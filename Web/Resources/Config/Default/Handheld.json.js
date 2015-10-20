@@ -59,7 +59,17 @@
                         "uri": "Resources/Locales/Mapping.Charting.en-US.json.js"
                     }
                 ]
-            }
+			},
+			{
+                "id":"Custom",
+                "uri":"Libraries/Custom/Compiled/Custom.js",
+                "locales":[
+                    {
+                        "locale":"en-US",
+                        "uri":"Resources/Locales/Custom.en-US.json.js"
+                    }
+                ]
+            }            
         ],
         "modules": [
             {
@@ -87,7 +97,63 @@
                         "configuration": {}
                     }
                 ]
+            },                       
+            {
+                "moduleName": "LayerActionsExtension",
+                "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
+                "libraryId": "Custom",
+                "configuration": {}                                            
+            }, 
+            {
+                "moduleName": "AddCommunityData",
+                "moduleType": "oe.add_community_data.AddCommunityDataModule",
+                "libraryId": "Custom",
+                "configuration": {}                                            
+            }, 
+            {
+                "moduleName": "HyperlinkBanner",
+                "moduleType": "oe.hyperlink_banner.HyperlinkBannerModule",
+                "libraryId": "Custom",
+                "configuration": {
+                    "linkUri": "http://oregonexplorer.info"
+                }                                            
+            }, 
+            {
+                "moduleName": "Elevation",
+                "moduleType": "oe.elevation.ElevationModule",
+                "libraryId": "Custom",
+                "configuration": {
+
+                },
+                "views": [
+                   {
+                       "id": "ElevationModuleView",
+                       "viewModelId": "ElevationModuleViewModel",
+                       "visible": true,
+                       "markup": "Modules/Elevation/ElevationModuleView.html",
+                       "type": "oe.elevation.ElevationModuleView",
+                       "region": "LeftFooterRegion",
+                       "configuration": {
+
+                       }
+                   }
+                ],
+                "viewModels": [
+                   {
+                       "id": "ElevationModuleViewModel",
+                       "type": "oe.elevation.ElevationModuleViewModel",
+                       "configuration": {               
+                       }
+                   }
+                ]
             },
+            {
+                "moduleName": "RasterFunctions",
+                "moduleType": "oe.raster_functions.RasterFunctionsModule",
+                "libraryId": "Custom",
+                "configuration": {                    
+                }                                            
+            }, 
             {
                 "moduleName": "Accessibility",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.accessibility.AccessibilityModule",
@@ -238,7 +304,7 @@
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.bookmarks.BookmarksViewModel",
                         "configuration": {
                             "bookmarksEnabled": true,
-                            "showBookmarksButton": false
+                            "showBookmarksButton": true
                         }
                     }
                 ]
@@ -1125,7 +1191,7 @@
                             "singleGeolocationProfiles": {
                                 "default": {
                                     "accuracyThreshold": 10,
-                                    "timeLimit": 30000
+                                    "timeLimit": 2000
                                 },
                                 "coarse": {
                                     "accuracyThreshold": 250,
@@ -1136,7 +1202,7 @@
                                     "timeLimit": 60000
                                 }
                             },
-                            "geolocateAccuracyCircleEnabled": true,
+                            "geolocateAccuracyCircleEnabled": false,
                             "adjustExtentZoomOnGeolocate": true,
                             "geolocateExtentZoomLevel": 50000,
                             "geolocationIndicator": "Resources/Images/Icons/geolocate-position-32.png"
@@ -1146,11 +1212,11 @@
                         "id": "GeolocateStatusViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.geolocate.GeolocateStatusViewModel",
                         "configuration": {
-                            "showGeolocateCoordinates": false,
+                            "showGeolocateCoordinates": true,
                             "showTrackingCoordinates": true,
                             "showFollowingCoordinates": true,
                             "coordinateFormat": "dd",
-                            "coordinateWkid": null,
+                            "coordinateWkid": 4326,
                             "coordinateFractionalDigits": 4,
                             "geolocateIcon": "Resources/Images/Icons/geolocate-24.png",
                             "busyIcon": "Resources/Images/loader-small.gif"
@@ -1296,7 +1362,7 @@
                         "id": "InfoViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.Info.InfoViewModel",
                         "configuration": {
-                            "content": "%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%5BApplication%20information%20and%20actions%20here%5D%3C%2Fp%3E%3Cbr%3E%3Cp%3E%3Ci%3EUse%20this%20region%20to%20welcome%20users%2C%20make%20objectives%20of%20the%20application%20clear%2C%20and%20provide%20efficient%20access%20to%20important%20functions%20and%20workflows.%3C%2Fi%3E%3C%2Fp%3E",
+                            "content": "%3Cdiv%20style%3D%22font-family%3ASegoe%20UI%2C%20Arial%3B%20text-align%3Acenter%3B%20width%3A85%25%3B%20margin%3Aauto%22%3E%20%3Cp%20style%3D%22color%3A%20%23000000%3B%20%20font-size%3A%2018px%3B%22%3E%0A%20%20%20%20%20%20%20%20Welcome%20to%20the%20Oregon%20Explorer%0A%20%20%20%20%20%20%20%20%3Cbr%3E%20Map%20Viewer!%0A%20%20%20%20%3C%2Fp%3E%0A%20%20%20%20%3Cbr%3E%0A%0A%20%20%20%20%3Cp%20style%3D%22text-align%3Aleft%22%3EWith%20hundreds%20of%20map%20layers%20available%20to%20draw%20from%2C%20you%20can%20use%20the%20Oregon%20Explorer%20Map%20Viewer%20to%20make%20your%20own%20custom%20map%20and%20share%20it%20with%20others.%20%3C%2Fp%3E%0A%20%20%20%20%3Cbr%3E%0A%0A%20%20%20%20%3Cp%20style%3D%22text-align%3Aleft%22%3EClick%20button%20below%20to%20directly%20access%20the%20map%20layers%20or%20click%20on%20the%20%E2%80%9Clayers%E2%80%9D%20icon%20in%20the%20bottom%20left%20hand%20corner%20of%20this%20window.%20%20The%20home%20button%20gets%20you%20back%20to%20this%20introduction.%3C%2Fp%3E%0A%20%20%20%20%3Cbr%3E%0A%20%20%20%20%3Cp%20style%3D%22text-align%3Acenter%22%3E%3Ca%20href%3D%22command%3ASwitchToLayerView%22%3E%3Cimg%20src%3D%22Resources%2FImages%2FCustom%2FGotoLayers.png%22%3E%3C%2Fa%3E%3C%2Fp%3E%0A%20%20%20%20%0A%20%20%20%20%3Cbr%3E%0A%20%20%20%20%3Cp%3E%0A%20%20%20%20%20%20%20%20We%20hope%20you%20enjoy%20using%20the%20tool.%26nbsp%3B%20Send%20questions%20or%20feedback%20to%3A%20%3Ca%20href%3D%22mailto%3Avirtualoregon.support%40oregonstate.edu%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20virtualoregon.support%40oregonstate.edu%0A%20%20%20%20%20%20%20%20%3C%2Fa%3E%0A%20%20%20%20%3C%2Fp%3E%0A%20%20%20%20%3Cbr%3E%3Cbr%3E%0A%20%20%20%20%3Cp%20style%3D%22text-align%3Acenter%22%3E%0A%20%20%20%20%20%20%20%20%3Ca%20href%3D%22http%3A%2F%2Foregonexplorer.info%22%20target%3D%22_blank%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cimg%20style%3D%22width%3A%20294px%3B%22%20src%3D%22Resources%2FImages%2FCustom%2Fsplash-logo.png%22%3E%0A%20%20%20%20%20%20%20%20%3C%2Fa%3E%0A%20%20%20%20%3C%2Fp%3E%20%20%20%20%0A%3C%2Fdiv%3E",
                             "included": true,
                             "title": "@language-common-welcome"
                         }
@@ -1934,6 +2000,22 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/visualizations-24.png",
                                     "command": "ShowVisualizationView",
                                     "hideOnDisable": true
+                                },
+                                {
+                                    "text": "View metadata",
+                                    "description": "View the layer's metadata",
+                                    "iconUri": "Resources/Images/Icons/details-24.png",
+                                    "command": "showMetadata",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "Download layer",
+                                    "description": "Download the layer",
+                                    "iconUri": "Resources/Images/Icons/download-24.png",
+                                    "command": "showDownload",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
                                 }
                             ]
                         },
@@ -2452,7 +2534,7 @@
                         "region": "BottomLeftMapRegion",
                         "configuration": {
                             "scalebarStyle": "ruler",
-                            "scalebarUnit": "metric",
+                            "scalebarUnit": "english",
                             "showBackground": true
                         },
                         "viewModelId": "ScalebarViewModel"
@@ -2775,8 +2857,8 @@
             {
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
-                "configuration": {
-                    "siteUri": "http://gedemo.geocortex.com/Geocortex/Essentials/Prod/REST/sites/World_Cities"
+                "configuration": {                    
+                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/layer_test"                    
                 },
                 "views": [
                     {

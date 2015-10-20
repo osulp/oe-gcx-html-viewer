@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,6 +60,7 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Handheld.html" />
+    <Content Include="HtmlPage1.html" />
     <Content Include="Index.html" />
     <Content Include="offline.aspx" />
     <Content Include="offline.js" />
@@ -72,6 +74,7 @@
     <Content Include="Resources\Compiled\Mapping.js" />
     <Content Include="Resources\Config\CacheManifestConfig.xml" />
     <Content Include="Resources\Config\Default\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\Desktop_ORIG.json.js" />
     <Content Include="Resources\Config\Default\Handheld.json.js" />
     <Content Include="Resources\Config\Default\Tablet.json.js" />
     <Content Include="Resources\Config\OfflineManifestParameters.xml" />
@@ -81,6 +84,10 @@
     <Content Include="Resources\Images\Banners\default-banner.png" />
     <Content Include="Resources\Images\blank-tile.png" />
     <Content Include="Resources\Images\body-bg.gif" />
+    <Content Include="Resources\Images\Custom\broadcasting.png" />
+    <Content Include="Resources\Images\Custom\GotoLayers.png" />
+    <Content Include="Resources\Images\Custom\oe-default-banner.png" />
+    <Content Include="Resources\Images\Custom\splash-logo.png" />
     <Content Include="Resources\Images\Datepicker\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="Resources\Images\Datepicker\ui-bg_diagonals-thick_20_666666_40x40.png" />
     <Content Include="Resources\Images\Datepicker\ui-bg_flat_10_000000_40x100.png" />
@@ -328,7 +335,7 @@
     <Content Include="Resources\Images\Icons\tree-expander-invisible-red-16.png" />
     <Content Include="Resources\Images\Icons\tree-expander-open-light-green-16.png" />
     <Content Include="Resources\Images\Icons\tree-expander-open-light-red-16.png" />
-    <Content Include="Resources\Images\Icons\legend-16.png" />  
+    <Content Include="Resources\Images\Icons\legend-16.png" />
     <Content Include="Resources\Images\Icons\workflow-24.png" />
     <Content Include="Resources\Images\Icons\workflow-white-24.png" />
     <Content Include="Resources\Images\Icons\workflow.png" />
@@ -396,6 +403,9 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Scripts\Custom\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

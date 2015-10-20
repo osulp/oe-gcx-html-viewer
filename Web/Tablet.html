@@ -4,7 +4,7 @@
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <title>Geocortex Viewer for HTML5</title>
+        <title>Oregon Explorer Map Viewer</title>
 
         <link rel="shortcut icon" href="favicon.ico"/>
         <link rel="apple-touch-icon" href="Resources/Images/Icons/iOS/apple-touch-icon.png"/>
@@ -21,7 +21,7 @@
         <!-- Splash Screen Markup -->
         <div class="splash-overlay">
             <div class="splash-plate">
-                <img class="splash-image" src="Resources/Images/splash-logo.png" alt=""/>
+                <img class="splash-image" src="Resources/Images/Custom/splash-logo.png" alt=""/>
                 <p class="splash-paragraph">This application uses licensed Geocortex Essentials technology for the Esri<sup>&reg;</sup> ArcGIS platform. All rights reserved.</p>
             </div>
         </div>
@@ -30,7 +30,7 @@
         <script src="Resources/Compiled/loader.js"></script>
         <script>
             // Uncomment the below line to only use local copies of Esri API files. This is done automatically in the Geocortex Mobile App Framework.
-            //var geocortexUseLocalEsriApi = true;
+            var geocortexUseLocalEsriApi = true;
             var viewerConfig = {
                 "configurations": {
                     "default": "Resources/Config/Default/Tablet.json.js"

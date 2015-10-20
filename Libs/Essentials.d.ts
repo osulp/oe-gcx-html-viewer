@@ -1562,29 +1562,7 @@ declare module geocortex.essentials {
         * secured ArcGIS Portal hosted services.
         */
         static arcGisPortalToken: TokenResult;
-        private static _anchorScratch;
-        private static _pathCleaner;
-        /**
-         * Custom token scopes to apply.
-         */
-        static tokenScopes: {
-            [partialUri: string]: boolean | string;
-        };
-        /**
-         * Returns the token for a scope URI.
-         * @param uri The URI to return the token for.
-         */
-        static getTokenForScope(uri: string): string;
-        /**
-         * Sets the default Essentials token for all requests satisfying the default scope.
-         * @param token The default token to set.
-         * @param scope The URI scope for which the token applies.
-         */
-        static setDefaultToken(token: string, scope: string): void;
-        /**
-         * The Geocortex Essentials token for all requests satisfying the default scopes.
-         * @deprecated 2.5.1 Use `getTokenForScope` instead. This will ensure that tokens will not be brokered for non-Essentials URIs (unless explicitly instructed to do so).
-         */
+        /** The Geocortex Essentials token for all requests. */
         static token: string;
         /**
          * Initializes a new instance of the {@link geocortex.essentials.RestHelperHTTPService} class.
@@ -4224,7 +4202,6 @@ declare module geocortex.essentials {
           * @returns Returns the appropriate token for the given type.
           */
         getTokenFromPrincipal(url: string, type: any): string;
-        private _updateDefaultToken(token);
         /**
          * Initializes the {@link Site} from the server.
          * {@link Site} needs to override the base initialize because it needs to initialize from more than one rest endpoint.</p>
