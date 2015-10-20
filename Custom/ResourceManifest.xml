@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Profile Key="Custom" Library="true">
+
+    <Code>
+        <Include Path="..\custom_ts_out.js" />
+    </Code>
+
+    <Markup>
+        <Include Path="Modules\**\*.html" />
+    </Markup>
+
+    <Styles>
+        <Include Path="Modules\**\*.css" />
+    </Styles>
+
+    <Dictionary Name="Invariant">
+        <Include Path="Modules\**\*.json" />
+    </Dictionary>
+
+</Profile>

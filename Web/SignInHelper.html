@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>_</title>
+</head>
+<body onload="init()">
+    <script type="text/javascript">
+        function init() {
+            var owner = window.opener || window.parent;
+            var redirectTo = owner.security.handleSignIn(location.hash, location.href);
+            if (redirectTo) {
+                location.replace(redirectTo);
+            } else if (window.opener) {
+                // We detect if this is a popup, and close.
+                // This "trick" is not necessary for most browsers, but for IE, this
+                // will avoid the user from getting prompted to close the popup.
+                // This "trick" is somewhat well-known and has been used other places.
+                window.open(null, "_self").close();
+            }
+        }
+    </script>
+</body>
+</html>

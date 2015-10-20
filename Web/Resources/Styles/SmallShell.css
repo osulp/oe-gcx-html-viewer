@@ -1,0 +1,560 @@
+﻿body.shell-small {
+    overflow: hidden;
+    height: 100%;
+}
+
+.shell-small .search-hints-region {
+    margin-top: 0;
+}
+
+.shell-small .global-search {
+    border: none;
+    border-radius: 0;
+}
+
+.shell-small .region.header-region .view.ToolbarButtonView {
+    z-index: 0;
+}
+
+.shell-small .toolbar-body.small h2 {
+    font-size: 1.25em;
+    border-top: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    width: 96%;
+    padding: 0.4em 2%;
+    margin: 0;
+}
+
+.shell-small .toolbar-body.small .toolbar-item:first-child h2 {
+    border-top: 0;
+}
+
+.shell-small .TabbedToolbarView .toolbar-item ul {
+    padding-bottom: 0;
+}
+.no-touch .shell-small .esriControlsBR {
+    right: 3.2em;
+}
+.shell-small .esriControlsBR {
+    right: 3.9em;
+    z-index: 0;
+}
+
+.shell-small .wtm-button {
+    z-index: 0;
+}
+
+.shell-small .wtm-list .list-menu li:last-child {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+.shell-container {
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transition: top 500ms cubic-bezier(0.55, 0, 0.1, 1);
+    transition: top 500ms cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+/** Anchor the IWTM button to the top left. */
+.shell-small .wtm-button {
+    width: 9.3em;
+    height: 100%;
+    background-color: #197DC9;
+    opacity: 1;
+    padding: 0 0.7em 0.25em 0.7em;
+    font-size: 1.5em;
+}
+
+/** Hide the text in the small shell. */
+    .shell-small .wtm-button span {
+        display: none;
+    }
+
+.shell-small .list-menu-item:hover {
+    background-color: #E4F5FF;
+}
+
+.region.header-region {
+    margin: 0;
+    background: #FFFFFF;
+}
+
+.shell-small .shell-container .bottom-panel {
+    position: absolute;
+    width: 100%;
+    z-index: 300;
+}
+
+/** Anchors the search box in the HeaderRegion and cleans it up. */
+.shell-small .search-box input {
+    width: 100%;
+    height: 100%;
+    padding: 0.125em 2.125em 0.125em 0.125em;
+    background: #FFFFFF;
+    border: 0;
+    border-radius: 0;
+    font-weight: normal;
+    text-align: right;
+}
+
+.shell-small .search-button {
+    background: url("../../Resources/Images/Icons/Toolbar/search-24.png") no-repeat center center;
+    right: 0;
+    width: 3.3em;
+    height: 100%;
+}
+
+.shell-small .view.IWantToView {
+    position: absolute;
+    z-index: 500;
+}
+
+.shell-small .region.inactive {
+    display: normal;
+}
+
+.shell-small .region.left-panel-region {
+    position: absolute;
+    z-index: 1000;
+    width: 75%;
+    left: -75%;
+    top: 0;
+    bottom: 0;
+    opacity: 0;
+    background: #fff;
+    transform-origin: 0% 50%;
+    -webkit-transition: -webkit-transform 500ms cubic-bezier(0.55, 0, 0.1, 1), opacity 500ms cubic-bezier(0.55, 0, 0.1, 1);
+    transition: transform 500ms cubic-bezier(0.55, 0, 0.1, 1), opacity 500ms cubic-bezier(0.55, 0, 0.1, 1);
+    border-right: 1px solid #D9D9D9;
+}
+
+.shell-small .new-shell.extended-height .region.left-panel-region {
+    bottom: 0;
+}
+
+/** When the panel opens... */
+.shell-small .region.left-panel-closed,
+.shell-small .region.right-panel-closed {
+    display: none;
+}
+
+.shell-small .region.right-panel-opening,
+.shell-small .region.left-panel-opening {
+    -webkit-transform: translate3d(0, 0, 1px);
+    transform: translate3d(0, 0, 1px);
+}
+
+.shell-small .region.right-panel-closing,
+.shell-small .region.left-panel-region.left-panel-closing {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 0, 1px);
+    transform: translate3d(0, 0, 1px);
+}
+
+.shell-small .region.left-panel-region.right-panel-opened {
+    opacity: 1;
+    -webkit-transform: translate3d(%100, 0, 1px);
+    transform: translate3d(100%, 0, 1px);
+}
+
+.shell-small .region.left-panel-region.left-panel-opened {
+    opacity: 1;
+    -webkit-transform: translate3d(99.5%, 0, 1px);
+    transform: translate3d(99.5%, 0, 1px);
+}
+
+.shell-small button {
+    cursor: pointer;
+}
+
+.shell-small .wtm-button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #197DC9;
+}
+
+.shell-small .toolbar-toggle-button {
+    width: 100%;
+    height: 100%;
+    padding: .5em;
+    background: url("../../Resources/Images/Icons/Toolbar/tools-32.png") center center no-repeat;
+    border-left: 1px solid #D9D9D9;
+}
+
+/** #undo */
+.shell-small .panel-header {
+    height: 44px;
+    line-height: 44px;
+}
+.no-touch .shell-small .panel-header {
+    height: 2.75em;
+    line-height: 2.5em;
+}
+    .shell-small .panel-header button.panel-resizer {
+        border-left: 1px solid #ddd;
+        background: url("../../Resources/Images/Icons/chevron-down-24.png") center center no-repeat;
+    }
+
+    .shell-small .panel-header button.panel-back {
+        border-left: 1px solid #ddd;
+        background: url("../../Resources/Images/Icons/chevron-left-24.png") center center no-repeat;
+    }
+
+
+.shell-small .region.header-region {
+    -webkit-transition: -webkit-transform 500ms cubic-bezier(0.55, 0, 0.1, 1);
+    transition: transform 500ms cubic-bezier(0.55, 0, 0.1, 1);
+    border-bottom: 1px solid #D9D9D9;
+    position: relative;
+}
+
+.shell-small .region.screen-region {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 3.3em;
+    bottom: 0;
+    -webkit-transition: -webkit-transform 500ms cubic-bezier(0.55, 0, 0.1, 1);
+    transition: transform 500ms cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+    .shell-small .region.screen-region.slide-up-sliding {
+    }
+
+    .shell-small .region.screen-region.slide-up-end {
+    }
+
+
+.shell-small .region.header-region .view {
+    vertical-align: top;
+}
+
+.shell-small .region .nav-button-view {
+    position: absolute;
+    width: 3.5em;
+    height: 3.5em;
+    right: 0.4em;
+    bottom: 0em;
+    background: #fff url("../../Resources/Images/Icons/panel-more-24.png") center center no-repeat;
+    border-radius: 0.25rem;
+    border: 1px solid #D9D9D9;
+}
+.no-touch .shell-small .region .nav-button-view {
+    width: 2.79em;
+    height: 2.75em;
+}
+.shell-small .region.small-navigation-region,
+.shell-small .region.small-navigation-region * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.small-navigation-region .panel-header-button {
+    width: 3.9em;
+}
+.no-touch .small-navigation-region .panel-header-button {
+    width: 3.2em;
+}
+    /**
+     The switcher view, like the bottom and left panels, slides out of view when not needed.
+     This means it must must be display: none when not in use, but must be set to display: block
+     in order for the animated slide to occurr.
+     */
+    .shell-small .region.small-navigation-region .view-switcher-view.inactive {
+        display: block;
+    }
+
+    .shell-small .region.small-navigation-region .view-switcher-view {
+        display: block;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow-x: auto;
+        background: #FFFFFF;
+    }
+
+        .shell-small .region.small-navigation-region .view-switcher-view .panel-header-button.right {
+            position: absolute;
+            height: 100%;
+            right: 0;
+            bottom: 0;
+            border-left: 1px solid #ddd;
+            background: #fff url("../../Resources/Images/Icons/close-24.png") center center no-repeat;
+        }
+
+            .shell-small .region.small-navigation-region .view-switcher-view .panel-header-button.right:hover {
+                background-color: #E4F5FF;
+            }
+
+
+.shell-small .region.small-navigation-region {
+    position: absolute;
+    background: white;
+    height: 4em;
+    z-index: 1000;
+    width: 100%;
+    top: 100%;
+    overflow: hidden;
+    opacity: 0;
+    -webkit-transform-origin: 0% 50%;
+    transform-origin: 0% 50%;
+    -webkit-transition: -webkit-transform 300ms cubic-bezier(0.55, 0, 0.1, 1), opacity 300ms cubic-bezier(0.55, 0, 0.1, 1);
+    transition: transform 300ms cubic-bezier(0.55, 0, 0.1, 1), opacity 300ms cubic-bezier(0.55, 0, 0.1, 1);
+    -webkit-transform: translate3d(0, 100%, 1px);
+    transform: translate3d(0, 100%, 1px);
+}
+    .no-touch .shell-small .region.small-navigation-region {
+        height: 3.25em;
+    }
+    .shell-small .region.small-navigation-region .view,
+    .shell-small .region.small-navigation-region .view-switcher-view,
+    .shell-small .region.small-navigation-region .panel-header-nav {
+        height: 100%;
+    }
+
+    .shell-small .region.small-navigation-region .panel-header-nav {
+        padding: 0.25em 0;
+    }
+
+    .shell-small .region.small-navigation-region.nav-region-closing {
+        -webkit-transform: translate3d(0, 0, 1px);
+        transform: translate3d(0, 0, 1px);
+    }
+
+    .shell-small .region.small-navigation-region.nav-region-closed {
+        display: none;
+    }
+
+    .shell-small .region.small-navigation-region.nav-region-opening {
+    }
+
+    .shell-small .region.small-navigation-region.nav-region-opened {
+        overflow: hidden;
+        opacity: 1;
+        -webkit-transform: translate3d(0, -100%, 1px);
+        transform: translate3d(0, -100%, 1px);
+        border-top: 1px solid #D9D9D9;
+    }
+
+.shell-small .region.top-left-shell-region {
+    top: 0px;
+    right: 0px;
+    width: 100%;
+    position: absolute;
+}
+
+.shell-small .region.top-right-shell-region .view.inactive {
+    display: block;
+}
+
+.shell-small .region.top-right-shell-region {
+    bottom: 100%;
+    width: 100%;
+    position: absolute;
+    background: white;
+    -webkit-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+    -webkit-transition: -webkit-transform 250ms cubic-bezier(0.55, 0, 0.1, 1);
+    transition: transform 250ms cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.shell-small .region.top-left-shell-region-closed,
+.shell-small .region.top-right-shell-region-closed {
+    display: none;
+}
+
+.shell-small .region.top-right-shell-region-closing {
+    -webkit-transform: translate3d(0, 0%, 1px);
+    transform: translate3d(0, 0%, 1px);
+}
+
+.shell-small .region.top-right-shell-region-opening {
+}
+
+.shell-small .region.top-right-shell-region-opened {
+    overflow: hidden;
+    opacity: 1;
+    -webkit-transform: translate3d(0, 100%, 1px);
+    transform: translate3d(0, 100%, 1px);
+}
+
+
+.shell-small .region.top-right-shell-region .compactToolbar-collapsible-area.bound-invisible {
+    display: block !important;
+}
+
+.shell-small .region.left-panel-region.left-panel-opened .view {
+    background: none repeat scroll 0 0 #FFFFFF;
+    height: 100%;
+    width: 100%;
+    border-right: 1px solid #D9D9D9;
+}
+
+.shell-small .region.bottom-left-shell-region {
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    position: absolute;
+}
+
+.shell-small .region.bottom-right-shell-region {
+    bottom: 0px;
+    right: 0px;
+    width: 100%;
+    position: absolute;
+}
+
+.shell-small .extended-height .region.small-navigation-region.nav-region-opening {
+    -webkit-transform: translate3d(0, 0%, 1px);
+    transform: translate3d(0, 0%, 1px);
+}
+
+.shell-small .view-switcher-view button {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+    .shell-small .view-switcher-view button.nav-btn {
+        min-width: 5em;
+        height: 100%;
+        vertical-align: top;
+        text-align: center;
+        color: #333333;
+        border-bottom: 0.25em solid #DDECF7;
+        margin: 0 0.25em;
+    }
+
+        .shell-small .view-switcher-view button.nav-btn:hover {
+            background: #E4F5FF;
+            border-color: #24A7FF;
+        }
+
+        .shell-small .view-switcher-view button.nav-btn.nav-btn-active {
+            border-color: #24A7FF;
+        }
+
+.shell-small .view-switcher-view ul.panel-header-nav {
+    margin: 0;
+    padding: 0;
+}
+
+    .shell-small .view-switcher-view ul.panel-header-nav li {
+        display: inline;
+        margin: 0;
+        padding: 0 0 0 1em;
+        list-style-type: none;
+    }
+
+.shell-small .screen-region {
+    background: url("../../Resources/Images/Backgrounds/debut_light.png");
+}
+
+.shell-small .toolbar-toggle-button {
+    z-index: 300;
+}
+
+.shell-small .region.header-region {
+    height: 3.3em;
+}
+
+    /** Avoids issues in Chrome with these components.*/
+    .shell-small .region.header-region .view {
+        position: absolute;
+    }
+
+        .shell-small .region.header-region .view.inactive {
+            display: block;
+        }
+
+        .shell-small .region.header-region .view.IWantToMenuButtonView {
+            left: 0;
+            width: 9.3em;
+            height: 100%;
+            margin: 0;
+        }
+
+        .shell-small .region.header-region .view.SearchView {
+            left: 9.3em; /* Same as the IWT button width */
+            right: 3.3em; /* Same as the toolbar button width */
+            margin: 0;
+        }
+
+            .shell-small .region.header-region .view.SearchView,
+            .shell-small .region.header-region .view.SearchView .global-search,
+            .shell-small .region.header-region .view.SearchView .search-box {
+                height: 100%;
+            }
+
+        .shell-small .region.header-region .view.TabbedToolbarButtonView {
+            height: 100%;
+            right: 0px;
+            top: 0;
+            margin: 0;
+        }
+
+        .shell-small .region.header-region .view.TabbedToolbarButtonView .toolbar-toggle-button {
+            width: 3.3em;
+        }
+
+        .shell-small .region.header-region .view.TabbedToolbarButtonView .toolbar-toggle-button.bound-invisible {
+            display: none;
+        }
+
+        .shell-small .region.header-region .view.CompactToolbarButtonView {
+            height: 100%;
+            right: 0px;
+            top: 0;
+            margin: 0;
+        }
+
+        .shell-small .region.header-region .view.CompactToolbarButtonView .toolbar-toggle-button {
+            width: 3.3em;
+        }
+
+        .shell-small .region.header-region .view.CompactToolbarButtonView .toolbar-toggle-button.bound-invisible {
+            display: none;
+        }
+
+/**
+ * See the shell's codebehind, the classes below are applied via code and referenced via a map of class names.
+ * If you change them, please refer to the code to ensure that you're not breaking anything.
+ * Note that breaking anything regarding the shell itself === breaking everything.
+ */
+
+/** NOTE: A translate3d is currently set in code to manage the height of the shell-container. */
+.shell-small .shell-container .bottom-panel {
+    -webkit-transition: -webkit-transform 500ms cubic-bezier(0.55, 0, 0.1, 1);
+    transition: transform 500ms cubic-bezier(0.55, 0, 0.1, 1);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    
+}
+
+    .shell-small .shell-container .bottom-panel.panel-maximized {
+    }
+
+        .shell-small .shell-container .bottom-panel.panel-maximized.hhs-full-height {
+        }
+
+    .shell-small .shell-container .bottom-panel.panel-partial-height {
+    }
+
+    /** MUST use display: none to properly hide content from screen readers. */
+    .shell-small .shell-container .bottom-panel.panel-minimized {
+        display: none;
+    }
+
+    /** Ditto. */
+    .shell-small .shell-container .bottom-panel .hidden-by-panel {
+        display: none;
+    }

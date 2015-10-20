@@ -1,0 +1,7153 @@
+﻿
+/* Begin Script: Mapping/infrastructure/menus/CSS/common.css ------------------------- */ 
+/* MENU -------------------------*/
+
+.menu-hyperlinks .list-menu {
+    margin-top: .75em;
+    padding-top: .54em;
+    border-top: 1px solid #D9D9D9;
+    overflow: auto;
+    padding-bottom: 0.5em;
+}
+
+.menu-hyperlinks .list-menu-item {
+    display: inline-block;
+    border-bottom: none;
+    border-left: 1px solid #D9D9D9;
+    padding: 0 .54em;
+    cursor: default;
+}
+.menu-hyperlinks .list-menu-item:hover,
+.menu-hyperlinks .list-menu-item:focus,
+.menu-hyperlinks .list-menu-item a:hover,
+.menu-hyperlinks .list-menu-item a:focus {
+    background: none;
+}
+.menu-hyperlinks .list-menu-item:first-child {
+    padding-left: 0;
+    border-left: none;
+}
+
+.menu-hyperlinks .list-menu-item:last-child {
+    padding-right: 0;
+}
+
+.menu-hyperlinks .list-menu-item:hover,
+.menu-hyperlinks .list-menu-item.selected:hover {
+    background: none;
+}
+
+.menu-hyperlinks .list-menu-item a:hover {
+    text-decoration: underline;
+}
+
+.menu-hyperlinks .disabled,
+.menu-hyperlinks .bound-disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+.menu-hyperlinks .disabled a:hover,
+.menu-hyperlinks a.bound-disabled:hover {
+    text-decoration: none;
+}
+.menu-hyperlinks .list-menu-button {
+    color: #1B7DBF;
+    text-decoration: underline;
+}
+.region.footer-region .view .menu-hyperlinks button:hover,
+.menu-hyperlinks .list-menu-button:hover {
+    color: #666666;
+    text-decoration: none;
+    background: transparent;
+}
+/* Icon Menu -------------------------*/
+.icon-menu .list-menu {
+    overflow: hidden;
+}
+.icon-menu .list-menu-item {
+    padding: 0;
+    display: block;
+    float: left;
+    font-size: 0.9em;
+}
+.icon-menu .list-menu-name {
+    text-align: center;
+    color: #1b7dbf;
+}
+.icon-menu button {
+    min-width: 3.5em;
+    min-height: 3.5em;
+    border-radius: 0.25rem;
+    text-align: center;
+}
+.no-touch .icon-menu button {
+    min-width: 2.75em;
+    min-height: 2.75em;
+}
+.footer-container .list-menu.icon-menu .list-menu-icon,
+.icon-menu button .list-menu-icon {
+    vertical-align: middle;
+    display: inline-block;
+    float: none;
+    margin-bottom: 0.2em;
+}
+
+/* End Script: Mapping/infrastructure/menus/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/infrastructure/results/CSS/common.css ------------------------- */ 
+
+/* RESULTS (COMMON) -------------------------*/
+.ResultsTableView, .results, .ResultsTableView .results .widget.bound-visible {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+}
+.results-list {
+    overflow: auto;
+    position: absolute;
+    width: 100%;
+}
+.results-list {
+    top: 0;
+    bottom: 6em;
+    overflow-x: hidden;
+}
+
+.results-list .list-menu-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.results-list .list-menu-details {
+    margin-left: 3em;
+}
+.results-list .list-menu-item {
+    display: block;
+}
+
+.results-list .list-menu-details .list-menu-desc .feature-description {
+    /* Preserve white space and new lines*/
+    white-space: pre-wrap;
+}
+.FeatureDetailsView .panel-group.has-editable-related-features {
+    padding-left: 0;
+}
+.has-editable-related-features .results-table {
+    border-top: 1px solid #eeeeee;
+}
+.createfeature .list-menu-item {
+    border-bottom: 0;
+}
+.createfeature .list-menu-desc {
+    padding-left: 0.5em;
+}
+.ResultsTableView .results .paging-control {
+    height: 3.55em;
+}
+.no-item,
+.no-results {
+    padding: 1em;
+    color: #777777;
+}
+.no-results p {
+    margin-bottom: 1em;
+}
+
+
+/* RESULTS PAGING CONTROL (COMMON) -------------------------*/
+.paging-control.has-pages {
+	height: 6.5em;
+}
+
+.paging-control.no-pages {
+	height: 3em;
+}
+.paging-control {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+}
+.paging-control.has-pages {
+    height: 6em;
+}
+.paging-control.no-pages {
+    height: 3em;
+}
+.paging-control {
+    display: block;
+    background: #FFFFFF;
+    border-top: 1px solid #D9D9D9;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.paging-control-inner {
+    margin: 0 .75em;
+}
+.paging-result-info {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.8em;
+    padding-top:0.5em;
+}
+.paging-buttons {
+    padding: 0.5em 0;
+    overflow: hidden;
+}
+.view.ResultsTableView .paging-buttons {
+    float: right;
+    padding:0.6em 0em;
+}
+.view.ResultsTableView .paging-result-info {
+    float: left;
+    padding: .65em 0;
+}
+.paging-buttons button,
+.paging-control a {
+    width: 2em;
+    height: 2em;
+    background: #FFFFFF;
+    background-repeat: no-repeat;
+    text-align: center;
+}
+
+.paging-control .paging-result-info button {
+    width: 2em;
+    height: 2em;
+    padding: 0em 0.25em 0em 0.25em;
+}
+
+.paging-result-info button,
+.paging-result-info a {
+    margin-right: 0.5em;
+    border-radius: 0.25rem;
+}
+
+.paging-result-info span {
+    cursor: default;
+}
+
+.paging-control button,
+.paging-control a,
+.paging-buttons-info {
+    display: inline-block;
+    float: left;
+    background-color: #FFFFFF;
+    border: 1px solid #D9D9D9;
+}
+.paging-control button {
+    padding: 0em 0.5em 0.25em 0.5em;
+    overflow: hidden;
+}
+.paging-buttons-info {
+    padding: 0.27em 0.5em 0.22em 0.5em;
+    height: 2em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.paging-control button img {
+    width: 100%;
+    height: auto;
+    text-align: center;  
+    vertical-align: middle;
+    margin: 0 auto;
+}
+.paging-control button:hover {
+    background-color: #DEF2FF;
+    border: 1px solid #B2E0FF;
+}
+
+.paging-buttons button,
+.paging-buttons-info {
+    margin-right: -1px;
+}
+
+.paging-buttons button:first-child {
+    border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.paging-buttons button:last-child {
+    border-radius: 0 0.25rem 0.25rem 0;
+    margin-right: 0;
+}
+.results-list-actions-widget .menu-hyperlinks .list-menu,
+.results-table-actions-widget .menu-hyperlinks .list-menu {
+	margin-top: 0;
+	padding-bottom: 0.54em;
+    padding-left: .75em;
+	border-top: none;
+    border-bottom: 1px solid #D9D9D9;
+}
+
+.results-list-actions-widget .menu-hyperlinks .list-menu-item,
+.results-table-actions-widget .menu-hyperlinks .list-menu-item {
+    float: none;
+}
+
+.results-list-actions-widget .menu-hyperlinks .list-menu-item:first-child {
+    padding-left: .5em;
+}
+
+.ResultsTableView .tab-container {
+    overflow: hidden;
+}
+
+.ResultsTableView .tab-container table {
+	table-layout: fixed;
+	width: 100%;
+	overflow: hidden;
+}
+
+.ResultsTableView .tab-left-scroll, 
+.ResultsTableView .tab-right-scroll {
+	vertical-align: top;
+    background-color: #FFFFFF;
+    border-right: 1px solid #D9D9D9;
+    width: 2.75em;
+    position: relative;
+    z-index: 100;
+}
+.ResultsTableView .tab-right-scroll {
+    border-left: 1px solid #D9D9D9;
+}
+.ResultsTableView .tab-left-scroll img, 
+.ResultsTableView .tab-right-scroll img {
+    margin: 0 auto;
+    display: block;
+}
+.ResultsTableView .tab-left-scroll button, 
+.ResultsTableView .tab-right-scroll button {
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+}
+.ResultsTableView .tab-left-scroll.disabled button, 
+.ResultsTableView .tab-right-scroll.disabled button {
+    background: #eeeeee;
+}
+.ResultsTableView .results .widget.bound-visible {
+    top: 2.15em;
+}
+
+.ResultsTableView .tab-control {
+    /* Width inherit is required so tab control offset width can be compared to that of the tab container to check whether to display tab scroll buttons */
+    width: inherit;
+	display: inline-block !important;
+	zoom: 1;
+}
+
+
+/* End Script: Mapping/infrastructure/results/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/infrastructure/ui/components/SmartPanel/CSS/common.css ------------------------- */ 
+
+.panel-header {
+    user-select: none;
+}
+
+.resize-horizontal-hint {
+    cursor: ew-resize;
+}
+
+.resize-vertical-hint {
+    cursor: ns-resize;
+}
+
+.smart-panel .panel-header button.menu-button {
+    float: right;
+    width: 3.5em;
+    height: 3.5em;
+    background: url(../Images/Icons/menu-hoisted-24.png) center no-repeat;
+}
+.no-touch .smart-panel .panel-header button.menu-button {
+    width: 2.75em;
+    height: 2.75em;
+}
+.smart-panel-hoisted-menu-inline .has-icon .list-menu-details {
+    margin-left: 0em;
+}
+.smart-panel-hoisted-menu-inline .list-menu-icon {
+    margin-right: 0.5em;
+}
+.smart-panel-hoisted-menu-inline {
+    position: absolute;
+    z-index: 1000;
+    right: 0;
+    top: 3.75em;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+    min-width: 100px;
+}
+
+.no-touch .smart-panel-hoisted-menu-inline {
+    top: 3em;
+}
+
+.resize-hint {
+    position: absolute;
+    background: #000000;
+    z-index: 10000;
+    opacity: 0.3;
+    bottom: 0;
+    zoom: 1;
+    filter: alpha(opacity=30);
+}
+
+.maximized {
+    height: 100.2% !important;
+}
+
+.large-shell-bottom .smart-panel-hoisted-menu-inline {
+    right: 2em;
+}
+
+.hidden-hoisted-menu {
+    display: none;
+}
+
+.maximize-16 {
+    background-image: url("../Images/Icons/arrow-up-small-16.png");
+}
+
+.minimize-16 {
+    background-image: url("../Images/Icons/arrow-down-small-16.png");
+}
+
+/* End Script: Mapping/infrastructure/ui/components/SmartPanel/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/infrastructure/ui/components/Table/CSS/common.css ------------------------- */ 
+.results-table {
+    display: inline-block;
+    min-width: 100%;
+    vertical-align: top;
+    width: 100%;
+    overflow: auto;
+    white-space: nowrap;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 3.5em;
+}
+.results-table td {
+    cursor: pointer;
+}
+.results-table th,
+.results-table td {
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+    vertical-align: top;
+    border: 1px solid #DDDDDD;
+}
+.results-table th span,
+.results-table td span,
+.results-table td button {
+    display: block;
+    padding: 0.5em 0.8em;
+    white-space: pre;
+    text-decoration: none;
+}
+.results-table td a {
+    padding: 0.5em 0.8em;
+}
+.results-table th {
+    border-top: none;
+}
+.results-table a {
+    display: block;
+}
+.results-table tr th:last-child,
+.results-table tr td:last-child {
+    width: 100%;
+    border-right: none;
+}
+.results-table tbody tr:nth-child(odd) {
+    background-color: #FAFAFA;
+}
+
+.results-table tbody tr:active,
+.results-table tbody tr:hover {
+    background-color: #DEF2FF;
+}
+
+.results-table .feature-set-header {
+    background: #DDDDDD;
+    font-weight: 600;
+    padding: .9em;
+}
+.result-heading {
+    padding-right: 20px !important;
+    font-weight: 600;
+}
+.sort,
+.sort-down,
+.sort-up {
+    display: block;
+    float: right;
+    width: 16px;
+    height: 16px;
+    padding: 0 !important;
+    margin:0.5em 0;
+    background-repeat: no-repeat;
+}
+.sort {
+    background-image: url(../../Resources/Images/Icons/arrow-sort-small-16.png);
+    zoom: 1;
+    filter: alpha(opacity=30);
+    opacity: 0.3;
+}
+th:hover .sort {
+    zoom: 1;
+    filter: alpha(opacity=100);
+    opacity: 1;
+}
+
+.sort-down {
+    background-image: url(../../Resources/Images/Icons/arrow-down-small-16.png);
+}
+
+.sort-up {
+    background-image: url(../../Resources/Images/Icons/arrow-up-small-16.png);
+}
+
+/* End Script: Mapping/infrastructure/ui/components/Table/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/common.css ------------------------- */ 
+/* CSS RESET -------------------------*/
+
+body, div, dl, dt, dd, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+fieldset, img {
+    border: 0;
+}
+
+button {
+    border: 0;
+    box-shadow: none;
+    background: none;
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    font-family: "Segoe UI","Helvetica Neue","Droid Sans",Helvetica,Arial,sans-serif;
+    text-align: left;
+    font-size: 1em;
+}
+
+body > * {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent; /* For some Androids */
+}
+
+/* GLOBAL STYLING -------------------------*/
+
+body {
+    font-family: "Segoe UI", "Helvetica Neue", "Droid Sans", Helvetica, Arial, sans-serif;
+    font-size: 0.8em;
+}
+
+input, select, textarea {
+    font-family: "Segoe UI", "Helvetica Neue", "Droid Sans", Helvetica, Arial, sans-serif;
+    font-weight: lighter;
+    font-size: 1em;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;	
+}
+
+a, a:active, a:hover, a:visited {
+   outline: none;
+  /* text-decoration: none;*/
+   color: #1b7dbf; 
+}
+
+a:hover,
+a:focus {
+    color: #666666;
+}
+/* Killing browser focus states ONLY because 
+   we are relying on the focus states included with the
+    focus states included in the accessibility module */
+*:focus {
+    outline: 0;
+}
+select,
+input[type="text"] {
+    min-width: 80px;
+}
+input[type="number"] {
+    width: 100%;
+    padding: 0 0 0 0.3em;
+}
+
+input[type="text"].disabled,
+input[type="text"].bound-disabled {
+    background-color: #ddd;
+}
+
+textarea {
+    resize: none;
+}
+
+p {
+    margin: 0 0 1em 0;
+}
+
+/* BROWSER-SPECIFIC BEHAVIOUR -------------------------*/
+
+/* Prevents double-tap zooming on tapabble elements, resulting in a non-delayed click event. */
+a, input, button {
+    -ms-touch-action: none !important;
+}
+
+/* Removes Clear field icon -------------------------*/
+input::-ms-clear {
+    display: none!important;
+}
+
+/* MODAL FORMS -------------------------*/
+.form-modal {
+    height: 100%;
+    padding: 0.625em;
+}
+
+.form-modal label {
+    display: block;
+    margin: .75em 0 0.25em 0;
+}
+
+.form-modal input,
+.form-modal select,
+.form-modal textarea {
+    width: 100% !important;
+}
+
+/* UTILITY CLASSES -------------------------*/
+
+.inactive,
+.view.inactive,
+.region .view.inactive,
+.bound-invisible,
+.view .bound-invisible,
+.region .view .bound-invisible {
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.active,
+.activating {
+}
+
+.activating {
+    opacity: 0;
+}
+
+.bound-disabled {
+    opacity: 0.3;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.clear {
+    clear: both;
+}
+
+.block {
+    display: block;
+}
+
+.inline {
+    display: inline;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.unselectable {
+    user-select: none;
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -ms-user-select: none;
+   -webkit-user-select: none;
+}
+
+.spacer-vertical.small {
+    height: 0.6em;
+}
+
+.bound-disabled,
+.disabled {
+    opacity: 0.3;
+    filter: alpha(opacity=30);
+    cursor: default;
+}
+
+
+/* MODAL WINDOW -------------------------*/
+
+.modal.active {
+    position: fixed;
+    z-index: 999;
+}
+
+.modal-overlay,
+.modal-container {
+    position: absolute;
+    z-index: 999;
+}
+
+.modal.active,
+.modal-overlay {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.modal.active {
+    -moz-transition: opacity 3s;
+}
+
+.modal-overlay.active { 
+    background-color: #000000;
+    opacity: 0.75;
+    filter: alpha(opacity=75);
+}
+
+.modal-container {  
+    background-color: #FFFFFF;
+    border: 1px solid #666666;
+    border-radius: 0.25rem;
+    overflow: visible;
+}
+
+
+/* VIEW CONTAINERS / MODULE CONTAINERS -------------------------*/
+
+.panel-header {
+    position: relative;
+    height: 3.75em;
+    line-height: 3.5em;
+    background: #FFFFFF;
+    border-bottom: 1px solid #D9D9D9;     
+}
+.no-touch .panel-header {
+    line-height: 2.75em;
+    height: 3em;
+}
+.panel-header h2 {
+    display: block;
+    overflow: hidden;
+    color: #959398;
+    font-weight: normal;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    cursor: default;
+}
+
+.panel-title img {
+    vertical-align: middle;
+    margin-bottom: 3px;
+}
+
+.panel-header-button {
+    width: 3.5em;
+    height: 3.5em;
+    text-align: center;
+    opacity: 0.75;
+    background-position: center center;
+    background-repeat: no-repeat;
+    filter: none; /* IE9 */
+}
+.no-touch .panel-header-button {
+    height: 2.75em;
+    width: 2.75em;
+}
+.panel-header-button.left {
+    left: 0;
+}
+
+.panel-header-button.right {
+    right: 0;
+}
+
+.panel-header-button:hover {
+    opacity: 1;
+}
+.resize-vertical-hint .panel-title {
+    cursor: ns-resize;
+}
+.resize-horizontal-hint .panel-title {
+    cursor: ew-resize;
+}
+.panel-scroll-container {
+    width: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+    background: white;
+}
+
+
+.panel-footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    overflow: auto;
+    background-color: #E8E8E8;
+    box-shadow: 1px 1px 1px #D9D9D9 inset;
+    overflow: hidden;
+}
+
+.panel-notification,
+.panel-group-contents {
+    padding: 1em;
+}
+
+.panel-notification {
+    font-weight: bold;
+}
+
+.panel-group h3 {
+    padding: .75em;
+    vertical-align: baseline;
+    background-color: #EEEEEE;
+    font-size: 1em;
+}
+
+.panel-group h3.expander {
+    position: relative;
+    cursor: pointer;
+}
+
+.panel-group h3.expander button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 100%;
+    background: url(../../Resources/Images/Icons/expander-closed-24.png) no-repeat center center;
+}
+
+.modal .panel-header {
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.module {
+    padding: 0.75em;
+}
+
+.view .padded-view {
+    padding: 8px;
+}
+
+/* BUTTONS -------------------------*/
+.button,
+input[type="submit"] {
+    padding: .5em;
+    outline: none;
+    background: #F2F2F2;
+    border: 1px solid #CCCCCC;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    color: #1B7DBF;
+    box-shadow: 0;
+}
+.button:hover {
+    background-color: #DEF2FF;
+    color: #666666;
+}
+button img {
+    vertical-align: bottom;
+}
+.button-text-link {
+    display: inline-block;
+    color: #1B7DBF;
+}
+.button-text-link:focus,
+.button-text-link:hover {
+    color: #666666;
+    text-decoration: underline;
+}
+
+/* BUTTON TAB STRIP -------------------------*/
+
+.button-tab-strip div {
+    display: inline-block;
+    vertical-align: bottom;
+    list-style-type: none;
+    margin: -1px .5em 0.1em .5em;
+    overflow: visible;
+    white-space: nowrap;
+    padding: 0;
+}
+
+.button-tab-strip button {
+    display: inline-block;
+    padding: .6em;
+    border-radius: 0 0 0.25rem 0.25rem;
+    opacity: 0.5;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-top: none;
+    vertical-align: bottom;
+    min-height: 3.5em;
+    min-width: 3.5em;
+}
+
+.button-tab-strip button:hover {
+    opacity: 1;
+    filter: alpha(opacity = 100);
+}
+
+.button-tab-strip a,
+.button-tab-strip img {
+    display: block;
+    margin: 0 auto;
+}
+
+.button-tab-strip img {
+    width: 24px;
+    height: 24px;
+}
+
+.button-tab-strip .tab-active {
+    background-color: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-top: none;
+    opacity: 1;
+    cursor: default;
+}
+
+
+/* LIST MENU -------------------------*/
+.menu-no-items {
+    padding-left: .54em;
+    padding-right: .54em;
+}
+
+.list-menu {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.list-menu-item {
+    padding: .54em;
+    cursor: pointer;
+}
+
+.list-menu-item:after {
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.list-menu-icon {
+    float: left;
+}
+
+.list-menu-details {
+    display: block;
+}
+
+.list-menu-details span {
+    display: block;
+}
+
+.list-menu-details .list-menu-desc span {
+    display: inline;
+}
+.list-menu-item span.list-menu-name,
+.list-menu-name {
+    margin-bottom: .1em;
+    font-weight: 600;
+}
+
+.list-menu-desc {
+    color: #777777;
+}
+
+a.list-menu-item {
+    display: block;
+    /*text-decoration: none;*/
+}
+
+.has-icon .list-menu-details {
+    margin-left: 2.5em;
+}
+
+.list-menu-item.disabled,
+.list-menu-item.bound-disabled {
+    cursor: default;
+}
+
+.list-menu-item.disabled *,
+.list-menu-item.bound-disabled * {
+    opacity: 0.5;
+    filter: alpha(opacity = 50);
+}
+
+.static .list-menu-item {
+    cursor: default;
+}
+
+/* TAB CONTROL -------------------------*/
+
+.tab-container,
+.tab-left-scroll,
+.tab-right-scroll,
+.tab-control {
+    height: 2.2em;
+}
+
+.tab-left-scroll,
+.tab-right-scroll,
+.tab-left-scroll a,
+.tab-right-scroll a {
+    height: 1.5em;
+}
+
+.tab-right-scroll .next {
+    background-position: center -50px;
+}
+
+.tab-left-scroll .prev {
+    background-position: center -26px;
+}
+
+.tab-container {
+    background-color: #EEEEEE;
+    border-bottom: 1px solid #cccccc;
+}
+
+.tab-container .no-results {
+    background-color: #FFFFFF;
+}
+
+.tab-control {
+	position: relative;
+    margin: 0;
+	padding: 0 0.3em 0 0.3em ;
+	white-space: nowrap;
+	list-style-type: none;
+    width: 100%;
+}
+
+.tab-control li {
+	display: inline-block;
+	margin: 0.4em 4px 0 0;
+	position: relative;
+	z-index: 200;
+	/*max-width: 120px;*/
+}
+
+.tab-control,
+.tab-control a,
+.tab-control button,
+.tab-control a:hover {
+	line-height: 1.75em;
+	text-decoration: none;
+    color: #333333;
+}
+
+.tab,
+.tab-active {
+	cursor: pointer;
+	border-radius: 0.25rem 0.25rem 0 0;
+	display: block;
+	padding: 0 .75em;
+    position: relative;
+}
+
+.tab-inactive {
+    position: relative;
+}
+
+.tab {
+	border: 1px solid #CCCCCC;
+    border-bottom: 0;
+    opacity: 0.75;
+}
+
+.tab:hover,
+.tab-active {
+    opacity: 1;
+}
+
+.tab-active,
+.tab:hover {
+	border: 1px solid #D9D9D9;
+    border-bottom: 0;
+}
+
+.tab-active {
+    background: #FFFFFF;
+    opacity: 1;
+    z-index: 100;
+    position: relative;
+}
+
+.tab-active span {
+    color: #000000;
+}
+
+.tab-control .tab-active {
+	border-bottom: 1px solid #FFFFFF;
+}
+
+.tab span,
+.tab-active span {
+    display: block;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tab-left-scroll,
+.tab-right-scroll {
+    vertical-align: top;
+}
+
+.tab-left-scroll a,
+.tab-right-scroll a {
+    position: relative;
+    z-index: 300;
+}
+.multi-region-view .region-active {
+}
+/* LOADER -------------------------*/
+
+.loader {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    width: 20px;
+    height: 100%;
+    background: url("../Images/loader-small.gif") center center no-repeat;
+}
+
+
+/* MESSAGES & NOTIFICATIONS -------------------------*/
+
+.notification textarea {
+    max-width: 300px;
+    max-height: 300px;
+    resize: none;
+}
+
+.notification .desc {
+    padding-bottom: 0.5em;
+    white-space: pre;           /* CSS 2.0 */
+    white-space: pre-wrap;      /* CSS 2.1 */
+    white-space: pre-line;      /* CSS 3.0 */
+    white-space: -pre-wrap;     /* Opera 4-6 */
+    white-space: -o-pre-wrap;   /* Opera 7 */
+    white-space: -moz-pre-wrap; /* Mozilla */
+    word-wrap: break-word;      /* IE 5+ */
+}
+
+
+/* SPLASH SCREEN -------------------------*/
+ .shell-overlay {
+    display: table;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 200;
+    width: 100%;
+    height: 100%;
+    transition: opacity;
+    background: #FFFFFF;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=95);
+    opacity: 0.95;
+}
+
+.shell-splash {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.shell-splash-content {
+    display: inline-block;
+    padding: 3em 1em 2em 1em;
+    margin: 0 auto;
+    background: #FFFFFF;
+    border: 1px solid #ddd;
+    -moz-box-shadow: 0 0 15px #CCCCCC;
+    -webkit-box-shadow: 0 0 15px #CCCCCC;
+    box-shadow: 0 0 15px #CCCCCC;
+    border-radius: 0.25rem;
+}
+
+.shell-splash-content img {
+    max-width: 260px; /* restrict the width for use on handheld devices */
+}
+
+.shell-splash-content p {
+    font-size: 0.8em;
+    color: #AFADB3;
+    width: 27em;
+    margin: 1.5em auto 0 auto;
+}
+
+.shell-splash-content p sup {
+    font-size: 0.6em;
+}
+
+.shell.splash.overlay.splash-fade {
+    opacity: 0;
+    transition: opacity 250ms, opacity 250ms ease-in 10ms;
+    -webkit-transition: opacity 250ms, opacity 250ms ease-in 10ms;
+    -moz-transition: opacity 250ms, opacity 250ms ease-in 10ms;
+    -o-transition: opacity 250ms, opacity 250ms ease-in 10ms;
+}
+
+@media all and (min-width: 700px) {
+    .shell-splash-content {
+        padding: 3em 3em 2em 3em;
+    }
+
+    .shell-splash-content img {
+        max-width: 99999px; /* Removing the restriction on the width for larger screens */
+    }
+}
+
+/* ICON CLASSES -------------------------*/
+
+.add-24 {
+    background-image: url(../../Resources/Images/Icons/add-24.png);
+}
+
+.check-24 {
+    background-image: url(../../Resources/Images/Icons/check-24.png);
+}
+
+.clear-24 {
+    background-image: url(../../Resources/Images/Icons/Toolbar/clear-24.png);
+}
+
+.edit-24 {
+    background-image: url(../../Resources/Images/Icons/Toolbar/edit-24.png);
+}
+
+.error-24 {
+    background-image: url(../../Resources/Images/Icons/Toolbar/error-24.png);
+}
+
+.file-add-24 {
+    background-image: url(../../Resources/Images/Icons/Toolbar/file-add-24.png);
+}
+
+.file-clear-24 {
+    background-image: url(../../Resources/Images/Icons/Toolbar/file-clear-24.png);
+}
+
+.geometry-type-mappoint {
+    background-image: url(../../Resources/Images/Icons/Toolbar/draw-point-24.png);
+}
+
+.geometry-type-multipoint {
+    background-image: url(../../Resources/Images/Icons/Toolbar/draw-multipoint-24.png);
+}
+
+.geometry-type-polyline {
+    background-image: url(../../Resources/Images/Icons/Toolbar/draw-polyline-24.png); 
+}
+
+.geometry-type-polygon {
+    background-image: url(../../Resources/Images/Icons/Toolbar/draw-polygon-24.png);  
+}
+
+.geometry-type-freehandpolyline {
+    background-image: url(../../Resources/Images/Icons/Toolbar/draw-freehand-24.png);  
+}
+
+.geometry-type-extent {
+    background-image: url(../../Resources/Images/Icons/Toolbar/draw-rectangle-24.png);   
+}
+
+.geometry-type-currentextent {
+    background-image: url(../../Resources/Images/Icons/Toolbar/draw-extent-24.png);   
+}
+
+.zoom-in {
+    background-image: url("../../Resources/Images/Icons/map-nav-zoom-in-16.png");
+}
+
+.zoom-out {
+    background-image: url("../../Resources/Images/Icons/map-nav-zoom-out-16.png");
+}
+
+.close-16 {
+    background-image: url("../Images/Icons/panel-close.png");
+}
+
+.back-16 {
+    background-image: url("../Images/Icons/arrow-left-24.png");
+}
+
+.chevron-right-24 {
+    background-image: url("../Images/Icons/chevron-right-24.png");
+}
+
+.chevron-right-16 {
+    background-image: url("../Images/Icons/chevron-right-16.png");
+}
+
+
+/* MISCELLANEOUS -------------------------*/
+
+.tooltip {
+    display: none;
+}
+
+.ui-resizable-helper {
+    bottom: 0;
+    background: #000000;
+    zoom: 1;
+    filter: alpha(opacity=30);
+    opacity: 0.3;
+    cursor: ew-resize;
+}
+
+/* Prevent callouts from opening while holding down on the banner. */
+.banner, .banner * {
+    -webkit-touch-callout: none !important;
+}
+
+/* ESRI Style Overrides -------------------------*/
+.esriControlsBR {
+    right: 0.1em;
+    bottom: 0;
+}
+.esriAttribution {
+    line-height: 1.5em;
+    border-radius: 0.05rem;
+    font-size: 1em;
+    margin: 0.4em;
+}
+
+.view .jimu-widget {
+    margin: 10px;
+}
+/* jQuery Ui colour overrides -------------------------*/
+.ui-state-hover, 
+.ui-widget-content .ui-state-hover, 
+.ui-state-focus, 
+.ui-widget-content .ui-state-focus {
+    border: 1px solid #0593e8!important;
+    background: #edf8ff!important;
+    color: #035484!important;
+}
+
+/* FRAMEWORK.UI -------------------------*/
+.fui-selector {
+    display: inline-block;
+    width: 200px;
+    height: 100%;
+}
+
+ul.fui-selector-body {
+    display: none;
+    position: absolute;
+    z-index: 200;
+    max-height: 200px;
+    width: 20em;  /* Matches width of the selector header */
+    border: 1px solid #ddd;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+}
+
+ul.fui-selector-body li div {
+    margin: 0;
+    padding: 0.5em;
+    line-height: 1em;
+}
+
+ul.fui-selector-body li,
+ul.fui-selector-body li span {
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+ul.fui-selector-body li:hover {
+    background: #ddd;
+}
+
+ul.fui-selector-body li .selector-checkbox {
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+
+.fui-selector-body.expanded {
+    display: block;
+    background: #ffffff;
+}
+
+.fui-selector-header {
+    background: #ffffff;
+    width: 200px;
+    height: 100%;
+    border: 0;
+    padding-left: 0.5em;
+}
+
+.fui-selector-header button {
+    display: block;
+    width: 20em; /* Matches width of the selector list */
+    height: 100%;
+    background: url('../images/icons/arrow-down-small-24.png') right no-repeat;
+}
+
+.fui-selector-header.no-selector-items button {
+    background: none;
+}
+
+/* End Script: Mapping/modules/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Accessibility/CSS/common.css ------------------------- */ 
+.view.AccessibilityView {
+    position: absolute;
+    z-index: -1;
+}
+.keyboard-focus-active :focus {
+    outline: 2px solid #550055;
+    outline-offset: -2px;
+}
+.keyboard-focus-active #map_root:focus:after {
+    content:'';
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: block;
+    border: 2px solid #550055;
+    z-index: 10;
+    position: absolute;
+    pointer-events: none;
+}
+/* Charting overrides to allow for focus state */
+.chart {
+    outline-offset: 0!important;
+    width: 99%;
+}
+
+.AccessibilityButtonView {
+    float: right;
+    position: relative;
+}
+
+.accessibility-button {
+    width: 2.5em;
+    height: 2.5em;
+    padding: 0.25em 0.5em;
+    background: #FFFFFF url(../Images/Icons/accessibility-32.png) center center no-repeat;
+    background-size: 2.5em 2.5em;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+/* END: User --------------- */
+
+/* End Script: Mapping/modules/Accessibility/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Authentication/CSS/common.css ------------------------- */ 
+
+/* AUTHENTICATION DIALOG (COMMON) -------------------------*/
+
+.authentication-dialog input[type='text'],
+.authentication-dialog input[type='password'] {
+    width: 100%;
+}
+
+.authentication-dialog .form-label {
+    padding-left: 0;
+}
+
+/* End Script: Mapping/modules/Authentication/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Banner/CSS/common.css ------------------------- */ 
+
+/* BANNER (COMMON) -------------------------*/
+.BannerView {
+}
+
+.banner {
+    min-height:45px;
+    display:table;
+    width:100%;
+    z-index:800;
+}
+
+.banner-noselect {
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;
+}
+
+.banner-content-region {
+    display:table-cell;
+    text-align:center;
+    vertical-align:middle;
+}
+.banner-text {
+    position: absolute;
+    top: 0;
+    left: .5em;
+    height: 100%;
+}
+
+.banner-text h1,
+.banner-text h2 {
+    margin: 0;  
+}
+
+.banner-text h1 {
+    font-size: 1.3em;
+}
+
+.banner-text h2 {
+    font-size: .9em;
+}
+
+/* End Script: Mapping/modules/Banner/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/BarcodeScanner/CSS/common.css ------------------------- */ 
+.BarcodeScannerView video {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+.BarcodeScannerView canvas {
+    width: 640px;
+    height: 480px;
+}
+
+.BarcodeScannerView .camera-controls,
+.BarcodeScannerView .camera-controls li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.BarcodeScannerView .camera-controls {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 4em;
+    left: 0;
+    bottom: 0;
+    zoom: 1;
+	filter: alpha(opacity=85);
+	opacity: 0.85;
+}
+.BarcodeScannerView .camera-controls li {
+    display: inline-block;
+    width: 50%;
+    padding: 0.5em;
+}
+.BarcodeScannerView .camera-controls li:first-child {
+    text-align: right;
+}
+.BarcodeScannerView .camera-controls li:last-child {
+    margin-left: -4px;
+}
+.BarcodeScannerView .camera-controls .button {
+    display: inline-block;
+    width: 100%;
+    height: 3em;
+    max-width: 10em;
+    text-align: center;
+    border: 1px solid;
+}
+
+/* End Script: Mapping/modules/BarcodeScanner/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Basemap/CSS/common.css ------------------------- */ 
+.region .view.BasemapView {
+    margin-left: 0.45em;
+}
+.view .region .view.BasemapSwitcherButtonView {
+    float: left;
+    margin: 0;
+}
+.map-basemap-region .basemap-region .BasemapSwitcherButtonView,
+.map-top-right .basemap-region .BasemapSwitcherButtonView,
+.map-middle-right .basemap-region .BasemapSwitcherButtonView,
+.map-bottom-right .basemap-region .BasemapSwitcherButtonView {
+    float:right;
+}
+.basemap-switcher-wrapper a {
+    color: #333333;
+}
+.basemap-button {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border: 1px solid #D9D9D9;
+    background-color: #FFFFFF;
+    border-radius: 0.25rem;
+    zoom: 1;
+    max-width: 100%;
+    margin-bottom: -0.18em;
+    z-index: 100;
+    font-weight: normal;
+    color: #333333;
+}
+
+.switcher-active .basemap-button {
+    z-index: 600;
+}
+.basemap-button:hover {
+    color: #000000;
+    border: 1px solid #ffffff;
+}
+
+.basemap-icon {
+    position: relative;
+    top: 1px;
+}
+
+.basemap-icon,
+.basemap-list .list-menu-icon {
+    font-size: 1.25em;
+    width: 1.25em;
+    height: 1.25em;
+}
+
+.basemap-icon,
+.basemap-button .display-name {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.basemap-button .display-name {
+    background: url(../../Resources/Images/Icons/arrow-down-small-16.png) 100% 0 no-repeat;
+    background-position: right center;
+    -webkit-box-sizing: content-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: content-box; /* Firefox, other Gecko */
+    box-sizing: content-box;
+    vertical-align: top;
+}
+
+.basemap-list {
+    background-color: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+    border-top-right-radius: 0;
+    position: relative;
+    max-height: 20em;
+    overflow-y: auto;
+}
+
+.basemap-list button {
+    color: #333333;
+}
+
+.basemap-list-region {
+    z-index: 599;
+}
+
+.basemap-switcher-header {
+    background-color: #FFFFFF;
+    font-size: 1.3em;
+    color: #1B7DBF;
+    border-bottom: 1px solid #D9D9D9;
+    border-top-left-radius: 0.25rem;
+}
+.basemap-list .list-menu-item button {
+    width: 100%;
+    padding: 0.5em;
+}
+.basemap-list .list-menu-item:hover,
+.basemap-list .list-menu-item.selected:hover {
+    background-color: #DEF2FF;
+}
+
+.list-menu-item.selected {
+    background-color: #F2F2F2;
+}
+
+.basemap-list .has-icon .list-menu-details {
+    margin-left: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-left: 0.5em;
+    /*float: left; Causes problems w/ really long strings. */
+    max-width: 95%;
+}
+
+.list-menu li:last-child {
+    border-bottom-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
+
+/* ------ Basemap Slider ------ */
+.region .view.BasemapSliderView.active {
+    float: left;
+    margin: 0;
+}
+.basemap-slider-container {
+    position: relative;
+    height: 5em;
+    width: 2em;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+    background-color: #ffffff;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; 
+}
+.basemap-slider-container.basemap-slider-expanded {
+    width: 20em;
+    padding-left: 2em;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box;
+}
+
+.basemap-slider-inner {
+    width: 100%;
+    height: 100%;
+    padding: 0.5em 1em;
+    position: relative;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box;
+}
+.map-basemap-region .basemap-slider-container.basemap-slider-expanded,
+.map-top-right .basemap-slider-container.basemap-slider-expanded,
+.map-middle-right .basemap-slider-container.basemap-slider-expanded,
+.map-bottom-right .basemap-slider-container.basemap-slider-expanded {
+    padding-left: 0;
+    padding-right: 2em;
+}
+.basemap-slider-toggle {
+    display: block;
+    width: 100%;
+    background: url("../../Resources/Images/Icons/chevron-right-16.png") no-repeat center center #F8F8F8;
+    text-indent: -99999em;
+    border-radius: 0.25rem;
+    margin: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+}
+.basemap-slider-toggle.basemap-slider-expanded {
+    background: url("../../Resources/Images/Icons/chevron-left-16.png") no-repeat center center #F8F8F8;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 0;
+    width: 2.2em;
+}
+.map-basemap-region .basemap-slider-toggle,
+.map-top-right .basemap-slider-toggle,
+.map-middle-right .basemap-slider-toggle,
+.map-bottom-right .basemap-slider-toggle {
+    background: url("../../Resources/Images/Icons/chevron-left-16.png") no-repeat center center #F8F8F8;
+    left: auto;
+    right: 0;
+}
+.map-basemap-region .basemap-slider-toggle.basemap-slider-expanded,
+.map-top-right .basemap-slider-toggle.basemap-slider-expanded,
+.map-middle-right .basemap-slider-toggle.basemap-slider-expanded,
+.map-bottom-right .basemap-slider-toggle.basemap-slider-expanded {
+    background: url("../../Resources/Images/Icons/chevron-right-16.png") no-repeat center center #F8F8F8;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    border: 0;
+}
+.basemap-slider-toggle:hover, .basemap-slider-toggle.basemap-slider-expanded:hover {
+    background-color: #EEEEEE;
+}
+
+.basemap-slider-toggle:hover {
+    border: 1px solid #24A7FF;
+}
+.slider-label {
+    display: block;
+    width: 50%;
+    float: left;
+    font-size: 0.75em;
+    white-space: nowrap;
+    font-weight: bolder;
+    color: #666666;
+}
+.slider-label.slider-label-current {
+    float: none;
+    width: auto;
+    position: absolute;
+    top: 1.3em;
+    font-weight: normal;
+}
+.slider-label-min {
+    text-align: left;
+}
+.slider-label-max {
+    text-align: right;
+}
+.basemap-slider-ticks {
+    position: relative;
+    clear: both;
+    height: 1em;
+}
+.tick {
+    position: absolute;
+    height: 1em;
+    border-left: 1px solid #999999;
+}
+.tick.last-tick {
+    border-left: none;
+    border-right: 1px solid #999999;
+    right: -1px;
+    top: -1em;
+}
+.basemap-slider.ui-slider-horizontal .ui-slider-handle {
+    /*top: -7px;*/
+    height: 1.2em;
+    width: 1em !important;
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+.basemap-slider,
+.basemap-slider-ticks {
+    margin: 0 0.75em;
+}
+.ui-slider.basemap-slider {
+    font-family: "Segoe UI", "Helvetica Neue", "Droid Sans", Helvetica, Arial, sans-serif;
+    font-size: 1em;
+}
+/* ------ Basemap Slider ------ */
+
+@media screen and ( min-height: 600px ) {
+    .basemap-list {
+        max-height: 40em;
+    }
+}
+
+@media screen and ( min-height: 1000px ) {
+    .basemap-list {
+        max-height: 60em;
+    }
+}
+
+@media screen and ( min-height: 1200px ) {
+    .basemap-list {
+        max-height: 80em;
+    }
+}
+
+/* End Script: Mapping/modules/Basemap/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Bookmarks/CSS/common.css ------------------------- */ 
+/* START: Bookmarks --------------- */
+
+.region.map-top-left .bkmk-container {
+    width: 18em;
+    overflow: hidden;
+}
+.bookmark-wrapper {
+    position: relative;
+}
+.bookmark {
+    position: relative;
+    /*z-index: 99;*/
+}
+.bkmk-container {
+    position: absolute;
+    top: 0px;
+    left: 3.8em;
+    border-radius: 0 0.25rem 0 0;
+    z-index: 550;
+    width: 100%;
+}
+.no-touch .bkmk-container {
+    left: 2.75em;
+}
+.bkmk-title {
+    overflow: hidden;
+    color: #959398;
+    font-weight: normal;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    cursor: default;
+    font-size: 1.3em;
+    line-height: 2.45em;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    padding: 2px 5px 0 5px;
+    border-radius: 0 0.25rem 0 0;
+}
+.no-touch .bkmk-title {
+    line-height: 1.98em;
+}
+.bkmk-list {
+    margin: 0 0px 5px 0px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-top: none;
+    /*z-index: 0;*/
+    border-radius: 0 0 0.25rem 0.25rem;
+    max-height: 300px; /* Default max-height for IE8 */
+    overflow-x: hidden;
+    overflow-y: auto; /* Vertical scrollbars for overflow */
+}
+.bkmk-list .has-icon .list-menu-details {
+    /*width: 14.5em;*/
+    white-space: normal;
+    text-overflow: ellipsis;
+    float: left;
+    padding: 0.5em;
+    width: 78%;
+}
+
+.bkmk-list .list-menu-item {
+    padding: 0;
+    border: 1px solid #eeeeee;
+}
+
+.bkmk-add .list-menu-icon,
+.bkmk-list .bkmk-delete {
+    padding: 0.54em;
+}
+
+.bkmk-add .list-menu-icon,
+.bkmk-delete {
+    float: left;
+    margin-right: -2.6em;
+}
+
+.bkmk-add .list-menu-icon {
+    margin-right: -2.6em;
+}
+
+.bkmk-list .list-menu.bkmk-add {
+    background: #EEEEEE;
+    display: block;
+    min-height: 3.4em;
+    border-top: 1px solid #dddddd;
+    border-radius: 0 0 0.25rem 0.25rem;
+}
+.bkmk-add-btn {
+    padding: .25em 0;
+}
+.bkmk-delete .list-menu-icon {
+    float: none;
+    margin: 0;
+}
+.bkmk-list .list-menu {
+    border-radius: 0 0 0.25rem 0.25rem;
+}
+.bkmk-list .list-menu-item:first-child {
+    border-radius: 0 0.25rem 0 0;
+}
+.bkmk-list .list-menu-item:last-child {
+    border-radius: 0 0 0.25rem 0.25rem;
+    border: 0;
+}
+.bkmk-list .list-menu-item:hover {
+	background: #DEF2FF;
+}
+
+.zoom-control-btn button.bookmark {
+    background-image: url("../../Resources/Images/Icons/bookmark-24.png");
+    margin-top: 0.38em;
+}
+
+.zoom-control-btn.bkmk-active .bookmark {
+    border-radius: 0.25rem 0 0 0.25rem;
+    border-right: none;
+    zoom: 1;
+    filter: alpha(opacity=100);
+    opacity: 1;
+}
+
+.zoom-control-btn.bkmk-active {
+    position: relative;
+    z-index: 550;
+}
+
+
+/* END: Bookmarks --------------- */
+
+/* START: Modal Window Bookmarks ---------------*/
+
+.ModalViewContainerView .bkmk-container {
+    position: inherit;
+}
+
+.panel-scroll-container .bkmk-list {
+    position: relative;
+    left: 0;
+    border: none;
+    margin: 0;
+}
+
+/* END: Modal Window Bookmarks ---------------*/
+
+/* -- START: Media Queries for the scrollbars to appear -- */
+
+@media all and ( min-height: 0px) {
+    .bkmk-list {
+        max-height: 60px;
+    }
+}
+@media all and ( min-height: 400px) {
+    .bkmk-list {
+        max-height: 100px;
+    }
+}
+@media all and ( min-height: 500px) {
+    .bkmk-list {
+        max-height: 150px;
+    }
+}
+@media all and ( min-height: 600px) {
+    .bkmk-list {
+        max-height: 250px;
+    }
+}
+@media all and ( min-height: 700px) {
+    .bkmk-list {
+        max-height: 400px;
+    }
+}
+@media all and ( min-height: 900px) {
+    .bkmk-list {
+        max-height: 600px;
+    }
+}
+/* -- END: Media Queries for the scrollbars to appear -- */
+
+/* End Script: Mapping/modules/Bookmarks/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Buffer/CSS/common.css ------------------------- */ 
+.buffer-options {
+    padding: 1em;
+}
+
+/* End Script: Mapping/modules/Buffer/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/ClusterLayers/CSS/common.css ------------------------- */ 
+
+/* End Script: Mapping/modules/ClusterLayers/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Coordinates/CSS/common.css ------------------------- */ 
+.CoordinatesView {
+    position: fixed;
+    left: 0; 
+    overflow: visible;
+}
+.map-top-right .CoordinatesView,
+.map-bottom-right .CoordinatesView {
+    position: relative;
+    float: right;
+    clear: both;
+}
+.map-bottom-left .CoordinatesView {
+    position: relative;
+}
+.coords {
+	box-sizing: border-box;  
+	line-height: 2.75em;
+    z-index: 190;
+    position: relative;
+    overflow: visible;
+}
+.map-bottom-left .coords {
+    margin-left: 0;
+}
+.coords-select-label,
+.coords-display,
+.coords-info {
+    float: left;
+}
+.coords-item {
+    overflow: hidden;
+}
+.coords-info {
+    overflow: visible;
+    position: relative;
+	border-radius: 0.25rem;
+	background-color: #FFFFFF;
+	zoom: 1;
+    height: 3.5em;
+}
+.no-touch .coords-info {
+    height: 2.72em;
+}
+.region.footer-region .coords-info {
+    background-color: transparent;
+}
+.coords-toggle,
+.coords-select-btn {
+	padding: 0;
+	margin: 0;
+	border: none;
+	background-color: transparent;
+	border-right: 1px solid #EEEEEE;
+	cursor: pointer;
+    overflow: hidden;
+}
+.coords-toggle {
+    display: block;
+	width: 3.5em;
+	background: url("../../Resources/Images/Icons/coordinates-24.png") no-repeat center center #F8F8F8;
+	text-indent: -99999em;
+    border-radius: 0.25rem;
+    float: left;
+    margin: 0;
+    height: 3.5em;
+    border: 1px solid #d9d9d9;
+}
+.no-touch .coords-toggle {
+    width: 2.75em;
+    height: 2.75em;
+}
+.region.footer-region .coords-toggle {
+	border: 0;
+}
+.coords-toggle-left {
+    float: left;
+}
+.coords-toggle-right {
+    float: right;
+}
+.coords-select-btn:hover {
+	background-color: #DEF2FF;
+}
+.coords-toggle-left.coords-toggle-active:hover,
+.coords-toggle-left.coords-toggle-active {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.coords-toggle-right.coords-toggle-active:hover,
+.coords-toggle-right.coords-toggle-active {
+	border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.coords-select-btn {
+	padding: 0 0.8em;
+	font-size: 0.9em;
+	display: inline-block;
+	float: left;
+    color: #333333;
+    height: 3.9em;
+}
+.no-touch .coords-select-btn {
+    height: 3.1em;
+}
+.coords-select-btn:hover {
+    color: #333333;
+}
+.coords-select {
+    position:absolute;
+	cursor: pointer;
+	bottom: 3.5em;
+    border-bottom: 1px solid #DDDDDD;
+    width: 100%;
+    background: #ffffff;
+}
+.no-touch .coords-select {
+    bottom: 2.6em;
+}
+.coords-select,
+.coords-select li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.coords-select-item-selected {
+    background: #DEF2FF !important;
+}
+.coords-select-item button {
+	display: block;
+    padding: 0.5em;
+	line-height: 1.5em;
+	background-color: #FFFFFF;
+	border-top: 1px solid #DDDDDD;
+	text-decoration: none;
+    overflow: auto; 
+    width: 100%;
+    max-width: 100%;  
+}
+.region.footer-region .CoordinatesView .coords-select-item button {
+    border-top: 1px solid #DDDDDD;
+}
+.region.footer-region .CoordinatesView .coords-select-item button:last-child {
+    border: 0;
+}
+.region.footer-region .CoordinatesView .coords-select-item button:hover,
+.coords-select-item button:hover {
+	background-color: #DEF2FF;
+}
+.coords-select-top {
+    top: 2.5em;
+}
+.coords-display {
+	position: relative;
+	line-height: 1.375em;
+	padding: 0.65em 0.5em;
+	font-size: 0.85em;
+    text-align: right;
+    white-space: nowrap;
+}
+.no-touch .coords-display {
+    padding: 0.2em 0.5em;
+}
+.coords-info-float-right {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0; 
+    float: right;
+}
+.coords-info-float-left {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    float: left;
+}
+.map-bottom-left .coords-info {
+    float: left;
+    position: relative;
+    left: auto;
+}
+.coords-label {
+	font-weight: bold;
+	padding: 0 0.5em;
+	text-align: right;
+    float: left;
+}
+.arrow {
+    float: right;
+    margin-left: 0.5em;
+}
+.coordinate-attribution-override {
+    right: 4em;
+}
+
+/* End Script: Mapping/modules/Coordinates/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Editing/CSS/common.css ------------------------- */ 
+.content-container {
+    padding: 1.5em;
+}
+.button-action-icon {
+    display: block;
+    padding: 1em;
+    text-align: center;
+    min-height: 8em;
+    width: 100%;
+    line-height: 1.25em;
+}
+.button-action-icon img {
+    display: block;
+    margin: 0 auto 1em auto;
+}
+.action-btns,
+.action-btns li {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.action-btns li {
+    width: 50%;
+    float: left;
+    padding: 0 1em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+}
+.action-btns li:nth-child(odd) {
+    padding-left: 0;
+}
+.action-btns li:nth-child(even) {
+    padding-right: 0;
+}
+.action-btns:after {
+    content: " ";
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+
+/* FEATURE EDITING (COMMON) -------------------------/
+.editor .form-control
+{
+    text-align: right;
+    float: right;
+}
+
+.editor .form-label,
+.editor .form-control
+{
+    width: auto;
+}
+
+.editor select {
+    max-width: 300px;
+}
+
+.editor .form-control
+{
+    float: right;
+}
+
+    .editor .form-control textarea
+    {
+        height: 200px;
+    }
+
+.feature-template-picker .list-menu-item
+{
+    padding: 0;
+}
+
+.feature-template-picker .list-menu-name
+{
+    margin-left: 0.75em;
+}
+
+.feature-template-picker .feature-template
+{
+    padding: 1em;
+}
+
+.feature-template:after
+{
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.view-feature-geometry-selector,
+.view-feature-create-or-edit
+{
+    padding: 8px;
+}
+
+.create-edit-btns .button,
+.location-btns .button
+{
+    margin-top: 4px;
+    margin-right: 4px;
+}
+
+
+/ FIX FOR DESKTOP CONTEXT MENU -------------------------*/
+
+
+/* Feature Template Picker Rules - GVH-6222 */
+
+.feature-template-picker .feature-template::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.feature-template-picker .list-menu-item {
+    padding: 0;
+}
+
+.feature-template-picker .feature-template {
+    padding: 1em;
+}
+
+.feature-template-picker .feature-template.has-icon .list-menu-details {
+    margin-left: 3.5em;
+}
+
+
+.dijitPopup
+{
+    display: block;
+    position: absolute;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    box-shadow: 2px 2px 2px #444444;
+    -webkit-box-shadow: 2px 2px 2px #444444;
+}
+
+    .dijitPopup iframe
+    {
+        display: none;
+    }
+
+    .dijitPopup table
+    {
+        margin: .25em !important;
+        cursor: pointer;
+    }
+
+.dijitMenuItemIconCell
+{
+    padding-right: .45em;
+}
+
+/* End Script: Mapping/modules/Editing/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/ExportMap/CSS/common.css ------------------------- */ 
+.exportmap
+{
+    height: 100%;
+    padding: 10px;
+}
+
+.exportmap label
+{
+    color: #667580;
+    font-size: 1.2em;
+    display: block;
+    margin: .75em 0 0.25em 0;
+}
+
+.exportmap select
+{
+    width: 100%;
+}
+
+.exportmap input[type='checkbox']
+{
+    display: inline;
+    margin: .75em 0 0.25em 0;
+}
+
+.exportmap .inline
+{
+    display: inline;
+}
+
+.exportmap buttons
+{
+    margin-top: .75em;
+    text-align: center;
+}
+
+/* End Script: Mapping/modules/ExportMap/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/FeatureDetails/CSS/common.css ------------------------- */ 
+
+/* FEATURE DETAIL PROVIDERS -------------------------*/
+.FeatureDetailsCompactView h2,
+.FeatureDetailsView h2,
+.FeatureDetailsCompactView h3,
+.FeatureDetailsView h3 {
+    font-weight: lighter;
+}
+
+.FeatureDetailsCompactView h3 button,
+.FeatureDetailsView h3 button {
+    background: none;
+    border-bottom: 1px solid #D9D9D9;
+    font-size: 1.25em;
+    margin-bottom: 1em;
+}
+
+.FeatureDetailsCompactView .panel-group,
+.FeatureDetailsView .panel-group {
+    padding: 0 0 1em 0;
+    float: left;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.FeatureDetailsCompactView .panel-group h3,
+.FeatureDetailsView .panel-group h3 {
+    background: none;
+    padding: 0 0 0.4em 0;
+    font-size: 1.5em;
+}
+
+.map-callout-contents .modify {
+    text-align: center;
+    width: 100%;
+    background: #ffffff;
+}
+
+.map-callout-contents .modify a {
+    padding: 1em 0;
+    width: 100%;
+    color: #197DC8;
+    display: block;
+    width: 100%;
+}
+.feature-details-content {
+    padding-left: 1em;
+}
+.feature-details-content > iframe,
+.feature-details-content > img { /* Have the feature image or iframe float so the content will line up next to it. */
+    float: left;
+    margin: 0 1em 1em 0;
+}
+
+.feature-details-content > iframe + br,
+.feature-details-content > img + br { /* If the feature image or iframe has a br tag follow it, hide it so the content in the next column doesn't have an extra space above it. */
+    display: none;
+}
+
+.attribute-list,
+.attribute-item {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.attribute-item {
+    margin-top: 1em;
+}
+.attribute-item:first-child {
+    margin-top: 0;
+}
+
+.attribute-label,
+.attribute-details {
+    display: block;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.attribute-label {
+    color: #999999;
+}
+
+.attribute-details {
+    font-size: 1.25em;
+    line-height: 1.25em;
+    word-wrap: break-word;
+}
+
+.FeatureDetailsView .tab-container {
+    background: #FFFFFF;
+    border-color: #D9D9D9;
+}
+
+.FeatureDetailsView .tab {
+    background-color: #EEEEEE;
+    border-color: #D9D9D9;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.FeatureDetailsView .tab-active {
+    background: #FFFFFF;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.FeatureDetailsView .tab:hover {
+    background: #DDDDDD;
+}
+.FeatureDetailsCompactView .multi-column-container,
+.multi-column-container {
+    float: left;
+    width: 95%;
+    margin: 0 auto;
+}
+.FeatureDetailsCompactView .multi-column-container {
+    margin: 0 0 0.5em 0;
+    border: 0;
+    padding-top: 0.5em;
+}
+
+.multi-column-container {
+    width: 45%;
+    margin-left: 1em;
+    padding-left: 1em;
+    border-left: 1px solid #EEEEEE;
+}
+.multi-column-container:first-child {
+    margin-left: 0;
+    border-left: none;
+}
+
+
+@media all and (min-width: 1000px) {
+    .multi-column-container {
+        width: 30%;
+    }
+}
+
+.region-container {
+    display: inline-block;
+    float: left;
+}
+
+.FeatureDetailsTopLeftRegion-active.FeatureDetailsTopRightRegion-active .feature-details-top-left-region,
+.FeatureDetailsTopLeftRegion-active.FeatureDetailsTopRightRegion-active .feature-details-top-right-region {
+    width: 50%;
+}
+.FeatureDetailsTopLeftRegion-active.FeatureDetailsTopRightRegion-inactive .feature-details-top-left-region,
+.FeatureDetailsTopLeftRegion-inactive.FeatureDetailsTopRightRegion-active .feature-details-top-right-region,
+.feature-details-bottom-region {
+    width: 100%;
+}
+.feature-details-bottom-region:after {
+     content: " ";
+     display: block;
+     height: 0;
+     clear: both;
+     visibility: hidden; 
+}
+
+/* Hide the Details header when it is the only one present */
+.FeatureDetailsExpandedView .FeatureAttributesProviderView .panel-group h3 {
+    display: none;
+}
+
+/* Hide the header when tabs are present in the region header */
+.region-view-switcher.bound-visible + .region .view .panel-group h3 {
+    display: none;
+}
+.region-view-switcher.bound-visible + .region .view.FeatureDescriptionProviderView.active .panel-group .feature-details-content {
+    margin-top: 1em;
+}
+.datalinks-table-widget,
+.related-features-table-widget {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+/*.datalinks-table-widget, 
+.related-features-table-widget {
+    height: inherit;
+}*/
+.FeatureDetailsExpandedView .multi-column-container {
+    padding-top: 0.5em;
+}
+.region-container.feature-region {
+    width: 100%;
+    padding-top: 0.5em;
+}
+
+.panel-group {
+    float: none;
+    clear: both;
+    width: 100%;
+}
+.FeatureDetailsCompactView .multi-column-container {
+    float: none;
+}
+.FeatureDetailsCompactView .single-feature-chart h3 {
+    margin-bottom: 0;
+}
+.FeatureDetailsCompactView .panel-group h3 {
+    padding-left: .75em;
+}
+.FeatureDetailsCompactView .panel-group button.list-menu-item {
+    border: 0;
+    display: block;
+    width: 100%;
+}
+.FeatureDetailsCompactView .panel-group .list-menu .list-menu-item {
+    padding-left: 1em;
+}
+
+@media all and (min-width: 0px) and (max-width: 450px) {
+    .FeatureDetailsExpandedView .multi-column-container {
+        padding-top: 1em;
+        float: none;
+        border: 0;
+        width: 100%;
+        margin: 0;
+    }
+}
+
+/* End Script: Mapping/modules/FeatureDetails/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/FeatureEditing/CSS/common.css ------------------------- */ 
+.EditorView input[type="text"] {
+    width: 100%;
+}
+.EditorView .form-control {
+    width: 65%;
+}
+
+/* End Script: Mapping/modules/FeatureEditing/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/FeatureLayer/CSS/common.css ------------------------- */ 
+
+/* FEATURE LAYER (COMMON) -------------------------*/
+
+.feature-layer-details a {
+    text-decoration: underline;
+}
+.list-menu-item .form-item {
+    padding: 0;
+}
+.feature-layer .list-menu button {
+    display: block;
+    width: 100%;
+}
+.view-edit-log .clickable {
+    cursor: pointer;
+}
+
+.modal-message-view .error
+{
+    color: #F70000;
+    font-weight:bolder;
+}
+
+.modal-message-view .warn
+{
+    color: #FF800D;
+    font-weight: bold;
+}
+
+.sync-extent {
+    margin-top: 1em;
+}
+
+.sync-extent-btn {
+    margin-left: .5em;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.sync-form-btns {
+    margin-top: 1em;
+    text-align: right;
+}
+
+
+/* FEATURE LAYER DETAILS (COMMON) -------------------------*/
+
+.edit-highlight {
+    background-color: #FFFCCC;
+}
+
+
+/* EDIT LOG (COMMON) -------------------------*/
+
+.edits .list-menu-item {
+    padding: 0;
+}
+
+.edits table {
+    width: 100%;
+}
+
+.edits table td {
+    padding: 1em;
+    vertical-align: top;
+}
+
+.edits .list-menu-icon div {
+    width: 24px;
+    height: 24px;
+}
+
+.edit-btns {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.edit-btns button {
+    padding: .5em;
+}
+
+    .edit-btns button.edit-edit-log-entry {
+        display: none;
+    }
+
+.sync-now button {
+    width: 100%;
+    margin-top: 1em;
+}
+
+
+/* SYNC LOG (COMMON) -------------------------*/
+
+.sync-log table {
+    width: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.sync-log tr,
+.sync-status-msg .list-menu-item {
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.sync-log td,
+.sync-log .form-btns {
+    padding: 1em;
+}
+
+.sync-log .status span {
+    display: none;
+}
+
+.sync-log .error .status span.error-txt,
+.sync-log .warning .status span.warning-txt,
+.sync-log .trace .status span.trace-txt {
+    display: block;
+}
+
+.sync-log .msg {
+    text-align: left;
+    width: 100%;
+}
+
+
+.sync-log .form-btns {
+    margin: 0;
+    padding: 1em;
+    border-top: 1px solid #CCCCCC;
+}
+
+.sync-log .list-menu-icon {
+    width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.sync-status-msg {
+    font-weight: 600;
+}
+
+.sync-log .trace {
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.sync-log td {
+    vertical-align: top;
+}
+
+.sync-log .warning td,
+.sync-log .error td {
+    font-weight: 600;
+}
+
+.sync-log .error td {
+    color: #FF0000;
+}
+
+/* End Script: Mapping/modules/FeatureLayer/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Footer/CSS/common.css ------------------------- */ 
+.footer-container {
+    position: relative;
+    display: table; /* For vertical Alignment */
+    width: 100%;
+    -moz-box-shadow: inset 0 1px 0 0 #D9D9D9;
+    -webkit-box-shadow: inset 0 1px 0 0 #D9D9D9;
+    box-shadow: inset 0 1px 0 0 #D9D9D9;
+    overflow: visible;
+}
+
+.footer-container .menu-hyperlinks .list-menu {
+    border-top: none;
+    margin: 0;
+    padding: 0;
+}
+.footer-container .list-menu .list-menu-icon,
+.footer-container .list-menu .list-menu-details {
+    float: left;
+    line-height: 1.875em;
+}
+.footer-container .list-menu.has-icon .list-menu-details {
+    margin: 0;
+}
+.footer-container .list-menu.active {
+    cursor: default;
+}
+
+.footer-left,
+.footer-right {
+    display: table-cell;
+    width: 50%;
+    vertical-align: middle;
+    padding-top: 1px; /* to compenstate for top border and overflow:visible on footer */
+}
+
+.footer-right .view.active,
+.footer-left .view.active {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.footer-right .view.active {
+    margin-left: 0.4em;
+}
+
+.footer-left .view.active {
+    margin-right: 0.4em;
+}
+.footer-container .active,
+.footer-container .activating {
+}
+.footer-right,
+.footer-right * {
+    text-align: right;
+}
+
+.footer-container .list-menu .list-menu-item {
+    display: inline-block;
+    border: none;
+}
+.footer-container .CoordinatesView {
+    position: relative;
+}
+.footer-container .coords {
+    margin: 0;
+    -moz-box-shadow: 0 0 0.25em #CCCCCC;
+    -webkit-box-shadow: 0 0 0.25em #CCCCCC;
+    box-shadow: 0 0 0.25em #CCCCCC;
+}
+
+/* End Script: Mapping/modules/Footer/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Geolocate/CSS/common.css ------------------------- */ 
+/* START: Geolocate --------------- */
+.region.map-bottom-left .GeolocateButtonView .zoom-control-btn button {
+    width: 3.5em;
+    height: 3.5em;
+}
+.no-touch .region.map-bottom-left .GeolocateButtonView .zoom-control-btn button {
+    width: 2.75em;
+    height: 2.75em;
+}
+.geolocate-container {
+    position: absolute;
+    top: 0px;
+    left: 3.5em;
+    border-radius: 0 0.25rem 0 0;
+}
+.no-touch .geolocate-container {
+    left: 2.75em;
+}
+.geolocate-wrapper {
+    position: relative;
+}
+.geolocate-base {
+    position: relative;
+    z-index: 99;
+    background-image: url("../../Resources/Images/Icons/geolocate-24.png");
+    background-repeat: no-repeat;
+}
+.geolocate-tracking .geolocate-base {
+    background-image: url("../../Resources/Images/Icons/geolocate-track-active-24.png");
+}
+.geolocate-following .geolocate-base {
+    background-image: url("../../Resources/Images/Icons/geolocate-follow-active-24.png");
+}
+.geolocate-title {
+    color: #959398;
+    font-weight: normal;
+    white-space: nowrap;
+    text-align: center;
+    cursor: default;
+    font-size: 1.3em;
+    line-height: 2.55em;
+    background:  #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 0 0.25rem 0 0;
+    width: 15em;
+    margin: 0 0.25em;
+    position:relative;
+    z-index:550;
+}
+.geolocate-list .has-icon .list-menu-details {
+    margin-left: 2.5em;
+    width: 15em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.zoom-control-btn.geolocate.geolocate-active {
+
+    border-radius: 0.25rem 0 0 0.25rem;
+    border-right: none;
+    zoom: 1;
+	filter: alpha(opacity=100);
+	opacity: 1;
+}
+.geolocate-list {
+    margin: 0 0.33em 0.35em 0.8em;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-top: none;
+    border-radius: 0 0 0.25rem 0.25rem;
+    position:relative;
+    z-index:550;
+}
+
+.geolocate-status {
+    margin: 0.75em;
+}
+.geolocate-status-window .coords-display {
+    margin-bottom: 0.75em;
+}
+/* END: Geolocate --------------- */
+
+/* End Script: Mapping/modules/Geolocate/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/HeatMaps/CSS/common.css ------------------------- */ 
+.heat-maps .slider-container,
+.heat-maps .intensity-slider {
+    clear: both;
+}
+.heat-maps .slider-label {
+    width: auto;
+}
+.heat-maps .slider-label-max {
+    float: right;
+}
+
+/* End Script: Mapping/modules/HeatMaps/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Info/CSS/common.css ------------------------- */ 
+.home-panel
+{
+    padding: 8px;
+}
+
+    .home-panel td
+    {
+        vertical-align: top;
+    }
+
+/* End Script: Mapping/modules/Info/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Integration/CSS/common.css ------------------------- */ 
+/* INTEGRATION STYLING -------------------------*/
+.integration .fui-selector-body span {
+    vertical-align: top;
+    line-height: 1.6em;
+    font-size: 0.95em;
+    display: inline-block;
+    width: 93%;
+}
+
+.ExternalComponentView .panel-scroll-container {
+    border: 0;
+    overflow: hidden;
+}
+
+.ExternalComponentView .panel-header img {
+    display: inline-block;
+    margin-left: 0.7em;
+    vertical-align: middle;
+}
+
+.ExternalComponentView .panel-header {
+    border: 0;
+}
+
+.ExternalComponentView .fui-selector {
+    vertical-align: middle;
+}
+
+.ExternalComponentView .panel-scroll-container > .view {
+    display: inline-block;
+    /**
+     * Note: If you're changing these properties, you're changing the total size of external component panes and must
+     * change the size parameters in code. See 'handleApplicationResizedEvent' in ExternalComponentView.
+     */
+    margin: 0;
+    border: 1px solid #eee;
+}
+
+.ExternalComponentView .fui-selector {
+    padding: 0;
+    margin: 0;
+    width: 16em;
+    float: none;
+}
+
+.ExternalComponentView .resize-header {
+    background-color: #FFFFFF;
+}
+
+.integration .pane iframe {
+    width: 100%;
+    margin: auto;
+    clear: both;
+}
+
+.integration .pane {
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    background: #FFFFFF;
+}
+
+.integration-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.5;
+}
+
+/* End Script: Mapping/modules/Integration/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/IWantToMenu/CSS/common.css ------------------------- */ 
+
+/* I WANT TO MENU (COMMON)-------------------------*/
+.IWantToMenuView,
+.IWantToMenuButtonView {
+    height: 100%;
+}
+.IWantToMenuButtonView {
+}
+.wtm-menu-active,
+.wtm-menu-inactive {
+    position: relative;
+}
+.region .IWantToMenuButtonView .view.IWantToMenuView {
+    margin: 0;
+}
+.wtm-list-container {
+    position: absolute;
+    overflow: auto;
+}
+.wtm-button {
+    display: inline-block;
+    position: relative;
+    min-height: 2.15em;
+    padding: 0 0.7em 0.2em 0.69em;
+    font-size: 1.6em;
+    text-decoration: none;
+    border-radius: 0.25rem;
+    background: #197DC9;
+    color: #FFFFFF;
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 1.0;
+    filter: alpha(opacity = 100);
+    color: #FFFFFF;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.no-touch .wtm-button {
+    min-height: 0em;
+    line-height: 21px;/*pixels to sync up firefox/chrome*/
+    padding: 0.25em 0.7em 0.40em 0.5em;
+
+}
+.wtm-list-container {
+    z-index: 700;
+}
+.wtm-button {
+    z-index: 220;
+}
+.wtm-active .wtm-button,
+.wtm-active .wtm-button:hover {
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-bottom: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    color: #1B7DBF;
+    opacity: 1.0;
+    filter: none;
+    margin-bottom:-1px;
+    padding-bottom: 0.4em;
+    z-index: 800;
+}
+
+.wtm-list {
+    min-width: 300px;
+    max-width: 400px;
+    background: #FFFFFF;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+    transition: max-height 250ms;
+	-webkit-transition: max-height 250ms;
+	-moz-transition: max-height 250ms;
+	-o-transition: max-height 250ms;
+    border: 1px solid #d9d9d9;
+    max-height: 400px; /* Default max-height for IE8 */
+    overflow-y: auto; /* Vertical scrollbars for overflow */
+}
+.wtm-list .list-menu-item {
+    padding: 0;
+}
+
+.wtm-list .menu-hyperlinks .list-menu {
+    border: 0;
+    padding-top: 0;
+    padding-left: 0.5em;
+}
+.wtm-list .has-icon .list-menu-details {
+    margin: 0;
+}
+.wtm-list .list-menu-name,
+.wtm-list .list-menu-desc {
+    margin-left: 2.5em;
+}
+.wtm-list button {
+    padding: 0.54em;
+    width: 100%;
+}
+.wtm-list button:hover {
+    background: #DEF2FF;
+}
+.wtm-list div.list-menu-item:first-child {
+    border-top-right-radius: 0.25rem;
+}
+
+.wtm-list div.list-menu-item:last-child {
+    border-bottom-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+    border-bottom: none;
+}
+/* -- START: Media Queries for the scrollbars to appear -- */
+@media all and ( min-height: 0px) {
+    .wtm-list {
+        max-height: 100px;
+    }
+}
+@media all and ( min-height: 400px) {
+    .wtm-list {
+        max-height: 200px;
+    }
+}
+@media all and ( min-height: 500px) {
+    .wtm-list {
+        max-height: 300px;
+    }
+}
+@media all and ( min-height: 600px) {
+    .wtm-list {
+        max-height: 400px;
+    }
+}
+@media all and ( min-height: 700px) {
+    .wtm-list {
+        max-height: 500px;
+    }
+}
+@media all and ( min-height: 900px) {
+    .wtm-list {
+        max-height: 700px;
+    }
+}
+/* -- END: Media Queries for the scrollbars to appear -- */
+
+/* End Script: Mapping/modules/IWantToMenu/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/LayerList/CSS/common.css ------------------------- */ 
+
+/* LAYER LIST */
+.layer-list ul,
+.layer-list li {
+    position: relative;
+}
+
+.layer {
+    float: left;
+    clear: both;
+    width: 100%;
+    padding-left: 10%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.layer-invisible:after {
+    content: " ";
+    display: block;
+    background: #F8F8F8;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: -2em;
+    z-index: 999;
+    zoom: 1;
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+}
+
+.layer-invisible .layer-invisible:after {
+    display: none;
+}
+
+.layer-theme-switcher {
+    width: 99.8%;
+    height: 3.2em;
+    position: absolute;
+    top: 0px;
+    z-index: 200;
+    padding: 0.5em;
+    background: #F8F8F8;
+    border-bottom: 1px solid #D9D9D9;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.layer-theme-switcher select {
+    width: 100%;
+    height: 2.2em;
+    padding: 0.2em;
+}
+
+.layer-list {
+    font-size: 1em;
+    position: absolute;
+    overflow: auto;
+    top: 2.98em;
+    left: .5em;
+    right: 0px;
+}
+
+.bound-invisible + .layer-list {
+    top: 0;
+}
+
+.layer-list-footer {
+    position: absolute;
+    z-index: 200;
+    bottom: 0;
+    width: 100%;
+    height: 4.5em;
+    background: #FFFFFF;
+    border-top: 1px solid #D9D9D9;
+}
+
+.layer-list-footer button {
+    margin: 1em 0.75em;
+}
+
+.layer-list ul {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.layer-item-ctrl {
+    display: block;
+    float: left;
+    padding-right: 0.5em;
+}
+
+.layer-item-ctrl input[type="checkbox"],
+.layer-item-ctrl input[type="radio"] {
+    margin: 0.25em  0.375em 0em 0.375em;
+}
+.layer-item-ctrl a,
+.layer-item-ctrl span {
+    padding: 0.5em 0;
+}
+
+.layer-item-expander {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0.25em 0;
+}
+
+.layer-item-expander .tree-expander.collapsed,
+.layer-item-expander .tree-expander.expanded {
+    padding: 0.45em;
+}
+.legend-item-parent .tree-expander.collapsed,
+.legend-item-parent .tree-expander.expanded {
+    padding: 0 2em;
+    margin: 0;
+}
+.layer-item-expander .tree-expander {
+    width: 1.25em;
+    height: 1.25em;
+    padding: 0.3em;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+.layers .layer {
+    padding-left: 1em;
+}
+
+.layers .layer .layer-item-expander {
+    margin-left: -1em;
+}
+
+.layer-info {
+    position: relative;
+}
+.layer-contents {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 3em;
+    line-height: 2.25em;
+    padding: 0.25em 3.5em 0.35em 0;
+    border-bottom: 1px solid #EEEEEE;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    z-index: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+   /* white-space: nowrap;*/
+}
+.no-touch .layer-contents {
+    padding: 0.5em 2.75em 0.2em 0;
+    line-height: inherit;
+    margin: 0;
+}
+.no-touch .legend-item.layer-contents {
+    padding-top: 0.25em;
+    min-height: 2.5em;
+}
+.legend-item.leaf:last-child,
+.legend-item.leaf {
+    margin: 0;
+    padding: 0;
+}
+.layer-actions.bound-visible + .widget.bound-invisible + .layer-contents { /* actions are on */
+    padding-right: 3.5em;
+}
+
+.layer-actions.bound-visible + .widget.bound-visible + .layer-contents { /* actions and slider are on */
+    padding-right: 8em;
+}
+
+.layer-actions.bound-invisible + .widget.bound-visible + .layer-contents,
+.layer-actions.bound-invisible + .widget.bound-visible-inline + .layer-contents { /* slider is on */
+    padding-right: 4.5em;
+}
+
+.layer-contents:hover {
+    background: #DEF2FF;
+    cursor: pointer;
+}
+
+.layer-contents .display-name {
+    padding: 0 0em 0em 0.5em;
+    display: block;
+    width: 95%;
+    word-wrap: break-word;
+}
+
+.layer-info img {
+    vertical-align: middle;
+    display: inline-block;
+    padding: 0;
+}
+
+.layer-actions button {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3em;
+    min-height: 3em;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    border-left: 1px solid #EEEEEE;
+    border-bottom: 1px solid #EEEEEE;
+    background-color: #FFFFFF;
+    display: block;
+    z-index: 99;
+}
+
+.LayerActionsView .list-menu-item {
+    width: 100%;
+    display: block;
+    padding: 1em 0.5em;
+}
+
+.layer-actions button:hover {
+    background-color: #DEF2FF;
+}
+
+.layer-list .layer-enabled {
+    color: #000000;
+}
+
+.layer-list .layer-disabled {
+    color: #999999;
+}
+
+.parent-layer {
+    font-weight: 600;
+}
+
+.layer-info.parent-layer .contents {
+    margin-right: 0;
+}
+
+.flat-layers {
+    margin-left: -1em;
+}
+
+.transparency-slider {
+    position: absolute !important;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 3em;
+    margin: 1.375em 0.5em 1.375em 0;
+    z-index: 99;
+}
+
+.layer-actions.bound-visible + .widget .transparency-slider {
+    right: 3.5em;
+}
+
+.transparency-slider.ui-slider-horizontal {
+    height: 3px;
+}
+
+.transparency-slider.ui-slider-horizontal .ui-slider-handle {
+    top: -7px;
+    height: 16px;
+    overflow: hidden;
+}
+
+.layer-list-mapservice-icon,
+.layer-list-layer-icon {
+    float: left;
+}
+
+.layer-list-layer-icon img, .layer-list-mapservice-icon img {
+    width: 24px;
+    height: 24px;
+}
+.layer-list-legend-icon .simple-swatch {
+   height: auto;
+    width: 24px;
+}
+
+/* End Script: Mapping/modules/LayerList/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/LayerSelector/CSS/common.css ------------------------- */ 
+.layer-selector-buttons {
+    float: left;
+    width: 100%;
+    padding: 0.25em 0;
+    margin: 0;
+}
+.layer-selector-buttons li {
+    display: block;
+    width: 50%;
+    padding: 0 0.5em;
+    float: left;
+    margin: 0;
+    list-style: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.layer-actions-button {
+    width: 100%;
+    text-align: center;
+}
+
+/* End Script: Mapping/modules/LayerSelector/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Legend/CSS/common.css ------------------------- */ 
+/* START: Legend --------------- */
+.layer .legend-list {
+    margin-left: 2em;
+}
+.legend ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.legend ul li ul li {
+    margin-left: 2em;
+}
+
+.legend-swatch {
+    display: inline-block;
+    margin-right: 0.5em;
+    min-width: 2em;
+}
+
+.legend-swatch img {
+    display: block;
+    margin-left: 0.5em;
+    width: 24px;
+    height: 24px;
+}
+
+.legend-swatch img.wms-legend-swatch {
+    width: auto;
+    height: auto;
+}
+
+.legend-item-parent .legend-item-label,
+.legend-item.leaf {
+    border-bottom: 1px solid #EEEEEE;
+    padding: 0.25em 0;
+}
+.layer .legend-item-parent .legend-item-label,
+.layer .legend-item.leaf {
+    border-bottom: none;
+}
+
+.legend-item.leaf,
+.legend-item-parent .tree-expander {
+    margin: 0.25em 0;
+}
+.legend-item.leaf:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.layer-list.legend .tree-expander {
+    position: relative !important;
+    width: 100%;
+    border: 0;
+}
+
+.legend-item-parent {
+    position: relative;
+}
+
+.legend-item-label {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.legend-item-label {
+    padding: 0.25em 0;
+}
+.legend-item-parent .legend-item-label {
+    padding: 0.65em 0 0.65em 0.65em;
+    font-weight: 600;
+}
+
+.legend-item.leaf.clear:after,
+.legend-item-parent:after {
+    content: "";
+    display: block;
+    clear: both;
+    width: 0;
+    height: 0;
+    visibility: hidden;
+}
+
+
+.legend-item.children .templ-group {
+    margin-left: -1em;
+}
+
+.simple-swatch {
+    float: left;
+    margin-left: 0.5em;
+}
+.layer-list-legend-icon .simple-swatch.square,
+.square {
+    width: 20px;
+    height: 20px;
+    border-style: solid;
+    border-width: 2px;
+}
+.layer-list-legend-icon .simple-swatch.line,
+.line {
+    width: 24px;
+    height: 0px;
+    margin-top: 12px;
+    border-style: solid;
+    border-width: 1px;
+}
+.layer-list-footer button {
+    padding: .5em;
+    outline: none;
+    background: #F2F2F2;
+    border: 1px solid #CCCCCC;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    color: #1B7DBF;
+    box-shadow: 1px 1px 1px #FFFFFF inset;
+    -moz-box-shadow: 1px 1px 1px #FFFFFF inset;
+    -webkit-box-shadow: 1px 1px 1px #FFFFFF inset;
+}
+/* END: Legend --------------- */
+
+/* End Script: Mapping/modules/Legend/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Log/CSS/common.css ------------------------- */ 
+
+/* LOG VIEW -------------------------*/
+
+.log-region {
+    position: absolute;
+    z-index: 101;
+    width: 100%;
+    overflow: auto;
+}
+
+.logview-header {
+    height: 50px;
+    position: relative;
+    padding-left: 0.8em;
+    background: #DDDDDD;
+}
+
+.logview-header h2 {
+    font-size: 1.2em;
+    font-weight: 600;
+    line-height: 48px;
+}
+
+.logview-header-buttons {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.logview-header-buttons button {
+    display: block;
+    float: left;
+    margin-left: .25em;
+    margin-right: 0;
+}
+
+.logview {
+    position: relative;
+    height: 100%;
+}
+
+.logview table {
+    background: #FFFFFF;
+    width: 100%;
+}
+
+.logview th,
+.logview td {
+    border: 1px solid #CCCCCC;
+    padding: 0.4em 0.8em;
+}
+
+.logview th {
+    background: #FFFFFF;
+    white-space: nowrap;
+}
+
+.logview .error,
+.logview .warning,
+.logview .geocortex.trace.alert {
+    font-weight: 600;
+}
+
+.logview .error {
+    background-color: #FF0000;
+    color: #FFFFFF;
+}
+
+.logview .warning {
+    background: #FFFBE2;
+}
+
+.logview .geocortex.trace.alert {
+    background: #666666;
+    color: #FFFFFF;
+}
+
+.LogView {
+    height: 100%;
+}
+
+.logview-inner {
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+}
+
+/* End Script: Mapping/modules/Log/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Map/CSS/common.css ------------------------- */ 
+
+/* MAP (COMMON) -------------------------*/
+
+.map,
+.map-region {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /*z-index: 100;*/
+}
+.map-top-left {
+    position: absolute;
+    left: 0;
+    display: inline-block;
+}
+.no-touch .map-top-left {
+    /*top: 3.05em;*/
+}
+.map-bottom-left {
+    position: absolute;
+    bottom: 0em;
+    left: 0em;
+    display: inline-block;
+    float: left;
+}
+.map-bottom-left .active {
+    display: inline-block!important;
+    vertical-align: bottom;
+}
+.map .bingLogo-lg {
+  background-image: url("../../Resources/Images/bing-logo-70x40.png");
+  left: 0;
+  width: 70px;
+  height: 40px;
+  position: absolute;
+  z-index: 1;
+}
+
+.map-navigation-region  {
+    position: relative;
+    display: inline-block;
+    float: left;
+    max-height: 40%;
+    max-width: 50%;
+    /*z-index: 101;*/
+    margin-left: 3.9em;
+}
+.no-touch .map-navigation-region {
+    margin-left: 3.1em;
+}
+
+.map-basemap-region {
+    position: relative;
+    display: inline-block;
+    float: right;
+    margin: 5px 5px 0 5px;
+    max-width: 60%;
+}
+
+.map-top-center {
+    top: 0;
+    position: relative;
+}
+
+.map-top-right {
+    position: relative;
+    top: 0;
+    right: 0;
+    display: inline-block;
+    float: right;
+}
+
+.map-middle-left {
+    left: 0;
+}
+
+.map-middle-right {
+    right: 0;
+}
+
+.map-bottom-center {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    pointer-events: none;
+}
+.status-window {
+    pointer-events: auto;
+}
+
+.map-bottom-center .view.active {
+    position: relative;
+    display: inline-block;
+    z-index: 210;
+}
+
+.map-bottom-right {
+    position: absolute;
+    bottom: 0.4em;
+    right: 0em;
+    width: auto;
+    height: auto;
+}
+
+.map-error {
+    padding: 1em;
+}
+
+.map-error div {
+    padding-left: 40px;
+    background: url("../../Resources/Images/Icons/Toolbar/stop-32.png") no-repeat top left;
+}
+
+.map-error h2 {
+    font-size: 1.1em;
+}
+.MapView {
+    height: 100%;
+}
+
+.map-keyboard-focus > div {
+    border: none !important;
+}
+
+/* Map Elements positioning/spacing, region specific */
+.region.map-navigation-region .view,
+.region.footer-left .view,
+.region.map-top-left .view,
+.region.map-center-left .view,
+.region.map-bottom-left .view {
+    margin: 0.38em 0em 0.4em 0.4em;
+}
+.region.footer-left .view {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.region.footer-right .view,
+.region.map-top-right .view,
+.region.map-center-right .view,
+.region.map-bottom-right .view {
+    margin: 0.38em 0.4em 0.4em 0em;
+}
+.region.map-bottom-right .view {
+    margin-bottom: 0;
+}
+.region.footer-right .view {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.region.footer-region .view button {
+    border: 0;
+    background-color: transparent;
+}
+.region.footer-region .view button:hover {
+    background-color: #ffffff;
+}
+
+/* End Script: Mapping/modules/Map/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/MapTips/CSS/common.css ------------------------- */ 
+
+/* MAP TIPS -------------------------*/
+.region.map-top-left .view.MapTipHeaderView {
+    margin-bottom: 0;
+}
+.MapTipView {
+    margin: 0.4em 0 0 0.4em;
+}
+
+.map-callout-wrapper {
+    margin-top: -2em;
+    overflow: visible;
+    z-index: 10;
+}
+
+.map-callout {
+    background: #FFFFFF;
+    border-radius: 0.25rem;
+    box-shadow: 2px 2px 2px #444444;
+}
+
+.map-tip-view {
+    pointer-events: all !important;
+    min-height: 6.8em;
+    position: relative;
+    z-index: 220;
+}
+
+.map-tip-view .feature-description {
+    overflow: auto;
+}
+
+.map-callout .panel-header-button,
+.map-tip-view .panel-header-button {
+    top: 0;
+    position: absolute;
+}
+
+.map-callout-header, .map-tip-view-header {
+    position: relative;
+    padding: 0.5em 0.75em 0.8em 0.75em;
+    padding-right: 3.05em;
+    font-size: 1em;
+    color: #000000;
+}
+.map-tip-view-header {
+    padding-bottom: 0;
+}
+
+.map-callout-header h2 {
+    font-size: 1.1em;
+}
+
+.map-callout-title {
+    white-space: nowrap;
+    font-weight: 600;
+    text-overflow: ellipsis;
+}
+
+.map-callout-pointer {
+    margin-left: 50%;
+    width: 1px;
+    height: 1px;
+    overflow: visible;
+}
+
+.map-callout-pointer-image {
+    background-repeat: no-repeat;
+    margin-left: -19px;
+    width: 38px;
+    height: 32px;
+    position: relative;
+}
+
+.map-callout-contents, .map-tip-view-contents {
+    padding: 0 .75em .75em .75em;
+    overflow: auto;
+    color: #666666;
+    clear: both;
+}
+
+.map-callout-contents .feature-description, .map-tip-view-contents .feature-description {
+    white-space: pre-wrap;
+}
+
+.map-tip-view .map-tip-contents {
+    position: relative;
+    margin: 0.15em;
+}
+
+.map-tip-view .list-menu {
+    width: 100%;
+    display: inline-block;
+    text-align: right;
+    padding-bottom: 0;
+}
+
+.map-callout-pointer-image {
+    background: url("../Images/map-callout-pointer.png");
+}
+
+.map-callout-wrapper.active {
+    opacity: 100;
+    transition: margin 250ms, opacity 250ms ease-in 10ms;
+    -webkit-transition: margin 250ms, opacity 250ms ease-in 10ms;
+    -moz-transition: margin 250ms, opacity 250ms ease-in 10ms;
+    -o-transition: margin 250ms, opacity 250ms ease-in 10ms;
+}
+
+.map-callout-wrapper.activating {
+    display: block;
+    margin-top: -16px;
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+}
+
+.map-callout-wrapper.inactive {
+    display: none;
+}
+
+.map-tip-header {
+    min-height: 2em;
+}
+
+.map-tip-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    clear: both;
+}
+.map-tip-nav.bound-visible + .map-tip-title {
+    padding-top: 1em;
+    line-height: 1em;
+}
+.map-tip-title span {
+    overflow: hidden;
+    display: inline-block;
+    margin: 0.15em;
+}
+.map-tip-nav {
+    position: relative;
+}
+
+.map-tip-nav .paging-control {
+    float: right;
+    position: relative;
+    bottom: auto;
+    border: 0;
+    width: auto;
+    vertical-align: top;
+}
+
+.map-tip-nav .paging-buttons {
+    padding: 0;
+    margin-right: 0.5em;
+}
+
+.map-tip-nav .widget {
+    float: left;
+    max-width: 70%;
+    min-width: 50%;
+    vertical-align: top;
+    overflow: visible;
+}
+
+.map-tip-nav .feature-select-wrapper {
+    float: left;
+    width: 55%;
+    vertical-align: top;
+}
+
+.map-callout .map-tip-nav .feature-select-wrapper {
+    width: 48%;
+}
+
+.map-tip-nav select {
+    width: 100%;
+    padding: 0.19em;
+}
+
+/* End Script: Mapping/modules/MapTips/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Markup/CSS/common.css ------------------------- */ 
+/* START: Markup ----------------*/
+.style-selector {
+    padding: 0em 1em 1em 1em;
+    max-width: 540px;
+}
+/*.style-selector div {
+    display: block;
+    float: left;
+    margin: 0;
+    padding: 0;
+}*/
+.style-selector .markup-swatch {
+    list-style: none;
+    display: inline-block;
+    /*float: left;*/
+    margin: 1em;
+    padding: 1em;
+    border: 1px solid #EEEEEE;
+    width: 5em !important; /* !important styles are for IE8 support */
+    height: 4.5em !important; /* !important styles are for IE8 support */
+    cursor: pointer;
+    text-align: center;
+    background: #FFFFFF;
+    text-align: center;
+}
+.style-selector .form-btns {
+    clear: both;
+    text-align: right;
+}
+.style-selector div { /* IE8 support to center the swatch elements */
+    position: relative !important;
+    margin: 0 auto !important;
+    text-align: center;
+}
+.icon-swatch-picker-24 {
+    width: 24px;
+    height: 24px;
+    background-image: url("../../Resources/Images/Icons/Toolbar/styles-24.png");
+}
+.icon-draw-edit-24 {
+    width: 24px;
+    height: 24px;
+    background-image: url("../../Resources/Images/Icons/Toolbar/draw-edit-24.png");
+}
+.markup-edit {
+    margin-top: -0.4em;
+}
+.toolbar-body .MarkupEditView  .toolbar-small-layout {
+    padding: 0.5em;
+}
+
+.esriSymbolEditor {
+    display: none !important;
+}
+/* END: Markup ----------------*/
+
+/* End Script: Mapping/modules/Markup/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Measurement/CSS/common.css ------------------------- */ 
+/* ------ START: Measurement ------ */
+.icon-clear-24 {
+    width: 24px;
+    height: 24px;
+    background-image: url("../../Resources/Images/Icons/Toolbar/clear-24.png");
+}
+.icon-erase-24 {
+    width: 24px;
+    height: 24px;
+    background-image: url("../../Resources/Images/Icons/Toolbar/erase-24.png");
+}
+.toolbar-small-layout .horizontal .icon-clear-24 {
+    background-image: url("../../Resources/Images/Icons/Toolbar/clear-16.png");
+    background-position: center center;
+}
+.toolbar-small-layout .horizontal .icon-erase-24 {
+    background-image: url("../../Resources/Images/Icons/Toolbar/erase-16.png");
+    background-position: center center;
+}
+.toolbar-item.select-double {
+    width: 8em !important;
+    max-width: 8em !important;
+}
+.toolbar-item.select-double:hover,
+.toolbar-item.select-double:focus {
+   background-color: transparent;
+   border-color: transparent;
+   cursor: default;
+}
+.toolbar-item.select-double select {
+    margin-top: 0.25em;
+}
+.toolbar-item.select-double select + select {
+    margin-top: 0.5em;
+}
+.toolbar-item.checkbox,
+.toolbar-item.checkbox input,
+.toolbar-item.checkbox label {
+    cursor: pointer;
+}
+.toolbar-item.checkbox {
+    text-align: center;
+    padding-top: 0.25em;
+    width: 5em;
+}
+.toolbar-item.checkbox label {
+    display: inline-block;
+    line-height: 1.25em;
+}
+.toolbar-item.checkbox input {
+    display: block;
+    margin: 0.5em auto 0.35em auto;
+    width: 24px; /* Matching width and height to toolbar icon size */
+    height: 24px;
+}
+.toolbar-item.multi-tool {
+    margin-bottom: 0;
+}
+.toolbar-item.multi-tool,
+.multi-tool-button {
+    width: 5em;
+}
+.nested-group .multi-tool-button {
+    font-size: 0.9373em;
+    width: 5.379em;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+}
+.toolbar-body .toolbar-region ul.transient-measurement li {
+    margin: 0 0.25em;
+}
+.transient-measurement .toolbar-item.button {
+    margin-bottom: 0;
+}
+
+/* ------ END: Measurement ------ */
+
+.icon {
+    display: block;
+    background-repeat: no-repeat;
+}
+
+/* START: Measurement ----------------------- */
+.measurement-toolbar-view {
+    margin-top: -0.25em;
+    padding-right: 0.5em;
+}
+.measurement-toolbar-view .toolbar-small-layout .toolbar-item {
+    overflow: hidden;
+    display: block;
+}
+
+.measurement-toolbar-view .toolbar-item.select select {
+    font-size: 0.8em;
+    color: #656189;
+    margin: 0.7em 0;
+}
+.toolbar-body .measurement-toolbar-view .toolbar-small-layout .toolbar-item.checkbox {
+    padding: 0.7em 0 0 0;
+    -webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;/
+	box-sizing: border-box; 
+    vertical-align: top;
+}
+.toolbar-body .measurement-toolbar-view .toolbar-small-layout .toolbar-item.checkbox input {
+    left: 0 !important;
+    top: 0.5em !important;
+    height: 1em;
+}
+.toolbar-body .measurement-toolbar-view .toolbar-small-layout .toolbar-item.checkbox label {
+    padding-left: 1.5em;
+    height: 1.5em;
+}
+.icon {
+    display: block;
+    background-repeat: no-repeat;
+}
+.tbo-btn .icon {
+    float: left;
+    margin-right: 0.5em;
+}
+.icon-clear-16 {
+    width: 16px;
+    height: 16px;
+    background-image: url("../../Resources/Images/Icons/Toolbar/clear-16.png");
+}
+.icon-erase-16 {
+    width: 16px;
+    height: 16px;
+    background-image: url("../../Resources/Images/Icons/Toolbar/erase-16.png");
+}
+.highlight {
+    border: 1px solid #C8E9FF;
+    background: #FBFDFF;
+}
+
+/* END: Measurement ----------------------- */
+
+/* ------ START: Compact Toolbar ------ */
+.flyout-menu-transient-measurement .toolbar-small-layout {
+    float: left;
+    padding-left: 9em !important;
+}
+.flyout-menu-transient-measurement li {
+    margin: 1px;
+}
+.flyout-menu-transient-measurement .toolbar-item.select {
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 8em !important;
+    padding: 0.5em 0;
+}
+.flyout-menu-transient-measurement .toolbar-item.select + .toolbar-item.select {
+    top: auto;
+    bottom: 0;
+}
+.flyout-menu-transient-measurement .toolbar-item.checkbox {
+    text-align: center;
+    padding-top: 0.25em;
+}
+
+/* End Script: Mapping/modules/Measurement/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Native/CSS/common.css ------------------------- */ 
+
+.panel-content {
+    text-align: center;
+}
+
+.btn {
+    width: 200px;
+    margin-top: 32px;
+}
+
+.inp {
+    width: 200px;
+    margin-top: 32px;
+}
+
+.loading {
+    margin-top: 20px;
+    text-align: center;
+    color: #FF0000;
+}
+
+.heading {
+    margin-top: 32px;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+/* End Script: Mapping/modules/Native/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Offline/ConnectionStatusIndicator/CSS/common.css ------------------------- */ 
+
+/* OFFLINE CONNECTION INDICATOR -------------------------*/
+
+.connection-status-indicator button,
+.connection-status-indicator button:hover
+{
+    width: 2.8em;
+    height: 2.85em;
+    padding: 0;
+    background: #FFFFFF;
+    border: 1px solid #999999;
+    border-radius: 0.25rem;
+    box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    text-align: center;
+    margin: 0.37em 0 0 0.25em;
+    vertical-align: bottom;
+}
+.view.ConnectionStatusIndicatorView.inactive  {
+    display: none;
+}
+.connection-status-indicator button:hover {
+}
+
+/* End Script: Mapping/modules/Offline/ConnectionStatusIndicator/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Offline/CSS/common.css ------------------------- */ 
+.map-bottom-left .ConnectionStatusIndicatorView {
+        float: left;
+}
+
+/* End Script: Mapping/modules/Offline/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/OverviewMap/CSS/common.css ------------------------- */ 
+/* START: OverviewMap --------------- */
+.overview-map-container {
+    position: relative;
+    max-width: 210px;
+}
+
+.overview-map-container-top-position {
+   position: relative;
+}
+
+.overview-map-container-bottom-position {
+    position: relative;
+}
+
+.overview-map-container-right-position  {
+    float: right;
+}
+.overview-map-container-top-position.overview-map-container-right-position {
+    margin: 0.4em;
+}
+.overview-map-container-left-position {
+    margin: 0 0.1em;
+}
+
+.overview-map {
+    height: 180px;
+    width: 205px;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+}
+
+.overview-map-bottom-position {
+    bottom: 186px;
+}
+
+.overview-map-right-position {
+    right: 210px;
+}
+    
+.overview-map-toggle {
+    text-align: center;
+    width: 3.5em;
+    height: 3.5em;
+    background: #FFFFFF url("../../Resources/Images/Icons/arrow-top-left-16.png") center center no-repeat;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+    zoom: 1;
+    display: block;
+}
+.no-touch .overview-map-toggle {
+    width: 2.75em;
+    height: 2.75em;
+}
+.overview-map-toggle-off {
+    position: absolute;
+    z-index: 101;
+    background-image: url("../../Resources/Images/Icons/arrow-bottom-right-16.png");
+}
+
+.overview-map-toggle-rightPosition {
+    right: 0px;
+}
+
+.overview-map-toggle-bottomPosition {
+    bottom: 0px;
+}
+
+.overview-map-toggle-bottomActive {
+}
+
+.overview-map-attribution-override {
+    right: 3.9em;
+}
+.no-touch .overview-map-attribution-override {
+    right: 3.15em;
+}
+/* END: OverviewMap --------------- */
+
+/* End Script: Mapping/modules/OverviewMap/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Printing/CSS/common.css ------------------------- */ 
+.printing
+{
+    padding: 1em;
+    overflow: hidden;
+}
+
+.printing label
+{
+    color: #667580;
+    font-size: 1.2em;
+    display: block;
+    margin: .75em 0 0.25em 0;
+}
+
+.printing input,
+.printing select,
+.printing textarea
+{
+    width: 100%;
+}
+
+.printing buttons
+{
+    margin-top: .75em;
+    text-align: center;
+}
+
+/* End Script: Mapping/modules/Printing/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/QueryBuilder/CSS/common.css ------------------------- */ 
+.simple-query-builder select,
+.simple-query-builder input {
+    margin: 0 0 0 .25em;
+    font-size: 0.9em;
+    min-width: 65px;
+}
+.simple-query-builder button {
+    cursor: pointer;
+    margin: 0 0 1% 1%;
+    padding: 0.25em;
+}
+.simple-query-builder button:hover {
+    background: #DEF2FF;
+    border-radius: 0.25rem;
+}
+.simple-query-builder .jimu-btn.add {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    font-size: 1em;
+}
+.simple-query-builder input {
+    padding: 0.3em;
+    vertical-align: middle;
+    width: auto;
+}
+.simple-query-builder form span {
+    vertical-align: middle;
+}
+.simple-query-builder select {
+    width: auto;
+   /* width: 60%;*/
+    margin-left: 2%;
+    padding: 0.25em;
+}
+.simple-query-builder .datetime-select {
+    margin-bottom: 0;
+    font-size:0.85em;
+}
+.simple-query-builder .datetime-select select {
+    padding:.31em 0;
+}
+.simple-query-builder .auto-complete,
+.simple-query-builder input.ui-autocomplete-input {
+    /*min-width: 142px;*/
+    width: 100%;
+}
+.simple-query-builder .select-box {
+    display: table;
+    width: 100%;
+}
+.simple-query-builder .select-box span {
+    display: table-cell;
+    width: 25%;
+}
+.simple-query-builder .select-box select {
+    display: table-cell;
+    width: 98%;
+}
+.simple-query-builder .find-records {
+    margin-bottom: 0.25em;
+}
+.simple-query-builder .query-clause-row .query-clause-content {
+    padding: 1em 0;
+    position: relative;
+    height: 24px;
+}
+.simple-query-builder .operator-selector,
+.simple-query-builder .field-selector {
+    margin-right: 2px;
+    vertical-align: middle;
+    white-space: nowrap;   
+}
+.simple-query-builder .auto-field {
+    vertical-align: middle;
+    width: 100%;
+}
+.simple-query-builder .query-clause-row {
+    margin-bottom: 0.5em;
+}
+.simple-query-builder .query-clause-row a {
+    vertical-align: middle;
+    margin-right: 2px;
+}
+.simple-query-builder .query-clause-row td.delete { vertical-align:middle;}
+.simple-query-builder .query-clause-row .delete-button {
+    display: block;
+    background-image: url("../Images/Icons/delete-16.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 18px;
+    height: 18px;
+    margin-left: 8px;
+}
+.simple-query-builder .query-clause-row .disabled {
+    cursor: default;
+}
+.simple-query-builder .query-clause-row a.presentable-query-item {
+    color: #1B7DBF;
+}
+.simple-query-builder .query-clause-row a.presentable-query-item:hover {
+    text-decoration: underline;
+}
+.simple-query-builder .and-text {
+    margin: 0px 0px 4px 10px;
+}
+.simple-query-builder .search-button-container {
+    margin-top: 15px;
+}
+.simple-query-builder .search-button-container button {
+    float: right;
+}
+.simple-query-builder hr {
+    border: 1px solid #ccc;
+    border-bottom: none;
+    margin: 10px 0px 10px 0px;
+}
+.simple-query-builder .empty-text-placeholder {
+    font-style: italic;
+}
+.simple-query-builder .add-query-container {
+    margin-top: 15px;
+}
+
+/* Begin: Date picker */
+.simple-query-builder .date-picker {
+    display: block;
+    white-space: nowrap;
+}
+.simple-query-builder .date-picker .form-label {
+    display: none;
+}
+.simple-query-builder .date-picker input {
+    float: none;
+    width: 85%;
+}
+.simple-query-builder .date-picker .form-control {
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
+}
+.simple-query-builder .ui-datepicker-trigger {
+    padding-top: 0.2em;
+    vertical-align: middle;
+    padding-bottom: 0.2em;
+}
+.simple-query-builder .form-control .inline-block {
+    display: block;
+}
+.simple-query-builder .form-control .inline-block.bound-invisible {
+    display: none;
+}
+/* End: Date picker */
+
+
+.simple-query-builder td {
+    max-width: 100%;
+}
+.simple-query-builder a {
+    padding-right: 0.25em;
+}
+.simple-query-builder td.delete {
+    min-width: 30px;
+    width: 100%;
+    text-align: center;
+}
+.simple-query-builder .autocomplete-container {
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 26px;
+    box-sizing: border-box;
+}
+.simple-query-builder {
+    position: relative;
+}
+
+/* End Script: Mapping/modules/QueryBuilder/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Reporting/CSS/common.css ------------------------- */ 
+
+/**
+ * ReportsListView
+ */
+
+.list-reports-view {}
+.list-reports-view * {
+    margin: 0;
+    padding: 0;
+}
+
+.list-reports-header {
+    padding: 1em 20px;
+}
+
+.list-of-reports {
+    list-style: none;
+    border-top: 1px solid #E4E8EC;
+}
+
+.list-of-reports-link {
+    display: block;
+    width: 100%;
+    font-size: 1.2em;
+    padding: 1em 20px;
+    cursor: pointer;
+    color: #2D5FB5;
+}
+
+.list-of-reports-link:hover {
+    background: rgba(0, 148, 255, 0.1);
+}
+.list-of-reports-link:active {
+    background: rgba(0, 148, 255, 0.3);
+}
+
+.list-of-reports-link-title {
+    display: block;
+}
+
+.list-of-reports-link-description {
+    display: block;
+    font-size: 0.8em;
+}
+
+.list-of-reports-link-details {
+    font-size: 0.8em;
+    opacity: 0.6;
+    font-style: italic;
+    color: black;
+    padding-left: 1em;
+}
+
+
+/**
+ * ReportResultView
+ */
+
+.run-report-view {
+    padding: 1em 2em;
+}
+.run-report-view * {
+    margin: 0;
+    padding: 0;
+}
+
+.run-report-complete-link {
+    display: block;
+    font-size: 1.2em;
+    margin-top: 1.5em;
+    cursor: pointer;
+    text-decoration: none;
+}
+.run-report-complete-link:hover {
+    text-decoration: underline;
+}
+
+.run-report-view iframe {
+    width: 100%;
+    min-height: 240px;
+    margin: 1em auto;
+    border: 0;
+}
+
+.run-report-complete-done-button {
+    display: block;
+    margin-top: 4em;
+    margin-left: auto;
+    padding: 0.5em 1em;
+    background: rgba(0,0,0, 0.08);
+    border-radius: 2px;
+}
+
+/* End Script: Mapping/modules/Reporting/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Scalebar/CSS/common.css ------------------------- */ 
+.scale-bar-container.scalebar-standout {
+    background: #ffffff;
+    background: rgba(255, 255, 255, 1);
+    width: 14.5em;
+    padding: 0.85em;
+    border-radius: 0.25rem;
+    border: 1px solid #D9D9D9;
+}
+.no-touch .scale-bar-container.scalebar-standout {
+    padding: 0.45em 0.8em;
+}
+.footer-region .scale-bar-container.scalebar-standout {
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+}
+.ScalebarView  {
+    position: relative;
+    z-index: 30;
+}
+.scale-bar-container .esriScalebar {
+    position: static;
+    min-height: 1.65em;
+}
+
+.scale-bar-container.scalebar-line-style .esriScalebar {
+    height: auto;
+}
+
+/* End Script: Mapping/modules/Scalebar/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Search/CSS/common.css ------------------------- */ 
+.hints-list {
+    background-color: #FFFFFF;
+    border: 1px solid #BBBBBB;
+    border-radius: 0.25rem;
+    border-top-right-radius: 0;
+}
+.hints-list .list-menu-icon {
+    font-size: 1.25em;
+    width: 1em;
+    height: 1em;
+}
+.hints-list .list-menu-item {
+    position: relative;
+    cursor: pointer;
+    padding: 0;
+}
+.hints-list .refine-disabled .list-menu-item .content {
+    margin-right: 0;
+}
+.hints-list .list-menu-item .content {
+    margin-right: 2em;
+    padding: 0.5em;
+    overflow: hidden;
+}
+.hints-list .has-icon .list-menu-details {
+    margin-left: 0;
+    padding-left: 0.5em;
+    float: left;
+    max-width: 27em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.list-menu li:last-child {
+    border-bottom-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
+.list-menu-button {
+    width: 100%;
+}
+.refine-disabled .refine-container {
+    display: none;
+}
+.refine-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2.5em;
+    height: 100%;
+    background-color: #FFFFFF;
+    border-left: 1px solid #EEEEEE;
+    border-bottom: 1px solid #EEEEEE;
+}
+.refine-btn {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../Images/Icons/search-refine-16.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    cursor: pointer;
+}
+.global-search .search-button {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    bottom:1px;
+    width: 40px;
+    /*height: 100%;*/
+    background: url(../Images/Icons/Toolbar/search-24.png) center center no-repeat;
+    cursor: pointer;
+    overflow: hidden;
+    text-indent: -999em;
+}
+
+/* End Script: Mapping/modules/Search/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Share/CSS/common.css ------------------------- */ 
+.social-media-pages {
+    display: table-cell;
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+    text-align: center;
+    padding: 1em;
+}
+
+/* End Script: Mapping/modules/Share/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Shells/CSS/common.css ------------------------- */ 
+
+/* SHELL (COMMON) -------------------------*/
+
+.shell-container
+{
+    height: 100%;
+}
+
+.shell-container-inner
+{
+    height: 100%;
+}
+
+.ShellView {
+    height: 100%;
+    overflow: hidden;
+}
+
+.shell 
+{
+    height: 100%;
+}
+
+.bottom-region.region-active {
+	min-height: 75px;
+}
+
+/* iOS 7 fix for iPads in landscape mode. Taken from http://stackoverflow.com/questions/19012135/ios-7-ipad-safari-landscape-innerheight-outerheight-layout-issue. */
+@media (orientation:landscape) {
+    html.ipad.ios7 > body {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 672px !important;
+    }
+}
+
+/* BEGIN DATAFRAME TOGGLE --------------- */
+
+.region .view.DataFrameButtonView {
+    position: relative;
+    width: 3.9em;
+    height: 3.8em;
+    margin: 0;
+}
+.data-frame-button {
+    width: 3.9em;
+    height: 3.8em;
+    cursor: pointer;
+    background: #FFFFFF;
+    border-right: 1px solid #D9D9D9;
+    border-bottom: 1px solid #D9D9D9;
+    border-left: none;
+    border-bottom-right-radius: 0.25rem;
+    cursor: pointer;
+    position: absolute;
+    z-index: 200;
+    top: 0em;
+    left: 0em;
+}
+.no-touch .data-frame-button {
+    width: 3.14em;
+    position: absolute;
+    height: 3.05em;
+}
+.no-touch .region .view.DataFrameButtonView {
+    width: 3.14em;
+    height: 3.05em;
+}
+.data-frame-button:hover {
+    border-left: 0;
+}
+.data-frame-button.tab-open {
+    background: #FFFFFF url("../../Resources/Images/Icons/chevron-left-24.png") no-repeat center center;
+}
+
+.data-frame-button.tab-closed {
+    background: #FFFFFF url("../../Resources/Images/Icons/chevron-right-24.png") no-repeat center center;
+}
+
+/* END DATAFRAME TOGGLE ----------------- */
+
+.large-shell-left,
+.medium-shell-left {
+    background: url("../../Resources/Images/Backgrounds/map-bg-texture.png");
+}
+.panel-side-empty {
+    padding: 2em;
+    color: #666666;
+}
+.panel-empty-heading {
+    font-size: 1.25em;
+    font-weight: normal;
+    line-height: 1em;
+    margin-bottom: 1em;
+}
+
+/* End Script: Mapping/modules/Shells/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Status/CSS/common.css ------------------------- */ 
+
+/* STATUS INDICATOR -------------------------*/
+
+.status-indicator img,
+.status-indicator span {
+    display: block;
+}
+
+.status-window {
+    position: relative;
+    display: inline-block;
+    margin: .4em 0.4em;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 0.25rem;
+    vertical-align: bottom;
+    border: 1px solid #999999;
+    padding: 0.78em;
+}
+
+.status-window .status-img,
+.status-window .status-msg {
+    margin: .75em;
+}
+
+.status-window .status-img {
+    margin-right: 0;
+}
+
+.status-btn,
+.status-btn:hover,
+.status-btn:active {
+    background: url("../Images/Icons/panel-close.png") center center no-repeat;
+    border: none;
+}
+
+.status-btn {
+    width: 3.125em;
+    height: 3.125em;
+    padding: 0;
+}
+
+.status-btn span {
+    height: 2.34em;
+    border-left: 1px solid #CCCCCC;
+}
+
+.status-btn {
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+.status-window.active-tool .status-img {
+    background-color: #c8e9ff;
+    border: 1px solid #8fc3e6;
+    margin: 0;
+    padding: 0.625em;
+    border-radius: 0.25rem;
+}
+.status-window.active-tool .status-btn {
+    background-image: url("../Images/Icons/delete-16.png");
+}
+
+/* End Script: Mapping/modules/Status/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Toolbar/CSS/common.css ------------------------- */ 
+/* START: Toolbar --------------- */
+.toolbar-container button {
+    float: left;
+    display: inline-block;
+}
+
+.toolbar-container {
+    background: #F0F0F0;
+    border-bottom: 1px solid #D9D9D9;
+    position: relative;
+    /*z-index: 301;*/
+}
+
+.toolbar-body button {
+    margin: 0.25em 0.05em;
+    list-style-type: none;
+}
+
+.toolbar-body ul {
+    padding-left: 0;
+}
+.transient-toolbar li,
+.toolbar-body ul li,
+.flyout-menu ul li {
+    float: left;
+    margin: 0.2em;
+    list-style: none;
+}
+
+.toolbar-body ul li ul,
+.multi-tool-list li {
+    padding-left: 0;
+    list-style: none;
+}
+
+.toolbar-item.toolbar-region {
+    border: 1px solid #333;
+}
+
+.toolbar-group {
+    display: block;
+    text-align: center;
+}
+.toolbar-body.large .toolbar-group {
+    min-height: 7.75em;
+    position: relative;
+    padding-bottom: 1em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.toolbar-body.large > .toolbar-group {
+    padding-bottom: 0;
+}
+.nested-group .toolbar-group {
+    border: 1px solid #F0F0F0;
+}
+
+.toolbar-group.toolbar-group-horizontal-controls {
+    margin-left: 3em;
+}
+
+.toolbar-group.toolbar-group-vertical-controls {
+    margin-top: 3em;
+}
+
+.toolbar-group > ul {
+    margin: 0;
+}
+
+.toolbar-body .nested-group {
+    display: inline-block;
+    padding: 0.25em;
+    vertical-align: top;
+    margin: 0;
+}
+
+.toolbar-item.toolbar-group .toolbar-item.toolbar-group {
+    text-align: center;
+}
+/* Cancel out the border on root tab groups */
+.toolbar-body > .toolbar-item.toolbar-group {
+    border: none;
+}
+
+.toolbar-item.toolbar-group {
+    /*text-align: center;*/
+    background: #FFFFFF;
+}
+
+.toolbar-item.selected {
+    border: 1px solid #197DC9;
+    background: #E9F6FF;
+}
+.toolbar-group h4 {
+    height: 1.5em;
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #AFADB3;
+    cursor: default;
+    clear: both;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.toolbar-body.large .toolbar-group h4 {
+  bottom: 0;
+  position: absolute;
+  width: 98%;
+  margin: 0 1%;
+}
+
+.toolbar-group p,
+.toolbar-group label {
+    clear: both;
+    color: #656189;
+    font-size: 0.9em;
+    white-space: pre-wrap;
+}
+
+/* Hide the top-level group label */
+.toolbar-body > .toolbar-item.toolbar-group > p {
+    display: none;
+}
+.toolbar-group li {
+    float:left;
+}
+/* ------ START: Toolbar Buttons ------ */
+.toolbar-item {
+    min-width: 4em;
+    max-width: 8em;
+    text-align: center;
+    border: 1px solid transparent;
+    cursor: pointer;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0.2em;
+}
+.toolbar-item,
+.tbo-btn,
+.multi-tool-button {
+    border-radius: 0.25rem;
+    box-shadow: none;
+}
+
+.toolbar-item p,
+.toolbar-item label {
+    margin: 0 0.5em 0.5em 0.5em;
+    line-height: 1.25em;
+}
+.toolbar-body.large .toolbar-item p,
+.toolbar-body.large .toolbar-item label {
+    margin-bottom: 0;
+}
+.toolbar-region .horizontal {
+    float: none;
+    display: block;
+}
+
+.toolbar-region .horizontal .toolbar-item .icon {
+    display: inline-block;
+    vertical-align: middle;
+    height: 1.25em;
+}
+
+.toolbar-region .horizontal .toolbar-item {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    vertical-align: middle;
+    font-size: 0.9em;
+    color: #666666;
+}
+/* ------ END: Toolbar Buttons ------ */
+
+/* ------ START: Hover States ------ */
+.toolbar-item:hover,
+.tbo-btn:hover,
+.toolbar-item.highlight,
+.toggled-on,
+.transient-active {
+    cursor: pointer;
+    border: 1px solid #197DC9;
+    background: #E9F6FF;
+}
+.flyout-menu .flyout-menu-floating-area > .toolbar-item,
+.flyout-menu .flyout-menu-floating-area > .toolbar-item:hover {
+    cursor: default;
+    border: none;
+    background: transparent;
+}
+/* ------ END: Hover States ------ */
+
+.toolbar-item.highlight {
+    border: 1px solid #C8E9FF;
+    background: #E9F6FF;
+}
+
+.toolbar-item.hidden {
+    display: none;
+}
+
+.flyout-menu .toolbar-item.hidden {
+    display: none;
+}
+
+.toolbar-item.bound-disabled {
+    opacity: 0.3;
+    filter: alpha(opacity=30);
+    cursor: default;
+}
+.toolbar-item.disabled:hover,
+.toolbar-item.disabled:focus {
+    background-color: none !important;
+    border-color: none !important;
+}
+
+.toolbar-item > img,
+.toolbar-item > span.icon {
+    display: block;
+    margin: 0.5em auto;
+    width: 24px;
+    height: 24px;
+}
+.region .view.CompactToolbarView,
+.region .view.TabbedToolbarButtonView {
+    margin: 0;
+}
+.toolbar-toggle-button {
+    width: 3.9em; 
+    height: 3.9em; /* height adjusted for negative margins */
+    margin-top: -1px;
+    background: #FFFFFF url(../Images/Icons/Toolbar/tools-32.png) center no-repeat;
+    border: 1px solid #D9D9D9;
+    border-top: 1px solid #ffffff;
+    border-right: 0;
+    border-bottom-left-radius: 0.25rem;
+    position: relative;
+    z-index: 500;
+    cursor: pointer;
+    float: right;
+}
+.no-touch .toolbar-toggle-button {
+    width: 3.15em;
+    height: 3.15em;
+}
+.touch .toolbar-item.toggle-button.toggled-off:hover {
+    cursor: default;
+    border: 0;
+    background:transparent;
+}
+.toolbar-toggle-button:hover {
+    border-top: 1px solid #FFFFFF;
+}
+.transient-toolbar {
+    border: 1px solid #ddd;
+    background: #f8f8f8;
+    border-radius: .25rem;
+    overflow: hidden;
+    padding: 0 0 0.3em 0;
+    margin: 0.25em 0em 0.2em 0em;
+    position: relative;
+    z-index: 600;
+}
+.transient-toolbar button {
+    margin: 0;
+    max-width: 100%;
+}
+.transient-toolbar button.toolbar-item p {
+    white-space: nowrap;
+}
+.toolbar-item.transient-active.multi-tool,
+.toolbar-item.transient-active {
+    position: relative;
+    border-radius: 0.25rem;
+    padding-bottom: 0.5em;
+    min-height: 4.95em;
+    overflow: visible;
+}
+.toolbar-item.multi-tool.transient-active  {
+    background: #E9F6FF;
+    border: 1px solid #c2e1f5;
+    margin-bottom: -1.85em;
+    /*padding-bottom: 2.3em;*/
+}
+.toolbar-item.transient-active:after, .toolbar-item.transient-active:before {
+	left: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+    z-index: 601;
+}
+.toolbar-item.transient-active:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-left-color: #E9F6FF;
+	border-width: 0.95em;
+	margin-top: -0.95em;
+}
+.toolbar-item.transient-active:before {
+	border-color: rgba(194, 225, 245, 0);
+	border-left-color: #c2e1f5;
+	border-width: 1.05em;
+	margin-top: -1.02em;
+}
+.transient-measurement {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.transient-toolbar.has-neighbour-transient {
+    padding-left: 8.4em;
+}
+.transient-toolbar + .transient-measurement {
+    margin-top: -4.9em;
+    margin-left: 0.2em;
+    position: relative;
+    z-index: 601;
+}
+.large-transient-toolbar {
+    position: relative;
+    border: 1px solid #ddd;
+    float: right;
+    right: 50%;
+    background: #eee;
+}
+
+.toolbar-close-button {
+    background-image: url(../Images/Icons/panel-close.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    color: transparent;
+    display: inline-block;
+    overflow: hidden;
+    width: 16px;
+    text-indent: -9999px;
+    padding: 5px;
+    float: right;
+}
+
+/* ------ START: Flyout ------ */
+.multi-tool-dropdown {
+    position: absolute;
+    background: #FFFFFF;  
+    border: 1px solid #D9D9D9;
+    padding: 0.125em;
+    -webkit-border-bottom-right-radius: 0.25em;
+    -webkit-border-bottom-left-radius: 0.25em;
+    -moz-border-radius-bottomright: 0.25em;
+    -moz-border-radius-bottomleft: 0.25emx;
+    border-bottom-right-radius: 0.25em;
+    border-bottom-left-radius: 0.25em;
+    max-width: 20em;
+    z-index: 601;
+}
+.flyout-menu .multi-tool-dropdown {
+    border-top: none;  
+    -moz-box-shadow: inset 0 0.25em 0.25em 0 #CCCCCC;
+    -webkit-box-shadow: inset 0 0.25em 0.25em 0 #CCCCCC;
+    box-shadow: inset 0 0.25em 0.25em 0 #CCCCCC;
+}
+.multi-tool-list {
+    margin: 0;
+    padding: 0;
+}
+    .multi-tool-list li {
+        margin: 0.25em;
+    }
+
+.multi-tool-dropdown-left {
+    left: 0px;
+}
+
+.multi-tool-dropdown-right {
+    right: 0px;
+}
+
+.multi-tool-list > li {
+    max-width: 8em;
+    min-width: 4em;
+    display: inline-block;
+}
+.multi-tool-list > li.hidden {
+    display: none;
+}
+.multi-tool-list > li p {
+    font-size: 0.9em;
+}
+
+/* Prevent the scroll arrows for the flyout from appearing in the tabbed toolbar. */
+.toolbar-container .scroll-back {
+    display: none;
+}
+
+.toolbar-container .scroll-forward {
+    display: none;
+}
+
+/* ------ END: Flyout ------ */
+
+
+/* ------ START: Compact Toolbar ------ */
+/* Region specific styling */
+.map-top-right .flyout-menu-active-tool,
+.map-top-center .flyout-menu-active-tool,
+.map-middle-right .flyout-menu-active-tool,
+.map-bottom-right .flyout-menu-active-tool,
+.map-bottom-center .flyout-menu-active-tool {
+    float: right;
+}
+.map-top-left .flyout-menu-active-tool,
+.map-middle-left .flyout-menu-active-tool,
+.map-bottom-left .flyout-menu-active-tool {
+    float: left;
+}
+.map-bottom-left .flyout-menu-tools,
+.map-bottom-center .flyout-menu-tools,
+.map-bottom-right .flyout-menu-tools {
+    bottom: 0;
+}
+/* Region specific styling */
+.multi-row.flyout-menu-collapsible-area:before {
+    content: "";
+    font-size: 1em;
+    display: block;
+    width: 0.25em;
+    height: 0.25em;
+    background: #FFFFFF;
+    position: absolute;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    z-index: 504;
+}
+.map-top-right .multi-row.flyout-menu-collapsible-area:before,
+.map-top-center .multi-row.flyout-menu-collapsible-area:before,
+.map-top-left .multi-row.flyout-menu-collapsible-area:before,
+.map-middle-right .multi-row.flyout-menu-collapsible-area:before,
+.map-middle-left .multi-row.flyout-menu-collapsible-area:before {
+    top: 4.75em;
+}
+.map-bottom-left .multi-row.flyout-menu-collapsible-area:before,
+.map-bottom-center .multi-row.flyout-menu-collapsible-area:before,
+.map-bottom-right .multi-row.flyout-menu-collapsible-area:before {
+    bottom: 4.75em;
+}
+.map-top-right .multi-row.flyout-menu-collapsible-area:before,
+.map-top-center .multi-row.flyout-menu-collapsible-area:before,
+.map-middle-right .multi-row.flyout-menu-collapsible-area:before,
+.map-bottom-right .multi-row.flyout-menu-collapsible-area:before,
+.map-bottom-center .multi-row.flyout-menu-collapsible-area:before {
+    right: 0;
+}
+.map-top-left .multi-row.flyout-menu-collapsible-area:before,
+.map-middle-left .multi-row.flyout-menu-collapsible-area:before,
+.map-bottom-left .multi-row.flyout-menu-collapsible-area:before {
+    left: 0;
+}
+
+.shell-large .flyout-menu-collapsible-area:after {
+    content: "";
+    font-size: 1em;
+    display: block;
+    width: 0.4em;
+    height: 5em;
+    background: #FFFFFF;
+    position: absolute;
+    border-top: 1px solid #D9D9D9;
+    border-bottom: 1px solid #D9D9D9;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.map-top-right .flyout-menu-collapsible-area:after,
+.map-top-center .flyout-menu-collapsible-area:after,
+.map-top-left .flyout-menu-collapsible-area:after,
+.map-middle-right .flyout-menu-collapsible-area:after,
+.map-middle-left .flyout-menu-collapsible-area:after {
+    top: -1px;
+}
+.map-bottom-left .flyout-menu-collapsible-area:after,
+.map-bottom-center .flyout-menu-collapsible-area:after,
+.map-bottom-right .flyout-menu-collapsible-area:after {
+    bottom: -1px;
+}
+.map-top-right .flyout-menu-collapsible-area:after,
+.map-top-center .flyout-menu-collapsible-area:after,
+.map-middle-right .flyout-menu-collapsible-area:after,
+.map-bottom-right .flyout-menu-collapsible-area:after,
+.map-bottom-center .flyout-menu-collapsible-area:after {
+    right: -0.25em;
+}
+.map-top-left .flyout-menu-collapsible-area:after,
+.map-middle-left .flyout-menu-collapsible-area:after,
+.map-bottom-left .flyout-menu-collapsible-area:after {
+    left: -0.25em;
+}
+
+.flyout-menu-active-tool p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 0 0.25em;
+    font-size: 0.8em;
+}
+.flyout-menu-active-tool img {
+    margin: 0.5em 0 0.1em 0;
+}
+.map-top-right .flyout-menu-tools,
+.map-top-center .flyout-menu-tools,
+.map-middle-right .flyout-menu-tools,
+.map-bottom-right .flyout-menu-tools,
+.map-bottom-center .flyout-menu-tools {
+    right: 5em; /* Same as the width of the active tool button */
+}
+.map-top-left .flyout-menu-tools,
+.map-middle-left .flyout-menu-tools,
+.map-bottom-left .flyout-menu-tools {
+    left: 5em; /* Same as the width of the active tool button */
+}
+.flyout-menu {
+    position: relative;
+    float: left;
+    margin: 0;
+}
+.region.map-top-right .flyout-menu {
+    margin: 0.4em;
+}
+.flyout-menu .toolbar-button {
+    border-radius: 0;
+}
+.flyout-menu-active-tool {
+    position: relative;
+    height: 5em;
+    width: 5em;
+    text-align: center;
+    border: 1px solid #D9D9D9;
+    background: #FFFFFF;
+    z-index: 102;
+    border-radius: 0.25rem;
+}
+.flyout-menu-active-tool:hover,
+.multi-tool-button:hover {
+    background-color: #e9f6ff;
+    border: 1px solid #c8e9ff;
+}
+
+.tool-label {
+    display: block;
+}
+
+.flyout-menu-tools {
+    position: absolute;
+    margin: 0;
+    float: left;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+    z-index: 501;
+    overflow: visible;
+}
+.flyout-menu-tools,
+.flyout-menu-transient {
+    height: 5em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; 
+    width: 100.5%; /*Pixel rounding fix*/
+}
+.flyout-menu-transient .transient-toolbar {
+    background: #ffffff;
+    border: 0;
+}
+.flyout-menu-floating-area h2 {
+    display: none;
+}
+.flyout-menu .toolbar-parent {
+   /*float: left;*/
+    margin: 0;
+    padding: 0;
+}
+.flyout-menu .toolbar-group {
+    border: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+.flyout-menu .toolbar-item {
+    display: inline-block;
+    list-style: none;
+    vertical-align: top;
+}
+.flyout-menu li.toolbar-item,
+.flyout-menu .toolbar-item li {
+    width: 5em;
+}
+.flyout-menu .toolbar-item {
+    width: 100%;
+}
+.flyout-menu .toolbar-item.multi-tool {
+    height: auto !important;
+}
+.flyout-menu .toolbar-item.multi-tool img {
+    margin-top: 0.4em;
+}
+.flyout-menu .toolbar-item.toolbar-group {
+    max-width: none;
+}
+.flyout-menu-transient .transient-toolbar.has-neighbour-transient {
+    padding-left: 8.5em;
+}
+.flyout-menu .toolbar-item p,
+.flyout-menu .toolbar-item label,
+.multi-tool-container .toolbar-item p,
+.multi-tool-button  {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 0;
+    text-align: center;
+    font-size: 0.8em;
+}
+.multi-tool-container .toolbar-item {
+    max-width: 6em;
+}
+.nested-group .multi-tool-button,
+.toolbar-body .multi-tool-button {
+    position: relative;
+    z-index: 1;
+    border: 1px solid transparent;
+    padding: 0.35em 1.5em 0.35em 0 !important;
+    margin: 0 auto;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    font-weight: lighter;
+    font-size: 0.9em;
+    background-image: url("../../Resources/Images/Icons/arrow-down-small-16.png");
+    background-position:  center right;
+    background-repeat: no-repeat;
+    line-height: 1em;
+    height: 1.75em;
+    width: 5em;
+    background-color: #ffffff;
+}
+.multi-tool-item-container button {
+    padding-top: 0.35em; 
+}
+.toolbar-container button.multi-tool,
+.toolbar-container button.multi-tool-button {
+    display: block;
+    float: none;
+}
+.toolbar-container button.multi-tool-button {
+    margin-bottom: 0.65em;
+}
+
+.flyout-menu .multi-tool-button {
+    font-size: 0.8em;
+}
+.toolbar-item.multi-tool img {
+    margin-bottom: 0.05em;
+    margin-top: 0.25em;
+}
+.toolbar-item.multi-tool.transient-active img {
+    margin: 0 auto 1.5em auto;
+}
+.flyout-menu-scroll {
+    position: absolute;
+    border: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    text-align: center;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+    background-color: #EEEEEE;
+    z-index: 502;
+}
+.flyout-menu-scroll:hover,
+.flyout-menu-scroll:focus {
+    cursor: pointer;
+    border: 1px solid #C8E9FF;
+    background: #E9F6FF;
+}
+.scroll-forward,
+.scroll-back {
+    top: 50%;
+    margin-top: -1.75em;
+    width: 2.5em;
+    height: 3.5em;
+}
+.scroll-forward {
+    right: 0;
+    margin-right: -1.25em;
+}
+.scroll-back {
+    left: 0;
+    margin-left: -1.25em;
+}
+.scroll-bottom,
+.scroll-top {
+    left: 50%;
+    margin-left: -1.75em;
+    width: 3.5em;
+    height: 2.5em;
+}
+.scroll-top {
+    top: 0;
+    margin-top: -1.25em;
+}
+.scroll-bottom {
+    bottom: 0;
+    margin-bottom: -1.25em;
+}
+.map-bottom-center .scroll-bottom,
+.map-bottom-left .scroll-bottom,
+.map-bottom-right .scroll-bottom {
+    margin-bottom: -0.25em;
+}
+
+
+/* ------ END: Compact Toolbar ------ */
+/* ------ START: Compact Toolbar Transient Tools ------ */
+.flyout-menu-transient ul {
+    margin: 0;
+    padding: 0;
+}
+/* ------ END: Compact Toolbar Transient Tools ------ */
+
+/* TESTING/DEBUG ONLY */
+.flyout-menu .toolbar-item.multi-tool.button { /* Temporary styling for demo purposes. Correct solution is to remove the .button class from the HTML element but it breaks the compact toolbar when it is removed. */
+    background: transparent;
+}
+.flyout-menu .toolbar-item.multi-tool.button:hover { /* Temporary styling for demo purposes. Correct solution is to remove the .button class from the HTML element but it breaks the compact toolbar when it is removed. */
+    background: #E9F6FF;
+}
+/* TESTING/DEBUG ONLY */
+
+
+/* ------ START: Toggle Buttons ------ */
+.toggled-on,
+.toggled-off {
+    position: relative;
+}
+.toggled-on p:after,
+.toggled-off p:after {
+    font-size: 0.8em;
+    display: block;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 2em;
+    left: 50%;
+    margin-left: -2em;
+}
+.toggled-on p:after {
+    content: "";
+    background: url("../../Resources/Images/Icons/Toolbar/toggled-on-16.png") no-repeat center center;
+}
+/* ------ END: Toggle Buttons ------ */
+
+/* End Script: Mapping/modules/Toolbar/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/User/CSS/common.css ------------------------- */ 
+/* START: User --------------- */
+
+.SignInView, .SignInView.active, .UserInfoView, .UserInfoView.active {
+    vertical-align: top;
+    float: right;
+}
+
+.user-info-wrapper {
+    position: relative;
+}
+
+.user-name {
+    font-size: 1.3em;
+    white-space: nowrap;
+}
+
+.user-info {
+    position: relative;
+    height: 45px;
+    margin: 0;
+    border: 1px solid transparent;
+    border-bottom: 0;
+    padding-left: 5px;
+}
+
+.user-info-expander {
+    float: right;
+    background: url("../../Resources/Images/Icons/arrow-down-small-24.png") center center no-repeat;
+    width: 24px;
+    height: 33px;
+    margin-top: 2px;
+    margin-right: 2px;
+    overflow: hidden;
+    text-indent: -999px;
+}
+
+.user-info-expander:hover,
+.user-info.expanded .user-info-expander {
+    filter: none;
+}
+
+.user-info,
+.user-info a {
+    display: block;
+    z-index: 1;
+}
+
+.user-info-expander a {
+    width: 100%;
+    height: 100%;
+}
+
+.user-info.expanded {
+    border: 1px solid #D9D9D9;
+    border-bottom: none;
+    border-radius: 0.25rem 0.25rem 0 0;
+    zoom: 1;
+}
+
+.user-info-popup {
+    position: absolute;
+    right: 0px;
+    top: 45px;
+    border-radius: 0.25rem 0 0.25rem 0.25rem;
+    font-size: 1em;
+    margin: 0;
+    border: 1px solid #D9D9D9;
+    padding: 20px;
+    min-width: 200px;
+    text-align: left;
+}
+.sign-out,
+.sign-in {
+    position: relative;
+    line-height: 1em;
+}
+.sign-out {
+    float: right;
+}
+
+.sign-out button,
+.sign-in button {
+    padding: .58em;
+    border-radius: 0.25rem;
+}
+
+
+.sign-in button, .sign-in button:visited, .user-info-wrapper button, .user-info-wrapper button:visited {
+    font-size: 1.15em;
+}
+
+/* END: User --------------- */
+
+/* End Script: Mapping/modules/User/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Visualization/CSS/common.css ------------------------- */ 
+.visualization-selector,
+.visualization-options {
+    margin-bottom: 2em; 
+}
+.visualization .visualization-title {
+    color: #959398;
+    font-weight: normal;
+    font-size: 1.25em;
+}
+
+/* End Script: Mapping/modules/Visualization/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Workflow/CSS/common.css ------------------------- */ 
+
+/* WORKFLOW -------------------------*/
+
+.workflow-form {
+    /* min-width: 300px; */
+}
+
+.workflow-instruction-msg {
+    margin-bottom: 0.75em;
+}
+
+.workflowlist-container {
+    width: 100%;
+    margin: 8px;
+}
+
+.workflowlist-container h1 {
+    font-weight: 600;
+}
+
+.workflow-list-no-workflows.bound-invisible {
+    position: absolute;
+}
+
+
+/* WORKFLOW - STATUS MESSAGE -------------------------*/
+
+.workflow-status-msg {
+    border-radius: 0.25rem;
+    overflow: auto;
+    margin: 1em 0;
+    padding: 0.5em;
+}
+
+.workflow-status-msg img {
+    display: block;
+    margin-right: 4px;
+}
+
+
+/* WORKFLOW - DISPLAY/CAPTURE GEOMETRY -------------------------*/
+
+.form-btns.geometry {
+    text-align: left;
+}
+
+.form-btns.geometry button {
+    padding: .25em;
+    margin: 0 0.25em 0 0;
+}
+
+.geometry button span {
+    display: block;
+    width: 24px;
+    height: 24px;
+}
+
+
+/* WORKFLOW - DISPLAY HYPERLINK -------------------------*/
+
+
+.display-hyperlink a {
+    text-decoration: underline;
+}
+
+
+/* WORKFLOW - DISPLAY RESULT PICKER -------------------------*/
+.modal-container .display-result-picker {
+    height: 400px;
+}
+
+.modal-container .panel-scroll-container .workflow-container {
+    position: relative;
+}
+
+.display-result-picker-list { /* Sets the position for the results list and sets it so that it will add a scroll bar as is neccesary */
+    position: absolute;
+    overflow-y: auto;
+    left: 0;
+    right: 0;
+}
+
+.display-result-picker-list .list-menu-item {
+    display: table;
+    width: 100%;
+    padding: 0;
+}
+.display-result-picker-list .list-menu-item > div {
+    padding: 0.75em;
+}
+.display-result-picker-list .list-menu-checkbox,
+.display-result-picker-list .list-menu-icons,
+.display-result-picker-list .list-menu-details {
+    display: table-cell;
+    vertical-align: top;
+}
+.display-result-picker-list .list-menu-checkbox {
+    padding: 0.25em 0.5em 0 0;
+}
+.display-result-picker-list .list-menu-icons {
+    padding: 0 0.5em 0 0;
+}
+.display-result-picker-list .list-menu-details {
+    width: 100%;
+}
+
+.display-result-picker .form-btns {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    margin: 0;
+    height: 3.35em;
+    background: #FFFFFF;
+    width: 100%;
+    padding: 0.25em;
+    box-sizing: border-box;
+    border-top: 1px solid #DDDDDD;
+}
+
+.display-result-picker-list.error {
+    border: 1px solid #990000;
+}
+
+.filter-section {
+    padding: 0.5em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    /*height: 4.15em;*/
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 999;
+    background: #FFFFFF;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.filter-selection-mode a {
+    display: block;
+    float: left;
+    margin: 0.5em 0 0 0.5em;
+    border-left: 1px solid #DDDDDD;
+    padding-left: 0.5em;
+}
+
+.filter-selection-mode a:first-child {
+    padding-left: 0;
+    margin-left: 0;
+    border: none;
+}
+
+.filter-section a:hover{
+    text-decoration: underline;
+}
+
+.filter-text-box {
+    position: relative;
+}
+
+.filter-text-box a {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1.25em;
+    height: 1.25em;
+    text-indent: -999999px;
+    background: url("../../Resources/Images/Icons/delete-16.png") no-repeat;
+    margin: 0.375em;
+}
+
+.filter-text-box input {
+    width: 100% !important;
+    height: 2em;
+}
+
+/* Remove the clear button next to the text box in IE10 */
+.filter-text-box input::-ms-clear {
+    display: none;
+}
+
+.list-menu-item .selected {
+	background-color: #D1D1D1;
+}
+
+.error-message {
+    color: #990000;
+}
+
+.disabled-link {
+    cursor: default;
+    zoom: 1;
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+    text-decoration: none !important;
+}
+
+.display-result-picker-message {
+    max-height: 155px;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+/* WORKFLOW - DATE/TIME PICKER -------------------------*/
+
+.datetime-select > div {
+    display: inline-block;
+}
+.datetime-select select {
+    font-size: 1em;
+    min-height:22px;
+}
+.datetime-select {
+    margin-bottom: 0.5em;
+}
+.datetime-select input {
+    font-size: 1em;
+    vertical-align: top;
+    padding:0.1em;
+} 
+.form-control-date-picker .inline-block {
+    vertical-align: top;
+}
+button.datetime-btn {
+    vertical-align: middle;
+    box-shadow: none;
+}
+.datetime-select label {
+    margin-left: 0.5em;
+}
+.hasDatepicker {
+    font-size: 1em;
+}
+.ui-datepicker-trigger {
+    vertical-align: top;
+    height:23px;
+    margin-bottom:0.3em;
+}
+.form-control-date-picker input {
+    vertical-align: top;
+}
+.form-control-date-picker .date-time,
+.form-control-date-picker .hasDatepicker,
+.form-control-date-picker input[type=date] {
+    font-size: 1em;
+    padding:0.1em;
+}
+.form-control-date-picker .hasDatepicker {
+    max-width: 120px;
+}
+
+/* End Script: Mapping/modules/Workflow/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Workflow/Forms/Items/CSS/common.css ------------------------- */ 
+
+/* FORM ITEMS -------------------------*/
+
+.form-container * {
+    box-sizing: border-box; /* Standardize the box model for form items */
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+input,
+select,
+textarea,
+.form-label,
+.checkbox-group,
+.radio-group {
+    padding: .3em;
+}
+select {
+    padding: 0;
+    font-weight: 400;
+    color: #000000;
+}
+
+input[type='text'],
+input[type='date'],
+input[type='datetime'],
+input[type='password'],
+select,
+textarea {
+    max-width: 100%; /* Don't exceed the width of the container */
+    width: 100%;
+    outline: none;
+    border: 1px solid #AAAAAA;
+    border-radius: 2px;
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+    margin: 0;
+    padding: 0;
+}
+
+fieldset {
+    margin: 0;
+    padding: .5em .75em .75em .75em;
+    border-radius: 0.25rem;
+}
+
+fieldset legend{
+
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+}
+
+select {
+    min-width: 100px;
+}
+
+textarea {
+    height: 5em;
+    resize: none;
+}
+
+.form-item {
+    padding: .5em 0.1em 0.5em 0;
+}
+
+.form-item:after {
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+    content: "_";
+}
+
+.form-label,
+.form-control {
+    float: left;
+    position: relative;
+}
+
+.form-label {
+    overflow: hidden;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+.label-left .form-label {
+    min-width: 30%;
+}
+.form-horizontal .label-left .form-label {
+    display: block;
+    padding: 0;
+    margin: 0;
+    width: auto;
+}
+.form-horizontal .form-label.right {
+    margin-right: 0.5em;
+}
+.form-horizontal .form-label.bound-invisible {
+    display: none;
+}
+.form-horizontal select,
+.form-horizontal input {
+    min-width: 4.6em;
+}
+.form-horizontal select {
+    padding: 0.25em;
+}
+.form-horizontal input[type=checkbox],
+.form-horizontal input[type=radio] {
+    min-width: 0;
+}
+.form-horizontal > .form > .form-item, 
+.form-horizontal > .form-item {
+    display: inline-block;
+    width: auto;
+    vertical-align: top;
+    margin-right: 0.25em;
+}
+.form-horizontal .checkbox .form-item {
+    vertical-align: middle;
+}
+.form-control {
+    min-width: 69.9%;
+    max-width: 100%;
+}
+/*.form-horizontal .form-control select,
+.form-horizontal .form-control input {
+    width: auto;
+}*/
+.form-horizontal .form-control { 
+    width: auto;
+}
+
+.autocomplete .form-control {
+    position: inherit;
+}
+
+.autocomplete-input {
+    display: inline;
+    position: relative;
+}
+
+.autocomplete-menu {
+    position: absolute;
+    margin-top: 2px;
+    z-index: 999;
+}
+
+.autocomplete-menu ul {
+    max-height: 200px;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    overflow-y: scroll;
+    background: #FFFFFF;
+    border: 1px solid #999999;
+    border-radius: 0.25rem;
+}
+
+.autocomplete-menu li {
+    cursor: pointer;
+    white-space: inherit;
+}
+
+.autocomplete-menu.inactive {
+    display: none;
+}
+
+.combobox,
+.listbox {
+    max-width: 100%;
+}
+
+.combobox .loader {
+    left: 6px;
+}
+
+.listbox {
+    position: relative;
+    width: auto;
+}
+
+.listbox .loader {
+    left: 0;
+    width: 80px;
+}
+
+.checkbox-group label,
+.checkbox-group input,
+.radio-group label,
+.radio-group input {
+    width: auto;
+    cursor: pointer;
+}
+.radiobtn input,
+.checkbox input {
+    width: 1em;
+}
+.checkbox td,
+.radiobtn td {
+    padding: 0.3em;
+    width: 1em;
+}
+.checkbox .form-label,
+.radiobtn .form-label {
+    width: auto;
+    min-width: 0%;
+}
+
+.checkbox input,
+.checkbox span,
+.radiobtn input,
+.radiobtn span {
+    display: block;
+    vertical-align: middle;
+}
+
+
+
+.form-control .date-picker {
+    padding: 0;
+}
+
+.groupbox fieldset {
+    border: 1px solid #999999;
+}
+
+.hyperlink a {
+    word-wrap: break-word;
+    text-decoration: underline;
+}
+
+.form-btns {
+    margin-top: .75em;
+    text-align: right;
+}
+
+.form-btns button {
+    margin-left: 0.25em;
+}
+
+.form-btns input[type='Submit'] {
+    margin: 0;
+    padding: 0.25em .5em;
+    cursor: pointer;
+}
+.file-input,
+.file-input-clear {
+    display: block;
+    height: 2em;
+}
+.file-input {
+    padding-right: 32px;
+    position: relative;
+}
+.file-input-browser {
+    position: relative;
+    width: 100%;
+}
+.file-input input {}
+.file-input-clear {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 0;
+    right: 0;
+    border: none;
+    background: url("../Images/Icons/clear-24.png") no-repeat;
+    text-indent: -99999px;
+    cursor: pointer;
+    margin: 0.4em 0;
+}
+
+/* DATE - TIME PICKER VARIATIONS -------------------------*/
+
+.datetime-select {
+    white-space: nowrap;
+}
+
+.date-picker select,
+.time-picker select {
+    display: inline-block;
+    width: auto;
+    margin: 0;
+}
+
+.datetime-select select {
+    min-width: 0;
+    width: auto;
+}
+
+.datepicker .form-control {
+    white-space: nowrap;
+}
+.datepicker .form-control > div {
+    width: 80%;
+}
+.datepicker .form-control div {
+    vertical-align: top;
+}
+input.hasDatepicker {
+    width: 82%;
+    float: left;
+}
+.datepicker .ui-datepicker-trigger {
+    border: 1px solid #cccccc;
+    border-radius: .25rem;
+    display: block;
+    float: left;
+    height: auto;
+    padding: 0.3em 0.5em;
+}
+.datetime-btn-container {
+    display: inline;
+}
+
+button.datetime-btn {
+    width: 2em;
+    height: 2em;
+}
+
+button.datetime-btn.nullify {
+    background: url("../Images/Icons/clear-24.png") center no-repeat;
+}
+
+button.datetime-btn.un-nullify {
+    background: url("../Images/Icons/add-24.png") center no-repeat;
+}
+
+.ui-datepicker {
+    z-index: 1100 !important;
+}
+
+
+/* FORM VARIATIONS -------------------------*/
+
+.ltr {
+    direction: ltr;
+}
+
+.rtl {
+    direction: rtl;
+}
+
+.rtl .form-label,
+.rtl .form-control {
+    float: right;
+}
+
+.rtl .form-label {
+    border-left: .25em solid transparent;
+    border-right: none;
+}
+
+.label-left .form-label {
+    text-align: left;
+    padding: 0 0.3em 0 0;
+}
+
+.label-right .form-label {
+    text-align: right;
+}
+
+.label-stacked .form-label {
+    text-align: left;
+    padding-left: 0;
+    padding-right: 0;
+}
+.label-stacked .form-label,
+.label-stacked .form-control {
+    width: 100%;
+}
+.label-stacked .form-control-date-picker .hasDatepicker {
+    max-width: 100%;
+    width: 90%;
+}
+.label-stacked .form-control .inline-block {
+    width: 88%;
+}
+.label-stacked .form-control .inline-block + .inline-block {
+    width: 10%;
+}
+
+.label-top .form-label,
+.label-top .form-control {
+    display: block;
+    float: none;
+    padding-left: 0;
+    padding-right: 0;
+    width: auto;
+}
+
+.label-top .form-item {
+    padding: 0 0 .5em 0;
+}
+
+.ltr .form-buttons {
+    text-align: right;
+}
+
+.rtl .form-buttons {
+    text-align: left;
+}
+
+.checkbox .form-label.right,
+.radiobtn .form-label.right {
+    float: none;
+}
+.form-stacked .form-label {
+    padding-left: 0;
+    width: 100%;
+}
+.form-stacked .form-control {
+    width: 100%;
+}
+
+
+/* VALIDATION -------------------------*/
+
+.form-validation {
+    display: block;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    list-style-type: none;
+    margin: 0.5em 0;
+    padding: 0.25em;
+    border-radius: 0.25rem;
+    background-color: #FFBABA;
+    border: 1px solid #D8000C;
+    color: #660000;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+}
+
+.form-item.invalid input[type='text'],
+.form-item.invalid select,
+.form-item.invalid textarea {
+    background-color: #FFFCCC;
+    border: 1px solid red !important;
+}
+
+.form-item.invalid input[type='text']:focus,
+.form-item.invalid select:focus,
+.form-item.invalid textarea:focus {
+    box-shadow: 1px 1px 2px #CCCCCC inset, 0 0 2px Red;
+    -webkit-box-shadow: 1px 1px 2px #CCCCCC inset, 0 0 2px Red;
+}
+
+.indicator {
+    font-weight: 600;
+}
+
+.form-item.invalid .indicator {
+    color: Red;
+}
+
+
+/* JQUERY DEFAULTS -------------------------*/
+
+
+/* Layout helpers
+----------------------------------*/
+.ui-helper-hidden { display: none; } /*.ui-helper-hidden-accessible { position: absolute !important; clip: rect(1px 1px 1px 1px); clip: rect(1px,1px,1px,1px); }*/
+.ui-helper-reset { margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none; }
+.ui-helper-clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+.ui-helper-clearfix { display: inline-block; } /* required comment for clearfix to work in Opera \*/
+* html .ui-helper-clearfix { height:1%; }
+.ui-helper-clearfix { display:block; } /* end clearfix */
+.ui-helper-zfix { width: 100%; height: 100%; top: 0; left: 0; position: absolute; opacity: 0; filter:Alpha(Opacity=0); }
+
+
+/* Component containers
+----------------------------------*/
+.ui-widget { font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif; font-size: 1.1em; }
+.ui-widget .ui-widget { font-size: 1em; }
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif; font-size: 1em; }
+.ui-widget-content { border: 1px solid #dddddd; background: #eeeeee url(./Images/Datepicker/ui-bg_highlight-soft_100_eeeeee_1x100.png) 50% top repeat-x; color: #333333; }
+.ui-widget-content a { color: #333333; }
+.ui-widget-header { border: 1px solid #e78f08; background: #f6a828 url(./Images/Datepicker/ui-bg_gloss-wave_35_f6a828_500x100.png) 50% 50% repeat-x; color: #ffffff; font-weight: 600; }
+.ui-widget-header a { color: #ffffff; }
+
+/* Interaction states
+----------------------------------*/
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { border: 1px solid #cccccc; background: #f6f6f6 url(../Images/Datepicker/ui-bg_glass_100_f6f6f6_1x400.png) 50% 50% repeat-x; font-weight: 600; color: #1c94c4; }
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #1c94c4; text-decoration: none; }
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { border: 1px solid #fbcb09; background: #fdf5ce url(./Images/Datepicker/ui-bg_glass_100_fdf5ce_1x400.png) 50% 50% repeat-x; font-weight: 600; color: #c77405; }
+.ui-state-hover a, .ui-state-hover a:hover { color: #c77405; text-decoration: none; }
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { border: 1px solid #fbd850; background: #ffffff url(../Images/Datepicker/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x; font-weight: 600; color: #eb8f00; }
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #eb8f00; text-decoration: none; }
+.ui-widget :active { outline: none; }
+
+/* Interaction Cues
+----------------------------------*/
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {border: 1px solid #fed22f; background: #ffe45c url(../Images/Datepicker/ui-bg_highlight-soft_75_ffe45c_1x100.png) 50% top repeat-x; color: #363636; }
+.ui-state-highlight a, .ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a { color: #363636; }
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {border: 1px solid #cd0a0a; background: #b81900 url(../Images/Datepicker/ui-bg_diagonals-thick_18_b81900_40x40.png) 50% 50% repeat; color: #ffffff; }
+.ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a { color: #ffffff; }
+.ui-state-error-text, .ui-widget-content .ui-state-error-text, .ui-widget-header .ui-state-error-text { color: #ffffff; }
+.ui-priority-primary, .ui-widget-content .ui-priority-primary, .ui-widget-header .ui-priority-primary { font-weight: 600; }
+.ui-priority-secondary, .ui-widget-content .ui-priority-secondary,  .ui-widget-header .ui-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); font-weight: normal; }
+.ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled { opacity: .35; filter:Alpha(Opacity=35); background-image: none; }
+
+
+/* Icons
+----------------------------------*/
+.ui-icon { width: 16px; height: 16px; background-image: url(../Images/Datepicker/ui-icons_222222_256x240.png); }
+.ui-widget-content .ui-icon {background-image: url(../Images/Datepicker/ui-icons_222222_256x240.png); }
+.ui-widget-header .ui-icon {background-image: url(../Images/Datepicker/ui-icons_ffffff_256x240.png); }
+.ui-state-default .ui-icon { background-image: url(../Images/Datepicker/ui-icons_ef8c08_256x240.png); }
+.ui-state-hover .ui-icon, .ui-state-focus .ui-icon {background-image: url(../Images/Datepicker/ui-icons_ef8c08_256x240.png); }
+.ui-state-active .ui-icon {background-image: url(../Images/Datepicker/ui-icons_ef8c08_256x240.png); }
+.ui-state-highlight .ui-icon {background-image: url(../Images/Datepicker/ui-icons_228ef1_256x240.png); }
+.ui-state-error .ui-icon, .ui-state-error-text .ui-icon {background-image: url(../Images/Datepicker/ui-icons_ffd27a_256x240.png); }
+.ui-icon-circle-triangle-e { background-position: -48px -192px; }
+.ui-icon-circle-triangle-s { background-position: -64px -192px; }
+.ui-icon-circle-triangle-w { background-position: -80px -192px; }
+
+
+/* Datepicker 
+----------------------------------*/
+.ui-datepicker { width: 17em; padding: .2em .2em 0; display: none; }
+.ui-datepicker .ui-datepicker-header { position:relative; padding:.2em 0; }
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 1.8em; height: 1.8em; }
+.ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover { top: 1px; }
+.ui-datepicker .ui-datepicker-prev { left:2px; }
+.ui-datepicker .ui-datepicker-next { right:2px; }
+.ui-datepicker .ui-datepicker-prev-hover { left:1px; }
+.ui-datepicker .ui-datepicker-next-hover { right:1px; }
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span { display: block; position: absolute; left: 50%; margin-left: -8px; top: 50%; margin-top: -8px;  }
+.ui-datepicker .ui-datepicker-title { margin: 0 2.3em; line-height: 1.8em; text-align: center; }
+.ui-datepicker .ui-datepicker-title select { font-size:1em; margin:1px 0; }
+.ui-datepicker select.ui-datepicker-month-year {width: 100%;}
+.ui-datepicker select.ui-datepicker-month, 
+.ui-datepicker select.ui-datepicker-year { width: 49%;}
+.ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin:0 0 .4em; }
+.ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: 600; border: 0;  }
+.ui-datepicker td { border: 0; padding: 1px; }
+.ui-datepicker td span, .ui-datepicker td a { display: block; padding: .2em; text-align: right; text-decoration: none; }
+.ui-datepicker .ui-datepicker-buttonpane { background-image: none; margin: .7em 0 0 0; padding:0 .2em; border-left: 0; border-right: 0; border-bottom: 0; }
+.ui-datepicker .ui-datepicker-buttonpane button { float: right; margin: .5em .2em .4em; cursor: pointer; padding: .2em .6em .3em .6em; width:auto; overflow:visible; }
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current { float:left; }
+
+/* with multiple calendars */
+.ui-datepicker.ui-datepicker-multi { width:auto; }
+.ui-datepicker-multi .ui-datepicker-group { float:left; }
+.ui-datepicker-multi .ui-datepicker-group table { width:95%; margin:0 auto .4em; }
+.ui-datepicker-multi-2 .ui-datepicker-group { width:50%; }
+.ui-datepicker-multi-3 .ui-datepicker-group { width:33.3%; }
+.ui-datepicker-multi-4 .ui-datepicker-group { width:25%; }
+.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header { border-left-width:0; }
+.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header { border-left-width:0; }
+.ui-datepicker-multi .ui-datepicker-buttonpane { clear:left; }
+.ui-datepicker-row-break { clear:both; width:100%; font-size:0em; }
+
+/* RTL support */
+.ui-datepicker-rtl { direction: rtl; }
+.ui-datepicker-rtl .ui-datepicker-prev { right: 2px; left: auto; }
+.ui-datepicker-rtl .ui-datepicker-next { left: 2px; right: auto; }
+.ui-datepicker-rtl .ui-datepicker-prev:hover { right: 1px; left: auto; }
+.ui-datepicker-rtl .ui-datepicker-next:hover { left: 1px; right: auto; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane { clear:right; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane button { float: left; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current { float:right; }
+.ui-datepicker-rtl .ui-datepicker-group { float:right; }
+.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
+.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
+
+/* Slider 
+----------------------------------*/
+.ui-slider { position: relative; text-align: left; }
+.ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 1.2em; height: 1.2em; cursor: default; }
+.ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; }
+
+.ui-slider-horizontal { height: .8em; }
+.ui-slider-horizontal .ui-slider-handle { top: -.3em; margin-left: -.6em; }
+.ui-slider-horizontal .ui-slider-range { top: 0; height: 100%; }
+.ui-slider-horizontal .ui-slider-range-min { left: 0; }
+.ui-slider-horizontal .ui-slider-range-max { right: 0; }
+
+.ui-slider-vertical { width: .8em; height: 100px; }
+.ui-slider-vertical .ui-slider-handle { left: -.3em; margin-left: 0; margin-bottom: -.6em; }
+.ui-slider-vertical .ui-slider-range { left: 0; width: 100%; }
+.ui-slider-vertical .ui-slider-range-min { bottom: 0; }
+.ui-slider-vertical .ui-slider-range-max { top: 0; }
+
+.ui-slider-handle {
+    text-indent: -9999px;
+}
+
+/* JQUERY OVERRIDES
+----------------------------------*/
+
+.ui-widget {
+    font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
+    font-size: .95em;
+}
+
+.ui-widget-content {
+    background: #FFFFFF;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.ui-datepicker {
+    padding: .25em;
+    border: 1px solid #999999;
+}
+
+.ui-datepicker .ui-datepicker-header,
+.ui-datepicker-buttonpane.ui-widget-content {
+    background: #EEEEEE;
+    border: none;
+}
+
+.ui-datepicker .ui-datepicker-header {
+    padding-top: .25em;
+    padding-bottom: .25em;
+    color: #000000;
+    font-weight: 600;
+}
+
+.ui-datepicker .ui-datepicker-buttonpane {
+    overflow: hidden;
+    margin-top: .5em;
+}
+
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-next {
+    position:absolute;
+    top: 0;
+    width: 1.8em;
+    height: 100%;
+    overflow: hidden;
+    color: transparent;
+    cursor: pointer;
+    opacity: 0.5;
+    filter:alpha(opacity=50);
+}
+
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-prev-hover {
+    background: url("../Images/Icons/chevron-left-16.png") no-repeat scroll center center;
+    border: none;
+    left: 0;
+}
+
+.ui-datepicker .ui-datepicker-next,
+.ui-datepicker .ui-datepicker-next-hover {
+    background: url("../Images/Icons/chevron-right-16.png") no-repeat scroll center center;
+    border: none;
+    right: 0;
+}
+
+.ui-datepicker .ui-datepicker-next-hover,
+.ui-datepicker .ui-datepicker-prev-hover {
+    opacity: 1;
+}
+
+.ui-datepicker .ui-datepicker-prev span,
+.ui-datepicker .ui-datepicker-next span {
+    display: none;
+ }
+
+.ui-datepicker .ui-datepicker-title select {
+    margin: 0;
+}
+
+.ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+    width: auto;
+    min-width: 0;
+}
+
+.ui-datepicker-trigger {
+    margin-left: .15em;
+    padding: .15em
+}
+
+.ui-datepicker-buttonpane .ui-state-default {
+    background: #EEEEEE;
+    background: linear-gradient(top, #EEEEEE 0%,#CCCCCC 100%); 
+    background: -moz-linear-gradient(top, #EEEEEE 0%, #CCCCCC 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#EEEEEE), color-stop(100%,#CCCCCC));  
+    background: -webkit-linear-gradient(top, #EEEEEE 0%,#CCCCCC 100%); 
+    background: -o-linear-gradient(top, #EEEEEE 0%,#CCCCCC 100%);
+    background: -ms-linear-gradient(top, #EEEEEE 0%,#CCCCCC 100%);
+    border: 1px solid #AAAAAA;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    color: #333333;
+    text-shadow: 1px 1px #FFFFFF;
+}
+
+.ui-timepicker-div {
+    margin-top: .75em;
+    font-size: .9em;
+}
+
+.ui-timepicker-div dd {
+    padding: .25em .5em;
+}
+
+.ui-timepicker-div dt {
+    padding: 0 .5em;
+}
+
+.ui_tpicker_time_label,
+.ui_tpicker_time {
+    font-weight: 600;
+}
+
+.ui-timepicker-div dd.ui_tpicker_time {
+    padding-top: 0;
+    padding-bottom: .5em;
+}
+
+.ui-slider.ui-widget-content {
+    background: #EEEEEE;
+    border: 1px solid #999999;
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+    margin-left: -0.7em;
+    top: -0.3em;
+}
+
+.ui-datepicker-calendar .ui-state-highlight,
+.ui-datepicker-calendar .ui-widget-content .ui-state-highlight,
+.ui-datepicker-calendar .ui-widget-header .ui-state-highlight,
+.ui-timepicker-div .ui-state-highlight,
+.ui-timepicker-div .ui-widget-content .ui-state-highlight,
+.ui-timepicker-div .ui-widget-header .ui-state-highlight {
+    background: #999999;
+    border: 1px solid #666666;
+    color: #FFFFFF;
+}
+
+.ui-datepicker-calendar .ui-state-active,
+.ui-datepicker-calendar .ui-widget-content .ui-state-active,
+.ui-datepicker-calendar .ui-widget-header .ui-state-active,
+.ui-timepicker-div .ui-state-active,
+.ui-timepicker-div .ui-widget-content .ui-state-active,
+.ui-timepicker-div .ui-widget-header .ui-state-active {
+    background: #666666;
+    border: 1px solid #333333;
+    color: #FFFFFF;
+}
+
+.ui-datepicker-calendar .ui-state-hover,
+.ui-datepicker-calendar .ui-widget-content .ui-state-hover,
+.ui-datepicker-calendar .ui-widget-header .ui-state-hover,
+.ui-datepicker-calendar .ui-state-focus,
+.ui-datepicker-calendar .ui-widget-content .ui-state-focus,
+.ui-datepicker-calendar .ui-widget-header .ui-state-focus,
+.ui-timepicker-div .ui-state-hover,
+.ui-timepicker-div .ui-widget-content .ui-state-hover,
+.ui-timepicker-div .ui-widget-header .ui-state-hover,
+.ui-timepicker-div .ui-state-focus,
+.ui-timepicker-div .ui-widget-content .ui-state-focus,
+.ui-timepicker-div .ui-widget-header .ui-state-focus {
+    background: #999999;
+    border: 1px solid #666666;
+    color: #FFFFFF;
+}
+
+.ui-datepicker-buttonpane button.ui-datepicker-current,
+.ui-datepicker-buttonpane button.ui-datepicker-close {
+    opacity: 1;
+    filter: Alpha(Opacity=100);
+}
+
+.ui-datepicker-buttonpane button:hover {
+    background: #EEEEEE;
+}
+
+/* End Script: Mapping/modules/Workflow/Forms/Items/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/ZoomControl/CSS/common.css ------------------------- */ 
+
+/* ZOOM BUTTONS -------------------------*/
+
+.zoom-control-btn button {
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+}
+.zoom-control-btn button.active {
+    outline: 0;
+    border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.zoom-control-btn,
+.zoom-control-btn button {
+    display: block;
+}
+
+.zoom-control-btn {
+    width: 3.5em;
+    height: 3.5em;
+    position: relative;
+    z-index: 99;
+}
+.no-touch .zoom-control-btn {
+    width: 2.75em;
+    height: 2.75em;
+}
+.zoom-control-btn button {
+    width: 100%;
+    height: 100%;
+}
+
+.zoom-control-btn .zoom-in {
+    border-radius: 0.25rem 0.25rem 0 0;
+    border-bottom: 0;
+}
+.region .view.ZoomInView {
+    margin-bottom: -1px;
+}
+.zoom-control-btn .zoom-out {
+    border-radius: 0 0 0.25rem 0.25rem;
+}
+.region .view.ZoomOutView {
+    margin-bottom: 0.02em;
+    margin-top: 0;
+}
+
+/* End Script: Mapping/modules/ZoomControl/CSS/common.css ------------------------- */ 
+

@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Bing Maps</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <link href="3rdParty.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+    <script src="../Scripts/Bridge.js"></script>
+    <script src="ThirdPartyMap.js"></script>
+
+    <script type="text/javascript">
+
+        /**#
+         * Note: This comment will be removed during the build process (if wrapped by hash tags).
+         * If you change the 'bingApiKey' variable name, the 3rd party test (Testing/test/release-package/viewer)
+         * and post build task (_SolutionItems/_Build/Common/Targets/Geocortex.Common.targets) will need to be updated.
+        #*/
+        var bingApiKey = "AhzUdXgTb9izUBjBFSuRA6nf7st57pSf36MC_a3A0UyWafIGGc_eOfMYuplrLiTR";
+
+        var map;
+        var currentZoom = 10;
+        var isReady = false;
+
+        var thirdPartyMap = new geocortex.essentialsHtmlViewer.integration.ThirdPartyMap("bingMaps",
+            initializeMap,
+            getMapViewpointParams,
+            handleViewerPositionUpdatedEvent,
+            handleViewpointIndicatorUpdatedEvent);
+
+        /**
+         * Initializes the Bing map.
+         */
+        function initializeMap() {
+            var location = new Microsoft.Maps.Location(0, 0);
+            var mapOptions = {
+                credentials: bingApiKey,
+                center: location,
+                mapTypeId: Microsoft.Maps.MapTypeId.birdseye,
+                zoom: currentZoom,
+                enableSearchLogo: false,
+                showDashboard: true
+            };
+
+            map = new Microsoft.Maps.Map(document.getElementById("map-container"), mapOptions);
+        }
+
+        /**
+         * Gets the current position of the Bing map.
+         */
+        function getMapViewpointParams() {
+            var pos = map.getCenter();
+            var scale = thirdPartyMap.zoomLevelToScale(map.getZoom());
+
+            return {
+                center: {
+                    x: pos.longitude,
+                    y: pos.latitude
+                },
+                scale: scale,
+                heading: map.getHeading()
+            };
+        }
+
+        /**
+         * Updates the Bing map to match the viewer.
+         */
+        function handleViewerPositionUpdatedEvent(arg) {
+            if (!isReady) {
+                // Add handlers after we have received our first position
+                Microsoft.Maps.Events.addHandler(map, 'viewchangeend', function () {
+                    thirdPartyMap.handleViewpointChanged();
+                });
+                isReady = true;
+            }
+
+            currentZoom = thirdPartyMap.scaleToZoomLevel(arg.scale);
+            map.setView({ zoom: currentZoom, center: new Microsoft.Maps.Location(arg.position.y, arg.position.x) });
+        }
+
+        /**
+         * Updates the Bing map to match the viewpoint indicator position.
+         */
+        function handleViewpointIndicatorUpdatedEvent(arg) {
+            map.setView({ center: new Microsoft.Maps.Location(arg.y, arg.x), animate: false });
+        }
+
+    </script>
+</head>
+<body>
+    <ul class="integration-panel-actions">
+        <li class="panel-action-button">
+            <button class="viewpoint-indicator viewpoint-indicator-bing" title="Viewpoint Indicator"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="centerButton" class="center-map" title="Center this map to the viewer"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="syncButton" class="sync-toggle-off" title="Synchronize Maps"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="dockButton" class="window-popout" title="Open in new window"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="closeButton" class="window-close" title="Close this map view"></button>
+        </li>
+    </ul>
+    <div id="map-container" class="map-container"></div>
+</body>
+</html>

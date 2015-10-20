@@ -1,0 +1,187 @@
+﻿
+
+* + HTML .authentication-dialog .form-row
+{
+    overflow: hidden;
+    width: auto;
+}
+
+* + HTML .authentication-dialog input
+{
+    width: 280px;
+}
+
+* + HTML .global-search
+{
+    background-color: #FFFFFF;
+    border: 1px inset #1D86B7;
+    padding: 3px 30px 3px 4px;
+    width: 400px;
+}
+
+* + HTML .global-search input
+{
+    border-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+* + HTML .logview .logview-inner
+{
+    background-color: #FFFFFF;
+}
+
+* + HTML .layer
+{
+   display: inline-block;
+   vertical-align: bottom; 
+}
+
+* + HTML .layer-list input[type="checkbox"] {
+    height: 32px; 
+}
+
+* + HTML .wanttomenu-container
+{
+   float: none; 
+}
+
+* + HTML .wanttomenu-container-inner .wanttomenu-button
+{
+    text-align: left;
+}
+
+* + HTML .tab-control
+{
+    overflow: hidden;
+}
+
+* + HTML .tab-control li
+{
+    float: left;
+}
+
+* + HTML .form-row
+{
+    width: 300px;
+}
+
+* + HTML .loading-container
+{
+    overflow: hidden;
+}
+
+* + HTML .loading-img,
+* + HTML .loading-msg
+{
+    display: inline;
+}
+
+* + HTML .list-menu li
+{
+    padding: 0;
+}
+
+* + HTML .panel-header
+{
+    height: 38px;
+    min-width: 0; /* peekaboo bug fix for IE7 */
+}
+
+.panel-footer {
+    border-top: 1px solid #CCCCCC;
+    overflow-y: visible;
+}
+
+* + HTML .modal
+{
+    position: relative;
+    z-index: 400;
+}
+
+* + HTML .modal .panel-header
+{
+    width: 100%;
+    padding: 0;
+}
+
+* + HTML .modal .panel-header,
+* + HTML .modal .panel-scroll-container
+{
+    overflow-x: hidden;
+}
+
+* + HTML .modal .panel-header h2
+{
+    display: block;
+    margin-left: 8px;
+    margin-right: 32px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modal .panel-scroll-container
+{
+    overflow-y: auto;
+    width: 100%;
+    max-width: 800px;
+    max-height: 500px;
+}
+
+HTML .map-callout
+{
+    border: 1px solid #999999;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+HTML .map-callout-pointer-image
+{
+    background-image: url("../Images/map-callout-pointer-IE7.png");
+    z-index: 201;
+    margin-top: -1px;
+}
+
+* + HTML .map-bottom-center
+{
+    z-index: 500;
+    left: 0;
+    bottom: 10px;
+}
+
+* + HTML .results-container .panel-scroll-container
+{
+    overflow-x: hidden;
+}
+
+* + HTML .button-tab-strip {
+    overflow-x: auto;
+}
+
+* + HTML .button-tab-strip ul,
+* + HTML .button-tab-strip li {
+    display: inline;
+}
+
+.button-tab-strip ul {
+    margin-top: -1px;
+}
+
+/* STATUS INDICATOR -------------------------*/
+
+.status-window {
+    margin: 16px;
+    padding: 0;
+    position: relative;
+}
+
+.status-window td {
+    background-color: #FFFFFF;
+}
+
+/* BASEMAEP Switcher --------------- */
+.basemap-list {
+    height: 20em\9; /* "\9" targets IE8 and below */
+}

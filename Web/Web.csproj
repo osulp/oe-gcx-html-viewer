@@ -1,0 +1,442 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A3AF2584-7BEA-4EAD-8C3D-311D8A064735}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Web</RootNamespace>
+    <AssemblyName>Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="favicon.ico" />
+    <Content Include="Handheld.html" />
+    <Content Include="HtmlPage1.html" />
+    <Content Include="Index.html" />
+    <Content Include="offline.aspx" />
+    <Content Include="offline.js" />
+    <Content Include="online.js" />
+    <Content Include="Resources\Compiled\dojo\dojo.js" />
+    <Content Include="Resources\Compiled\dojo\nls\gcx_en-us.js" />
+    <Content Include="Resources\Compiled\Essentials.js" />
+    <Content Include="Resources\Compiled\Framework.js" />
+    <Content Include="Resources\Compiled\Framework.UI.js" />
+    <Content Include="Resources\Compiled\Mapping.Infrastructure.js" />
+    <Content Include="Resources\Compiled\Mapping.js" />
+    <Content Include="Resources\Config\CacheManifestConfig.xml" />
+    <Content Include="Resources\Config\Default\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\Desktop_ORIG.json.js" />
+    <Content Include="Resources\Config\Default\Handheld.json.js" />
+    <Content Include="Resources\Config\Default\Tablet.json.js" />
+    <Content Include="Resources\Config\OfflineManifestParameters.xml" />
+    <Content Include="Resources\Images\banner-background.png" />
+    <Content Include="Resources\Images\banner-logo.png" />
+    <Content Include="Resources\Images\Banners\default-banner-bg.png" />
+    <Content Include="Resources\Images\Banners\default-banner.png" />
+    <Content Include="Resources\Images\blank-tile.png" />
+    <Content Include="Resources\Images\body-bg.gif" />
+    <Content Include="Resources\Images\Custom\broadcasting.png" />
+    <Content Include="Resources\Images\Custom\GotoLayers.png" />
+    <Content Include="Resources\Images\Custom\oe-default-banner.png" />
+    <Content Include="Resources\Images\Custom\splash-logo.png" />
+    <Content Include="Resources\Images\Datepicker\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="Resources\Images\Datepicker\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="Resources\Images\Datepicker\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="Resources\Images\Datepicker\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="Resources\Images\Datepicker\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="Resources\Images\Datepicker\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Resources\Images\Datepicker\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="Resources\Images\Datepicker\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="Resources\Images\Datepicker\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="Resources\Images\Datepicker\ui-icons_222222_256x240.png" />
+    <Content Include="Resources\Images\Datepicker\ui-icons_228ef1_256x240.png" />
+    <Content Include="Resources\Images\Datepicker\ui-icons_ef8c08_256x240.png" />
+    <Content Include="Resources\Images\Datepicker\ui-icons_ffd27a_256x240.png" />
+    <Content Include="Resources\Images\Datepicker\ui-icons_ffffff_256x240.png" />
+    <Content Include="Resources\Images\header-background.png" />
+    <Content Include="Resources\Images\Icons\add-16.png" />
+    <Content Include="Resources\Images\Icons\add-24.png" />
+    <Content Include="Resources\Images\Icons\add-white-16.png" />
+    <Content Include="Resources\Images\Icons\arrow-down-small-16.png" />
+    <Content Include="Resources\Images\Icons\arrow-down-small-24.png" />
+    <Content Include="Resources\Images\Icons\arrow-down-white.png" />
+    <Content Include="Resources\Images\Icons\arrow-left-24.png" />
+    <Content Include="Resources\Images\Icons\arrow-right-24.png" />
+    <Content Include="Resources\Images\Icons\arrow-right-32.png" />
+    <Content Include="Resources\Images\Icons\arrow-right-alt-16.png" />
+    <Content Include="Resources\Images\Icons\arrow-right-alt-24.png" />
+    <Content Include="Resources\Images\Icons\arrow-sort-small-16.png" />
+    <Content Include="Resources\Images\Icons\arrow-up-small-16.png" />
+    <Content Include="Resources\Images\Icons\arrow-up-small-24.png" />
+    <Content Include="Resources\Images\Icons\attach-file-photo-24.png" />
+    <Content Include="Resources\Images\Icons\bookmark-24.png" />
+    <Content Include="Resources\Images\Icons\change-theme-24.png" />
+    <Content Include="Resources\Images\Icons\check-16.png" />
+    <Content Include="Resources\Images\Icons\check-24.png" />
+    <Content Include="Resources\Images\Icons\chevron-left-16.png" />
+    <Content Include="Resources\Images\Icons\chevron-left-24.png" />
+    <Content Include="Resources\Images\Icons\chevron-right-16.png" />
+    <Content Include="Resources\Images\Icons\chevron-right-24.png" />
+    <Content Include="Resources\Images\Icons\clear-24.png" />
+    <Content Include="Resources\Images\Icons\connection-24.png" />
+    <Content Include="Resources\Images\Icons\connection-off-24.png" />
+    <Content Include="Resources\Images\Icons\connection-on-24.png" />
+    <Content Include="Resources\Images\Icons\data-edit-24.png" />
+    <Content Include="Resources\Images\Icons\data-edit-white-24.png" />
+    <Content Include="Resources\Images\Icons\delete-16.png" />
+    <Content Include="Resources\Images\Icons\delete-markup-24.png" />
+    <Content Include="Resources\Images\Icons\details-24.png" />
+    <Content Include="Resources\Images\Icons\dot-16.png" />
+    <Content Include="Resources\Images\Icons\download-16.png" />
+    <Content Include="Resources\Images\Icons\download-24.png" />
+    <Content Include="Resources\Images\Icons\drag-handle-40x60.png" />
+    <Content Include="Resources\Images\Icons\draw-circle-24.png" />
+    <Content Include="Resources\Images\Icons\draw-ellipse-24.png" />
+    <Content Include="Resources\Images\Icons\draw-extent-24.png" />
+    <Content Include="Resources\Images\Icons\draw-freehand-24.png" />
+    <Content Include="Resources\Images\Icons\draw-multipoint-24.png" />
+    <Content Include="Resources\Images\Icons\draw-point-24.png" />
+    <Content Include="Resources\Images\Icons\draw-polygon-24.png" />
+    <Content Include="Resources\Images\Icons\draw-polyline-24.png" />
+    <Content Include="Resources\Images\Icons\draw-rectangle-16.png" />
+    <Content Include="Resources\Images\Icons\draw-rectangle-24.png" />
+    <Content Include="Resources\Images\Icons\draw-text-24.png" />
+    <Content Include="Resources\Images\Icons\edit-24.png" />
+    <Content Include="Resources\Images\Icons\edit-log.png" />
+    <Content Include="Resources\Images\Icons\edit-markup-24.png" />
+    <Content Include="Resources\Images\Icons\edit.png" />
+    <Content Include="Resources\Images\Icons\error-24.png" />
+    <Content Include="Resources\Images\Icons\error-32.png" />
+    <Content Include="Resources\Images\Icons\error-white-24.png" />
+    <Content Include="Resources\Images\Icons\expander-closed-24.png" />
+    <Content Include="Resources\Images\Icons\expander-open-24.png" />
+    <Content Include="Resources\Images\Icons\feature-layer-list-24.png" />
+    <Content Include="Resources\Images\Icons\file-add-24.png" />
+    <Content Include="Resources\Images\Icons\file-clear-24.png" />
+    <Content Include="Resources\Images\Icons\file-edit-16.png" />
+    <Content Include="Resources\Images\Icons\file-edit-log-24.png" />
+    <Content Include="Resources\Images\Icons\file-edit-white-24.png" />
+    <Content Include="Resources\Images\Icons\file-multi-24.png" />
+    <Content Include="Resources\Images\Icons\geolocate-24.png" />
+    <Content Include="Resources\Images\Icons\geolocate.png" />
+    <Content Include="Resources\Images\Icons\globe-32.png" />
+    <Content Include="Resources\Images\Icons\house-24.png" />
+    <Content Include="Resources\Images\Icons\house-number-24.png" />
+    <Content Include="Resources\Images\Icons\house-number-white-24.png" />
+    <Content Include="Resources\Images\Icons\house-owner-24.png" />
+    <Content Include="Resources\Images\Icons\house-owner-white-24.png" />
+    <Content Include="Resources\Images\Icons\house-value-24.png" />
+    <Content Include="Resources\Images\Icons\house-value-white-24.png" />
+    <Content Include="Resources\Images\Icons\IconPlaceholder24x24.png" />
+    <Content Include="Resources\Images\Icons\identify-24.png" />
+    <Content Include="Resources\Images\Icons\identify-freehand-24.png" />
+    <Content Include="Resources\Images\Icons\identify-polygon-24.png" />
+    <Content Include="Resources\Images\Icons\identify-polyline-24.png" />
+    <Content Include="Resources\Images\Icons\identify-rectangle-24.png" />
+    <Content Include="Resources\Images\Icons\iOS\apple-touch-icon-114x114.png" />
+    <Content Include="Resources\Images\Icons\iOS\apple-touch-icon-144x144.png" />
+    <Content Include="Resources\Images\Icons\iOS\apple-touch-icon-72x72.png" />
+    <Content Include="Resources\Images\Icons\iOS\apple-touch-icon-ipad-retina.png" />
+    <Content Include="Resources\Images\Icons\iOS\apple-touch-icon-ipad.png" />
+    <Content Include="Resources\Images\Icons\iOS\apple-touch-icon-iphone-retina.png" />
+    <Content Include="Resources\Images\Icons\iOS\apple-touch-icon.png" />
+    <Content Include="Resources\Images\Icons\iwtm-default-24.png" />
+    <Content Include="Resources\Images\Icons\layer-actions-24.png" />
+    <Content Include="Resources\Images\Icons\layer-manage.png" />
+    <Content Include="Resources\Images\Icons\layerlist-16.png" />
+    <Content Include="Resources\Images\Icons\layerlist-24.png" />
+    <Content Include="Resources\Images\Icons\layerlist-extract-24.png" />
+    <Content Include="Resources\Images\Icons\layerlist-extract-white-24.png" />
+    <Content Include="Resources\Images\Icons\layerlist-menu-24.png" />
+    <Content Include="Resources\Images\Icons\layerlist-white-24.png" />
+    <Content Include="Resources\Images\Icons\layerlist.png" />
+    <Content Include="Resources\Images\Icons\ll-expander-closed.png" />
+    <Content Include="Resources\Images\Icons\ll-expander-open.png" />
+    <Content Include="Resources\Images\Icons\log.png" />
+    <Content Include="Resources\Images\Icons\map-24.png" />
+    <Content Include="Resources\Images\Icons\map-nav-initial-extent-24.png" />
+    <Content Include="Resources\Images\Icons\map-nav-zoom-in-16.png" />
+    <Content Include="Resources\Images\Icons\map-nav-zoom-out-16.png" />
+    <Content Include="Resources\Images\Icons\map-white-24.png" />
+    <Content Include="Resources\Images\Icons\map.png" />
+    <Content Include="Resources\Images\Icons\minus-24.png" />
+    <Content Include="Resources\Images\Icons\minus-white-16.png" />
+    <Content Include="Resources\Images\Icons\pan-24.png" />
+    <Content Include="Resources\Images\Icons\panel-close.png" />
+    <Content Include="Resources\Images\Icons\paperclip-24.png" />
+    <Content Include="Resources\Images\Icons\pin-blue-32.png" />
+    <Content Include="Resources\Images\Icons\pin-red-32.png" />
+    <Content Include="Resources\Images\Icons\print-24.png" />
+    <Content Include="Resources\Images\Icons\results.png" />
+    <Content Include="Resources\Images\Icons\school-24.png" />
+    <Content Include="Resources\Images\Icons\school-white-24.png" />
+    <Content Include="Resources\Images\Icons\search-16.png" />
+    <Content Include="Resources\Images\Icons\search-24.png" />
+    <Content Include="Resources\Images\Icons\search-refine-16.png" />
+    <Content Include="Resources\Images\Icons\search-refine-24.png" />
+    <Content Include="Resources\Images\Icons\search-results-24.png" />
+    <Content Include="Resources\Images\Icons\search-white-24.png" />
+    <Content Include="Resources\Images\Icons\search.png" />
+    <Content Include="Resources\Images\Icons\spinner-small.gif" />
+    <Content Include="Resources\Images\Icons\stop-red-32.png" />
+    <Content Include="Resources\Images\Icons\sync-24.png" />
+    <Content Include="Resources\Images\Icons\sync-manage-24.png" />
+    <Content Include="Resources\Images\Icons\template-picker-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\add-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\attach-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\attach-file-photo-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\clear-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\clear-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\connection-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\connection-off-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\connection-on-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\data-edit-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\details-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\download-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\download-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-arrow-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-circle-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-circle-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-edit-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-edit-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-ellipse-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-ellipse-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-extent-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-freehand-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-freehand-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-line-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-multipoint-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-point-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-point-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-polygon-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-polygon-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-polyline-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-rectangle-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-rectangle-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-text-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-text-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\draw-triangle-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\edit-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\edit-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\edit-log-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\erase-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\erase-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\error-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\error-32.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\file-add-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\file-clear-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\file-multi-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\geolocate.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\home-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\house-number-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\house-owner-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\house-value-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\icon-blank-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\identify-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\identify-freehand-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\identify-polygon-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\identify-polyline-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\identify-rectangle-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\iwt-default-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\layer-actions-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\layer-list-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\layers-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\layers-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\layers-extract-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\layers-menu-32.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\map-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\measure-area-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\measure-convert-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\measure-distance-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\pan-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\print-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\region-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\school-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\schools-search-32.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\search-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\search-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\search-32.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\search-results-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\stop-32.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\styles-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\subtract-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\sync-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\sync-manage-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\template-picker-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\tools-32.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\trash-16.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\trash-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\workflow-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\zoom-full-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\zoom-in-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\zoom-initial-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\zoom-next-32.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\zoom-out-24.png" />
+    <Content Include="Resources\Images\Icons\Toolbar\zoom-previous-32.png" />
+    <Content Include="Resources\Images\Icons\tools-32.png" />
+    <Content Include="Resources\Images\Icons\trashcan-16.png" />
+    <Content Include="Resources\Images\Icons\trashcan-24.png" />
+    <Content Include="Resources\Images\Icons\tree-expander-closed-16.png" />
+    <Content Include="Resources\Images\Icons\tree-expander-closed-light-16.png" />
+    <Content Include="Resources\Images\Icons\tree-expander-open-16.png" />
+    <Content Include="Resources\Images\Icons\tree-expander-open-light-16.png" />
+    <Content Include="Resources\Images\Icons\tree-expander-closed-light-green-16.png" />
+    <Content Include="Resources\Images\Icons\tree-expander-closed-light-red-16.png" />
+    <Content Include="Resources\Images\Icons\tree-expander-invisible-green-16.png" />
+    <Content Include="Resources\Images\Icons\tree-expander-invisible-red-16.png" />
+    <Content Include="Resources\Images\Icons\tree-expander-open-light-green-16.png" />
+    <Content Include="Resources\Images\Icons\tree-expander-open-light-red-16.png" />
+    <Content Include="Resources\Images\Icons\legend-16.png" />
+    <Content Include="Resources\Images\Icons\workflow-24.png" />
+    <Content Include="Resources\Images\Icons\workflow-white-24.png" />
+    <Content Include="Resources\Images\Icons\workflow.png" />
+    <Content Include="Resources\Images\Icons\zoom-in-24.png" />
+    <Content Include="Resources\Images\Icons\zoom-in.png" />
+    <Content Include="Resources\Images\Icons\zoom-initial-extent-24.png" />
+    <Content Include="Resources\Images\Icons\zoom-out-24.png" />
+    <Content Include="Resources\Images\Icons\zoom-out.png" />
+    <Content Include="Resources\Images\loader-small.gif" />
+    <Content Include="Resources\Images\map-callout-pointer-IE7.png" />
+    <Content Include="Resources\Images\map-callout-pointer.png" />
+    <Content Include="Resources\Images\Markup\backward-diagonal-12.png" />
+    <Content Include="Resources\Images\Markup\cross-24.png" />
+    <Content Include="Resources\Images\Markup\diagonal-cross-24.png" />
+    <Content Include="Resources\Images\Markup\forward-diagonal-12.png" />
+    <Content Include="Resources\Images\Markup\horizontal-24.png" />
+    <Content Include="Resources\Images\Markup\sample-markup-image.png" />
+    <Content Include="Resources\Images\Markup\vertical-24.png" />
+    <Content Include="Resources\Images\overlay.png" />
+    <Content Include="Resources\Images\paging-control-sprite-16.png" />
+    <Content Include="Resources\Images\paging-control-sprite-24.png" />
+    <Content Include="Resources\Images\ParcelByID.png" />
+    <Content Include="Resources\Images\ParcelByOwner.png" />
+    <Content Include="Resources\Images\ParcelByValue.png" />
+    <Content Include="Resources\Images\Pushpins\map-marker-blue-32.png" />
+    <Content Include="Resources\Images\Pushpins\map-marker-green-32.png" />
+    <Content Include="Resources\Images\Pushpins\map-marker-purple-32.png" />
+    <Content Include="Resources\Images\Pushpins\map-marker-red-32.png" />
+    <Content Include="Resources\Images\Pushpins\map-marker-yellow-32.png" />
+    <Content Include="Resources\Images\SearchSchools.png" />
+    <Content Include="Resources\Images\splash-logo.png" />
+    <Content Include="Resources\Locales\Framework.UI.en-US.json.js" />
+    <Content Include="Resources\Locales\Mapping.en-US.json.js" />
+    <Content Include="Resources\Scripts\esri-sup.js" />
+    <Content Include="Resources\Scripts\fastclick.js" />
+    <Content Include="Resources\Scripts\jquery-ui-timepicker-addon.min.js" />
+    <Content Include="Resources\Scripts\jquery.ui.custom.js" />
+    <Content Include="Resources\Scripts\jquery.ui.touch-punch.js" />
+    <Content Include="Resources\Scripts\modernizr.js" />
+    <Content Include="Resources\Scripts\native.js" />
+    <Content Include="Resources\Styles\Animations.css" />
+    <Content Include="Resources\Styles\common.css" />
+    <Content Include="Resources\Styles\Custom\Desktop.css" />
+    <Content Include="Resources\Styles\Custom\Handheld.css" />
+    <Content Include="Resources\Styles\Custom\Tablet.css" />
+    <Content Include="Resources\Styles\Desktop.css" />
+    <Content Include="Resources\Styles\Handheld.css" />
+    <Content Include="Resources\Styles\IE-small.css" />
+    <Content Include="Resources\Styles\IE.css" />
+    <Content Include="Resources\Styles\jquery.ui.custom.css" />
+    <Content Include="Resources\Styles\Tablet.css" />
+    <Content Include="SignInHelper.html" />
+    <Content Include="Tablet.html" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="manifest.ashx" />
+    <Content Include="proxy.ashx" />
+    <Content Include="proxy.config" />
+    <Content Include="proxy.jsp" />
+    <Content Include="proxy.php" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Scripts\Custom\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:53285/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

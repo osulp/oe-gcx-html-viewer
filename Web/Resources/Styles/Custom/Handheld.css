@@ -1,0 +1,6 @@
+﻿/* Put custom handheld styling in this file. Put custom images in the Custom subfolder of the Images directory. */
+
+.wtm-button, .wtm-list h2 {
+    background-color: #c34500 !important;
+    /*font-size:1.2em !important;*/
+}

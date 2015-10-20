@@ -1,0 +1,23 @@
+﻿
+/*.region .view.TemplateModuleView.active {
+    margin: 0;
+}*/
+
+.elevation-module-view
+{
+    position: absolute;
+    left:325px;
+    top:0;
+    float:right;
+    /*z-index: 100;*/
+    font-size:.85em;
+    width: 175px;   
+    height:20px;
+    /*right: 0;*/
+    background: none;
+    color: #333;
+    /*padding: 6px;*/
+    border: none;
+    margin-top: 10px;    
+}
+

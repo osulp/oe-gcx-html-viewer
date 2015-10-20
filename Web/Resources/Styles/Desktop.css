@@ -1,0 +1,1231 @@
+﻿
+/* Begin Script: Mapping/modules/large.css ------------------------- */ 
+
+/* GLOBAL STYLING (LARGE )-------------------------*/
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #FFFFFF;
+    color: #333333;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* MODAL WINDOW (LARGE) -------------------------*/
+
+.modal-container {
+    min-width: 360px;
+}
+
+.modal-container .panel-scroll-container {
+    float: left;
+    width: 100%;
+}
+
+/* VIEW CONTAINERS / MODULE CONTAINERS (LARGE) -------------------------*/
+.large-shell-bottom {
+    z-index: 1000;
+}
+
+.large-shell-left .panel-scroll-container,
+.large-shell-bottom .panel-scroll-container {
+    position: absolute;
+}
+
+.large-shell-bottom .panel-header {
+    border-top: 1px solid #eee;
+}
+
+.panel-header h2 {
+    margin: 0 40px; /* Allows space for icons on either side of the heading */
+    font-size: 1.3em;
+}
+
+
+/* BUTTONS (LARGE) -------------------------*/
+
+button {
+    cursor: pointer;
+}
+
+button::-moz-focus-inner { /* Remove button padding in FF */
+    border: 0;
+    padding: 0;
+}
+
+
+/* LIST MENU (LARGE) -------------------------*/
+
+.list-menu-item {
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.list-menu.active {
+    cursor: pointer;
+}
+
+.list-menu-item:hover {
+    background-color: #DEF2FF;
+}
+
+.list-menu.active .list-menu-item:active {
+    background-color: #EEEEEE;
+}
+
+a.list-menu-item {
+    color: #333333;
+}
+
+.list-menu-closed {
+    background: url("../../Resources/Images/Icons/expander-closed-24.png") right center no-repeat;
+}
+
+.list-menu-open {
+    background: url("../../Resources/Images/Icons/expander-open-24.png") right center no-repeat;
+}
+
+
+/* LOADING INDICATOR (LARGE) -------------------------*/
+
+.loading-container {
+    text-align: center;
+    padding: 0.5em;
+}
+
+.loading-img,
+.loading-msg {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.loading-img {
+    width: 24px;
+    height: 24px;
+    background-image: url(../Images/loader-small.gif);
+}
+
+
+/* TREEVIEW (LARGE) -------------------------*/
+
+.tree-expander {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 24px;
+    height: 100%;
+    cursor: pointer;
+    margin-left: 1px; /* To match the alignment with the legend expander */
+}
+
+.tree-expander.expanded {
+    background: url(../Images/Icons/tree-expander-open-16.png) 0.3em center no-repeat;
+}
+
+.tree-expander.collapsed {
+    background: url(../Images/Icons/tree-expander-closed-16.png) 0.3em center no-repeat;
+}
+
+/* NOTIFICATIONS (LARGE) -------------------------*/
+
+.notification textarea {
+    max-width: 300px;
+    max-height: 300px;
+    resize: none;
+}
+
+
+/* MEDIA QUERIES (LARGE) -------------------------*/
+
+@media screen and (max-height: 768px) {
+
+    .modal-container .panel-scroll-container {
+        max-height: 480px;
+    }
+}
+
+@media screen and (min-height: 769px) {
+
+    .modal-container .panel-scroll-container {
+        max-height: 600px;
+    }
+}
+
+
+/* ANIMATIONS (LARGE) -------------------------*/
+
+@keyframes anim-zoom-in {
+    0% {
+        transform: scale(0.9,0.9);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1,1);
+        opacity: 100;
+    }
+}
+
+@-webkit-keyframes anim-zoom-in {
+    0% {
+        -webkit-transform: scale(0.9,0.9);
+        opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: scale(1,1);
+        opacity: 100;
+    }
+}
+
+.anim-zoom-in {
+    text-align: center;
+    transform: scale(0,0);
+    transform-origin: 50% 50%;
+    -webkit-transform: scale(0,0);
+    -webkit-tranform-origin: 50% 50%;
+}
+
+.anim-zoom-in {
+    animation-name: anim-zoom-in;
+    animation-duration: 250ms;
+    animation-timing-function: ease-out;
+    animation-delay: 0s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    -webkit-animation-name: anim-zoom-in;
+    -webkit-animation-duration: 250ms;
+    -webkit-animation-timing-function: ease-out;
+    -webkit-animation-delay: 0s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-direction: normal;
+    -webkit-animation-fill-mode: forwards;
+}
+
+/* End Script: Mapping/modules/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Alert/CSS/large.css ------------------------- */ 
+
+/* ALERT (LARGE) -------------------------*/
+
+.modal-container .alert,
+.modal-container .confirm,
+.modal-container .prompt {
+    max-width: 400px;
+}
+
+/* End Script: Mapping/modules/Alert/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Banner/CSS/large.css ------------------------- */ 
+
+/* BANNER (LARGE) -------------------------*/
+
+.banner {
+    position: relative;
+    background-repeat: repeat-x; 
+    border-bottom: 1px solid #D9D9D9;
+}
+
+.banner-title,
+.banner-subtitle { 
+    position: relative;  
+    z-index: 500;
+}
+
+.banner-images {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.banner-left-img {
+    left: 0;
+}
+
+.banner-right-img {
+    right: 0;
+}
+
+.banner-images img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+/* End Script: Mapping/modules/Banner/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Basemap/CSS/large.css ------------------------- */ 
+
+.switcher-inactive .basemap-list-region {
+    display: none;
+}
+.switcher-active .basemap-button,
+.switcher-active .basemap-button:hover {
+    background-color: #FFFFFF;
+    border-bottom: none;
+    border-bottom-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+    zoom: 1;
+	filter: alpha(opacity=100);
+	opacity: 1;
+}
+
+.basemap-switcher-header {
+    padding: 0.5em;
+    overflow: hidden;
+}
+.basemap-list .list-menu-item {
+    overflow: hidden;
+    padding: 0;
+}
+
+.basemap-button {
+    padding: 0.49em 0.65em;
+    margin-left: 1em;
+}
+
+.basemap-button .display-name {
+    height: 1.25em;
+    line-height: 1.1em;
+    font-size: 1.4em;
+    padding: 0 1.4em 0 0.6em;
+}
+
+.basemap-list-region {
+    position: relative;
+    display: inline-block;
+    float: right;
+    clear: both;
+    width: 100%;
+}
+
+.basemap-icon {
+    height: 20px;
+    width: 20px;
+}
+
+.map-basemap-region > .view {
+    float: right;
+}
+
+/* End Script: Mapping/modules/Basemap/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Bookmarks/CSS/large.css ------------------------- */ 
+
+/* End Script: Mapping/modules/Bookmarks/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/FeatureDetails/CSS/large.css ------------------------- */ 
+
+/* FEATURE DETAIL PROVIDERS -------------------------*/
+
+.attrib .list-menu-item .list-menu-name,
+.attrib .list-menu-item .list-menu-desc {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.attrib .list-menu-item {
+    display: block;
+    max-width:50em;
+    padding: 0;
+}
+
+.attrib .list-menu-name,
+.attrib .list-menu-desc {
+    float: left;
+    vertical-align: bottom;
+    padding: 1em;
+    word-wrap: break-word;
+}
+
+.attrib .list-menu-name {
+    width: 40%;
+    font-weight: 600;
+}
+
+.attrib .list-menu-desc {
+    width: 60%;
+}
+
+.feature-details-header .panel-title {
+    float: left;
+    margin: 0 20px;
+}
+
+.feature-details-header .feature-actions-widget {
+    float: right;
+    margin: 0 20px;
+    max-width: 60%;
+}
+
+.feature-details-bottom-region .panel-scroll-container {
+    position: relative;
+}
+
+.feature-details-bottom-region h3 {
+}
+
+/* Hide the chart header in feature details, since we have a chart selector that does the same thing */
+.region .view .panel-group.single-feature-chart.bound-visible h3 {
+    display: none;
+}
+
+/* If the header is not visible, we need to make adjustments to chart view */
+.region .view .panel-group.single-feature-chart.bound-visible img {
+    top: 0;
+}
+
+/*.FeatureDetailsView .FeatureChartsProviderView .single-feature-chart .fui-selector {
+    padding: 0;
+}*/
+
+.feature-details-header {
+    display: block;
+    width: 100%;
+}
+
+.feature-details-header .feature-actions-widget .menu-hyperlinks .list-menu {
+    margin-top: 0;
+    border-top: none;
+}
+
+.columns {
+}
+
+.multi-region-view .tab-control li {
+    max-width: 200px;
+}
+.FeatureDetailsTopRightRegion-active .feature-details-top-right-region .results-table {
+    max-width: 50%;
+    min-width: 0;
+}
+
+/* End Script: Mapping/modules/FeatureDetails/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/FeatureLayer/CSS/large.css ------------------------- */ 
+
+/* SYNC LOG (LARGE) -------------------------*/
+
+.sync-log .scroll {
+    width: 400px;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.feature-layer-details input {
+    width: 24px;
+    height: 18px;
+}
+
+/* End Script: Mapping/modules/FeatureLayer/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Geolocate/CSS/large.css ------------------------- */ 
+/* START: Geolocate --------------- */
+
+.geolocate-list button {
+    background: none;
+    border: 0;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    color: #000000;
+    font-weight: normal;
+}
+
+.geolocate-list button:hover {
+    border: 0;
+    padding: 0;
+    box-shadow: none;
+}
+
+.geolocate-list .list-menu-item:first-child {
+    -webkit-border-radius: 0 3px 0 0;
+    -moz-border-radius: 0 3px 0 0;
+    border-radius: 0 3px 0 0;
+}
+
+.geolocate-list .list-menu-item:last-child {
+    -webkit-border-radius: 0 0 3px 3px;
+    -moz-border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px;
+}
+
+.geolocate-list li:hover {
+    background: #EEE;
+}
+
+.list-menu-item span,
+.list-menu-item a {
+    line-height: 1.6em;
+}
+/* END: Geolocate --------------- */
+
+/* End Script: Mapping/modules/Geolocate/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/HeatMaps/CSS/large.css ------------------------- */ 
+.HeatMapsView .ui-slider-horizontal .ui-slider-handle {
+    width: 1.5em;
+}
+
+/* End Script: Mapping/modules/HeatMaps/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Integration/CSS/large.css ------------------------- */ 
+.ExternalComponentView .resize-header {
+    height: 0.4em;
+}
+
+/* End Script: Mapping/modules/Integration/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/IWantToMenu/CSS/large.css ------------------------- */ 
+
+/* I WANT TO MENU (LARGE)-------------------------*/
+
+
+/* End Script: Mapping/modules/IWantToMenu/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/LayerList/CSS/large.css ------------------------- */ 
+
+/* LAYER LIST (LARGE) -------------------------*/
+
+/* JQUERY SLIDER HANDLE FOR TRANSPARENCY SLIDER */
+
+.ui-slider-horizontal .ui-slider-handle {
+    width: 0.6em;
+}
+
+/* End Script: Mapping/modules/LayerList/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/MapTips/CSS/large.css ------------------------- */ 
+
+/* MAP TIPS -------------------------*/
+
+.map-tip-view {
+    width: 23.44em;
+}
+@media all and (min-width: 1px) {
+    .map-tip-view {
+        width: 15.6em;
+    }
+    .map-top-center .map-tip-view,
+    .map-bottom-center .map-tip-view {
+        margin-left: -11.72em; /* Half the width of the map tip, so that it's centered. */
+    }
+    .map-tip-view .paging-control {
+        float: left;
+        margin: 0.25em 0;
+    }
+}
+@media all and (min-width: 725px) {
+    .map-tip-view {
+        width: 23.44em;
+    }
+    .map-top-center .map-tip-view,
+    .map-bottom-center .map-tip-view {
+        margin-left: -11.72em; /* Half the width of the map tip, so that it's centered. */
+    }
+    .map-tip-view .paging-control {
+        float: right;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
+@media all and (min-width: 985px) {
+    .map-tip-view {
+        width: 31.25em;
+    }
+    .map-top-center .map-tip-view,
+    .map-bottom-center .map-tip-view {
+        margin-left: -15.62em; /* Half the width of the map tip, so that it's centered. */
+    }
+}
+
+.map-tip-view .feature-description {
+    max-height: 16.64em;
+}
+
+@media all and (min-height: 1px) {
+    .map-tip-view .feature-description {
+        max-height: 4.37em;
+    }
+}
+@media all and (min-height: 500px) {
+    .map-tip-view  .feature-description {
+        max-height: 8.83em;
+    }
+}
+@media all and (min-height: 600px) {
+    .map-tip-view  .feature-description {
+        max-height: 16.64em;
+    }
+}
+@media all and (min-height: 700px) {
+    .map-tip-view  .feature-description {
+        max-height: 24.45em;
+    }
+}
+
+.map-navigation-region .map-tip-view,
+.map-center-region .map-tip-view,
+.map-top-left .map-tip-view,
+.map-top-center .map-tip-view,
+.map-top-right .map-tip-view,
+.map-basemap-region .map-tip-view,
+.map-middle-left .map-tip-view,
+.map-middle-right .map-tip-view,
+.map-bottom-left .map-tip-view,
+.map-bottom-center .map-tip-view,
+.map-bottom-right .map-tip-view {
+    background: #FFFFFF;
+    border-radius: 0.25rem;
+    border: 1px solid #D9D9D9;
+}
+
+.map-top-center .map-tip-view,
+.map-bottom-center .map-tip-view {
+    position: absolute;
+    left: 50%;
+    margin-left: -11.72em; /* Half the width of the map tip, so that it's centered. */
+}
+.map-bottom-center .map-tip-view {
+    bottom: 0;
+}
+
+.map-navigation-region .map-tip-view {
+    margin-top: 3px;
+}
+
+/* End Script: Mapping/modules/MapTips/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Search/CSS/large.css ------------------------- */ 
+
+/* GLOBAL SEARCH (LARGE) -------------------------*/
+
+.SearchView, .SearchView.active {
+    vertical-align: top;
+    margin-right: 0.5em;
+    width: 20em;
+    float: right;
+}
+
+.global-search {
+    position: relative;
+    width: 100%;
+    z-index: 0;
+}
+
+.global-search .search-box {
+    position: relative;
+    width: 100%;
+}
+
+.global-search input {
+    width: 100%;
+    padding: 3px 30px 4px 9px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+    font-size: 1.6em;
+    color: #656169;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.global-search input:focus {
+    -webkit-user-modify: read-write-plaintext-only; /* Android 3.0+ fix */
+}
+
+.search-hints-region {
+    position: absolute;
+    width: 100%;
+    z-index: 200;
+}
+
+.hints-list .list-menu-item .content:hover,
+.hints-list .list-menu-item .list-menu-button:focus {
+    background-color: #F7F7F7;
+}
+
+.refine-btn {
+    filter: alpha(opacity=50);
+    opacity: 0.50;
+}
+
+.refine-btn:hover {
+    filter: alpha(opacity=100);
+    opacity: 1;
+}
+
+/* End Script: Mapping/modules/Search/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Shells/CSS/large.css ------------------------- */ 
+
+/* SHELL (LARGE) -------------------------*/
+
+.large-shell-main,
+.large-shell-left,
+.large-shell-right,
+.large-shell-center {
+    position: absolute;
+    /*z-index: 0;*/
+}
+.large-shell-left {
+    z-index: 300; /* Position it over the map for the resizable tab to overlay the map. */
+}
+
+.large-shell-header {
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.large-shell-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 600;
+}
+
+.large-shell-header,
+.large-shell-bottom {
+    position: absolute;
+    display: inline-block;
+}
+
+.large-shell-left {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    margin-left: -1px;
+    border-right: 1px solid #D9D9D9;
+    height: 100% !important;
+}
+
+.large-shell-left.ui-resizable.panel-closed > .region.data-region {
+    display: none;
+}
+
+.large-shell-bottom {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 600;
+    max-height: 100.2%;
+    background: #FFFFFF;
+}
+
+.large-shell-bottom.ui-resizable.panel-closed button {
+    display: none;
+}
+
+.large-shell-main,
+.large-shell-center {
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.collapse-tab a {
+    display: block;
+    width: 39px;
+    height: 42px;
+    margin-left: -1px;
+    border-bottom: 1px solid #D9D9D9;
+    border-right: 1px solid #D9D9D9;
+    border-left: 1px solid #F2F2F2;
+    border-bottom-right-radius: 3px;
+    -moz-border-bottom-right-radius: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+}
+
+.collapse-tab a:hover {
+    background-color: #FFFFFF;
+}
+
+.tab-open
+{
+    background: #FFFFFF url("../Images/Icons/chevron-left-16.png") no-repeat center center;
+}
+
+.tab-closed
+{
+    background: #FFFFFF url("../Images/Icons/chevron-right-16.png") no-repeat center center;
+}
+
+.shell-container-inner
+{
+    height: 100%;
+    position: relative;
+}
+
+/* End Script: Mapping/modules/Shells/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Site/CSS/large.css ------------------------- */ 
+.service-layers-failure {
+    width: 500px;
+}
+
+/* End Script: Mapping/modules/Site/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Toolbar/CSS/large.css ------------------------- */ 
+/* START: Toolbar */
+
+/* START: Toolbar Tabs --------------- */
+.toolbar-tab-container {
+    position: relative;
+}
+.toolbar-tab {
+    position: relative;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-bottom: none;
+    margin: 0 0.125em;
+}
+
+.toolbar-tab button
+{
+    cursor: pointer;
+    text-decoration: none;
+    color: #959398;
+}
+.toolbar-tab.tb-tab-active button,
+.toolbar-tab button:hover {
+    color: #1B7DBF;
+}
+.toolbar-tab:hover {
+    border: 1px solid #D9D9D9;
+    border-bottom: none;
+    background: #F8F8F8;
+}
+
+.toolbar-tab.tb-tab-active
+{
+    cursor: none;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-bottom: none;
+}
+
+.tb-tab-active:before, 
+.tb-tab-active:after {
+    content: "";
+    display: block;
+    width: 5px;
+    height: 5px;
+    border-bottom: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+    position: absolute;
+    bottom: 0px;
+}
+
+.tb-tab-active:before {
+    border-right: 1px solid #D9D9D9;
+    left: -6px;
+    -moz-box-shadow: 2px 2px 0 0 #FFFFFF;
+    -webkit-box-shadow: 2px 2px 0 0 #FFFFFF;
+    box-shadow: 2px 2px 0 0 #FFFFFF;
+}
+
+.tb-tab-active:after {
+    border-left: 1px solid #D9D9D9;
+    right: -6px;
+    -moz-box-shadow: -2px 2px 0 0 #FFFFFF;
+    -webkit-box-shadow: -2px 2px 0 0 #FFFFFF;
+    box-shadow: -2px 2px 0 0 #FFFFFF;
+}
+
+ul.toolbar-tab-control {
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 0.2em 0.25em 0 0.25em;
+    list-style: none;
+}
+
+ul.toolbar-tab-control:after {
+    content: " ";
+    display: block;
+    clear: both;
+    width: 0;
+    height: 0;
+    visibility: hidden;
+}
+
+ul.toolbar-tab-control li
+{
+    display: block;
+    list-style-type: none;
+    float: left;
+    width: auto;
+    position: relative;
+    overflow: hidden;
+    padding: 0.15em;
+}
+
+ul.toolbar-tab-control li button
+{
+    display: inline-block;
+    padding: 0.15em 0.75em;
+    font-size: 1.15em;
+}
+/* END: Toolbar Tabs --------------- */
+
+.toolbar-body {
+    border-top: 1px solid #D9D9D9;
+    background: #FFFFFF;
+    margin-top: -1px; /* to hide the border behind the active tab */
+}
+.toolbar-body.large > .toolbar-group > h4 {
+    display: none; /* Quick Fix: hiding the extra tab group label from showing up. Should be removed from item templates */
+}
+
+.toolbar-group {
+    border-radius: 0.25rem;
+}
+.toolbar-body > .toolbar-item.toolbar-group {
+    padding: 0.25em;
+}
+/*.toolbar-item.toolbar-group {
+    background: none;
+    margin: 0;
+    padding: 0;
+}*/
+.toolbar-item.toolbar-group > ul > li .toolbar-item.toolbar-group > ul > li {
+    margin: 0.25em;
+} 
+li .toolbar-item.toolbar-group {
+    background: #FFFFFF;
+}
+
+.toolbar-group > ul:after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.toolbar-item {
+    /*height: 5.25em;*/
+    padding:0;
+}
+.flyout-menu .toolbar-item {
+    max-width: initial;
+    height: 4.4em !important;
+}
+
+/* ------ START: Small Toolbar Buttons ------ */
+.toolbar-group > .toolbar-small-layout:first-child {
+    min-height: 6.0em;
+}
+.toolbar-body .toolbar-small-layout li.toolbar-item {
+    position: relative;
+    display: block;
+    float: none;
+    line-height: 1em;
+    width: 8em;
+    height: 2.5em;
+    text-align: left;
+}
+
+
+/* Could not use nth-child because of IE8. Had to use the adjacent sibling selector to target li's instead for IE8 compatibility */
+.toolbar-body .toolbar-small-layout li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li {
+	margin-top: -6em !important;
+}
+/* Could not use nth-child because of IE8. Had to use the adjacent sibling selector to target li's instead for IE8 compatibility */
+.toolbar-body .toolbar-small-layout li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li {
+	margin-top: 0 !important;
+}
+.toolbar-body .toolbar-small-layout li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li {
+    margin-left: 7.5em !important;
+}
+.toolbar-body .toolbar-small-layout li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li {
+    margin-left: 15.75em !important;
+}
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li {
+    margin-left: 25em !important;
+}
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li {
+    margin-left: 33.25em !important;
+}
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li {
+    margin-left: 41.5em !important;
+}
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li {
+    margin-left: 49.75em !important;
+}
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li {
+    margin-left: 58em !important;
+}
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li {
+    margin-left: 66.25em !important;
+}
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li {
+    margin-left: 74.5em !important;
+}
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li {
+    margin-left: 82.75em !important;
+}
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li,
+.toolbar-body .toolbar-small-layout li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li + li {
+    margin-left: 91em !important;
+}
+.toolbar-body .toolbar-small-layout li img,
+.toolbar-body .toolbar-small-layout li span.icon,
+.toolbar-body .measurement-toolbar-view .toolbar-small-layout .toolbar-item.checkbox input {
+    /*position: absolute;*/
+    /*top: 0.6em;*/
+    left: 0.5em;
+    display: block;
+    height: 16px;
+    margin: 0 !important;
+    width: 16px;
+}
+.toolbar-body .toolbar-small-layout li button {
+    padding: 0.5em 1em;
+    float: none;
+}
+.toolbar-body .toolbar-small-layout li > div {
+    float: left;
+}
+.toolbar-body .toolbar-small-layout li {
+    /*display: inline-block;*/
+    float: none;
+    /*height: 2.5em;*/
+    line-height: 1em;
+    /*padding: 0.65em;*/
+    position: relative;
+    text-align: left;
+    min-width: 8em;
+}
+.toolbar-small-layout li.toolbar-region {
+    min-width: 15em;
+    overflow: hidden;
+}
+.toolbar-small-layout .transient-measurement {
+    width: 22em;
+}
+.toolbar-body .measurement-toolbar-view .horizontal button {
+    text-align: left;
+}
+.toolbar-body .measurement-toolbar-view  .toolbar-item.select {
+    width: 9em;
+    max-width: 9em;
+}
+.toolbar-body .measurement-toolbar-view li {
+    margin: 0;
+}
+.toolbar-body .toolbar-small-layout li .multi-tool-item-container {
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+}
+.toolbar-small-layout li .multi-tool-item-container .multi-tool {
+    margin: 0.25em 0.05em!important;
+}
+.toolbar-body .toolbar-small-layout li .multi-tool-button,
+.toolbar-body .toolbar-small-layout li button p,
+.toolbar-body .toolbar-small-layout li.toolbar-item label {
+    display: block;
+    padding-left: 1em;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box; /* Firefox, other Gecko */
+	box-sizing: border-box; 
+    margin-top: -1.4em;
+}
+.toolbar-body .toolbar-small-layout li .multi-tool-button {
+    width: 6em;
+    display: inline-block;
+    padding: 0.5em 1em;
+    margin-top: 0.7em;
+}
+.toolbar-small-layout .multi-tool-item-container .toolbar-item {
+    border: 0;
+    box-sizing: initial;
+    cursor: pointer;
+    max-width: initial;
+    min-width: 0;
+    width: auto;
+    float: left;
+    padding: 0;
+}
+.toolbar-small-layout .transient-measurement {
+    overflow: hidden;
+}
+.toolbar-body .toolbar-small-layout .transient-measurement li {
+    margin-top: 0!important;
+    float: none;
+    height: auto;
+    padding: 0;
+}
+.toolbar-small-layout .transient-measurement .icon {
+    margin: 0;
+}
+.toolbar-small-layout .transient-measurement .icon.icon-erase-24 {
+    background-image: url("../../Resources/Images/Icons/Toolbar/erase-16.png");
+}
+.toolbar-small-layout .transient-measurement .icon.icon-clear-24 {
+    background-image: url("../../Resources/Images/Icons/Toolbar/clear-16.png");
+}
+.toolbar-small-layout .transient-measurement .toolbar-item.select-double {
+    height: auto;
+    float: left;
+    position: relative;
+    z-index: 1;
+}
+.toolbar-small-layout .transient-measurement .toolbar-item {
+    padding: 0.25em 0.75em;
+    width: 6.5em;
+}
+.toolbar-body .toolbar-small-layout .transient-measurement li.toolbar-item.checkbox {
+    padding: 0.5em;
+    margin-left: 15.75em!important;
+    margin-top: -4.4em!important;
+}
+.toolbar-small-layout .transient-measurement .toolbar-item.checkbox input {
+    margin: 0;
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    vertical-align: middle;
+}
+.toolbar-small-layout .transient-measurement .toolbar-item.checkbox label {
+    margin-left: 0em;
+    display: inline-block;
+    margin-top: 0em !important;
+    padding: 0;
+    width: 4em;
+    vertical-align: middle;
+}
+/* ------ END: Small Toolbar Buttons ------ */
+
+/* ------ START: Flyout ------ */
+.toolbar-item.flyout {
+    height: 4.1em;
+}
+/* ------ END: Flyout ------ */
+
+/* ------ START: Compact Toolbar ------ */
+.flyout-menu-floating-area {
+    overflow: hidden;
+    height: 5em;
+}
+/* ------ END: Compact Toolbar ------ */
+
+/* End Script: Mapping/modules/Toolbar/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Workflow/Forms/Items/CSS/large.css ------------------------- */ 
+
+/* FORM ITEMS (LARGE) -------------------------*/
+
+select,
+button {
+	cursor: pointer;
+}
+
+.form-item .group-box {
+    max-width: 640px;
+}
+
+.form-button-container {
+    padding-top: .5em;
+}
+
+.auto-complete .list-menu li {
+    cursor: pointer;
+}
+
+/* End Script: Mapping/modules/Workflow/Forms/Items/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/ZoomControl/CSS/large.css ------------------------- */ 
+
+/* ZOOM BUTTONS (LARGE) -------------------------*/
+
+
+
+
+
+
+/* End Script: Mapping/modules/ZoomControl/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/infrastructure/menus/CSS/large.css ------------------------- */ 
+/* MENU -------------------------*/
+
+.menu-hyperlinks .list-menu-item {
+    font-size: .9em
+}
+
+/* End Script: Mapping/infrastructure/menus/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/infrastructure/results/CSS/large.css ------------------------- */ 
+
+/* End Script: Mapping/infrastructure/results/CSS/large.css ------------------------- */ 
+

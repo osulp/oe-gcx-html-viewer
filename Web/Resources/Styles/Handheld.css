@@ -1,0 +1,1838 @@
+﻿
+/* Begin Script: Mapping/modules/small.css ------------------------- */ 
+
+/* GLOBAL STYLING  (SMALL)-------------------------*/
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    background: #FFFFFF;
+    color: #333333;
+}
+
+body {
+    font-size: .8em;
+    -webkit-text-size-adjust: 100%;
+}
+
+button, input, select, textarea { 
+   -webkit-tap-highlight-color: #DEF2FF;
+}
+
+
+/* BUTTONS (SMALL) -------------------------*/
+
+button {
+    -webkit-tap-highlight-color: #DEF2FF;
+}
+
+
+/* VIEW CONTAINERS / MODULE CONTAINERS (SMALL) -------------------------*/
+
+.panel-header {
+    height: 3.9em;
+    line-height: 3.9em;
+}
+
+.panel-header h2 {
+    font-size: 1.3em;
+    text-align: center;
+    margin-left: 3.5em;
+    margin-right: 3.5em;
+}
+
+.panel-header-button {
+    width: 3.5em;
+    -webkit-tap-highlight-color: #DEF2FF;
+}
+
+.panel-scroll-container {
+    -webkit-overflow-scrolling: touch;
+    overflow: auto;
+    position: absolute;
+    bottom: 0px;
+
+}
+
+.view-container-view {
+    height: 100%;
+}
+
+/* LIST MENU (SMALL) -------------------------*/
+
+.list-menu-item {
+    padding: 1em;
+    border-bottom: 1px solid #F0F0F0;
+    -webkit-tap-highlight-color: #DEF2FF;
+}
+
+.list-submenu {
+    margin: 8px;
+    background: #FFFFFF;
+    border: 1px solid #999999;
+    border-radius: 0.25rem;
+}
+
+a.list-menu-item {
+    color: #333333;
+}
+
+.list-menu-closed {
+    background: url("../../Resources/Images/Icons/expander-closed-24.png") right center no-repeat;
+}
+
+.list-menu-open {
+    background: url("../../Resources/Images/Icons/expander-open-24.png") right center no-repeat;
+}
+
+
+/* LOADING INDICATOR (SMALL) -------------------------*/
+
+.loading-container {
+    text-align: center;
+    padding: 0.5em;
+}
+
+.loading-img,
+.loading-msg {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.loading-img {
+    width: 24px;
+    height: 24px;
+    background-image: url(../Images/loader-small.gif);
+}
+
+
+/* TREEVIEW (SMALL) -------------------------*/
+
+.tree-expander {
+  /*  width: 24px;
+    height: 24px;*/
+}
+
+.tree-expander.expanded {
+   background: url(../Images/Icons/minus-24.png) left center no-repeat;
+}
+
+.tree-expander.collapsed {
+   background: url(../Images/Icons/add-24.png) left center no-repeat;
+}
+
+/* End Script: Mapping/modules/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Basemap/CSS/small.css ------------------------- */ 
+.basemap-button {
+    padding: 0.55em;
+}
+
+.basemap-button .display-name {
+    height: 1.25em;
+    line-height: 1.2em;
+    font-size: 1.1em;
+    padding: 0 1.4em 0 0.6em;
+}
+
+.basemap-switcher-header,
+.basemap-list .list-menu-item {
+    padding: 1em;
+}
+.basemap-list {
+    border-radius: 0;
+    border: none;
+}
+.basemap-list .list-menu-icon {
+    font-size: 1.5em;
+}
+.basemap-list .list-menu-details {
+    font-size: 1.3em;
+    font-weight: 300;
+}
+
+.basemap-icon {
+    height: 16px;
+    width: 16px;
+}
+
+
+/* New Small Shell Styles */
+.basemap-switcher,
+.basemap-item {
+    display: block;
+    float: left;
+    clear: both;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.basemap-item button {
+    width: 100%;
+    border-radius: 0;
+    border-bottom: 1px solid #D9D9D9;
+}
+.basemap-item .icon {
+    float: left;
+    margin-right: 1em;
+}
+.basemap-item .toolbar-item {
+    max-width: inherit;
+}
+.basemap-item .toolbar-item p.label {
+    text-align: left;
+    margin: 0;
+    line-height: 2.875em;
+}
+.basemap-item .toolbar-item.selected {
+    border: none;
+    border-bottom: 1px solid #D9D9D9;
+}
+.basemap-slider-container {
+    border-radius: 0 !important;
+}
+.basemap-slider-container.basemap-slider-expanded {
+    width: 100%;
+}
+.region .view.BasemapSliderView.active {
+    float: none;
+}
+.basemap-slider-container {
+    opacity: 1;
+    float: right;
+}
+
+/* End Script: Mapping/modules/Basemap/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Bookmarks/CSS/small.css ------------------------- */ 
+/* START: Bookmarks --------------- */
+.bkmk-title {
+   display: none !important;
+}
+.bkmk-list {
+    max-height: inherit;
+}
+.bkmk-list li {
+    position: relative;
+
+}
+.bkmk-list .list-menu-item .bkmk-delete {
+    height: 24px;
+}
+.no-touch .bkmk-container,
+.bkmk-container {
+    left: 0em;
+}
+@media all and (max-width: 500px) {
+    .toolbar td.IWantToMenuView span {
+        max-width: 15em;
+    }
+}
+@media all and (max-width: 400px) {
+    .toolbar td.IWantToMenuView span {
+        max-width: 11em;
+    }
+}
+@media all and ( min-height: 0px) {
+    .bkmk-list {
+        max-height: initial;
+    }
+}
+@media all and ( min-height: 400px) {
+    .bkmk-list {
+        max-height: initial;
+    }
+}
+@media all and ( min-height: 500px) {
+    .bkmk-list {
+        max-height: initial;
+    }
+}
+@media all and ( min-height: 600px) {
+    .bkmk-list {
+        max-height: initial;
+    }
+}
+@media all and ( min-height: 700px) {
+    .bkmk-list {
+        max-height: initial;
+    }
+}
+@media all and ( min-height: 900px) {
+    .bkmk-list {
+        max-height: initial;
+    }
+}
+/* END: Bookmarks --------------- */
+
+/* End Script: Mapping/modules/Bookmarks/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/FeatureDetails/CSS/small.css ------------------------- */ 
+.region-container.feature-region {
+    width: 100%;
+}
+.FeatureDetailsView .panel-group {
+    float: none;
+    clear: both;
+    width: 100%;
+}
+.FeatureDetailsView .multi-column-container {
+    float: none;
+}
+.FeatureDetailsView .single-feature-chart h3 {
+    margin-bottom: 0;
+}
+
+/* End Script: Mapping/modules/FeatureDetails/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/FeatureEditing/CSS/small.css ------------------------- */ 
+.screen-region .FeatureEditingContainerView {
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+/* End Script: Mapping/modules/FeatureEditing/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Geolocate/CSS/small.css ------------------------- */ 
+/* START: Geolocate --------------- */
+.geolocate-container {
+    position: static;
+    border-radius: 0;
+}
+.geolocate-title {
+    display: none !important;
+}
+.geolocate-list {
+    margin: 0;
+    border: 0;
+}
+.geolocate-list li {
+    position: relative;
+}
+.geolocate-list .list-menu-item .list-menu-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 1em;
+    width: 16px;
+    height: 16px;
+    background-position: center center;
+}
+.list-menu-item span,
+.list-menu-item a {
+    line-height: 1.2em;
+}
+.geolocate-wrapper .zoom-control-btn {
+    position:relative;
+}
+/* END: Geolocate --------------- */
+
+/* End Script: Mapping/modules/Geolocate/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Info/CSS/small.css ------------------------- */ 
+.screen-region .HomePanelContainerView {
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+/* End Script: Mapping/modules/Info/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/IWantToMenu/CSS/small.css ------------------------- */ 
+
+/* I WANT TO MENU  (SMALL)-------------------------*/
+
+.toolbar td.IWantToMenuView {
+    background: #1B7DBF;
+}
+
+.toolbar td.IWantToMenuView span {
+    display: block;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #FFFFFF;
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:30em;
+}
+
+.toolbar td.IWantToMenuView.tb-view-active span {
+    font-weight: 600;
+}
+
+.toolbar td.IWantToMenuView.tb-view-active {
+    background: #197DC9;
+}
+
+.toolbar .IWantToMenuView img {
+    display: none !important;
+}
+
+.screen-region .IWantToMenuView {
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100%;
+    width: 100%;
+}
+.wtm-button {
+    border-radius: 0;
+    border: 0;
+    min-height: initial;
+    padding: 0;
+    width: auto;
+}
+.wtm-active .wtm-button,
+.wtm-active .wtm-button:hover {
+    color: #ffffff;
+    border :0;
+    border-radius: 0;
+    margin-bottom: 0;
+    padding-bottom: 0em;
+    z-index: auto;
+}
+.wtm-list {
+    overflow: auto;
+    height: 100%;
+    border: 0;
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+    border-radius: 0;
+}
+.wtm-list h2 {
+    background: #197DC9;
+    color: #FFFFFF;
+    padding: 0.42em 1em; 
+    font-weight: normal;
+}
+.wtm-list ul {
+    padding-bottom: 3em;
+}
+.wtm-list .menu {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: #ffffff;
+}
+@media all and (max-width: 500px) {
+    .toolbar td.IWantToMenuView span {
+        max-width: 15em;
+    }
+}
+@media all and (max-width: 400px) {
+    .toolbar td.IWantToMenuView span {
+        max-width: 11em;
+    }
+}
+@media all and ( min-height: 0px) {
+    .wtm-list {
+        max-height: initial;
+    }
+}
+@media all and ( min-height: 400px) {
+    .wtm-list {
+        max-height: initial;
+    }
+}
+@media all and ( min-height: 500px) {
+    .wtm-list {
+        max-height: initial;
+    }
+}
+@media all and ( min-height: 600px) {
+    .wtm-list {
+        max-height: initial;
+    }
+}
+@media all and ( min-height: 700px) {
+    .wtm-list {
+        max-height: initial;
+    }
+}
+@media all and ( min-height: 900px) {
+    .wtm-list {
+        max-height: initial;
+    }
+}
+
+/* End Script: Mapping/modules/IWantToMenu/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/LayerList/CSS/small.css ------------------------- */ 
+
+/* LAYER LIST (SMALL) -------------------------*/
+.layer {
+    padding-left: 2em;
+}
+.layer .layer {
+    padding-left: 0.8em;
+}
+.layer-list {
+    overflow-x: hidden;
+}
+.layer-item-ctrl input[type="checkbox"] {
+    margin: 0.05em 0;
+}
+.layer-item-ctrl input[type="checkbox"] {
+    margin-left: 0.25em;
+}
+.transparency-slider {
+    right: 1.5em;
+    width: 4em;
+}
+.ui-slider-handle /* heavy for jquery UI overwrites */{
+    background: transparent!important;
+    border: 0!important;
+    height: 4em!important;
+    width: 4em!important;
+    top: -2em!important;
+}
+.ui-slider-handle::after {
+    background: none repeat scroll 0 0 #f6f6f6;
+    border: 1px solid #cccccc;
+    width: 0.75em;
+    content: "";
+    display: block;
+    margin-top: 0.1em;
+    height: 1.75em;
+}
+ui-slider-handle.ui-state-focus::after,
+.ui-slider-handle.ui-state-active::after {
+    background-color: #edf8ff;
+    border-color: #0593e8;
+}
+.ui-slider-handle.ui-state-focus,
+.ui-slider-handle.ui-state-hover,
+.ui-slider-handle.ui-state-active {
+    background: transparent!important;
+    border: 0!important;
+}
+.layer-list input[type=checkbox]:disabled {
+    opacity: 0.4;
+}
+.layer-item-ctrl .tree-expander {
+    width: 1.875em;
+    height: 1.875em;
+    padding: 0;
+}
+
+.layer-list input[type=checkbox],
+.layer-info .contents,
+.layer-actions {
+    -webkit-tap-highlight-color: #DEF2FF;
+}
+
+
+/* LAYER LIST LEGENDS (SMALL) */
+
+
+.legend-swatch img {
+    margin-left: 0;
+}
+
+/* End Script: Mapping/modules/LayerList/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Map/CSS/small.css ------------------------- */ 
+/* MAP (SMALL) -------------------------*/
+.no-touch .map-navigation-region,
+.map-navigation-region {
+    margin: 0;
+    max-width: 80%;
+}
+
+/* End Script: Mapping/modules/Map/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/MapTips/CSS/small.css ------------------------- */ 
+
+/* MAP TIPS -------------------------*/
+
+.map-tip-view {
+    width: 100%;
+    position: static !important;
+    z-index: auto !important;
+}
+
+.map-tip-view .feature-description {
+    height: 150px;
+}
+
+.map-tip-nav a.prev, .map-tip-nav a.next {
+    width: 24px;
+}
+
+.map-navigation-region .map-tip-view,
+.map-center-region .map-tip-view,
+.map-top-left .map-tip-view,
+.map-top-center .map-tip-view,
+.map-top-right .map-tip-view,
+.map-basemap-region .map-tip-view,
+.map-middle-left .map-tip-view,
+.map-middle-right .map-tip-view,
+.map-bottom-left .map-tip-view,
+.map-bottom-center .map-tip-view,
+.map-bottom-right .map-tip-view {
+    background: #FFFFFF;
+}
+
+/* End Script: Mapping/modules/MapTips/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Markup/CSS/small.css ------------------------- */ 
+/* START: Markup ----------------*/
+.TextStyleView,
+.style-selector {
+    height: 100%;    
+}
+.style-selector .form-btns {
+    margin-top: 1em;
+}
+.markup-edit {
+    width: 100%;
+    float: left;
+}
+.markup-edit .icon.icon-erase-16 {
+    background-image: url(../../Resources/Images/Icons/Toolbar/erase-24.png);
+}
+.markup-edit .icon.icon-clear-16 {
+    background-image: url(../../Resources/Images/Icons/Toolbar/clear-24.png);
+}
+
+.tbtm-btn {
+    width: 100%;
+    height: 4.75em;
+}
+
+
+@media all and (min-width: 100px) {
+    .markup-edit .toolbar-item.button {
+        width: 49.9%; /* Twice the default width because the markup edit divs are 50% wide instead of 100% */
+    }
+    .markup-edit .toolbar-item.button:nth-child(1n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+    .markup-edit .toolbar-item.button:nth-child(2n+1) { /* Clears every 3rd item */
+        clear: both;
+    }
+}
+
+@media all and (min-width: 200px) {
+    .markup-edit .toolbar-item.button {
+        width: 33.3%;
+    }
+    .markup-edit .toolbar-item.button:nth-child(2n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+    .markup-edit .toolbar-item.button:nth-child(3n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 300px) {
+    .markup-edit { width: 50%; }
+    .markup-edit .toolbar-item.button {
+        width: 49.9%;
+    }
+    .markup-edit .toolbar-item.button:nth-child(3n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+    .markup-edit .toolbar-item.button:nth-child(4n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 400px) {
+    .markup-edit { width: 40%; }
+    .markup-edit .toolbar-item.button {
+        width: 49.9%;
+    }
+    .markup-edit .toolbar-item.button:nth-child(4n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+    .markup-edit .toolbar-item.button:nth-child(5n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 600px) {
+    .markup-edit { width: 33.3%; }
+    .markup-edit .toolbar-item.button {
+        width: 49.9%;
+    }
+    .markup-edit .toolbar-item.button:nth-child(5n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+    .markup-edit .toolbar-item.button:nth-child(6n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 700px) {
+    .markup-edit { width: 28.57%; }
+    .markup-edit .toolbar-item.button {
+        width: 49.9%;
+    }
+    .markup-edit .toolbar-item.button:nth-child(6n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+    .markup-edit .toolbar-item.button:nth-child(7n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 800px) {
+    .markup-edit { width: 24.9%; }
+    .markup-edit .toolbar-item.button {
+        width: 49.9%;
+    }
+    .markup-edit .toolbar-item.button:nth-child(7n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+    .markup-edit .toolbar-item.button:nth-child(8n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 900px) {
+    .markup-edit { width: 22.22%; }
+    .markup-edit .toolbar-item.button {
+        width: 49.9%;
+    }
+    .markup-edit .toolbar-item.button:nth-child(8n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+    .markup-edit .toolbar-item.button:nth-child(9n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 1000px) {
+    .markup-edit { width: 20%; }
+    .markup-edit .toolbar-item.button {
+        width: 49.9%;
+    }
+    .markup-edit .toolbar-item.button:nth-child(9n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+    .markup-edit .toolbar-item.button:nth-child(10n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 1100px) {
+    .markup-edit { width: 18.18%; }
+    .markup-edit .toolbar-item.button {
+        width: 49.9%;
+    }
+    .markup-edit .toolbar-item.button:nth-child(10n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+    .markup-edit .toolbar-item.button:nth-child(11n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 1200px) {
+    .markup-edit { width: 16.667%; }
+    .markup-edit .toolbar-item.button {
+        width: 49.9%;
+    }
+    .markup-edit .toolbar-item.button:nth-child(11n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+    .markup-edit .toolbar-item.button:nth-child(12n+1) {
+        clear: both;
+    }
+}
+/* END: Markup ----------------*/
+
+/* End Script: Mapping/modules/Markup/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Measurement/CSS/small.css ------------------------- */ 
+
+/* START: Measurement ----------------------- */
+
+.tbtm-select {
+    width: 100%;
+}
+
+/* END: Measurement ----------------------- */
+
+/* End Script: Mapping/modules/Measurement/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Search/small.css ------------------------- */ 
+
+.small .global-search
+{
+    background: #FFFFFF;
+    border: 1px solid #999999;
+    border-radius: 4px;
+    margin: 8px;
+    padding: 5px 30px 5px 5px;
+    position: relative;
+}
+
+.small .global-search input
+{
+    font-size: 1.2em;
+    border: none;
+    margin: 0 30px 0 0;
+    outline: none;
+    width: 100%;
+}
+
+.small .global-search button
+{
+    background: url(Resources/Images/Icons/Toolbar/search-24.png) center center no-repeat;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+    height: 100%;
+    vertical-align: middle;
+}
+
+@media screen and (min-width: 800px)
+{
+    .small .global-search
+    {
+        width: auto;
+    }
+}
+
+/* End Script: Mapping/modules/Search/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Search/CSS/small.css ------------------------- */ 
+
+/* GLOBAL SEARCH (SMALL) -------------------------*/
+
+.global-search {
+    position: relative;
+    width: 100%;
+}
+.global-search .search-box {
+    position: relative;
+    width: 100%;
+}
+.global-search input {
+    width: 100%;
+    padding: 3px 30px 4px 9px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+    font-size: 1.6em;
+    color: #656169;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.global-search input:focus {
+    -webkit-user-modify: read-write-plaintext-only; /* Android 3.0+ fix */
+}
+.search-hints-region {
+    position: absolute;
+    width: 100%;
+    z-index: 300;
+}
+.search-hints-region .SearchHintsView {
+    right: -3.3em;
+    left: -9.3em;
+}
+.shell-small .region.header-region .view.SearchHintsView.inactive {
+    display: none;
+}
+.hints-list .list-menu-item .content:hover,
+.hints-list .list-menu-item .list-menu-button:focus {
+    background-color: #F7F7F7;
+}
+.refine-btn {
+    filter: alpha(opacity=50);
+    opacity: 0.50;
+}
+.refine-btn:hover {
+    filter: alpha(opacity=100);
+    opacity: 1;
+}
+.hints-list {
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid #D9D9D9;
+}
+.hints-list .list-menu-item .content {
+    margin-right: 4em;
+    padding: .4em;
+}
+.hints-list .list-menu-icon {
+    font-size: 2.5em;
+}
+.hints-list .list-menu-details {
+    line-height: 2.5em;
+}
+.refine-container {
+    width: 3.2em;
+}
+
+/* End Script: Mapping/modules/Search/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Shells/CSS/small.css ------------------------- */ 
+
+/* SHELL (SMALL) -------------------------*/
+
+.screen-region {
+    position: absolute;
+}
+
+.tool-region {
+    overflow: hidden;
+}
+
+.shell-small 
+{
+    height: 100%;
+}
+
+.shell-container-inner
+{
+    height: 100%;
+}
+
+/* End Script: Mapping/modules/Shells/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Status/CSS/small.css ------------------------- */ 
+
+/* STATUS INDICATOR (SMALL) -------------------------*/
+
+.status-window {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.status-close {
+    opacity: 100;
+}
+.status-window {
+    padding: 0.39em;
+}
+.status-btn {
+    height: 4em;
+}
+
+/* End Script: Mapping/modules/Status/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Toolbar/CSS/small.css ------------------------- */ 
+/* TOOLBAR (SMALL) -------------------------*/
+.toolbar-toggle-button {
+    border-radius: 0;
+    margin: 0;
+    border-bottom: 0;
+    position: initial;
+}
+
+.toolbar {
+    position: relative;
+    height: 50px;
+    overflow: hidden;
+    background: #FFFFFF;
+    font-size: 0.8em;
+}
+
+.toolbar * {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    text-align: center;
+}
+
+.toolbar table {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-collapse: separate;
+}
+
+.toolbar td {
+    padding: 0 .8em;
+    border-left: 1px solid #D9D9D9;
+    border-bottom: 1px solid #D9D9D9;
+}
+
+.toolbar tr .IWantToMenuView {
+    border: none !important;
+}
+
+.toolbar-nested {
+    width: 100%;
+}
+
+.toolbar td:first-child:nth-last-child(4),
+.toolbar td:first-child:nth-last-child(4) ~ td {
+    width: 25%;
+}
+
+.toolbar td:first-child:nth-last-child(5),
+.toolbar td:first-child:nth-last-child(5) ~ td {
+    width: 20%;
+}
+
+.toolbar td:first-child:nth-last-child(6),
+.toolbar td:first-child:nth-last-child(6) ~ td {
+    width: 16.666%;
+}
+
+.toolbar td:first-child {
+    border-left: none;
+}
+
+.toolbar td:last-child {
+    border-right: none;
+}
+
+.toolbar-region {
+    width: 100%;
+}
+
+.toolbar img {
+    max-width: 32px;
+    max-height: 32px;
+    opacity: 0.75;
+}
+
+.toolbar .highlight {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    display: none;
+}
+
+.tab-container span {
+    display: none !important;
+    color: #FFFFFF;
+    font-size: .9em;
+}
+
+.tb-view-active {
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    background: #E9F6FF;
+}
+
+.tb-view-active img,
+.tb-view-active span {
+    opacity: 1;
+}
+
+.toolbar-item ul:after {
+    display: block;
+    clear: both;
+    content: " ";
+    height: 0;
+    visibility: hidden;
+}
+
+.toolbar-item ul {
+    padding-bottom: 1.5em;
+}
+
+.toolbar-body.small .toolbar-item.toolbar-group {
+    text-align: left;
+    padding: 0;
+    max-width: inherit;
+}
+.toolbar-body.small .toolbar-item.toolbar-group:hover {
+    background: none;
+}
+.toolbar-body.small .toolbar-parent > li {
+    display: block;
+}
+
+.toolbar-body.small ul {
+    text-align: left;
+}
+.toolbar-body.small ul li.toolbar-item.button {
+    display: block;
+    float: left;
+    margin: 0;
+}
+
+.toolbar-item.toolbar-group h2 {
+    font-weight: normal;
+    font-size: 1.35em;
+    color: #959398;
+    padding: 0.25em 0.5em;
+    background: #FFFFFF;
+    margin-bottom: 1em;
+}
+
+.toolbar-item.toolbar-group h3 {
+    font-weight: normal;
+    padding: 0;
+    margin: 0 0.5em 0.25em 0.5em;
+    /*border-bottom: 1px solid #DDDDDD;*/
+}
+
+.toolbar-item.toolbar-group h3 {
+    font-size: 1em;
+    display: block;
+}
+
+.toolbar-item.toolbar-group.hidden {
+    display: none !important;
+}
+
+.toolbar-item.button {
+    width: 100%;
+    min-width: 50px;
+}
+
+.toolbar-item.button:nth-child(1n+1) { /* Sets the first item to clear */
+    clear: both;
+}
+.new-shell .TabbedToolbarView .toolbar-body.small .toolbar-parent > li {
+    width: auto;
+}
+.new-shell .TabbedToolbarView .toolbar-body.small .toolbar-parent > li.toolbar-group {
+    width: 99%;
+    margin: 0.4em auto 0.4em 0.4em;
+}
+@media all and (min-width: 100px) {
+    .toolbar-item.button {
+        width: 49.9%;
+    }
+
+    .toolbar-item.button:nth-child(1n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+
+    .toolbar-item.button:nth-child(2n+1) { /* Clears every 3rd item */
+        clear: both;
+    }
+}
+
+@media all and (min-width: 200px) {
+    .toolbar-item.button {
+        width: 33%;
+    }
+
+    .toolbar-item.button:nth-child(2n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+
+    .toolbar-item.button:nth-child(3n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 300px) {
+    .toolbar-item.button {
+        width: 24.9%;
+    }
+
+    .toolbar-item.button:nth-child(3n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+
+    .toolbar-item.button:nth-child(4n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 400px) {
+    .toolbar-item.button {
+        width: 19.9%;
+    }
+
+    .toolbar-item.button:nth-child(4n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+
+    .toolbar-item.button:nth-child(5n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 600px) {
+    .toolbar-item.button {
+        width: 16.65%;
+    }
+
+    .toolbar-item.button:nth-child(5n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+
+    .toolbar-item.button:nth-child(6n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 700px) {
+    .toolbar-item.button {
+        width: 14.25%;
+    }
+
+    .toolbar-item.button:nth-child(6n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+
+    .toolbar-item.button:nth-child(7n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 800px) {
+    .toolbar-item.button {
+        width: 12.4%;
+    }
+
+    .toolbar-item.button:nth-child(7n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+
+    .toolbar-item.button:nth-child(8n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 900px) {
+    .toolbar-item.button {
+        width: 11%;
+    }
+
+    .toolbar-item.button:nth-child(8n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+
+    .toolbar-item.button:nth-child(9n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 1000px) {
+    .toolbar-item.button {
+        width: 9.9%;
+    }
+
+    .toolbar-item.button:nth-child(9n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+
+    .toolbar-item.button:nth-child(10n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 1100px) {
+    .toolbar-item.button {
+        width: 9%;
+    }
+
+    .toolbar-item.button:nth-child(10n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+
+    .toolbar-item.button:nth-child(11n+1) {
+        clear: both;
+    }
+}
+
+@media all and (min-width: 1200px) {
+    .toolbar-item.button {
+        width: 8%;
+    }
+
+    .toolbar-item.button:nth-child(11n+1) { /* Overrides the previous clear */
+        clear: none;
+    }
+
+    .toolbar-item.button:nth-child(12n+1) {
+        clear: both;
+    }
+}
+
+.toolbar-body.small {
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+}
+
+.toolbar-body.small > .toolbar-item.toolbar-group {
+    text-align: left;
+}
+
+.toolbar-body.small .toolbar-item.toolbar-group > p {
+    display: none;
+}
+
+.toolbar-item.toolbar-group {
+    margin: 0px;
+}
+.toolbar-item.toolbar-group .toolbar-group {
+    border: 1px solid #cccccc;
+    margin-bottom: 0.4em;
+    padding: 0;
+}
+
+.toolbar-body.small ul li {
+    float: none;
+}
+
+.TabbedToolbarView {
+    height: 100%;
+    overflow: auto;
+}
+
+/* START: Toolbar "Tool Mode" ----------------------- */
+.toolbar-tool-mode {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #DDDDDD;
+    font-size: 1em;
+    text-align: center;
+    background: white;
+}
+
+.toolbar-tool-mode,
+.toolbar-tool-mode .tbtm-list,
+.toolbar-tool-mode .tbtm-list li,
+.toolbar-tool-mode .tbtm-done {
+    height: 5em; /* Same as the .toolbar height */
+}
+
+.tbtm-list li {
+    position: relative;
+    display: block;
+    float: left;
+    width: auto;
+    margin: 0;
+    padding: 3px;
+    list-style: none;
+    line-height: 1em;
+    border-left: 1px solid #DDDDDD;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.tbtm-list li,
+.tbtm p {
+    cursor: pointer;
+}
+
+.tbtm-list li .icon,
+.tbtm-checkbox input[type="checkbox"] {
+    display: block;
+    margin: 0 auto;
+}
+
+.tbtm-list p {
+    width: 100%;
+    height: 20px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.tbtm-units {
+    position: relative;
+    display: block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.tbtm-units span {
+    color: #197EC0;
+}
+
+.tbtm-units .icon-select {
+    display: block;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    bottom: -6px;
+    right: -8px;
+    background: url("../../Resources/Images/Icons/arrow-down-small-16.png") right bottom no-repeat;
+}
+
+.toolbar-tool-mode .tbtm-list {
+    float: left;
+    padding-left: 3em;
+    width: 100%;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box;
+}
+
+.toolbar-tool-mode .tbtm-list ul {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+/* two items */
+.toolbar-tool-mode .tbtm-list .two li {
+    width: 50%;
+}
+/* three items */
+.toolbar-tool-mode .tbtm-list .three li {
+    width: 33.33%;
+}
+/* four items */
+.toolbar-tool-mode .tbtm-list .four li {
+    width: 25%;
+}
+/* five items */
+.toolbar-tool-mode .tbtm-list .five li {
+    width: 20%;
+}
+
+.toolbar-tool-mode .tbtm-done {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: table;
+    width: 2.5em;
+    padding: 0;
+    background: #197EC0;
+    color: #FFFFFF;
+    border: none;
+    font-size: 1.2em;
+}
+
+.tbtm-done span {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+    -webkit-transform: rotate(-90deg); /* Safari */
+    -moz-transform: rotate(-90deg); /* Firefox */
+    -ms-transform: rotate(-90deg); /* IE */
+    -o-transform: rotate(-90deg); /* Opera */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); /* Internet Explorer */
+}
+
+/* ------ START: Compact Toolbar ------ */
+.CompactToolbarView,
+.flyout-menu-collapsible-area,
+.flyout-menu-expanded,
+.toolbar-parent {
+    width: 100% !important;
+}
+.scroll-back {
+    margin-left: -0.5em;
+}
+.flyout-menu {
+    width: 100%;
+    display: block;
+    margin: 0px;
+    background: #FFFFFF;
+}
+
+.flyout-menu-floating-area,
+.flyout-menu-transient {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 5em !important;
+}
+    .flyout-menu-floating-area .toolbar-item.toolbar-group {
+        height: 5em;
+    }
+.flyout-menu-transient {
+    padding: 0.5em 0.2em 2em 0.2em;
+}
+.flyout-menu-active-tool {
+    float: right;
+    font-size: 1em;
+    background: #FFFFFF !important;
+    border-left: 1px solid #D9D9D9 !important;
+    border-radius: 0;
+    z-index: 502;
+}
+
+.flyout-menu-collapsible-area {
+    border: none;
+    border-bottom: 1px solid #D9D9D9;
+}
+.flyout-menu-floating-area > .toolbar-item {
+    margin-right: 5em;    
+}
+
+.flyout-menu-expanded {
+    width: 100% !important;
+}
+
+.map-top-right .CompactToolbarView .flyout-menu {
+    z-index: 0;
+}
+
+.flyout-menu > .toolbar-item.button {
+    width: initial;
+}
+.flyout-menu-tools {
+    margin: 0;
+}
+
+
+.CompactToolbarButtonView .toolbar-toggle-button:hover {
+    border-right: none;
+    border-top-color: #ffffff;
+    border-bottom: none;
+}
+
+/* This can probably be placed somewhere else. */
+.region.map-top-right {
+    width: 100%;
+}
+
+.scroll-forward {
+    margin-right: 4.5em;
+}
+
+/* ------ END: Compact Toolbar ------ */
+
+/* ------ START: Multi-tool dropdown ------ */
+.CompactToolbarDropdown {
+    width: 100%;
+    background: white;
+}
+
+.multi-tool-container {
+    width: 100%;
+}
+
+.multi-tool-dropdown {
+    right: 0px !important;
+    left: 0px;
+    top: 0px;
+    display: none;
+}
+
+.multi-tool-list .toolbar-item {
+    min-width: 5em;
+    max-width: 6em;
+}
+
+button.toolbar-item.button.tool {
+    width: 5em;
+}
+
+/* ------ END: Multi-tool dropdown ------ */
+
+/* ------ START: Compact Toolbar Transient ------ */
+.markup-edit {
+    width: initial !important;
+}
+.flyout-menu-transient .transient-measurement {
+    height: 5em;
+    padding-right: 5em;
+    width: 100%;
+}
+.flyout-menu-transient select {
+    padding: 0;
+}
+
+.flyout-menu-transient .toolbar-item {
+    min-width: 5em;
+    max-width: 6em;
+}
+.flyout-menu .flyout-menu-transient ul li {
+    margin: 0;
+}
+
+/* ------ END: Compact Toolbar Transient ------ */
+
+.region.toolbar-tab-content-region {
+    height: 50px;
+    margin-top: 1em;
+}
+
+/* ------ START: New Shell Styles ------ */
+.new-shell .toolbar-body.small .toolbar-parent > li,
+.new-shell .toolbar-body.small .toolbar-parent > li .toolbar-nested > li {
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+    width: 6em;
+    margin: 0 0 0.4em 0;
+}
+.new-shell .toolbar-body.small .toolbar-parent > li .toolbar-nested > li.toolbar-group {
+    display: block;
+}
+.new-shell .toolbar-body.small .toolbar-item.toolbar-group,
+.new-shell .toolbar-body.small .toolbar-region {
+    width: 100%;
+    display: block;
+}
+.new-shell .toolbar-item.toolbar-group h3 {    
+    text-align: left;
+    padding: 0.4em 0.4em 0.4em 2em;
+    margin:0;
+    color: #959398;
+}
+.new-shell .toolbar-body.small .toolbar-parent li.toolbar-region { /* Hiding the transient tools  */
+    display: none !important;
+}
+/* ------ END: New Shell Styles ------ */
+
+/* ------ START: Transient Toolbar ------ */
+.toolbar-item.transient-active.multi-tool::after,
+.toolbar-item.transient-active.multi-tool::before {
+    display: none;
+}
+.toolbar-item.transient-active.multi-tool,
+.toolbar-item.transient-active {
+    padding-bottom: 2em;
+}
+.transient-toolbar + .transient-measurement {
+    margin-top: -6.6em;
+    width: 8em;
+    display: block;
+}
+.toolbar-item.multi-tool.transient-active {
+    margin-bottom: -2.70em;
+}
+.transient-toolbar {
+    min-height: 5.65em;
+    min-width: 0.75em;
+}
+.flyout-menu-transient .transient-toolbar + .transient-measurement {
+    margin-top: -5.8em;
+}
+.transient-measurement .toolbar-item.select-double select + select {
+    margin-top: 0.1em;
+}
+.flyout-menu-transient .transient-measurement .toolbar-item.select-double select + select {
+    margin-top: 0.25em;
+}
+.toolbar-item.multi-tool.transient-active img {
+    margin: 0.25em auto 0.05em auto;
+}
+/* ------ END: Transient Toolbar ------ */
+
+/* End Script: Mapping/modules/Toolbar/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Workflow/Forms/Items/CSS/small.css ------------------------- */ 
+
+/* FORM ITEMS (SMALL) -------------------------*/
+
+input,
+select,
+textarea {
+	padding: .5em;
+	font-size: 1em;
+}
+
+input[type='checkbox'],
+input[type='radio'],
+input[type='text'],
+select,
+textarea {
+   -webkit-tap-highlight-color: rgba(0,0,0,0);  
+}
+
+input[type='text'],
+input[type='password'] {
+	width: 100%; /* Use available space for fields on small devices */
+	max-width: 100%; /* Don't exceed the width of the container */
+}
+
+.form-label,
+.form-control {
+	display: block;
+	float: none;
+	padding-left: 0;
+	padding-right: 0;
+	width: auto;
+}
+
+.form-item {
+	padding: .5em 0;
+}
+
+.label-left .form-label,
+.label-right .form-label {
+	text-align: left;
+}
+
+.combobox,
+.listbox {
+    display: inline-block;
+    width: 100%;
+}
+
+.combobox select,
+.listbox select,
+textarea {
+    width: 100% !important; /* Use available space for fields on small devices */
+	max-width: 100% !important; /* Don't exceed the width of the container */
+}
+
+input[type='checkbox'] {
+    width: 24px;
+    height: 24px;
+}
+
+input[type='radio'] {
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    border: 2px solid #999999;
+}
+
+input[type='checkbox']:checked,
+input[type='radio']:checked {
+    border: 2px solid #999999;
+}
+
+
+input[type='checkbox']:disabled,
+input[type='radio']:disabled {
+    opacity: 0.4;
+}
+
+
+.checkbox .form-label.left,
+.radiobtn .form-label.left {
+    display: inline-block;
+}
+
+.checkbox .form-label.right,
+.radiobtn .form-label.right {
+    display: inline-block;
+}
+
+.autocomplete-menu {
+    position: relative;
+}
+
+.autocomplete-menu ul {
+    max-height: none;
+}
+
+.WorkflowListView {
+    height: 100%;
+    overflow: auto;
+}
+
+/* End Script: Mapping/modules/Workflow/Forms/Items/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/infrastructure/menus/CSS/small.css ------------------------- */ 
+/* MENU -------------------------*/
+
+.map-tip-actions .list-menu-item {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+/* End Script: Mapping/infrastructure/menus/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/infrastructure/results/CSS/small.css ------------------------- */ 
+
+/* RESULTS PAGING CONTROL (SMALL) -------------------------*/
+.results-table,
+.results-list {
+    bottom: 4.8em;
+}
+.paging-control {
+}
+.paging-control.has-pages {
+	height: 5em;
+}
+.paging-result-info {
+    float: left;
+    padding: .5em 0;
+    font-size: 0.9em;
+    height: 1.7em;
+}
+.view.ResultsListView .paging-buttons,
+.paging-buttons {
+    float: right;
+    padding:0.6em 0.5em;
+}
+.paging-result-info button {
+    display: none;
+}
+.paging-buttons button {
+    padding: 0 0.25em;
+    height: 2.2em;
+    line-height: 1.2em;
+}
+
+@media only screen and (max-width: 420px) {
+
+   .view.ResultsListView .paging-buttons,
+   .paging-result-info,
+   .paging-buttons {
+        float: none;
+        margin:0 auto;
+        padding:0.2em 0;
+        width:auto;
+    }
+    .paging-result-info {
+        padding:0.5em 0 0.2em 0;
+    }
+    .paging-buttons {
+        padding: 0 0 0.5em 0;
+    }    
+    .paging-buttons a {
+        width: 14%;
+        min-width:5%;
+        text-align:center;
+    }
+    
+    .paging-buttons .paging-buttons-info {
+        width: auto;
+        text-align: center;
+        vertical-align: middle;
+        padding: 0.2em;
+    } 
+    
+}
+
+.screen-region .ResultsViewContainerView {
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+/* End Script: Mapping/infrastructure/results/CSS/small.css ------------------------- */ 
+

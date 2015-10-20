@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{32E36075-BC8D-4D98-8158-E8EA4251AA7C}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <OutputPath>bin</OutputPath>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>50922</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:49827/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <ItemGroup>
+    <TypeScriptCompile Include="Modules\Elevation\ElevationModule.ts" />
+    <TypeScriptCompile Include="Modules\Elevation\ElevationModuleView.ts" />
+    <TypeScriptCompile Include="Modules\Elevation\ElevationModuleViewModel.ts" />
+    <TypeScriptCompile Include="Modules\HyperlinkBanner\HyperlinkBannerModule.ts" />
+    <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModule.ts" />
+    <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModuleView.ts" />
+    <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModuleViewModel.ts" />
+    <TypeScriptCompile Include="Modules\RasterFunctions\RasterFunctionsModule.ts" />
+    <Content Include="Modules\Elevation\ElevationModule.css" />
+    <Content Include="Modules\Elevation\ElevationModuleView.html" />
+    <Content Include="Modules\Elevation\Readme.txt" />
+    <None Include="Modules\Elevation\Language.json" />
+    <Content Include="ResourceManifest.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Resources\Config\Defaults.json.js" />
+    <Content Include="Resources\Styles\Custom\Desktop.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DevModules\" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES3</TypeScriptTarget>
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+    <TypeScriptOutFile>..\custom_ts_out.js</TypeScriptOutFile>
+    <TypeScriptGeneratesDeclarations>false</TypeScriptGeneratesDeclarations>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptTarget>ES3</TypeScriptTarget>
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+    <TypeScriptOutFile>..\custom_ts_out.js</TypeScriptOutFile>
+    <TypeScriptGeneratesDeclarations>false</TypeScriptGeneratesDeclarations>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets')" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <PostBuildEvent>
+      java -jar "$(SolutionDir)Tools\ResourceCompilerTool.jar" "$(SolutionDir)Custom\ResourceManifest.xml" "$(SolutionDir)Custom" "Custom" "$(SolutionDir)Custom\Resources\Compiled\Custom.js" --export "$(SolutionDir)Web\Resources\Locales" --msbuild
+      IF NOT ERRORLEVEL 0 EXIT 1
+
+      move "$(SolutionDir)Web\Resources\Locales\Invariant.json" "$(SolutionDir)Web\Resources\Locales\Custom.en-US.json.js"
+      IF NOT ERRORLEVEL 0 EXIT 1
+
+      ECHO D | xcopy /E /Y /D "$(SolutionDir)Custom\Resources" "$(SolutionDir)Web\Libraries\Custom"
+      IF NOT ERRORLEVEL 0 EXIT 1
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <PostBuildEvent>
+      java -jar "$(SolutionDir)Tools\ResourceCompilerTool.jar" "$(SolutionDir)Custom\ResourceManifest.xml" "$(SolutionDir)Custom" "Custom" "$(SolutionDir)Custom\Resources\Compiled\Custom.js" --export "$(SolutionDir)Web\Resources\Locales" --msbuild --optimize "$(SolutionDir)Tools\closure_compiler.jar"
+      IF NOT ERRORLEVEL 0 EXIT 1
+
+      move "$(SolutionDir)Web\Resources\Locales\Invariant.json" "$(SolutionDir)Web\Resources\Locales\Custom.en-US.json.js"
+      IF NOT ERRORLEVEL 0 EXIT 1
+
+      ECHO D | xcopy /E /Y /D "$(SolutionDir)Custom\Resources" "$(SolutionDir)Web\Libraries\Custom"
+      IF NOT ERRORLEVEL 0 EXIT 1
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+      java -jar "$(SolutionDir)Tools\ResourceCompilerTool.jar" "$(SolutionDir)Custom\ResourceManifest.xml" "$(SolutionDir)Custom" "Custom" "$(SolutionDir)Custom\Resources\Compiled\Custom.js" --export "$(SolutionDir)Web\Resources\Locales" --msbuild
+      IF NOT ERRORLEVEL 0 EXIT 1
+
+      move "$(SolutionDir)Web\Resources\Locales\Invariant.json" "$(SolutionDir)Web\Resources\Locales\Custom.en-US.json.js"
+      IF NOT ERRORLEVEL 0 EXIT 1
+
+      ECHO D | xcopy /E /Y /D "$(SolutionDir)Custom\Resources" "$(SolutionDir)Web\Libraries\Custom"
+      IF NOT ERRORLEVEL 0 EXIT 1
+</PostBuildEvent>
+  </PropertyGroup>
+</Project>

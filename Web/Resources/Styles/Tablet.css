@@ -1,0 +1,1292 @@
+﻿
+/* Begin Script: Mapping/modules/medium.css ------------------------- */ 
+
+/* GLOBAL STYLING  (MEDIUM)-------------------------*/
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #FFFFFF;
+    color: #333333;
+}
+
+html {
+	-webkit-text-size-adjust: none; /* IOS - Retain font size when switching modes */
+}
+
+button, input, select, textarea { 
+   -webkit-tap-highlight-color: #DEF2FF;
+}
+
+
+/* MODAL WINDOW (MEDIUM) -------------------------*/
+
+.modal-container {
+    min-width: 360px;
+}
+
+.modal-container .panel-scroll-container {
+    float: left;
+    width:100%;
+}
+/* VIEW CONTAINERS / MODULE CONTAINERS (MEDIUM) -------------------------*/
+
+.panel-header h2 {
+    margin: 0 40px; /* Allows space for icons on either side of the heading */
+    font-size: 1.3em;
+}
+
+.panel-header-button {
+    -webkit-tap-highlight-color: #DEF2FF;
+}
+
+.panel-scroll-container {
+    -webkit-overflow-scrolling: touch;
+}
+
+.medium-shell-left .panel-scroll-container,
+.medium-shell-bottom .panel-scroll-container {
+    position: absolute;
+    -webkit-overflow-scrolling: touch;
+}
+
+.medium-shell-bottom .panel-header {
+    border-top: 1px solid #999999;
+}
+
+
+/* BUTTONS (MEDIUM) -------------------------*/
+
+button {
+    -webkit-tap-highlight-color: #FFFFFF;
+}
+
+
+/* LIST MENU (MEDIUM) -------------------------*/
+
+.list-menu-item {
+    -webkit-tap-highlight-color: #DEF2FF
+}
+
+.list-submenu {
+    margin: 8px;
+    background: #FFFFFF;
+    border: 1px solid #999999;
+    border-radius: 0.25rem;
+}
+
+a.list-menu-item {
+    color: #333333;
+}
+
+.list-menu-closed {
+    background: url("../../Resources/Images/Icons/expander-closed-24.png") right center no-repeat;
+}
+
+.list-menu-open {
+    background: url("../../Resources/Images/Icons/expander-open-24.png") right center no-repeat;
+}
+
+
+/* LOADING INDICATOR (MEDIUM) -------------------------*/
+
+.loading-container {
+    text-align: center;
+    padding: 0.5em;
+}
+
+.loading-img,
+.loading-msg {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.loading-img {
+    width: 24px;
+    height: 24px;
+    background-image: url(../Images/loader-small.gif);
+}
+
+/* TREEVIEW (MEDIUM) -------------------------*/
+
+.tree-expander {
+     box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 24px;
+    height: 100%;
+    cursor: pointer;
+    margin-left: 1px;
+}
+
+.tree-expander.expanded {
+    background: url(../Images/Icons/minus-24.png) 0.3em center no-repeat;
+}
+
+.tree-expander.collapsed {
+    background: url(../Images/Icons/add-24.png) 0.3em center no-repeat;
+}
+
+/* NOTIFICATIONS (MEDIUM) -------------------------*/
+
+.notification textarea {
+    max-width: 300px;
+    max-height: 300px;
+    resize: none;
+}
+/* TAB CONTROL (MEDIUM) -------------------------*/
+
+.tab-control,
+.tab-control a,
+.tab-control button,
+.tab-control a:hover {
+	line-height: 1.6em;
+}
+
+/* MEDIA QUERIES (MEDIUM) -------------------------*/
+
+@media screen and (max-height: 1020px) and (min-width: 760px) {
+
+    .modal-container .panel-scroll-container {
+        max-height: 700px;
+        min-width: 300px;
+    }
+}
+
+@media screen and (max-height: 760px) {
+
+    .modal-container .panel-scroll-container {
+        max-height: 500px;
+        min-width: 300px;
+        }
+}
+@media screen and (max-height: 660px) {
+
+    .modal-container .panel-scroll-container {
+        max-height: 400px;
+        min-width: 300px;
+        }
+}
+@media screen and (max-height: 500px) {
+
+    .modal-container .panel-scroll-container {
+        max-height: 300px;
+        min-width: 300px;
+    }
+}
+@media screen and (max-height: 380px) {
+
+    .modal-container .panel-scroll-container {
+        max-height: 200px;
+        min-width: 300px;
+    }
+}
+
+/* ANDROID FIXES (MEDIUM)-------------------------*/
+
+html.dj_android .map svg,
+html.dj_android .map-top-left,
+html.dj_android .map-top-right,
+html.dj_android .map-bottom-left,
+html.dj_android .map-bottom-right,
+html.dj_android .map-navigation-region,
+html.dj_android .map-basemap-region,
+html.dj_android .map-callout-wrapper,
+html.dj_android .modal,
+html.dj_android .status-indicator,
+html.dj_android .ui-datepicker {
+    /*-webkit-transform: translate3d(0px, 0px, 1px);*/
+}
+
+/* End Script: Mapping/modules/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Alert/CSS/medium.css ------------------------- */ 
+
+/* ALERT (MEDIUM) -------------------------*/
+
+.modal-container .alert,
+.modal-container .confirm,
+.modal-container .prompt {
+    max-width: 400px;
+}
+
+/* End Script: Mapping/modules/Alert/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Banner/CSS/medium.css ------------------------- */ 
+
+/* BANNER (MEDIUM) -------------------------*/
+
+.banner {
+    position: relative;
+    background-repeat: repeat-x;
+    border-bottom: 1px solid #D9D9D9;
+}
+
+.banner-title,
+.banner-subtitle {  
+    position: relative;  
+    z-index: 500;
+}
+
+.banner-images {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.banner-left-img {
+    left: 0;
+}
+
+.banner-right-img {
+    right: 0;
+}
+
+.banner-images img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.banner-text {
+    float: left;
+}
+
+/* End Script: Mapping/modules/Banner/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Basemap/CSS/medium.css ------------------------- */ 
+.switcher-inactive .basemap-list-region {
+    display: none;
+}
+.switcher-active .basemap-button {
+    background-color: #FFFFFF;
+    border-bottom: none;
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    zoom: 1;
+    filter: alpha(opacity=100);
+    opacity: 1;
+
+}
+
+.basemap-switcher-header,
+.basemap-list .list-menu-item {
+    padding: 0.5em;
+}
+
+.basemap-list-region {
+    position: relative;
+    display: inline-block;
+    float: right;
+    clear: both;
+    width: 100%;
+}
+
+.basemap-button {
+    padding: 0.6em 0.65em;
+    font-size:0.85em;
+}
+
+.basemap-button .display-name {
+    height: 1.25em;
+    line-height: 1.1em;
+    font-size: 1.4em;
+    padding: 0 1.4em 0 0.6em;
+}
+
+.basemap-list .list-menu-item {
+    padding: 1em;
+}
+.basemap-list .list-menu-icon {
+    font-size: 1.875em;
+}
+.basemap-list .list-menu-details {
+    line-height: 1.7em;
+    font-size: 1.2em;
+    padding-left: 0.6em;
+}
+
+.basemap-icon {
+    height: 20px;
+    width: 20px;
+}
+
+.map-basemap-region {
+    margin: 5px 3px 0;
+}
+
+.map-basemap-region > .view {
+    float: right;
+}
+
+.map-basemap-region .basemap-slider-container {
+    margin-right: 1em;
+}
+
+.basemap-list-region {
+    font-size: 0.85em;
+}
+
+/* End Script: Mapping/modules/Basemap/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Bookmarks/CSS/medium.css ------------------------- */ 
+
+/* End Script: Mapping/modules/Bookmarks/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/FeatureDetails/CSS/medium.css ------------------------- */ 
+
+/* FEATURE DETAIL PROVIDERS -------------------------*/
+
+.attrib .list-menu-item .list-menu-name,
+.attrib .list-menu-item .list-menu-desc {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.attrib .list-menu-item {
+    display: block;
+    max-width:50em;
+    padding: 0;
+}
+
+.attrib .list-menu-name,
+.attrib .list-menu-desc {
+    float: left;
+    vertical-align: bottom;
+    padding: 1em;
+    word-wrap: break-word;
+}
+
+.attrib .list-menu-name {
+    width: 40%;
+    font-weight: 600;
+}
+
+.attrib .list-menu-desc {
+    width: 60%;
+}
+
+.feature-details-header .panel-title {
+    float: left;
+    margin: 0 20px;
+}
+
+.feature-details-header .feature-actions-widget {
+    float: right;
+    margin: 0 20px;
+    max-width: 60%;
+}
+
+.feature-details-top-left-region,
+.feature-details-top-right-region {
+    width: 50%;
+    display: inline-block;
+    float: left;
+}
+
+.feature-details-bottom-region {
+    width: 100%;
+    display: inline-block;
+}
+
+.feature-details-bottom-region .panel-scroll-container {
+    top:auto !important;
+    bottom: auto !important;
+    position: relative;
+}
+
+.feature-details-bottom-region h3 {
+}
+
+/* Hide the chart header in feature details, since we have a chart selector that does the same thing */
+.region .view .panel-group.single-feature-chart.bound-visible h3 {
+    display: none;
+}
+
+/* If the header is not visible, we need to make adjustments to chart view */
+.region .view .panel-group.single-feature-chart.bound-visible img {
+    top: 0;
+}
+
+/*.FeatureDetailsView .FeatureChartsProviderView .single-feature-chart .fui-selector {
+    padding: 0;
+}*/
+
+.feature-details-header {
+    display: block;
+    width: 100%;
+}
+
+.feature-details-header .feature-actions-widget .menu-hyperlinks .list-menu {
+    margin-top: 0;
+    border-top: none;
+}
+
+.multi-region-view .tab-control li {
+    max-width: 200px;
+}
+@media all and (max-width: 980px) {
+
+    .feature-details-bottom-region .multi-column-container {
+        padding-left: 1em;
+        margin: 0;
+        border-left:0;
+    }
+}
+
+/* End Script: Mapping/modules/FeatureDetails/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/FeatureLayer/CSS/medium.css ------------------------- */ 
+
+/* SYNC LOG (MEDIUM) -------------------------*/
+
+.sync-log .scroll {
+    width: 400px;
+    height: 300px;
+    overflow-y: auto;
+}
+
+/* End Script: Mapping/modules/FeatureLayer/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Geolocate/CSS/medium.css ------------------------- */ 
+/* START: Geolocate --------------- */
+.geolocate-list .list-menu-item:first-child {
+    border-radius: 0 0.25rem 0 0;
+}
+.geolocate-list .list-menu-item:last-child {
+    border-radius: 0 0 0.25rem 0.25rem;
+}
+.list-menu-item span,
+.list-menu-item a {
+    line-height: 1.6em;
+}
+/* END: Geolocate --------------- */
+
+/* End Script: Mapping/modules/Geolocate/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Integration/CSS/medium.css ------------------------- */ 
+.ExternalComponentView .resize-header {
+    height: 1.5em;    
+}
+
+/* End Script: Mapping/modules/Integration/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/IWantToMenu/CSS/medium.css ------------------------- */ 
+
+/* I WANT TO MENU  (MEDIUM)-------------------------*/
+
+/*.wtm-menu-active,
+.wtm-menu-inactive {
+    position: relative;
+    display:block;
+}
+
+.wtm-inactive .wtm-list-container {
+    display: none;
+}
+
+.wtm-active .wtm-list-container {
+    position: absolute;
+    left: 0;
+    top: 37px;
+}
+
+.wtm-active .wtm-button,
+.wtm-list {
+    border: 1px solid #D9D9D9;
+}
+
+.wtm-button {
+    display: inline-block;
+    position: relative;
+    height: 37px;
+    line-height: 32px;
+    padding: 0 0.7em;
+    font-size: 1.6em;
+    text-decoration: none;
+    border-radius: 0.25rem;
+    border: 1px solid transparent;
+}
+
+.wtm-active .wtm-button,
+.wtm-active .wtm-button:hover {
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-bottom: none;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    color: #1B7DBF;
+    opacity: 1.0;
+    filter: none;
+}
+
+.wtm-list {
+    min-width: 300px;
+    max-width: 400px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #FFFFFF;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+    transition: max-height 250ms;
+	-webkit-transition: max-height 250ms;
+	-moz-transition: max-height 250ms;
+	-o-transition: max-height 250ms;
+    max-height: 400px; /* Default max-height for IE8 */
+    /*overflow-y: auto; /* Vertical scrollbars for overflow */
+
+
+/* End Script: Mapping/modules/IWantToMenu/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/LayerList/CSS/medium.css ------------------------- */ 
+
+/* LAYER LIST (MEDIUM) -------------------------*/
+
+.layer-item-ctrl input[type="checkbox"] {
+    margin: 0.05em 0.5em;
+}
+.transparency-slider {
+    right: 0.25em;
+}
+.legend-item-parent .tree-expander.collapsed,
+.legend-item-parent .tree-expander.expanded {
+    padding: 0 2.5em;
+}
+.layer-item-expander .tree-expander.collapsed, 
+.layer-item-expander .tree-expander.expanded {
+    padding: 0.6em;
+}
+.layer-list-footer {
+    height: 4.65em; /* Prevents double scroll bars */
+}
+
+/* End Script: Mapping/modules/LayerList/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Log/CSS/medium.css ------------------------- */ 
+
+/* LOG VIEW (MEDIUM) -------------------------*/
+
+.logview-inner {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* End Script: Mapping/modules/Log/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/MapTips/CSS/medium.css ------------------------- */ 
+
+/* MAP TIPS -------------------------*/
+
+.map-tip-view {
+    width: 23.44em;
+}
+@media all and (min-width: 1px) {
+    .map-tip-view {
+        width: 15.6em;
+    }
+    .map-top-center .map-tip-view,
+    .map-bottom-center .map-tip-view {
+        margin-left: -11.72em; /* Half the width of the map tip, so that it's centered. */
+    }
+}
+@media all and (min-width: 725px) {
+    .map-tip-view {
+        width: 23.44em;
+    }
+    .map-top-center .map-tip-view,
+    .map-bottom-center .map-tip-view {
+        margin-left: -11.72em; /* Half the width of the map tip, so that it's centered. */
+    }
+}
+@media all and (min-width: 985px) {
+    .map-tip-view {
+        width: 31.25em;
+    }
+    .map-top-center .map-tip-view,
+    .map-bottom-center .map-tip-view {
+        margin-left: -15.62em; /* Half the width of the map tip, so that it's centered. */
+    }
+}
+
+.map-tip-view .feature-description {
+    max-height: 16.64em;
+}
+
+@media all and (min-height: 1px) {
+    .map-tip-view .feature-description {
+        max-height: 4.37em;
+    }
+}
+@media all and (min-height: 500px) {
+    .map-tip-view  .feature-description {
+        max-height: 8.83em;
+    }
+}
+@media all and (min-height: 600px) {
+    .map-tip-view  .feature-description {
+        max-height: 16.64em;
+    }
+}
+@media all and (min-height: 700px) {
+    .map-tip-view  .feature-description {
+        max-height: 24.45em;
+    }
+}
+
+
+.map-navigation-region .map-tip-view,
+.map-center-region .map-tip-view,
+.map-top-left .map-tip-view,
+.map-top-center .map-tip-view,
+.map-top-right .map-tip-view,
+.map-basemap-region .map-tip-view,
+.map-middle-left .map-tip-view,
+.map-middle-right .map-tip-view,
+.map-bottom-left .map-tip-view,
+.map-bottom-center .map-tip-view,
+.map-bottom-right .map-tip-view {
+    border-radius: 0.25rem;
+    border: 1px solid #D9D9D9;
+    background: #FFFFFF;
+}
+
+.map-top-center .map-tip-view,
+.map-bottom-center .map-tip-view {
+    position: absolute;
+    left: 50%;
+    margin-left: -11.72em; /* Half the width of the map tip, so that it's centered. */
+}
+
+.map-bottom-center .map-tip-view {
+    bottom: 0;
+}
+
+.map-navigation-region .map-tip-view {
+    margin-top: 3px;
+}
+
+
+/* End Script: Mapping/modules/MapTips/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Search/CSS/medium.css ------------------------- */ 
+
+/* GLOBAL SEARCH (MEDIUM) ------------------------ */
+
+.SearchView, .SearchView.active {
+    vertical-align: top;
+    margin-right: 0.5em;
+    width: 18em;
+    float: right;
+}
+
+.global-search {
+    position: relative;
+    width: 100%;
+}
+
+.global-search .search-box {
+    position: relative;
+    width: 100%;
+}
+
+.global-search input {
+    width: 100%;
+    padding: 3px 30px 4px 9px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+    font-size: 1.6em;
+    color: #656169;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.global-search input:focus {
+    -webkit-user-modify: read-write-plaintext-only; /* Android 3.0+ fix */
+}
+
+.search-hints-region {
+    position: absolute;
+    width: 100%;
+    z-index: 200;
+}
+.hints-list {
+    overflow: hidden;
+}
+.hints-list .list-menu-item .content {
+    margin-right: 3.25em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hints-list .list-menu-icon {
+    font-size: 1.875em;
+}
+
+.hints-list .has-icon .list-menu-details,
+.hints-list .list-menu-details {
+    line-height: 1.875em;
+    max-width: 12em;
+}
+
+.refine-container {
+    width: 4em;
+}
+
+/* End Script: Mapping/modules/Search/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Shells/CSS/medium.css ------------------------- */ 
+
+/* SHELL (MEDIUM) -------------------------*/
+
+.medium-shell-main,
+.medium-shell-left,
+.medium-shell-right,
+.medium-shell-center {
+    position: absolute;
+}
+.medium-shell-left {
+    z-index: 300; /* Position it over the map for the resizable tab to overlay the map. */
+}
+
+.medium-shell-header {
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+.medium-shell-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.medium-shell-header,
+.medium-shell-bottom {
+	position: absolute;
+	display: inline-block;
+}
+
+.medium-shell-bottom {
+	overflow: hidden;
+}
+
+.medium-shell-left {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    margin-left: -1px;
+	border-right: 1px solid #D9D9D9;  
+    height: 100% !important;
+}
+
+.medium-shell-left.ui-resizable.panel-closed > .region.data-region {
+    display: none;
+}
+
+
+.medium-shell-bottom {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 600;
+    max-height: 100.2%;
+    background: #FFFFFF;
+}
+
+.medium-shell-main,
+.medium-shell-center {
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.medium-shell-center {
+}
+
+.collapse-tab a {
+    display: block;
+    width: 39px;
+    height: 42px;
+    margin-left: -1px;
+    border-bottom: 1px solid #D9D9D9;
+    border-right: 1px solid #D9D9D9;
+    border-left: 1px solid #F2F2F2;
+    border-bottom-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    -moz-border-bottom-right-radius: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    -webkit-tap-highlight-color: #DEF2FF;
+}
+
+.collapse-tab a:hover {
+    background-color: #FFFFFF;
+    opacity: 1;
+}
+
+.tab-open
+{
+    background: #FFFFFF url("../Images/Icons/chevron-left-16.png") no-repeat center center;
+}
+
+.tab-closed
+{
+    background: #FFFFFF url("../Images/Icons/chevron-right-16.png") no-repeat center center;
+}
+
+
+.shell-medium 
+{
+    height: 100%;
+}
+
+.shell-container-inner
+{
+    height: 100%;
+    position: relative;
+}
+
+.medium-shell-left 
+{
+    -ms-touch-action: none;
+}
+
+/* End Script: Mapping/modules/Shells/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Site/CSS/medium.css ------------------------- */ 
+.service-layers-failure {
+    width: 500px;
+}
+
+/* End Script: Mapping/modules/Site/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Toolbar/CSS/medium.css ------------------------- */ 
+/* START: Toolbar */
+
+
+/* START: Toolbar Tabs --------------- */
+.toolbar-tab-container {
+    position: relative;
+}
+
+.toolbar-tab {
+    position: relative;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.toolbar-tab {
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-bottom: none;
+}
+
+.toolbar-tab button {
+    cursor: pointer;
+    text-decoration: none;
+    color: #959398;
+}
+
+.toolbar-tab.tb-tab-active button {
+    color: #1B7DBF;
+}
+
+.toolbar-tab.tb-tab-active {
+    cursor: none;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-bottom: none;
+}
+
+.toolbar-item.button:active,
+.tbo-btn:active {
+    cursor: pointer;
+    border: 1px solid #C8E9FF;
+    background: #E9F6FF;
+}
+
+.tb-tab-active:before,
+.tb-tab-active:after {
+    content: "";
+    display: block;
+    width: 5px;
+    height: 5px;
+    border-bottom: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+    position: absolute;
+    bottom: 0px;
+}
+
+.tb-tab-active:before {
+    border-right: 1px solid #D9D9D9;
+    left: -6px;
+    -moz-box-shadow: 2px 2px 0 0 #FFFFFF;
+    -webkit-box-shadow: 2px 2px 0 0 #FFFFFF;
+    box-shadow: 2px 2px 0 0 #FFFFFF;
+}
+
+.tb-tab-active:after {
+    border-left: 1px solid #D9D9D9;
+    right: -6px;
+    -moz-box-shadow: -2px 2px 0 0 #FFFFFF;
+    -webkit-box-shadow: -2px 2px 0 0 #FFFFFF;
+    box-shadow: -2px 2px 0 0 #FFFFFF;
+}
+
+ul.toolbar-tab-control {
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 0.2em 0.5em 0 0.5em;
+}
+
+ul.toolbar-tab-control:after {
+    content: " ";
+    display: block;
+    clear: both;
+    width: 0;
+    height: 0;
+    visibility: hidden;
+}
+
+ul.toolbar-tab-control li {
+    display: block;
+    list-style-type: none;
+    float: left;
+    width: auto;
+}
+
+ul.toolbar-tab-control li button {
+    display: block;
+    padding: 0.3em 1.3em 0.3em 1em;
+    font-size: 1.15em;
+}
+/* END: Toolbar Tabs --------------- */
+
+
+.toolbar-body {
+    border-top: 1px solid #D9D9D9;
+    background: #FFFFFF;
+    margin-top: -1px; /* to hide the border behind the active tab */
+}
+
+.toolbar-body.large > .toolbar-group > h4 {
+    display: none; /* Quick Fix: hiding the extra tab group label from showing up. Should be removed from item templates */
+}
+
+.toolbar-group {
+    border-radius: 0.25rem;
+}
+
+.toolbar-item.toolbar-group.hidden {
+    display: none;
+}
+
+.toolbar-body > .toolbar-item.toolbar-group {
+    padding: 0.25em;
+}
+
+.toolbar-item.toolbar-group {
+    background: none;
+    margin: 0;
+    padding: 0;
+}
+
+.toolbar-item.toolbar-group > ul > li {
+    margin: 0.15em;
+}
+
+.toolbar-item.toolbar-group > ul > li .toolbar-item.toolbar-group > ul > li {
+    margin: 0.25em;
+}
+
+li .toolbar-item.toolbar-group {
+    background: #FFFFFF;
+}
+
+.toolbar-group > ul:after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.toolbar-item.button {
+    min-width: 4em;
+    max-width: 8em;
+    /*height: 5.25em;*/
+    padding:0;
+}
+
+.toolbar-item.button,
+.tbo-btn,
+.multi-tool-button {
+    -webkit-border-radius: 0.25em;
+    -moz-border-radius: 0.25em;
+    border-radius: 0.25em;
+    box-shadow: none;
+}
+
+/*.toolbar-item.multi-tool.button {
+    margin: 0.25em 0.05em !important;
+}
+.toolbar-group .multi-tool-button {
+    margin-top: -5px !important; /* Offset the height for the added borders and space between the two buttons 
+}*/
+
+/* START: Toolbar Options ----------------------- */
+.tbo-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+}
+/* END: Toolbar Options ----------------------- */
+
+/* ------ START: Small Toolbar Buttons ------ */
+
+.toolbar-group > .toolbar-small-layout:first-child {
+    min-height: 6.0em;
+}
+
+.toolbar-body .toolbar-small-layout li.toolbar-item {
+    position: relative;
+    display: block;
+    float: none;
+    line-height: 1em;
+    width: 8em;
+    height: 2.5em;
+    text-align: left;
+    padding: 0.65em;
+}
+/* Could not use nth-child because of IE8. Had to use the adjacent sibling selector to target li's instead for IE8 compatibility */
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li {
+    margin-top: -5.5em !important;
+}
+/* Could not use nth-child because of IE8. Had to use the adjacent sibling selector to target li's instead for IE8 compatibility */
+.toolbar-body .toolbar-small-layout li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.button {
+    margin-top: 0 !important;
+}
+
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.button {
+    margin-left: 8.5em !important;
+}
+
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.button {
+    margin-left: 16.75em !important;
+}
+
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.button {
+    margin-left: 25em !important;
+}
+
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.button {
+    margin-left: 33.25em !important;
+}
+
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.button {
+    margin-left: 41.5em !important;
+}
+
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.button {
+    margin-left: 49.75em !important;
+}
+
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.button {
+    margin-left: 58em !important;
+}
+
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.button {
+    margin-left: 66.25em !important;
+}
+
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.button {
+    margin-left: 74.5em !important;
+}
+
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.button {
+    margin-left: 82.75em !important;
+}
+
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li,
+.toolbar-body .toolbar-small-layout li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.toolbar-item + li.button {
+    margin-left: 91em !important;
+}
+
+.toolbar-body .toolbar-small-layout li.button img,
+.toolbar-body .toolbar-small-layout li.button span.icon,
+.toolbar-body .measurement-toolbar-view .toolbar-small-layout .toolbar-item.checkbox input {
+    position: absolute;
+    top: 0.6em;
+    left: 0.5em;
+    display: block;
+    height: 16px;
+    margin: 0 !important;
+    width: 16px;
+}
+.toolbar-body .toolbar-small-layout li button {
+    padding: 0.5em 1em;
+}
+.toolbar-body .toolbar-small-layout li button p,
+.toolbar-body .toolbar-small-layout li.toolbar-item label {
+    display: block;
+    padding-left: 1em;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box; /* Firefox, other Gecko */
+	box-sizing: border-box; 
+    margin-top: -1.4em;
+}
+/* ------ END: Small Toolbar Buttons ------ */
+
+/* ------ START: Flyout ------ */
+.toolbar-item.flyout {
+    height: 4.1em;
+}
+.flyout-menu .toolbar-item {
+    max-width: initial;
+    height: 4.5em !important;
+}
+
+/* ------ END: Flyout ------ */
+
+/* ------ START: Compact Toolbar ------ */
+.flyout-menu-floating-area {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 5em;
+}
+.no-touch .flyout-menu-floating-area {
+    overflow: hidden;
+}
+.flyout-menu-active-tool {
+    font-size: 1em;
+}
+/* ------ END: Compact Toolbar ------ */
+
+/* ------ START: Transient Toolbar ------ */
+
+.transient-toolbar {
+    min-height: 4.55em;
+}
+.transient-toolbar + .transient-measurement {
+    margin-top: -5.3em;
+    margin-left: 0em;
+}
+/* ------ END: Transient Toolbar ------ */
+
+/* End Script: Mapping/modules/Toolbar/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Workflow/Forms/Items/CSS/medium.css ------------------------- */ 
+
+/* FORM ITEMS (MEDIUM) -------------------------*/
+
+
+input[type='checkbox'],
+input[type='radio'],
+input[type='text'],
+select,
+textarea {
+   -webkit-tap-highlight-color: rgba(0,0,0,0);  
+}
+
+input[type='checkbox'] {
+    width: 24px;
+    height: 24px;
+}
+
+input[type='radio'] {
+    width: 24px;
+    height: 24px;
+}
+
+input[type='checkbox']:disabled,
+input[type='radio']:disabled {
+    opacity: 0.4;
+}
+
+button.datetime-btn {
+    width: 20px;
+    height: 22px;
+}
+
+.panel-scroll-container .autocomplete-menu {
+    position: relative;
+    border: none;
+    margin: 0px;
+    width: inherit;
+}
+
+/* End Script: Mapping/modules/Workflow/Forms/Items/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/infrastructure/menus/CSS/medium.css ------------------------- */ 
+/* MENU -------------------------*/
+
+.map-tip-actions .list-menu-item {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+/* End Script: Mapping/infrastructure/menus/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/infrastructure/results/CSS/medium.css ------------------------- */ 
+
+/* End Script: Mapping/infrastructure/results/CSS/medium.css ------------------------- */ 
+

@@ -1,0 +1,98 @@
+﻿/* Put custom desktop styling in this file. Put custom images in the Custom subfolder of the Images directory. */
+
+.banner{
+    border-bottom:1px solid #a0abb1 !important;
+}
+
+.collapsed.tree-expander{
+    background:url(../../Images/Icons/tree-expander-closed-light-16.png) 0.3em center no-repeat !important;
+}
+.expanded.tree-expander{
+    background-image:url(../../Images/Icons/tree-expander-open-light-16.png) !important;
+}
+
+.banner-text{
+    left:375px;
+    position:relative !important;
+}
+
+.banner-left-img:hover
+{
+    cursor:pointer;
+}
+
+.banner-text h1
+{
+    font-size:1.8em;
+    font-weight:normal;
+    /*margin-top:.2em;*/   
+}
+.banner-text h1.no-subtitle
+{
+    /*margin-top:.6em;*/
+}
+
+.banner-text h2{
+    font-weight:normal;
+}
+
+.wtm-button {
+    background-color: #c34500;
+    font-size:1.2em;
+}
+
+.layer-contents .display-name
+{
+    width:95% !important;
+}
+
+.panel-footer {
+    overflow:hidden !important;
+}
+
+select [multiple]
+{
+height:400px;
+}
+
+.BasemapSwitcherButtonView .flyout-menu-active-tool img {
+    max-height:30px;
+}
+.splash-paragraph {
+    width: 311px;   
+    font-size: 10px;
+}
+
+.banner-images{
+    height:98% !important;
+}
+
+.ScalebarView {
+    left:15px;
+}
+.scalebar-standout.scale-bar-container {
+    background-color:rgba(255,255,255,.5);
+    border:none;
+}
+
+.medium-shell-left{
+    z-index:auto;
+}
+.coords-select{
+    border:1px solid #DDDDDD;
+}
+
+#dijit_Menu_0 tr{
+    height:35px;    
+}
+#dijit_Menu_0 tr:hover{
+    background-color:rgba(128, 128, 128, 0.43);
+    cursor:pointer;
+}
+.dijitReset .dijitMenuItemIconCell
+{
+    padding-left:5px;
+}
+.legend-item-label{
+    width:80%;
+}
