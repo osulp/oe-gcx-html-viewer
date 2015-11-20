@@ -321,15 +321,10 @@ declare module geocortex.essentialsHtmlViewer {
      * Options used by `ViewerLoader` to load resources (prior to application initialization).
      */
     interface ViewerLoaderOptions {
-        /** URL prefix for locally hosted resources of the viewer loader's ResourceSet. Defaults to "./". */
-        loaderResourcePrefix?: string;
+        /** Prefix string prepended to all locally hosted resources. Defaults to "./". */
+        baseUrl?: string;
         /** Whether or not load Esri scripts locally or from the cloud. */
         useLocalEsriApi?: boolean;
-        /**
-         * Deprecated name for 'loaderResourcePrefix'.
-         * @deprecated 2.5.1
-         */
-        baseUrl?: string;
     }
 }
 declare module geocortex.essentialsHtmlViewer {
