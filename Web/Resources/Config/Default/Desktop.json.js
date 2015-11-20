@@ -1,6 +1,6 @@
 {
     "configuration": {
-        "version": "2.5.1",
+        "version": "2.5.2",
         "application": {
             "proxyUri": "proxy.ashx?",
             "allowUnsafeContent": true,
@@ -340,7 +340,9 @@
                             "backgroundColor": "#FFFFFF",
                             "backgroundImage": "Resources/Images/Banners/default-banner-bg.png",
                             "leftImage": "Resources/Images/Custom/oe-default-banner.png",
+							"leftImageDescription": "@language-banner-title",
                             "rightImage": "",
+                            "rightImageDescription": "Sponsor logo",
                             "height": 60
                         }
                     }
@@ -3755,7 +3757,7 @@
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                 "configuration": {                    
-                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/layer_test"                    
+                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/_planners_map_viewer"                    
                 },
                 "views": [
                     {

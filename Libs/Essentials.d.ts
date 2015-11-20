@@ -332,6 +332,22 @@ declare module geocortex.essentials.exportMap.BingEnvironment {
 }
 declare module geocortex.essentials.exportMap {
     /**
+     * Represents the dynamic definition of a layer that has been added to the map.
+     * @private
+     */
+    interface ExportDynamicMapLayerDefinition {
+        /** Arbitrary drawing info for the layer to include in the printing request made to Essentials. */
+        drawingInfo?: esri.layers.LayerDrawingOptions;
+        /** The dynamic source for this layer. Used so Essentials can create the dynamic layer. */
+        source?: esri.layers.LayerSource;
+        /** Display name for this layer. */
+        displayName?: string;
+        /** The current definition expression for this layer, if it has one. */
+        definitionExpression?: string;
+    }
+}
+declare module geocortex.essentials.exportMap {
+    /**
      * Represents a feature to include in the exported map.
      * @private
      */
@@ -376,8 +392,16 @@ declare module geocortex.essentials.exportMap {
     interface ExportMapLayerDefinition {
         /** The name of the layer.*/
         name: string;
-        /** Arbitrary drawing info for the layer to include in the printing request made to Essentials. */
+        /** Optional id of this layer. */
+        id?: number;
+        /** The definition expression for the export dynamic layer. Brought out of layerDefinition for Essentials. */
+        layerDef?: string;
+        /** This looks like it was being used by some piece of ExportMapTask and so it exists both here and in the underlying layerDefinition */
         drawingInfo?: any;
+        /** The display name for this layer. */
+        displayName?: string;
+        /** The dynamic definition for this layer. */
+        layerDefinition?: ExportDynamicMapLayerDefinition;
         /** A string representing the type of geometry contained in the export layer's features array. */
         geometryType: string;
     }
@@ -658,6 +682,7 @@ declare module geocortex.essentials.exportMap {
         private _esriMap;
         private _essentialsRestUrl;
         private _site;
+        private _internalLayerIdsToRemove;
         /**
          * Creates an instance of a {@link ExportMapTask}.
          * @param resource A resource which the Essentials ExportContext print will use. Can be of type {@link Map}, {@link PrintTemplate} or {@link Report}.
@@ -685,6 +710,11 @@ declare module geocortex.essentials.exportMap {
          * @return An {@link ExportContext} object representing the map's printing state.
          */
         private _getPrintingObjectForEssentials();
+        /**
+         * Removes any layers from the printing context which are not to be printed. Ie: Snapping layers
+         * @param exportContext The {@link ExportContext} which will be modified.
+         */
+        private _removeInternalLayers(exportContext);
         /**
          * Converts picture marker symbols from relative urls into encoded data or absolute urls.
          * @param exportContext The {@link ExportContext} which will be modified.
@@ -759,6 +789,19 @@ declare module geocortex.essentials.exportMap {
          * @param exportContext The {@link ExportContext} which will be modified.
          */
         private _removeAttributes(exportContext);
+        /**
+         * Important operations to run at the END of {@link ExportContext} modifications.
+         * Introduced as part of GVH-6002.
+         * @param exportContext The {@link ExportContext}.
+        */
+        private _finalizePrintingContext(exportContext);
+        /**
+         * Modifies the {@link ExportContext} for layers so that Essentials can associate them back to their original site configuration.
+         * @param exportContext the {@link ExportContext} to be modified.
+         * @param esriMap the {@link esri.Map} that contains the service layers.
+         * @param site The {@link essentials.Site}.
+         */
+        private _fixMapServiceIds(exportContext, esriMap, site);
         /**
          * Creates the request parameters for the ExportContext print operation.
          * @param buildParameters The {@link WebMapBuilderParameters} which the print operation will be created from.
@@ -1562,7 +1605,29 @@ declare module geocortex.essentials {
         * secured ArcGIS Portal hosted services.
         */
         static arcGisPortalToken: TokenResult;
-        /** The Geocortex Essentials token for all requests. */
+        private static _anchorScratch;
+        private static _pathCleaner;
+        /**
+         * Custom token scopes to apply.
+         */
+        static tokenScopes: {
+            [partialUri: string]: boolean | string;
+        };
+        /**
+         * Returns the token for a scope URI.
+         * @param uri The URI to return the token for.
+         */
+        static getTokenForScope(uri: string): string;
+        /**
+         * Sets the default Essentials token for all requests satisfying the default scope.
+         * @param token The default token to set.
+         * @param scope The URI scope for which the token applies.
+         */
+        static setDefaultToken(token: string, scope: string): void;
+        /**
+         * The Geocortex Essentials token for all requests satisfying the default scopes.
+         * @deprecated 2.5.1 Use `getTokenForScope` instead. This will ensure that tokens will not be brokered for non-Essentials URIs (unless explicitly instructed to do so).
+         */
         static token: string;
         /**
          * Initializes a new instance of the {@link geocortex.essentials.RestHelperHTTPService} class.
@@ -4202,6 +4267,7 @@ declare module geocortex.essentials {
           * @returns Returns the appropriate token for the given type.
           */
         getTokenFromPrincipal(url: string, type: any): string;
+        private _updateDefaultToken(token);
         /**
          * Initializes the {@link Site} from the server.
          * {@link Site} needs to override the base initialize because it needs to initialize from more than one rest endpoint.</p>
@@ -5242,7 +5308,7 @@ declare module geocortex.forms.items {
          */
         constructor(xmlNode: Element, formDefinition?: FormDefinition);
         /**
-         * Clears the data items.
+         * Clears the data items. This includes the currently-selected (default) item.
          */
         clearDataItems(): void;
         /** @private */

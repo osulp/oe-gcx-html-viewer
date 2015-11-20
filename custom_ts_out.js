@@ -1,6 +1,6 @@
 /// <reference path="../../../Libs/Framework.d.ts" />
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
-var __extends = (this && this.__extends) || function (d, b) {
+var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -43,7 +43,7 @@ var oe;
 var oe;
 (function (oe) {
     var elevation;
-    (function (elevation_1) {
+    (function (_elevation) {
         var demURL = "http://sampleserver5.arcgisonline.com/arcgis/rest/services/Elevation/WorldElevations/MapServer";
         var googleURL = "http://maps.googleapis.com/maps/api/elevation/json?locations=";
         var identify = new esri.tasks.IdentifyTask(demURL);
@@ -122,7 +122,7 @@ var oe;
             };
             return ElevationModuleViewModel;
         })(geocortex.framework.ui.ViewModelBase);
-        elevation_1.ElevationModuleViewModel = ElevationModuleViewModel;
+        _elevation.ElevationModuleViewModel = ElevationModuleViewModel;
     })(elevation = oe.elevation || (oe.elevation = {}));
 })(oe || (oe = {}));
 /// <reference path="../../../Libs/Framework.d.ts" />
@@ -312,7 +312,6 @@ var oe;
                 var _this = this;
                 _this.app.commandRegistry.command("processRasterFunctions").register(this, function () {
                     var imageServicesArray = [];
-                    //find Image services
                     for (var x = 0; x < site.essentialsMap.mapServices.length; x++) {
                         if (site.essentialsMap.mapServices[x].mapServiceType === "Image") {
                             var service = {};

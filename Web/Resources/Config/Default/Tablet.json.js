@@ -1,6 +1,6 @@
 {
     "configuration": {
-        "version": "2.5.1",
+        "version": "2.5.2",
         "application": {
             "proxyUri": "proxy.ashx?",
             "allowUnsafeContent": true,
@@ -341,7 +341,7 @@
                             "backgroundImage": "Resources/Images/Banners/default-banner-bg.png",
                             "leftImage": "Resources/Images/Custom/oe-default-banner.png",
                             "rightImage": "",
-                            "rightImageDescription": "",
+                            "rightImageDescription": "Sponsor Logo",
                             "height": 60
                         }
                     }

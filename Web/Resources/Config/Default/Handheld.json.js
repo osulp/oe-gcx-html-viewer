@@ -1,6 +1,6 @@
 {
     "configuration": {
-        "version": "2.5.1",
+        "version": "2.5.2",
         "application": {
             "proxyUri": "proxy.ashx?",
             "allowUnsafeContent": false,
