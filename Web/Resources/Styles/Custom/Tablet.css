@@ -13,14 +13,17 @@
     background-size:20px 20px !important;
 }
 
-.banner-text{
-    left:375px;
+.banner-images img{
     position:relative !important;
 }
-
 .banner-left-img:hover
 {
     cursor:pointer;
+}
+
+.banner-right-img{
+    max-height:50px;
+    margin-bottom:.4em !important;
 }
 
 .banner-text h1

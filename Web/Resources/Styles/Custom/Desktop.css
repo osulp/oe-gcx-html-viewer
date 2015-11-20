@@ -11,14 +11,18 @@
     background-image:url(../../Images/Icons/tree-expander-open-light-16.png) !important;
 }
 
-.banner-text{
-    left:375px;
+.banner-images img{
     position:relative !important;
 }
 
 .banner-left-img:hover
 {
     cursor:pointer;
+}
+
+.banner-right-img{
+    max-height:50px;
+    margin-bottom:.4em !important;
 }
 
 .banner-text h1

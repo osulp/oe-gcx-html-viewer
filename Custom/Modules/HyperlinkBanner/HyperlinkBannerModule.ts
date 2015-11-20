@@ -31,9 +31,8 @@ module oe.hyperlink_banner {
                     window.open(linkUri, '_blank');                    
                 }
             });
-            //if ($('.banner-subtitle').html() === "") {
-            //    $('.banner-title').addClass("no-subtitle");
-            //}          
+            //adds support for sponsor logo image to be next to the OE banner image before the banner text.
+            $('.banner-text').css("left", (/\.(gif|jpg|jpeg|tiff|png)$/i).test($('.banner-right-img')[0]["src"]) ? $('.banner-right-img').width() + 370 + "px" : "370px");          
             
         }
     }

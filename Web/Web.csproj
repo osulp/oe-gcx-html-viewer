@@ -74,7 +74,7 @@
     <Content Include="Resources\Compiled\Mapping.js" />
     <Content Include="Resources\Config\CacheManifestConfig.xml" />
     <Content Include="Resources\Config\Default\Desktop.json.js" />
-    <Content Include="Resources\Config\Default\Desktop_ORIG.json.js" />
+    <Content Include="Resources\Config\Default\_archive\Desktop_ORIG.json.js" />
     <Content Include="Resources\Config\Default\Handheld.json.js" />
     <Content Include="Resources\Config\Default\Tablet.json.js" />
     <Content Include="Resources\Config\OfflineManifestParameters.xml" />
@@ -85,6 +85,7 @@
     <Content Include="Resources\Images\blank-tile.png" />
     <Content Include="Resources\Images\body-bg.gif" />
     <Content Include="Resources\Images\Custom\broadcasting.png" />
+    <Content Include="Resources\Images\Custom\dlcd_logo.png" />
     <Content Include="Resources\Images\Custom\GotoLayers.png" />
     <Content Include="Resources\Images\Custom\oe-default-banner.png" />
     <Content Include="Resources\Images\Custom\splash-logo.png" />
