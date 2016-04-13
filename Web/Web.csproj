@@ -74,6 +74,7 @@
     <Content Include="Resources\Compiled\Mapping.js" />
     <Content Include="Resources\Config\CacheManifestConfig.xml" />
     <Content Include="Resources\Config\Default\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\DesktopOE.json.js" />
     <Content Include="Resources\Config\Default\_archive\Desktop_ORIG.json.js" />
     <Content Include="Resources\Config\Default\Handheld.json.js" />
     <Content Include="Resources\Config\Default\Tablet.json.js" />

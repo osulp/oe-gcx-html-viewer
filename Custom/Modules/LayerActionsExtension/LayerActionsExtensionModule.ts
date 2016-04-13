@@ -34,7 +34,7 @@ module oe.layer_actions_extension {
                 // Show the text that was passed into the command.
                 // Metadata links are the first link in the description so split and send to first url.
                 var metadataLink = layer.description.split("http");
-                metadataLink = metadataLink.length > 1 ? "http" + metadataLink[1].split(" ")[0].replace("Download","").replace("download","") : "";
+                metadataLink = metadataLink.length > 1 ? "http" + metadataLink[1].split(" ")[0].replace("Download:", "").replace("download:", "").replace("Download","").replace("download","") : "";
                 if (metadataLink !== "") {
                     window.open(metadataLink, "_blank");
                 }
@@ -56,7 +56,10 @@ module oe.layer_actions_extension {
                 else {
                     return true;
                 }
-            });       
+                });  
+            this.app.commandRegistry.command("showServiceInfo").register(this, function (layer) {
+                window.open(layer.getLayerUrl(), "_blank");
+            });      
             this.app.commandRegistry.command("showDownload").register(this, function (layer) {
                 // Show the text that was passed into the command.
                 // Download links are the second link in the description so split and send to second url.

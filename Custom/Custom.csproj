@@ -9,7 +9,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
     <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -46,6 +46,7 @@
     <TypeScriptCompile Include="Modules\Elevation\ElevationModuleView.ts" />
     <TypeScriptCompile Include="Modules\Elevation\ElevationModuleViewModel.ts" />
     <TypeScriptCompile Include="Modules\HyperlinkBanner\HyperlinkBannerModule.ts" />
+    <TypeScriptCompile Include="Modules\M49\M49Module.ts" />
     <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModule.ts" />
     <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModuleView.ts" />
     <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModuleViewModel.ts" />

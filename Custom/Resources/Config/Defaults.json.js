@@ -104,8 +104,8 @@
                 "configuration": {}                                            
             }, 
             {
-                "moduleName": "AddCommunityData",
-                "moduleType": "oe.add_community_data.AddCommunityDataModule",
+                "moduleName": "M49",
+                "moduleType": "oe.M49.M49Module",
                 "libraryId": "Custom",
                 "configuration": {}                                            
             }, 
@@ -2963,7 +2963,7 @@
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                 "configuration": {                    
-                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/stream_classification/"                    
+                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root"                    
                 },
                 "views": [
                     {

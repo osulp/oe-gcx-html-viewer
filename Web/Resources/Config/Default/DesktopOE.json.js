@@ -104,8 +104,8 @@
                 "configuration": {}                                            
             }, 
             {
-                "moduleName": "M49",
-                "moduleType": "oe.M49.M49Module",
+                "moduleName": "AddCommunityData",
+                "moduleType": "oe.add_community_data.AddCommunityDataModule",
                 "libraryId": "Custom",
                 "configuration": {}                                            
             }, 
@@ -1920,13 +1920,13 @@
                                     "description": "@language-menu-zoom-initial-extent-desc",
                                     "command": "ZoomToInitialExtent"
                                 },
-                               {
-                                   "iconUri": "{ViewerConfigUri}../../../Resources/Images/Custom/profile-tool-24.png",
-                                   "text": "Calculate M49 Constraints",
-                                   "description": "Find the percent area constrained by M49 overlays",
-                                   "command": "RunWorkflowById",
-                                   "commandParameter": "calculateConstraints"
-                               }
+                                {
+                                    "iconUri": "Resources/Images/Icons/bookmark-24.png",
+                                    "text": "@language-menu-bookmark-add",
+                                    "description": "@language-menu-bookmark-add-desc",
+                                    "command": "ShowAddBookmark",
+                                    "hideOnDisable": true
+                                }
                             ]
                         }
                     ]
@@ -3763,7 +3763,7 @@
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                 "configuration": {                    
-                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root"                    
+                    "siteUri": "http://rempelm-op9020.tss.oregonstate.edu/Geocortex/Essentials/REST/sites/m49"                    
                 },
                 "views": [
                     {

@@ -2514,6 +2514,14 @@
                                     "hideOnDisable": true
                                 },
                                 {
+                                    "text": "View Service Info",
+                                    "description": "View the layer web service information",
+                                    "iconUri": "Resources/Images/Icons/window-new-24.png",
+                                    "command": "showServiceInfo",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
                                     "text": "Download layer",
                                     "description": "Download the layer",
                                     "iconUri": "Resources/Images/Icons/download-24.png",

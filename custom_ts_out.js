@@ -3,8 +3,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var oe;
 (function (oe) {
@@ -157,7 +156,11 @@ var oe;
                     }
                 });
                 //adds support for sponsor logo image to be next to the OE banner image before the banner text.
-                $('.banner-text').css("left", (/\.(gif|jpg|jpeg|tiff|png)$/i).test($('.banner-right-img')[0]["src"]) ? $('.banner-right-img').width() + 370 + "px" : "370px");
+                try {
+                    $('.banner-text').css("left", (/\.(gif|jpg|jpeg|tiff|png)$/i).test($('.banner-right-img')[0]["src"]) ? $('.banner-right-img').width() + 370 + "px" : "370px");
+                }
+                catch (ex) { }
+                ;
             };
             return HyperlinkBannerModule;
         })(geocortex.framework.application.ModuleBase);
@@ -194,7 +197,7 @@ var oe;
                     // Show the text that was passed into the command.
                     // Metadata links are the first link in the description so split and send to first url.
                     var metadataLink = layer.description.split("http");
-                    metadataLink = metadataLink.length > 1 ? "http" + metadataLink[1].split(" ")[0].replace("Download", "").replace("download", "") : "";
+                    metadataLink = metadataLink.length > 1 ? "http" + metadataLink[1].split(" ")[0].replace("Download:", "").replace("download:", "").replace("Download", "").replace("download", "") : "";
                     if (metadataLink !== "") {
                         window.open(metadataLink, "_blank");
                     }
@@ -216,6 +219,9 @@ var oe;
                     else {
                         return true;
                     }
+                });
+                this.app.commandRegistry.command("showServiceInfo").register(this, function (layer) {
+                    window.open(layer.getLayerUrl(), "_blank");
                 });
                 this.app.commandRegistry.command("showDownload").register(this, function (layer) {
                     // Show the text that was passed into the command.
@@ -284,6 +290,56 @@ var oe;
         })(geocortex.framework.ui.ViewModelBase);
         layer_actions_extension.LayerActionsExtensionModuleViewModel = LayerActionsExtensionModuleViewModel;
     })(layer_actions_extension = oe.layer_actions_extension || (oe.layer_actions_extension = {}));
+})(oe || (oe = {}));
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+var oe;
+(function (oe) {
+    var M49;
+    (function (M49) {
+        var M49Module = (function (_super) {
+            __extends(M49Module, _super);
+            function M49Module(app, lib) {
+                _super.call(this, app, lib);
+            }
+            M49Module.prototype.initialize = function (config) {
+                var _this = this;
+                var site = this.app.site;
+                if (site && site.isInitialized) {
+                    this._onSiteInitialized(site);
+                }
+                else {
+                    this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, function (args) {
+                        _this._onSiteInitialized(args);
+                    });
+                }
+            };
+            M49Module.prototype._onSiteInitialized = function (site) {
+                var _this = this;
+                window["_calcAreas"] = [];
+                // Register an implementation of custom commands.
+                this.app.commandRegistry.command("addCalcAreas").register(this, function (calcAreas) {
+                    //calcArea for each AOI
+                    //Allows for adding/deleting dynamically in the UI
+                    //Example of the json object the receive:
+                    //{
+                    //    "aoi_id": {id},
+                    //    "TotalArea": { TotArea }, 
+                    //    "HVFarmSoil_IntersectedArea":{ dblHVFarmSoil },
+                    //    "HVFarmDairy_IntersectedArea": { dblHVFarmDairy },
+                    //    "HVForest1_IntersectedArea": { dblHVForest1 },
+                    //    "HVForest3_IntersectedArea": { dblHVForest3 }
+                    //}                
+                    window["_calcAreas"].push(JSON.parse(calcAreas));
+                });
+                this.app.commandRegistry.command("removeCalcAreas").register(this, function (index) {
+                    window["_calcAreas"].splice(index, 1);
+                });
+            };
+            return M49Module;
+        })(geocortex.framework.application.ModuleBase);
+        M49.M49Module = M49Module;
+    })(M49 = oe.M49 || (oe.M49 = {}));
 })(oe || (oe = {}));
 /// <reference path="../../../Libs/Framework.d.ts" />
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
