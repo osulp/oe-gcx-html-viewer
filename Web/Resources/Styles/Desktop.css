@@ -415,24 +415,6 @@ a.list-menu-item {
 /* End Script: Mapping/modules/FeatureDetails/CSS/large.css ------------------------- */ 
 
 
-/* Begin Script: Mapping/modules/FeatureLayer/CSS/large.css ------------------------- */ 
-
-/* SYNC LOG (LARGE) -------------------------*/
-
-.sync-log .scroll {
-    width: 400px;
-    height: 300px;
-    overflow-y: auto;
-}
-
-.feature-layer-details input {
-    width: 24px;
-    height: 18px;
-}
-
-/* End Script: Mapping/modules/FeatureLayer/CSS/large.css ------------------------- */ 
-
-
 /* Begin Script: Mapping/modules/Geolocate/CSS/large.css ------------------------- */ 
 /* START: Geolocate --------------- */
 
@@ -478,9 +460,21 @@ a.list-menu-item {
 /* End Script: Mapping/modules/Geolocate/CSS/large.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/GlobalMenu/CSS/large.css ------------------------- */ 
+.GlobalMenuView {
+    display: none;
+}
+.wtm-active .GlobalMenuView {
+    display: block;
+}
+
+/* End Script: Mapping/modules/GlobalMenu/CSS/large.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/HeatMaps/CSS/large.css ------------------------- */ 
 .HeatMapsView .ui-slider-horizontal .ui-slider-handle {
     width: 1.5em;
+    overflow: hidden;
 }
 
 /* End Script: Mapping/modules/HeatMaps/CSS/large.css ------------------------- */ 
@@ -513,6 +507,13 @@ a.list-menu-item {
 }
 
 /* End Script: Mapping/modules/LayerList/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Map/CSS/large.css ------------------------- */ 
+body {
+}
+
+/* End Script: Mapping/modules/Map/CSS/large.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/MapTips/CSS/large.css ------------------------- */ 
@@ -666,6 +667,16 @@ a.list-menu-item {
     background-color: #F7F7F7;
 }
 
+.hints-list .has-icon .list-menu-details,
+.hints-list .list-menu-details {
+    max-width: 15em;
+}
+
+.hints-list .has-icon.refine-disabled .list-menu-details,
+.hints-list .refine-disabled .list-menu-details {
+    max-width: 18em;
+}
+
 .refine-btn {
     filter: alpha(opacity=50);
     opacity: 0.50;
@@ -677,6 +688,11 @@ a.list-menu-item {
 }
 
 /* End Script: Mapping/modules/Search/CSS/large.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Selection/CSS/large.css ------------------------- */ 
+
+/* End Script: Mapping/modules/Selection/CSS/large.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/Shells/CSS/large.css ------------------------- */ 
@@ -720,6 +736,11 @@ a.list-menu-item {
     margin-left: -1px;
     border-right: 1px solid #D9D9D9;
     height: 100% !important;
+    overflow: hidden;
+}
+
+.large-shell-left.panel-closed {
+    display: none;
 }
 
 .large-shell-left.ui-resizable.panel-closed > .region.data-region {
@@ -812,11 +833,11 @@ a.list-menu-item {
 {
     cursor: pointer;
     text-decoration: none;
-    color: #959398;
+    color: #666666;
 }
 .toolbar-tab.tb-tab-active button,
 .toolbar-tab button:hover {
-    color: #1B7DBF;
+    color: #1A72C4;
 }
 .toolbar-tab:hover {
     border: 1px solid #D9D9D9;
@@ -866,6 +887,7 @@ ul.toolbar-tab-control {
     margin: 0;
     padding: 0.2em 0.25em 0 0.25em;
     list-style: none;
+    overflow: hidden;
 }
 
 ul.toolbar-tab-control:after {
@@ -1226,6 +1248,21 @@ button {
 
 
 /* Begin Script: Mapping/infrastructure/results/CSS/large.css ------------------------- */ 
+.large-shell-bottom .paging-result-info,
+.large-shell-bottom .paging-buttons {
+    display: inline-block;  
+    height: 2em;
+    padding: 0.5em 0;  
+}
+.large-shell-bottom .paging-control-inner {
+    float: right;
+}
+.large-shell-bottom .paging-control-inner:after {
+    content: "";
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
 
 /* End Script: Mapping/infrastructure/results/CSS/large.css ------------------------- */ 
 

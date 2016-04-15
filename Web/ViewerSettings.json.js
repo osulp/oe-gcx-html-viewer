@@ -1,0 +1,4 @@
+{
+	"viewerSettings": [],
+	"endpoints": []
+}

@@ -22,3 +22,4 @@ dojo.require("esri.toolbars.edit");
 dojo.require("esri.dijit.OverviewMap");
 dojo.require("esri.urlUtils");
 dojo.require("esri.SnappingManager");
+require(["esri/geometry/geometryEngineAsync"], function(m) { esri.geometry.geometryEngineAsync = m; });

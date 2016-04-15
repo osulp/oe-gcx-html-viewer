@@ -63,7 +63,7 @@
 .shell-small .wtm-button {
     width: 9.3em;
     height: 100%;
-    background-color: #197DC9;
+    background-color: #1A72C4;
     opacity: 1;
     padding: 0 0.7em 0.25em 0.7em;
     font-size: 1.5em;
@@ -178,7 +178,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background: #197DC9;
+    background: #1A72C4;
 }
 
 .shell-small .toolbar-toggle-button {
@@ -384,6 +384,7 @@
     opacity: 1;
     -webkit-transform: translate3d(0, 100%, 1px);
     transform: translate3d(0, 100%, 1px);
+    z-index: 500;
 }
 
 
@@ -475,6 +476,9 @@
         .shell-small .region.header-region .view.inactive {
             display: block;
         }
+        .shell-small .region.header-region.region-inactive .toolbar-toggle-button {
+            display: none;
+        }
 
         .shell-small .region.header-region .view.IWantToMenuButtonView {
             left: 0;
@@ -515,6 +519,9 @@
             right: 0px;
             top: 0;
             margin: 0;
+        }
+        .shell-small .region.header-region .view.CompactToolbarButtonView {
+        
         }
 
         .shell-small .region.header-region .view.CompactToolbarButtonView .toolbar-toggle-button {
