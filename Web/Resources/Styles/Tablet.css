@@ -446,19 +446,6 @@ html.dj_android .ui-datepicker {
 /* End Script: Mapping/modules/FeatureDetails/CSS/medium.css ------------------------- */ 
 
 
-/* Begin Script: Mapping/modules/FeatureLayer/CSS/medium.css ------------------------- */ 
-
-/* SYNC LOG (MEDIUM) -------------------------*/
-
-.sync-log .scroll {
-    width: 400px;
-    height: 300px;
-    overflow-y: auto;
-}
-
-/* End Script: Mapping/modules/FeatureLayer/CSS/medium.css ------------------------- */ 
-
-
 /* Begin Script: Mapping/modules/Geolocate/CSS/medium.css ------------------------- */ 
 /* START: Geolocate --------------- */
 .geolocate-list .list-menu-item:first-child {
@@ -474,6 +461,17 @@ html.dj_android .ui-datepicker {
 /* END: Geolocate --------------- */
 
 /* End Script: Mapping/modules/Geolocate/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/GlobalMenu/CSS/medium.css ------------------------- */ 
+.GlobalMenuView {
+    display: none;
+}
+.wtm-active .GlobalMenuView {
+    display: block;
+}
+
+/* End Script: Mapping/modules/GlobalMenu/CSS/medium.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/Integration/CSS/medium.css ------------------------- */ 
@@ -528,7 +526,7 @@ html.dj_android .ui-datepicker {
     border-bottom: none;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
-    color: #1B7DBF;
+    color: #1A72C4;
     opacity: 1.0;
     filter: none;
 }
@@ -685,6 +683,22 @@ html.dj_android .ui-datepicker {
 /* End Script: Mapping/modules/MapTips/CSS/medium.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/Project/CSS/medium.css ------------------------- */ 
+.filter-box {
+    height: 4em;
+}
+
+.project-selector-tools {
+    height: 3.2em;
+}
+
+.projects-list .list-menu {
+    top: 7.2em;
+}
+
+/* End Script: Mapping/modules/Project/CSS/medium.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/Search/CSS/medium.css ------------------------- */ 
 
 /* GLOBAL SEARCH (MEDIUM) ------------------------ */
@@ -746,11 +760,21 @@ html.dj_android .ui-datepicker {
     max-width: 12em;
 }
 
+.hints-list .has-icon.refine-disabled .list-menu-details,
+.hints-list .refine-disabled .list-menu-details {
+    max-width: 16em;
+}
+
 .refine-container {
     width: 4em;
 }
 
 /* End Script: Mapping/modules/Search/CSS/medium.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Selection/CSS/medium.css ------------------------- */ 
+
+/* End Script: Mapping/modules/Selection/CSS/medium.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/Shells/CSS/medium.css ------------------------- */ 
@@ -783,10 +807,6 @@ html.dj_android .ui-datepicker {
 .medium-shell-bottom {
 	position: absolute;
 	display: inline-block;
-}
-
-.medium-shell-bottom {
-	overflow: hidden;
 }
 
 .medium-shell-left {
@@ -905,11 +925,11 @@ html.dj_android .ui-datepicker {
 .toolbar-tab button {
     cursor: pointer;
     text-decoration: none;
-    color: #959398;
+    color: #666666;
 }
 
 .toolbar-tab.tb-tab-active button {
-    color: #1B7DBF;
+    color: #1A72C4;
 }
 
 .toolbar-tab.tb-tab-active {
@@ -1012,15 +1032,15 @@ ul.toolbar-tab-control li button {
     margin: 0;
     padding: 0;
 }
-
+/*
 .toolbar-item.toolbar-group > ul > li {
     margin: 0.15em;
 }
 
-.toolbar-item.toolbar-group > ul > li .toolbar-item.toolbar-group > ul > li {
+*/.toolbar-item.toolbar-group > ul > li .toolbar-item.toolbar-group > ul > li {
     margin: 0.25em;
 }
-
+    
 li .toolbar-item.toolbar-group {
     background: #FFFFFF;
 }
@@ -1050,12 +1070,12 @@ li .toolbar-item.toolbar-group {
     box-shadow: none;
 }
 
-/*.toolbar-item.multi-tool.button {
+.toolbar-item.multi-tool.button {
     margin: 0.25em 0.05em !important;
 }
 .toolbar-group .multi-tool-button {
-    margin-top: -5px !important; /* Offset the height for the added borders and space between the two buttons 
-}*/
+    margin-top: -5px !important; /* Offset the height for the added borders and space between the two buttons */
+}
 
 /* START: Toolbar Options ----------------------- */
 .tbo-checkbox input[type="checkbox"] {
@@ -1069,7 +1089,6 @@ li .toolbar-item.toolbar-group {
 .toolbar-group > .toolbar-small-layout:first-child {
     min-height: 6.0em;
 }
-
 .toolbar-body .toolbar-small-layout li.toolbar-item {
     position: relative;
     display: block;
@@ -1195,13 +1214,13 @@ li .toolbar-item.toolbar-group {
 /* ------ END: Small Toolbar Buttons ------ */
 
 /* ------ START: Flyout ------ */
-.toolbar-item.flyout {
+/*.toolbar-item.flyout {
     height: 4.1em;
 }
 .flyout-menu .toolbar-item {
     max-width: initial;
     height: 4.5em !important;
-}
+}*/
 
 /* ------ END: Flyout ------ */
 
@@ -1225,7 +1244,6 @@ li .toolbar-item.toolbar-group {
     min-height: 4.55em;
 }
 .transient-toolbar + .transient-measurement {
-    margin-top: -5.3em;
     margin-left: 0em;
 }
 /* ------ END: Transient Toolbar ------ */
@@ -1287,6 +1305,21 @@ button.datetime-btn {
 
 
 /* Begin Script: Mapping/infrastructure/results/CSS/medium.css ------------------------- */ 
+.medium-shell-bottom .paging-result-info,
+.medium-shell-bottom .paging-buttons {
+    display: inline-block;  
+    height: 2em;
+    padding: 0.5em 0;  
+}
+.medium-shell-bottom .paging-control-inner {
+    float: right;
+}
+.medium-shell-bottom .paging-control-inner:after {
+    content: "";
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
 
 /* End Script: Mapping/infrastructure/results/CSS/medium.css ------------------------- */ 
 

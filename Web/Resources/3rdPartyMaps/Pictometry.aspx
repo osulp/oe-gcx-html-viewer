@@ -16,15 +16,8 @@
 
     <script runat="server">
     
-        /**#
-         * Note: This comment will be removed during the build process (if wrapped by hash tags).
-         * If you change the 'ApiKey' or 'SecretKey' variable name, the 3rd party test (Testing/test/release-package/viewer)
-         * and post build task (_SolutionItems/_Build/Common/Targets/Geocortex.Common.targets) will need to be updated.
-         * 
-         * This key is only valid on http://localhost/
-        #*/
-        protected static string ApiKey = "217DD3D3A9240810D4BFE9E0F9E723E7";
-        protected static string SecretKey = "28F23E74530E5EFFDDECA0C75FFF1E2D56342EF7CDFD067FF800CF5ADDDB97D16AAE53897D1DE038D704FD7211A14975E64AD81218617F3563028B5EE5642DFCE6F79B64AD171057E752B99A1F779825164225D4599DF2DE3240576099750DE7AC7A508EA7CB5E332CB0024077978CAE019EF6DBDB49203F78C353EDDFE80530";
+        protected static string ApiKey = "";
+        protected static string SecretKey = "";
         public string IpaLoadUrl = "http://pol.pictometry.com/ipa/v1/load.php";
         public string IpaJsLibUrl = "http://pol.pictometry.com/ipa/v1/embed/host.php?apikey=" + ApiKey;
         public string IframeId = "pictometry_ipa";

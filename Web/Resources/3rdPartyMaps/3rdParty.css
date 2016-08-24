@@ -5,25 +5,9 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Segoe UI","Helvetica Neue","Droid Sans",Helvetica,Arial,sans-serif;
     background: #FFFFFF;
     position: relative;
-}
-
-button {
-    border: 0;
-    box-shadow: none;
-    background: none;
-    margin: 0;
-    padding: 0;
-    font-weight: normal;
-    font-family: "Segoe UI","Helvetica Neue","Droid Sans",Helvetica,Arial,sans-serif;
-    text-align: left;
-    font-size: 1em;
-}
-
-button {
-    cursor: pointer;
 }
 
 iframe, 
@@ -75,11 +59,20 @@ iframe {
     background-image: url("../Images/Icons/location-direction-blue-32.png");
 }
 
-button {
+.panel-action-button button {
+    border: 0;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    font-family: "Segoe UI","Helvetica Neue","Droid Sans",Helvetica,Arial,sans-serif;
+    text-align: left;
+    font-size: 1em;
     width: 1.5em;
     height: 1.5em;
     background-repeat: no-repeat;
     background-position: center center;
+    cursor: pointer;
 }
 
 .window-popout {

@@ -272,6 +272,20 @@ a.list-menu-item {
 /* End Script: Mapping/modules/Bookmarks/CSS/small.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/ContextMenu/CSS/small.css ------------------------- */ 
+.MapContextMenuView .map-menu-coordinates,
+.MapContextMenuView .map-menu-reverse-geocode {
+   background-color: #EEEEEE;
+   padding: 0.25em 1em;
+   border-bottom: 1px solid #D9D9D9;
+}
+.MapContextMenuView .map-menu-reverse-geocode b {
+    display: block
+}
+
+/* End Script: Mapping/modules/ContextMenu/CSS/small.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/FeatureDetails/CSS/small.css ------------------------- */ 
 .region-container.feature-region {
     width: 100%;
@@ -341,6 +355,14 @@ a.list-menu-item {
 /* End Script: Mapping/modules/Geolocate/CSS/small.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/GlobalMenu/CSS/small.css ------------------------- */ 
+.list-menu.global-menu {
+    padding-bottom: .5em;
+}
+
+/* End Script: Mapping/modules/GlobalMenu/CSS/small.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/Info/CSS/small.css ------------------------- */ 
 .screen-region .HomePanelContainerView {
     top: 0px;
@@ -359,7 +381,7 @@ a.list-menu-item {
 /* I WANT TO MENU  (SMALL)-------------------------*/
 
 .toolbar td.IWantToMenuView {
-    background: #1B7DBF;
+    background: #1A72C4;
 }
 
 .toolbar td.IWantToMenuView span {
@@ -378,7 +400,7 @@ a.list-menu-item {
 }
 
 .toolbar td.IWantToMenuView.tb-view-active {
-    background: #197DC9;
+    background: #1A72C4;
 }
 
 .toolbar .IWantToMenuView img {
@@ -419,7 +441,7 @@ a.list-menu-item {
     border-radius: 0;
 }
 .wtm-list h2 {
-    background: #197DC9;
+    background: #1A72C4;
     color: #FFFFFF;
     padding: 0.42em 1em; 
     font-weight: normal;
@@ -503,7 +525,7 @@ a.list-menu-item {
     background: transparent!important;
     border: 0!important;
     height: 4em!important;
-    width: 4em!important;
+    width: 2.5em!important;
     top: -2em!important;
 }
 .ui-slider-handle::after {
@@ -782,6 +804,111 @@ ui-slider-handle.ui-state-focus::after,
 /* End Script: Mapping/modules/Measurement/CSS/small.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/OfflineMaps/CSS/small.css ------------------------- */ 
+.sync-status.padded-view {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    padding: 2em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* End Script: Mapping/modules/OfflineMaps/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/PlotCoordinates/CSS/small.css ------------------------- */ 
+.coord-sys-switcher select {
+    padding: 0;
+}
+
+/* End Script: Mapping/modules/PlotCoordinates/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Project/CSS/small.css ------------------------- */ 
+.filter-box,
+.project-selector-tools {
+    height: 4em;
+}
+
+.projects-list .list-menu {
+    top: 8em;
+}
+
+/* End Script: Mapping/modules/Project/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Scalebar/CSS/small.css ------------------------- */ 
+.ScalebarView .scale-bar-container {
+    width: auto;
+}
+
+.scale-bar-container .esriScalebar {
+    width: 100%;
+    margin-right: 3.5em;
+}
+
+.scale-switcher {
+    float: none;
+    vertical-align: top;
+    margin-right: 0.5em;
+}
+
+.ScaleInputBoxView .scale-input-box-container {
+    width: auto;
+    height: auto;
+    margin-left: 0;
+    padding: 0.4em 0.5em;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.scale-input-box-container .scale-input-box {
+    width: 85%;
+    margin-left: 0;
+}
+
+.scale-input-box .scale-selector {
+    width: 100%;
+}
+
+.scale-input-box-container form {
+    height: auto;
+    margin-top: 0;
+}
+
+.scale-input-box-container .form-label {
+    width: 100%;
+    display: block;
+    line-height: 1.7em;
+    text-align: left;
+}
+
+.scale-input-box-container .go-button {
+    position: relative;
+    bottom: 1px;
+}
+
+.scale-input-box-container .scale-selector-input.scale-selector {
+    width: 97%;
+}
+
+.scale-input-box-container .scale-selector-input.scale-selector {
+    width: 90%;
+    border-right: none;
+}
+
+.custom-scale-control .scale-input-box .scale-selector-input {
+    width: 100%;
+    border-right: 1px solid #AAAAAA;
+    border-radius: 0.25em;
+}
+
+/* End Script: Mapping/modules/Scalebar/CSS/small.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/Search/small.css ------------------------- */ 
 
 .small .global-search
@@ -898,6 +1025,11 @@ ui-slider-handle.ui-state-focus::after,
 /* End Script: Mapping/modules/Search/CSS/small.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/Selection/CSS/small.css ------------------------- */ 
+
+/* End Script: Mapping/modules/Selection/CSS/small.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/Shells/CSS/small.css ------------------------- */ 
 
 /* SHELL (SMALL) -------------------------*/
@@ -929,6 +1061,7 @@ ui-slider-handle.ui-state-focus::after,
 
 .status-window {
     background-color: rgba(255, 255, 255, 1);
+    margin-right: 4.25em; /* Margin to make room for the panel switcher button to be visible at all times. */
 }
 
 .status-close {
@@ -1121,8 +1254,11 @@ ui-slider-handle.ui-state-focus::after,
     width: auto;
 }
 .new-shell .TabbedToolbarView .toolbar-body.small .toolbar-parent > li.toolbar-group {
-    width: 99%;
+    width: 97%;
     margin: 0.4em auto 0.4em 0.4em;
+}
+.new-shell .TabbedToolbarView .toolbar-item.toolbar-group h3 {
+    padding-left: 0.4em;
 }
 @media all and (min-width: 100px) {
     .toolbar-item.button {
@@ -1472,7 +1608,7 @@ ui-slider-handle.ui-state-focus::after,
         height: 5em;
     }
 .flyout-menu-transient {
-    padding: 0.5em 0.2em 2em 0.2em;
+    padding: 0.2em;
 }
 .flyout-menu-active-tool {
     float: right;
@@ -1506,6 +1642,9 @@ ui-slider-handle.ui-state-focus::after,
     margin: 0;
 }
 
+.CompactToolbarButtonView {
+    z-index: 0;
+}
 
 .CompactToolbarButtonView .toolbar-toggle-button:hover {
     border-right: none;
@@ -1524,6 +1663,13 @@ ui-slider-handle.ui-state-focus::after,
 
 /* ------ END: Compact Toolbar ------ */
 
+/* ------ START: Tabbed Toolbar ------ */
+.TabbedToolbarButtonView {
+    z-index: 0;
+}
+
+/* ------ END: Tabbed Toolbar ------ */
+
 /* ------ START: Multi-tool dropdown ------ */
 .CompactToolbarDropdown {
     width: 100%;
@@ -1540,7 +1686,53 @@ ui-slider-handle.ui-state-focus::after,
     top: 0px;
     display: none;
 }
+.small .multi-tool-button {
+    line-height: 1em;
+    min-height: 2em;
+    overflow: visible;
+    padding: 0.2em 1em 3.5em 1em!important;
+    vertical-align: middle;
+    background-position: center bottom;
+    text-overflow: inherit;
+    white-space: inherit;
+    background-image: none;
+    text-align: center;
+}
+.flyout-menu .multi-tool-button {
+    line-height: 1em;
+    min-height: 2em;
+    overflow: visible;
+    /*padding: 2em 2em 3em 1em!important;*/
+    vertical-align: middle;
 
+}
+.flyout-menu .multi-tool-button span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 3em;
+    display: block;
+}
+.small .multi-tool-button::after {
+    display: block;
+    height: 1em;
+    width: 1.2em;
+    margin: 0.5em auto 0 auto;
+    content:"";
+    background-position: center bottom;
+    background-image: url("../../Resources/Images/Icons/arrow-down-small-16.png");
+    background-repeat: no-repeat;
+}
+.flyout-menu .multi-tool-button::after {
+    display: block;
+    height:5em;
+    width: 2em;
+    margin: 0.5em auto 0 auto;
+    content:"";
+    position: absolute;
+    top: 1em;
+    right: 0;
+    z-index: 300;
+}
 .multi-tool-list .toolbar-item {
     min-width: 5em;
     max-width: 6em;
@@ -1603,6 +1795,7 @@ button.toolbar-item.button.tool {
     margin:0;
     color: #959398;
 }
+
 .new-shell .toolbar-body.small .toolbar-parent li.toolbar-region { /* Hiding the transient tools  */
     display: none !important;
 }
@@ -1726,8 +1919,8 @@ input[type='radio']:disabled {
 }
 
 
-.checkbox .form-label.left,
-.radiobtn .form-label.left {
+.checkbox .form-label.left.bound-visible,
+.radiobtn .form-label.left.bound-visible {
     display: inline-block;
 }
 
