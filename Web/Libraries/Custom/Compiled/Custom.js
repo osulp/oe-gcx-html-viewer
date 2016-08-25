@@ -1,12 +1,10 @@
-﻿
-/* Begin Script: C:/Users/rempelma/Documents/Visual Studio 2015/Projects/oe-gcx-html-viewer/custom_ts_out.js ------------------------- */ 
-/// <reference path="../../../Libs/Framework.d.ts" />
-/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
-var __extends = (this && this.__extends) || function (d, b) {
+﻿var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
 var oe;
 (function (oe) {
     var elevation;
@@ -19,7 +17,7 @@ var oe;
             ElevationModule.prototype.initialize = function (config) {
             };
             return ElevationModule;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         elevation.ElevationModule = ElevationModule;
     })(elevation = oe.elevation || (oe.elevation = {}));
 })(oe || (oe = {}));
@@ -35,7 +33,7 @@ var oe;
                 _super.call(this, app, lib);
             }
             return ElevationModuleView;
-        })(geocortex.framework.ui.ViewBase);
+        }(geocortex.framework.ui.ViewBase));
         elevation.ElevationModuleView = ElevationModuleView;
     })(elevation = oe.elevation || (oe.elevation = {}));
 })(oe || (oe = {}));
@@ -73,8 +71,59 @@ var oe;
             ElevationModuleViewModel.prototype._onSiteInitialized = function (site) {
                 elevCounterMax = 10;
                 shellName = this.app.shellName;
-                this.app.map.on("mouse-move", handleMouseMoveClick);
-                this.app.map.on("click", handleMouseMoveClick);
+                //this.app.map.on("mouse-move", handleMouseMoveClick);      
+                //this.app.map.on("click", handleMouseMoveClick);
+                buildElevationHTML();
+                this.app.eventRegistry.event("ContextMenuActivated").subscribe(null, handleMouseClick);
+                function buildElevationHTML() {
+                    //make sure the menu exists
+                    var menuCoords = $(".map-menu-coordinates");
+                    if (menuCoords == undefined || menuCoords == null)
+                        return;
+                    //add a div to the end of the coordinates element in the menu to hold our elevation data
+                    menuCoords.append('<div><b>Elevation: </b><span id="GoogleElevationValue">Loading...</span></div>');
+                }
+                function handleMouseClick(appIn) {
+                    //make sure our html element exists
+                    var menuCoords = $("#GoogleElevationValue");
+                    if (menuCoords == undefined && menuCoords == null)
+                        return;
+                    $("#GoogleElevationValue").html("Loading...");
+                    //Grab the current application
+                    appIn = geocortex.framework.applications[0];
+                    //The coordinates manager hold a prevCoord which is acutally the current context menu point.
+                    var defaultX = appIn.coordinatesManager._prevCoord.x;
+                    var defaultY = appIn.coordinatesManager._prevCoord.y;
+                    //The default spatial reference is 102100, change it to web mercator
+                    var xyPoint = new esri.geometry.Point(defaultX, defaultY, new esri.SpatialReference({ wkid: 102100 }));
+                    var geographicPoint = esri.geometry.webMercatorToGeographic(xyPoint);
+                    var mapPoint = new esri.geometry.Point(geographicPoint);
+                    //toss the point at google
+                    var url = googleURL + mapPoint.y + "," + mapPoint.x;
+                    var siteUrl = window.location.href.split("?")[0];
+                    siteUrl = siteUrl.replace(siteUrl.split("/")[siteUrl.split("/").length - 1], "");
+                    var proxyUrl = siteUrl + "Proxy.ashx?" + url;
+                    var contentType = "application/x-www-form-urlencoded; charset=utf-8";
+                    $.ajax({
+                        type: "GET",
+                        contentType: "application/json; charset=utf-8",
+                        url: proxyUrl,
+                        dataType: "json",
+                        async: false,
+                        success: function (result) {
+                            if (result.results.length > 0) {
+                                var elevation = result.results[0].elevation;
+                                elevation = Math.round(parseFloat(elevation) * 3.28084).toString() + " ft";
+                                $("#GoogleElevationValue").html(elevation);
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            var error = thrownError;
+                            $("#GoogleElevationValue").html("Load failed");
+                            //alert(error);
+                        }
+                    });
+                }
                 function handleMouseMoveClick(evt) {
                     if (elevCounter === 0 || shellName !== "Desktop") {
                         elevCounter++;
@@ -122,9 +171,61 @@ var oe;
                 }
             };
             return ElevationModuleViewModel;
-        })(geocortex.framework.ui.ViewModelBase);
+        }(geocortex.framework.ui.ViewModelBase));
         elevation_1.ElevationModuleViewModel = ElevationModuleViewModel;
     })(elevation = oe.elevation || (oe.elevation = {}));
+})(oe || (oe = {}));
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+var oe;
+(function (oe) {
+    var initial_extent;
+    (function (initial_extent) {
+        var linkUri;
+        var InitialExtentModule = (function (_super) {
+            __extends(InitialExtentModule, _super);
+            function InitialExtentModule(app, lib) {
+                _super.call(this, app, lib);
+            }
+            InitialExtentModule.prototype.initialize = function (config) {
+                var _this = this;
+                linkUri = config.linkUri !== undefined ? config.linkUri : "http://oregonexplorer.info";
+                var site = this.app.site;
+                if (site && site.isInitialized) {
+                    this._onSiteInitialized(site);
+                }
+                else {
+                    this.app.eventRegistry.event("MapLoadedEvent").subscribe(this, function (args) {
+                        _this._onMapLoaded(args);
+                    });
+                    this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, function (args) {
+                        _this._onSiteInitialized(args);
+                    });
+                }
+            };
+            InitialExtentModule.prototype._onMapLoaded = function (site) {
+                // alert("Map loaded");
+                this.app.command("ZoomToInitialExtent").execute();
+            };
+            InitialExtentModule.prototype._onSiteInitialized = function (site) {
+                //alert("Site loaded");
+                this.app.command("ZoomToInitialExtent").execute();
+                /*$('.banner').click(function (e) {
+                    if (e.pageX < 350) {
+                        window.open(linkUri, '_blank');
+                    }
+                });
+                //adds support for sponsor logo image to be next to the OE banner image before the banner text.
+                try {
+                    $('.banner-text').css("left", (/\.(gif|jpg|jpeg|tiff|png)$/i).test($('.banner-right-img')[0]["src"]) ? $('.banner-right-img').width() + 370 + "px" : "370px");
+                }
+                catch (ex)
+                { };*/
+            };
+            return InitialExtentModule;
+        }(geocortex.framework.application.ModuleBase));
+        initial_extent.InitialExtentModule = InitialExtentModule;
+    })(initial_extent = oe.initial_extent || (oe.initial_extent = {}));
 })(oe || (oe = {}));
 /// <reference path="../../../Libs/Framework.d.ts" />
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
@@ -165,7 +266,7 @@ var oe;
                 ;
             };
             return HyperlinkBannerModule;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         hyperlink_banner.HyperlinkBannerModule = HyperlinkBannerModule;
     })(hyperlink_banner = oe.hyperlink_banner || (oe.hyperlink_banner = {}));
 })(oe || (oe = {}));
@@ -251,7 +352,7 @@ var oe;
                 });
             };
             return LayerActionsExtension;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         layer_actions_extension.LayerActionsExtension = LayerActionsExtension;
     })(layer_actions_extension = oe.layer_actions_extension || (oe.layer_actions_extension = {}));
 })(oe || (oe = {}));
@@ -267,7 +368,7 @@ var oe;
                 _super.call(this, app, lib);
             }
             return LayerActionsExtensionModuleView;
-        })(geocortex.framework.ui.ViewBase);
+        }(geocortex.framework.ui.ViewBase));
         layer_actions_extension.LayerActionsExtensionModuleView = LayerActionsExtensionModuleView;
     })(layer_actions_extension = oe.layer_actions_extension || (oe.layer_actions_extension = {}));
 })(oe || (oe = {}));
@@ -289,7 +390,7 @@ var oe;
                 //}
             };
             return LayerActionsExtensionModuleViewModel;
-        })(geocortex.framework.ui.ViewModelBase);
+        }(geocortex.framework.ui.ViewModelBase));
         layer_actions_extension.LayerActionsExtensionModuleViewModel = LayerActionsExtensionModuleViewModel;
     })(layer_actions_extension = oe.layer_actions_extension || (oe.layer_actions_extension = {}));
 })(oe || (oe = {}));
@@ -339,7 +440,7 @@ var oe;
                 });
             };
             return M49Module;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         M49.M49Module = M49Module;
     })(M49 = oe.M49 || (oe.M49 = {}));
 })(oe || (oe = {}));
@@ -391,13 +492,68 @@ var oe;
                 _this.app.commandRegistry.command("processRasterFunctions").execute();
             };
             return RasterFunctionsModule;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         raster_functions.RasterFunctionsModule = RasterFunctionsModule;
     })(raster_functions = oe.raster_functions || (oe.raster_functions = {}));
 })(oe || (oe = {}));
-
-/* End Script: C:/Users/rempelma/Documents/Visual Studio 2015/Projects/oe-gcx-html-viewer/custom_ts_out.js ------------------------- */ 
-
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+var quickStart;
+(function (quickStart) {
+    var template;
+    (function (template) {
+        var TemplateModule = (function (_super) {
+            __extends(TemplateModule, _super);
+            function TemplateModule(app, lib) {
+                _super.call(this, app, lib);
+            }
+            TemplateModule.prototype.initialize = function (config) {
+                alert(this.app.getResource(this.libraryId, "hello-world-initialized"));
+            };
+            return TemplateModule;
+        }(geocortex.framework.application.ModuleBase));
+        template.TemplateModule = TemplateModule;
+    })(template = quickStart.template || (quickStart.template = {}));
+})(quickStart || (quickStart = {}));
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+var quickStart;
+(function (quickStart) {
+    var template;
+    (function (template) {
+        var TemplateModuleView = (function (_super) {
+            __extends(TemplateModuleView, _super);
+            function TemplateModuleView(app, lib) {
+                _super.call(this, app, lib);
+            }
+            return TemplateModuleView;
+        }(geocortex.framework.ui.ViewBase));
+        template.TemplateModuleView = TemplateModuleView;
+    })(template = quickStart.template || (quickStart.template = {}));
+})(quickStart || (quickStart = {}));
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+var quickStart;
+(function (quickStart) {
+    var template;
+    (function (template) {
+        var TemplateModuleViewModel = (function (_super) {
+            __extends(TemplateModuleViewModel, _super);
+            function TemplateModuleViewModel(app, lib) {
+                _super.call(this, app, lib);
+                this.greeting = new Observable();
+            }
+            TemplateModuleViewModel.prototype.initialize = function (config) {
+                if (config) {
+                    this.greeting.set(config["greeting"] || this.app.getResource(this.libraryId, "hello-world-greeting"));
+                }
+            };
+            return TemplateModuleViewModel;
+        }(geocortex.framework.ui.ViewModelBase));
+        template.TemplateModuleViewModel = TemplateModuleViewModel;
+    })(template = quickStart.template || (quickStart.template = {}));
+})(quickStart || (quickStart = {}));
+//# sourceMappingURL=custom_ts_out.js.map
 geocortex.resourceManager.register("Custom","inv","Modules/Elevation/ElevationModuleView.html","html","PGRpdiBjbGFzcz0iZWxldmF0aW9uLW1vZHVsZS12aWV3Ij4NCglFTEVWQVRJT046IDxiPjxzcGFuIGlkPSJlbGV2YXRpb24iPjwvc3Bhbj48L2I+ICAgDQo8L2Rpdj4NCg==");
 geocortex.resourceManager.register("Custom","inv","Modules/Template/TemplateModuleView.html","html","PGRpdiBjbGFzcz0idGVtcGxhdGUtbW9kdWxlLXZpZXciPg0KCTxiPjxzcGFuIGRhdGEtYmluZGluZz0ie0B0ZXh0OiBncmVldGluZ30iPjwvc3Bhbj48L2I+DQo8L2Rpdj4NCg==");
 geocortex.resourceManager.register("Custom","inv","Modules/Elevation/ElevationModule.css","css","DQovKi5yZWdpb24gLnZpZXcuVGVtcGxhdGVNb2R1bGVWaWV3LmFjdGl2ZSB7DQogICAgbWFyZ2luOiAwOw0KfSovDQoNCi5lbGV2YXRpb24tbW9kdWxlLXZpZXcNCnsNCiAgICBwb3NpdGlvbjogYWJzb2x1dGU7DQogICAgbGVmdDozMjVweDsNCiAgICB0b3A6MDsNCiAgICBmbG9hdDpyaWdodDsNCiAgICAvKnotaW5kZXg6IDEwMDsqLw0KICAgIGZvbnQtc2l6ZTouODVlbTsNCiAgICB3aWR0aDogMTc1cHg7ICAgDQogICAgaGVpZ2h0OjIwcHg7DQogICAgLypyaWdodDogMDsqLw0KICAgIGJhY2tncm91bmQ6IG5vbmU7DQogICAgY29sb3I6ICMzMzM7DQogICAgLypwYWRkaW5nOiA2cHg7Ki8NCiAgICBib3JkZXI6IG5vbmU7DQogICAgbWFyZ2luLXRvcDogMTBweDsgICAgDQp9DQoNCg==");
