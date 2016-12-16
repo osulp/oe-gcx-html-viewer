@@ -1,0 +1,85 @@
+﻿
+.region .view.TemplateModuleView.active {
+    margin: 0;
+}
+
+.template-module-view {
+    position: absolute;
+    z-index: 100;
+    width: 500px;
+    right: 0;
+    background: white;
+    color: black;
+    padding: 6px;
+    border: 1px solid #333;
+    margin-top: 46px;
+    margin-right: 2px;
+}
+
+    .mainForm input[type="text"], .mainForm textarea, .mainForm select {
+        /*width: 65%;*/
+        margin-bottom: 5px;
+    }
+
+    .mainForm input[type="date"] {
+        display: block;
+    }
+
+.textBox {
+    border-radius: 2px;
+    border: 1px solid #AAAAAA;
+}
+
+.error {
+    /*width: 100%;*/
+    padding: 0;
+    display: inline-block;
+    /*font-size: 80%;*/
+    color: red;
+    /*background-color: #900;*/
+    border-radius: 0 0 5px 5px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.myLabel {
+    font-weight: bold;
+    min-width: 30% !important;
+    display: inline-flex;
+    overflow: hidden;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+
+#customForm fieldset{
+    border:solid 1px #a7a7a7;
+    border-radius:0.25rem;
+    margin:2em auto;
+}
+.link {
+    color:#1A72C4;
+}
+.link:hover{
+    cursor:pointer;
+    text-decoration:underline;
+}
+
+#constraints-table tr td{
+    padding:.6em;
+}
+
+#constraints-table tr.alt{
+    background-color:rgb(240,240,240);
+}
+.constraint-layer-controls{
+    margin-left:1em;
+    font-size:.9em;
+    padding-top:3px;
+}
+.constraint-layer-controls span:first-child{
+    padding-right:10px;
+}
+.constraint-cell{
+    min-width:250px;
+}

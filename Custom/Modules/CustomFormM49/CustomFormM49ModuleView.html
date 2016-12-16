@@ -1,0 +1,116 @@
+﻿
+
+<div class="module workflow-form" dir="ltr">
+    <form id="customForm" title="Measure 49 Estimated Constraints">
+        <div class="form-container">
+            <fieldset>
+                <legend>Selected Area(s)</legend>
+                <div>
+                    <span>Custom Drawn Area</span>
+                    <span class="link" data-binding="{@event-onclick:zoomTo}">Zoom To</span>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Estimated Constraints</legend>
+                <table id="constraints-table">
+                    <thead>
+                        <tr>
+                            <th align="center">Constraints</th>
+                            <th align="center">Area(%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="alt">
+                            <td class="constraint-cell">
+                                <div>High-value farmland soil </div>
+                                <div class="constraint-layer-controls">
+                                    <span class="link" data-binding="{@event-onclick:toggleLayer}" data-attr-layer="High-value Farm Soils">
+                                        Toggle layer
+                                    </span>
+                                    <span class="link" data-binding="{@event-onclick:showInfo}" data-attr-constraint="HVFL">
+                                        Constraint Info
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="hvfl_soil"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>High-value farmland dairy </div>
+                                <div class="constraint-layer-controls">
+                                    <span class="link" data-binding="{@event-onclick:toggleLayer}" data-attr-layer="High-value Farm Dairy Soil">
+                                        Toggle layer
+                                    </span>
+                                    <span class="link" data-binding="{@event-onclick:showInfo}" data-attr-constraint="HVFD">
+                                        Constraint Info
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="hvfl_dairy"></div>
+                            </td>
+                        </tr>
+                        <tr class="alt">
+                            <td>
+                                <div>High-value forestland</div>
+                                <div class="constraint-layer-controls">
+                                    <span class="link" data-binding="{@event-onclick:toggleLayer}" data-attr-layer="High-value Forest land">
+                                        Toggle layer
+                                    </span>
+                                    <span class="link" data-binding="{@event-onclick:showInfo}" data-attr-constraint="HVForest">
+                                        Constraint Info
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="hvf"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>Likely high-value forestland</div>
+                                <div class="constraint-layer-controls">
+                                    <span class="link" data-binding="{@event-onclick:toggleLayer}" data-attr-layer="Likely high-value forestland west of the Cascades Possible areas of high-value forestland east of the Cascades">
+                                        Toggle layer
+                                    </span>
+                                    <span class="link" data-binding="{@event-onclick:showInfo}" data-attr-constraint="LHVForest">
+                                        Constraint Info
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="hvf_likely"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+            <fieldset>
+                <legend>PDF Report Settings</legend>
+                <div class="form-container">
+                    <div class="form label-left" id="customFormBody">
+                        <label for="reportTitle" class="form-label myLabel">Title</label>
+                        <div class="form-control">
+                            <input id="reportTitle" type="text" placeholder="Report Title" value="Report Title" data-binding="{@event-onclick:clearTitle}"/>
+                        </div>
+                        <label for="userName" id="userNamelbl" class="form-label myLabel">Include map</label>
+                        <div class="form-control">
+                            <input id="includeMap" type="checkbox" checked />
+                        </div>
+
+                    </div>
+                </div>
+            </fieldset>
+
+            <div style="text-align:right; width:100%; display: inline-block;" class="form-btns">
+                <button id="okBtn" class="button" type="button" data-binding="{@event-onclick:runNewReport}"><< New Report</button>
+                <button id="okBtn" class="button" type="button" data-binding="{@event-onclick:getPDF}">Download PDF</button>
+                <button id="cancelBtn" class="button" type="button" data-binding="{@event-onclick:cancelForm}">Close</button>
+            </div>
+        </div>
+    </form>
+    <div id="animation"></div>
+
+</div>

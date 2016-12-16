@@ -96,27 +96,27 @@
                         "configuration": {}
                     }
                 ]
-            },                       
+            },
             {
                 "moduleName": "LayerActionsExtension",
                 "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
                 "libraryId": "Custom",
-                "configuration": {}                                            
-            }, 
+                "configuration": {}
+            },
             {
                 "moduleName": "M49",
                 "moduleType": "oe.M49.M49Module",
                 "libraryId": "Custom",
-                "configuration": {}                                            
-            }, 
+                "configuration": {}
+            },
             {
                 "moduleName": "HyperlinkBanner",
                 "moduleType": "oe.hyperlink_banner.HyperlinkBannerModule",
                 "libraryId": "Custom",
                 "configuration": {
                     "linkUri": "http://oregonexplorer.info"
-                }                                            
-            }, 
+                }
+            },
             {
                 "moduleName": "Elevation",
                 "moduleType": "oe.elevation.ElevationModule",
@@ -141,7 +141,7 @@
                    {
                        "id": "ElevationModuleViewModel",
                        "type": "oe.elevation.ElevationModuleViewModel",
-                       "configuration": {               
+                       "configuration": {
                        }
                    }
                 ]
@@ -150,9 +150,34 @@
                 "moduleName": "RasterFunctions",
                 "moduleType": "oe.raster_functions.RasterFunctionsModule",
                 "libraryId": "Custom",
-                "configuration": {                    
-                }                                            
-            }, 
+                "configuration": {
+                }
+            },
+            {
+                "moduleName": "CustomFormM49",
+                "moduleType": "oe.customform49.CustomFormM49Module",
+                "libraryId": "Custom",
+                "configuration": {},
+                "views": [
+                 {
+                     "id": "CustomForm49ModuleView",
+                     "title": "Measure 49 Estimated Constraints",
+                     "viewModelId": "CustomFormM49ModuleViewModel",
+                     "visible": false,
+                     "markup": "Modules/CustomFormM49/CustomFormM49ModuleView.html",
+                     "type": "oe.customform49.CustomForm49ModuleView",
+                     "region": "DataRegion",
+                     "configuration": {}
+                 }
+                ],
+                "viewModels": [
+                  {
+                      "id": "CustomFormM49ModuleViewModel",
+                      "type": "oe.customform49.CustomFormM49ModuleViewModel",
+                      "configuration": {}
+                  }
+                ]
+            },
             {
                 "moduleName": "Accessibility",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.accessibility.AccessibilityModule",
@@ -1003,7 +1028,7 @@
                             "displayName" : "Lat/Long",
                             "wkid" : 4326,
                             "output" : "latLon"
-                        }, 
+                        },
                         {
                             "displayName" : "Degree Minute Second",
                             "wkid" : 4326,
@@ -1023,7 +1048,7 @@
                     }
                 }
                 ]
-            },             
+            },
             {
                 "moduleName": "Editing",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.editing.EditingModule",
@@ -1588,7 +1613,7 @@
                         "configuration": {
                             "menuId": "FooterMenu"
                         }
-                    }                     
+                    }
                 ],
                 "viewModels": [
                     {
@@ -1925,7 +1950,7 @@
                                    "text": "Calculate M49 Constraints",
                                    "description": "Find the percent area constrained by M49 overlays",
                                    "command": "RunWorkflowById",
-                                   "commandParameter": "calculateConstraints"
+                                   "commandParameter": "calculateConstraintsCustomForm"
                                }
                             ]
                         }
@@ -3288,7 +3313,7 @@
                                     "text": "Draw a point",
                                     "command": "AddMarkup",
                                     "commandParameter": "{{context}}"
-                                },                                
+                                },
                                 {
                                     "iconUri": "Resources/Images/Icons/Toolbar/draw-text-24.png",
                                     "text": "Add some text",
@@ -3300,12 +3325,12 @@
                                     "text": "Center the map here",
                                     "command": "PanToPoint",
                                     "commandParameter": "{{context}}"
-                                }                             
+                                }
                             ]
                         }
                     ]
                 }
-            },           
+            },
             {
                 "moduleName": "Scalebar",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.scalebar.ScalebarModule",
@@ -3762,8 +3787,8 @@
             {
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
-                "configuration": {                    
-                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root"                    
+                "configuration": {
+                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/m49_copy"
                 },
                 "views": [
                     {
@@ -5133,7 +5158,7 @@
                     }
                     ]
                 }
-            }, 
+            },
             {
                 "moduleName": "User",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.User.UserModule",

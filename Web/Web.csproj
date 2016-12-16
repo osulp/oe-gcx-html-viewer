@@ -62,6 +62,7 @@
     <Content Include="Handheld.html" />
     <Content Include="HtmlPage1.html" />
     <Content Include="Index.html" />
+    <Content Include="Libraries\Custom\Compiled\Custom.js" />
     <Content Include="offline.aspx" />
     <Content Include="offline.js" />
     <Content Include="online.js" />
