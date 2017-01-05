@@ -3,7 +3,7 @@
 
 
 .banner{
-    border-bottom:1px solid #a0abb1 !important;
+    border-bottom:1px solid #a0abb1 !important;        
 }
 
 .collapsed.tree-expander{
@@ -13,8 +13,14 @@
     background-image:url(../../Images/Icons/tree-expander-open-light-16.png) !important;
 }
 
-.banner-images img{
+.banner-images {
     position:relative !important;
+    float:left;
+    width:auto;           
+}
+
+.banner-images img{
+    position:relative !important;        
 }
 
 .banner-right-img{
@@ -27,8 +33,11 @@
     cursor:pointer;
 }
 
-table.banner-text{
-    left:375px;
+.banner-text{
+    position:relative !important;
+    left:0px;/*375px;*/
+    float:left;
+    margin-left:10px;
 }
 
 table.banner-text tbody{
@@ -78,7 +87,8 @@ height:400px;
 }
 
 .banner-images{
-    height:98% !important;
+    /*height:98% !important;*/
+    height:60px;
 }
 
 .ScalebarView {
@@ -110,3 +120,49 @@ height:400px;
 .legend-item-label{
     width:80%;
 }
+
+#CustomMapTipPopup {  
+  z-index:220;   
+  width: 200px;
+  height: 100px;
+  padding:4px 10px 4px 10px;
+  border: 1px solid #A1B8E1;
+  border-radius: 2px;    
+  background-color:#ffffff;
+  color: #000000;
+}
+
+.CustomMapTipHeader {  
+    float:left;
+    width:100%;
+    font-size:1.2em;
+    font-weight:bold;
+    padding-top:0.3em;
+    padding-bottom:0.5em;
+    color:rgba(105, 105, 105, 1);
+}
+
+.CustomMapTipContent {  
+    font-size:1em;
+}
+
+.CustomMapTipCloseButton {  
+    position:absolute;
+    right:0em;
+    top:2.5em;
+}
+
+/*#CustomMapTipPopup {
+  position:absolute;
+  left: 300px;
+  top: 100px;
+  z-index:200; 
+  padding: 3px;
+  margin-left: 10px;
+  margin-top: 5px;
+  width: 200px;
+  border: 0px;
+  border-radius: 5px;
+  background-color:#777;
+  color: white;
+}*/

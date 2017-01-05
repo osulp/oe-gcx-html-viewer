@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.16/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.17/esri/copyright.txt for details.
 //>>built
 define("esri/workers/WorkerClient","dojo/Evented dojo/_base/declare dojo/Deferred dojo/_base/lang dojo/request ../sniff ../kernel ../urlUtils require".split(" "),function(f,n,h,e,p,k,q,g,r){var l=window.Blob||window.webkitBlob||window.mozBlob,m=window.URL||window.webkitURL||window.mozURL;f=n([f],{declaredClass:"esri.workers.WorkerClient",worker:null,returnDeferreds:!1,_queue:null,constructor:function(a,c){this._isIE=k("ie");this.returnDeferreds=!!c;this._queue={};this._acceptMessage=e.hitch(this,
 this._acceptMessage);this._errorMessage=e.hitch(this,this._errorMessage);a&&(this.worker=this.setWorker(a))},setWorker:function(a){if(a instanceof Array){var c=a;a=c.shift()}a=this._getUrl(a);var b=!g.hasSameOrigin(g.getAbsoluteUrl(a),location.href),d;if(!1===a)return console.log("Can not resolve worker path"),!1;this.worker&&(d=this.worker,d.removeEventListener("message",this._acceptMessage,!1),d.removeEventListener("error",this._errorMessage,!1),d.terminate(),d=null);if(b){var e=this._getUrl("./mutableWorker",

@@ -4,7 +4,7 @@
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <title>Oregon Explorer Viewer</title>
+        <title>Geocortex Viewer for HTML5</title>
 
         <link rel="shortcut icon" href="favicon.ico"/>
         <link rel="apple-touch-icon" href="Resources/Images/Icons/iOS/apple-touch-icon.png"/>
@@ -17,7 +17,7 @@
 
         <link rel="stylesheet" href="Resources/Styles/splash.css" />
     </head>
-    <body>       
+    <body>
         <!-- Splash Screen Markup -->
         <div class="splash-overlay">
             <div class="splash-plate">
@@ -31,69 +31,32 @@
         <script src="Resources/Compiled/loader.js"></script>
         <script>
 
-           /*var viewerConfig = {
-                "viewerConfigUri": "Libraries/Custom/Config/Defaults.json.js"
-            };*/
-            
-            var geocortexUseLocalEsriApi = true;
-
-            //Clear any hard coded viewer config.  If this is not clearned
-            //short short url and global unique ID's will not work.
             var viewerConfig = {
-               //"configurations": {"default": "Resources/Config/Default/" + shellName + ".json.js"},
-                "viewerConfigUri": null                
-                //"configurations": { "default": "Resources/Config/Default/Tablet.json.js" }
+                //"viewerConfigUri": "Libraries/Custom/Config/Defaults.json.js"
+                //"viewerConfigUri": "Resources/Config/Default/Tablet.json.js"
+                //"viewerConfigUri": "Resources/Config/Default/Desktop.json.js"
             };
 
-            geocortex._configDomains = {
-                "http://tools.oregonexplorer.info": true,
-                "http://lib-arcgis2.library.oregonstate.edu": true
-            };
-                        
             // To load external css or javascript files in your project add the URL for each resource to this array
-            var resources = ["./Resources/Styles/Custom/Desktop.css"];
-            
-           // geocortex.framework.application.loading
-            var viewerInitOptions = { "onSiteInitialized": SiteLoaded };
+            var resources = [];
 
             var loader = new geocortex.essentialsHtmlViewer.ViewerLoader();
-            loader.resourceSet.find("dependencies").prepend(resources);
-            //loader.resourceSet.find("css").prepend(resources);
-            loader.loadAndInitialize(viewerInitOptions);
-                                    
-            function SiteLoaded() {
-
-                if (geocortex ==  null)
-                    return;
-                
-                var app = geocortex.framework.applications[0];
-
-                app.eventRegistry.event("MapExtentChangedEvent").once(null, DoInitialExtent);                
-            }
-                        
-            function DoInitialExtent() {
-                var app = geocortex.framework.applications[0];
-
-                if (app == null)
-                    return;
-
-                app.command("ZoomToInitialExtent").execute();
-            }
-
+            loader.resourceSet.find("dependencies").append(resources);
+            loader.loadAndInitialize();
 
         </script>
 
         <script type="text/javascript">
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-13183466-3']);
-        _gaq.push(['_trackPageview']);
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-13183466-3']);
+            _gaq.push(['_trackPageview']);
 
-        (function () {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
+            (function () {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
 
         </script>
 

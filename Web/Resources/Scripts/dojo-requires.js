@@ -17,6 +17,7 @@ dojo.require("esri.layers.CSVLayer");
 dojo.require("esri.layers.GeoRSSLayer");
 dojo.require("esri.layers.GraphicsLayer");
 dojo.require("esri.layers.KMLLayer");
+dojo.require("esri.layers.WMTSLayer");
 dojo.require("esri.toolbars.draw");
 dojo.require("esri.toolbars.edit");
 dojo.require("esri.dijit.OverviewMap");

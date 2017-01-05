@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.16/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.17/esri/copyright.txt for details.
 //>>built
 define("esri/SnappingManager","dojo/_base/declare dojo/_base/connect dojo/_base/lang dojo/_base/array dojo/_base/Color dojo/_base/Deferred dojo/has dojo/keys ./kernel ./graphic ./geometry/ScreenPoint ./geometry/Extent ./symbols/SimpleMarkerSymbol ./symbols/SimpleLineSymbol ./tasks/query".split(" "),function(w,e,t,x,C,I,D,E,J,K,F,u,G,H,v){w=w(null,{declaredClass:"esri.SnappingManager",constructor:function(a){a=a||{};a.map||console.error("map is not specified for SnappingManager");this.map=a.map;this.tolerance=
 a.tolerance||15;this.layerInfos=[];if(a.layerInfos)this.layerInfos=a.layerInfos;else{var b;for(b=0;b<this.map.graphicsLayerIds.length;b++){var d=this.map.getLayer(this.map.graphicsLayerIds[b]);this.layerInfos.push({layer:d})}if(this.map.loaded)this.layerInfos.push({layer:this.map.graphics});else var m=e.connect(this.map,"onLoad",this,function(a){e.disconnect(m);m=null;this.layerInfos.push({layer:this.map.graphics});this.setLayerInfos(this.layerInfos)})}this.snapPointSymbol=a.snapPointSymbol?a.snapPointSymbol:

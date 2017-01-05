@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.16/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.17/esri/copyright.txt for details.
 //>>built
 define("esri/layers/rasterFormats/Png",["./Zlib"],function(v){return function(){function f(a){var b,e,c,d;this.data=a;this.pos=8;this.palette=[];this.imgData=[];this.transparency={};this.animation=null;this.text={};for(c=null;;){b=this.readUInt32();d=a=void 0;d=[];for(a=0;4>a;++a)d.push(String.fromCharCode(this.data[this.pos++]));a=d.join("");switch(a){case "IHDR":this.width=this.readUInt32();this.height=this.readUInt32();this.bits=this.data[this.pos++];this.colorType=this.data[this.pos++];this.compressionMethod=
 this.data[this.pos++];this.filterMethod=this.data[this.pos++];this.interlaceMethod=this.data[this.pos++];break;case "acTL":this.animation={numFrames:this.readUInt32(),numPlays:this.readUInt32()||Infinity,frames:[]};break;case "PLTE":this.palette=this.read(b);break;case "fcTL":c&&this.animation.frames.push(c);this.pos+=4;c={width:this.readUInt32(),height:this.readUInt32(),xOffset:this.readUInt32(),yOffset:this.readUInt32()};a=this.readUInt16();b=this.readUInt16()||100;c.delay=1E3*a/b;c.disposeOp=this.data[this.pos++];

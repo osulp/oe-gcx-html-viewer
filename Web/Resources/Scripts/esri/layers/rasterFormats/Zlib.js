@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.16/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.17/esri/copyright.txt for details.
 //>>built
 define("esri/layers/rasterFormats/Zlib",[],function(){var s=function(){function e(){this.bufferLength=this.pos=0;this.eof=!1;this.buffer=null}e.prototype={ensureBuffer:function(a){var e=this.buffer,n=e?e.byteLength:0;if(a<n)return e;for(var l=512;l<a;)l<<=1;a=new Uint8Array(l);for(l=0;l<n;++l)a[l]=e[l];return this.buffer=a},getByte:function(){for(var a=this.pos;this.bufferLength<=a;){if(this.eof)return null;this.readBlock()}return this.buffer[this.pos++]},getBytes:function(a){var e=this.pos;if(a){this.ensureBuffer(e+
 a);for(a=e+a;!this.eof&&this.bufferLength<a;)this.readBlock();var n=this.bufferLength;a>n&&(a=n)}else{for(;!this.eof;)this.readBlock();a=this.bufferLength}this.pos=a;return this.buffer.subarray(e,a)},lookChar:function(){for(var a=this.pos;this.bufferLength<=a;){if(this.eof)return null;this.readBlock()}return String.fromCharCode(this.buffer[this.pos])},getChar:function(){for(var a=this.pos;this.bufferLength<=a;){if(this.eof)return null;this.readBlock()}return String.fromCharCode(this.buffer[this.pos++])},

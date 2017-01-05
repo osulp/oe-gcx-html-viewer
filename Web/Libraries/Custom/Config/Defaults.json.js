@@ -4124,7 +4124,7 @@
 		    "moduleName": "Site",
 		    "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
 		    "configuration": {
-		        "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/Copy_of__watershed_restoration"
+		        "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root"
 		    },
 		    "views": [{
 		        "id": "ServiceLayersFailureView",

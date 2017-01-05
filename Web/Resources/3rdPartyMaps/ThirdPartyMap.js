@@ -273,7 +273,7 @@ var geocortex;
                     return true;
                 };
                 return ThirdPartyMap;
-            })();
+            }());
             integration.ThirdPartyMap = ThirdPartyMap;
         })(integration = essentialsHtmlViewer.integration || (essentialsHtmlViewer.integration = {}));
     })(essentialsHtmlViewer = geocortex.essentialsHtmlViewer || (geocortex.essentialsHtmlViewer = {}));
