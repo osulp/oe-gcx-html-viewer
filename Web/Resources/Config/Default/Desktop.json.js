@@ -98,7 +98,7 @@
                 "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
                 "libraryId": "Custom",
                 "configuration": {}                                            
-            }, 
+            },            
             {
                 "moduleName": "M49",
                 "moduleType": "oe.M49.M49Module",
@@ -2727,7 +2727,7 @@
                         "configuration": {}
                     }
                 ]
-            },
+            },             
             {
                 "moduleName": "Markers",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.markers.MarkersModule",
@@ -5219,7 +5219,9 @@
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                 "configuration": {
-                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root"
+                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
+                    "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
+                    "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/wildfire_risk"
                 },
                 "views": [
                     {

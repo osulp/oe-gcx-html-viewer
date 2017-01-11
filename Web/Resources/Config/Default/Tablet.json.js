@@ -92,7 +92,7 @@
                         "configuration": {}
                     }
                 ]
-            },
+            },            
              {
                  "moduleName": "LayerActionsExtension",
                  "moduleType": "oe.layer_actions_extension.LayerActionsExtension",

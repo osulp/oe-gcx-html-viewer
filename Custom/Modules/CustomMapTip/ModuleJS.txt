@@ -1,6 +1,0 @@
-﻿ {
-	"moduleName": "CustomMapTip",
-	"moduleType": "oe.custom_map_tip.CustomMapTipModule",
-	"libraryId": "Custom",
-	"configuration": {}                                            
-}
