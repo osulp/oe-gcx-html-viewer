@@ -3,6 +3,8 @@
     export class WildfireRiskPopupModule extends geocortex.framework.application.ModuleBase {
         
         app: geocortex.essentialsHtmlViewer.ViewerApplication;
+
+        //pointFeatureSet: Observable<esri.tasks.FeatureSet> = new Observable<esri.tasks.FeatureSet>();
                                 
         constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, lib: string) {
             super(app, lib);
