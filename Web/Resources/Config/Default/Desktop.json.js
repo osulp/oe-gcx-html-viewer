@@ -97,8 +97,8 @@
                 "moduleName": "LayerActionsExtension",
                 "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
                 "libraryId": "Custom",
-                "configuration": {}                                            
-            },            
+                "configuration": {}
+            },
             {
                 "moduleName": "M49",
                 "moduleType": "oe.M49.M49Module",
@@ -138,39 +138,60 @@
                     "linkUri": "http://oregonexplorer.info"
                 }                                            
             }, 
-             {
-                 "moduleName": "Elevation",
-                 "moduleType": "oe.elevation.ElevationModule",
-                 "libraryId": "Custom",
-                 "configuration": {
+          {
+            "moduleName" : "Elevation",
+            "moduleType" : "oe.elevation.ElevationModule",
+            "libraryId" : "Custom",
+            "configuration" : {},
+            "views" : [{
+                "id" : "ElevationModuleView",
+                "viewModelId" : "ElevationModuleViewModel",
+                "visible" : false,
+                "markup" : "Modules/Elevation/ElevationModuleView.html",
+                "type" : "oe.elevation.ElevationModuleView",
+                "region" : "LeftFooterRegion",
+                "configuration" : {}
+              }
+            ],
+            "viewModels" : [{
+                "id" : "ElevationModuleViewModel",
+                "type" : "oe.elevation.ElevationModuleViewModel",
 
-                 },
-                 "views": [
+                "configuration" : {}  
+              }
+            ]
+          },
+            {
+              "moduleName" : "RasterFunctions",
+              "moduleType" : "oe.raster_functions.RasterFunctionsModule",
+              "libraryId" : "Custom",
+              "configuration" : {}
+            },           
+            {
+                "moduleName": "CustomFormM49",
+                "moduleType": "oe.customform49.CustomFormM49Module",
+                "libraryId": "Custom",
+                "configuration": {},
+                "views": [
+                 {
+                     "id": "CustomForm49ModuleView",
+                     "title": "Measure 49 Estimated Constraints",
+                     "viewModelId": "CustomFormM49ModuleViewModel",
+                     "visible": false,
+                     "markup": "Modules/CustomFormM49/CustomFormM49ModuleView.html",
+                     "type": "oe.customform49.CustomForm49ModuleView",
+                     "region": "DataRegion",
+                     "configuration": {}
+                 }
+                ],
+                "viewModels": [
                   {
-                      "id": "ElevationModuleView",
-                      "viewModelId": "ElevationModuleViewModel",
-                      "visible": false,
-                      "markup": "Modules/Elevation/ElevationModuleView.html",
-                      "type": "oe.elevation.ElevationModuleView",
-                      "region": "LeftFooterRegion",
+                      "id": "CustomFormM49ModuleViewModel",
+                      "type": "oe.customform49.CustomFormM49ModuleViewModel",
                       "configuration": {}
                   }
-                 ],
-                 "viewModels": [
-                   {
-                       "id": "ElevationModuleViewModel",
-                       "type": "oe.elevation.ElevationModuleViewModel",
-                       "configuration": {}
-                   }
-                 ]
-             },
-             {
-                 "moduleName": "RasterFunctions",
-                 "moduleType": "oe.raster_functions.RasterFunctionsModule",
-                 "libraryId": "Custom",
-                 "configuration": {                    
-                 }                                            
-             }, 
+                ]
+            },
             {
                 "moduleName": "Accessibility",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.accessibility.AccessibilityModule",
@@ -2065,7 +2086,14 @@
                                     "description": "@language-menu-bookmark-add-desc",
                                     "command": "ShowAddBookmark",
                                     "hideOnDisable": true
-                                }
+                                },
+                               {
+                                   "iconUri": "{ViewerConfigUri}../../../Resources/Images/Custom/profile-tool-24.png",
+                                   "text": "Calculate M49 Constraints",
+                                   "description": "Find the percent area constrained by M49 overlays",
+                                   "command": "RunWorkflowById",
+                                   "commandParameter": "calculateConstraintsCustomForm"
+                               }
                             ]
                         }
                     ]

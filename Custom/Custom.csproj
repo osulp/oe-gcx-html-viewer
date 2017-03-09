@@ -42,6 +42,9 @@
     </VisualStudio>
   </ProjectExtensions>
   <ItemGroup>
+    <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49Module.ts" />
+    <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49ModuleView.ts" />
+    <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49ModuleViewModel.ts" />
     <TypeScriptCompile Include="Modules\Elevation\ElevationModule.ts" />
     <TypeScriptCompile Include="Modules\Elevation\ElevationModuleView.ts" />
     <TypeScriptCompile Include="Modules\Elevation\ElevationModuleViewModel.ts" />
@@ -51,9 +54,13 @@
     <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModuleView.ts" />
     <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModuleViewModel.ts" />
     <TypeScriptCompile Include="Modules\RasterFunctions\RasterFunctionsModule.ts" />
+    <Content Include="Modules\CustomFormM49\Readme.txt" />
+    <Content Include="Modules\CustomFormM49\CustomFormM49Module.css" />
+    <Content Include="Modules\CustomFormM49\CustomFormM49ModuleView.html" />
     <Content Include="Modules\Elevation\ElevationModule.css" />
     <Content Include="Modules\Elevation\ElevationModuleView.html" />
     <Content Include="Modules\Elevation\Readme.txt" />
+    <Content Include="Modules\CustomFormM49\Language.json" />
     <None Include="Modules\Elevation\Language.json" />
     <Content Include="ResourceManifest.xml">
       <SubType>Designer</SubType>

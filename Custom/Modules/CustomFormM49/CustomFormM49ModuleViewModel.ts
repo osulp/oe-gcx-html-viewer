@@ -6,8 +6,11 @@ module oe.customform49 {
 
     export class CustomFormM49ModuleViewModel extends geocortex.framework.ui.ViewModelBase {
 
+
         app: geocortex.essentialsHtmlViewer.ViewerApplication;       
 
+        //hvfl_soil: Observable<string> = new Observable<string>();
+        
         constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, lib: string) {
             super(app, lib);
         }
@@ -24,6 +27,8 @@ module oe.customform49 {
                 document.getElementById("hvf").innerHTML = myWorkflowContext.getValue("hvfl_forest");
                 document.getElementById("hvfl_dairy").innerHTML = myWorkflowContext.getValue("hvfl_dairy");
                 document.getElementById("hvf_likely").innerHTML = myWorkflowContext.getValue("likely_hvf");
+
+                //document.getElementById("uda").value = myWorkflowContext.getValue("uda");
             });
         }
 

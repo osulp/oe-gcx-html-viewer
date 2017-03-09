@@ -7,6 +7,125 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var oe;
 (function (oe) {
+    var customform49;
+    (function (customform49) {
+        var CustomFormM49Module = (function (_super) {
+            __extends(CustomFormM49Module, _super);
+            function CustomFormM49Module(app, lib) {
+                _super.call(this, app, lib);
+            }
+            CustomFormM49Module.prototype.initialize = function (config) {
+                //alert(this.app.getResource(this.libraryId, "hello-world-initialized"));
+            };
+            return CustomFormM49Module;
+        })(geocortex.framework.application.ModuleBase);
+        customform49.CustomFormM49Module = CustomFormM49Module;
+    })(customform49 = oe.customform49 || (oe.customform49 = {}));
+})(oe || (oe = {}));
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+var myWorkflowContext;
+var myApp;
+var myLibID;
+var oe;
+(function (oe) {
+    var customform49;
+    (function (customform49) {
+        var CustomForm49ModuleView = (function (_super) {
+            __extends(CustomForm49ModuleView, _super);
+            function CustomForm49ModuleView(app, lib) {
+                _super.call(this, app, lib);
+                this.toggleLayer = function (event, element, context) {
+                    var workflowArgs = {};
+                    workflowArgs.workflowId = "toggleLayer";
+                    workflowArgs.MapServiceID = "83";
+                    workflowArgs.LayerName = element.getAttribute("data-attr-layer");
+                    this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
+                };
+                this.showInfo = function (event, element, context) {
+                    var workflowArgs = {};
+                    workflowArgs.workflowId = "constraintPopUps";
+                    workflowArgs.constraint = element.getAttribute("data-attr-constraint");
+                    this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
+                };
+                this.zoomTo = function (event, element, context) {
+                    var featureExtent = myWorkflowContext.getValue('uda_extent');
+                    myApp.commandRegistry.commands.ZoomToExtent.execute(featureExtent);
+                };
+                this.clearTitle = function (event, element, context) {
+                    element.value = "";
+                };
+                this.runNewReport = function (event, element, context) {
+                    myWorkflowContext.setValue("finalFormBtn", 'New');
+                    myWorkflowContext.completeActivity();
+                    this.app.commandRegistry.command("DeactivateView").execute("CustomForm49ModuleView");
+                    return true;
+                };
+                this.getPDF = function (event, element, context) {
+                    myWorkflowContext.setValue("finalFormBtn", 'PDF');
+                    myWorkflowContext.setValue("reportTitle", document.getElementById("reportTitle")["value"]);
+                    var includedMap = document.getElementById("includeMap")["checked"];
+                    myWorkflowContext.setValue("includeMap", includedMap);
+                    myWorkflowContext.completeActivity();
+                    this.app.commandRegistry.command("DeactivateView").execute("CustomForm49ModuleView");
+                    return true;
+                };
+                this.cancelForm = function (event, element, context) {
+                    myWorkflowContext.setValue("finalFormBtn", 'Close');
+                    myWorkflowContext.completeActivity();
+                    this.app.commandRegistry.command("DeactivateView").execute("CustomForm49ModuleView");
+                    return true;
+                };
+            }
+            return CustomForm49ModuleView;
+        })(geocortex.framework.ui.ViewBase);
+        customform49.CustomForm49ModuleView = CustomForm49ModuleView;
+    })(customform49 = oe.customform49 || (oe.customform49 = {}));
+})(oe || (oe = {}));
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+/// <reference path="../../../Libs/arcgis-js-api.d.ts" />
+var oe;
+(function (oe) {
+    var customform49;
+    (function (customform49) {
+        var CustomFormM49ModuleViewModel = (function (_super) {
+            __extends(CustomFormM49ModuleViewModel, _super);
+            //hvfl_forest = new Observable();
+            //hvfl_dairy = new Observable();
+            //likely_hvf = new Observable();
+            //uda: Observable<esri.geometry.Extent> =  new Observable<esri.geometry.Extent>();
+            function CustomFormM49ModuleViewModel(app, lib) {
+                _super.call(this, app, lib);
+                //greeting: Observable<string> = new Observable<string>();
+                //okBtn_lbl = new Observable();
+                //cancelBtn_lbl = new Observable();
+                //userID_lbl = new Observable();
+                //userName_lbl = new Observable();
+                this.hvfl_soil = new Observable();
+            }
+            CustomFormM49ModuleViewModel.prototype.initialize = function (config) {
+                myApp = this.app;
+                myLibID = this.libraryId;
+                this.app.registerActivityIdHandler("displaycustomform_m49", function CustomEventHandler(workflowContext, contextFunctions) {
+                    myWorkflowContext = $.extend({}, workflowContext);
+                    myApp.commandRegistry.command("ActivateView").execute("CustomForm49ModuleView");
+                    document.getElementById("hvfl_soil").innerHTML = myWorkflowContext.getValue("hvfl_soil");
+                    document.getElementById("hvf").innerHTML = myWorkflowContext.getValue("hvfl_forest");
+                    document.getElementById("hvfl_dairy").innerHTML = myWorkflowContext.getValue("hvfl_dairy");
+                    document.getElementById("hvf_likely").innerHTML = myWorkflowContext.getValue("likely_hvf");
+                    //document.getElementById("uda").value = myWorkflowContext.getValue("uda");
+                });
+            };
+            return CustomFormM49ModuleViewModel;
+        })(geocortex.framework.ui.ViewModelBase);
+        customform49.CustomFormM49ModuleViewModel = CustomFormM49ModuleViewModel;
+    })(customform49 = oe.customform49 || (oe.customform49 = {}));
+})(oe || (oe = {}));
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+var oe;
+(function (oe) {
     var elevation;
     (function (elevation) {
         var ElevationModule = (function (_super) {
