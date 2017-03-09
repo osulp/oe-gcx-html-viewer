@@ -50,22 +50,20 @@ var geocortex;
                     this.id = id;
                     this.sync = sync;
                     this.actionButtons = [
-                        { id: "centerButton", clickHandler: function () {
-                            _this.handleClickCenter();
-                        }, show: true, elem: null },
-                        { id: "syncButton", clickHandler: function () {
-                            _this.handleClickSync();
-                        }, show: false, elem: null },
-                        { id: "dockButton", clickHandler: function () {
-                            _this.handleClickDock();
-                        }, show: true, elem: null },
-                        { id: "closeButton", clickHandler: function () {
-                            _this.handleClickClose();
-                        }, show: true, elem: null }
+                        { id: "centerButton", clickHandler: function () { _this.handleClickCenter(); }, show: true, elem: null },
+                        { id: "syncButton", clickHandler: function () { _this.handleClickSync(); }, show: false, elem: null },
+                        { id: "dockButton", clickHandler: function () { _this.handleClickDock(); }, show: true, elem: null },
+                        { id: "closeButton", clickHandler: function () { _this.handleClickClose(); }, show: true, elem: null }
                     ];
-                    window.onload = function () {
-                        _this.initializePane();
-                    };
+                    // Check the window has already finished loading (GVH-7329)
+                    if (document.readyState === "complete") {
+                        this.initializePane();
+                    }
+                    else {
+                        window.onload = function () {
+                            _this.initializePane();
+                        };
+                    }
                     window.onunload = function () {
                         _this.disconnect();
                     };
@@ -75,6 +73,12 @@ var geocortex;
                  */
                 ThirdPartyMap.prototype.initializePane = function () {
                     var _this = this;
+                    // If it's already initialized, bail out (GVH-7329)
+                    if (this._isInitialized) {
+                        return;
+                    }
+                    // Set the initialization to true so we don't initialize more than once
+                    this._isInitialized = true;
                     this.initializeMap();
                     this.initializeViewerBridge();
                     this.statusOverlayElement = document.getElementById("status");
@@ -258,7 +262,8 @@ var geocortex;
                         return ua.indexOf(token.toLowerCase()) > -1;
                     };
                     // Docking is not supported in the tablet shell
-                    if (userAgentContains("Android") || userAgentContains("iPad") || userAgentContains("Playbook") || userAgentContains("Touch")) {
+                    if (userAgentContains("Android") || userAgentContains("iPad") ||
+                        userAgentContains("Playbook") || userAgentContains("Touch")) {
                         return false;
                     }
                     // Post message is not supported between tabs/windows in IE9
@@ -268,7 +273,7 @@ var geocortex;
                     return true;
                 };
                 return ThirdPartyMap;
-            })();
+            }());
             integration.ThirdPartyMap = ThirdPartyMap;
         })(integration = essentialsHtmlViewer.integration || (essentialsHtmlViewer.integration = {}));
     })(essentialsHtmlViewer = geocortex.essentialsHtmlViewer || (geocortex.essentialsHtmlViewer = {}));

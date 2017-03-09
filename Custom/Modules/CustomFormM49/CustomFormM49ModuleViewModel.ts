@@ -6,19 +6,11 @@ module oe.customform49 {
 
     export class CustomFormM49ModuleViewModel extends geocortex.framework.ui.ViewModelBase {
 
-        app: geocortex.essentialsHtmlViewer.ViewerApplication;
-        //greeting: Observable<string> = new Observable<string>();
-        //okBtn_lbl = new Observable();
-        //cancelBtn_lbl = new Observable();
-        //userID_lbl = new Observable();
-        //userName_lbl = new Observable();
 
-        hvfl_soil: Observable<string> = new Observable<string>();
-        //hvfl_forest = new Observable();
-        //hvfl_dairy = new Observable();
-        //likely_hvf = new Observable();
-        //uda: Observable<esri.geometry.Extent> =  new Observable<esri.geometry.Extent>();
+        app: geocortex.essentialsHtmlViewer.ViewerApplication;       
 
+        //hvfl_soil: Observable<string> = new Observable<string>();
+        
         constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, lib: string) {
             super(app, lib);
         }
@@ -35,6 +27,7 @@ module oe.customform49 {
                 document.getElementById("hvf").innerHTML = myWorkflowContext.getValue("hvfl_forest");
                 document.getElementById("hvfl_dairy").innerHTML = myWorkflowContext.getValue("hvfl_dairy");
                 document.getElementById("hvf_likely").innerHTML = myWorkflowContext.getValue("likely_hvf");
+
                 //document.getElementById("uda").value = myWorkflowContext.getValue("uda");
             });
         }

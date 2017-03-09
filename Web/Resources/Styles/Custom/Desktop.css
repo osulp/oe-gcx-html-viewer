@@ -1,7 +1,9 @@
 ﻿/* Put custom desktop styling in this file. Put custom images in the Custom subfolder of the Images directory. */
 
+
+
 .banner{
-    border-bottom:1px solid #a0abb1 !important;
+    border-bottom:1px solid #a0abb1 !important;        
 }
 
 .collapsed.tree-expander{
@@ -11,8 +13,14 @@
     background-image:url(../../Images/Icons/tree-expander-open-light-16.png) !important;
 }
 
-.banner-images img{
+.banner-images {
     position:relative !important;
+    float:left;
+    width:auto;           
+}
+
+.banner-images img{
+    position:relative !important;        
 }
 
 .banner-right-img{
@@ -25,11 +33,22 @@
     cursor:pointer;
 }
 
+.banner-text{
+    position:relative !important;
+    left:0px;/*375px;*/
+    float:left;
+    margin-left:10px;
+}
+
+table.banner-text tbody{
+    vertical-align:top;
+}
+
 .banner-text h1
 {
     font-size:1.8em;
     font-weight:normal;
-    /*margin-top:.2em;*/   
+    margin-top:.2em;
 }
 .banner-text h1.no-subtitle
 {
@@ -68,7 +87,8 @@ height:400px;
 }
 
 .banner-images{
-    height:98% !important;
+    /*height:98% !important;*/
+    height:60px;
 }
 
 .ScalebarView {
@@ -100,3 +120,18 @@ height:400px;
 .legend-item-label{
     width:80%;
 }
+
+/*#CustomMapTipPopup {
+  position:absolute;
+  left: 300px;
+  top: 100px;
+  z-index:200; 
+  padding: 3px;
+  margin-left: 10px;
+  margin-top: 5px;
+  width: 200px;
+  border: 0px;
+  border-radius: 5px;
+  background-color:#777;
+  color: white;
+}*/

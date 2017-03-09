@@ -17,7 +17,7 @@ module oe.customform49 {
         toggleLayer = function (event, element, context) {
             let workflowArgs: any = {};
             workflowArgs.workflowId = "toggleLayer";
-            workflowArgs.MapServiceID = "83";
+            workflowArgs.MapServiceID = myWorkflowContext.getValue("mapServiceID");
             workflowArgs.LayerName = element.getAttribute("data-attr-layer");
             this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
         };
