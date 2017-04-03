@@ -1,4 +1,4 @@
-﻿This module is used in the M49 viewer to display the constraint output with embedded viewer commands (toggle layer, view constraints, zoom to feature).
+This module is used in the M49 viewer to display the constraint output with embedded viewer commands (toggle layer, view constraints, zoom to feature).
 
 Sample config for including in viewer along with the compiled library output.
 

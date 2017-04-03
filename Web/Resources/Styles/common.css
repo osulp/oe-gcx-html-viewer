@@ -1,4 +1,108 @@
 ﻿
+/* Begin Script: Mapping/infrastructure/documents/CSS/common.css ------------------------- */ 
+.grant-editor-options {
+    width: 100%;
+}
+
+.grant-editor-search-options {
+    padding: 0 0.1em 0.5em 0;
+    width: 100%;
+    display:inline-block;
+}
+
+.grant-editor-search-options select {
+    width: 29.5%;
+    margin-top: 0.3em;
+    padding: 0.3em 0 0.3em 0;
+    min-width: 0;
+    height: 2.3em;
+    float: left;
+}
+
+.grant-editor-options-btns {
+    width: 10%;
+    display: inline-block;
+}
+
+.grant-editor .clear-24 {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: top;
+}
+
+.grant-editor-search-options .grant-editor-search {
+    width: 69.5%;
+    margin-top: 0.3em;
+    min-width: 100px;
+    height: 2.3em;
+    float: right;
+}
+
+.grant-editor-search-options .add-button {
+    padding: 0.3em 0.5em 0.3em 0.5em;
+    line-height: 1.5em;
+}
+
+
+/*---START: Grant Editor Table---*/
+.grant-editor-table {
+    margin-top: 1.5em;
+    width: 100%;
+}
+
+.grant-editor-table th {
+    padding: 0 0 0.5em 0;
+}
+
+.grant-editor-table tr:nth-child(2) {
+    border-bottom: solid 3px #FFFFFF;
+}
+
+.grant-editor-table td {
+    position: relative;
+    padding: 0.4em 0.2em;
+    text-align: center;
+    width: 5%;
+}
+
+.grant-editor-table .grant-name-column {
+    width: 35%;
+    text-align: left;
+}
+
+.grant-editor-table .grant-name-label {
+    margin-left: 20px;
+}
+
+.grant-editor-table .global-grant {
+    background-color: #DEF2FF;
+}
+
+.grant-editor-table .disabled-grant {
+    background-color: #EEEEEE;
+    text-decoration: line-through;
+}
+
+.grant-editor-table img {
+    position: absolute;
+    height: 18px;
+}
+/*---END: Grant Editor Table---*/
+
+/*---START: Project Status---*/
+
+.project-status-complete {
+    margin: 1em;
+}
+
+.project-status-complete .form-item {
+    padding-top: 0;
+}
+
+/* End Script: Mapping/infrastructure/documents/CSS/common.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/infrastructure/menus/CSS/common.css ------------------------- */ 
 /* MENU -------------------------*/
 
@@ -51,7 +155,7 @@
     text-decoration: none;
 }
 .menu-hyperlinks .list-menu-button {
-    color: #1B7DBF;
+    color: #1A72C4;
     text-decoration: underline;
 }
 .region.footer-region .view .menu-hyperlinks button:hover,
@@ -72,7 +176,7 @@
 }
 .icon-menu .list-menu-name {
     text-align: center;
-    color: #1b7dbf;
+    color: #1A72C4;
 }
 .icon-menu button {
     min-width: 3.5em;
@@ -150,6 +254,7 @@
 }
 .no-item,
 .no-results {
+    box-sizing: border-box;
     padding: 1em;
     color: #777777;
 }
@@ -160,11 +265,11 @@
 
 /* RESULTS PAGING CONTROL (COMMON) -------------------------*/
 .paging-control.has-pages {
-	height: 6.5em;
+    height: 6.5em;
 }
 
 .paging-control.no-pages {
-	height: 3em;
+    height: 3em;
 }
 .paging-control {
     position: absolute;
@@ -279,10 +384,10 @@
 }
 .results-list-actions-widget .menu-hyperlinks .list-menu,
 .results-table-actions-widget .menu-hyperlinks .list-menu {
-	margin-top: 0;
-	padding-bottom: 0.54em;
+    margin-top: 0;
+    padding-bottom: 0.54em;
     padding-left: .75em;
-	border-top: none;
+    border-top: none;
     border-bottom: 1px solid #D9D9D9;
 }
 
@@ -300,14 +405,14 @@
 }
 
 .ResultsTableView .tab-container table {
-	table-layout: fixed;
-	width: 100%;
-	overflow: hidden;
+    table-layout: fixed;
+    width: 100%;
+    overflow: hidden;
 }
 
 .ResultsTableView .tab-left-scroll, 
 .ResultsTableView .tab-right-scroll {
-	vertical-align: top;
+    vertical-align: top;
     background-color: #FFFFFF;
     border-right: 1px solid #D9D9D9;
     width: 2.75em;
@@ -339,8 +444,8 @@
 .ResultsTableView .tab-control {
     /* Width inherit is required so tab control offset width can be compared to that of the tab container to check whether to display tab scroll buttons */
     width: inherit;
-	display: inline-block !important;
-	zoom: 1;
+    display: inline-block !important;
+    zoom: 1;
 }
 
 
@@ -372,7 +477,7 @@
     height: 2.75em;
 }
 .smart-panel-hoisted-menu-inline .has-icon .list-menu-details {
-    margin-left: 0em;
+    margin-left: 2.4em;
 }
 .smart-panel-hoisted-menu-inline .list-menu-icon {
     margin-right: 0.5em;
@@ -406,8 +511,23 @@
     height: 100.2% !important;
 }
 
-.large-shell-bottom .smart-panel-hoisted-menu-inline {
-    right: 2em;
+.bottom-region  .smart-panel-hoisted-menu-inline {
+    right: 5em;
+}
+
+.data-region .smart-panel-hoisted-menu-inline {
+    max-width: 85%;
+}
+
+.bottom-region  .smart-panel-hoisted-menu-inline .list-menu {
+    max-height: 25em;
+    max-width: 25em;
+    overflow-y: auto;
+}
+
+.data-region .smart-panel-hoisted-menu-inline .list-menu {
+    max-height: 25em;
+    overflow-y: auto;
 }
 
 .hidden-hoisted-menu {
@@ -421,6 +541,30 @@
 .minimize-16 {
     background-image: url("../Images/Icons/arrow-down-small-16.png");
 }
+
+/* ------ START: Panel Resize ------ */
+.bottom-panel-resize.resize-handle {
+    display: block;
+    position: absolute;
+    top: -1em;
+    left: 50%;
+    margin-left: -1em;
+    cursor: ns-resize;
+    z-index: 100;
+}
+.bottom-panel-resize.resize-handle .icon-drag {
+    width: 2em;
+    height: 1em;
+    border-bottom: none;
+    border-bottom-right-radius: 0;
+    background-image: url("../Images/Icons/drag-v-16.png");
+}
+.touch .bottom-panel-resize.resize-handle {
+    padding: 2.5em 0.75em 0 0.75em;
+    top: -3.5em;
+    margin-left: -1.75em;
+}
+/* ------ END: Panel Resize ------ */
 
 /* End Script: Mapping/infrastructure/ui/components/SmartPanel/CSS/common.css ------------------------- */ 
 
@@ -576,7 +720,7 @@ input, select, textarea {
 a, a:active, a:hover, a:visited {
    outline: none;
   /* text-decoration: none;*/
-   color: #1b7dbf; 
+   color: #1A72C4; 
 }
 
 a:hover,
@@ -663,10 +807,6 @@ input::-ms-clear {
     opacity: 0;
 }
 
-.bound-disabled {
-    opacity: 0.3;
-}
-
 .left {
     float: left;
 }
@@ -705,8 +845,8 @@ input::-ms-clear {
 
 .bound-disabled,
 .disabled {
-    opacity: 0.3;
-    filter: alpha(opacity=30);
+    opacity: 0.5;
+    filter: alpha(opacity=50);
     cursor: default;
 }
 
@@ -735,7 +875,7 @@ input::-ms-clear {
 }
 
 .modal.active {
-    -moz-transition: opacity 3s;
+    -moz-transition: opacity 0.25s;
 }
 
 .modal-overlay.active { 
@@ -881,19 +1021,19 @@ input[type="submit"] {
     border: 1px solid #CCCCCC;
     border-radius: 0.25rem;
     font-weight: 600;
-    color: #1B7DBF;
+    color: #1A72C4;
     box-shadow: 0;
 }
 .button:hover {
-    background-color: #DEF2FF;
-    color: #666666;
+    background-color: #1A72C4;
+    color: #ffffff;
 }
 button img {
     vertical-align: bottom;
 }
 .button-text-link {
     display: inline-block;
-    color: #1B7DBF;
+    color: #1A72C4;
 }
 .button-text-link:focus,
 .button-text-link:hover {
@@ -902,15 +1042,20 @@ button img {
 }
 
 /* BUTTON TAB STRIP -------------------------*/
+.button-tab-strip {
+    width: 100%;
+}
 
 .button-tab-strip div {
     display: inline-block;
     vertical-align: bottom;
     list-style-type: none;
     margin: -1px .5em 0.1em .5em;
-    overflow: visible;
+    overflow: auto;
+    overflow-y: hidden;
     white-space: nowrap;
     padding: 0;
+    width: 100%;
 }
 
 .button-tab-strip button {
@@ -924,6 +1069,58 @@ button img {
     vertical-align: bottom;
     min-height: 3.5em;
     min-width: 3.5em;
+}
+
+.button-tab-strip div button:first-child:nth-last-child(1) {
+	max-width: 100%;
+}
+
+/* two items */
+.button-tab-strip div button:first-child:nth-last-child(2),
+.button-tab-strip div button:first-child:nth-last-child(2) ~ button {
+	max-width: 50%;
+}
+
+/* three items */
+.button-tab-strip div button:first-child:nth-last-child(3),
+.button-tab-strip div button:first-child:nth-last-child(3) ~ button {
+	max-width: 33.3333%;
+}
+
+/* four items */
+.button-tab-strip div button:first-child:nth-last-child(4),
+.button-tab-strip div button:first-child:nth-last-child(4) ~ button {
+	max-width: 25%;
+}
+
+.button-tab-strip div button:first-child:nth-last-child(5),
+.button-tab-strip div button:first-child:nth-last-child(5) ~ button {
+	max-width: 20%;
+}
+
+.button-tab-strip div button:first-child:nth-last-child(6),
+.button-tab-strip div button:first-child:nth-last-child(6) ~ button {
+	max-width: 16.67%;
+}
+
+.button-tab-strip div button:first-child:nth-last-child(7),
+.button-tab-strip div button:first-child:nth-last-child(7) ~ button {
+	max-width: 14.29%;
+}
+
+.button-tab-strip div button:first-child:nth-last-child(8),
+.button-tab-strip div button:first-child:nth-last-child(8) ~ button {
+	max-width: 12.5%;
+}
+
+.button-tab-strip div button:first-child:nth-last-child(9),
+.button-tab-strip div button:first-child:nth-last-child(9) ~ button {
+	max-width: 11.1%;
+}
+
+.button-tab-strip div button:first-child:nth-last-child(10),
+.button-tab-strip div button:first-child:nth-last-child(10) ~ button {
+	max-width: 10%;
 }
 
 .button-tab-strip button:hover {
@@ -940,6 +1137,27 @@ button img {
 .button-tab-strip img {
     width: 24px;
     height: 24px;
+    position: absolute;
+}
+
+.button-tab-strip.no-label img {
+    position: static;
+}
+
+.tab-strip-label {
+    font-size: 0.9em;    
+    padding-left: 2.6em;
+    margin: 0.5em 0 0 0;
+    text-align: center;
+    white-space: normal;
+    color: #333333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.button-tab-strip.no-label .tab-strip-label {
+    display: none;
 }
 
 .button-tab-strip .tab-active {
@@ -949,6 +1167,8 @@ button img {
     opacity: 1;
     cursor: default;
 }
+
+
 
 
 /* LIST MENU -------------------------*/
@@ -995,10 +1215,19 @@ button img {
 .list-menu-name {
     margin-bottom: .1em;
     font-weight: 600;
+    font-size: 1em;
+    display: block;
+}
+a.list-menu-item {
+    text-decoration: none;
+    color: #333333;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .list-menu-desc {
-    color: #777777;
+    color: #666666;
 }
 
 a.list-menu-item {
@@ -1010,6 +1239,7 @@ a.list-menu-item {
     margin-left: 2.5em;
 }
 
+/* ---- Are these unnessesary with the standard .disabled and .bound-disabled classes?
 .list-menu-item.disabled,
 .list-menu-item.bound-disabled {
     cursor: default;
@@ -1019,7 +1249,7 @@ a.list-menu-item {
 .list-menu-item.bound-disabled * {
     opacity: 0.5;
     filter: alpha(opacity = 50);
-}
+} ---- */
 
 .static .list-menu-item {
     cursor: default;
@@ -1266,6 +1496,10 @@ a.list-menu-item {
     background-image: url(../../Resources/Images/Icons/Toolbar/edit-24.png);
 }
 
+.edit-alt-24 {
+    background-image: url(../../Resources/Images/Icons/edit-markup-24.png);
+}
+
 .error-24 {
     background-image: url(../../Resources/Images/Icons/Toolbar/error-24.png);
 }
@@ -1306,6 +1540,10 @@ a.list-menu-item {
     background-image: url(../../Resources/Images/Icons/Toolbar/draw-extent-24.png);   
 }
 
+.more-24 {
+    background-image: url("../../Resources/Images/Icons/Toolbar/more-24.png");
+}
+
 .zoom-in {
     background-image: url("../../Resources/Images/Icons/map-nav-zoom-in-16.png");
 }
@@ -1328,6 +1566,10 @@ a.list-menu-item {
 
 .chevron-right-16 {
     background-image: url("../Images/Icons/chevron-right-16.png");
+}
+
+.trashcan-24 {
+    background-image: url(../../Resources/Images/Icons/Toolbar/trash-24.png);
 }
 
 
@@ -1383,8 +1625,7 @@ a.list-menu-item {
     height: 100%;
 }
 
-ul.fui-selector-body {
-    display: none;
+.fui-selector-body {
     position: absolute;
     z-index: 200;
     max-height: 200px;
@@ -1396,7 +1637,7 @@ ul.fui-selector-body {
     overflow-y: scroll;
 }
 
-ul.fui-selector-body li div {
+.fui-selector-body li div {
     margin: 0;
     padding: 0.5em;
     line-height: 1em;
@@ -1630,6 +1871,8 @@ ul.fui-selector-body li .selector-checkbox {
 .basemap-switcher-wrapper a {
     color: #333333;
 }
+.basemap-item { height: 4.85em; }
+
 .basemap-button {
     position: relative;
     display: block;
@@ -1705,7 +1948,7 @@ ul.fui-selector-body li .selector-checkbox {
 .basemap-switcher-header {
     background-color: #FFFFFF;
     font-size: 1.3em;
-    color: #1B7DBF;
+    color: #1A72C4;
     border-bottom: 1px solid #D9D9D9;
     border-top-left-radius: 0.25rem;
 }
@@ -2007,7 +2250,7 @@ ul.fui-selector-body li .selector-checkbox {
     border: 0;
 }
 .bkmk-list .list-menu-item:hover {
-	background: #DEF2FF;
+	background-color: #DEF2FF;
 }
 
 .zoom-control-btn button.bookmark {
@@ -2096,6 +2339,30 @@ ul.fui-selector-body li .selector-checkbox {
 /* End Script: Mapping/modules/ClusterLayers/CSS/common.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/ContextMenu/CSS/common.css ------------------------- */ 
+.ContextMenuView {
+    position: absolute;
+    z-index: 999;
+}
+
+.ContextMenuView .context-menu-region > div {
+    background: white;
+    border: 1px solid #d9d9d9;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 0.25rem;
+}
+
+.ContextMenuView .map-menu-coordinates,
+.ContextMenuView .map-menu-reverse-geocode {
+   font-size: 0.9em;
+   background-color: #EEEEEE;
+   padding: 0.25em 1em;
+   border-bottom: 1px solid #D9D9D9;
+}
+
+/* End Script: Mapping/modules/ContextMenu/CSS/common.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/Coordinates/CSS/common.css ------------------------- */ 
 .CoordinatesView {
     position: fixed;
@@ -2138,7 +2405,7 @@ ul.fui-selector-body li .selector-checkbox {
     height: 3.5em;
 }
 .no-touch .coords-info {
-    height: 2.72em;
+    height: 2.75em;
 }
 .region.footer-region .coords-info {
     background-color: transparent;
@@ -2271,8 +2538,6 @@ ul.fui-selector-body li .selector-checkbox {
 }
 .map-bottom-left .coords-info {
     float: left;
-    position: relative;
-    left: auto;
 }
 .coords-label {
 	font-weight: bold;
@@ -2496,6 +2761,24 @@ ul.fui-selector-body li .selector-checkbox {
 /* End Script: Mapping/modules/ExportMap/CSS/common.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/ExportWebMap/CSS/common.css ------------------------- */ 
+.export-webmap
+{
+    height: 100%;
+    padding: 10px;
+}
+
+.export-webmap label
+{
+    color: #667580;
+    font-size: 1.2em;
+    display: block;
+    margin: .75em 0 0.25em 0;
+}
+
+/* End Script: Mapping/modules/ExportWebMap/CSS/common.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/FeatureDetails/CSS/common.css ------------------------- */ 
 
 /* FEATURE DETAIL PROVIDERS -------------------------*/
@@ -2625,7 +2908,7 @@ ul.fui-selector-body li .selector-checkbox {
 
 .multi-column-container {
     width: 45%;
-    margin-left: 1em;
+    margin-right: 1em;
     padding-left: 1em;
     border-left: 1px solid #EEEEEE;
 }
@@ -2678,9 +2961,13 @@ ul.fui-selector-body li .selector-checkbox {
 .datalinks-table-widget,
 .related-features-table-widget {
     width: 100%;
-    height: 100%;
     position: absolute;
+    top: 2.3em;
+    bottom: 0;
 }
+.createfeature-actions.bound-visible ~ .related-features-table-widget {
+    top: 5.3em;
+} 
 
 /*.datalinks-table-widget, 
 .related-features-table-widget {
@@ -2739,169 +3026,6 @@ ul.fui-selector-body li .selector-checkbox {
 }
 
 /* End Script: Mapping/modules/FeatureEditing/CSS/common.css ------------------------- */ 
-
-
-/* Begin Script: Mapping/modules/FeatureLayer/CSS/common.css ------------------------- */ 
-
-/* FEATURE LAYER (COMMON) -------------------------*/
-
-.feature-layer-details a {
-    text-decoration: underline;
-}
-.list-menu-item .form-item {
-    padding: 0;
-}
-.feature-layer .list-menu button {
-    display: block;
-    width: 100%;
-}
-.view-edit-log .clickable {
-    cursor: pointer;
-}
-
-.modal-message-view .error
-{
-    color: #F70000;
-    font-weight:bolder;
-}
-
-.modal-message-view .warn
-{
-    color: #FF800D;
-    font-weight: bold;
-}
-
-.sync-extent {
-    margin-top: 1em;
-}
-
-.sync-extent-btn {
-    margin-left: .5em;
-    text-align: right;
-    white-space: nowrap;
-}
-
-.sync-form-btns {
-    margin-top: 1em;
-    text-align: right;
-}
-
-
-/* FEATURE LAYER DETAILS (COMMON) -------------------------*/
-
-.edit-highlight {
-    background-color: #FFFCCC;
-}
-
-
-/* EDIT LOG (COMMON) -------------------------*/
-
-.edits .list-menu-item {
-    padding: 0;
-}
-
-.edits table {
-    width: 100%;
-}
-
-.edits table td {
-    padding: 1em;
-    vertical-align: top;
-}
-
-.edits .list-menu-icon div {
-    width: 24px;
-    height: 24px;
-}
-
-.edit-btns {
-    text-align: right;
-    white-space: nowrap;
-}
-
-.edit-btns button {
-    padding: .5em;
-}
-
-    .edit-btns button.edit-edit-log-entry {
-        display: none;
-    }
-
-.sync-now button {
-    width: 100%;
-    margin-top: 1em;
-}
-
-
-/* SYNC LOG (COMMON) -------------------------*/
-
-.sync-log table {
-    width: 100%;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-}
-
-.sync-log tr,
-.sync-status-msg .list-menu-item {
-    border-bottom: 1px solid #CCCCCC;
-}
-
-.sync-log td,
-.sync-log .form-btns {
-    padding: 1em;
-}
-
-.sync-log .status span {
-    display: none;
-}
-
-.sync-log .error .status span.error-txt,
-.sync-log .warning .status span.warning-txt,
-.sync-log .trace .status span.trace-txt {
-    display: block;
-}
-
-.sync-log .msg {
-    text-align: left;
-    width: 100%;
-}
-
-
-.sync-log .form-btns {
-    margin: 0;
-    padding: 1em;
-    border-top: 1px solid #CCCCCC;
-}
-
-.sync-log .list-menu-icon {
-    width: 24px;
-    height: 24px;
-    background-repeat: no-repeat;
-    background-position: center center;
-}
-
-.sync-status-msg {
-    font-weight: 600;
-}
-
-.sync-log .trace {
-    border-bottom: 1px solid #CCCCCC;
-}
-
-.sync-log td {
-    vertical-align: top;
-}
-
-.sync-log .warning td,
-.sync-log .error td {
-    font-weight: 600;
-}
-
-.sync-log .error td {
-    color: #FF0000;
-}
-
-/* End Script: Mapping/modules/FeatureLayer/CSS/common.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/Footer/CSS/common.css ------------------------- */ 
@@ -3063,6 +3187,64 @@ ul.fui-selector-body li .selector-checkbox {
 /* End Script: Mapping/modules/Geolocate/CSS/common.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/GlobalMenu/CSS/common.css ------------------------- */ 
+.GlobalMenuView {
+    margin: 0 !important;
+}
+.global-menu .list-menu-item:last-child {
+    border-radius: 0;
+}
+.global-menu,
+.global-menu .list-menu-item:last-child,
+.global-menu .list-menu-item:last-child .global-menu-details {
+    border-top-right-radius: 0.25rem;
+}
+.global-menu .list-menu-item {
+    display: inline-block;
+    text-align: center;
+    width: 25%;
+    padding: 0;
+    background-color: #F8F8F8;
+    border-top: 1px solid #EEEEEE;
+    border-left: 1px solid #EEEEEE;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.global-menu .list-menu-item:first-child {
+    border-left: none;
+}
+.global-menu .global-menu-details {
+    text-align: center;
+    padding: 0.25em 0.5em;
+    width: 100%;
+    height: 100%;
+}
+.global-menu .list-menu-item span.list-menu-name {
+    margin: 0;
+    font-weight: normal;
+    font-size: 0.85em;
+    color: #555555;
+}
+.global-menu .list-menu-item .list-menu-name, .global-menu .list-menu-name {
+    margin: 0;
+    display: block;
+}
+.global-menu .list-menu-icon {
+    text-align: center;
+    float: none;
+}
+.region.map-navigation-region .GlobalMenuView.view {
+    margin: 0;
+}
+.GlobalMenuView.active + .IWantToMenuView .wtm-list {
+    border-top-right-radius: 0;
+    border-top: 0;
+}
+
+/* End Script: Mapping/modules/GlobalMenu/CSS/common.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/HeatMaps/CSS/common.css ------------------------- */ 
 .heat-maps .slider-container,
 .heat-maps .intensity-slider {
@@ -3094,7 +3276,7 @@ ul.fui-selector-body li .selector-checkbox {
 
 /* Begin Script: Mapping/modules/Integration/CSS/common.css ------------------------- */ 
 /* INTEGRATION STYLING -------------------------*/
-.integration .fui-selector-body span {
+.integration ul.fui-selector-body span {
     vertical-align: top;
     line-height: 1.6em;
     font-size: 0.95em;
@@ -3188,6 +3370,9 @@ ul.fui-selector-body li .selector-checkbox {
     position: absolute;
     overflow: auto;
 }
+.wtm-heading {
+    font-size: 1em;
+}
 .wtm-button {
     display: inline-block;
     position: relative;
@@ -3196,7 +3381,7 @@ ul.fui-selector-body li .selector-checkbox {
     font-size: 1.6em;
     text-decoration: none;
     border-radius: 0.25rem;
-    background: #197DC9;
+    background: #1A72C4;
     color: #FFFFFF;
     overflow: hidden;
     white-space: nowrap;
@@ -3225,7 +3410,7 @@ ul.fui-selector-body li .selector-checkbox {
     border-bottom: 0;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
-    color: #1B7DBF;
+    color: #1A72C4;
     opacity: 1.0;
     filter: none;
     margin-bottom:-1px;
@@ -3269,7 +3454,7 @@ ul.fui-selector-body li .selector-checkbox {
     width: 100%;
 }
 .wtm-list button:hover {
-    background: #DEF2FF;
+    background-color: #DEF2FF;
 }
 .wtm-list div.list-menu-item:first-child {
     border-top-right-radius: 0.25rem;
@@ -3317,8 +3502,8 @@ ul.fui-selector-body li .selector-checkbox {
 
 
 /* Begin Script: Mapping/modules/LayerList/CSS/common.css ------------------------- */ 
-
 /* LAYER LIST */
+
 .layer-list ul,
 .layer-list li {
     position: relative;
@@ -3372,14 +3557,14 @@ ul.fui-selector-body li .selector-checkbox {
     height: 2.2em;
     padding: 0.2em;
 }
-
 .layer-list {
     font-size: 1em;
     position: absolute;
     overflow: auto;
     top: 2.98em;
     left: .5em;
-    right: 0px;
+    right: 0;
+    bottom: 0;
 }
 
 .bound-invisible + .layer-list {
@@ -3503,7 +3688,7 @@ ul.fui-selector-body li .selector-checkbox {
 }
 
 .layer-contents:hover {
-    background: #DEF2FF;
+    background-color: #DEF2FF;
     cursor: pointer;
 }
 
@@ -3605,6 +3790,18 @@ ul.fui-selector-body li .selector-checkbox {
 .layer-list-legend-icon .simple-swatch {
    height: auto;
     width: 24px;
+}
+/* IDENTIFY LAYER LIST */
+
+.identify-layers .layers .layer .layer-item-expander {
+    margin-left: 0;
+}
+
+.identify-layers .layers .layer {
+    padding-left: 2em;
+}
+.identify-layers .layers .layer {
+    padding-left: 2em;
 }
 
 /* End Script: Mapping/modules/LayerList/CSS/common.css ------------------------- */ 
@@ -3751,7 +3948,7 @@ ul.fui-selector-body li .selector-checkbox {
     border: 1px solid #CCCCCC;
     border-radius: 0.25rem;
     font-weight: 600;
-    color: #1B7DBF;
+    color: #1A72C4;
     box-shadow: 1px 1px 1px #FFFFFF inset;
     -moz-box-shadow: 1px 1px 1px #FFFFFF inset;
     -webkit-box-shadow: 1px 1px 1px #FFFFFF inset;
@@ -3866,14 +4063,17 @@ ul.fui-selector-body li .selector-checkbox {
     height: 100%;
     /*z-index: 100;*/
 }
+
 .map-top-left {
     position: absolute;
     left: 0;
     display: inline-block;
 }
+
 .no-touch .map-top-left {
     /*top: 3.05em;*/
 }
+
 .map-bottom-left {
     position: absolute;
     bottom: 0em;
@@ -3881,20 +4081,22 @@ ul.fui-selector-body li .selector-checkbox {
     display: inline-block;
     float: left;
 }
-.map-bottom-left .active {
-    display: inline-block!important;
-    vertical-align: bottom;
-}
+
+    .map-bottom-left .active {
+        display: inline-block !important;
+        vertical-align: bottom;
+    }
+
 .map .bingLogo-lg {
-  background-image: url("../../Resources/Images/bing-logo-70x40.png");
-  left: 0;
-  width: 70px;
-  height: 40px;
-  position: absolute;
-  z-index: 1;
+    background-image: url("../../Resources/Images/bing-logo-70x40.png");
+    left: 0;
+    width: 70px;
+    height: 40px;
+    position: absolute;
+    z-index: 1;
 }
 
-.map-navigation-region  {
+.map-navigation-region {
     position: relative;
     display: inline-block;
     float: left;
@@ -3903,6 +4105,7 @@ ul.fui-selector-body li .selector-checkbox {
     /*z-index: 101;*/
     margin-left: 3.9em;
 }
+
 .no-touch .map-navigation-region {
     margin-left: 3.1em;
 }
@@ -3929,7 +4132,9 @@ ul.fui-selector-body li .selector-checkbox {
 }
 
 .map-middle-left {
+    position: absolute;
     left: 0;
+    top: 50%;
 }
 
 .map-middle-right {
@@ -3944,6 +4149,7 @@ ul.fui-selector-body li .selector-checkbox {
     text-align: center;
     pointer-events: none;
 }
+
 .status-window {
     pointer-events: auto;
 }
@@ -3966,14 +4172,15 @@ ul.fui-selector-body li .selector-checkbox {
     padding: 1em;
 }
 
-.map-error div {
-    padding-left: 40px;
-    background: url("../../Resources/Images/Icons/Toolbar/stop-32.png") no-repeat top left;
-}
+    .map-error div {
+        padding-left: 40px;
+        background: url("../../Resources/Images/Icons/Toolbar/stop-32.png") no-repeat top left;
+    }
 
-.map-error h2 {
-    font-size: 1.1em;
-}
+    .map-error h2 {
+        font-size: 1.1em;
+    }
+
 .MapView {
     height: 100%;
 }
@@ -3990,30 +4197,54 @@ ul.fui-selector-body li .selector-checkbox {
 .region.map-bottom-left .view {
     margin: 0.38em 0em 0.4em 0.4em;
 }
+
 .region.footer-left .view {
     margin-top: 0;
     margin-bottom: 0;
 }
+
 .region.footer-right .view,
 .region.map-top-right .view,
 .region.map-center-right .view,
 .region.map-bottom-right .view {
     margin: 0.38em 0.4em 0.4em 0em;
 }
+
 .region.map-bottom-right .view {
     margin-bottom: 0;
 }
+
 .region.footer-right .view {
     margin-top: 0;
     margin-bottom: 0;
 }
+
 .region.footer-region .view button {
     border: 0;
     background-color: transparent;
 }
-.region.footer-region .view button:hover {
-    background-color: #ffffff;
+
+    .region.footer-region .view button:hover {
+        background-color: #ffffff;
+    }
+
+/*#region Map Context Menu */
+
+.context-menu-region .MapContextMenuView {
+    width: 15em;
 }
+
+.context-menu-region.offset-up .MapContextMenuView {
+    position: absolute;
+    top: -40px;
+}
+
+.map-menu-reverse-geocode {
+    /* Prevents click on the address opening Google Maps application on Android */
+    pointer-events: none;
+}
+
+/*#endregion */
 
 /* End Script: Mapping/modules/Map/CSS/common.css ------------------------- */ 
 
@@ -4029,7 +4260,7 @@ ul.fui-selector-body li .selector-checkbox {
 }
 
 .map-callout-wrapper {
-    margin-top: -2em;
+    margin-bottom: 2em;
     overflow: visible;
     z-index: 10;
 }
@@ -4191,12 +4422,22 @@ ul.fui-selector-body li .selector-checkbox {
 }
 
 .map-callout .map-tip-nav .feature-select-wrapper {
-    width: 48%;
+    width: 44%;
 }
 
 .map-tip-nav select {
     width: 100%;
     padding: 0.19em;
+}
+
+.map-tip-null-geometry {
+    font-style: italic;
+    font-size: 0.9em;
+    padding-top: 1em;
+}
+
+.map-tip-null-geometry span {
+    margin-left: 0.15em;
 }
 
 /* End Script: Mapping/modules/MapTips/CSS/common.css ------------------------- */ 
@@ -4460,40 +4701,457 @@ ul.fui-selector-body li .selector-checkbox {
 /* End Script: Mapping/modules/Native/CSS/common.css ------------------------- */ 
 
 
-/* Begin Script: Mapping/modules/Offline/ConnectionStatusIndicator/CSS/common.css ------------------------- */ 
-
-/* OFFLINE CONNECTION INDICATOR -------------------------*/
-
-.connection-status-indicator button,
-.connection-status-indicator button:hover
-{
-    width: 2.8em;
-    height: 2.85em;
-    padding: 0;
-    background: #FFFFFF;
-    border: 1px solid #999999;
-    border-radius: 0.25rem;
-    box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    text-align: center;
-    margin: 0.37em 0 0 0.25em;
-    vertical-align: bottom;
-}
-.view.ConnectionStatusIndicatorView.inactive  {
-    display: none;
-}
-.connection-status-indicator button:hover {
-}
-
-/* End Script: Mapping/modules/Offline/ConnectionStatusIndicator/CSS/common.css ------------------------- */ 
-
-
 /* Begin Script: Mapping/modules/Offline/CSS/common.css ------------------------- */ 
-.map-bottom-left .ConnectionStatusIndicatorView {
-        float: left;
-}
 
 /* End Script: Mapping/modules/Offline/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/OfflineMaps/CSS/common.css ------------------------- */ 
+.offline-heading {
+    font-size: 1.3em;
+    font-weight: normal;
+}
+
+.offline-heading,
+.error-message-text {
+    display: block;
+    margin: 0.5em 1em;
+}
+.OfflineMapEditorGeometryView .offline-heading {
+    margin-bottom: 1em;
+}
+.offline-header-info-text {
+    padding: 1em;
+    border-bottom: 1px solid #D9D9D9;
+}
+.list-menu,
+.list-menu * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.list-menu .item-list-item {
+    border-bottom: 1px solid #D9D9D9;
+    position: relative;
+}
+.item-list-item.active-list-item {
+    background-color: #DEF2FF;
+}
+.list-item-button {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0.25em 4em 0.25em 6.5em;
+    min-height: 5em;
+}
+.offline-profiles .list-item-button.bound-disabled {
+    opacity: 1;
+}
+.profile-manage .list-item-button.button-delete {
+    padding-right: 0em;
+}
+.online-only .list-item-button {
+    background-color: #F8F8F8;
+}
+.offline-thumbnail {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0.5em;
+}
+
+.offline-thumbnail-helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.list-item-img {
+    position: relative !important;
+    vertical-align: middle;
+    border: 1px solid #d9d9d9;
+}
+
+.progress-message {
+    background: #eee;
+}
+
+.list-item-button.button-delete,
+.list-item-button.action-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3.5em;
+    height: 100%;
+    padding: 0;
+    text-align: center;
+    border-left: 1px solid #D9D9D9;
+    background: #FFFFFF;
+}
+
+.list-item-button.action-button.sync-button {
+    right: 3.5em;
+}
+
+.list-item-button.button-delete {
+    background: #d1332f;
+}
+.offline-profile-basemap-more-detail {
+    float: right;
+}
+.basemap-editor .display-name {
+    font-weight: 600;
+    display: block;
+}
+.basemap-editor .display-name,
+.basemap-editor form,
+.basemap-editor .error-message {
+    margin-bottom: 0.5em;
+}
+
+.edits-badge,
+.sync-badge {
+    background: #d1332f;
+    color: #ffffff;
+    min-width: 1.5em;
+    height: 1.5em;
+    text-align: center;
+    border-radius: 1em;
+    line-height: 0.5em;
+    padding: 0.5em;
+    font-size: 0.9em;
+}
+
+.edits-badge {
+    position: absolute;
+    right: 4.2em;
+    top: 20%;
+}
+
+.orphan-warning {
+    font-style: italic;
+}
+
+/* ------ START: New Profiles ------ */
+.offline-map-editor {
+    position: relative;
+}
+.offline-map-editor .form-btns {
+    padding: 0 1em;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+.offline-map-editor .layer-selector-buttons.panel-group-contents {
+    padding: 1em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.profile-layers .layer-list {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: 0;
+    overflow: inherit;
+}
+.profile-layers .layer-list .identify-layers .layer {
+    padding-left: 10%;
+}
+.profile-layers .layer-list .identify-layers.layers .layer .layer-item-expander {
+    margin-left: 0;
+}
+.profile-layers .filter-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border-left: 1px solid #EEEEEE;
+  background: #FFFFFF;
+  padding: 0 0.75em;
+}
+.profile-layers .filter-button:hover,
+.list-menu-item:hover,
+.list-menu-details:hover {
+    background-color: #DEF2FF;
+    cursor: pointer;
+}
+.profile-layers .layer-contents:hover {
+    background: transparent;
+    cursor: default;
+}
+.profile-layers .sub-text {
+    color: #777777;
+    font-size: 0.9em;
+}
+.profile-layers .layer-item-ctrl input[type="checkbox"], 
+.profile-layers .layer-item-ctrl input[type="radio"] {
+    margin-bottom: 2em;
+}
+.offline-map-editor button.list-menu-item {
+    width: 100%;
+}
+.offline-map-editor .list-menu li:first-child .list-menu-item {
+    border-top: 1px solid #eeeeee;
+}
+.list-menu-status-msg {
+    font-style: italic;
+    font-size: 0.9em;
+}
+.list-menu-status-msg .status-msg-icon,
+.list-menu-status-msg .list-menu-desc,
+.list-menu-status-msg .error-message {
+    display: inline-block;
+}
+/* ------ END: New Profiles ------ */
+
+/* ------ START: Select Layers ------ */
+.offline-profiles .layers .layer .layer-item-expander {
+    margin-left: 0;
+}
+/* ------ END: Select Layers ------ */
+/* ------ START: Basemaps ------ */
+.offline-map-editor .input-group {
+    margin-bottom: 1em;
+}
+.basemap-editor .input-group label {
+    display: block;
+}
+.label-text {
+    pointer-events: none;
+}
+/* ------ END: Basemaps ------ */
+/* ------ START: Sharing ------ */
+.offline-map-editor .grant-editor {
+    padding: 0 1em 1em 1em;
+}
+.share-with label{
+    padding: 1em 0 0 1em; 
+}
+/* ------ END: Sharing ------ */
+/* ------ START: Overrides ------ */
+.offline-profiles .list-menu li:last-child {
+    border-radius: 0;
+}
+.OfflineMapEditorBasemapsView .form-btns,
+.OfflineMapEditorBasemapLevelsView .form-btns {
+    padding: 0 1em;
+}
+.offline-profiles .layer-list {
+    position: relative;
+    overflow: visible;
+    top: 0;
+    left: 0;
+}
+.offline-profiles .layers .layer {
+    padding-left: 2.15em;
+}
+.offline-profiles .layer-list .tree-expander.expanded {
+    background-position: 50% 50%;
+}
+/* ------ END: Overrides ------ */
+
+/* ------ START Button States ------*/
+.active-profile button,
+.active-profile button:hover .status-icon,
+.active-profile button .status-icon:hover,
+.list-item-button:hover,
+.online-only .list-item-butto:hover {
+    background-color: #DEF2FF;
+    cursor: pointer;
+}
+
+.button-delete:hover {
+    background-color: #999999;
+}
+
+.active-profile .status-icon {
+    background-color: #ffffff;
+}
+
+.status-icon.downloaded-icon,
+.status-icon.active-icon,
+.status-icon.orphan-icon,
+.profile-manage .status-icon {
+    right: 3.5em;
+}
+
+.status-icon.downloaded-icon,
+.status-icon.active-icon,
+.status-icon.orphan-icon {
+    border-left-color: transparent;
+}
+
+/* ------ END Button States ------*/
+
+/* ------ START Sync Status View ------*/
+.sync-status.padded-view {
+    min-width: 35em;
+    padding: 2em;
+}
+.sync-status-heading {
+    margin-bottom: 1em;
+}
+.sync-status-details-toggle {
+    font-weight: 600;
+    color: #444444;
+    padding-left: 1.5em;
+    background-position: left center;
+    background-repeat: no-repeat;
+}
+.sync-status-details-toggle.collapsed {
+    background-image: url(../Images/Icons/chevron-right-16.png);
+}
+.sync-status-details-toggle.expanded {
+    background-image: url(../Images/Icons/chevron-down-16.png);
+}
+.sync-details {
+    margin-top: 1em;
+}
+.sync-status-details {
+    background-color: #EEEEEE;
+    padding: 0.5em;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+}
+.sync-checkbox-close{
+    margin-right: 1em;
+    position: relative;
+    padding-left: 2.5em;
+    padding-top: 0.35em;
+}
+.sync-checkbox-close input[type="checkbox"] {
+    position: absolute;
+    top: 0.2em;
+    left: 0;
+}
+.sync-status .success {
+    color: green;
+}
+.sync-status .error {
+    color: #990000;
+}
+
+.status-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    width: 3.5em;
+    border-left: 1px solid #D9D9D9;
+    text-align: center;
+}
+
+.online-only .status-icon {
+    border-left-color: transparent;
+}
+.online-only .list-menu-desc {
+    display: block;
+}
+
+.action-button-helper,
+.status-icon-helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.action-button img,
+.status-icon img {
+    vertical-align: middle;
+}
+
+.sync-warning-header {
+    color: red;
+    margin-top: 1em;
+    font-weight: 600;
+    margin-bottom: 0em;
+}
+.sync-warnings {
+  background-color: #EEEEEE;
+  padding: 0.5em;
+  border: 1px solid #D9D9D9;
+  border-radius: 0.25rem;
+  margin-top: 0em;
+}
+.sync-warnings ul {
+  margin: 0.25em;
+  padding-left: 1.25em;
+}
+
+/* ------ END Sync Status View ------*/
+
+/* ------ START Progress Bar ------*/
+.progress-bar {
+    width: 100%;
+    border: 1px solid #CCCCCC;
+    padding: 0.25em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    
+    -webkit-border-radius: 0.25em;
+    -moz-border-radius: 0.25em;
+    -ms-border-radius: 0.25em;
+    border-radius: 0.25em;
+}
+.progress {
+    height: 1em;
+    background: #4BB749;
+  
+    -webkit-border-radius: 0.15em;
+    -moz-border-radius: 0.15em;
+    -ms-border-radius: 0.15em;
+    border-radius: 0.15em;
+    
+    -webkit-transition: width 0.5s ease-in-out;
+    -moz-transition: width 0.5s ease-in-out;
+    -o-transition: width 0.5s ease-in-out;
+    transition: width 0.5s ease-in-out;
+    
+    -webkit-animation: fade-background 2s ease-in-out infinite; /* Safari 4+ */
+    -moz-animation:    fade-background 2s ease-in-out infinite; /* Fx 5+ */
+    -o-animation:      fade-background 2s ease-in-out infinite; /* Opera 12+ */
+    animation:         fade-background 2s ease-in-out infinite ; 
+}
+
+
+ @-webkit-keyframes fade-background {
+    0%, 100% { 
+        background: #4BB749;
+    }
+    50% { 
+        background: #89DF87; 
+    }
+}
+@-moz-keyframes fade-background {
+    0%, 100% { 
+        background: #4BB749;
+    }
+    50% { 
+        background: #89DF87; 
+    }
+}
+@-o-keyframes fade-background {
+    0%, 100% { 
+        background: #4BB749;
+    }
+    50% { 
+        background: #89DF87; 
+    }
+}
+@keyframes fade-background {
+    0%, 100% { 
+        background: #4BB749;
+    }
+    50% { 
+        background: #89DF87; 
+    }
+} 
+/* ------ END Progress Bar ------*/
+
+/* End Script: Mapping/modules/OfflineMaps/CSS/common.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/OverviewMap/CSS/common.css ------------------------- */ 
@@ -4578,35 +5236,621 @@ ul.fui-selector-body li .selector-checkbox {
 /* End Script: Mapping/modules/OverviewMap/CSS/common.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/PlotCoordinates/CSS/common.css ------------------------- */ 
+.PlotCoordinatesView,
+.plot-coordinates {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.coord-list,
+.coord-list .coord-item {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.coord-list {
+    position: absolute;
+    top: 4.6em;
+    right: 0;
+    bottom: 3em;
+    left: 0;
+    overflow-y: auto;
+}
+.coord-item {
+    clear: both;
+    border-bottom: 1px solid #EEEEEE;
+}
+.coord-ref-label,
+.coord-group,
+.coord-label,
+.coord-inputs,
+.coord-val {
+    display: block;
+}
+.coord-ref-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 1.25em;
+    width: 2.25em;
+    height: 2.25em;
+    line-height: 2.25em;
+    padding: 0 0.25em;
+    margin: 0.5em;
+    border-radius: 1.125em;
+    background: #666666;
+    color: #FFFFFF;
+    text-align: center;
+    font-weight: bold;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.editing .coord-ref-label {
+    background: #1A72C4;
+}
+.coord-contents.editing,
+button.item-contents {
+    padding: 0.5em 0;
+}
+.coord-group {
+    position: relative;
+    display: block;
+    width: 100%;
+    clear: both;
+    padding: 0.25em 0.5em 0.25em 4em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.coord-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2em;
+    display: block;
+    text-align: right;
+    color: #777777;
+    padding-right: 0.5em;
+    margin: 0.25em 0 0.25em 4em;
+}
+.plotted .coord-val {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.editing .coord-label {
+    margin: 0.5em 0 0.5em 4em;
+}
+.coord-inputs {
+    width: 100%;
+    padding-left: 2.5em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.item-contents {
+    display: block;
+    padding-right: 3.5em;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+button.item-contents:hover,
+button.item-contents:focus {
+    background-color: #DEF2FF;
+}
+.editing .item-contents {
+    padding-right: 0;
+}
+.item-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 3.5em;
+}
+.item-actions button {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #FFFFFF;
+    border-left: 1px solid #eeeeee;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    z-index: 99;
+}
+.item-actions button:hover,
+.item-actions button:focus {
+    background-color: #DEF2FF;
+}
+.no-coordinates {
+    margin: 1em;
+}
+.coord-sys-switcher {
+    width: 100%;
+    top: 0px;
+    z-index: 200;
+    padding: 0.5em;
+    background: #F8F8F8;
+    border-bottom: 1px solid #D9D9D9;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.coord-select-label {
+    display: block;
+    height: 1.5em;
+}
+.coord-sys-switcher select {
+    width: 100%;
+    height: 2em;
+}
+.add-coordinate {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3em;
+    border-top: 1px solid #D9D9D9;
+}
+.add-coordinate button {
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+}
+.add-coordinate button:hover,
+.add-coordinate button:focus {
+    background: #E9F6FF;
+}
+.add-coordinate .list-menu-icon {
+    margin-right: 0.5em;
+}
+.field-sym {
+    padding: .25em;
+    font-size: 1.25em;
+    width: 5%;
+    display: inline-block;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.field-sym,
+.editing .coord-val {
+    display: block;
+    float: left;
+}
+
+/* Large Inputs */
+.dd .coord-degrees {
+    width: 85%;
+    min-width: 0;
+}
+
+/* Medium Inputs */
+.ddm .coord-degrees,
+.ddm .coord-min {
+    width: 40%;
+    min-width: 0;
+}
+
+/* Small Inputs */
+.dms .coord-degrees,
+.dms .coord-min,
+.dms .coord-sec {
+    width: 25%;
+    min-width: 0;
+}
+
+/* Extra Small Inputs */
+.coord-val.coord-bearing {
+    width: 10%;
+    min-width: 0;
+}
+.coord-bearing:after {
+    content: " ";
+    display: table;
+    clear: both;
+}
+.editing .form-btns {
+    clear: both;
+    padding: 0.5em;
+}
+.coord-hidden .coord-label,
+.coord-hidden .coord-inputs {
+	color: #DCDCDC;
+}
+.coord-hidden .coord-ref-label {
+    background: #DCDCDC;
+}
+.add-disabled {
+    opacity: 0.3;
+    filter: alpha(opacity=30);
+    cursor: default;
+}
+
+/* End Script: Mapping/modules/PlotCoordinates/CSS/common.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/Printing/CSS/common.css ------------------------- */ 
-.printing
-{
+.printing {
     padding: 1em;
     overflow: hidden;
 }
 
-.printing label
-{
-    color: #667580;
-    font-size: 1.2em;
-    display: block;
-    margin: .75em 0 0.25em 0;
-}
+    .printing label {
+        color: #667580;
+        font-size: 1.2em;
+        display: block;
+        margin: .75em 0 0.25em 0;
+    }
 
-.printing input,
-.printing select,
-.printing textarea
-{
+    .printing input,
+    .printing select,
+    .printing textarea {
+        width: 100%;
+    }
+
+
+.shell-large .printing-peephole-container {
+    position: absolute;
+    height: 100%;
     width: 100%;
+    overflow: hidden;
+    pointer-events: none;
 }
 
-.printing buttons
-{
-    margin-top: .75em;
-    text-align: center;
+    .shell-large .printing-peephole-container .printing-peephole,
+    .shell-large .printing-peephole-container .printing-peephole-img {
+        position: absolute;
+    }
+
+    .shell-large .printing-peephole-container .printing-peephole {
+        border-style: dashed;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .shell-large .printing-peephole-container .printing-peephole-img {
+        top: 50%;
+        left: 50%;
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+.print-preview-toggler {
+    text-align: left;
 }
+
+    .print-preview-toggler input {
+        width: auto;
+        vertical-align: middle;
+    }
 
 /* End Script: Mapping/modules/Printing/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Project/CSS/common.css ------------------------- */ 
+.project-editor-content {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0 1em 1em 1em;
+}
+
+.project-editor-save-complete {
+    padding: 1em;
+}
+
+.projects .filter-box {
+    position: relative;
+    width: 100%;
+    height: 4em;
+    background: #EEEEEE;
+    padding: 0.5em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.projects .filter-input {
+    width: 100%;
+    padding: 3px 30px 4px 9px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+    font-size: 1.6em;
+    color: #656169;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.projects .filter-button {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    width: 40px;
+    background: url(../Images/Icons/clear-24.png) center center no-repeat;
+    cursor: pointer;
+    overflow: hidden;
+    text-indent: -999em;
+}
+
+.projects-options {
+    border-bottom: 1px solid #D9D9D9;
+    position: relative;
+    z-index: 1;
+}
+
+/*------Project Selector Tools------*/
+.project-selector-tools {
+    height: 3em;
+}
+
+.project-selector-dropdown {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0.75em 0.5em 0.75em 0.2em;
+}
+
+.project-selector-tools select {
+    min-width: 100%;
+}
+
+span.project-selector-dropdown {
+    display: inline-block;
+    width: 50%;
+    float: right;
+}
+
+.project-selector-tools::after {
+   content: " ";
+   display: block; 
+   height: 0; 
+   clear: both;
+}
+
+.project-selector-tools .project-checkbox {
+    width: 50%;
+    float: left;
+    clear: right;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0.75em 0.2em 0.75em 0.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.project-selector-tools .project-checkbox span,
+.project-selector-tools .project-checkbox input {
+    vertical-align: middle;
+}
+
+.projects-status-message {
+    width: 100%;
+    display: block;
+    padding: 1em;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.list-menu,
+.list-menu * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/*------Project List------*/
+.projects-list .list-menu {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style-type: none;
+    position: absolute;
+    top: 7em;
+    bottom: 6em;
+    overflow: auto;
+}
+
+.projects .paging-control {
+    height: 6em;
+}
+
+/*---Project List Item---*/
+.projects-list .list-menu .item-list-item {
+    border-bottom: 1px solid #D9D9D9;
+    position: relative;
+    clear: both;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.projects .list-item-icon {
+    float: left;
+    height: 50px;
+    width: 70px;
+    padding: 0.3em 0.2em 0.2em 0.3em;
+}
+
+.projects .list-item-button {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 50px;
+    padding: 0;
+}
+
+.profile-manage .list-item-button {
+    padding-right: 4.5em;
+}
+
+.list-item-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-height: 100%;
+}
+
+.share-project-content .share-with,
+.share-project-content .share-with label {
+    padding-bottom: 0;
+}
+
+.list-item-button.project-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3.5em;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding: 0;
+    text-align: center;
+    border-left: 1px solid #D9D9D9;
+    background-color: #FFFFFF;
+}
+
+.projects-list .more-button {
+    width: 3.5em;
+    text-align: center;
+    float: right;
+    margin-bottom: 0.45em;
+}
+
+/*------Project List Item Text------*/
+.project-overview {
+    margin: 0 3.5em 0 0;
+    padding: 0 0.5em;
+}
+
+.project-overview {
+    position: relative;
+    padding-top: 0.15em;
+}
+
+.project-name,
+.project-description {
+    width: 100%;
+    display: block;
+    word-wrap: break-word;
+}
+
+.project-name {
+    font-weight: 600;
+}
+
+.project-description {
+    color: #333333;
+    padding: 0.2em 0;
+}
+
+.project-description:empty {
+    display: none;
+}
+
+.project-details {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: block;
+    padding: 0 0.5em;
+    margin: 0 3.5em 0 0;
+    clear: both;
+}
+
+.project-details::after {
+    content: "";
+    clear: both;
+    display: block;
+    height: 0;
+}
+
+.project-modified,
+.project-created {
+    width: 100%;
+    color: #666666;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 0.9em;
+    margin-bottom: 0.2em;
+}
+
+.project-created {
+    float: left;
+}
+
+/* ------ START Button States ------*/
+.project-info:hover {
+    background-color: #DEF2FF;
+}
+
+.item-list-item .chevron-right-16:hover {
+    background-color: #DEF2FF;
+}
+/* ------ END Button States ------*/
+
+/*---Share Project View---*/
+.share-project-content {
+    padding: 1em;
+}
+
+.share-with-label {
+    padding-bottom: 0;
+}
+
+.share-project-links .clear-24,
+.share-project-links .add-16 {
+    vertical-align: middle;
+    font-size: 2em;
+}
+
+.share-project-links .link-box {
+    width: 90%;
+    margin: 0;
+    float: left;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.share-project-links {
+    margin-top: 1.5em;
+}
+
+.project-link-buttons {
+    width: 8%;
+    margin-left: 2%;
+    text-align: right;
+}
+
+.share-project-links .clear-24 {
+    background: url(../Images/Icons/clear-24.png) center no-repeat;
+}
+
+.share-project-links .add-16 {
+    background: url(../Images/Icons/Toolbar/add-16.png) center no-repeat;
+}
+
+/* End Script: Mapping/modules/Project/CSS/common.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/QueryBuilder/CSS/common.css ------------------------- */ 
@@ -4622,7 +5866,7 @@ ul.fui-selector-body li .selector-checkbox {
     padding: 0.25em;
 }
 .simple-query-builder button:hover {
-    background: #DEF2FF;
+    background-color: #DEF2FF;
     border-radius: 0.25rem;
 }
 .simple-query-builder .jimu-btn.add {
@@ -4707,7 +5951,7 @@ ul.fui-selector-body li .selector-checkbox {
     cursor: default;
 }
 .simple-query-builder .query-clause-row a.presentable-query-item {
-    color: #1B7DBF;
+    color: #1A72C4;
 }
 .simple-query-builder .query-clause-row a.presentable-query-item:hover {
     text-decoration: underline;
@@ -4886,26 +6130,38 @@ ul.fui-selector-body li .selector-checkbox {
 
 
 /* Begin Script: Mapping/modules/Scalebar/CSS/common.css ------------------------- */ 
-.scale-bar-container.scalebar-standout {
-    background: #ffffff;
-    background: rgba(255, 255, 255, 1);
+.scale-bar-container.scalebar-standout,
+.scale-input-box-container {
+    background: #FFFFFF;
     width: 14.5em;
-    padding: 0.85em;
+    height: 3.5em;
+    box-sizing: border-box;
+    padding: 0.4em;
     border-radius: 0.25rem;
     border: 1px solid #D9D9D9;
 }
+
 .no-touch .scale-bar-container.scalebar-standout {
-    padding: 0.45em 0.8em;
+    height: 2.75em;
+    padding: 0;
+    box-sizing: border-box;
 }
+
 .footer-region .scale-bar-container.scalebar-standout {
     background-color: transparent;
     border: 0;
     padding: 0;
 }
-.ScalebarView  {
+
+.scale-bar-host {
+    margin: 0.5em;
+}
+
+.ScalebarView {
     position: relative;
     z-index: 30;
 }
+
 .scale-bar-container .esriScalebar {
     position: static;
     min-height: 1.65em;
@@ -4914,6 +6170,167 @@ ul.fui-selector-body li .selector-checkbox {
 .scale-bar-container.scalebar-line-style .esriScalebar {
     height: auto;
 }
+
+.scale-input-box-view-open .scale-input-box-toggle {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.scale-input-box-view-closed .scale-input-box-toggle {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+}
+
+.ScaleInputBoxButtonView {
+    z-index: 40;
+    position: relative;
+}
+
+.scale-input-box-toggle {
+    height: 2.75em;
+    width: 2.75em;
+    display: block;
+    float: left;
+    margin: 0;
+    background: url("../../Resources/Images/Icons/Toolbar/scale-input-24.png") no-repeat center center #F8F8F8;
+    text-indent: -99999em;
+    border-radius: 0.25rem;
+    border: 1px solid #D9D9D9;
+}
+
+.touch .scale-input-box-toggle {
+    height: 3.5em;
+    width: 3.5em;
+    z-index: 1;
+    position: relative;
+}
+
+.scale-bar-host {
+    display: inline-block;
+}
+
+.ScaleInputBoxView {
+    position: relative;
+    z-index: 30;
+}
+
+.touch .scale-input-box-container {
+    width: 19em;
+    height: 3.5em;
+    padding: 0 0.5em 0 1em;
+}
+
+.scale-input-box-container {
+    margin-left: -1em;
+    width: 19em;
+    height: 2.75em;
+    padding: 0 0.3em 0 1em;
+}
+
+.region.footer-region .scale-input-box-container {
+    background: transparent;
+    border: 1px solid transparent;
+    border-bottom: 0px none;
+}
+
+.scale-input-box-container form {
+    height: 2em;
+    margin-top: 0.3em;
+}
+
+.scale-input-box form {
+    display: inline;
+}
+
+.scale-input-box-container .form-label {
+    width: 4em;
+    float: left;
+    padding: 0.3em 0;
+    vertical-align: middle;
+    font-size: 1.1em;
+    line-height: 1.3em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+.scale-input-box-container .scale-input-box {
+    height: 2em;
+    width: 9em;
+    float: left;
+    vertical-align: middle;
+    margin-left: .5em;
+    position: relative;
+}
+
+.scale-input-box .scale-selector {
+    padding: 0.1em;
+}
+
+.scale-selector-select {
+    height: 100%;
+}
+
+.scale-input-box-container .scale-selector-input.scale-selector {
+    height: 100%;
+    width: 7.3em;
+    -moz-appearance: textfield;
+    border: solid 1px #AAAAAA;
+    border-top-left-radius: 0.25em;
+    border-bottom-left-radius: 0.25em;
+    border-right: none;
+    z-index: 9;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.scale-input-box-open {
+    border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.scale-switcher {
+    width: 2.5em;
+    float: right;
+}
+
+.custom-scale-control .scale-input-box .scale-selector-select {
+    display: none;
+}
+
+.custom-scale-control .scale-input-box .scale-selector-input {
+    width: 100%;
+    border-right: 1px solid #AAAAAA;
+    border-radius: 0.25em;
+}
+
+.scale-input-box-container .form-btns {
+    margin: 0 0 0 0.2em;
+} 
+
+.touch .scale-input-box-container .form-btns {
+    margin: 0.65em 0 0.75em 0.2em;
+}
+
+.scale-input-box-container .go-button::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+.scale-input-box-container .go-button,
+.region.footer-region .view.ScaleInputBoxView .scale-input-box-container .go-button {
+    padding: 0.3em 0.5em;
+    border: 1px solid #CCCCCC;
+    background-color: #F2F2F2;
+    margin-right: 0.25em;
+}
+
+.scale-input-box-container .go-button:hover,
+.region.footer-region .view.ScaleInputBoxView .scale-input-box-container .go-button:hover {
+    background-color: #1A72C4;
+}
+
 
 /* End Script: Mapping/modules/Scalebar/CSS/common.css ------------------------- */ 
 
@@ -4995,7 +6412,112 @@ ul.fui-selector-body li .selector-checkbox {
     text-indent: -999em;
 }
 
+.SearchHintsView em {
+    font-style: normal;
+    font-weight: bold;
+}
+
 /* End Script: Mapping/modules/Search/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Selection/CSS/common.css ------------------------- */ 
+/* SAVE SELECTIONS -------------------------*/
+.save-selection-view {
+    padding: 1em;
+}
+
+/* LOAD SELECTIONS -------------------------*/
+
+.list-selections-view .no-item p.description {
+    font-style: italic;
+}
+.list-selections-view .list-menu-item,
+.list-selections-view .list-menu-item * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.list-selections-view .list-menu-item {
+    padding: 0;
+    position: relative;
+}
+.list-selections-view .list-menu-item:hover {
+    background-color: transparent;
+}
+.list-selections-view .selection-contents {
+    width: 100%;
+    min-height: 3em;
+    padding: 0.5em 6.5em 0.5em 0.5em;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.list-selections-view .action-button {
+    position: absolute;
+    top: 0;
+    right: 3em;
+    width: 3em;
+    height: 3em;
+    border-left: 1px solid #EEEEEE;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #FFFFFF;
+    margin: 0;
+    padding: 0;
+}
+.list-selections-view .action-button + .action-button {
+    right: 0;
+}
+.list-selections-view .list-menu-item button:hover {
+    background-color: #DEF2FF;   
+}
+
+/* REFINE RESULTS -------------------------*/
+.list-refine-results-header {
+    border-bottom: 1px solid #D9D9D9;
+    background-color: #F2F2F2;
+    width: 100%;
+    padding: .54em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.list-refine-results-header span {
+    float: right;
+}
+.list-refine-results-header:after {
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.refine-results .list-menu-item {
+    position: relative;
+}
+.refine-results .list-menu-label {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding-right: 2.5em;
+    cursor: pointer;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.refine-results .list-menu-action {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0.75em 1em;
+}
+.refine-results .form-btns {
+    padding: 1em;
+}
+
+/* End Script: Mapping/modules/Selection/CSS/common.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/Share/CSS/common.css ------------------------- */ 
@@ -5036,7 +6558,7 @@ ul.fui-selector-body li .selector-checkbox {
 }
 
 .bottom-region.region-active {
-	min-height: 75px;
+    min-height: 75px;
 }
 
 /* iOS 7 fix for iPads in landscape mode. Taken from http://stackoverflow.com/questions/19012135/ios-7-ipad-safari-landscape-innerheight-outerheight-layout-issue. */
@@ -5094,14 +6616,59 @@ ul.fui-selector-body li .selector-checkbox {
 
 /* END DATAFRAME TOGGLE ----------------- */
 
+/* START DATAFRAME RESIZE ----------------- */
+
+.data-frame-resize.resize-handle {
+    cursor: ew-resize;
+    box-sizing: content-box;
+}
+.data-frame-resize.resize-handle,
+.data-frame-resize.resize-handle .icon-drag {
+    width: 1em;
+    height: 2em;
+}
+
+.resize-handle .icon-drag {
+    display: block;
+    background-color: #EEEEEE;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+    border-bottom-left-radius: 0;
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+.data-frame-resize.resize-handle .icon-drag {
+    border-left: none;
+    border-top-left-radius: 0;
+    background-image: url("../Images/Icons/drag-h-16.png");
+}
+
+.touch .data-frame-resize.resize-handle {
+    padding: 0.75em 2.5em 0.75em 0;
+}
+
+/* END DATAFRAME RESIZE ----------------- */
+
+
 .large-shell-left,
 .medium-shell-left {
     background: url("../../Resources/Images/Backgrounds/map-bg-texture.png");
+    overflow: hidden;
 }
+
+.large-shell-left.panel-closed,
+.medium-shell-left.panel-closed {
+    display: none;
+}
+
 .panel-side-empty {
     padding: 2em;
     color: #666666;
 }
+
 .panel-empty-heading {
     font-size: 1.25em;
     font-weight: normal;
@@ -5175,6 +6742,45 @@ ul.fui-selector-body li .selector-checkbox {
     background-image: url("../Images/Icons/delete-16.png");
 }
 
+/* ------ START: Panel Status ------ */
+.panel-status-region.region-active {
+    background: #FFFACD;
+    border-bottom: 1px solid #D9D9D9;
+}
+.panel-status-region .status-window {
+    width: 100%;
+    border: none;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    border-radius: 0;
+}
+.panel-status-region .status-window table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.panel-status-region .status-window .status-img-container {
+    width: 0;
+}
+
+.panel-status-region .status-window .status-msg-container {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.panel-status-region .status-window .status-btn span {
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+.panel-status-region .status-close {
+    width: 3em;
+    text-align: right;
+}
+/* ------ END: Panel Status ------ */
+
 /* End Script: Mapping/modules/Status/CSS/common.css ------------------------- */ 
 
 
@@ -5207,7 +6813,12 @@ ul.fui-selector-body li .selector-checkbox {
     margin: 0.2em;
     list-style: none;
 }
-
+.flyout-menu ul li {
+    margin: 0 0.2em;
+}
+.flyout-menu .transient-toolbar li {
+    margin: 0.2em;
+}
 .toolbar-body ul li ul,
 .multi-tool-list li {
     padding-left: 0;
@@ -5270,7 +6881,7 @@ ul.fui-selector-body li .selector-checkbox {
 }
 
 .toolbar-item.selected {
-    border: 1px solid #197DC9;
+    border: 1px solid #1A72C4;
     background: #E9F6FF;
 }
 .toolbar-group h4 {
@@ -5329,6 +6940,7 @@ ul.fui-selector-body li .selector-checkbox {
 .toolbar-item label {
     margin: 0 0.5em 0.5em 0.5em;
     line-height: 1.25em;
+    word-wrap: break-word;
 }
 .toolbar-body.large .toolbar-item p,
 .toolbar-body.large .toolbar-item label {
@@ -5362,7 +6974,7 @@ ul.fui-selector-body li .selector-checkbox {
 .toggled-on,
 .transient-active {
     cursor: pointer;
-    border: 1px solid #197DC9;
+    border: 1px solid #1A72C4;
     background: #E9F6FF;
 }
 .flyout-menu .flyout-menu-floating-area > .toolbar-item,
@@ -5404,9 +7016,17 @@ ul.fui-selector-body li .selector-checkbox {
     width: 24px;
     height: 24px;
 }
+.transient-toolbar .toolbar-item > img,
+.transient-toolbar .toolbar-item > span.icon {
+    margin: 0.25em auto 0.5em auto;
+}
 .region .view.CompactToolbarView,
 .region .view.TabbedToolbarButtonView {
     margin: 0;
+}
+.CompactToolbarButtonView {
+    position: relative;
+    z-index: 500;
 }
 .toolbar-toggle-button {
     width: 3.9em; 
@@ -5439,24 +7059,19 @@ ul.fui-selector-body li .selector-checkbox {
     background: #f8f8f8;
     border-radius: .25rem;
     overflow: hidden;
-    padding: 0 0 0.3em 0;
+    padding: 0 0 0.25em 0;
     margin: 0.25em 0em 0.2em 0em;
     position: relative;
     z-index: 600;
 }
 .transient-toolbar button {
     margin: 0;
-    max-width: 100%;
-}
-.transient-toolbar button.toolbar-item p {
-    white-space: nowrap;
 }
 .toolbar-item.transient-active.multi-tool,
 .toolbar-item.transient-active {
     position: relative;
     border-radius: 0.25rem;
     padding-bottom: 0.5em;
-    min-height: 4.95em;
     overflow: visible;
 }
 .toolbar-item.multi-tool.transient-active  {
@@ -5497,7 +7112,7 @@ ul.fui-selector-body li .selector-checkbox {
     padding-left: 8.4em;
 }
 .transient-toolbar + .transient-measurement {
-    margin-top: -4.9em;
+    margin-top: -4.7em;
     margin-left: 0.2em;
     position: relative;
     z-index: 601;
@@ -5680,16 +7295,16 @@ ul.fui-selector-body li .selector-checkbox {
 .map-bottom-left .flyout-menu-collapsible-area:after {
     left: -0.25em;
 }
-
-.flyout-menu-active-tool p {
+.flyout-menu-active-tool p,
+.flyout-menu-active-tool span {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    padding: 0 0.25em;
-    font-size: 0.8em;
+    vertical-align: bottom;
 }
 .flyout-menu-active-tool img {
     margin: 0.5em 0 0.1em 0;
+    padding: 0.4em 0.4em 0em 0.4em;
 }
 .map-top-right .flyout-menu-tools,
 .map-top-center .flyout-menu-tools,
@@ -5752,6 +7367,7 @@ ul.fui-selector-body li .selector-checkbox {
     box-sizing: border-box; 
     width: 100.5%; /*Pixel rounding fix*/
 }
+
 .flyout-menu-transient .transient-toolbar {
     background: #ffffff;
     border: 0;
@@ -5769,18 +7385,15 @@ ul.fui-selector-body li .selector-checkbox {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
+    padding: 0.2em;
 }
 .flyout-menu .toolbar-item {
     display: inline-block;
     list-style: none;
     vertical-align: top;
 }
-.flyout-menu li.toolbar-item,
-.flyout-menu .toolbar-item li {
-    width: 5em;
-}
 .flyout-menu .toolbar-item {
-    width: 100%;
+    width: 5em;
 }
 .flyout-menu .toolbar-item.multi-tool {
     height: auto !important;
@@ -5811,11 +7424,12 @@ ul.fui-selector-body li .selector-checkbox {
     max-width: 6em;
 }
 .nested-group .multi-tool-button,
+.toolbar-group .multi-tool-button,
 .toolbar-body .multi-tool-button {
     position: relative;
     z-index: 1;
     border: 1px solid transparent;
-    padding: 0.35em 1.5em 0.35em 0 !important;
+    padding: 0.35em 2em 0.35em 0 !important;
     margin: 0 auto;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
@@ -5825,13 +7439,49 @@ ul.fui-selector-body li .selector-checkbox {
     background-image: url("../../Resources/Images/Icons/arrow-down-small-16.png");
     background-position:  center right;
     background-repeat: no-repeat;
-    line-height: 1em;
+    line-height: 0.8em;
     height: 1.75em;
-    width: 5em;
+    width: 90%;
     background-color: #ffffff;
 }
-.multi-tool-item-container button {
-    padding-top: 0.35em; 
+.multi-tool-item-container {
+    max-width: 8em;
+    position: relative;
+}
+.multi-tool-item .toolbar-item > img {
+    padding: 0.5em 2.5em 0.5em 0.5em;
+    margin: 0 auto;
+}
+.touch .multi-tool-item .toolbar-item > img {
+    padding: 0.5em 4.5em 0.5em 1.5em;
+}
+.multi-tool-item.multi-tool-chooser .toolbar-item {
+    min-width: 0;
+}
+.multi-tool-item.multi-tool-chooser .toolbar-item > img {
+    padding: 0;
+    margin: 0.5em auto;
+}
+.flyout-menu .multi-tool-item.multi-tool-chooser .toolbar-item > img {
+    margin: 0.25em auto;
+}
+.flyout-menu .multi-tool-item-container button.toolbar-item {
+    width: auto;
+}
+.multi-tool-chooser {
+    position: absolute;
+    top: 1px;
+    left: 52.5%;
+}
+.multi-tool-chooser img {
+    border-left: 1px solid #D9D9D9;
+    border-right: 1px solid transparent;
+}
+.multi-tool-chooser:hover img {
+    border-left-color: transparent;
+}
+.touch .multi-tool-chooser .toolbar-item img {
+    padding: 0 0.75em;
 }
 .toolbar-container button.multi-tool,
 .toolbar-container button.multi-tool-button {
@@ -5950,6 +7600,448 @@ ul.fui-selector-body li .selector-checkbox {
 /* End Script: Mapping/modules/Toolbar/CSS/common.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/UploadData/common.css ------------------------- */ 
+/*---Upload Data: Validation Problems---*/
+
+.validation-problems {
+    list-style: none;
+    padding: 0;
+    margin: 1em 0 1.35em 0;
+}
+.validation-problems li {
+    margin: 1em auto;
+}
+.validation-problems p {
+    margin: auto;
+}
+.validation-problems p:first-child {
+    font-weight: bold;
+}
+
+
+/*---Upload Data: Upload Dialog---*/
+
+.upload-dialog {
+    width: 360px;
+    max-height: 400px;
+    padding: 1em;
+    margin-bottom: 0.5em;
+    overflow: auto;
+}
+
+.upload-dialog-supported-files > strong::after {
+    content: ":";
+}
+
+.upload-dialog.uploader-disabled .form-btns {
+    opacity: 0.5;
+}
+
+
+/*---Upload Data: Table Mapping Dialog---*/
+
+.table-mapping-dialog {
+    max-width: 600px;
+    padding: 1em;
+}
+
+.table-mapping {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.table-mapping-form input {
+    vertical-align: middle;
+}
+
+.table-mapping .form-label {
+    display: inline-block;
+    width: 100%;
+    padding: 0.3em 0;
+    float: none;
+}
+
+.table-mapping .form-label span,
+.table-mapping.address .form-label {
+    margin-bottom: 0.25em;
+    display: inline-block;
+}
+
+.table-mapping.address .form-label {
+    padding: 0;
+}
+
+.table-mapping .form-label span::after,
+.table-mapping.address .form-label::after {
+    content: ":";
+}
+
+.table-mapping select,
+.table-mapping input {
+    display: inline-block;
+    width: 100%;
+}
+
+.table-mapping-location-type-box {
+    padding: 0;
+    border-radius: 0;
+    margin-bottom: 0.5em;
+}
+
+.table-mapping-location-type-box span {
+    margin-right: 2em;
+    vertical-align: middle;
+}
+
+.table-mapping-is-first-row-header-box {
+    margin: 0.75em 0 0.5em 0;
+    display: block;
+}
+
+.table-mapping-preview-container {
+    overflow: auto;
+    box-shadow: 
+        inset -8px 0 0 -7px #CCCCCC, 
+        inset 8px 0 0 -7px #CCCCCC;
+}
+
+.table-mapping-preview {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-mapping-preview tr:first-of-type {
+    font-weight: bold;
+}
+
+.table-mapping-preview tr:first-of-type td {
+    background-color: #CCCCCC;
+    text-align: center;
+    border-right: solid 1px white;
+}
+
+.table-mapping-preview tr:first-of-type td:last-of-type {
+    border-right: 1px solid #CCCCCC;
+}
+
+.table-mapping-preview td {
+    padding: 0.25em 0.5em;
+    text-align: left;
+    min-width: 6em;
+    border: solid 1px #CCCCCC;
+}
+
+.table-mapping.address li {
+    padding: 0.3em 0;
+}
+
+/*---Upload Data: Layer Details Dialog---*/
+
+.layer-details-dialog {
+    padding: 1em;
+    max-width: 480px;
+}
+
+.layer-details-dialog .form-fields label {
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    float: left;
+    width: 25%;
+    padding-top: .3em;
+    font-size: 1em;
+}
+
+.layer-details-dialog .form-fields label::after {
+    content: ":";
+}
+
+.layer-details-dialog .form-fields input {
+    width: 75%;
+}
+
+.layer-details-dialog .publish-checkbox-container {
+    margin: 1em auto;
+}
+
+
+/*---Upload Data: Table Record Results Dialog---*/
+
+.table-record-results-dialog {
+    padding: 1em;
+}
+
+.table-record-result-details {
+    width: 100%;
+    display: block;
+    margin-bottom: 1em;
+}
+
+.table-record-result-details img {
+    vertical-align: middle;
+    margin-right: 0.3em;
+}
+
+.table-record-result-details span {
+    display: inline;
+    width: 80%;
+    vertical-align: middle;
+}
+
+.table-record-result-download {
+    margin: 1.15em 0 0.3em 0;
+}
+
+
+/*---Upload Data: Symbol Dialog---*/
+
+.symbol-dialog {
+    padding: 1em;
+}
+
+/* End Script: Mapping/modules/UploadData/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/UploadData/Widgets/SymbologySettings/common.css ------------------------- */ 
+/*--- Symbology Settings Widget ---*/
+
+.symbology-label {
+    display: block;
+}
+
+.symbology-settings .symbology-label::after {
+    content: ":";
+}
+
+.symbology-colors .symbology-label {
+    display: inline;
+    margin-right: 0.5em;
+    vertical-align: middle;
+}
+
+.symbology-settings input[type=color] {
+    width: 4em;
+    height: 1.6em;
+    padding: 0.1em 0.3em;
+    background-color: #EEE;
+    border: 1px solid #CCC;
+    vertical-align: middle;
+}
+.symbology-settings input[type="color"]:hover,
+.symbology-settings input[type="color"]:active {
+    border: 1px solid #AAA;
+}
+
+.symbology-settings .radio-container {
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+
+.symbology-settings .color-swatches {
+    vertical-align: middle;
+}
+
+.symbology-settings .color-swatch {
+    background-color: #EEE;
+    padding: 0.25em 0.5em;
+    margin: 0.1em;
+    border-radius: 5px;
+    text-align: center;
+    display: inline-block;
+    height: 1.3em;
+    width: 1.3em;
+}
+
+.touch .symbology-settings .color-swatch {
+    height: 2em;
+    width: 2em;
+}
+
+.symbology-fields .color-swatch input {
+    margin-bottom: 0.2em;
+}
+
+.symbology-sliders {
+    margin: 1em 0;
+}
+
+.symbology-slider {
+    margin: 0.34em 0;
+}
+
+.symbology-sliders .symbology-label {
+    margin-bottom: 0.3em;
+}
+
+.symbology-sliders .slider {
+    display: inline-block;
+    width: 88%;
+    height: 0.5em;
+}
+
+.symbology-sliders .ui-slider-horizontal .ui-slider-handle {
+    height: 1.5em;
+    top: -0.6em;
+}
+
+.symbology-sliders .ui-slider-horizontal .ui-slider-handle::after {
+    margin-top: 50%;
+}
+
+.symbology-slider-value {
+    float: right;
+}
+
+.symbology-drop-downs {
+    margin: 1em 0 1.75em 0;
+}
+
+.symbology-drop-down {
+    margin: 0.5em 0;
+}
+
+.symbology-drop-downs .symbology-label {
+    margin-bottom: 0.25em;
+}
+
+/* End Script: Mapping/modules/UploadData/Widgets/SymbologySettings/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/UploadData/Widgets/Uploader/common.css ------------------------- */ 
+
+/*--- Uploader widget ---*/
+
+.uploader-disabled form {
+    opacity: 0.5;
+}
+
+.uploader input {
+    border: 1px solid #cccccc;
+    width: 100%;
+    background: none;
+}
+
+.uploader input[type="checkbox"],
+.uploader input[type="radio"] {
+    width: auto;
+    vertical-align: bottom;
+    margin-right: 0.5em;
+}
+
+.uploader .selected-file-list {
+    background: #efefef;
+    padding: 0.5em;
+    border-radius: 0.25em;
+}
+
+.uploader .selected-file-list li {
+    width: 90%;
+    list-style: none;
+    margin: 0.5em 0 0 0;
+    padding: 0.5em 5%;
+    background: #ffffff;
+}
+
+.uploader .selected-file-list li.flagged {
+    outline: 1px solid #990000;
+}
+
+.uploader .selected-file-list li.flagged .selected-file-name::before,
+.uploader .validation-problems li p:first-child::before {
+    content: "";
+    display: block;
+    float: left;
+    width: 1em;
+    height: 1em;
+    background: url("../Images/Icons/stop-red-32.png");
+    background-size: cover;
+    margin-right: 0.5em;
+    position: relative;
+    top: 0.15em;
+}
+
+.uploader .selected-file-list li:first-child {
+    margin-top: 0;
+}
+
+.uploader .selected-file-box {
+    display: table;
+    width: 100%;
+}
+
+.uploader .selected-file-box > span {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.uploader .selected-file-name {
+    word-break: break-all;
+}
+
+.uploader .selected-file-size {
+    opacity: 0.5;
+    font-style: italic;
+    text-align: right;
+}
+
+.uploader progress {
+    width: 100%;
+}
+
+
+/*--- Uploader widget legacy implementations ---*/
+
+.uploader-legacy-input-box {
+    text-align: center;
+}
+
+.uploader-legacy-input-box ol {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.uploader-legacy-input-box li {
+    margin: 1em 0;
+}
+
+.uploader-legacy-input-box li > * {
+    display: inline-block;
+}
+
+.uploader-legacy-input-box input {
+    width: 75%;
+}
+
+.uploader-legacy-input-box .file-flag {
+    margin-bottom: 1em;
+    color: #990000;
+}
+
+.uploader-legacy-remove-button {
+    background: url("../Images/Icons/Toolbar/trash-24.png") center center no-repeat;
+    margin: 0 0.25em 0 0.5em;
+}
+
+.uploader-legacy-add-button {
+    background: url("../Images/Icons/add-24.png") center center no-repeat;
+    margin-left: 0.25em;
+}
+
+.uploader-legacy-remove-button,
+.uploader-legacy-add-button {
+    height: 24px;
+    width: 24px;
+    background-size: cover;
+    vertical-align: middle;
+}
+
+/* End Script: Mapping/modules/UploadData/Widgets/Uploader/common.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/User/CSS/common.css ------------------------- */ 
 /* START: User --------------- */
 
@@ -5969,7 +8061,6 @@ ul.fui-selector-body li .selector-checkbox {
 
 .user-info {
     position: relative;
-    height: 45px;
     margin: 0;
     border: 1px solid transparent;
     border-bottom: 0;
@@ -6181,8 +8272,12 @@ ul.fui-selector-body li .selector-checkbox {
     border-top: 1px solid #DDDDDD;
 }
 
-.display-result-picker-list.error {
-    border: 1px solid #990000;
+.display-result-picker-list .error-message {
+    display: block;
+    padding: 0.5em;
+    margin: 0;
+    border-bottom: 1px solid #EEEEEE;
+    background-color: #FFFACD
 }
 
 .filter-section {
@@ -6269,7 +8364,7 @@ ul.fui-selector-body li .selector-checkbox {
 }
 .datetime-select select {
     font-size: 1em;
-    min-height:22px;
+    min-height:24px;
 }
 .datetime-select {
     margin-bottom: 0.5em;
@@ -6349,7 +8444,9 @@ textarea {
     border: 1px solid #AAAAAA;
     border-radius: 2px;
 }
-
+input[type='date'] {
+    width: 60%;
+}
 input[type='checkbox'],
 input[type='radio'] {
     margin: 0;
@@ -6593,7 +8690,8 @@ textarea {
 /* DATE - TIME PICKER VARIATIONS -------------------------*/
 
 .datetime-select {
-    white-space: nowrap;
+    /*white-space: nowrap;*/
+    text-align: left;
 }
 
 .date-picker select,
@@ -6688,16 +8786,22 @@ button.datetime-btn.un-nullify {
 .label-stacked .form-label,
 .label-stacked .form-control {
     width: 100%;
+    overflow: visible;
+    text-align: left;
 }
 .label-stacked .form-control-date-picker .hasDatepicker {
     max-width: 100%;
     width: 90%;
 }
+.form-control-date-picker input[type=date] {
+    margin-bottom: 0.5em;
+}
 .label-stacked .form-control .inline-block {
-    width: 88%;
+    width: 87.5%;
 }
 .label-stacked .form-control .inline-block + .inline-block {
-    width: 10%;
+    width: 1.5em;
+    float: right;
 }
 
 .label-top .form-label,

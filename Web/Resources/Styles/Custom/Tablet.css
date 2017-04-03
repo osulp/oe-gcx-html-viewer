@@ -1,5 +1,10 @@
 ﻿/* Put custom desktop styling in this file. Put custom images in the Custom subfolder of the Images directory. */
 
+.SearchView, .active.SearchView
+{
+    width:15em;
+}
+
 .banner{
     border-bottom:1px solid #a0abb1 !important;
 }
@@ -13,12 +18,14 @@
     background-size:20px 20px !important;
 }
 
-.banner-images img{
+.banner-images {
     position:relative !important;
+    float:left;
+    width:auto;           
 }
-.banner-left-img:hover
-{
-    cursor:pointer;
+
+.banner-images img{
+    position:relative !important;        
 }
 
 .banner-right-img{
@@ -26,11 +33,27 @@
     margin-bottom:.4em !important;
 }
 
+.banner-left-img:hover
+{
+    cursor:pointer;
+}
+
+.banner-text{
+    position:relative !important;
+    left:0px;/*375px;*/
+    float:left;
+    margin-left:14px;
+}
+
+table.banner-text tbody{
+    vertical-align:top;
+}
+
 .banner-text h1
 {
     font-size:1.8em;
     font-weight:normal;
-    /*margin-top:.2em;*/   
+    margin-top:.4em;
 }
 .banner-text h1.no-subtitle
 {
@@ -69,7 +92,8 @@ height:400px;
 }
 
 .banner-images{
-    height:98% !important;
+    height:50px;
+    /*width:50px;*/
 }
 
 ul.toolbar-tab-control li {

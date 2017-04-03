@@ -1,9 +1,15 @@
-﻿.splash-overlay, .splash-overlay * { margin: 0; padding: 0; }
+﻿.splash-overlay, .splash-overlay * {
+    margin: 0;
+    padding: 0;
+}
 
 .splash-overlay {
     z-index: 900;
     position: fixed;
-    top: 0; left: 0; bottom: 0; right: 0;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
     background: white;
 }
 
@@ -16,8 +22,14 @@
     background: white;
 }
 
+    .splash-plate.splash-invisible {
+        display: none;
+    }
+
 .splash-image {
     max-width: 100%;
+    display: block;
+    margin: 0 auto;
 }
 
 .splash-paragraph {
@@ -26,11 +38,12 @@
     color: #AFADB3;
     font-family: "Segoe UI", "Helvetica Neue", "Droid Sans", Helvetica, Arial, sans-serif;
     font-size: 12px;
+    margin: 0 auto;
 }
 
-.splash-paragraph sup {
-    font-size: 0.6em;
-}
+    .splash-paragraph sup {
+        font-size: 0.6em;
+    }
 
 /** 
  * Splash centering rules.
@@ -43,13 +56,13 @@
     white-space: nowrap;
 }
 
-.splash-overlay::before {
-    content: "";
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-    margin-right: -0.25em;
-}
+    .splash-overlay::before {
+        content: "";
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        margin-right: -0.25em;
+    }
 
 .splash-plate {
     display: inline-block;

@@ -26,17 +26,21 @@ module oe.hyperlink_banner {
         }
 
         _onSiteInitialized(site: geocortex.essentials.Site) {
-            $('.banner').click(function (e) {
+                        
+            //wrap banner image with a link anchor
+            $(".banner-left-img").wrap('<a href="'+linkUri+'" target="_blank"></a>');
+
+            /*$('.banner').click(function (e) {
                 if (e.pageX < 350) {
                     window.open(linkUri, '_blank');                    
                 }
             });
             //adds support for sponsor logo image to be next to the OE banner image before the banner text.
             try {
-                $('.banner-text').css("left", (/\.(gif|jpg|jpeg|tiff|png)$/i).test($('.banner-right-img')[0]["src"]) ? $('.banner-right-img').width() + 370 + "px" : "370px");
+               // $('.banner-text').css("left", (/\.(gif|jpg|jpeg|tiff|png)$/i).test($('.banner-right-img')[0]["src"]) ? $('.banner-right-img').width() + 370 + "px" : "370px");
             }
             catch (ex)
-            { };
+            { };*/
             
         }
     }

@@ -1,0 +1,21 @@
+Updating
+========
+These instructions are for updating our customized build of the Globalize library and accompanying CLDR data.
+
+Prerequisites
+=============
+You need to have the following installed:
+- nodejs for npm (https://nodejs.org/).
+- grunt command line tool (run “npm install -g grunt-cli”)
+
+Building
+========
+1. Edit "packages.json" in this folder and set the version of Globalize that you intend to target under "dependencies". You can determine the most recent version by running "npm view globalize version" from the command line.
+2. Open a command prompt and change to the directory containing this file.
+3. Run "npm install" to fetch all of the packages needed for the build (this can take a while).
+4. Run "grunt" to build. If it completes successfully, it will create/update the following files:
+  - cldr.min.js
+  - globalize.min.js
+  - globalize-with-locales.min.js
+  - locale directory with JSON files for each locale.
+

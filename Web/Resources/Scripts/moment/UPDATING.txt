@@ -1,0 +1,22 @@
+﻿About
+=====
+The version of Moment that we are using is the one bundled with Esri's JavaScript API. We host local
+copies of Esir's locale files for use with GMAF. The moment-timezone-with-data.js file does NOT
+come from Esri -- this needs to be updated directly from moment.js.
+
+Updating
+========
+If you update the locales files, you will need to re-run the small script that generates the 
+locale/all-locales.js file as detailed below.
+
+Prerequisites
+=============
+You need to have the following installed:
+- nodejs for npm (https://nodejs.org/).
+- grunt command line tool (run “npm install -g grunt-cli”)
+
+Building
+========
+1. Open a command prompt and change to the directory containing this file.
+2. Run "npm install" to fetch all of the packages needed for the build.
+3. Run "grunt" to build. If it completes successfully, it will create/update locale/all-locales.js.

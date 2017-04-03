@@ -65,6 +65,8 @@ module geocortex.essentialsHtmlViewer.integration {
         statusOverlayElement: HTMLElement;
         actionButtons: ActionButton[];
 
+        private _isInitialized: boolean;
+
         constructor(id: string,
             public initializeMap: () => void,
             public getMapViewpointParams: () => mapping.infrastructure.integration.ComponentViewpointMessage,
@@ -83,9 +85,14 @@ module geocortex.essentialsHtmlViewer.integration {
                 { id: "closeButton", clickHandler: () => { this.handleClickClose(); }, show: true, elem: null }
             ];
 
-            window.onload = () => {
+            // Check the window has already finished loading (GVH-7329)
+            if (document.readyState === "complete") {
                 this.initializePane();
-            };
+            } else {
+                window.onload = () => {
+                    this.initializePane();
+                };
+            }
 
             window.onunload = () => {
                 this.disconnect();
@@ -96,6 +103,14 @@ module geocortex.essentialsHtmlViewer.integration {
          * Initializes this map's container.
          */
         initializePane(): void {
+            // If it's already initialized, bail out (GVH-7329)
+            if (this._isInitialized) {
+                return;
+            }
+
+            // Set the initialization to true so we don't initialize more than once
+            this._isInitialized = true;
+
             this.initializeMap();
             this.initializeViewerBridge();
 

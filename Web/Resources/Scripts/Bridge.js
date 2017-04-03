@@ -1,3 +1,8 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var geocortex;
 (function (geocortex) {
     var essentialsHtmlViewer;
@@ -7,8 +12,7 @@ var geocortex;
             var MessageBroker = (function () {
                 function MessageBroker(transport) {
                     var _this = this;
-                    this.onReady = function (message) {
-                    };
+                    this.onReady = function (message) { };
                     this._isReady = false;
                     this._queuedMessages = [];
                     this._messageSubscriptions = {};
@@ -155,7 +159,7 @@ var geocortex;
                     }
                 };
                 return MessageBroker;
-            })();
+            }());
             integration.MessageBroker = MessageBroker;
         })(integration = essentialsHtmlViewer.integration || (essentialsHtmlViewer.integration = {}));
     })(essentialsHtmlViewer = geocortex.essentialsHtmlViewer || (geocortex.essentialsHtmlViewer = {}));
@@ -170,8 +174,7 @@ var geocortex;
                 function PostMessageTransport(input, output, name) {
                     var _this = this;
                     if (name === void 0) { name = "PostMessageBridge"; }
-                    this.onMessage = function (payload) {
-                    };
+                    this.onMessage = function (payload) { };
                     this._originsAllowed = {};
                     this._targetOrigin = "*";
                     this._messageHandler = function (message) { return _this._handleMessage(message); };
@@ -245,7 +248,8 @@ var geocortex;
                         var messageObj = JSON.parse(message.data);
                     }
                     catch (err) {
-                        console.error("Error decoding bridge message JSON: " + err);
+                        console.log("Message received and ignored - could not deserialize from JSON: " + err);
+                        return;
                     }
                     try {
                         this.onMessage(messageObj);
@@ -255,7 +259,7 @@ var geocortex;
                     }
                 };
                 return PostMessageTransport;
-            })();
+            }());
             integration.PostMessageTransport = PostMessageTransport;
         })(integration = essentialsHtmlViewer.integration || (essentialsHtmlViewer.integration = {}));
     })(essentialsHtmlViewer = geocortex.essentialsHtmlViewer || (geocortex.essentialsHtmlViewer = {}));
@@ -278,12 +282,6 @@ var geocortex;
         })(integration = essentialsHtmlViewer.integration || (essentialsHtmlViewer.integration = {}));
     })(essentialsHtmlViewer = geocortex.essentialsHtmlViewer || (geocortex.essentialsHtmlViewer = {}));
 })(geocortex || (geocortex = {}));
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
 var geocortex;
 (function (geocortex) {
     var essentialsHtmlViewer;
@@ -296,7 +294,7 @@ var geocortex;
                     _super.call(this, new integration.PostMessageTransport(window, window.opener || window.parent, name));
                 }
                 return RemotePostMessageComponent;
-            })(integration.MessageBroker);
+            }(integration.MessageBroker));
             integration.RemotePostMessageComponent = RemotePostMessageComponent;
         })(integration = essentialsHtmlViewer.integration || (essentialsHtmlViewer.integration = {}));
     })(essentialsHtmlViewer = geocortex.essentialsHtmlViewer || (geocortex.essentialsHtmlViewer = {}));
