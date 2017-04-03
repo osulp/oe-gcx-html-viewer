@@ -96,27 +96,27 @@
                         "configuration": {}
                     }
                 ]
-            },                       
+            },
             {
                 "moduleName": "LayerActionsExtension",
                 "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
                 "libraryId": "Custom",
-                "configuration": {}                                            
-            }, 
+                "configuration": {}
+            },
             {
                 "moduleName": "M49",
                 "moduleType": "oe.M49.M49Module",
                 "libraryId": "Custom",
-                "configuration": {}                                            
-            }, 
+                "configuration": {}
+            },
             {
                 "moduleName": "HyperlinkBanner",
                 "moduleType": "oe.hyperlink_banner.HyperlinkBannerModule",
                 "libraryId": "Custom",
                 "configuration": {
                     "linkUri": "http://oregonexplorer.info"
-                }                                            
-            }, 
+                }
+            },
             {
                 "moduleName": "Elevation",
                 "moduleType": "oe.elevation.ElevationModule",
@@ -141,7 +141,7 @@
                    {
                        "id": "ElevationModuleViewModel",
                        "type": "oe.elevation.ElevationModuleViewModel",
-                       "configuration": {               
+                       "configuration": {
                        }
                    }
                 ]
@@ -150,9 +150,9 @@
                 "moduleName": "RasterFunctions",
                 "moduleType": "oe.raster_functions.RasterFunctionsModule",
                 "libraryId": "Custom",
-                "configuration": {                    
-                }                                            
-            }, 
+                "configuration": {
+                }
+            },
             {
                 "moduleName": "Accessibility",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.accessibility.AccessibilityModule",
@@ -596,7 +596,7 @@
                             "displayName" : "Lat/Long",
                             "wkid" : 4326,
                             "output" : "latLon"
-                        }, 
+                        },
                         {
                             "displayName" : "Degree Minute Second",
                             "wkid" : 4326,
@@ -616,7 +616,7 @@
                     }
                 }
                 ]
-            },             
+            },
             {
                 "moduleName": "Editing",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.editing.EditingModule",
@@ -819,7 +819,7 @@
                             "viewId": "FeatureDetailsExpandedView",
                             "defaultProviderTargetRegion": "FeatureDetailsBottomRegion"
                         }
-                    },       
+                    },
                     "providers": [
                         {
                             "type": "geocortex.essentialsHtmlViewer.mapping.modules.FeatureDetails.FeatureDetailsProviders.DescriptionViewModel",
@@ -1092,7 +1092,7 @@
                         "configuration": {
                             "menuId": "FooterMenu"
                         }
-                    }                     
+                    }
                 ],
                 "viewModels": [
                     {
@@ -1803,7 +1803,7 @@
                                     "iconUri": "Resources/Images/Icons/arrow-right-alt-24.png",
                                     "command": "ZoomToLayerExtent",
                                     "hideOnDisable": true
-                                },                                
+                                },
                                 {
                                     "text": "@language-menu-zoom-to-visible-scale",
                                     "description": "@language-menu-zoom-to-visible-scale-desc",
@@ -2491,7 +2491,7 @@
                                     "iconUri": "{ViewerConfigUri}../../../Resources/Images/Custom/drivetimes-24.png",
                                     "text": "Add Community Data",
                                     "command": "RunWorkflowWithArguments",
-                                    "commandParameter": { 
+                                    "commandParameter": {
                                         "workflowId": "AddCommunityData"
                                     }
                                 },
@@ -2508,7 +2508,7 @@
                         }
                     ]
                 }
-            },           
+            },
             {
                 "moduleName": "Scalebar",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.scalebar.ScalebarModule",
@@ -2962,8 +2962,8 @@
             {
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
-                "configuration": {                    
-                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root"                    
+                "configuration": {
+                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/_planners_map_viewer"
                 },
                 "views": [
                     {
@@ -3946,7 +3946,7 @@
                     }
                     ]
                 }
-            }, 
+            },
             {
                 "moduleName": "User",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.User.UserModule",
@@ -4051,7 +4051,7 @@
                 "configuration": {},
                 "views": [],
                 "viewModels": []
-            }             
+            }
         ],
         "widgets": [
             {

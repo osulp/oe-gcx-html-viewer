@@ -1,4 +1,29 @@
-﻿This module folder provides a starting point for development with the Geocortex Viewer for HTML5.
+﻿This module is used in the M49 viewer to display the constraint output with embedded viewer commands (toggle layer, view constraints, zoom to feature).
 
-To configure this sample, modify the configuration file in Resources/Config of the Custom folder. This configuration
-file will be copied to the web folder each time the batch that builds the library is run.
+Sample config for including in viewer along with the compiled library output.
+
+	{
+                "moduleName": "CustomFormM49",
+                "moduleType": "oe.customform49.CustomFormM49Module",
+                "libraryId": "Custom",
+                "configuration": {},
+                "views": [
+                 {
+                     "id": "CustomForm49ModuleView",
+                     "title": "Measure 49 Estimated Constraints",
+                     "viewModelId": "CustomFormM49ModuleViewModel",
+                     "visible": false,
+                     "markup": "Modules/CustomFormM49/CustomFormM49ModuleView.html",
+                     "type": "oe.customform49.CustomForm49ModuleView",
+                     "region": "DataRegion",
+                     "configuration": {}
+                 }
+                ],
+                "viewModels": [
+                  {
+                      "id": "CustomFormM49ModuleViewModel",
+                      "type": "oe.customform49.CustomFormM49ModuleViewModel",
+                      "configuration": {}
+                  }
+                ]
+            }

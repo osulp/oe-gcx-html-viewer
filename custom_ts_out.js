@@ -38,7 +38,7 @@ var oe;
                 this.toggleLayer = function (event, element, context) {
                     var workflowArgs = {};
                     workflowArgs.workflowId = "toggleLayer";
-                    workflowArgs.MapServiceID = "83";
+                    workflowArgs.MapServiceID = myWorkflowContext.getValue("mapServiceID");
                     workflowArgs.LayerName = element.getAttribute("data-attr-layer");
                     this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
                 };
@@ -91,18 +91,8 @@ var oe;
     (function (customform49) {
         var CustomFormM49ModuleViewModel = (function (_super) {
             __extends(CustomFormM49ModuleViewModel, _super);
-            //hvfl_forest = new Observable();
-            //hvfl_dairy = new Observable();
-            //likely_hvf = new Observable();
-            //uda: Observable<esri.geometry.Extent> =  new Observable<esri.geometry.Extent>();
             function CustomFormM49ModuleViewModel(app, lib) {
                 _super.call(this, app, lib);
-                //greeting: Observable<string> = new Observable<string>();
-                //okBtn_lbl = new Observable();
-                //cancelBtn_lbl = new Observable();
-                //userID_lbl = new Observable();
-                //userName_lbl = new Observable();
-                this.hvfl_soil = new Observable();
             }
             CustomFormM49ModuleViewModel.prototype.initialize = function (config) {
                 myApp = this.app;
@@ -114,7 +104,6 @@ var oe;
                     document.getElementById("hvf").innerHTML = myWorkflowContext.getValue("hvfl_forest");
                     document.getElementById("hvfl_dairy").innerHTML = myWorkflowContext.getValue("hvfl_dairy");
                     document.getElementById("hvf_likely").innerHTML = myWorkflowContext.getValue("likely_hvf");
-                    //document.getElementById("uda").value = myWorkflowContext.getValue("uda");
                 });
             };
             return CustomFormM49ModuleViewModel;
@@ -290,6 +279,56 @@ var oe;
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
 var oe;
 (function (oe) {
+    var M49;
+    (function (M49) {
+        var M49Module = (function (_super) {
+            __extends(M49Module, _super);
+            function M49Module(app, lib) {
+                _super.call(this, app, lib);
+            }
+            M49Module.prototype.initialize = function (config) {
+                var _this = this;
+                var site = this.app.site;
+                if (site && site.isInitialized) {
+                    this._onSiteInitialized(site);
+                }
+                else {
+                    this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, function (args) {
+                        _this._onSiteInitialized(args);
+                    });
+                }
+            };
+            M49Module.prototype._onSiteInitialized = function (site) {
+                var _this = this;
+                window["_calcAreas"] = [];
+                // Register an implementation of custom commands.
+                this.app.commandRegistry.command("addCalcAreas").register(this, function (calcAreas) {
+                    //calcArea for each AOI
+                    //Allows for adding/deleting dynamically in the UI
+                    //Example of the json object the receive:
+                    //{
+                    //    "aoi_id": {id},
+                    //    "TotalArea": { TotArea }, 
+                    //    "HVFarmSoil_IntersectedArea":{ dblHVFarmSoil },
+                    //    "HVFarmDairy_IntersectedArea": { dblHVFarmDairy },
+                    //    "HVForest1_IntersectedArea": { dblHVForest1 },
+                    //    "HVForest3_IntersectedArea": { dblHVForest3 }
+                    //}                
+                    window["_calcAreas"].push(JSON.parse(calcAreas));
+                });
+                this.app.commandRegistry.command("removeCalcAreas").register(this, function (index) {
+                    window["_calcAreas"].splice(index, 1);
+                });
+            };
+            return M49Module;
+        })(geocortex.framework.application.ModuleBase);
+        M49.M49Module = M49Module;
+    })(M49 = oe.M49 || (oe.M49 = {}));
+})(oe || (oe = {}));
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+var oe;
+(function (oe) {
     var layer_actions_extension;
     (function (layer_actions_extension) {
         var LayerActionsExtension = (function (_super) {
@@ -409,56 +448,6 @@ var oe;
         })(geocortex.framework.ui.ViewModelBase);
         layer_actions_extension.LayerActionsExtensionModuleViewModel = LayerActionsExtensionModuleViewModel;
     })(layer_actions_extension = oe.layer_actions_extension || (oe.layer_actions_extension = {}));
-})(oe || (oe = {}));
-/// <reference path="../../../Libs/Framework.d.ts" />
-/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
-var oe;
-(function (oe) {
-    var M49;
-    (function (M49) {
-        var M49Module = (function (_super) {
-            __extends(M49Module, _super);
-            function M49Module(app, lib) {
-                _super.call(this, app, lib);
-            }
-            M49Module.prototype.initialize = function (config) {
-                var _this = this;
-                var site = this.app.site;
-                if (site && site.isInitialized) {
-                    this._onSiteInitialized(site);
-                }
-                else {
-                    this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, function (args) {
-                        _this._onSiteInitialized(args);
-                    });
-                }
-            };
-            M49Module.prototype._onSiteInitialized = function (site) {
-                var _this = this;
-                window["_calcAreas"] = [];
-                // Register an implementation of custom commands.
-                this.app.commandRegistry.command("addCalcAreas").register(this, function (calcAreas) {
-                    //calcArea for each AOI
-                    //Allows for adding/deleting dynamically in the UI
-                    //Example of the json object the receive:
-                    //{
-                    //    "aoi_id": {id},
-                    //    "TotalArea": { TotArea }, 
-                    //    "HVFarmSoil_IntersectedArea":{ dblHVFarmSoil },
-                    //    "HVFarmDairy_IntersectedArea": { dblHVFarmDairy },
-                    //    "HVForest1_IntersectedArea": { dblHVForest1 },
-                    //    "HVForest3_IntersectedArea": { dblHVForest3 }
-                    //}                
-                    window["_calcAreas"].push(JSON.parse(calcAreas));
-                });
-                this.app.commandRegistry.command("removeCalcAreas").register(this, function (index) {
-                    window["_calcAreas"].splice(index, 1);
-                });
-            };
-            return M49Module;
-        })(geocortex.framework.application.ModuleBase);
-        M49.M49Module = M49Module;
-    })(M49 = oe.M49 || (oe.M49 = {}));
 })(oe || (oe = {}));
 /// <reference path="../../../Libs/Framework.d.ts" />
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />

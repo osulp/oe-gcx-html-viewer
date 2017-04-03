@@ -60,7 +60,6 @@
     <Content Include="Modules\Elevation\ElevationModule.css" />
     <Content Include="Modules\Elevation\ElevationModuleView.html" />
     <Content Include="Modules\Elevation\Readme.txt" />
-    <Content Include="Modules\CustomFormM49\Language.json" />
     <None Include="Modules\Elevation\Language.json" />
     <Content Include="ResourceManifest.xml">
       <SubType>Designer</SubType>

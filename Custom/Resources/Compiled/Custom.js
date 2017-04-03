@@ -40,7 +40,7 @@ var oe;
                 this.toggleLayer = function (event, element, context) {
                     var workflowArgs = {};
                     workflowArgs.workflowId = "toggleLayer";
-                    workflowArgs.MapServiceID = "83";
+                    workflowArgs.MapServiceID = myWorkflowContext.getValue("mapServiceID");
                     workflowArgs.LayerName = element.getAttribute("data-attr-layer");
                     this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
                 };
@@ -93,18 +93,8 @@ var oe;
     (function (customform49) {
         var CustomFormM49ModuleViewModel = (function (_super) {
             __extends(CustomFormM49ModuleViewModel, _super);
-            //hvfl_forest = new Observable();
-            //hvfl_dairy = new Observable();
-            //likely_hvf = new Observable();
-            //uda: Observable<esri.geometry.Extent> =  new Observable<esri.geometry.Extent>();
             function CustomFormM49ModuleViewModel(app, lib) {
                 _super.call(this, app, lib);
-                //greeting: Observable<string> = new Observable<string>();
-                //okBtn_lbl = new Observable();
-                //cancelBtn_lbl = new Observable();
-                //userID_lbl = new Observable();
-                //userName_lbl = new Observable();
-                this.hvfl_soil = new Observable();
             }
             CustomFormM49ModuleViewModel.prototype.initialize = function (config) {
                 myApp = this.app;
@@ -116,7 +106,6 @@ var oe;
                     document.getElementById("hvf").innerHTML = myWorkflowContext.getValue("hvfl_forest");
                     document.getElementById("hvfl_dairy").innerHTML = myWorkflowContext.getValue("hvfl_dairy");
                     document.getElementById("hvf_likely").innerHTML = myWorkflowContext.getValue("likely_hvf");
-                    //document.getElementById("uda").value = myWorkflowContext.getValue("uda");
                 });
             };
             return CustomFormM49ModuleViewModel;
@@ -292,6 +281,56 @@ var oe;
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
 var oe;
 (function (oe) {
+    var M49;
+    (function (M49) {
+        var M49Module = (function (_super) {
+            __extends(M49Module, _super);
+            function M49Module(app, lib) {
+                _super.call(this, app, lib);
+            }
+            M49Module.prototype.initialize = function (config) {
+                var _this = this;
+                var site = this.app.site;
+                if (site && site.isInitialized) {
+                    this._onSiteInitialized(site);
+                }
+                else {
+                    this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, function (args) {
+                        _this._onSiteInitialized(args);
+                    });
+                }
+            };
+            M49Module.prototype._onSiteInitialized = function (site) {
+                var _this = this;
+                window["_calcAreas"] = [];
+                // Register an implementation of custom commands.
+                this.app.commandRegistry.command("addCalcAreas").register(this, function (calcAreas) {
+                    //calcArea for each AOI
+                    //Allows for adding/deleting dynamically in the UI
+                    //Example of the json object the receive:
+                    //{
+                    //    "aoi_id": {id},
+                    //    "TotalArea": { TotArea }, 
+                    //    "HVFarmSoil_IntersectedArea":{ dblHVFarmSoil },
+                    //    "HVFarmDairy_IntersectedArea": { dblHVFarmDairy },
+                    //    "HVForest1_IntersectedArea": { dblHVForest1 },
+                    //    "HVForest3_IntersectedArea": { dblHVForest3 }
+                    //}                
+                    window["_calcAreas"].push(JSON.parse(calcAreas));
+                });
+                this.app.commandRegistry.command("removeCalcAreas").register(this, function (index) {
+                    window["_calcAreas"].splice(index, 1);
+                });
+            };
+            return M49Module;
+        })(geocortex.framework.application.ModuleBase);
+        M49.M49Module = M49Module;
+    })(M49 = oe.M49 || (oe.M49 = {}));
+})(oe || (oe = {}));
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+var oe;
+(function (oe) {
     var layer_actions_extension;
     (function (layer_actions_extension) {
         var LayerActionsExtension = (function (_super) {
@@ -416,56 +455,6 @@ var oe;
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
 var oe;
 (function (oe) {
-    var M49;
-    (function (M49) {
-        var M49Module = (function (_super) {
-            __extends(M49Module, _super);
-            function M49Module(app, lib) {
-                _super.call(this, app, lib);
-            }
-            M49Module.prototype.initialize = function (config) {
-                var _this = this;
-                var site = this.app.site;
-                if (site && site.isInitialized) {
-                    this._onSiteInitialized(site);
-                }
-                else {
-                    this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, function (args) {
-                        _this._onSiteInitialized(args);
-                    });
-                }
-            };
-            M49Module.prototype._onSiteInitialized = function (site) {
-                var _this = this;
-                window["_calcAreas"] = [];
-                // Register an implementation of custom commands.
-                this.app.commandRegistry.command("addCalcAreas").register(this, function (calcAreas) {
-                    //calcArea for each AOI
-                    //Allows for adding/deleting dynamically in the UI
-                    //Example of the json object the receive:
-                    //{
-                    //    "aoi_id": {id},
-                    //    "TotalArea": { TotArea }, 
-                    //    "HVFarmSoil_IntersectedArea":{ dblHVFarmSoil },
-                    //    "HVFarmDairy_IntersectedArea": { dblHVFarmDairy },
-                    //    "HVForest1_IntersectedArea": { dblHVForest1 },
-                    //    "HVForest3_IntersectedArea": { dblHVForest3 }
-                    //}                
-                    window["_calcAreas"].push(JSON.parse(calcAreas));
-                });
-                this.app.commandRegistry.command("removeCalcAreas").register(this, function (index) {
-                    window["_calcAreas"].splice(index, 1);
-                });
-            };
-            return M49Module;
-        })(geocortex.framework.application.ModuleBase);
-        M49.M49Module = M49Module;
-    })(M49 = oe.M49 || (oe.M49 = {}));
-})(oe || (oe = {}));
-/// <reference path="../../../Libs/Framework.d.ts" />
-/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
-var oe;
-(function (oe) {
     var raster_functions;
     (function (raster_functions) {
         var RasterFunctionsModule = (function (_super) {
@@ -523,6 +512,6 @@ geocortex.resourceManager.register("Custom","inv","Modules/Template/TemplateModu
 geocortex.resourceManager.register("Custom","inv","Modules/CustomFormM49/CustomFormM49Module.css","css","DQoucmVnaW9uIC52aWV3LlRlbXBsYXRlTW9kdWxlVmlldy5hY3RpdmUgew0KICAgIG1hcmdpbjogMDsNCn0NCg0KLnRlbXBsYXRlLW1vZHVsZS12aWV3IHsNCiAgICBwb3NpdGlvbjogYWJzb2x1dGU7DQogICAgei1pbmRleDogMTAwOw0KICAgIHdpZHRoOiA1MDBweDsNCiAgICByaWdodDogMDsNCiAgICBiYWNrZ3JvdW5kOiB3aGl0ZTsNCiAgICBjb2xvcjogYmxhY2s7DQogICAgcGFkZGluZzogNnB4Ow0KICAgIGJvcmRlcjogMXB4IHNvbGlkICMzMzM7DQogICAgbWFyZ2luLXRvcDogNDZweDsNCiAgICBtYXJnaW4tcmlnaHQ6IDJweDsNCn0NCg0KICAgIC5tYWluRm9ybSBpbnB1dFt0eXBlPSJ0ZXh0Il0sIC5tYWluRm9ybSB0ZXh0YXJlYSwgLm1haW5Gb3JtIHNlbGVjdCB7DQogICAgICAgIC8qd2lkdGg6IDY1JTsqLw0KICAgICAgICBtYXJnaW4tYm90dG9tOiA1cHg7DQogICAgfQ0KDQogICAgLm1haW5Gb3JtIGlucHV0W3R5cGU9ImRhdGUiXSB7DQogICAgICAgIGRpc3BsYXk6IGJsb2NrOw0KICAgIH0NCg0KLnRleHRCb3ggew0KICAgIGJvcmRlci1yYWRpdXM6IDJweDsNCiAgICBib3JkZXI6IDFweCBzb2xpZCAjQUFBQUFBOw0KfQ0KDQouZXJyb3Igew0KICAgIC8qd2lkdGg6IDEwMCU7Ki8NCiAgICBwYWRkaW5nOiAwOw0KICAgIGRpc3BsYXk6IGlubGluZS1ibG9jazsNCiAgICAvKmZvbnQtc2l6ZTogODAlOyovDQogICAgY29sb3I6IHJlZDsNCiAgICAvKmJhY2tncm91bmQtY29sb3I6ICM5MDA7Ki8NCiAgICBib3JkZXItcmFkaXVzOiAwIDAgNXB4IDVweDsNCiAgICAtbW96LWJveC1zaXppbmc6IGJvcmRlci1ib3g7DQogICAgYm94LXNpemluZzogYm9yZGVyLWJveDsNCn0NCg0KLm15TGFiZWwgew0KICAgIGZvbnQtd2VpZ2h0OiBib2xkOw0KICAgIG1pbi13aWR0aDogMzAlICFpbXBvcnRhbnQ7DQogICAgZGlzcGxheTogaW5saW5lLWZsZXg7DQogICAgb3ZlcmZsb3c6IGhpZGRlbjsNCiAgICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlOw0KICAgIHRleHQtb3ZlcmZsb3c6IGVsbGlwc2lzOw0KICAgIHdvcmQtd3JhcDogYnJlYWstd29yZDsNCn0NCg0KI2N1c3RvbUZvcm0gZmllbGRzZXR7DQogICAgYm9yZGVyOnNvbGlkIDFweCAjYTdhN2E3Ow0KICAgIGJvcmRlci1yYWRpdXM6MC4yNXJlbTsNCiAgICBtYXJnaW46MmVtIGF1dG87DQp9DQoubGluayB7DQogICAgY29sb3I6IzFBNzJDNDsNCn0NCi5saW5rOmhvdmVyew0KICAgIGN1cnNvcjpwb2ludGVyOw0KICAgIHRleHQtZGVjb3JhdGlvbjp1bmRlcmxpbmU7DQp9DQoNCiNjb25zdHJhaW50cy10YWJsZSB0ciB0ZHsNCiAgICBwYWRkaW5nOi42ZW07DQp9DQoNCiNjb25zdHJhaW50cy10YWJsZSB0ci5hbHR7DQogICAgYmFja2dyb3VuZC1jb2xvcjpyZ2IoMjQwLDI0MCwyNDApOw0KfQ0KLmNvbnN0cmFpbnQtbGF5ZXItY29udHJvbHN7DQogICAgbWFyZ2luLWxlZnQ6MWVtOw0KICAgIGZvbnQtc2l6ZTouOWVtOw0KICAgIHBhZGRpbmctdG9wOjNweDsNCn0NCi5jb25zdHJhaW50LWxheWVyLWNvbnRyb2xzIHNwYW46Zmlyc3QtY2hpbGR7DQogICAgcGFkZGluZy1yaWdodDoxMHB4Ow0KfQ0KLmNvbnN0cmFpbnQtY2VsbHsNCiAgICBtaW4td2lkdGg6MjUwcHg7DQp9DQo=");
 geocortex.resourceManager.register("Custom","inv","Modules/Elevation/ElevationModule.css","css","DQovKi5yZWdpb24gLnZpZXcuVGVtcGxhdGVNb2R1bGVWaWV3LmFjdGl2ZSB7DQogICAgbWFyZ2luOiAwOw0KfSovDQoNCi5lbGV2YXRpb24tbW9kdWxlLXZpZXcNCnsNCiAgICBwb3NpdGlvbjogYWJzb2x1dGU7DQogICAgbGVmdDozMjVweDsNCiAgICB0b3A6MDsNCiAgICBmbG9hdDpyaWdodDsNCiAgICAvKnotaW5kZXg6IDEwMDsqLw0KICAgIGZvbnQtc2l6ZTouODVlbTsNCiAgICB3aWR0aDogMTc1cHg7ICAgDQogICAgaGVpZ2h0OjIwcHg7DQogICAgLypyaWdodDogMDsqLw0KICAgIGJhY2tncm91bmQ6IG5vbmU7DQogICAgY29sb3I6ICMzMzM7DQogICAgLypwYWRkaW5nOiA2cHg7Ki8NCiAgICBib3JkZXI6IG5vbmU7DQogICAgbWFyZ2luLXRvcDogMTBweDsgICAgDQp9DQoNCg==");
 geocortex.resourceManager.register("Custom","inv","Modules/Template/TemplateModule.css","css","DQoucmVnaW9uIC52aWV3LlRlbXBsYXRlTW9kdWxlVmlldy5hY3RpdmUgew0KICAgIG1hcmdpbjogMDsNCn0NCg0KLnRlbXBsYXRlLW1vZHVsZS12aWV3DQp7DQogICAgcG9zaXRpb246IGFic29sdXRlOw0KICAgIHotaW5kZXg6IDEwMDsNCiAgICB3aWR0aDogMjAwcHg7DQogICAgcmlnaHQ6IDA7DQogICAgYmFja2dyb3VuZDogd2hpdGU7DQogICAgY29sb3I6IGJsYWNrOw0KICAgIHBhZGRpbmc6IDZweDsNCiAgICBib3JkZXI6IDFweCBzb2xpZCAjMzMzOw0KICAgIG1hcmdpbi10b3A6IDQ2cHg7DQogICAgbWFyZ2luLXJpZ2h0OiAycHg7DQp9DQo=");
-geocortex.resourceManager.register("Custom","inv","Invariant","json","eyJoZWxsby13b3JsZC1pbml0aWFsaXplZCI6IkhlbGxvIHdvcmxkISBUZW1wbGF0ZSBtb2R1bGUgaW5pdGlhbGl6ZWQuIiwiVXNlciBJRCI6IlVzZXIgSUQiLCJDYW5jZWwiOiJDYW5jZWwiLCJVc2VyIE5hbWUiOiJVc2VyIE5hbWUiLCJQbGVhc2UgZW50ZXIgbmFtZSI6IlBsZWFzZSBlbnRlciBuYW1lIiwiT0siOiJPSyIsImhlbGxvLXdvcmxkLWdyZWV0aW5nIjoiSGVsbG8sIHdvcmxkLiJ9");
+geocortex.resourceManager.register("Custom","inv","Invariant","json","eyJoZWxsby13b3JsZC1pbml0aWFsaXplZCI6IkhlbGxvIHdvcmxkISBUZW1wbGF0ZSBtb2R1bGUgaW5pdGlhbGl6ZWQuIiwiaGVsbG8td29ybGQtZ3JlZXRpbmciOiJIZWxsbywgd29ybGQuIn0=");
 
 geocortex.framework.notifyLibraryDownload("Custom");
