@@ -91,6 +91,7 @@ var oe;
     (function (customform49) {
         var CustomFormM49ModuleViewModel = (function (_super) {
             __extends(CustomFormM49ModuleViewModel, _super);
+            //hvfl_soil: Observable<string> = new Observable<string>();
             function CustomFormM49ModuleViewModel(app, lib) {
                 _super.call(this, app, lib);
             }
@@ -104,6 +105,7 @@ var oe;
                     document.getElementById("hvf").innerHTML = myWorkflowContext.getValue("hvfl_forest");
                     document.getElementById("hvfl_dairy").innerHTML = myWorkflowContext.getValue("hvfl_dairy");
                     document.getElementById("hvf_likely").innerHTML = myWorkflowContext.getValue("likely_hvf");
+                    //document.getElementById("uda").value = myWorkflowContext.getValue("uda");
                 });
             };
             return CustomFormM49ModuleViewModel;
@@ -113,16 +115,72 @@ var oe;
 })(oe || (oe = {}));
 /// <reference path="../../../Libs/Framework.d.ts" />
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+// module to fire off the StartEditingFeature command since it requires use of the HtmlViewer context not available in workflow.
+var oe;
+(function (oe) {
+    var development_registry;
+    (function (development_registry) {
+        var DevelopmentRegistryModule = (function (_super) {
+            __extends(DevelopmentRegistryModule, _super);
+            function DevelopmentRegistryModule(app, lib) {
+                _super.call(this, app, lib);
+            }
+            DevelopmentRegistryModule.prototype.initialize = function (config) {
+                var _this = this;
+                var site = this.app.site;
+                if (site && site.isInitialized) {
+                    this._onSiteInitialized(site);
+                }
+                else {
+                    this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, function (args) {
+                        _this._onSiteInitialized(args);
+                    });
+                }
+            };
+            DevelopmentRegistryModule.prototype._onSiteInitialized = function (site) {
+                var _this = this;
+                this.app.commandRegistry.command("showFeatureEditForm").register(this, function () {
+                    var collection = this.app.featureSetManager.getCollectionById("add_feature");
+                    var feature = null;
+                    if (collection.featureSets.length() > 0) {
+                        if (collection.featureSets.getAt(0).features.length() > 0) {
+                            feature = collection.featureSets.getAt(0).features.getAt(0);
+                            _this.app.commandRegistry.command("StartEditingFeature").execute(feature);
+                        }
+                    }
+                });
+            };
+            return DevelopmentRegistryModule;
+        })(geocortex.framework.application.ModuleBase);
+        development_registry.DevelopmentRegistryModule = DevelopmentRegistryModule;
+    })(development_registry = oe.development_registry || (oe.development_registry = {}));
+})(oe || (oe = {}));
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
 var oe;
 (function (oe) {
     var elevation;
     (function (elevation) {
+        /* var googleURL = "http://maps.googleapis.com/maps/api/elevation/json?locations=";
+         var identifyParams = new esri.tasks.IdentifyParameters();
+         var elevCounter = 0;
+         var elevCounterMax;
+         var shellName;*/
         var ElevationModule = (function (_super) {
             __extends(ElevationModule, _super);
             function ElevationModule(app, lib) {
                 _super.call(this, app, lib);
             }
             ElevationModule.prototype.initialize = function (config) {
+                /*var site: geocortex.essentials.Site = (<any>this).app.site;
+                if (site && site.isInitialized) {
+                    this._onSiteInitialized(site);
+                }
+                else {
+                    this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, (args) => {
+                        this._onSiteInitialized(args);
+                    });
+                }*/
             };
             return ElevationModule;
         })(geocortex.framework.application.ModuleBase);
@@ -179,52 +237,67 @@ var oe;
             ElevationModuleViewModel.prototype._onSiteInitialized = function (site) {
                 elevCounterMax = 10;
                 shellName = this.app.shellName;
-                this.app.map.on("mouse-move", handleMouseMoveClick);
-                this.app.map.on("click", handleMouseMoveClick);
-                function handleMouseMoveClick(evt) {
-                    if (elevCounter === 0 || shellName !== "Desktop") {
-                        elevCounter++;
-                        if (this.extent !== undefined) {
-                            var extent = this.extent;
-                            var mapHeight = this.height;
-                            var mapWidth = this.width;
-                            //check to see if the result window is open, if so need to add to width or else values are wrong
-                            var clientX = evt.clientX - $(".DataFrameResultsContainerView").width();
-                            var screenPoint = new esri.geometry.ScreenPoint(clientX, evt.clientY);
-                            var mapGeometry = esri.geometry.toMapPoint(extent, mapWidth, mapHeight, screenPoint);
-                            var geographicPoint = esri.geometry.webMercatorToGeographic(mapGeometry);
-                            var mapPoint = new esri.geometry.Point(geographicPoint);
-                            var url = googleURL + mapPoint.y + "," + mapPoint.x;
-                            //var proxyUrl = window.location.href.replace(window.location.href.split("/")[window.location.href.split("/").length - 1], "") + "Proxy.ashx?" + url;
-                            var siteUrl = window.location.href.split("?")[0];
-                            siteUrl = siteUrl.replace(siteUrl.split("/")[siteUrl.split("/").length - 1], "");
-                            //alert(siteUrl);
-                            var proxyUrl = siteUrl + "Proxy.ashx?" + url;
-                            //var proxyUrl = window.location.href.replace(window.location.pathname, "/Proxy.ashx?" + url);
-                            var contentType = "application/x-www-form-urlencoded; charset=utf-8";
-                            $.ajax({
-                                type: "GET",
-                                contentType: "application/json; charset=utf-8",
-                                url: proxyUrl,
-                                dataType: "json",
-                                async: false,
-                                success: function (result) {
-                                    if (result.results.length > 0) {
-                                        var elevation = result.results[0].elevation;
-                                        elevation = Math.round(parseFloat(elevation) * 3.28084).toString() + " ft";
-                                        $("#elevation").html(elevation);
-                                    }
-                                },
-                                error: function (xhr, ajaxOptions, thrownError) {
-                                    var error = thrownError;
-                                    alert(error);
-                                }
-                            });
+                buildElevationHTML();
+                //this.app.eventRegistry.event("ContextMenuActivated").subscribe(null, handleMouseClick);              
+                this.app.eventRegistry.event("MapContextMenuPointUpdatedEvent").subscribe(null, handleMouseClick);
+                function buildElevationHTML() {
+                    //make sure the menu exists
+                    var menuCoords = $(".map-menu-coordinates");
+                    if (menuCoords == undefined || menuCoords == null)
+                        return;
+                    //add a div to the end of the coordinates element in the menu to hold our elevation data
+                    menuCoords.append('<div><b>Elevation: </b><span id="GoogleElevationValue">Loading...</span></div>');
+                }
+                function handleMouseClick(pointIn, appIn) {
+                    //make sure our html element exists
+                    var menuCoords = $("#GoogleElevationValue");
+                    if (menuCoords == undefined && menuCoords == null)
+                        return;
+                    $("#GoogleElevationValue").html("Loading...");
+                    //Grab the current application
+                    appIn = geocortex.framework.applications[0];
+                    if (appIn == undefined || appIn == null) {
+                        $("#GoogleElevationValue").html("App not found");
+                        return;
+                    }
+                    if (pointIn == undefined || pointIn == null) {
+                        $("#GoogleElevationValue").html("No point supplied");
+                        return;
+                    }
+                    //The coordinates manager hold a prevCoord which is acutally the current context menu point.
+                    //var defaultX = appIn.coordinatesManager._prevCoord.x;
+                    //var defaultY = appIn.coordinatesManager._prevCoord.y;
+                    var defaultX = pointIn.x;
+                    var defaultY = pointIn.y;
+                    //The default spatial reference is 102100, change it to web mercator
+                    var xyPoint = new esri.geometry.Point(defaultX, defaultY, new esri.SpatialReference({ wkid: 102100 }));
+                    var geographicPoint = esri.geometry.webMercatorToGeographic(xyPoint);
+                    var mapPoint = new esri.geometry.Point(geographicPoint);
+                    //toss the point at google
+                    var url = googleURL + mapPoint.y + "," + mapPoint.x;
+                    var siteUrl = window.location.href.split("?")[0];
+                    siteUrl = siteUrl.replace(siteUrl.split("/")[siteUrl.split("/").length - 1], "");
+                    var proxyUrl = siteUrl + "Proxy.ashx?" + url;
+                    var contentType = "application/x-www-form-urlencoded; charset=utf-8";
+                    $.ajax({
+                        type: "GET",
+                        contentType: "application/json; charset=utf-8",
+                        url: proxyUrl,
+                        dataType: "json",
+                        async: false,
+                        success: function (result) {
+                            if (result.results.length > 0) {
+                                var elevation = result.results[0].elevation;
+                                elevation = Math.round(parseFloat(elevation) * 3.28084).toString() + " ft";
+                                $("#GoogleElevationValue").html(elevation);
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            var error = thrownError;
+                            $("#GoogleElevationValue").html("Load failed");
+                            //alert(error);
                         }
-                    }
-                    else {
-                        elevCounter = elevCounter === (elevCounterMax - 1) ? 0 : (elevCounter + 1);
-                    }
+                    });
                 }
             };
             return ElevationModuleViewModel;
@@ -258,72 +331,24 @@ var oe;
                 }
             };
             HyperlinkBannerModule.prototype._onSiteInitialized = function (site) {
-                $('.banner').click(function (e) {
+                //wrap banner image with a link anchor
+                $(".banner-left-img").wrap('<a href="' + linkUri + '" target="_blank"></a>');
+                /*$('.banner').click(function (e) {
                     if (e.pageX < 350) {
                         window.open(linkUri, '_blank');
                     }
                 });
                 //adds support for sponsor logo image to be next to the OE banner image before the banner text.
                 try {
-                    $('.banner-text').css("left", (/\.(gif|jpg|jpeg|tiff|png)$/i).test($('.banner-right-img')[0]["src"]) ? $('.banner-right-img').width() + 370 + "px" : "370px");
+                   // $('.banner-text').css("left", (/\.(gif|jpg|jpeg|tiff|png)$/i).test($('.banner-right-img')[0]["src"]) ? $('.banner-right-img').width() + 370 + "px" : "370px");
                 }
-                catch (ex) { }
-                ;
+                catch (ex)
+                { };*/
             };
             return HyperlinkBannerModule;
         })(geocortex.framework.application.ModuleBase);
         hyperlink_banner.HyperlinkBannerModule = HyperlinkBannerModule;
     })(hyperlink_banner = oe.hyperlink_banner || (oe.hyperlink_banner = {}));
-})(oe || (oe = {}));
-/// <reference path="../../../Libs/Framework.d.ts" />
-/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
-var oe;
-(function (oe) {
-    var M49;
-    (function (M49) {
-        var M49Module = (function (_super) {
-            __extends(M49Module, _super);
-            function M49Module(app, lib) {
-                _super.call(this, app, lib);
-            }
-            M49Module.prototype.initialize = function (config) {
-                var _this = this;
-                var site = this.app.site;
-                if (site && site.isInitialized) {
-                    this._onSiteInitialized(site);
-                }
-                else {
-                    this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, function (args) {
-                        _this._onSiteInitialized(args);
-                    });
-                }
-            };
-            M49Module.prototype._onSiteInitialized = function (site) {
-                var _this = this;
-                window["_calcAreas"] = [];
-                // Register an implementation of custom commands.
-                this.app.commandRegistry.command("addCalcAreas").register(this, function (calcAreas) {
-                    //calcArea for each AOI
-                    //Allows for adding/deleting dynamically in the UI
-                    //Example of the json object the receive:
-                    //{
-                    //    "aoi_id": {id},
-                    //    "TotalArea": { TotArea }, 
-                    //    "HVFarmSoil_IntersectedArea":{ dblHVFarmSoil },
-                    //    "HVFarmDairy_IntersectedArea": { dblHVFarmDairy },
-                    //    "HVForest1_IntersectedArea": { dblHVForest1 },
-                    //    "HVForest3_IntersectedArea": { dblHVForest3 }
-                    //}                
-                    window["_calcAreas"].push(JSON.parse(calcAreas));
-                });
-                this.app.commandRegistry.command("removeCalcAreas").register(this, function (index) {
-                    window["_calcAreas"].splice(index, 1);
-                });
-            };
-            return M49Module;
-        })(geocortex.framework.application.ModuleBase);
-        M49.M49Module = M49Module;
-    })(M49 = oe.M49 || (oe.M49 = {}));
 })(oe || (oe = {}));
 /// <reference path="../../../Libs/Framework.d.ts" />
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
@@ -399,7 +424,7 @@ var oe;
                         workflowArgs["LayerToken"] = layer.mapService.serviceToken;
                         //workflowArgs["LayerUser"] = layer.properties.user !== undefined ? layer.properties.user : "";
                         //workflowArgs["LayerPwd"] = layer.properties.pwd !== undefined ? layer.properties.pwd : "";
-                        //workflowArgs["LayerTokenUrl"] = layer.getLayerUrl().toUpperCase().split("/REST/")[0] + "/tokens";                
+                        //workflowArgs["LayerTokenUrl"] = layer.getLayerUrl().toUpperCase().split("/REST/")[0] + "/tokens";
                         this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
                     }
                 }, function (context) {
@@ -448,6 +473,56 @@ var oe;
         })(geocortex.framework.ui.ViewModelBase);
         layer_actions_extension.LayerActionsExtensionModuleViewModel = LayerActionsExtensionModuleViewModel;
     })(layer_actions_extension = oe.layer_actions_extension || (oe.layer_actions_extension = {}));
+})(oe || (oe = {}));
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+var oe;
+(function (oe) {
+    var M49;
+    (function (M49) {
+        var M49Module = (function (_super) {
+            __extends(M49Module, _super);
+            function M49Module(app, lib) {
+                _super.call(this, app, lib);
+            }
+            M49Module.prototype.initialize = function (config) {
+                var _this = this;
+                var site = this.app.site;
+                if (site && site.isInitialized) {
+                    this._onSiteInitialized(site);
+                }
+                else {
+                    this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, function (args) {
+                        _this._onSiteInitialized(args);
+                    });
+                }
+            };
+            M49Module.prototype._onSiteInitialized = function (site) {
+                var _this = this;
+                window["_calcAreas"] = [];
+                // Register an implementation of custom commands.
+                this.app.commandRegistry.command("addCalcAreas").register(this, function (calcAreas) {
+                    //calcArea for each AOI
+                    //Allows for adding/deleting dynamically in the UI
+                    //Example of the json object the receive:
+                    //{
+                    //    "aoi_id": {id},
+                    //    "TotalArea": { TotArea }, 
+                    //    "HVFarmSoil_IntersectedArea":{ dblHVFarmSoil },
+                    //    "HVFarmDairy_IntersectedArea": { dblHVFarmDairy },
+                    //    "HVForest1_IntersectedArea": { dblHVForest1 },
+                    //    "HVForest3_IntersectedArea": { dblHVForest3 }
+                    //}                
+                    window["_calcAreas"].push(JSON.parse(calcAreas));
+                });
+                this.app.commandRegistry.command("removeCalcAreas").register(this, function (index) {
+                    window["_calcAreas"].splice(index, 1);
+                });
+            };
+            return M49Module;
+        })(geocortex.framework.application.ModuleBase);
+        M49.M49Module = M49Module;
+    })(M49 = oe.M49 || (oe.M49 = {}));
 })(oe || (oe = {}));
 /// <reference path="../../../Libs/Framework.d.ts" />
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />

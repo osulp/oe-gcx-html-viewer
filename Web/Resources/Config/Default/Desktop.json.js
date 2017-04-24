@@ -103,8 +103,8 @@
                 "moduleName": "M49",
                 "moduleType": "oe.M49.M49Module",
                 "libraryId": "Custom",
-                "configuration": {}                                            
-            }, 
+                "configuration": {}
+            },
              {
                  "moduleName": "CustomFormM49",
                  "moduleType": "oe.customform49.CustomFormM49Module",
@@ -136,8 +136,8 @@
                 "libraryId": "Custom",
                 "configuration": {
                     "linkUri": "http://oregonexplorer.info"
-                }                                            
-            }, 
+                }
+            },
           {
             "moduleName" : "Elevation",
             "moduleType" : "oe.elevation.ElevationModule",
@@ -157,7 +157,7 @@
                 "id" : "ElevationModuleViewModel",
                 "type" : "oe.elevation.ElevationModuleViewModel",
 
-                "configuration" : {}  
+                "configuration" : {}
               }
             ]
           },
@@ -166,31 +166,12 @@
               "moduleType" : "oe.raster_functions.RasterFunctionsModule",
               "libraryId" : "Custom",
               "configuration" : {}
-            },           
+            },
             {
-                "moduleName": "CustomFormM49",
-                "moduleType": "oe.customform49.CustomFormM49Module",
-                "libraryId": "Custom",
-                "configuration": {},
-                "views": [
-                 {
-                     "id": "CustomForm49ModuleView",
-                     "title": "Measure 49 Estimated Constraints",
-                     "viewModelId": "CustomFormM49ModuleViewModel",
-                     "visible": false,
-                     "markup": "Modules/CustomFormM49/CustomFormM49ModuleView.html",
-                     "type": "oe.customform49.CustomForm49ModuleView",
-                     "region": "DataRegion",
-                     "configuration": {}
-                 }
-                ],
-                "viewModels": [
-                  {
-                      "id": "CustomFormM49ModuleViewModel",
-                      "type": "oe.customform49.CustomFormM49ModuleViewModel",
-                      "configuration": {}
-                  }
-                ]
+                "moduleName" : "DevelopmentRegistry",
+                "moduleType" : "oe.development_registry.DevelopmentRegistryModule",
+                "libraryId" : "Custom",
+                "configuration" : {}
             },
             {
                 "moduleName": "Accessibility",
@@ -1070,7 +1051,7 @@
                         "id": "CoordinatesViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.coordinates.CoordinatesViewModel",
                         "configuration": {
-                            "isEnabled": true,                            
+                            "isEnabled": true,
                             "openByDefault" : true,
                             "useBasemapCoordinates" : false,
                             "coordinatesModel": "MapCoordinatesModel",
@@ -1079,7 +1060,7 @@
                                 "displayName" : "Lat/Long",
                                 "wkid" : 4326,
                                 "output" : "latLon"
-                            }, 
+                            },
                             {
                                 "displayName" : "Degree Minute Second",
                                 "wkid" : 4326,
@@ -2642,7 +2623,7 @@
                         "id": "MapCoordinatesModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.coordinates.CoordinatesModel",
                         "configuration": {
-                            "defaultCoordinateDisplayTypes": [                                
+                            "defaultCoordinateDisplayTypes": [
                             ],
                             "customCoordinateSystems": [
                                  {
@@ -2755,7 +2736,7 @@
                         "configuration": {}
                     }
                 ]
-            },             
+            },
             {
                 "moduleName": "Markers",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.markers.MarkersModule",
@@ -4540,7 +4521,7 @@
                         "markup": "Mapping/modules/Scalebar/ScaleInputBoxView.html",
                         "region": "BottomLeftMapRegion",
                         "viewModelId": "ScalebarViewModel"
-                    }                  
+                    }
                 ],
                 "viewModels": [
                     {
@@ -5247,9 +5228,9 @@
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                 "configuration": {
-                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
+                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                     "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
-                    "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/wildfire_risk"
+                    "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg"
                 },
                 "views": [
                     {
@@ -5672,8 +5653,8 @@
                             ]
                         }
                     ],
-                    "toolbarGroups": [                         
-                        
+                    "toolbarGroups": [
+
                         {
                             "id" : "CustomTabFile",
                             "type" : "toolbarGroup",
@@ -5725,7 +5706,7 @@
                             }
                             ]
                         },
-                        
+
                         {
                             "id" : "CustomTabFind",
                             "type" : "toolbarGroup",
@@ -5826,6 +5807,34 @@
                                     "type" : "region",
                                     "regionName" : "IdentifyToolControlRegion"
                                 }
+                                ]
+                            },
+                            {
+                                "id": "EeD54kqL",
+                                "type": "toolbarGroup",
+                                "name": "Oregon Development Projects",
+                                "layout": "Large",
+                                "items": [
+                                  {
+                                      "id": "XWVepsnv",
+                                      "type": "button",
+                                      "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/feature-create-24.png",
+                                      "command": "RunWorkflowById",
+                                      "commandParameter": "add_project",
+                                      "hideOnDisable": false,
+                                      "name": "Add Development",
+                                      "tooltip": "Add Development"
+                                  },
+                                  {
+                                      "id": "2iVZdrT2",
+                                      "type": "button",
+                                      "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/feature-edit-24.png",
+                                      "command": "RunWorkflowById",
+                                      "commandParameter": "add_project",
+                                      "hideOnDisable": true,
+                                      "name": "Edit Project",
+                                      "tooltip": "Edit Project"
+                                  }
                                 ]
                             }
                             ]
@@ -6524,7 +6533,7 @@
                         "id": "TabbedToolbarViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.toolbar.TabbedToolbarViewModel",
                         "configuration": {
-                            "toolbarGroupRefs": [       
+                            "toolbarGroupRefs": [
                                 "CustomTabFile",
                                 "CustomTabFind",
                                 "CustomTabLayers",
@@ -7283,7 +7292,7 @@
                         },
                         {
                             "style": "dashdot",
-                            "label": "@language-symbology-settings-line-style-dashdot"      
+                            "label": "@language-symbology-settings-line-style-dashdot"
                         }
                     ],
                     "fillStyles": [

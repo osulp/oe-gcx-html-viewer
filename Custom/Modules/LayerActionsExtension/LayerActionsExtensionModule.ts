@@ -11,7 +11,7 @@ module oe.layer_actions_extension {
             super(app, lib);
         }
 
-        
+
 
         initialize(config: any): void {
 
@@ -27,8 +27,8 @@ module oe.layer_actions_extension {
             }
         }
 
-        _onSiteInitialized(site: geocortex.essentials.Site) {                              
-            var _this = this;                        
+        _onSiteInitialized(site: geocortex.essentials.Site) {
+            var _this = this;
             // Register an implementation for the "showMetadata" and "showDownload" commands.
             this.app.commandRegistry.command("showMetadata").register(this, function (layer) {
                 // Show the text that was passed into the command.
@@ -56,19 +56,19 @@ module oe.layer_actions_extension {
                 else {
                     return true;
                 }
-                });  
+                });
             this.app.commandRegistry.command("showServiceInfo").register(this, function (layer) {
                 window.open(layer.getLayerUrl(), "_blank");
-            });      
+            });
             this.app.commandRegistry.command("showDownload").register(this, function (layer) {
                 // Show the text that was passed into the command.
                 // Download links are the second link in the description so split and send to second url.
                 var downloadLink = layer.description.split("http");
-                downloadLink = downloadLink.length > 2 ? "http" + downloadLink[2] : "";                                
+                downloadLink = downloadLink.length > 2 ? "http" + downloadLink[2] : "";
                 if (downloadLink !== "") {
                     window.open(downloadLink, "_blank");
                 }
-                else {                    
+                else {
                     var GESiteUri = this.app.site.url;
                     var workflowArgs = {};
                     workflowArgs["workflowId"] = "Extract_Layer"; //This is the ID of the workflow.
@@ -78,14 +78,14 @@ module oe.layer_actions_extension {
                     workflowArgs["LayerToken"] = layer.mapService.serviceToken;
                     //workflowArgs["LayerUser"] = layer.properties.user !== undefined ? layer.properties.user : "";
                     //workflowArgs["LayerPwd"] = layer.properties.pwd !== undefined ? layer.properties.pwd : "";
-                    //workflowArgs["LayerTokenUrl"] = layer.getLayerUrl().toUpperCase().split("/REST/")[0] + "/tokens";                
-                    
+                    //workflowArgs["LayerTokenUrl"] = layer.getLayerUrl().toUpperCase().split("/REST/")[0] + "/tokens";
+
                     this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
                 }
             }, function (context) {
-                return (context === null ? false : (context.properties.hideDownload === undefined ? true : context.properties.hideDownload === "False" ? false : false));                
-            });       
-    
+                return (context === null ? false : (context.properties.hideDownload === undefined ? true : context.properties.hideDownload === "False" ? false : false));
+            });
+
         }
     }
 }

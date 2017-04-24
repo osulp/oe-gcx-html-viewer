@@ -53,6 +53,7 @@
     <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModule.ts" />
     <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModuleView.ts" />
     <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModuleViewModel.ts" />
+    <TypeScriptCompile Include="Modules\DevelopmentRegistry\DevelopmentRegistryModule.ts" />
     <TypeScriptCompile Include="Modules\RasterFunctions\RasterFunctionsModule.ts" />
     <Content Include="Modules\CustomFormM49\Readme.txt" />
     <Content Include="Modules\CustomFormM49\CustomFormM49Module.css" />
