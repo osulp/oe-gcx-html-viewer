@@ -3,7 +3,7 @@
 
 
 .banner{
-    border-bottom:1px solid #a0abb1 !important;        
+    border-bottom:1px solid #a0abb1 !important;
 }
 
 .collapsed.tree-expander{
@@ -16,11 +16,11 @@
 .banner-images {
     position:relative !important;
     float:left;
-    width:auto;           
+    width:auto;
 }
 
 .banner-images img{
-    position:relative !important;        
+    position:relative !important;
 }
 
 .banner-right-img{
@@ -82,7 +82,7 @@ height:400px;
     max-height:30px;
 }
 .splash-paragraph {
-    width: 311px;   
+    width: 311px;
     font-size: 10px;
 }
 
@@ -107,7 +107,7 @@ height:400px;
 }
 
 #dijit_Menu_0 tr{
-    height:35px;    
+    height:35px;
 }
 #dijit_Menu_0 tr:hover{
     background-color:rgba(128, 128, 128, 0.43);
@@ -121,11 +121,26 @@ height:400px;
     width:80%;
 }
 
+#oe_layer_desc{
+    padding:20px;
+    font-size:.9em;
+    color:rgba(128, 128, 128, 0.83);
+}
+#oe_layer_desc_toggle_more{
+    float:right;
+    color:#c34500;
+}
+
+#oe_layer_desc_toggle_more:hover{
+    text-decoration:underline;
+    cursor:pointer;
+}
+
 /*#CustomMapTipPopup {
   position:absolute;
   left: 300px;
   top: 100px;
-  z-index:200; 
+  z-index:200;
   padding: 3px;
   margin-left: 10px;
   margin-top: 5px;

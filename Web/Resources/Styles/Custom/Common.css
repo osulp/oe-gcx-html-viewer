@@ -25,7 +25,7 @@
 {
     font-size:1.8em;
     font-weight:normal;
-    /*margin-top:.2em;*/   
+    /*margin-top:.2em;*/
 }
 .banner-text h1.no-subtitle
 {
@@ -59,7 +59,7 @@ height:400px;
     max-height:30px;
 }
 .splash-paragraph {
-    width: 311px;   
+    width: 311px;
     font-size: 10px;
 }
 
@@ -83,7 +83,7 @@ height:400px;
 }
 
 #dijit_Menu_0 tr{
-    height:35px;    
+    height:35px;
 }
 #dijit_Menu_0 tr:hover{
     background-color:rgba(128, 128, 128, 0.43);
@@ -96,3 +96,4 @@ height:400px;
 .legend-item-label{
     width:80%;
 }
+

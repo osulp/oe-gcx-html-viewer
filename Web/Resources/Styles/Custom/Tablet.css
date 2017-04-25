@@ -21,11 +21,11 @@
 .banner-images {
     position:relative !important;
     float:left;
-    width:auto;           
+    width:auto;
 }
 
 .banner-images img{
-    position:relative !important;        
+    position:relative !important;
 }
 
 .banner-right-img{
@@ -87,7 +87,7 @@ height:400px;
     max-height:30px;
 }
 .splash-paragraph {
-    width: 311px;   
+    width: 311px;
     font-size: 10px;
 }
 
@@ -132,4 +132,10 @@ input[type='checkbox']{
 }
 .legend-item-label{
     width:80%;
+}
+
+#oe_layer_desc{
+    padding:20px;
+    font-size:.9em;
+    color:rgba(128, 128, 128, 0.83);
 }

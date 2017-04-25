@@ -42,6 +42,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <ItemGroup>
+    <Content Include="Resources\Styles\Custom\OE.css" />
     <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49Module.ts" />
     <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49ModuleView.ts" />
     <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49ModuleViewModel.ts" />

@@ -117,6 +117,7 @@ var oe;
 })(oe || (oe = {}));
 /// <reference path="../../../Libs/Framework.d.ts" />
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+// module to fire off the StartEditingFeature command since it requires use of the HtmlViewer context not available in workflow.
 var oe;
 (function (oe) {
     var development_registry;
@@ -140,8 +141,6 @@ var oe;
             };
             DevelopmentRegistryModule.prototype._onSiteInitialized = function (site) {
                 var _this = this;
-                //this.app.registerActivityIdHandler("showFeatureEditForm", function CustomEventHandler(workflowContext, contextFunctions) {
-                //});
                 this.app.commandRegistry.command("showFeatureEditForm").register(this, function () {
                     var collection = this.app.featureSetManager.getCollectionById("add_feature");
                     var feature = null;
@@ -151,10 +150,6 @@ var oe;
                             _this.app.commandRegistry.command("StartEditingFeature").execute(feature);
                         }
                     }
-                    //let featureOptions: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureOptions = new geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureOptions();
-                    //featureOptions.graphic = featureGraphic;
-                    //let gxcFeature = new geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature(featureOptions);
-                    //_this.app.command("ShowEditFeature",);
                 });
             };
             return DevelopmentRegistryModule;
@@ -380,9 +375,46 @@ var oe;
                     });
                 }
             };
+            LayerActionsExtension.prototype.registerOnclickLayerDesc = function () {
+                var _this = this;
+                $("#oe_layer_desc_toggle_more").click(function () {
+                    if ($("#oe_layer_desc_toggle_more").html() === "show more") {
+                        var show_all = _this["layer_desc_full"] + '<div id="oe_layer_desc_toggle_more">show less</div>';
+                        $("#oe_layer_desc").html(show_all);
+                    }
+                    else {
+                        var show_less = _this["layer_desc_full"].substring(0, 500) + '...<div id="oe_layer_desc_toggle_more">show more</div>';
+                        $("#oe_layer_desc").html(show_less);
+                    }
+                    _this.registerOnclickLayerDesc();
+                });
+            };
             LayerActionsExtension.prototype._onSiteInitialized = function (site) {
                 var _this = this;
+                //var _this = this;
                 // Register an implementation for the "showMetadata" and "showDownload" commands.
+                this.app.eventRegistry.event("ViewContainerActivatedEvent").subscribe(this, function (args) {
+                    if (args.id === "LayerDataContainerView") {
+                        // check to see if div id already added, else create a new one
+                        if (args.childRegions[0].activeViews.length > 1) {
+                            _this.layer_desc_full = args.childRegions[0].activeViews[1].viewModel.menuContext.value.description.split("Metadata:")[0];
+                            _this.layer_desc_full = _this.layer_desc_full.split('Abstract:').length > 1
+                                ? _this.layer_desc_full.split('Abstract:')[1]
+                                : _this.layer_desc_full;
+                            var showMore = _this.layer_desc_full.length > 500;
+                            var layer_desc = showMore ? _this.layer_desc_full.substring(0, 500) + '...<div id="oe_layer_desc_toggle_more">show more</div>' : _this.layer_desc_full;
+                            if ($("#oe_layer_desc").length > 0) {
+                                $("#oe_layer_desc").html(layer_desc);
+                            }
+                            else {
+                                $(".LayerActionsView.active").prepend('<div id="oe_layer_desc">' + layer_desc + '</div>');
+                            }
+                            _this.registerOnclickLayerDesc();
+                        }
+                    }
+                });
+                this["registerOnClickForLayerDesc"] = function () {
+                };
                 this.app.commandRegistry.command("showMetadata").register(this, function (layer) {
                     // Show the text that was passed into the command.
                     // Metadata links are the first link in the description so split and send to first url.
@@ -410,6 +442,7 @@ var oe;
                         return true;
                     }
                 });
+                // view LayerActionsView active
                 this.app.commandRegistry.command("showServiceInfo").register(this, function (layer) {
                     window.open(layer.getLayerUrl(), "_blank");
                 });

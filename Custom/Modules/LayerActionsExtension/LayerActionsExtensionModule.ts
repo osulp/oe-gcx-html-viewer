@@ -11,7 +11,7 @@ module oe.layer_actions_extension {
             super(app, lib);
         }
 
-
+        layer_desc_full: any;
 
         initialize(config: any): void {
 
@@ -26,21 +26,56 @@ module oe.layer_actions_extension {
                 });
             }
         }
+        registerOnclickLayerDesc(): void {
+            $("#oe_layer_desc_toggle_more").click(() => {
+                if ($("#oe_layer_desc_toggle_more").html() === "show more") {
+                    let show_all = this["layer_desc_full"] + '<div id="oe_layer_desc_toggle_more">show less</div>'
+                    $("#oe_layer_desc").html(show_all);
+                } else {
+                    let show_less = this["layer_desc_full"].substring(0, 500) + '...<div id="oe_layer_desc_toggle_more">show more</div>'
+                    $("#oe_layer_desc").html(show_less);
+                }
+                this.registerOnclickLayerDesc();
+            });
+        }
 
         _onSiteInitialized(site: geocortex.essentials.Site) {
-            var _this = this;
+            //var _this = this;
             // Register an implementation for the "showMetadata" and "showDownload" commands.
+            this.app.eventRegistry.event("ViewContainerActivatedEvent").subscribe(this, (args) => {
+                if (args.id === "LayerDataContainerView") {
+                    // check to see if div id already added, else create a new one
+                    if (args.childRegions[0].activeViews.length > 1) {
+                        this.layer_desc_full = args.childRegions[0].activeViews[1].viewModel.menuContext.value.description.split("Metadata:")[0];
+                        this.layer_desc_full = this.layer_desc_full.split('Abstract:').length > 1
+                            ? this.layer_desc_full.split('Abstract:')[1]
+                            : this.layer_desc_full;
+                        let showMore = this.layer_desc_full.length > 500;
+                        let layer_desc = showMore ? this.layer_desc_full.substring(0, 500) + '...<div id="oe_layer_desc_toggle_more">show more</div>' : this.layer_desc_full;
+                        if ($("#oe_layer_desc").length > 0) {
+                            $("#oe_layer_desc").html(layer_desc);
+                        } else {
+                            $(".LayerActionsView.active").prepend('<div id="oe_layer_desc">' + layer_desc + '</div>');
+                        }
+                        this.registerOnclickLayerDesc();
+                    }
+                }
+            });
+
+            this["registerOnClickForLayerDesc"] = function () {
+
+            }
             this.app.commandRegistry.command("showMetadata").register(this, function (layer) {
                 // Show the text that was passed into the command.
                 // Metadata links are the first link in the description so split and send to first url.
                 var metadataLink = layer.description.split("http");
-                metadataLink = metadataLink.length > 1 ? "http" + metadataLink[1].split(" ")[0].replace("Download:", "").replace("download:", "").replace("Download","").replace("download","") : "";
+                metadataLink = metadataLink.length > 1 ? "http" + metadataLink[1].split(" ")[0].replace("Download:", "").replace("download:", "").replace("Download", "").replace("download", "") : "";
                 if (metadataLink !== "") {
                     window.open(metadataLink, "_blank");
                 }
                 else {
                     alert(layer.description)
-                    }
+                }
             }, function (context) {
                 //canExecute
                 if (context !== null) {
@@ -50,13 +85,15 @@ module oe.layer_actions_extension {
                         return context.description !== "" ? true : false;
                     }
                     else {
-                    return false
-                        }
+                        return false
+                    }
                 }
                 else {
                     return true;
                 }
-                });
+            });
+            // view LayerActionsView active
+
             this.app.commandRegistry.command("showServiceInfo").register(this, function (layer) {
                 window.open(layer.getLayerUrl(), "_blank");
             });
