@@ -22,7 +22,7 @@ declare module geocortex.charting {
          */
         isSeriesInternal: boolean;
         /**
-         * A distinctive color for the series. This differs from the the {@link ChartSeriesDefinition} color
+         * A distinctive color for the series. This differs from the the {@link configuration.ChartSeriesDefinition} color
          * if the source is a multi-value field.
          */
         distinctColor: Color;
@@ -35,8 +35,8 @@ declare module geocortex.charting {
          */
         items: ChartPointCollection;
         /**
-         * Initializes a new instance of the {@link geocortex.charting.infrastructure.SeriesViewModel} class.
-         * @param app The {@link geocortex.framework.application.Application} that this view belongs to.
+         * Initializes a new instance of the {@link SeriesViewModel} class.
+         * @param app The {@link framework.application.Application} that this view belongs to.
          * @param libraryId The library Id
         */
         constructor(app: geocortex.framework.application.Application, libraryId?: string);
@@ -69,6 +69,8 @@ declare module geocortex.charting {
         defaultChart: Observable<boolean>;
         /** The chart display name. */
         displayName: Observable<string>;
+        /** The value formatter (e.g. format "123" as currency, etc) */
+        formatProvider: globalization.FormatProviderInterface;
         /** Whether to apply a gradient overlay to chart series. */
         gradients: Observable<boolean>;
         /** The height of the chart area. */
@@ -96,6 +98,8 @@ declare module geocortex.charting {
         renderAs: Observable<string>;
         /** The collection of series view models for this chart. */
         seriesViewModels: ObservableCollection<SeriesViewModel>;
+        /** If set to `true` the chart will display the title. By default the title is not displayed. */
+        showTitle: Observable<boolean>;
         /**
          * An object that contains data about this {@link ChartViewModel}. The default is null.
          * A common use for the tag property is to store data that is closely associated with the {@link ChartViewModel}.
@@ -170,6 +174,9 @@ declare module geocortex.charting.extensions.telerik {
     function axisMinimumValue(config: configuration.ChartAxisDefinition): number;
     function axisMaximumValue(config: configuration.ChartAxisDefinition): number;
 }
+/** @private */
+declare module kendo {
+}
 declare module kendo.internals {
     /** Private Kendo classes and APIs **/
     interface Box2D {
@@ -228,11 +235,11 @@ declare module geocortex.charting {
          */
         viewModel: ChartViewModel;
         /**
-         * Initializes a new instance of the {@link geocortex.charting.infrastructure.Chart} class.
-         * @param app The {@link geocortex.framework.application.Application} that this view belongs to.
+         * Initializes a new instance of the {@link Chart} class.
+         * @param app The {@link framework.application.Application} that this view belongs to.
          * @param libraryId The library Id
         */
-        constructor(app: geocortex.framework.application.Application, libraryId?: string);
+        constructor(app: framework.application.Application, libraryId?: string);
         /**
          * Attaches a view model and performs data-binding.
          * @param viewModel The view model to attach to this view.
@@ -255,7 +262,8 @@ declare module geocortex.charting {
          */
         updateLayout(): void;
         /**
-         * Refreshes the chart by destroying and recreating it.
+         * No longer necessary to manually refresh charts created via Essentials/GVH, this calls refresh on the telerik chart instead.
+         * You might need to use this if you've updated the chart config manually outside of the methods provided by this API.
          */
         refresh(): void;
         /**
@@ -276,64 +284,17 @@ declare module geocortex.charting {
          * @param args The arguments to the event.
          */
         onChartPointMouseDown(args: eventArgs.ChartPointEventArgs): void;
+        /** Destroys the Kendo chart widget */
+        protected _destroyChartWidget(): void;
         protected _create(domElement: HTMLElement): kendo.dataviz.ui.Chart;
         protected _getChartOptions(viewModel: ChartViewModel): kendo.dataviz.ui.ChartOptions;
+        protected _enablePanAndZoom(chartOptions: kendo.dataviz.ui.ChartOptions): void;
         /**
          * Sets the same axis range for all series on the chart. This scale range is based on the minimum
          * and maximum values found on the existing axes.
          * @param chartOptions The chart options.
          */
         protected _applyCommonSeriesRange(chartOptions: kendo.dataviz.ui.ChartOptions): void;
-        /**
-         * Rearranges the axis labels on all value (vertical) axes so they don't overlap. The layout is affected by the chart size and vertical zoom level.
-         * Called whenever the window size or zoom level is changed.
-         * @param chart The chart instance.
-         * @param chartOptions The chart options.
-         */
-        protected _autoScaleValueAxes(chart: kendo.dataviz.ui.Chart, chartOptions: kendo.dataviz.ui.ChartOptions): void;
-        /**
-         * Rearranges the axis labels on all category (horizontal) axes so they don't overlap. The layout is affected by the chart size and vertical zoom level.
-         * Called whenever the window size or zoom level is changed.
-         * @param chart The chart instance.
-         * @param chartOptions The chart options.
-         */
-        protected _autoScaleCategoryAxes(chart: kendo.dataviz.ui.Chart, chartOptions: kendo.dataviz.ui.ChartOptions): void;
-        /**
-         * Rearranges the axis labels for a given value (vertical) axis so they don't overlap. The layout is affected by the chart size and vertical zoom level.
-         * Called whenever the window size or zoom level is changed.
-         * @param chart The chart instance.
-         * @param chartOptions The chart options.
-         * @param axisIndex The index of the axis in the axis collection. If not supplied, 0 is assumed.
-         * @param axisLineLength Optional length of the axis line. If not supplied, will be estimated.
-         */
-        protected _autoFitValueAxisLabels(chart: kendo.dataviz.ui.Chart, chartOptions: kendo.dataviz.ui.ChartOptions, axisIndex?: number, axisLineLength?: number): void;
-        /**
-         * Rearranges the axis labels for a given category (horizontal) axis so they don't overlap. The layout is affected by the chart size and vertical zoom level.
-         * Called whenever the window size or zoom level is changed.
-         * @param chart The chart instance.
-         * @param chartOptions The chart options.
-         * @param axisIndex The index of the axis in the axis collection. If not supplied, 0 is assumed.
-         * @param axisLineLength Optional length of the axis line. If not supplied, will be estimated.
-         */
-        protected _autoFitCategoryAxisLabels(chart: kendo.dataviz.ui.Chart, chartOptions: kendo.dataviz.ui.ChartOptions, axisIndex?: number, axisLineLength?: number): void;
-        /**
-         * Sets the label rendering interval for an axis, i.e. render every n-th label. By default every label is rendered.
-         * @param axisOptions The chart axis options.
-         * @param interval The label interval. By default every label is rendered.
-         */
-        protected _setAxisLabelInterval(axisOptions: kendo.dataviz.ui.ChartValueAxisItem, interval?: number): void;
-        /**
-         * Makes an educated guess of the size of an axis based on the chart plot size.
-         * @param chartOptions The chart options.
-         * @param vertical Whether the axis is vertical or horizontal.
-         */
-        protected _axisDefaultLineLength(chartOptions: kendo.dataviz.ui.ChartOptions, vertical?: boolean): number;
-        private _seriesCategoryAxis(chart, axisName?);
-        private _seriesValueAxis(chart, axisName?);
-        private _axisLineLength(axis, chartOptions, vertical?);
-        private _axisLabelsCount(axis);
-        private _numericAxisLabelsCount(seriesNameOrConfig);
-        private _longestString(list);
     }
 }
 /**
@@ -368,7 +329,7 @@ declare module geocortex.charting.globalization {
 }
 declare module geocortex.charting {
     /**
-     * The {@link ChartSeriesProvider} serves as a bridge between a {@link ChartPointCollectin} and a data source for retrieving data.
+     * The {@link ChartSeriesProvider} serves as a bridge between a {@link ChartPointCollection} and a data source for retrieving data.
      * {@link ChartSeriesProvider} transforms external data into points of data that can be plotted in a Geocortex chart.
      */
     class ChartSeriesProvider extends geocortex.framework.FrameworkObject implements ChartSeriesProviderInterface {
@@ -412,7 +373,7 @@ declare module geocortex.charting {
         aggregator?: aggregation.ChartPointCollectionAggregatorInterface;
     }
     /**
-     * This class builds {@link ChartViewModel} instances from a given {@link ChartDefinition} and collections of items.
+     * This class builds {@link ChartViewModel} instances from a given {@link configuration.ChartDefinition} and collections of items.
      */
     class ChartViewModelFactory extends geocortex.framework.FrameworkObject {
         /**
@@ -430,15 +391,15 @@ declare module geocortex.charting {
         constructor(app: geocortex.framework.application.Application, libraryId?: string);
         initialize(config?: ChartViewModelFactoryOptions): void;
         /**
-         * TODO Document
+         * Creates an instance of a {@link ChartViewModel} for a particular {@link configuration.ChartDefinition}.
          */
         createInstance(chartDefinition: configuration.ChartDefinition, chartFeatureType?: ChartFeatureType, source?: any): ChartViewModel;
         /**
-         * TODO Document
+         * Refreshes the chart data, re-rendering it.
          */
         refreshChartData(chartViewModel: ChartViewModel, source?: any): void;
         /**
-         * TODO Document
+         * Creates a {@link ChartPointCollection}.
          */
         createChartPointCollection(chartDefinition: configuration.ChartDefinition, source?: any, chartFeatureType?: ChartFeatureType): ChartPointCollection;
     }
@@ -496,7 +457,7 @@ declare module geocortex.charting.extensions.telerik {
          */
         static applyConfiguration(chartOptions: kendo.dataviz.ui.ChartOptions, chartViewModel: ChartViewModel): void;
         static cssColor(series: SeriesViewModel): string;
-        static labels(series: SeriesViewModel, axisIsVisible?: boolean): kendo.dataviz.ui.ChartValueAxisItemLabels;
+        static labels(series: SeriesViewModel, axisIsVisible?: boolean, formatProvider?: globalization.FormatProviderInterface): kendo.dataviz.ui.ChartValueAxisItemLabels;
         static axisCrossingValues(series: SeriesViewModel): any;
         static plotBands(series: SeriesViewModel): kendo.dataviz.ui.ChartValueAxisItemPlotBand[];
     }
@@ -568,6 +529,7 @@ declare module geocortex.charting.extensions.telerik {
         static handleSeriesMouseEnter(e: kendo.dataviz.ui.ChartSeriesHoverEvent, view: Chart, chartViewModel: ChartViewModel): void;
         static handleSeriesMouseLeave(e: kendo.dataviz.ui.ChartSeriesHoverEvent, view: Chart, chartViewModel: ChartViewModel): void;
         static handleSeriesClick(e: kendo.dataviz.ui.ChartSeriesClickEvent, view: Chart, chartViewModel: ChartViewModel): void;
+        private static _stopEvent(e);
     }
 }
 declare module geocortex.charting.extensions.telerik {
@@ -589,56 +551,8 @@ declare module geocortex.charting.extensions.telerik {
          */
         static applyConfiguration(chartOptions: kendo.dataviz.ui.ChartOptions, chartViewModel: ChartViewModel): void;
         static cssColor(series: SeriesViewModel): string;
-        static labels(series: SeriesViewModel, axisIsVisible?: boolean): kendo.dataviz.ui.ChartYAxisItemLabels;
+        static labels(seriesViewModel: SeriesViewModel, axisIsVisible?: boolean, formatProvider?: globalization.FormatProviderInterface): kendo.dataviz.ui.ChartYAxisItemLabels;
         static axisCrossingValues(series: SeriesViewModel): any;
         static plotBands(series: SeriesViewModel): kendo.dataviz.ui.ChartYAxisItemPlotBand[];
-    }
-}
-declare module geocortex.charting {
-    interface TextSize {
-        width: number;
-        height: number;
-    }
-    /**
-     * Provides precise pixel measurements for blocks of text so that you can determine exactly how high and
-     * wide, in pixels, a given block of text will be. Note that when measuring text, it should be plain text and
-     * should not contain any HTML, otherwise it may not be measured correctly.
-     */
-    class TextMetrics {
-        private static _instance;
-        private _shared;
-        static measureText(text: string, font?: string, fixedWidth?: any): TextSize;
-        static getInstance(): TextMetrics;
-        constructor();
-        /**
-         * Sets the font style on the internal measurement element. If the text will be multi-line, you have
-         * to set a fixed width in order to accurately measure the text height.
-         * @param font The font to set on the element (e.g. "12px Arial, Helvetica, sans-serif")
-         */
-        setFont(font: string): void;
-        /**
-         * Sets a fixed width on the internal measurement element. If the text will be multi-line, you have
-         * to set a fixed width in order to accurately measure the text height.
-         * @param width The width to set on the element
-         */
-        setFixedWidth(width: number): any;
-        setFixedWidth(width: string): any;
-        /**
-         * Returns the size of the specified text based on the internal element's style and width properties.
-         * @param text The text to measure
-         * @return An object containing the text's size {width: (width), height: (height)}
-         */
-        getSize(text: string): TextSize;
-        /**
-         * Returns the measured width of the specified text in pixels.
-         * @param text The text to measure
-         */
-        getWidth(text: string): number;
-        /**
-         * Returns the measured height of the specified text in pixels.
-         * For multi-line text, be sure to call setFixedWidth if necessary.
-         * @param text The text to measure
-         */
-        getHeight(text: string): number;
     }
 }

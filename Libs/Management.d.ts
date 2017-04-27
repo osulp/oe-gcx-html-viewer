@@ -2,11 +2,11 @@
 /// <reference path="Management.Infrastructure.d.ts" />
 /// <reference path="jquery.d.ts" />
 /// <reference path="jquery.cleditor.d.ts" />
+/// <reference path="framework.ui.d.ts" />
 /// <reference path="jquery.colorpicker.d.ts" />
 /// <reference path="essentials.d.ts" />
 /// <reference path="jqueryui.d.ts" />
 /// <reference path="dojo.d.ts" />
-/// <reference path="framework.ui.d.ts" />
 /// <reference path="arcgis-js-api.d.ts" />
 declare module geocortex.essentialsHtmlViewer.management.modules.Accessibility {
     class AccessibilityModule extends geocortex.framework.application.ModuleBase {
@@ -14,15 +14,16 @@ declare module geocortex.essentialsHtmlViewer.management.modules.Accessibility {
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.Accessibility {
     class AccessibilityView extends geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView {
+        accessibilityModuleProperties: string[];
         accessibilityIconViewModelProperties: string[];
-        accessibilityIconViewProperties: any[];
+        subsetAccessibilityIconViewModelProperties: string[];
         richEditor: CLEditor;
         activated(): void;
         handleApply(): void;
         applyConfigs(managedConfigs: infrastructure.ManagedConfiguration[]): void;
         applyViewModel(viewModel: AccessibilityViewModel): void;
         findAccessibilityIconViewModel(managedConfig: infrastructure.ManagedConfiguration): any;
-        findAccessibilityIconView(managedConfig: infrastructure.ManagedConfiguration): any;
+        findAccessibilityModule(managedConfig: infrastructure.ManagedConfiguration): any;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.shared {
@@ -45,8 +46,39 @@ declare module geocortex.essentialsHtmlViewer.management.modules.Accessibility {
         content: Observable<string>;
         title: Observable<string>;
         included: Observable<boolean>;
+        includeProviders: Observable<boolean>;
         titleWidget: shared.LanguageResourceViewModel;
+        keyboardFocusIndicatorColor: shared.ColorPickerWidgetModel;
         constructor(app: geocortex.framework.application.Application, libraryId?: string);
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.ContextMenus {
+    class ContextMenuActionsViewModel extends geocortex.framework.ui.ViewModelBase {
+        menu: any;
+        configuration: any;
+        menuId: any;
+        moduleType: any;
+        userMessage: any;
+        constructor(app: any, libraryId: any);
+        initialize(config: any): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.ContextMenus {
+    class ContextMenusModule extends geocortex.framework.application.ModuleBase {
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.ContextMenus {
+    class ContextMenuActionsView extends geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView {
+        viewModel: ContextMenuActionsViewModel;
+        managedProperties: any[];
+        mixin: any;
+        managedConfigs: any;
+        constructor(app: any, libraryId: any);
+        attach(viewModel: any): void;
+        applyConfigs(managedConfigs: infrastructure.ManagedConfiguration[]): void;
+        findMenuConfig(menuModule: framework.config.ModuleJson): any;
+        applyViewModel(viewModel: any): void;
+        handleApply(): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.Geolocate {
@@ -111,6 +143,35 @@ declare module geocortex.essentialsHtmlViewer.management.modules.Geolocate {
         validate(): boolean;
     }
 }
+declare module geocortex.essentialsHtmlViewer.management.modules.breadcrumbs {
+    class BreadCrumbsModule extends geocortex.framework.application.ModuleBase {
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.breadcrumbs {
+    class BreadCrumbsView extends geocortex.framework.ui.ViewBase {
+        navigate(evt: any, element: any, breadCrumb: any): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.breadcrumbs {
+    class BreadCrumbsViewModel extends geocortex.framework.ui.ViewModelBase {
+        items: any;
+        configuration: any;
+        constructor(app: any, libraryId: any);
+        initialize(config: any): void;
+        updateBreadCrumbs(viewIds: any): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.externalcontent {
+    class ExternalContentModule extends geocortex.framework.application.ModuleBase {
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.externalcontent {
+    class ExternalContentView extends geocortex.framework.ui.ViewBase {
+        externalContentContainer: any;
+        activated(): void;
+        attach(viewModel: any): void;
+    }
+}
 declare module geocortex.essentialsHtmlViewer.management.modules.InsightIntegration {
     class InsightIntegrationView extends geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView {
         insightIntegrationModuleProperties: string[];
@@ -137,6 +198,53 @@ declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
         validate(): boolean;
     }
 }
+declare module geocortex.essentialsHtmlViewer.management.modules.shared {
+    /**
+     * The model for the Color Picker Widget includes the state and configuration.
+     */
+    class ColorPickerWidgetModel extends geocortex.framework.ui.ViewModelBase {
+        color: Observable<string>;
+        includeAlpha: boolean;
+        constructor(app?: framework.application.Application, libraryId?: string);
+        initialize(config?: {
+            color?: string;
+            includeAlpha?: boolean;
+        }): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
+    class HighlightsViewModel extends geocortex.framework.ui.ViewModelBase {
+        fillColor: shared.ColorPickerWidgetModel;
+        borderColor: shared.ColorPickerWidgetModel;
+        borderWidth: Observable<number>;
+        textErrorMessage: Observable<string>;
+        validate(): boolean;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
+    class ResultsViewsViewModel extends geocortex.framework.ui.ViewModelBase {
+        handheldShell: Observable<boolean>;
+        contentField: Observable<any>;
+        handheldContentField: Observable<any>;
+        contentFieldOptions: ObservableCollection<{
+            "display": string;
+            "config": string;
+        }>;
+        handheldContentFieldOptions: ObservableCollection<{
+            "display": string;
+            "config": string;
+        }>;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
+    class ResultsListViewModel extends geocortex.framework.ui.ViewModelBase {
+        contentField: Observable<any>;
+        contentFieldOptions: ObservableCollection<{
+            "display": string;
+            "config": string;
+        }>;
+    }
+}
 declare module geocortex.essentialsHtmlViewer.management.modules.mapwidgets {
     class BookmarksViewModel extends geocortex.framework.ui.ViewModelBase {
         managedProperties: string[];
@@ -148,27 +256,14 @@ declare module geocortex.essentialsHtmlViewer.management.modules.mapwidgets {
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.mapwidgets {
-    class CoordinatesViewModel extends geocortex.framework.ui.ViewModelBase {
+    class MouseCoordinatesViewModel extends geocortex.framework.ui.ViewModelBase {
         managedProperties: Array<string>;
         isEnabled: Observable<boolean>;
         isEnabledId: Observable<string>;
         openByDefault: Observable<boolean>;
         openByDefaultId: Observable<string>;
-        useBasemapCoordinates: Observable<boolean>;
-        useBasemapCoordinatesId: Observable<string>;
-        numDigits: Observable<number>;
-        numDigitsId: Observable<string>;
-        coordinateSystems: ObservableCollection<CoordinateSystem>;
-        coordinateSystemsId: Observable<string>;
-        errorMessage: Observable<string>;
-        displayNameError: Observable<string>;
-        wkidError: Observable<string>;
         constructor(app: geocortex.framework.application.Application, libraryId: string);
         validate(): boolean;
-        validCoordinateSystem(coordinateSystem: CoordinateSystem): boolean;
-        generateCoordinateSystemFromDialog(dialog: JQuery): CoordinateSystem;
-        saveNewCoordinateSystem(dialog: JQuery): boolean;
-        saveEditedCoordinateSystem(dialog: JQuery, arrayPosition: number): boolean;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.mapwidgets {
@@ -188,19 +283,93 @@ declare module geocortex.essentialsHtmlViewer.management.modules.mapwidgets {
         validate(): boolean;
     }
 }
+declare module geocortex.essentialsHtmlViewer.management.modules.mapwidgets {
+    class ScaleInputBoxViewModel extends geocortex.framework.ui.ViewModelBase {
+        managedProperties: Array<string>;
+        isEnabled: Observable<boolean>;
+        isEnabledId: Observable<string>;
+        openByDefault: Observable<boolean>;
+        openByDefaultId: Observable<string>;
+        constructor(app: geocortex.framework.application.Application, libraryId: string);
+        validate(): boolean;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.mapwidgets {
+    class TimeSliderViewModel extends geocortex.framework.ui.ViewModelBase {
+        managedProperties: Array<string>;
+        enabled: Observable<boolean>;
+        enabledId: Observable<string>;
+        animateSlider: Observable<boolean>;
+        animateSliderId: Observable<string>;
+        activateOnStartup: Observable<boolean>;
+        activateOnStartupId: Observable<string>;
+        constructor(app: geocortex.framework.application.Application, libraryId: string);
+        validate(): boolean;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.Map {
+    class MapCoordinatesViewModel extends geocortex.framework.ui.ViewModelBase {
+        managedProperties: Array<string>;
+        defaultCoordinateDisplayTypes: Observable<string[]>;
+        useXy: Observable<boolean>;
+        useDd: Observable<boolean>;
+        useDdm: Observable<boolean>;
+        useDms: Observable<boolean>;
+        fractionalDigits: Observable<number>;
+        customCoordinateSystems: ObservableCollection<CoordinateSystem>;
+        defaultGcsWkid: Observable<number>;
+        errorMessage: Observable<string>;
+        displayNameError: Observable<string>;
+        wkidError: Observable<string>;
+        defaultGcsWkidError: Observable<string>;
+        useXyId: string;
+        useDdId: string;
+        useDdmId: string;
+        useDmsId: string;
+        fractionalDigitsId: string;
+        customCoordinateSystemsId: string;
+        defaultGcsWkidId: string;
+        constructor(app: geocortex.framework.application.Application, libraryId: string);
+        validate(): boolean;
+        validCoordinateSystem(coordinateSystem: CoordinateSystem): boolean;
+        generateCoordinateSystemFromDialog(dialog: JQuery): CoordinateSystem;
+        clearWkidErrorMessage(): void;
+        saveNewCoordinateSystem(dialog: JQuery): boolean;
+        saveEditedCoordinateSystem(dialog: JQuery, arrayPosition: number): boolean;
+        setCoordinateDisplayObservables(): void;
+        private _updateDefaultCoordinateDisplayTypes();
+    }
+}
 declare module geocortex.essentialsHtmlViewer.management.modules.Map {
     class MapModule extends geocortex.framework.application.ModuleBase {
+    }
+    interface CoordinateSystem {
+        displayName: string;
+        wkid?: number;
+        wkt?: string;
+        output: string;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.Map {
     class MapView extends geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView {
         viewModel: MapViewModel;
+        wkidInputElement: HTMLInputElement;
+        wktTextAreaElement: HTMLTextAreaElement;
         private _mapViewProperties;
+        private _moduleName;
+        private _mapCoordsVmName;
         constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, libraryId: string);
+        activated(): void;
         handleApply(): any;
         applyConfigs(managedConfigs: infrastructure.ManagedConfiguration[]): void;
         applyViewModel(viewModel: MapViewModel): void;
         private _findMapViewConfig(managedConfig);
+        private findViewModel(managedConfig, moduleName, viewModelName);
+        openAddNewModal(): void;
+        openEditModal(event: Event, element: HTMLElement, context: any): void;
+        wkidChanged(evt: any, el: any, context: any): void;
+        wktChanged(evt: any, el: any, context: any): void;
+        removeCoordinateSystem(): void;
         validate(): void;
     }
 }
@@ -209,17 +378,101 @@ declare module geocortex.essentialsHtmlViewer.management.modules.Map {
         minScale: Observable<number>;
         maxScale: Observable<number>;
         textErrorMessage: Observable<string>;
+        coordinates: Observable<MapCoordinatesViewModel>;
+        coordinatesInConfig: Observable<boolean>;
+        constructor(app: geocortex.framework.application.Application, libraryId: string);
         validate(): boolean;
     }
 }
-declare module geocortex.essentialsHtmlViewer.management.modules.offline {
-    /**
-     * This is not a good pattern.  I'm just documenting what existing JS code was doing.
-     */
-    interface HackedMapService extends geocortex.essentials.MapService {
-        isProvisioned: Observable<boolean>;
-        tpkFilename: Observable<string>;
-        title: Observable<string>;
+declare module geocortex.essentialsHtmlViewer.management.modules.measurement {
+    class MeasurementModule extends geocortex.framework.application.ModuleBase {
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.measurement {
+    class MeasurementView extends geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView {
+        app: geocortex.essentialsHtmlViewer.management.infrastructure.ManagementApplication;
+        viewModel: MeasurementViewModel;
+        managedProperties: string[];
+        mixin: any;
+        managedConfigs: any;
+        attach(viewModel: any): void;
+        applyConfigs(managedConfigs: infrastructure.ManagedConfiguration[]): void;
+        applyViewModel(viewModel: MeasurementViewModel): void;
+        handleApply(): void;
+        textSizeStringToInt(textSize: string): void;
+        textSizeIntToString(textSize: number): void;
+        findMeasurementViewModel(managedConfig: infrastructure.ManagedConfiguration): framework.config.ViewModelJson;
+        validate(): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.measurement {
+    class MeasurementViewModel extends geocortex.framework.ui.ViewModelBase {
+        markupLayerName: shared.LanguageResourceViewModel;
+        lineColor: shared.ColorPickerWidgetModel;
+        fillColor: shared.ColorPickerWidgetModel;
+        textColor: shared.ColorPickerWidgetModel;
+        highlightColor: shared.ColorPickerWidgetModel;
+        outlineColor: shared.ColorPickerWidgetModel;
+        outlineWidth: Observable<number>;
+        totalMeasurementTextColor: shared.ColorPickerWidgetModel;
+        totalMeasurementHighlightColor: shared.ColorPickerWidgetModel;
+        totalMeasurementOutlineColor: shared.ColorPickerWidgetModel;
+        totalMeasurementOutlineWidth: Observable<number>;
+        highlightRadius: Observable<number>;
+        textSize: string;
+        textSizeAsNumber: Observable<number>;
+        addMarkupToMapByDefault: Observable<boolean>;
+        addMarkupToMapByDefaultId: Observable<any>;
+        outlineWidthErrorMessage: Observable<string>;
+        totalMeasurementOutlineWidthErrorMessage: Observable<string>;
+        textSizeErrorMessage: Observable<string>;
+        highlightRadiusErrorMessage: Observable<string>;
+        constructor(app: geocortex.framework.application.Application, libraryId: string);
+        validate(): boolean;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.menumanager {
+    class MenuItem {
+        text: Observable<string>;
+        viewId: Observable<string>;
+        iconUri: Observable<string>;
+        cssClass: Observable<string>;
+        cssListClass: Observable<string>;
+        itemType: Observable<string>;
+        constructor();
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.menumanager {
+    class MenuManagerModule extends geocortex.framework.application.ModuleBase {
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.menumanager {
+    class MenuViewModel extends geocortex.framework.ui.ViewModelBase {
+        items: ObservableCollection<MenuItem>;
+        selectedItem: Observable<any>;
+        isInitialized: boolean;
+        initialize(config: any): void;
+        containsViewId(viewId: string): boolean;
+        getFirstViewId(): string;
+        /**
+         * Performed when configuration loaded.
+         * @event
+         */
+        onInitialized(): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.menumanager {
+    class MenuView extends geocortex.framework.ui.ViewBase {
+        static SECTION_SHELL_VIEW_ID: string;
+        static MENU_SHELL_VIEW_ID: string;
+        viewModel: MenuViewModel;
+        constructor(app: geocortex.framework.application.Application, libraryId?: string);
+        activated(): void;
+        attach(viewModel?: MenuViewModel): void;
+        navigate(evt: Event, element: HTMLElement, context: any): void;
+        performHashChange(viewId: string): void;
+        hashChangeEventHandler(): void;
+        viewActivated(view: geocortex.framework.ui.ViewBase): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.offline {
@@ -231,11 +484,10 @@ declare module geocortex.essentialsHtmlViewer.management.modules.offline {
     class OfflineView extends geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView {
         app: geocortex.essentialsHtmlViewer.management.infrastructure.ManagementApplication;
         viewModel: OfflineViewModel;
-        attach(viewModel?: OfflineViewModel): void;
+        hasFetchedTags: boolean;
+        activated(): void;
         applyConfigs(managedConfigs: infrastructure.ManagedConfiguration[]): void;
         applyViewModel(viewModel: OfflineViewModel): void;
-        toggleProvision(evt: any, element: any, context: HackedMapService): void;
-        tpkFileUpdated(evt: any, element: any, context: HackedMapService): void;
         handleApply(): any;
         handleClickEvent(evt: any, element: any): boolean;
     }
@@ -248,15 +500,9 @@ declare module geocortex.essentialsHtmlViewer.management.modules.offline {
         advertiseOriginal: boolean;
         autoInstallOriginal: boolean;
         isLoading: Observable<boolean>;
-        templatePath: Observable<string>;
-        viewerFrameworks: ObservableCollection<any>;
-        baseMaps: ObservableCollection<HackedMapService>;
-        hasBaseMap: Observable<boolean>;
-        multipleTemplates: Observable<boolean>;
         advertise: Observable<boolean>;
         autoInstall: Observable<boolean>;
         constructor(app: geocortex.essentialsHtmlViewer.management.infrastructure.ManagementApplication, libraryId?: string);
-        onSiteInitialized(site: geocortex.essentials.Site, moduleConfig: any): void;
         /**
          * Fetch the tags from the viewer's endpoint and process them to see if gmafadvertised is set.
          */
@@ -319,13 +565,26 @@ declare module geocortex.essentialsHtmlViewer.management.modules.shared {
         initAutoComplete(): void;
     }
 }
+declare module geocortex.essentialsHtmlViewer.management.modules.shells {
+    class SimpleMenuShellView extends geocortex.framework.ui.ViewBase {
+    }
+}
 declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
-    class LoadPresetView extends geocortex.framework.ui.ViewBase {
-        viewModel: ToolbarEditorViewModel;
-        constructor(app: any, libraryId: string);
-        handleDefaultPresetClick(evt: Event, el: HTMLElement, context: any): void;
-        handleFullPresetClick(evt: Event, el: HTMLElement, context: any): void;
-        handleCancelClick(evt: Event, el: HTMLElement, context: any): void;
+    class GroupDefaultSelectorView extends geocortex.framework.ui.ViewBase {
+        viewModel: GroupDefaultSelectorViewModel;
+        handleCancelClick(el: HTMLElement, evt: Event, context: any): void;
+        handleSubmit(): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
+    interface ISerializable {
+        toJSON(): any;
+        clone(): any;
+    }
+    class ToolbarItem extends geocortex.framework.ui.ViewModelBase implements ISerializable {
+        toJSON(): any;
+        clone(): any;
+        getPresentableCommandParameter(commandParam: any): any;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.shared {
@@ -334,6 +593,182 @@ declare module geocortex.essentialsHtmlViewer.management.modules.shared {
         attach(viewModel?: any): void;
         viewModelInitialized(): void;
         initAutoComplete(): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.shared {
+    class CommandAutoCompleteWidget extends geocortex.framework.ui.ViewBase {
+        cmdTextbox: HTMLElement;
+        constructor(app: any, libraryId: any);
+        attach(viewModel?: any): void;
+        setCommandsAutoComplete(): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.shared {
+    class CommandAutoCompleteWidgetViewModel extends geocortex.framework.ui.ViewModelBase {
+        commandName: Observable<string>;
+        constructor(app: geocortex.framework.application.Application, libraryId?: string);
+        initialize(config: string | {
+            [key: string]: any;
+        }): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
+    interface Tool {
+        id: string;
+        name: string;
+        type: string;
+        iconUri: string;
+        command: string;
+        drawMode: string;
+        hideOnDisable: boolean;
+        isSticky: boolean;
+        tooltip: string;
+        statusText: string;
+    }
+    class ToolEditorViewModel extends ToolbarItem {
+        guid: string;
+        isNew: boolean;
+        parentGroup: GroupEditorViewModel;
+        masterViewModel: any;
+        drawModes: ObservableCollection<string>;
+        textErrorMessage: Observable<string>;
+        drawModesBucket: {};
+        iconUriId: Observable<string>;
+        displayIconUri: Observable<string>;
+        id: string;
+        type: string;
+        name: any;
+        tooltip: any;
+        statusText: any;
+        iconUri: Observable<string>;
+        command: any;
+        drawMode: Observable<string>;
+        hideOnDisable: Observable<boolean>;
+        isSticky: Observable<boolean>;
+        constructor(app: geocortex.framework.application.Application, libraryId: string);
+        initialize(tool: any): void;
+        toJSON(): Tool;
+        clone(): ToolEditorViewModel;
+        setDrawModes(): void;
+        getDrawModeKey(value: string): string;
+        iconUriChanged(value?: string): void;
+        setParentGroup(parenGroup: GroupEditorViewModel): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
+    interface Button {
+        id: string;
+        name: string;
+        type: string;
+        command: string;
+        iconUri: string;
+        commandParameter: string;
+        hideOnDisable: boolean;
+        tooltip: string;
+    }
+    class ButtonEditorViewModel extends ToolbarItem {
+        isNew: boolean;
+        parentGroup: GroupEditorViewModel;
+        masterViewModel: any;
+        textErrorMessage: Observable<string>;
+        displayIconUri: Observable<string>;
+        iconUriId: Observable<string>;
+        name: any;
+        tooltip: any;
+        command: geocortex.essentialsHtmlViewer.management.modules.shared.CommandAutoCompleteWidgetViewModel;
+        type: string;
+        guid: string;
+        id: string;
+        iconUri: Observable<string>;
+        hideOnDisable: Observable<boolean>;
+        commandParameterWidgetContext: geocortex.essentialsHtmlViewer.management.modules.shared.CommandParameterWidgetViewModel;
+        private _managementLibraryId;
+        constructor(app: geocortex.framework.application.Application, libraryId: string);
+        initialize(button?: any): void;
+        toJSON(): Button;
+        clone(): ButtonEditorViewModel;
+        iconUriChanged(value?: string): void;
+        setParentGroup(parenGroup: GroupEditorViewModel): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
+    interface ToolbarGroup {
+        id: string;
+        name: string;
+        type: string;
+        items: any[];
+        layout?: string;
+        isDefault?: boolean;
+    }
+    class GroupEditorViewModel extends ToolbarItem {
+        isNew: boolean;
+        masterViewModel: any;
+        guid: string;
+        parentGroup: Observable<GroupEditorViewModel>;
+        textErrorMessage: Observable<string>;
+        supportedLayouts: ObservableCollection<string>;
+        isMultitool: Observable<boolean>;
+        isCompactToolbar: Observable<boolean>;
+        id: string;
+        name: any;
+        type: string;
+        isDefault: boolean;
+        items: ObservableCollection<any>;
+        layout: Observable<string>;
+        constructor(app: geocortex.framework.application.Application, libraryId: string);
+        initialize(toolbarGroup?: any, parentGroup?: GroupEditorViewModel): void;
+        constructItemsFromConfig(itemsConfig: any): ToolbarItem[];
+        constructItem(itemConfig: any): ToolbarItem;
+        toJSON(): ToolbarGroup;
+        getItemsToJSON(): any[];
+        clone(): GroupEditorViewModel;
+        setParentGroup(parenGroup: GroupEditorViewModel): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
+    interface Region {
+        id: string;
+        regionName: string;
+        type: string;
+    }
+    class RegionEditorViewModel extends ToolbarItem {
+        toolbarItem: Observable<any>;
+        guid: string;
+        isNew: boolean;
+        parentGroup: GroupEditorViewModel;
+        masterViewModel: any;
+        textErrorMessage: Observable<string>;
+        displayIconUri: Observable<string>;
+        id: string;
+        name: any;
+        type: string;
+        constructor(app: geocortex.framework.application.Application, libraryId: string);
+        initialize(region?: any): void;
+        toJSON(): Region;
+        clone(): RegionEditorViewModel;
+        setParentGroup(parenGroup: GroupEditorViewModel): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
+    interface TabGroup {
+        id: string;
+        name: string;
+    }
+    class GroupDefaultSelectorViewModel extends ToolbarItem {
+        tabGroups: ObservableCollection<TabGroup>;
+        defaultTabId: Observable<string>;
+        groups: GroupEditorViewModel[];
+        constructor(app: geocortex.framework.application.Application, libraryId: string);
+        initialize(groups: GroupEditorViewModel[]): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
+    class LoadPresetView extends geocortex.framework.ui.ViewBase {
+        viewModel: ToolbarEditorViewModel;
+        constructor(app: any, libraryId: string);
+        handleDefaultPresetClick(evt: Event, el: HTMLElement, context: any): void;
+        handleFullPresetClick(evt: Event, el: HTMLElement, context: any): void;
+        handleCancelClick(evt: Event, el: HTMLElement, context: any): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
@@ -348,16 +783,6 @@ declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
         handleBrowseToggleOnIconUri(element: HTMLElement, event: Event, context: any): void;
         handleBrowseToggleOffIconUri(element: HTMLElement, event: Event, context: any): void;
         handleBrowseIconUri(element: HTMLElement, event: Event, context: any, targetConfig: string): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
-    interface ISerializable {
-        toJSON(): any;
-        clone(): any;
-    }
-    class ToolbarItem extends geocortex.framework.ui.ViewModelBase implements ISerializable {
-        toJSON(): any;
-        clone(): any;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
@@ -420,6 +845,7 @@ declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.InstantSearch {
     class InstantSearchView extends geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView {
+        viewModel: InstantSearchViewModel;
         instantSearchProviderConfigProps: string[];
         searchViewModelConfigProps: string[];
         constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, libraryId: string);
@@ -446,29 +872,16 @@ declare module geocortex.essentialsHtmlViewer.management.modules.InstantSearch {
 declare module geocortex.essentialsHtmlViewer.management.modules.mapwidgets {
     class MapWidgetsModule extends geocortex.framework.application.ModuleBase {
     }
-    interface CoordinateSystem {
-        displayName: string;
-        wkid?: number;
-        wkt?: string;
-        output: string;
-    }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.mapwidgets {
     class MapWidgetsView extends geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView {
         viewModel: MapWidgetsViewModel;
-        wkidInputElement: HTMLInputElement;
-        wktTextAreaElement: HTMLTextAreaElement;
         constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, libraryId: string);
-        activated(): void;
         handleApply(): any;
         applyConfigs(managedConfigs: infrastructure.ManagedConfiguration[]): void;
         applyViewModel(viewModel: MapWidgetsViewModel): void;
-        openAddNewModal(): void;
-        openEditModal(event: Event, element: HTMLElement, context: any): void;
-        wkidChanged(evt: any, el: any, context: any): void;
-        wktChanged(evt: any, el: any, context: any): void;
-        removeCoordinateSystem(): void;
         private findScalebarView(managedConfig);
+        private findScaleInputBoxButtonView(managedConfig);
         private _findBookmarksView(managedConfig);
         private findViewModel(managedConfig, viewModelName);
         validate(): void;
@@ -477,12 +890,16 @@ declare module geocortex.essentialsHtmlViewer.management.modules.mapwidgets {
 declare module geocortex.essentialsHtmlViewer.management.modules.mapwidgets {
     class MapWidgetsViewModel extends geocortex.framework.ui.ViewModelBase {
         scalebar: Observable<ScalebarViewModel>;
+        scaleInputBoxButtonInConfig: Observable<boolean>;
+        scaleInputBox: Observable<ScaleInputBoxViewModel>;
         overviewMap: Observable<OverviewMapViewModel>;
         overviewMapInConfig: Observable<boolean>;
-        coordinates: Observable<CoordinatesViewModel>;
+        coordinates: Observable<MouseCoordinatesViewModel>;
         coordinatesInConfig: Observable<boolean>;
         bookmarksViewModel: Observable<BookmarksViewModel>;
         bookmarksInConfig: Observable<boolean>;
+        timeSliderViewModel: Observable<TimeSliderViewModel>;
+        timeSliderInConfig: Observable<boolean>;
         constructor(app: geocortex.framework.application.Application, libraryId: string);
         validate(): boolean;
     }
@@ -535,13 +952,45 @@ declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
         }>;
     }
 }
-declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
-    class ResultsListViewModel extends geocortex.framework.ui.ViewModelBase {
-        contentField: Observable<any>;
-        contentFieldOptions: ObservableCollection<{
-            "display": string;
-            "config": string;
-        }>;
+declare module geocortex.essentialsHtmlViewer.management.modules.MapContextMenu {
+    class MapContextMenuModule extends geocortex.framework.application.ModuleBase {
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.MapContextMenu {
+    class MapContextMenuView extends geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView {
+        app: infrastructure.ManagementApplication;
+        viewModel: MapContextMenuViewModel;
+        managedConfigs: infrastructure.ManagedConfiguration[];
+        mapContextMenuCommandName: string;
+        mapModuleNamespace: string;
+        coordinatesVMNamespace: string;
+        reverseGeocodeVMNamespace: string;
+        menuVMNamespace: string;
+        attach(viewModel?: MapContextMenuViewModel): void;
+        applyConfigs(managedConfigs: infrastructure.ManagedConfiguration[]): void;
+        applyViewModel(viewModel: MapContextMenuViewModel): void;
+        handleApply(): void;
+        getBehaviorCommands(behaviorName: string, behaviors: any[]): string[];
+        behaviorCommandExists(behaviorCommands: string[]): boolean;
+        findMenuConfig(module: framework.config.ModuleJson): any;
+        findView(managedConfig: infrastructure.ManagedConfiguration): framework.config.ViewJson;
+        findViewModelConfig(viewModelNameSpace: string, managedConfig: infrastructure.ManagedConfiguration): any;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.MapContextMenu {
+    class MapContextMenuViewModel extends geocortex.framework.ui.ViewModelBase {
+        app: infrastructure.ManagementApplication;
+        menu: shared.MenuEditorViewModel;
+        menuTitle: shared.LanguageResourceViewModel;
+        enableContextMenu: Observable<boolean>;
+        enableContextMenuId: Observable<string>;
+        showCoordinates: Observable<boolean>;
+        showCoordinatesId: Observable<string>;
+        showReverseGeocoder: Observable<boolean>;
+        showReverseGeocoderId: Observable<string>;
+        showMenu: Observable<boolean>;
+        showMenuId: Observable<string>;
+        constructor(app: infrastructure.ManagementApplication, libraryId?: string);
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.mapwidgets {
@@ -602,30 +1051,18 @@ declare module geocortex.essentialsHtmlViewer.management.modules.Pushpins {
 declare module geocortex.essentialsHtmlViewer.management.modules.Pushpins {
     class PushpinsViewModel extends geocortex.framework.ui.ViewModelBase {
         pushpinsEnabled: Observable<boolean>;
+        pushpinsRemainVisible: Observable<boolean>;
         pushpinMarkerUri: Observable<string>;
         pushpinMarkerWidth: Observable<number>;
         pushpinMarkerHeight: Observable<number>;
         offsetX: Observable<number>;
         offsetY: Observable<number>;
         eventMappings: string;
+        pushpinsModuleInConfig: Observable<boolean>;
         pushpinUriId: Observable<string>;
         textErrorMessage: Observable<string>;
         constructor(app: geocortex.framework.application.Application, libraryId: string);
         validateNumericValues(): boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.management.modules.shared {
-    /**
-     * The model for the Color Picker Widget includes the state and configuration.
-     */
-    class ColorPickerWidgetModel extends geocortex.framework.ui.ViewModelBase {
-        color: Observable<string>;
-        includeAlpha: boolean;
-        constructor(app?: framework.application.Application, libraryId?: string);
-        initialize(config?: {
-            color?: string;
-            includeAlpha?: boolean;
-        }): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.shared {
@@ -657,6 +1094,7 @@ declare module geocortex.essentialsHtmlViewer.management.modules.HomePanel {
 declare module geocortex.essentialsHtmlViewer.management.modules.HomePanel {
     class HomePanelView extends geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView {
         infoViewModelProperties: string[];
+        subsetInfoViewModelProperties: string[];
         shellModuleProperties: string[];
         infoViewProperties: any[];
         richEditor: CLEditor;
@@ -695,6 +1133,41 @@ declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
         validateWidths(): boolean;
     }
 }
+declare module geocortex.essentialsHtmlViewer.management.modules.preview {
+    class PreviewContainerView extends geocortex.framework.ui.ViewBase {
+        keyDownEventToken: any;
+        constructor(app: any, libraryId: any);
+        attach(viewModel: any): void;
+        clickClose(evt: any, element: any, context: any): void;
+        switcherClick(evt: any, element: any, previewItem: any): void;
+        activated(): void;
+        deactivated(): void;
+        keyDown(e: any): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.preview {
+    class PreviewContainerViewModel extends geocortex.framework.ui.ViewModelBase {
+        previewItems: any;
+        constructor(app: any, libraryId: any);
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.preview {
+    class PreviewView extends geocortex.framework.ui.ViewBase {
+        previewItem: any;
+        containerView: any;
+        constructor(app: any, libraryId: any);
+        configurationUpdated(args: any): void;
+        activated(): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.preview {
+    class PreviewViewModel extends geocortex.framework.ui.ViewModelBase {
+        name: any;
+        launchUri: any;
+        cssClass: any;
+        constructor(app: any, libraryId: any);
+    }
+}
 declare module JQueryUI {
     interface Autocomplete {
         /**
@@ -725,6 +1198,59 @@ declare module geocortex.essentialsHtmlViewer.management.modules.shared {
         handleCancelClick(evt: Event, el: HTMLElement, context: any): void;
         browseIconUriHandler(evt: Event, element: HTMLElement, context: any): void;
         private _setupCommandAutoComplete();
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.application {
+    class ApplicationModule extends geocortex.framework.application.ModuleBase {
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.application {
+    class ApplicationView extends geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView {
+        _managedProperties: string[];
+        applyConfigs(managedConfigs: any): void;
+        applyViewModel(viewModel: any): void;
+        handleApply(): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.application {
+    class ApplicationViewModel extends geocortex.framework.ui.ViewModelBase {
+        proxyUri: any;
+        geometryServiceUrl: any;
+        allowUnsafeContent: any;
+        constructor(app: any, libraryId: any);
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.IWantToMenu {
+    class IWantToMenuViewModel extends geocortex.framework.ui.ViewModelBase {
+        showMenu: any;
+        showGlobalMenu: any;
+        menuTitle: any;
+        showMenuId: any;
+        showGlobalMenuId: any;
+        menu: any;
+        primaryButtonColor: shared.ColorPickerWidgetModel;
+        errorMessageColour: Observable<string>;
+        constructor(app: any, libraryId: any);
+        validate(): boolean;
+        initialize(config: any): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.IWantToMenu {
+    class IWantToMenuModule extends geocortex.framework.application.ModuleBase {
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.IWantToMenu {
+    class IWantToMenuView extends geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView {
+        managedProperties: string[];
+        mixin: any;
+        managedConfigs: any;
+        constructor(app: any, libraryId: any);
+        attach(viewModel: any): void;
+        applyConfigs(managedConfigs: any): void;
+        findMenuConfig(module: any): any;
+        applyViewModel(viewModel: any): void;
+        handleApply(): void;
+        findViewModelConfig(managedConfig: any): any;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
@@ -765,18 +1291,25 @@ declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
         bottomPanelProperties: string[];
         resultslistProperties: string[];
         maptipsProperties: string[];
+        highlightsProperties: string[];
         backgroundImageInput: HTMLInputElement;
         leftImageInput: HTMLInputElement;
         rightImageInput: HTMLInputElement;
         attach(viewModel: any): void;
         applyConfigs(managedConfigs: infrastructure.ManagedConfiguration[]): void;
+        private getDefaultViewType(resultsModule, isHandheld);
+        private setDefaultViewTypeContentField(defaultViewType, isHandheld);
         findBannerViewModel(managedConfig: infrastructure.ManagedConfiguration): framework.config.ViewModelJson;
         findBannerView(managedConfig: infrastructure.ManagedConfiguration): framework.config.ViewJson;
         findDataframeViewModel(managedConfig: infrastructure.ManagedConfiguration): framework.config.ViewModelJson;
         findResultslistView(managedConfig: infrastructure.ManagedConfiguration): framework.config.ViewJson;
         findMapTipsModule(managedConfig: infrastructure.ManagedConfiguration): framework.config.ModuleJson;
+        findHighlightModule(managedConfig: infrastructure.ManagedConfiguration): framework.config.ModuleJson;
         findFeatureDescriptionProvider(managedConfig: infrastructure.ManagedConfiguration): any;
+        findResultsModule(managedConfig: infrastructure.ManagedConfiguration): framework.config.ModuleJson;
         applyViewModel(viewModel: LookAndFeelViewModel): void;
+        private tableToList(resultsModule);
+        private listToTable(resultsModule);
         handleApply(): boolean;
         browseBackgroundHandler(evt: any, element: any, context: any): void;
         browseLeftImageHandler(evt: any, element: any, context: any): void;
@@ -790,16 +1323,19 @@ declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
         dataframe: Observable<DataFrameViewModel>;
         bottomPanel: Observable<BottomPanelViewModel>;
         resultslist: Observable<ResultsListViewModel>;
+        resultsViews: Observable<ResultsViewsViewModel>;
         maptips: Observable<MapTipsViewModel>;
         featureDetails: Observable<FeatureDetailsViewModel>;
+        highlights: Observable<HighlightsViewModel>;
         constructor(app: geocortex.framework.application.Application, libraryId?: string);
         validate(): boolean;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.navigation {
     class NavigationItem {
-        text: Observable<string>;
         viewId: Observable<string>;
+        text: Observable<string>;
+        itemType: Observable<string>;
         iconUri: Observable<string>;
         cssClass: Observable<string>;
         cssListClass: Observable<string>;
@@ -826,6 +1362,9 @@ declare module geocortex.essentialsHtmlViewer.management.modules.navigation {
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.navigation {
     class NavigationView extends geocortex.framework.ui.ViewBase {
+        static SECTION_SHELL_VIEW_ID: string;
+        static MENU_SHELL_VIEW_ID: string;
+        viewModel: NavigationViewModel;
         constructor(app: geocortex.framework.application.Application, libraryId?: string);
         attach(viewModel?: NavigationViewModel): void;
         viewModelInitializedHandler(): void;
@@ -833,6 +1372,32 @@ declare module geocortex.essentialsHtmlViewer.management.modules.navigation {
         performHashChange(viewId: string): void;
         hashChangeEventHandler(): void;
         viewActivated(view: geocortex.framework.ui.ViewBase): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.preview {
+    class PreviewItem extends geocortex.framework.ui.ViewModelBase {
+        name: any;
+        launchUri: any;
+        previewViewId: any;
+        needsRefresh: boolean;
+        constructor(app: any, libraryId: any);
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.preview {
+    class PreviewLauncherViewModel extends geocortex.framework.ui.ViewModelBase {
+        previewItems: any;
+        constructor(app: any, libraryId: any);
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.preview {
+    class PreviewModule extends geocortex.framework.application.ModuleBase {
+        static createPreviewItems(managedConfigInfos: any): any[];
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.preview {
+    class PreviewLauncherView extends geocortex.framework.ui.ViewBase {
+        attach(viewModel: any): void;
+        previewClick(evt: any, element: any, context: any): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.sectionmanager {
@@ -855,6 +1420,11 @@ declare module geocortex.essentialsHtmlViewer.management.modules.sectionmanager 
         explodeToolTip: Observable<string>;
         coalesceToolTip: Observable<string>;
         allowConfigureIndividually: Observable<boolean>;
+        contentField: Observable<any>;
+        contentFieldOptions: ObservableCollection<{
+            "display": string;
+            "config": string;
+        }>;
         constructor(app: geocortex.framework.application.Application, libraryId?: string);
         initialize(config: any): void;
     }
@@ -877,6 +1447,8 @@ declare module geocortex.essentialsHtmlViewer.management.modules.sectionmanager 
         coalescedView: geocortex.framework.ui.ViewBase;
         managementViewRoot: Observable<HTMLElement>;
         isInitialized: boolean;
+        selectedShell: string;
+        viewModel: SectionViewModel;
         constructor(app: geocortex.essentialsHtmlViewer.management.infrastructure.ManagementApplication, libraryId?: string);
         activated(): void;
         attach(viewModel?: SectionViewModel): void;
@@ -911,11 +1483,11 @@ declare module geocortex.essentialsHtmlViewer.management.modules.shared {
         commandParameter: Observable<any>;
         commandParameterWidgetContext: geocortex.essentialsHtmlViewer.management.modules.shared.CommandParameterWidgetViewModel;
         hideOnDisable: Observable<boolean>;
+        batch: Observable<any>;
         managedConfigs: any;
         managedLibraryId: string;
         menuConfig: any;
         hideOnDisableId: Observable<string>;
-        supportsDisabling: Observable<boolean>;
         managedProperties: string[];
         isNew: boolean;
         menuEditorViewModel: MenuEditorViewModel;
@@ -998,42 +1570,6 @@ declare module geocortex.essentialsHtmlViewer.management.modules.shells {
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
-    interface Button {
-        id: string;
-        name: string;
-        type: string;
-        command: string;
-        iconUri: string;
-        commandParameter: string;
-        hideOnDisable: boolean;
-        tooltip: string;
-    }
-    class ButtonEditorViewModel extends ToolbarItem {
-        isNew: boolean;
-        parentGroup: GroupEditorViewModel;
-        masterViewModel: any;
-        textErrorMessage: Observable<string>;
-        displayIconUri: Observable<string>;
-        iconUriId: Observable<string>;
-        name: any;
-        tooltip: any;
-        command: geocortex.essentialsHtmlViewer.management.modules.shared.CommandAutoCompleteWidgetViewModel;
-        type: string;
-        guid: string;
-        id: string;
-        iconUri: Observable<string>;
-        hideOnDisable: Observable<boolean>;
-        commandParameterWidgetContext: geocortex.essentialsHtmlViewer.management.modules.shared.CommandParameterWidgetViewModel;
-        private _managementLibraryId;
-        constructor(app: geocortex.framework.application.Application, libraryId: string);
-        initialize(button?: any): void;
-        toJSON(): Button;
-        clone(): ButtonEditorViewModel;
-        iconUriChanged(value?: string): void;
-        setParentGroup(parenGroup: GroupEditorViewModel): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
     class ButtonEditorView extends geocortex.framework.ui.ViewBase {
         iconUriInput: any;
         attach(viewModel?: any): void;
@@ -1041,122 +1577,6 @@ declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
         handleSubmit(): boolean;
         validate(textString: string): boolean;
         handleBrowseIconUri(element: HTMLElement, event: Event, context: any): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.management.modules.shared {
-    class CommandAutoCompleteWidget extends geocortex.framework.ui.ViewBase {
-        cmdTextbox: HTMLElement;
-        constructor(app: any, libraryId: any);
-        attach(viewModel?: any): void;
-        setCommandsAutoComplete(): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.management.modules.shared {
-    class CommandAutoCompleteWidgetViewModel extends geocortex.framework.ui.ViewModelBase {
-        commandName: Observable<string>;
-        constructor(app: geocortex.framework.application.Application, libraryId?: string);
-        initialize(config: string | {
-            [key: string]: any;
-        }): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
-    interface Tool {
-        id: string;
-        name: string;
-        type: string;
-        iconUri: string;
-        command: string;
-        drawMode: string;
-        hideOnDisable: boolean;
-        isSticky: boolean;
-        tooltip: string;
-        statusText: string;
-    }
-    class ToolEditorViewModel extends ToolbarItem {
-        guid: string;
-        isNew: boolean;
-        parentGroup: GroupEditorViewModel;
-        masterViewModel: any;
-        drawModes: ObservableCollection<string>;
-        textErrorMessage: Observable<string>;
-        drawModesBucket: {};
-        iconUriId: Observable<string>;
-        displayIconUri: Observable<string>;
-        id: string;
-        type: string;
-        name: any;
-        tooltip: any;
-        statusText: any;
-        iconUri: Observable<string>;
-        command: any;
-        drawMode: Observable<string>;
-        hideOnDisable: Observable<boolean>;
-        isSticky: Observable<boolean>;
-        constructor(app: geocortex.framework.application.Application, libraryId: string);
-        initialize(tool: any): void;
-        toJSON(): Tool;
-        clone(): ToolEditorViewModel;
-        setDrawModes(): void;
-        getDrawModeKey(value: string): string;
-        iconUriChanged(value?: string): void;
-        setParentGroup(parenGroup: GroupEditorViewModel): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
-    interface Region {
-        id: string;
-        regionName: string;
-        type: string;
-    }
-    class RegionEditorViewModel extends ToolbarItem {
-        toolbarItem: Observable<any>;
-        guid: string;
-        isNew: boolean;
-        parentGroup: GroupEditorViewModel;
-        masterViewModel: any;
-        textErrorMessage: Observable<string>;
-        displayIconUri: Observable<string>;
-        id: string;
-        name: any;
-        type: string;
-        constructor(app: geocortex.framework.application.Application, libraryId: string);
-        initialize(region?: any): void;
-        toJSON(): Region;
-        clone(): RegionEditorViewModel;
-        setParentGroup(parenGroup: GroupEditorViewModel): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
-    interface ToolbarGroup {
-        id: string;
-        name: string;
-        type: string;
-        items: any[];
-        layout?: string;
-    }
-    class GroupEditorViewModel extends ToolbarItem {
-        isNew: boolean;
-        masterViewModel: any;
-        guid: string;
-        parentGroup: Observable<GroupEditorViewModel>;
-        textErrorMessage: Observable<string>;
-        supportedLayouts: ObservableCollection<string>;
-        isMultitool: Observable<boolean>;
-        isCompactToolbar: Observable<boolean>;
-        id: string;
-        name: any;
-        type: string;
-        items: ObservableCollection<any>;
-        layout: Observable<string>;
-        constructor(app: geocortex.framework.application.Application, libraryId: string);
-        initialize(toolbarGroup?: any, parentGroup?: GroupEditorViewModel): void;
-        constructItemsFromConfig(itemsConfig: any): ToolbarItem[];
-        constructItem(itemConfig: any): ToolbarItem;
-        toJSON(): ToolbarGroup;
-        getItemsToJSON(): any[];
-        clone(): GroupEditorViewModel;
-        setParentGroup(parenGroup: GroupEditorViewModel): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
@@ -1200,6 +1620,8 @@ declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
         getUniqueId(): string;
         createNewToolbarGroupView(title: any): any;
         createNewToolbarGroupViewModel(tbr: any, isNew: boolean, parentGroup?: GroupEditorViewModel): GroupEditorViewModel;
+        createSetDefaultToolbarView(title: any): any;
+        createSetDefaultToolbarViewModel(tabs: GroupEditorViewModel[]): GroupDefaultSelectorViewModel;
         createToolView(title: any): any;
         createToolViewModel(tool: any, isNew: boolean): ToolEditorViewModel;
         createButtonView(title: any): any;
@@ -1248,6 +1670,7 @@ declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
         tabbedToolbarRadioButtonId: Observable<string>;
         compactToolbarRadioButtonId: Observable<string>;
         openToolbarByDefaultCheckboxId: Observable<string>;
+        tabbedToolbarTabsExists: Observable<boolean>;
         constructor(app: essentialsHtmlViewer.ViewerApplication, libraryId: string);
         setup(managedConfigs: any[]): void;
         private _activateToolbarViewModel(toolbarConfig, toolbarModule, toolbarViewModelBase, managedLibraryId);
@@ -1312,6 +1735,7 @@ declare module geocortex.essentialsHtmlViewer.management.modules.toolbar {
         handleAddToggleButton(el: HTMLElement, evt: any, context: any): void;
         handleAddTool(el: HTMLElement, evt: any, context: any): void;
         handleAddRegion(el: HTMLElement, evt: any, context: any): void;
+        handleDefaultTab(el: HTMLElement, evt: any, context: any): void;
         handleCancelClick(el: HTMLElement, evt: any, context: any): void;
         handleCloseMenu(el: HTMLElement, evt: any, context: any): void;
         handleToggleBranch: (evt: any, el: any, context: any) => void;
@@ -1351,6 +1775,7 @@ declare module geocortex.essentialsHtmlViewer.management.modules.toolBehavior {
         bufferProjectionWkid: Observable<string>;
         bufferUnits: string[];
         defaultBufferUnit: Observable<string>;
+        addBufferToMarkupLayerByDefault: Observable<boolean>;
         constructor(app: geocortex.framework.application.Application, libraryId: string);
         refreshSelectedBufferUnits(): void;
         validate(): boolean;

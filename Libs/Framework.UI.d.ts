@@ -190,7 +190,7 @@ declare module geocortex.framework.ui.animation {
 }
 declare module geocortex.framework.ui.animation {
     /**
-     * Base implementation of a {@link AnimationFrameProvider}.
+     * Base implementation of a {@link AnimationProvider}.
      * Not implemented.
      */
     class AnimationProviderBase implements AnimationProvider {
@@ -215,9 +215,9 @@ declare module geocortex.framework.ui.animation {
      */
     function runWhenIdle(delegate: Function): void;
     /**
-     * Represents an animation, defined as a simple sequence of {@link AnimationFrames}.
-     * {@link Animation} itself does no actual animation, it's simply an abstract represention of an animation for which the
-     * actual mechanism of the visual representation is decoupled. See {@link AnimationFrameProvider}.
+     * Represents an animation, defined as a simple sequence of {@link AnimationKeyframe} objects.
+     * {@link AnimationSequence} itself does no actual animation, it's simply an abstract represention of an animation for which the
+     * actual mechanism of the visual representation is decoupled. See {@link AnimationProvider}.
      */
     class AnimationSequence {
         protected _state: AnimationState;
@@ -228,11 +228,11 @@ declare module geocortex.framework.ui.animation {
         protected _frame: number;
         protected _frameCallback: AnimationFrameCallback;
         protected _frameClass: string;
-        protected _animationPromise: Thenable<AnimationEvent>;
+        protected _animationPromise: Deferrable<AnimationEvent>;
         protected _frameProvider: AnimationProvider;
         /**
          * Constructs an instance of {@link AnimationSequence}, given a frame provider, an HTML element, and some optional keyframes.
-         * @param frameProvider The {@link AnimationFrameProvider} responsible for interpolating between keyframes.
+         * @param frameProvider The {@link AnimationProvider} responsible for interpolating between keyframes.
          * @param element The HTML element that the animation is to run on.
          * @param frames An initial set of 0 or more animation frames to populate the animation with.
          * @param frameCallback A callback to invoke after every frame has completed.
@@ -252,7 +252,7 @@ declare module geocortex.framework.ui.animation {
          * Begins playing the animation, returning a Promise-like object that will be resolved once the animation is complete.
          * @param frameCallback An optional callback to invoke after every frame has been applied and immediately before `_onFrameEnd` is called.
          */
-        play(frameCallback?: AnimationFrameCallback): Thenable<AnimationEvent>;
+        play(frameCallback?: AnimationFrameCallback): Deferrable<AnimationEvent>;
         /**
          * Stops playing the animation by preventing subsequent keyframes from being applied. Note that this will not prevent the visual
          * state of the animation from progressing between keyframes. In other words, an animation stopped will continue to animate until
@@ -269,7 +269,7 @@ declare module geocortex.framework.ui.animation {
         /**
          * Starts the animation sequences and begins progressing through the animation's states and applying keyframes.
          */
-        protected _startAnimation(): Thenable<AnimationEvent>;
+        protected _startAnimation(): Deferrable<AnimationEvent>;
         /**
          * Moves the animation forward, either to the next keyframe or to the completed state if all keyframes are complete.
          */
@@ -301,7 +301,7 @@ declare module geocortex.framework.ui.animation {
 }
 declare module geocortex.framework.ui.animation {
     /**
-     * Describes the state of an {@link Animation} at a certain point of time.
+     * Describes the state of an {@link AnimationSequence} at a certain point of time.
      */
     enum AnimationState {
         Idle = 0,
@@ -407,21 +407,6 @@ declare module geocortex.framework.ui.animation {
          * These are used as a manual fallback in case `getComputedStyle` isn't supported.
          */
         protected static _animatableProperties: string[];
-    }
-}
-declare module geocortex.framework.ui.animation {
-    /**
-     * Represents a Promise-like object.
-     */
-    interface Thenable<T> {
-        then<U>(onFulfilled: (value: T) => Thenable<U>, onRejected: (error: any) => Thenable<U>, onProgress?: (note: any) => any): Thenable<U>;
-        then<U>(onFulfilled: (value: T) => Thenable<U>, onRejected?: (error: any) => U, onProgress?: (note: any) => any): Thenable<U>;
-        then<U>(onFulfilled: (value: T) => U, onRejected: (error: any) => Thenable<U>, onProgress?: (note: any) => any): Thenable<U>;
-        then<U>(onFulfilled?: (value: T) => U, onRejected?: (error: any) => U, onProgress?: (note: any) => any): Thenable<U>;
-        resolve(arg: T): any;
-        resolve(val: T): Thenable<T>;
-        reject(...args: any[]): Thenable<T>;
-        rejectWith(context: any, ...args: any[]): Thenable<T>;
     }
 }
 declare module geocortex.framework.ui {
@@ -970,7 +955,7 @@ declare module geocortex.framework.ui.Selector {
      */
     class SelectorItemViewModel<T> {
         /** A unique ID token for the item. */
-        id: string;
+        private id;
         /** The name to display for the item. How its displayed is up to the item template used in the selector. */
         displayName: Observable<string>;
         /** Whether or not this item is selected. */
@@ -984,6 +969,7 @@ declare module geocortex.framework.ui.Selector {
          * @param isSelected The selected state of the object.
          */
         constructor(displayName?: string, item?: T, isSelected?: boolean);
+        getId(): string;
     }
 }
 declare module geocortex.framework.ui.Selector {
@@ -993,8 +979,10 @@ declare module geocortex.framework.ui.Selector {
     class SelectorView<T> extends geocortex.framework.ui.ViewBase {
         private _itemViews;
         viewModel: SelectorViewModel<T>;
+        selectElement: HTMLSelectElement;
         /** @inherited */
         attach(viewModel: SelectorViewModel<T>): void;
+        handleSelectionChange(evt: Event, element: HTMLElement, context: any): boolean;
         /**
          * Handles an item click. In {@link resolveWidget}, we actually set the parent view of newly templated item instances
          * to be this view, which means that the templated widget will actually have data-bound event handlers firing against
@@ -1010,7 +998,8 @@ declare module geocortex.framework.ui.Selector {
          * @param el The actual DOM element that was clicked.
          * @param context The view model context that was clicked.
          */
-        handleClickSelector(evt: Event, el: HTMLElement, context: any): void;
+        handleClickSelector(evt: Event, el: HTMLElement, context: any): boolean;
+        positionCustomSelect(): void;
         /** @inherited */
         resolveWidget(widgetId: string, context: any, binding?: framework.ui.BindingExpression): any;
     }
@@ -1019,19 +1008,25 @@ declare module geocortex.framework.ui.Selector {
     /**
      * View Model for the Selector widget.
      */
-    class SelectorViewModel<T> extends geocortex.framework.ui.ViewModelBase {
+    class SelectorViewModel<T> extends ViewModelBase {
         private _underlyingCollection;
         private _selectedItems;
-        private _singleSelect;
+        singleSelect: boolean;
+        showSelectorHeader: Observable<boolean>;
+        showNativeSelect: Observable<boolean>;
         selectorText: Observable<string>;
         noItemsText: Observable<string>;
+        dummyItem: SelectorItemViewModel<any>;
         items: ObservableCollection<SelectorItemViewModel<T>>;
+        selectedItems: ObservableCollection<SelectorItemViewModel<T>>;
         syncToken: any;
         displayNameField: string;
+        dummyItemText: string;
         templatePath: string;
         openState: Observable<boolean>;
+        mobileMode: boolean;
         /**@inherited */
-        constructor(app: framework.application.Application, libraryId: string, singleSelect?: boolean);
+        constructor(app: application.Application, libraryId: string, singleSelect?: boolean, nativeSelect?: boolean);
         /**
          * Toggles the state of the selector menu, expanding or collapsing it.
          */
@@ -1042,7 +1037,8 @@ declare module geocortex.framework.ui.Selector {
          * @param displayNameField The name of the field to use on the underlying items for selection.
          * @param templatePath The resource path of the HTML template to use for rendering.
          */
-        setCollection(collection: ObservableCollection<T>, displayNameField: string, templatePath: string): void;
+        setCollection(collection: ObservableCollection<T>, displayNameField: string, templatePath?: string): void;
+        clear(): void;
         /**
          * "Adapts" an array of items into {@link SelectorItemViewModels}.
          * @param items The items to adapt in selectable view models.
@@ -1052,7 +1048,7 @@ declare module geocortex.framework.ui.Selector {
          * Handles changes in the underlying collection, adapting new items and removing entries for items that have been removed.
          * @param changedArgs An instance of {@link events.CollectionChangedArgs} representing the collection change.
          */
-        handleUnderlyingCollectionChange(changedArgs: framework.events.CollectionChangedArgs): void;
+        handleUnderlyingCollectionChange(changedArgs: events.CollectionChangedArgs): void;
         /**
          * Given an underlying item, returns the view model for it.
          * @param item The underlying item to find the view model for.
@@ -1063,6 +1059,7 @@ declare module geocortex.framework.ui.Selector {
          * @param item The item.
          */
         getViewModelForSelectedItem(item: T): SelectorItemViewModel<T>;
+        getSelectedItems(): SelectorItemViewModel<T>[];
         /**
          * Returns true or false based on the existence of a view model for a particular item.
          * @param item The item that may or may not have a corresponding view model.
@@ -1105,7 +1102,7 @@ declare module geocortex.framework.ui.Selector {
          */
         unselectAll(exceptForItem?: SelectorItemViewModel<T>): void;
         /**
-         * Sets the selected state of an item and handles its presence in {@link selectedItems}.
+         * Sets the selected state of an item and handles its presence in {@link _selectedItems}.
          * @param item The item.
          * @param itemViewModel The view model for the item.
          * @param selected The selected state to set.
@@ -1149,7 +1146,16 @@ declare module geocortex.framework.ui {
 }
 declare module geocortex.framework.ui.ViewContainer {
     class ButtonTabStripView extends ViewBase {
+        viewModel: ViewContainerViewModel;
+        buttonTabStripElement: HTMLDivElement;
+        attach(viewModel?: any): void;
         handleClickTab(evt: Event, el: HTMLElement, ctx: any): void;
+        /**
+         * Update whether we should show or hide the labels for the active view descriptors
+         * @param viewDescriptorCount (Optional) The number of view descriptors that are active
+         */
+        protected _updateLabels(viewDescriptorCount?: number): void;
+        protected _yield(delegate: () => void): number;
     }
 }
 declare module geocortex.framework.ui.stringLocalizer {
@@ -1199,6 +1205,9 @@ declare module geocortex.framework.ui.ViewContainer {
         protected _activatingForViewInContainer: boolean;
         constructor(app: application.Application, libraryId?: string);
         attach(viewModelArg?: any): void;
+        /**
+         * Style the top/bottom offsets of the scroll region to accommodate any inserts (header or footer).
+         */
         resize(): void;
         /**
          * Works the same as resize() but after a small delay. This is useful if other elements still need to settle down.
@@ -1240,6 +1249,7 @@ declare module geocortex.framework.ui.ViewContainer {
         showHostedViews: Observable<boolean>;
         showingXButton: Observable<boolean>;
         containerTitle: Observable<string>;
+        containerManagedTitle: Observable<string>;
         viewTitle: Observable<string>;
         closeTitle: Observable<string>;
         backTitle: Observable<string>;

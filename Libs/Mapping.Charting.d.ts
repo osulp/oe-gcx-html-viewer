@@ -5,6 +5,12 @@
 /// <reference path="Framework.UI.d.ts" />
 /// <reference path="Charting.Infrastructure.d.ts" />
 declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
+    interface ChartingState extends infrastructure.project.ModuleState {
+        results: mapping.infrastructure.project.FeatureSetCollection;
+        displayedCharts: string[];
+    }
+}
+declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
     /**
      *
      */
@@ -24,7 +30,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
         /** The width of the pane item. */
         width: Observable<number>;
         /**
-         * Initializes a new instance of the {@link geocortex.charting.ChartPaneViewModel} class.
+         * Initializes a new instance of the {@link ChartPaneViewModel} class.
          * @param app The {@link geocortex.framework.application.Application} that this view belongs to.
          * @param libraryId The library Id
         */
@@ -45,7 +51,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
 }
 declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
     /**
-     * This class provides a single container view designed to host a {@link Chart}
+     * This class provides a single container view designed to host a {@link geocortex.charting.Chart}
      */
     class ChartPane extends geocortex.framework.ui.ViewBase {
         protected _chartView: geocortex.charting.Chart;
@@ -55,16 +61,16 @@ declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
         containerElement: HTMLElement;
         /**
          * Initializes a new instance of the {@link geocortex.charting.Chart} class.
-         * @param app The {@link geocortex.framework.application.Application} that this view belongs to.
+         * @param app The {@link framework.application.Application} that this view belongs to.
          * @param libraryId The library Id
         */
-        constructor(app: geocortex.framework.application.Application, libraryId?: string);
+        constructor(app: framework.application.Application, libraryId?: string);
         /**
          * Attaches a view model and performs data-binding.
          * @param viewModel The view model to attach to this view.
          */
         attach(viewModel?: any): void;
-        resolveWidget(widgetId: string, context: any, binding?: geocortex.framework.ui.BindingExpression): any;
+        resolveWidget(widgetId: string, context: any, binding?: framework.ui.BindingExpression): any;
         refresh(): void;
         /**
          * Clean up the chart while destroying this view.
@@ -88,6 +94,10 @@ declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
     type ChartOptions = geocortex.charting.ChartOptions;
 }
 declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
+    interface ApplyChartingStateArgs {
+        state: ChartingState;
+        stateAppliedPromises: Promise<void>[];
+    }
     /**
      *
      */
@@ -107,6 +117,9 @@ declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
         app: geocortex.essentialsHtmlViewer.ViewerApplication;
         constructor(app: geocortex.framework.application.Application, libraryId: string);
         initialize(config: any): void;
+        getStateFilter(): any;
+        exportState(): Promise<ChartingState>;
+        applyState(state: ChartingState): Promise<void>;
         /**
          * Creates and registers the ChartViewModelFactory instance
          */
@@ -132,14 +145,15 @@ declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
         private _canExecuteClearChartHighlights();
         /**
          * HighlightChartFeatureSet command implementation
-         * @param parameter The feature set or chart point to operate on. Unofficially takes a ChartPointEventArgs for compatability with Behaviors.
+         * @param parameter The feature set or chart point to operate on. Unofficially takes a ChartPointEventArgs for compatibility with Behaviors.
          */
         private _executeHighlightChartFeatureSet(parameter);
         private _canExecuteHighlightChartFeatureSet(parameter);
         private _convertParameterToFeatureSet(parameter);
         /**
-         * RunChartFeatureActions command implementation
-         * @param featureSet The feature set to operate on. Unofficially takes a ChartPointEventArgs for compatability with Behaviors.
+         * RunChartFeatureActions command implementation. In SLV this took a featureset, but in GVH this is always called in our code
+         * with a ChartPointEventArgs object. The lookup table may no longer be needed, since it is not really possible to run this command independently.
+         * @param parameter Either a featureset containing the clicked point, or a ChartPointEventArgs object.
          */
         private _executeRunChartFeatureActions(parameter);
         private _isValidFeatureSet(parameter);
@@ -360,6 +374,18 @@ declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
         handleViewDeactivatedEvent(view: framework.ui.ViewBase): void;
         handleViewDimensionsChangedEvent(args: framework.events.ViewDimensionsChangedArgs): void;
         handleApplicationResizedEvent(): void;
+        /**
+         * Resizes the charting view when it is hosted within a ViewContainerView
+         */
+        handleViewContainerActivatedEvent(container: framework.ui.ViewBase): void;
+        /**
+         * If this view is hosted within a ViewContainer (and it's currently active), we want to notify listeners that
+         * the container has been activated or deactivated.
+         * NOTE: Child views hosted within a ViewContainerView are not activated/deactivated when the container is
+         * activated/deactivated so this gives someone a chance to know that a view has been "hidden" because its
+         * container was deactivated.
+         */
+        protected _isViewHostedInContainer(container: framework.ui.ViewBase): boolean;
         protected _cancelDelayedResizeContainer(): void;
         protected _delayedResizeContainer(): framework.utils.TimeDelayedAction;
         protected _resizeContainer(force?: boolean): void;
@@ -370,16 +396,12 @@ declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
         private _canExecuteDisplayChartById(chartId);
         private _canExecuteRemoveChartById(chartId);
         private _canExecuteClearCharts();
+        protected _exportState(state: ChartingState): void;
+        protected _applyState(args: ApplyChartingStateArgs): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
-    /**
-     * TODO Document
-     */
     class ChartPointCollectionFeatureAggregator extends geocortex.charting.aggregation.ChartPointCollectionAggregator {
-        /**
-         * TODO Document
-         */
         attachAttributes(item: geocortex.charting.ChartPoint, group: geocortex.charting.ChartPointGroup): void;
         private _getFeatureFromChartPoint(cp);
     }
@@ -414,22 +436,10 @@ declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
      * Represents an adapter class to transform external data into points of data in a Geocortex chart.
      */
     class DataLinkChartPointAdapter extends geocortex.charting.ChartPointAdapterBase {
-        /**
-         * TODO Document
-         */
         fill(collection: geocortex.charting.ChartPointCollection, source: infrastructure.FeatureSet, options?: geocortex.charting.ChartPointAdapterOptions): void;
-        /**
-         * TODO Document
-         */
         createChartPoint(sourceItem: any, options?: geocortex.charting.ChartPointAdapterOptions, userState?: any): geocortex.charting.ChartPoint;
-        /**
-         * TODO Document
-         */
         getFieldValue(fieldDefinition: geocortex.charting.configuration.ChartFieldDefinition, sourceItem: any, userState?: any): any;
         private _fillFromDataLink(collection, feature, dataLinkResult, options?);
-        /**
-         * TODO Document
-         */
         attachAttributes(item: geocortex.charting.ChartPoint, sourceItem: any, options?: geocortex.charting.ChartPointAdapterOptions, userState?: any): void;
     }
 }
@@ -438,23 +448,26 @@ declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
      * Represents an adapter class to transform external data into points of data in a Geocortex chart.
      */
     class FeatureChartPointAdapter extends geocortex.charting.ChartPointAdapterBase {
-        /**
-         * TODO Document
-         */
         fill(collection: geocortex.charting.ChartPointCollection, source: infrastructure.FeatureSet, options?: geocortex.charting.ChartPointAdapterOptions): void;
-        /**
-         * TODO Document
-         */
         createChartPoint(sourceItem: any, options?: geocortex.charting.ChartPointAdapterOptions, userState?: any): geocortex.charting.ChartPoint;
-        /**
-         * TODO Document
-         */
         getFieldValue(fieldDefinition: geocortex.charting.configuration.ChartFieldDefinition, sourceItem: any, userState?: any): any;
-        /**
-         * TODO Document
-         */
         attachAttributes(item: geocortex.charting.ChartPoint, sourceItem: any, options?: geocortex.charting.ChartPointAdapterOptions, userState?: any): void;
         private _normalizeAttribute(value, dataType?);
+    }
+}
+declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {
+    /**
+     * Defines a method that supports custom formatting of the value of an object.
+     */
+    class FormatProvider implements geocortex.charting.globalization.FormatProviderInterface {
+        private _kendoFormatProvider;
+        /**
+         * Converts the value of a specified object to an equivalent string representation using specified format information.
+         * @param value The object to format.
+         * @param format A format string containing formatting specifications.
+         */
+        toString(value: Date, format: string, timeZoneId?: string, displayTimeZoneId?: string): string;
+        toString(value: number, format: string, timeZoneId?: string, displayTimeZoneId?: string): string;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.modules.charting {

@@ -1,5 +1,6 @@
 // Type definitions for the layer charts rest endpoint
 
+/** @docs-hide-from-nav */
 interface RestLayerChart {
     id: string;
     displayName?: string;
@@ -8,6 +9,7 @@ interface RestLayerChart {
     chartDefinition: RestChartDefinition;
 }
 
+/** @docs-hide-from-nav */
 interface RestChartDefinition {
     id?: string;
     displayName?: string;
@@ -20,6 +22,7 @@ interface RestChartDefinition {
     series?: RestChartSeriesDefinition[];
 }
 
+/** @docs-hide-from-nav */
 interface RestChartAreaDefinition {
     background?: number[];
     foreground?: number[];
@@ -45,16 +48,19 @@ interface RestChartAreaDefinition {
     enableCommonSeriesRange?: boolean;
 }
 
+/** @docs-hide-from-nav */
 interface RestChartLegendDefinition {
     title?: string;
     position?: string;
 }
 
+/** @docs-hide-from-nav */
 interface RestChartCategoryDefinition {
     field?: RestChartFieldDefinition;
     axis?: RestChartAxisDefinition;
 }
 
+/** @docs-hide-from-nav */
 interface RestChartSeriesDefinition {
     id?: string;
     displayName?: string;
@@ -63,6 +69,8 @@ interface RestChartSeriesDefinition {
     axis?: RestChartAxisDefinition;
     seriesBreak?: RestChartSeriesBreakDefinition;
     title?: string;
+    timeZoneId?: string;
+    displayTimeZoneId?: string;
     valueFormat?: string;
     color?: number[];
     labelType?: string;
@@ -70,11 +78,13 @@ interface RestChartSeriesDefinition {
     valueAggregatorName?: string;
 }
 
+/** @docs-hide-from-nav */
 interface RestChartSeriesBreakDefinition {
     breakType?: number;
     field?: RestChartFieldDefinition;
 }
 
+/** @docs-hide-from-nav */
 interface RestChartFieldDefinition {
     name?: string;
     displayName?: string;
@@ -86,6 +96,7 @@ interface RestChartFieldDefinition {
     dataLinkId?: string;
 }
 
+/** @docs-hide-from-nav */
 interface RestChartAxisDefinition {
     title?: string;
     visible?: boolean;

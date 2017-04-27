@@ -6,7 +6,7 @@ module oe.layer_actions_extension {
     export class LayerActionsExtensionModuleViewModel extends geocortex.framework.ui.ViewModelBase {
 
         app: geocortex.essentialsHtmlViewer.ViewerApplication;
-        greeting: Observable<string> = new Observable<string>();
+        greeting: Observable<string> = new Observable<string>();        
 
         constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, lib: string) {
             super(app, lib);

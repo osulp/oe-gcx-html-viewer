@@ -15,6 +15,44 @@ declare module geocortex.essentialsHtmlViewer.management.infrastructure.CLEditor
     function bindObservable(editor: CLEditor, observable: Observable<string>): void;
 }
 declare module geocortex.essentialsHtmlViewer.management.infrastructure {
+    class MenuItem {
+        text: Observable<string>;
+        itemType: Observable<string>;
+        viewId: Observable<string>;
+        iconUri: Observable<string>;
+        cssClass: Observable<string>;
+        cssListClass: Observable<string>;
+        constructor();
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.infrastructure {
+    class MenuViewModel extends geocortex.framework.ui.ViewModelBase {
+        items: ObservableCollection<MenuItem>;
+        parentMenu: string;
+        isInitialized: boolean;
+        initialize(config: any): void;
+        containsViewId(viewId: string): boolean;
+        getFirstViewId(): string;
+        /**
+         * Performed when configuration loaded.
+         * @event
+         */
+        onInitialized(): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.infrastructure {
+    class MenuView extends geocortex.framework.ui.ViewBase {
+        constructor(app: geocortex.framework.application.Application, libraryId?: string);
+        attach(viewModel?: MenuViewModel): void;
+        viewModelInitializedHandler(): void;
+        navigate(evt: Event, element: HTMLElement, context: any): void;
+        performHashChange(viewId: string): void;
+        hashChangeEventHandler(): void;
+        activateShellView(viewId: string): void;
+        viewActivated(view: geocortex.framework.ui.ViewBase): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.infrastructure {
     /**
      * This class provides slight enhancements to the viewer app being managed.
      * This is not the app that is doing the managing.
@@ -188,6 +226,7 @@ declare module geocortex.essentialsHtmlViewer.management.infrastructure.utils {
     function createHiddenEsriMap(): esri.Map;
     function htmlDecode(text: string): string;
     function unescapeSiteStrings(site: geocortex.essentials.Site): void;
+    function contentIsLocaleString(content: string): boolean;
     function toPropertyDescriptor(value: any): PercentagePropertyDescriptor;
     function toPropertyValue(descriptor: PercentagePropertyDescriptor): string | number;
 }
@@ -340,6 +379,38 @@ declare module geocortex.essentialsHtmlViewer.management.infrastructure {
         propertyValue: any;
         numericValue: number;
         isPercentage: boolean;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.infrastructure {
+    class IntermediateMenuView extends geocortex.framework.ui.ViewBase {
+        managedConfigs: infrastructure.ManagedConfiguration[];
+        /**
+         * Initializes a new instance of the {@link geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView} class.
+         * @class
+         * <p>
+         * Represents a view that can manage configuration for either a single shell (form factor) or a collection
+         * of shells simultaneously.
+         * </p>
+         * @constructs
+         * @memberOf geocortex.essentialsHtmlViewer.management.infrastructure
+         */
+        constructor(app: framework.application.Application, libraryId: string);
+        /**
+         * A life cycle event that will be called by infrastructure when the configuration has been loaded.
+         * The view should update itself so that it is representing the supplied configurations. Realistically,
+         * the view can only show one of these, so by convention, the first configuration should be used.
+         */
+        applyConfigs(managedConfigs: infrastructure.ManagedConfiguration[]): void;
+        /**
+         * A life cycle event that indicates that a view's configuration and visual state should be updated
+         * to represent the supplied view model. All of the managed configurations that this view is managing
+         * should be updated when this method is called.
+         */
+        applyViewModel(viewModel: any): void;
+        /**
+         * A utility function which fetches the configuration for a given module.
+         */
+        getModuleConfigByType(moduleType: string): any;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.infrastructure {

@@ -1,3 +1,5 @@
+/// <reference path="arcgis-js-api.d.ts" />
+
 declare module geocortex.insight {
     interface AuthenticationEvent {
         username: string;
@@ -75,6 +77,8 @@ declare module geocortex.insight {
         browserHeight: number;
         screenWidth: number;
         screenHeight: number;
+        appVersion: string;
+        appName: string;
     }
     interface ToolEvent {
         name: string;
@@ -95,6 +99,45 @@ declare module geocortex.insight {
 }
 declare module geocortex.insight {
     class EventRelay {
+        STORAGE_TEXTFILE_NAME: string;
+        STORAGE_ZIPFILE_NAME: string;
+        STORAGE_ANALYTICS_GUID: string;
+        ERROR_MSG_LOCAL_STORAGE_NOT_SUPPORTED: string;
+        ERROR_MSG_LOCAL_STORAGE_EXCEPTION: string;
+        /**
+         * Whether or not the relay is enabled. It is enabled by default, but disables itself after four
+         * consecutive failures to log data to the Insight Rest endpoint.
+         */
+        private _enabled;
+        /**
+         * Determines whether or not local storage is available (if not, don't store more data).
+         * @default true
+         */
+        private _localStorageAvailable;
+        /**
+         * Temporary array to add events to before they are stored in local storage.
+         */
+        private _tempEventCollection;
+        /**
+         * Indicates if the current browser is IE/Edge or not.
+         * @default false
+         */
+        private _isIE;
+        /**
+         * Handle used to identify the connection to the onExtentChange
+         * map event to disconnect it if the collector needs to be disabled.
+         */
+        private _extentConnect;
+        private _map;
+        private _siteId;
+        private _endpointUrl;
+        private _sessionId;
+        private _workstationId;
+        private _viewerId;
+        private _dataTransmissionTimer;
+        private _transmissionInterval;
+        private _timerDuration;
+        private _writeToStorageTimeoutToken;
         /**
          * Initializes a new instance of the {@link geocortex.insight.EventRelay} class.
          * @param viewerType The type of viewer used (eg. "Geocortex Viewer for HTML5").
@@ -118,5 +161,33 @@ declare module geocortex.insight {
          * @param eventData The event data; an object containing properties to log.
          */
         logEvent(eventName: string, eventData: any): void;
+        private _initializeMapEvents();
+        private _logStartupEvent(siteId, viewerType, viewerVersion);
+        private _logExtentChange(extent, lod?);
+        private _logVisibilityChange(args);
+        /**
+        * private - Adds the log event to the queue, which will be cleared on a variable time interval. This function
+        * will mix in values common to all log events before queueing.
+        */
+        private _queueData(content);
+        /**
+         * Writes the pending events to local storage.
+         */
+        private _writeToStorage();
+        private _compressEvents();
+        /**
+        * Attempt to send the accumulated data to the client relay. All existing event information will
+        * be compressed prior to sending it out. If there is an error sending the data, then the Event Relay will
+        * perform a retry after an exponential amount of time passes.
+        */
+        private _sendDataToClientRelay(endpointUrl);
+        private _resetDataTransmissionTimer(_this);
+        private _getWorkstationId();
+        private _generateGuid();
+        private _generateTimestamp();
+        /**
+         * Determine if the current browser is IE/Edge.
+         */
+        private _detectIE();
     }
 }

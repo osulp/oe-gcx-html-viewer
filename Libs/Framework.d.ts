@@ -70,7 +70,7 @@ declare module geocortex.framework.behaviors {
          */
         app: application.Application;
         /**
-         * Collection of {@link Behaviors} that are stored within the registry.
+         * Collection of {@link Behavior}s that are stored within the registry.
          */
         behaviors: {
             [behaviorName: string]: Behavior;
@@ -455,6 +455,17 @@ declare module geocortex.framework.events {
             (args: ui.RegionViewHostingEventArgs): void;
         }>;
         /**
+         * Raised when a view is created and bound to a view model for the first time.
+         * @docs-gcx-event geocortex.framework
+         * @name ViewInitializedEvent
+         * @param view The view that was initialized.
+         * @introduced 2.6
+         * @gcx-event-category Interface
+         */
+        (eventName: "ViewInitializedEvent"): TypedEvent<{
+            (view: ui.ViewBase): void;
+        }>;
+        /**
          * Raised when a view is removed from a region.
          * @docs-gcx-event geocortex.framework
          * @name ViewUnhostedEvent
@@ -501,8 +512,8 @@ declare module geocortex.framework {
         private eventSubscriptions;
         private commandHandlers;
         /**
-        * Binds a handler to an {@link geocortex.framework.events.Observable} or to a dojo.connect.
-        * Binding to an {@link geocortex.framework.events.Observable}:
+        * Binds a handler to an {@link Observable} or to a dojo.connect.
+        * Binding to an {@link Observable}:
         *```
         *   this.auto(someObservable, function (newValue) { });
         *
@@ -514,9 +525,9 @@ declare module geocortex.framework {
         *```
         *   this.auto(window, "onclick", function () { });
         *```
-        * @param arg0 Either an {@link geocortex.framework.events.Observable} (for observable bindings) or a regular object (if arg1 is a string)
-        * @param arg1 If arg0 is an {@link geocortex.framework.events.Observable}, a function or scope object. Otherwise, an event name (to use with dojo.connect).
-        * @param arg2 If arg0 is an {@link geocortex.framework.events.Observable}, a function handler.
+        * @param arg0 Either an {@link Observable} (for observable bindings) or a regular object (if arg1 is a string)
+        * @param arg1 If arg0 is an {@link Observable}, a function or scope object. Otherwise, an event name (to use with dojo.connect).
+        * @param arg2 If arg0 is an {@link Observable}, a function handler.
         */
         auto(arg0: any, arg1: any, arg2: any): void;
         /**
@@ -551,11 +562,11 @@ declare module geocortex.framework.events {
         /**
          * Type of collection operation this argument object represents.
          * One of:
-         * -append
-         * -insert
-         * -remove
-         * -clear
-         * -set
+         * - "append"
+         * - "insert"
+         * - "remove"
+         * - "clear"
+         * - "set"
          */
         type: string;
         /** The beginning of the range that this operation represents.*/
@@ -882,7 +893,7 @@ declare class Observable<T> {
 }
 /**
  * ObservableCollection provides {@link Observable} semantics around collections. Modifications to an {@link ObservableCollection} are
- * broadcast via a binding event that describes the change to the collection via a {@link CollectionChangedArgs}.
+ * broadcast via a binding event that describes the change to the collection via a {@link geocortex.framework.events.CollectionChangedArgs}.
  *
  * See {@link Observable} for more details about semantics and usage of {@link Observable}s.
  * @docs-hide-from-nav
@@ -990,7 +1001,7 @@ declare class ObservableCollection<T> {
     */
     removeRange(from: number, to?: number): void;
     /**
-    Removes all items from this ObservableCollection where the supplied callback
+    Removes all items from this {@link ObservableCollection} where the supplied callback
     function returns a truthy value.
     */
     removeWhere(callback: (item: T) => boolean): void;
@@ -1042,6 +1053,12 @@ declare module geocortex.framework.utils.ArrayUtils {
      */
     function firstOrDefault<TSource>(source: TSource[], predicate?: (element: TSource, index?: number) => boolean): TSource;
     /**
+     * Returns the last element in a sequence that satisfies a specified condition.
+     * @param source The sequence of values to return an element from.
+     * @param predicate A function to test each element for a condition.
+     */
+    function lastOrDefault<TSource>(source: TSource[], predicate?: (element: TSource, index?: number) => boolean): TSource;
+    /**
      * Sorts the elements of a sequence in ascending order according to a key.
      * The source sequence remains unaltered.
      * @param source The sequence of values to order.
@@ -1069,6 +1086,13 @@ declare module geocortex.framework.utils.ArrayUtils {
      */
     function distinct<TSource>(source: TSource[]): TSource[];
     /**
+     * Produces the set difference of two sequences by using the default equality comparer to compare values.
+     * The source sequence remains unaltered.
+     * @param first An array whose elements that are not also in `second` will be returned.
+     * @param second An array whose elements that also occur in the first sequence will cause those elements to be removed from the returned sequence.
+     */
+    function difference<T>(first: T[], second: T[]): T[];
+    /**
      * Removes a range of items from an Array.
      * @param array The Array to remove from.
      * @param from The index to begin removing from.
@@ -1093,6 +1117,35 @@ declare module geocortex.framework.utils.ArrayUtils {
      * @param obj The object to check for.
      */
     function pos(array: any[], obj: any): number;
+    /**
+     * Flattens an array of arrays into a single array of items, e.g. flatten([[1,2], [3], [4,5,6]]) == [1,2,3,4,5,6].
+     * The original array is not modified.
+     * @param array The array to flatten.
+     */
+    function flatten<T>(array: T[][]): T[];
+}
+/** @docs-hide-from-nav */
+interface Array<T> {
+    /**
+     * Returns the value of the first element in the array where predicate is true, and undefined
+     * otherwise.
+     * @param predicate find calls predicate once for each element of the array, in ascending
+     * order, until it finds one where predicate returns true. If such an element is found, find
+     * immediately returns that element value. Otherwise, find returns undefined.
+     * @param thisArg If provided, it will be used as the this value for each invocation of
+     * predicate. If it is not provided, undefined is used instead.
+     */
+    find(predicate: (value: T, index: number, obj: Array<T>) => boolean, thisArg?: any): T;
+    /**
+     * Returns the index of the first element in the array where predicate is true, and undefined
+     * otherwise.
+     * @param predicate find calls predicate once for each element of the array, in ascending
+     * order, until it finds one where predicate returns true. If such an element is found, find
+     * immediately returns that element value. Otherwise, find returns undefined.
+     * @param thisArg If provided, it will be used as the this value for each invocation of
+     * predicate. If it is not provided, undefined is used instead.
+     */
+    findIndex(predicate: (value: T) => boolean, thisArg?: any): number;
 }
 declare module geocortex.framework.utils {
     /**
@@ -1159,7 +1212,7 @@ declare module geocortex.framework.ui {
         invert: boolean;
         /** Signals returned by dojo.on, created in the .on function. */
         private _dojoDomEvents;
-        /** Array of objects containing event subscriptions tokens for bindings to {@link geocortex.framework.events.Observable} and {@link geocortex.framework.events.ObservableCollection} objects. */
+        /** Array of objects containing event subscriptions tokens for bindings to {@link Observable} and {@link ObservableCollection} objects. */
         targetBindings: {
             token: string;
             event: events.Event;
@@ -1263,6 +1316,8 @@ declare module geocortex.framework.ui {
         childRegions: ui.RegionAdapterBase[];
         /** Whether or not this view has been bound. */
         bound: boolean;
+        /** Indicates whether this view has been initialized and bound for the first time. */
+        initiallyBound: boolean;
         /** @private */
         disposableBindings: ui.DisposableBinding[];
         /** @private */
@@ -1276,7 +1331,7 @@ declare module geocortex.framework.ui {
         */
         constructor(app: geocortex.framework.application.Application, libraryId?: string);
         /**
-        * Adds an {@link geocortex.framework.events.Observable} binding that will be disposed of when the view is destroyed.
+        * Adds an {@link Observable} binding that will be disposed of when the view is destroyed.
         * @param observable The Observable to bind to.
         * @param token The token received from binding to the observable.
         */
@@ -1547,9 +1602,10 @@ declare module geocortex.framework.ui {
         overlayElement: HTMLElement;
         private _scrollTimer;
         private _scrollDelay;
+        private _screenReaderNarrationDisabled;
         private static instance;
         /**
-         * Initializes a new instance of the {@link geocortex.framework.events.ObservableCollection} class.
+         * Initializes a new instance of the {@link ObservableCollection} class.
          * @param name The optional name of the region adapter.
          * @param app The {@link geocortex.framework.application.Application} that this PopupModalRegionAdapter belongs to.
          */
@@ -1616,6 +1672,10 @@ declare module geocortex.framework.ui {
 }
 declare module geocortex.framework.application {
     class ApplicationCommands {
+        /**
+         * @obsolete 2.6 The "OpenWebPage" command is no longer handled by Framework.
+         * In the viewer, it is handled by {@link geocortex.essentialsHtmlViewer.ViewerApplication}.
+         */
         static createCommands(app: Application): void;
     }
 }
@@ -1661,10 +1721,12 @@ declare module geocortex.framework.commands {
          */
         postExecute: events.Event;
         /**
-         * Initializes a new instance of the {@link geocortex.framework.commands.Command} class.
+         * Initializes a new instance of the {@link Command} class.
          * @param name The name of this command.
-         * @param app The {@link framework.application.Application} that this command belongs to.
-         * @param canExecuteMode An optional {@link geocortex.framework.commands.CommandRequireMode}.
+         * @param app The {@link application.Application} that this command belongs to.
+         * @param canExecuteMode An optional string, either *any* or *all*.
+         * A `canExecuteMode` of *any* (the default) will prevent the command from running if any of the constituent implementations return false in their `canExecute` delegate.
+         * A `canExecuteMode` of *all* will only prevent the command from running if all of the constituent `canExecute` delegates return false.
          */
         constructor(name: string, app: application.Application, canExecuteMode?: string);
         /**
@@ -1754,6 +1816,7 @@ declare module geocortex.framework.config {
          */
         loadConfigurationTree(configUri: string, callback?: (config: Object) => void): void;
     }
+    function checkList(url: string): boolean;
 }
 declare module geocortex.framework.config {
     interface LibraryConfigLocale {
@@ -1961,6 +2024,13 @@ declare module geocortex.framework.config {
         geometryServiceUrl?: string;
         geometryServiceToken?: string;
         mobileMode?: boolean;
+        portalContentRelUrl?: string;
+        portalItemRelUrl?: string;
+        /**
+         * The default unit of currency to use (e.g. "USD", "CAD", "EUR", etc.) to use for formatting numbers as currency
+         * when none is explicitly specified. Defaults to "USD".
+         */
+        defaultCurrency?: string;
     }
     interface LibraryJson {
         id: string;
@@ -2142,6 +2212,16 @@ declare module geocortex.framework.storage {
     }
 }
 declare module geocortex.framework.storage {
+    /**
+     * String constants that represent the various types of {@link DOMError} and {@link DOMException}.
+     */
+    class ErrorType {
+        static QUOTA_EXCEEDED_ERR: string;
+        static NOT_FOUND_ERR: string;
+        static SECURITY_ERR: string;
+        static INVALID_MODIFICATION_ERR: string;
+        static INVALID_STATE_ERR: string;
+    }
     class FileStorageProvider extends storage.StorageProviderBase {
         /** Filesystem object we are (hopefully) granted. */
         private _filesystem;
@@ -2232,7 +2312,7 @@ declare module geocortex.framework.storage {
          */
         private _readValue(key, successCallback, errorCallback, shared?);
         /**
-         * If passed a FileError, this method will format a message for it and return a regular Error object.
+         * If passed a DOMError or DOMException, this method will format a message for it and return a regular Error object.
          * This is to avoid "leaking" File API implementation details through the StorageProviderBase interface.
          * @param {Error} e
          */
@@ -2359,7 +2439,7 @@ declare module geocortex.framework.storage {
 
         /**
          * Initializes a new instance of an {@link geocortex.framework.storage.Store} object.
-         * @param app The {@link geocortex.framework.storage.Application} that this module belongs to.
+         * @param app The {@link application.Application} that this module belongs to.
          * @param rootNamespace An optional parameter that is used to prefix storage keys.
          */
         constructor(app: application.Application, keyNamespace?: string);
@@ -2401,7 +2481,7 @@ declare module geocortex.framework.storage {
          * @param errorCallback (error, key) The callback to invoke if an error occurs trying to read from the underlying storage mechanism.
          * @param shared An optional flag that when set to true causes the storage mechanism to fetch the resource as a resource that is common to all applications on the same domain. Default is false.
          */
-        get(key: string, successCallback: (value: any, key: string) => void, errorCallback: (error: Error, key: string) => void, shared?: boolean): any;
+        get(key: string, successCallback?: (value: any, key: string) => void, errorCallback?: (error: Error, key: string) => void, shared?: boolean): dojo.Deferred;
         /**
          * Removes a key and associated value from the store.
          * @param key The key for which key/value pair to remove.
@@ -2465,7 +2545,7 @@ declare module geocortex.framework.ui {
         /**
          * Convenience method to create and bind a view model and view. The view will be initially visible, and if a region name is
          * supplied, the view will be activated in that region.
-         * @param viewType Type name of the view instance to create. If null, {@link geocortex.framework.ViewBase} is used.
+         * @param viewType Type name of the view instance to create. If null, {@link ViewBase} is used.
          * @param viewMarkup Resource name of the markup file to use with the view.
          * @param regionName Optional region name to activate the view in.
          * @param viewModelType Type name of the viewModel to use. The view will be attached to it.
@@ -2623,6 +2703,23 @@ declare module geocortex.framework.application {
          * @param state Custom state object, perhaps indicating a shutdown reason or exception.
          */
         shutdown(state: any): void;
+        /**
+         * Exports the current state of the module, which can be reapplied later via {@link applyState}.
+         * @return: A promise that is fulfilled with the module's exported state.
+         */
+        exportState(): Thenable<Object>;
+        /**
+         * Re-applies module state that was previously exported via {@link exportState}.
+         * @param: state The module state to apply.
+         * @return: A promise that is fulfilled when the state has been fully applied.
+         */
+        applyState(state: any): Thenable<void>;
+        /**
+         * A filter that will be applied to state as it is exported or applied to the module. See
+         * {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.ObjectFilter} for information on
+         * how to define a filter.
+         */
+        getStateFilter(): any;
     }
 }
 declare module geocortex.framework.application {
@@ -2635,8 +2732,12 @@ declare module geocortex.framework.application {
          * The {@link geocortex.framework.application.Application} that this module manager belongs to.
          */
         app: application.Application;
-        /** @private */
-        private _modules;
+        /**
+         * The modules managed by this instance.
+         */
+        protected _modules: {
+            [moduleName: string]: any;
+        };
         /**
          * Initializes a new instance of the {@link geocortex.framework.application.ModuleManager} class.
          * @param app The {@link geocortex.framework.application.Application} that this module belongs to.
@@ -2680,7 +2781,7 @@ declare module geocortex.framework.application {
     /**
      * Represents a Framework.js application instance.
      * Application provides library and module loading services and offers application-level lifecycle support and infrastructure.
-     * An instance of {@link Application will utilize} framework services to provide and manage an application lifecycle
+     * An instance of {@link Application} will utilize framework services to provide and manage an application lifecycle
      * for a collection of modules to participate in.
      */
     class Application {
@@ -2713,7 +2814,7 @@ declare module geocortex.framework.application {
          */
         abortInitialization: boolean;
         /**
-         * The ID of the application. This is used for keying application-wide resources, for example when using the {@link Store} to store data.
+         * The ID of the application. This is used for keying application-wide resources, for example when using the {@link storage.Store} to store data.
          * It should be a simple string key with no spaces or special characters.
          */
         id: string;
@@ -2749,6 +2850,14 @@ declare module geocortex.framework.application {
         */
         localServerAddress: string;
         /**
+        * An access token which needs to be provided in order to access any of the local server endpoints.
+        */
+        localServerToken: string;
+        /**
+        * The namespace for accessing data for a particular app.
+        */
+        localServerNamespace: string;
+        /**
          * The application's locale identifier. The application will attempt to pull a locale identifier from the `navigator` object
          * if present. The locale can, by default, be overriden in the URL like so: `index.html?locale=en-CA`.
          */
@@ -2777,6 +2886,10 @@ declare module geocortex.framework.application {
          */
         initializationCompleteCallback: (app: Application) => void;
         /**
+         * Invoked when the initial state for all modules has been applied.
+         */
+        initialStateAppliedCallback: (app: Application) => void;
+        /**
          * Indicates whether or not all libraries have been loaded.
          */
         allLibrariesLoaded: boolean;
@@ -2802,15 +2915,15 @@ declare module geocortex.framework.application {
          */
         moduleManager: application.ModuleManager;
         /**
-         * An instance of {@link CommandRegistry} used to manage and invoke named {@link Command}s.
+         * An instance of {@link commands.CommandRegistry} used to manage and invoke named commands. See {@link commands.Command}.
          */
         commandRegistry: commands.CommandRegistry;
         /**
-         * An instance of {@link EventRegistry} used to manage and dispatch named {@link Event}s.
+         * An instance of {@link events.EventRegistry} used to manage and dispatch named events. See {@link events.Event}.
          */
         eventRegistry: events.EventRegistry;
         /**
-         * An instance of {@link BehaviorRegistry} used to manage {@link Behavior}s.
+         * An instance of {@link behaviors.BehaviorRegistry} used to manage behaviours. See {@link behaviors.Behavior}.
          */
         behaviorRegistry: behaviors.BehaviorRegistry;
         /**
@@ -2821,7 +2934,7 @@ declare module geocortex.framework.application {
          * The {@link geocortex.framework.ui.ViewManager} instance used to manage hierarchies of regions and views.
          */
         viewManager: geocortex.framework.ui.ViewManager;
-        /** An application-wide instance of a {@link RegionAdapterBase} that creates and manages a modal popup. */
+        /** An application-wide instance of a {@link ui.RegionAdapterBase} that creates and manages a modal popup. */
         modalRegionSingleton: ui.PopupModalRegionAdapter;
         _resourceDictionaries: {
             [key: string]: any;
@@ -2831,6 +2944,8 @@ declare module geocortex.framework.application {
         private pendingLocaleDownloads;
         private hostElement;
         private frameworkObjects;
+        private _pendingFrameworkObjectRequests;
+        private _initialStateAppliedCount;
         /**
          * Creates a new instance of {@link Application}.
          * @param configObject Either a string URI, or a configuration object. If a string is passed, it will be treated as a URI and the application will attempt to fetch it. If an object is passed, it will be used as configuration.
@@ -2928,6 +3043,11 @@ declare module geocortex.framework.application {
          */
         getFrameworkObjectById(id: any): FrameworkObject;
         /**
+         * System-wide method to get a {@link FrameworkObject} by ID asynchronously whenever it's registered with this application
+         * @param id The ID of the object to fetch.
+         */
+        getFrameworkObjectByIdAsync(id: any, callback: (obj: FrameworkObject) => void, errBack?: (err: Error) => void): void;
+        /**
          * Begins the application initialization process.
          */
         initialize(): void;
@@ -2977,17 +3097,24 @@ declare module geocortex.framework.application {
         private processConfiguration(configurationModel);
         addNativeReadyFunction(callback: () => void): void;
         /**
+         * Subclasses can override this method to supply the initial state that will be applied to a module.
+         */
+        protected getInitialState(moduleName: string, libraryId: string): Thenable<Object>;
+        /**
          * Initializes an array of configured modules.
          * @param modules An array of configured modules to initialize.
          * @private
          */
         private initializeModules(modules);
+        private _onInitialStateApplied(moduleName, error?);
         /**
          * Fetches a configuration resource, provided it comes from the same domain or a whitelisted domain.
          * @param args Arguments containing a URL to fetch. These will be passed directly into an XmlHttpRequest via `dojo.xhrGet`.
          */
         fetchConfigResource(args: {
             url: string;
+            load?: (any) => void;
+            error?: (any) => void;
         }): any;
         /**
          * Generates a random string matching the length of the string passed in. Useful when testing internationalization.
@@ -3209,6 +3336,53 @@ declare module geocortex.framework.utils {
 }
 declare module geocortex.framework {
 }
+declare module geocortex.framework {
+    /**
+     * A very lightweight promise implementation. Used internally within Framework to avoid forcing
+     * consumers to load a 3rd party promise library. Applications that need to use promises are
+     * probably better off using a full-featured promise library rather than this class.
+     */
+    class SimplePromise<T> implements Thenable<T> {
+        static PENDING: number;
+        static FULFILLED: number;
+        static REJECTED: number;
+        private _state;
+        private _value;
+        private _handlers;
+        constructor(resolver: (resolve: (result?: Thenable<T> | T) => void, reject: (error: any) => void) => void);
+        /**
+         * Create a promise that is resolved with the given value. If value is already a promise, then it is
+         * returned as is.
+         * @param value The value to resolve.
+         */
+        static resolve<U>(value: U): Thenable<U>;
+        static resolve<U>(value: Thenable<U>): Thenable<U>;
+        /**
+         * Create a promise that is rejected with the given reason.
+         * @param reason An error or other value indicating why the promise was rejected.
+         */
+        static reject(reason: any): Thenable<any>;
+        static all<U>(values: Thenable<Thenable<U>[]>): Thenable<U[]>;
+        static all<U>(values: Thenable<U[]>): Thenable<U[]>;
+        static all<U>(values: Thenable<U>[]): Thenable<U[]>;
+        static all<U>(values: U[]): Thenable<U[]>;
+        then<U>(onFulfilled: (value: T) => Thenable<U>, onRejected: (error: any) => Thenable<U>): Thenable<U>;
+        then<U>(onFulfilled: (value: T) => Thenable<U>, onRejected?: (error: any) => U): Thenable<U>;
+        then<U>(onFulfilled: (value: T) => U, onRejected: (error: any) => Thenable<U>): Thenable<U>;
+        then<U>(onFulfilled?: (value: T) => U, onRejected?: (error: any) => U): Thenable<U>;
+        protected _fulfill(result: any): void;
+        protected _reject(error: any): void;
+        protected _resolve(result: any): void;
+        /**
+         * Check if a value is a Promise and, if it is,
+         * return the `then` method of that promise.
+         */
+        protected static _getThen(value: any): Function;
+        protected _doResolve(resolver: any, onFulfilled: any, onRejected: any): void;
+        protected _handle(handler: any): void;
+        protected _done(onFulfilled: any, onRejected: any): void;
+    }
+}
 declare module geocortex.framework.storage {
     class HttpStorageProvider extends storage.StorageProviderBase {
         fileStorageEndpoint: string;
@@ -3261,6 +3435,27 @@ declare module geocortex.framework.storage {
          * @param shared An optional flag that when set to true removes a resource previously saved as a shared resource. Default is false.
          */
         remove(key: string, successCallback: () => void, errorCallback: (error: Error) => void, shared?: boolean): void;
+    }
+}
+declare module geocortex.framework {
+    /**
+     * Represents a Promise-like object.
+     */
+    interface Thenable<T> {
+        then<U>(onFulfilled: (value: T) => Thenable<U>, onRejected: (error: any) => Thenable<U>): Thenable<U>;
+        then<U>(onFulfilled: (value: T) => Thenable<U>, onRejected?: (error: any) => U): Thenable<U>;
+        then<U>(onFulfilled: (value: T) => U, onRejected: (error: any) => Thenable<U>): Thenable<U>;
+        then<U>(onFulfilled?: (value: T) => U, onRejected?: (error: any) => U): Thenable<U>;
+    }
+    interface Deferrable<T> extends Thenable<T> {
+        then<U>(onFulfilled: (value: T) => Thenable<U>, onRejected: (error: any) => Thenable<U>): Deferrable<U>;
+        then<U>(onFulfilled: (value: T) => Thenable<U>, onRejected?: (error: any) => U): Deferrable<U>;
+        then<U>(onFulfilled: (value: T) => U, onRejected: (error: any) => Thenable<U>): Deferrable<U>;
+        then<U>(onFulfilled?: (value: T) => U, onRejected?: (error: any) => U): Deferrable<U>;
+        resolve(arg: T): any;
+        resolve(val: T): Deferrable<T>;
+        reject(...args: any[]): Deferrable<T>;
+        rejectWith(context: any, ...args: any[]): Deferrable<T>;
     }
 }
 declare module geocortex.framework.utils {

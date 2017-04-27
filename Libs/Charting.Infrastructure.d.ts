@@ -70,7 +70,7 @@ declare module geocortex.charting {
         /** The category value formatted for displaying in the user interface. */
         displayCategory: string;
         /** The category value formatted for sorting and aggregating. */
-        sortingCategory: string;
+        sortingCategory: string | number | Date;
         /** The value that breaks apart the series. */
         seriesBreakValue: any;
         /** The series break value formatted for display. */
@@ -82,7 +82,7 @@ declare module geocortex.charting {
         /** The series value formatted for displaying in the user interface. */
         displaySeries: string;
         /** The series value formatted for sorting and aggregating. */
-        sortingSeries: string;
+        sortingSeries: string | number | Date;
         /** Whether or not this {@link ChartPoint} is selected. */
         isSelected: boolean;
         /** The raw value for this {@link ChartPoint}. */
@@ -102,7 +102,7 @@ declare module geocortex.charting {
          * @param format The format to use when converting the value to string.
          * @param formatProvider The optional format provider to use.
          */
-        static tryGetFormattedString(value: any, format: string, formatProvider?: globalization.FormatProviderInterface): string;
+        static tryGetFormattedString(value: any, format: string, formatProvider?: globalization.FormatProviderInterface, timeZoneId?: string, displayTimeZoneId?: string): string;
         /**
          * Initializes a new instance of the {@link ChartPoint} class.
          * @param options Optional options block for this point.
@@ -205,11 +205,11 @@ declare module geocortex.charting {
         /**
          * The category value formatted for sorting and aggregating.
          */
-        sortingCategory: string;
+        sortingCategory: string | number | Date;
         /**
          * The series value formatted for sorting and aggregating.
          */
-        sortingSeries: string;
+        sortingSeries: string | number | Date;
         /**
          * The collection of {@link ChartPoint} objects that belong to this group.
          */
@@ -226,9 +226,16 @@ declare module geocortex.charting {
          */
         static getBounds(items: geocortex.charting.ChartPoint[], valueFunction: (item: geocortex.charting.ChartPoint) => number): geocortex.framework.utils.Tuple;
         /**
-         * Gets the various category sorting strings from a {@link ChartPointCollection}.
+         * Gets the various category sorting values from a {@link ChartPointCollection}.
          * @param collection The collection of {@link ChartPoint} objects.
-         * @return An array of category sorting strings.
+         * @return An array of category sorting values.
+         */
+        static getCategorySortingValues(collection: geocortex.charting.ChartPointCollection): (string | number | Date)[];
+        /**
+         * Gets the various category sorting strings from a {@link ChartPointCollection}.
+         * @deprecated from 2.6. Use 'getCategorySortingValues' to return values that can always be correctly sorted.
+         * @param collection The collection of {@link ChartPoint} objects.
+         * @return An array of category sorting values.
          */
         static getCategorySortingStrings(collection: geocortex.charting.ChartPointCollection): string[];
         /**
@@ -262,14 +269,14 @@ declare module geocortex.charting {
         static getSeriesChartPoints(collection: geocortex.charting.ChartPointCollection, seriesDefinition: geocortex.charting.configuration.ChartSeriesDefinition, sortingSeries?: string): geocortex.charting.ChartPointCollection;
         /**
          * Returns an array of {@link ChartPointGroup} objects which represent a group of {@link ChartPoint} objects that
-         * all have the same {@link ChartSeriesDefinition}, and the same sorting value.
+         * all have the same {@link configuration.ChartSeriesDefinition}, and the same sorting value.
          * @param collection The collection of {@link ChartPoint} objects.
          * @return The array of {@link ChartPointGroup} objects.
          */
         static getSeriesGroupedChartPoints(collection: geocortex.charting.ChartPointCollection): geocortex.charting.ChartPointGroup[];
         /**
-         * Takes a collection of {@link ChartPoint} objects and returns a dictionary keyed on the {@link ChartSeriesDefinitionInterface}'s ID
-         * with the list of strings of the series associated with that {@link ChartSeriesDefinitionInterface}.
+         * Takes a collection of {@link ChartPoint} objects and returns a dictionary keyed on the {@link configuration.ChartSeriesDefinition}'s ID
+         * with the list of strings of the series associated with that {@link configuration.ChartSeriesDefinition}.
          * @param collection The collection of {@link ChartPoint} objects.
          * @return A dictionary (key=SeriesConfigId, value=Array(Series)).
          */
@@ -399,6 +406,12 @@ declare module geocortex.charting {
          * @param landscapeMode Whether the shell is in landscape mode or not. The default is false.
          */
         static getResponsiveLegendPosition(chart: ChartViewModelInterface, landscapeMode?: boolean): ChartLegendPosition;
+        /**
+         * Scatter charts are a type of chart at the telerik API level, though it is configured as a type of series in our config model.
+         * This returns true if any the provided series are type ScatterPoint.
+         * @param series The array of series definitions to check
+         */
+        static isScatterChart(series: configuration.ChartSeriesDefinition[]): boolean;
     }
 }
 declare module geocortex.charting {
@@ -730,7 +743,7 @@ declare module geocortex.charting {
 }
 declare module geocortex.charting.configuration {
     /**
-     * This class represents the exposed configuration options for the plot area of a geocortex chart.
+     * This class represents the exposed configuration options for the plot area of a Geocortex chart.
      */
     class ChartAreaDefinition {
         /** The background color of the chart. */
@@ -749,10 +762,6 @@ declare module geocortex.charting.configuration {
         showVerticalGridLines: boolean;
         /** Whether vertical strips should be shown or not. */
         showVerticalStrips: boolean;
-        /** Whether vertical zoom is enabled or not. */
-        enableVerticalZoom: boolean;
-        /** Whether horizontal zoom is enabled or not. */
-        enableHorizontalZoom: boolean;
         /** Whether or not clicking on a chart point will select the respective features on the map. */
         actionSelect: boolean;
         /** Whether or not clicking on a chart point will pan to the respective features on the map. */
@@ -767,10 +776,8 @@ declare module geocortex.charting.configuration {
         commandName: string;
         /** The command parameter to use if configured to run a command upon clicking a chart point. */
         commandParameter: string;
-        /** A value indicating how the chart handles a mouse drag gesture. */
-        dragMode: ChartAreaDragMode;
-        /** Whether or not a trackball is shown on the chart for the nearest chart point from the current mouse position. */
-        enableTrackBall: boolean;
+        /** Whether or not the user can zoom and pan the chart */
+        enablePanAndZoom: boolean;
         /** Whether or not a pre-defined color palette is used for the chart series. */
         enableColorPalette: boolean;
         /** The approved Telerik chart color palette. */
@@ -813,10 +820,6 @@ declare module geocortex.charting.configuration {
          * Whether this axis should be rendered on the opposite side (i.e. on the right side for normal charts, on the top for flipped charts).
          */
         positionOpposite: boolean;
-        /**
-         * The label mode used for displaying labels on the category axis.
-         */
-        axisLabelMode: ChartAxisLabelMode;
         /**
          * Whether ticks are displayed on the axis.
          */
@@ -1020,9 +1023,17 @@ declare module geocortex.charting.configuration {
          */
         markerType: ChartPointMarkerType;
         /**
+         * The IANA ID of the time zone in which the series' data are current.
+         */
+        timeZoneId: string;
+        /**
+         * The IANA ID of the time zone in which the series' data should be displayed.
+         */
+        displayTimeZoneId: string;
+        /**
          * The name of the Value Aggregator to be used by this series.
-         * In infrastructure, there is a notion of an {@link IValueAggregator} which is responsible for aggregating
-         * value fields in collections that are generated by the Series Definition.  The various {@link IValueAggregator} are
+         * In infrastructure, there is a notion of an {@link aggregation.ValueAggregatorInterface} which is responsible for aggregating
+         * value fields in collections that are generated by the Series Definition.  The various {@link aggregation.ValueAggregatorInterface} are
          * imported allowing a developer to create a new one and configure any chart to use it by its name.
          */
         valueAggregatorName: string;
@@ -1038,10 +1049,12 @@ declare module geocortex.charting.globalization {
          * Converts the value of a specified object to an equivalent string representation using specified format information.
          * @param value The object to format.
          * @param format A format string containing formatting specifications.
+         * @param timeZoneId The IANA ID of the time zone in which the value exists, if it is a Date object.
+         * @param displayTimeZoneId The IANA ID of the time zone in which the value should be displayed, if it is a Date object.
          */
-        toString(value: Date, format: string): string;
-        toString(value: number, format: string): string;
-        toString(value: any, format: string): string;
+        toString(value: Date, format: string, timeZoneId?: string, displayTimeZoneId?: string): string;
+        toString(value: number, format: string, timeZoneId?: string, displayTimeZoneId?: string): string;
+        toString(value: any, format: string, timeZoneId?: string, displayTimeZoneId?: string): string;
     }
 }
 declare module geocortex.charting {
@@ -1129,7 +1142,7 @@ declare module geocortex.charting.aggregation {
 }
 declare module geocortex.charting {
     /**
-     * Represents a registry of all available {@link ValueAggregatorInterface} instances.
+     * Represents a registry of all available {@link aggregation.ValueAggregatorInterface} instances.
      */
     class ValueAggregatorRegistry {
         private static _aggregators;
@@ -1481,7 +1494,7 @@ declare module geocortex.charting {
 }
 declare module geocortex.charting {
     /**
-     * The {@link ChartSeriesProviderInterface} serves as a bridge between a {@link ChartPointCollectinInterface} and a data source for retrieving data.
+     * The {@link ChartSeriesProviderInterface} serves as a bridge between a {@link ChartPointCollection} and a data source for retrieving data.
      * It transforms external data into points of data that can be plotted in a geocortex chart.
      */
     interface ChartSeriesProviderInterface {
@@ -1506,7 +1519,7 @@ declare module geocortex.charting {
         initialize(): void;
         /** Updates the chart's layout, re-rendering it with the currently loaded data. */
         updateLayout(): void;
-        /** Refreshes the chart by destroying and recreating it. */
+        /** Calls the telerik API chart refresh method. Unless you've messed with the chart yourself you won't need to call this */
         refresh(): void;
         /** Destroys the chart view. */
         destroy(): void;

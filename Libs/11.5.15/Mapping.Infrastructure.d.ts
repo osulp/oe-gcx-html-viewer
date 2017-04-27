@@ -4,20 +4,10 @@
 /// <reference path="modernizr.d.ts" />
 /// <reference path="bluebird.d.ts" />
 /// <reference path="essentials.d.ts" />
-/// <reference path="moment.d.ts" />
-/// <reference path="globalize.d.ts" />
 /// <reference path="framework.ui.d.ts" />
-/// <reference path="WeakMap.d.ts" />
-/// <reference path="Documents.Rest.d.ts" />
-/// <reference path="jquery.d.ts" />
-/// <reference path="jqueryui.d.ts" />
-/// <reference path="caja-html-sanitizer.d.ts" />
-/// <reference path="rx.lite.d.ts" />
 /// <reference path="LayerList.Rest.d.ts" />
-/// <reference path="moment-timezone.d.ts" />
-/// <reference path="moment-node.d.ts" />
+/// <reference path="jquery.d.ts" />
 declare module geocortex.framework.commands {
-    import commandArgs = geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs;
     interface FrameworkCommands extends CommandsBase {
         /**
          * Activates buffering with the current settings for the specified command(s).
@@ -27,7 +17,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Buffering
          */
-        (commandName: "ActivateBuffering"): TypedCommand<{
+        (commandName: "ActivateBuffering"): framework.commands.TypedCommand<{
             (args: string | string[]): void;
         }>;
         /**
@@ -41,7 +31,7 @@ declare module geocortex.framework.commands {
         * @introduced 2.5
         * @gcx-command-category Buffering
         */
-        (commandName: "ActivateBufferingAndDisplayOptions"): TypedCommand<{
+        (commandName: "ActivateBufferingAndDisplayOptions"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.buffer.DisplayBufferOptionsArgs | string): void;
         }>;
         /**
@@ -51,18 +41,8 @@ declare module geocortex.framework.commands {
          * @param workflowId The ID of the workflow for which to activate container views.
          * @private
          */
-        (commandName: "ActivateContainersForWorkflow"): TypedCommand<{
+        (commandName: "ActivateContainersForWorkflow"): framework.commands.TypedCommand<{
             (workflowId: string): void;
-        }>;
-        /**
-         * Activates a context menu view that will be positioned based on the page x & y values specified.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ActivateContextMenu
-         * @param options The context menu options.
-         * @private
-         */
-        (commandName: "ActivateContextMenu"): TypedCommand<{
-            (options: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.ContextMenuArgs): void;
         }>;
         /**
          * Activates the Home Panel if it is configured to be included.
@@ -72,17 +52,7 @@ declare module geocortex.framework.commands {
          * @deprecated 2.0 Use ShowHomePanel instead.
          * @gcx-command-category Region and View
          */
-        (commandName: "ActivateHomePanel"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Activates the Plot Coordinates View.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ActivatePlotCoordinatesView
-         * @introduced 2.6
-         * @gcx-command-category PlotCoordinates
-         */
-        (commandName: "ActivatePlotCoordinatesView"): TypedCommand<{
+        (commandName: "ActivateHomePanel"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -92,7 +62,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Layer Selector
          */
-        (commandName: "ActivateSelectLayersForIdentify"): TypedCommand<{
+        (commandName: "ActivateSelectLayersForIdentify"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -102,7 +72,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Layer Selector
          */
-        (commandName: "DeactivateSelectLayersForIdentify"): TypedCommand<{
+        (commandName: "DeactivateSelectLayersForIdentify"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -112,7 +82,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Layer Selector
          */
-        (commandName: "ActivateSelectLayersForSnapping"): TypedCommand<{
+        (commandName: "ActivateSelectLayersForSnapping"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -122,7 +92,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Layer Selector
          */
-        (commandName: "DeactivateSelectLayersForSnapping"): TypedCommand<{
+        (commandName: "DeactivateSelectLayersForSnapping"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -132,7 +102,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Snapping
          */
-        (commandName: "ActivateSnapping"): TypedCommand<{
+        (commandName: "ActivateSnapping"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -142,7 +112,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Snapping
          */
-        (commandName: "DeactivateSnapping"): TypedCommand<{
+        (commandName: "DeactivateSnapping"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -153,7 +123,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.3
          * @gcx-command-category Region and View
          */
-        (commandName: "ActivateTransientElements"): TypedCommand<{
+        (commandName: "ActivateTransientElements"): framework.commands.TypedCommand<{
             (id: string): void;
         }>;
         /**
@@ -164,7 +134,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Bookmark
          */
-        (commandName: "AddBookmark"): TypedCommand<{
+        (commandName: "AddBookmark"): framework.commands.TypedCommand<{
             (name: string): void;
         }>;
         /**
@@ -175,30 +145,18 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Visualization
          */
-        (commandName: "AddClusterLayer"): TypedCommand<{
+        (commandName: "AddClusterLayer"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.ClusterLayerArgs | string): void;
-        }>;
-        /**
-         * Adds an individual feature to the current {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} displayed in the results view.
-         * Typically, an end-user would click "Add to Results" on a map tip to add the feature to the results.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name AddFeatureToResults
-         * @param feature The {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature} to add to the results view.
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "AddFeatureToResults"): TypedCommand<{
-            (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
          * Adds a heat map visualization to a given Geocortex layer.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name AddHeatMap
-         * @param args Either {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.HeatMapArgs} or a string representing the Map Service's ID.
+         * @param args Either {@link HeatMapArgs} or a string representing the Map Service's ID.
          * @introduced 2.5
          * @gcx-command-category Visualization
          */
-        (commandName: "AddHeatMap"): TypedCommand<{
+        (commandName: "AddHeatMap"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.HeatMapArgs | string): void;
         }>;
         /**
@@ -209,7 +167,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @private
          */
-        (commandName: "AddMarker"): TypedCommand<{
+        (commandName: "AddMarker"): framework.commands.TypedCommand<{
             (arg: string | geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.MarkerArgs): void;
         }>;
         /**
@@ -220,7 +178,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.3
          * @gcx-command-category Markup
          */
-        (commandName: "AddMarkup"): TypedCommand<{
+        (commandName: "AddMarkup"): framework.commands.TypedCommand<{
             (geometry: esri.geometry.Geometry): void;
         }>;
         /**
@@ -231,11 +189,11 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Markup
          */
-        (commandName: "AddMarkupGeometry"): TypedCommand<{
+        (commandName: "AddMarkupGeometry"): framework.commands.TypedCommand<{
             (geometry: esri.geometry.Geometry): void;
         }>;
         /**
-         * Creates and displays a pushpin for the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature} specified.
+         * Creates and displays a pushpin for the {@link Feature} specified.
          * Pushpins must be enabled for this command to work.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name AddPushpin
@@ -243,31 +201,20 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Pushpins
          */
-        (commandName: "AddPushpin"): TypedCommand<{
+        (commandName: "AddPushpin"): framework.commands.TypedCommand<{
             (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
-         * Creates and displays pushpins for the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} specified.
+         * Creates and displays pushpins for the {@link FeatureSetCollection} specified.
          * Pushpins must be enabled for this command to work.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name AddPushpins
-         * @param fscId The ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} to generate pushpins for.
+         * @param fscId The ID of the {@link FeatureSetCollection} to generate pushpins for.
          * @introduced 2.3
          * @gcx-command-category Pushpins
          */
-        (commandName: "AddPushpins"): TypedCommand<{
+        (commandName: "AddPushpins"): framework.commands.TypedCommand<{
             (fscId: string): void;
-        }>;
-        /**
-         * Displays a status indicator that can relay short messages in the results list or table.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name AddResultsStatus
-         * @param messageOrArgs Either a string containing the message, or an {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.AddStatusArgs} object.
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "AddResultsStatus"): TypedCommand<{
-            (messageOrArgs: string | geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.AddStatusArgs): void;
         }>;
         /**
          * Displays a status indicator that can relay tool tips and other types of short messages.
@@ -278,7 +225,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-requirements Note: In order to use this command in a workflow, you must pass the statusArgs parameter as a string.
          * @gcx-command-category Map Widget
          */
-        (commandName: "AddStatus"): TypedCommand<{
+        (commandName: "AddStatus"): framework.commands.TypedCommand<{
             (statusArgs: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.AddStatusArgs): void;
             (statusArgs: string): void;
         }>;
@@ -290,19 +237,19 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Markup
          */
-        (commandName: "AddTextMarkup"): TypedCommand<{
+        (commandName: "AddTextMarkup"): framework.commands.TypedCommand<{
             (geometry: esri.geometry.Geometry): void;
         }>;
         /**
-         * Adds a temporary markup graphic to the map. The command `ClearTemporaryMarkup` will clear this piece of markup.
-         * Subsequent invocations of `AddTemporaryMarkupGeometry` will clear the previous piece of temporary markup.
+         * Adds a temporary markup graphic to the map. The {@link Commands.ClearTemporaryMarkup} command will clear this piece of markup.
+         * Subsequent invocations of AddTemporaryMarkupGeometry will clear the previous piece of temporary markup.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name AddTemporaryMarkupGeometry
          * @param geometry A Geometry object representing the markup to draw.
          * @introduced 1.0
          * @gcx-command-category Markup
          */
-        (commandName: "AddTemporaryMarkupGeometry"): TypedCommand<{
+        (commandName: "AddTemporaryMarkupGeometry"): framework.commands.TypedCommand<{
             (geometry: esri.geometry.Geometry): void;
         }>;
         /**
@@ -316,7 +263,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-requirements In order to use this command in a workflow, you must omit the `callback` parameter.
          * @gcx-command-category Dialog
          */
-        (commandName: "Alert"): TypedCommand<{
+        (commandName: "Alert"): framework.commands.TypedCommand<{
             (message: string, title?: string, callback?: () => void): void;
         }>;
         /**
@@ -328,7 +275,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "AttachFileToFeature"): TypedCommand<{
+        (commandName: "AttachFileToFeature"): framework.commands.TypedCommand<{
             (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
@@ -339,7 +286,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Integration
          */
-        (commandName: "BroadcastCurrentViewpoint"): TypedCommand<{
+        (commandName: "BroadcastCurrentViewpoint"): framework.commands.TypedCommand<{
             (ecId: string): void;
         }>;
         /**
@@ -350,18 +297,8 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Buffering
          */
-        (commandName: "BufferGeometry"): TypedCommand<{
+        (commandName: "BufferGeometry"): framework.commands.TypedCommand<{
             (bufferGeometryArgs: geocortex.essentialsHtmlViewer.mapping.infrastructure.buffer.BufferGeometryArgs): void;
-        }>;
-        /**
-        * Cancels editing of a coordinate if currently active.
-        * @docs-gcx-command geocortex.essentialsHtmlViewer
-        * @name CancelEditCoordinate
-        * @introduced 2.6
-        * @gcx-command-category PlotCoordinates
-        */
-        (commandName: "CancelEditCoordinate"): TypedCommand<{
-            (): void;
         }>;
         /**
          * Cancel any in-progress search on all providers.
@@ -370,7 +307,43 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Search
          */
-        (commandName: "CancelSearch"): TypedCommand<{
+        (commandName: "CancelSearch"): framework.commands.TypedCommand<{
+            (): void;
+        }>;
+        /**
+         * Changes an existing edit log entry using an updated version of the feature edit that it represents.
+         * @docs-gcx-command geocortex.essentialsHtmlViewer
+         * @name ChangeEditLogEntry
+         * @param arg An object with the following members: mapService, feature, oldEditLogEntry, successCallback, errorCallback.
+         * @introduced 1.2
+         * @gcx-command-category Editing
+         */
+        (commandName: "ChangeEditLogEntry"): framework.commands.TypedCommand<{
+            (arg: {
+                mapService: geocortex.essentials.MapService;
+                feature: esri.Graphic;
+                oldEditLogEntry: any;
+                successCallback: () => void;
+                errorCallback: (error: Error) => void;
+            }): void;
+        }>;
+        /**
+         * Sets which offline button to display, if any.  Possible options include online, offline or none.
+         * @docs-gcx-command geocortex.essentialsHtmlViewer
+         * @name SetGMAFOfflineButtonState
+         * @param command A string representing which button to display, if any.  Valid values include "show-online", "show-offline" or "show-none".
+         * @gcx-command-category Offline/Online
+         */
+        (commandName: "SetGMAFOfflineButtonState"): framework.commands.TypedCommand<{
+            (command: string): void;
+        }>;
+        /**
+         * Toggles the connectivity state from online to offline or vice versa.
+         * @docs-gcx-command geocortex.essentialsHtmlViewer
+         * @name ToggleConnectivity
+         * @gcx-command-category Offline/Online
+         */
+        (commandName: "ToggleConnectivity"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -380,7 +353,7 @@ declare module geocortex.framework.commands {
          * @param markupTemplate A markup template for the markup style you want to change.
          * @private
          */
-        (commandName: "ChangeMarkupStyle"): TypedCommand<{
+        (commandName: "ChangeMarkupStyle"): framework.commands.TypedCommand<{
             (markupTemplate: any): void;
         }>;
         /**
@@ -390,7 +363,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Map Widget
          */
-        (commandName: "ClearActiveTool"): TypedCommand<{
+        (commandName: "ClearActiveTool"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -400,7 +373,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @private
          */
-        (commandName: "ClearChartHighlights"): TypedCommand<{
+        (commandName: "ClearChartHighlights"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -410,7 +383,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Charting
          */
-        (commandName: "ClearCharts"): TypedCommand<{
+        (commandName: "ClearCharts"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -421,7 +394,7 @@ declare module geocortex.framework.commands {
          * @deprecated 1.3 Use SetActiveHighlightLayerDefault followed by ClearHighlights instead.
          * @gcx-command-category Highlighting
          */
-        (commandName: "ClearDefaultHighlights"): TypedCommand<{
+        (commandName: "ClearDefaultHighlights"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -431,7 +404,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "ClearFeatureInformation"): TypedCommand<{
+        (commandName: "ClearFeatureInformation"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -441,7 +414,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.2
          * @gcx-command-category Highlighting
          */
-        (commandName: "ClearHighlights"): TypedCommand<{
+        (commandName: "ClearHighlights"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -451,7 +424,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.2
          * @gcx-command-category Markup
          */
-        (commandName: "ClearMarkup"): TypedCommand<{
+        (commandName: "ClearMarkup"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -461,7 +434,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.2
          * @gcx-command-category Markup
          */
-        (commandName: "ClearMarkupQuiet"): TypedCommand<{
+        (commandName: "ClearMarkupQuiet"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -471,7 +444,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.3
          * @gcx-command-category Search
          */
-        (commandName: "ClearSearch"): TypedCommand<{
+        (commandName: "ClearSearch"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -481,7 +454,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "ClearSelection"): TypedCommand<{
+        (commandName: "ClearSelection"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -492,7 +465,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.2
          * @gcx-command-category Offline/Online
          */
-        (commandName: "ClearStorageForApplication"): TypedCommand<{
+        (commandName: "ClearStorageForApplication"): framework.commands.TypedCommand<{
             (promptUser?: boolean): void;
         }>;
         /**
@@ -503,27 +476,17 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Offline/Online
          */
-        (commandName: "ClearStorageForDomain"): TypedCommand<{
+        (commandName: "ClearStorageForDomain"): framework.commands.TypedCommand<{
             (promptUser?: boolean): void;
         }>;
         /**
-         * Removes temporary markup created by the command `AddTemporaryMarkupGeometry`.
+         * Removes temporary markup created by {@link Commands.AddTemporaryMarkupGeometry}.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ClearTemporaryMarkup
          * @introduced 1.0
          * @gcx-command-category Markup
          */
-        (commandName: "ClearTemporaryMarkup"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Clears list of trusted URLs which are added by clicking "yes" on potentially untrusted content popup.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ClearTrustedUrls
-         * @introduced 2.7
-         * @gcx-command-category Content Policy
-         */
-        (commandName: "ClearTrustedUrls"): TypedCommand<{
+        (commandName: "ClearTemporaryMarkup"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -533,7 +496,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.3
          * @gcx-command-category Region and View
          */
-        (commandName: "CloseBottomRegion"): TypedCommand<{
+        (commandName: "CloseBottomRegion"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -543,18 +506,18 @@ declare module geocortex.framework.commands {
          * @introduced 1.0
          * @gcx-command-category Region and View
          */
-        (commandName: "CloseDataFrame"): TypedCommand<{
+        (commandName: "CloseDataFrame"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
-         * Closes the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection}.
+         * Closes the {@link FeatureSetCollection}.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name CloseFeatureSetCollection
-         * @param fscId The ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} to close.
+         * @param fscId The ID of the {@link FeatureSetCollection} to close.
          * @introduced 1.1
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "CloseFeatureSetCollection"): TypedCommand<{
+        (commandName: "CloseFeatureSetCollection"): framework.commands.TypedCommand<{
             (fscId: string): void;
         }>;
         /**
@@ -564,7 +527,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Region and View
          */
-        (commandName: "CloseResultsFrame"): TypedCommand<{
+        (commandName: "CloseResultsFrame"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -574,7 +537,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Map Display
          */
-        (commandName: "CloseOverviewMap"): TypedCommand<{
+        (commandName: "CloseOverviewMap"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -588,19 +551,8 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-requirements In order to use this command in a workflow, you must omit the `callback` parameter.
          * @gcx-command-category Dialog
          */
-        (commandName: "Confirm"): TypedCommand<{
-            (message: string, title: string, callback: (confirmResult: boolean) => void, options?: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.ConfirmOptionsArgs): void;
-        }>;
-        /**
-         * Displays a representation of the specified parameter object in the browser's debugging console.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ConsoleDir
-         * @param value The object to display.
-         * @introduced 2.7
-         * @gcx-command-category Log
-         */
-        (commandName: "ConsoleDir"): TypedCommand<{
-            (value: any): void;
+        (commandName: "Confirm"): framework.commands.TypedCommand<{
+            (message: string, title: string, callback: (confirmResult: boolean) => void): void;
         }>;
         /**
          * Creates a feature attachment.
@@ -610,7 +562,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "CreateAttachment"): TypedCommand<{
+        (commandName: "CreateAttachment"): framework.commands.TypedCommand<{
             (arg: {
                 mapService: geocortex.essentials.MapService;
                 layer: esri.layers.FeatureLayer;
@@ -625,15 +577,20 @@ declare module geocortex.framework.commands {
             }): void;
         }>;
         /**
-         * Creates a new feature.
+         * Creates a new feature. If the application is offline, the feature will be created in the edit log to be synced at a later date.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name CreateFeature
          * @param arg An object with members: mapService, feature, successCallback, errorCallback.
          * @introduced 1.1
          * @gcx-command-category Editing
          */
-        (commandName: "CreateFeature"): TypedCommand<{
-            (arg: commandArgs.EditFeatureArgs): void;
+        (commandName: "CreateFeature"): framework.commands.TypedCommand<{
+            (arg: {
+                mapService: geocortex.essentials.MapService;
+                feature: esri.Graphic;
+                successCallback?: () => void;
+                errorCallback?: (error: Error) => void;
+            }): void;
         }>;
         /**
          * Creates new graphics. These edits are only applied to the graphics layer in memory.
@@ -647,7 +604,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @private
          */
-        (commandName: "CreateGraphicsInMemory"): TypedCommand<{
+        (commandName: "CreateGraphicsInMemory"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.EditInMemoryArgs): void;
         }>;
         /**
@@ -660,7 +617,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.2
          * @gcx-command-category Highlighting
          */
-        (commandName: "CreateHighlightLayer"): TypedCommand<{
+        (commandName: "CreateHighlightLayer"): framework.commands.TypedCommand<{
             (layerName: string, fillColor?: any, borderColor?: any): void;
         }>;
         /**
@@ -672,19 +629,8 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Markup
          */
-        (commandName: "CreateMarkupStyleView"): TypedCommand<{
+        (commandName: "CreateMarkupStyleView"): framework.commands.TypedCommand<{
             (markupTypeName?: string): void;
-        }>;
-        /**
-         * Creates a new named, saved selection based on the supplied {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection}.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name CreateSelection
-         * @param args A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.SelectionArgs} object with the following members: `name`, `featureSetCollection` (optional), `successCallback` (optional), `errorCallback` (optional).
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "CreateSelection"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.SelectionArgs): void;
         }>;
         /**
          * Launch the barcode scanner, and use the result to create a new feature or edit an existing feature.
@@ -696,7 +642,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Scanning
          */
-        (commandName: "CreateOrEditFeatureFromBarcodeScan"): TypedCommand<{
+        (commandName: "CreateOrEditFeatureFromBarcodeScan"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.CreateOrEditFeatureFromBarcodeScanArgs): void;
         }>;
         /**
@@ -707,8 +653,17 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "CreateRelatedRecord"): TypedCommand<{
-            (arg: commandArgs.EditRelatedRecordArgs): void;
+        (commandName: "CreateRelatedRecord"): framework.commands.TypedCommand<{
+            (arg: {
+                mapService: geocortex.essentials.MapService;
+                layer: esri.layers.Layer;
+                feature: esri.Graphic;
+                relatedFeature: esri.Graphic;
+                relationshipOrigin: esri.layers.Relationship;
+                relationshipDestination: esri.layers.Relationship;
+                successCallback: () => void;
+                errorCallback: (error: Error) => void;
+            }): void;
         }>;
         /**
          * Cut graphics using a polyline, updating the geometry of the original graphic and creating new graphics for each new geometry. Created graphics will copy
@@ -719,7 +674,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @private
          */
-        (commandName: "CutGraphicsInMemory"): TypedCommand<{
+        (commandName: "CutGraphicsInMemory"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.CutGraphicsArgs): void;
         }>;
         /**
@@ -730,7 +685,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Buffering
          */
-        (commandName: "DeactivateBuffering"): TypedCommand<{
+        (commandName: "DeactivateBuffering"): framework.commands.TypedCommand<{
             (args: string | string[]): void;
         }>;
         /**
@@ -741,7 +696,7 @@ declare module geocortex.framework.commands {
         * @introduced 2.5
         * @gcx-command-category Buffering
         */
-        (commandName: "DeactivateBufferingAndDismissOptions"): TypedCommand<{
+        (commandName: "DeactivateBufferingAndDismissOptions"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.buffer.DisplayBufferOptionsArgs | string): void;
         }>;
         /**
@@ -751,18 +706,8 @@ declare module geocortex.framework.commands {
          * @param workflowId The ID of the workflow for which to deactivate container views.
          * @private
          */
-        (commandName: "DeactivateContainersForWorkflow"): TypedCommand<{
+        (commandName: "DeactivateContainersForWorkflow"): framework.commands.TypedCommand<{
             (workflowId: string): void;
-        }>;
-        /**
-         * Deactivates the context menu view.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name DeactivateContainersForWorkflow
-         * @introduced 2.6
-         * @private
-         */
-        (commandName: "DeactivateContextMenu"): TypedCommand<{
-            (): void;
         }>;
         /**
          * Deletes a feature attachment
@@ -771,7 +716,7 @@ declare module geocortex.framework.commands {
          * @param arg An object with the following members: mapService, layer, feature, featureUrl, filename, contentType, payload, successCallback, errorCallback.
          * @private
          */
-        (commandName: "DeleteAttachment"): TypedCommand<{
+        (commandName: "DeleteAttachment"): framework.commands.TypedCommand<{
             (arg: {
                 mapService: geocortex.essentials.MapService;
                 layer: esri.layers.FeatureLayer;
@@ -786,46 +731,15 @@ declare module geocortex.framework.commands {
             }): void;
         }>;
         /**
-         * Deletes all plotted Coordinates from the map.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name DeleteAllCoordinates
-         * @introduced 2.6
-         * @gcx-command-category PlotCoordinates
-         */
-        (commandName: "DeleteAllCoordinates"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Deletes one or many plotted Coordinates from the map.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name DeleteCoordinates
-         * @param descIds The string id, or array of string id's of the coordinate(s) to delete from the map.
-         * @introduced 2.6
-         * @gcx-command-category PlotCoordinates
-         */
-        (commandName: "DeleteCoordinates"): TypedCommand<{
-            (descIds: string | string[]): void;
-        }>;
-        /**
-         * Edits a plotted Coordinate on the map or creates a new coordinate in edit mode.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name EditCoordinate
-         * @param descId The string id of the coordinate to edit. If unspecified, a new coordinate will be created in edit mode.
-         * @introduced 2.6
-         * @gcx-command-category PlotCoordinates
-         */
-        (commandName: "EditCoordinate"): TypedCommand<{
-            (descId?: string): void;
-        }>;
-        /**
-         * Deletes a feature.
+         * Deletes a feature. If the application is offline, a deletion is added to the edit log, unless the feature is new and unsynchronized, in which case
+         * the creation edit and any subsequent update entries are deleted.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name DeleteFeature
          * @param arg An object with the following members: mapService, feature, successCallback, errorCallback.
          * @introduced 1.1
          * @gcx-command-category Editing
          */
-        (commandName: "DeleteFeature"): TypedCommand<{
+        (commandName: "DeleteFeature"): framework.commands.TypedCommand<{
             (arg: {
                 mapService: geocortex.essentials.MapService;
                 feature: esri.Graphic;
@@ -841,7 +755,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @private
          */
-        (commandName: "DeleteGraphicsInMemory"): TypedCommand<{
+        (commandName: "DeleteGraphicsInMemory"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.EditInMemoryArgs): void;
         }>;
         /**
@@ -852,7 +766,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Editing
          */
-        (commandName: "DeleteFromEditLog"): TypedCommand<{
+        (commandName: "DeleteFromEditLog"): framework.commands.TypedCommand<{
             (editLogEntry: any): void;
         }>;
         /**
@@ -863,7 +777,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Markup
          */
-        (commandName: "DeleteMarkup"): TypedCommand<{
+        (commandName: "DeleteMarkup"): framework.commands.TypedCommand<{
             (geometry: esri.geometry.Geometry): void;
         }>;
         /**
@@ -874,30 +788,8 @@ declare module geocortex.framework.commands {
          * @introduced 2.1
          * @gcx-command-category Measurement
          */
-        (commandName: "DeleteMeasurement"): TypedCommand<{
+        (commandName: "DeleteMeasurement"): framework.commands.TypedCommand<{
             (geometry: esri.geometry.Geometry): void;
-        }>;
-        /**
-         * Deletes a project.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name DeleteProject
-         * @param project The unique ID of the project to delete, or an instance of {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.project.Project} containing the project to delete.
-         * @introduced 2.6
-         * @gcx-command-category Projects
-         */
-        (commandName: "DeleteProject"): TypedCommand<{
-            (project: string | geocortex.essentialsHtmlViewer.mapping.infrastructure.project.Project): void;
-        }>;
-        /**
-         * Deletes a named selection.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name DeleteSelection
-         * @param args A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.SelectionArgs} object with the following members: `name`, `featureSetCollection` (optional), `successCallback` (optional), `errorCallback` (optional).
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "DeleteSelection"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.SelectionArgs): void;
         }>;
         /**
          * Deletes a related table record.
@@ -907,8 +799,17 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "DeleteRelatedRecord"): TypedCommand<{
-            (arg: commandArgs.EditRelatedRecordArgs): void;
+        (commandName: "DeleteRelatedRecord"): framework.commands.TypedCommand<{
+            (arg: {
+                mapService: geocortex.essentials.MapService;
+                layer: esri.layers.Layer;
+                feature: esri.Graphic;
+                relatedFeature: esri.Graphic;
+                relationshipOrigin: esri.layers.Relationship;
+                relationshipDestination: esri.layers.Relationship;
+                successCallback: () => void;
+                errorCallback: (error: Error) => void;
+            }): void;
         }>;
         /**
         * Prevents the commands configured to execute on map click from executing and also prevents the `MapClickedEvent` from firing.
@@ -917,7 +818,7 @@ declare module geocortex.framework.commands {
         * @introduced 2.4
         * @gcx-command-category Map Widget
         */
-        (commandName: "DisableMapClick"): TypedCommand<{
+        (commandName: "DisableMapClick"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -927,7 +828,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3.1
          * @gcx-command-category Map Widget
          */
-        (commandName: "DisableMapTips"): TypedCommand<{
+        (commandName: "DisableMapTips"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -937,7 +838,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.1
          * @gcx-command-category Pushpins
          */
-        (commandName: "DisablePushpins"): TypedCommand<{
+        (commandName: "DisablePushpins"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -951,7 +852,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Buffering
          */
-        (commandName: "DisplayBufferOptions"): TypedCommand<{
+        (commandName: "DisplayBufferOptions"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.buffer.DisplayBufferOptionsArgs | string): void;
         }>;
         /**
@@ -962,29 +863,29 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Charting
          */
-        (commandName: "DisplayChartById"): TypedCommand<{
+        (commandName: "DisplayChartById"): framework.commands.TypedCommand<{
             (chartId: string): void;
         }>;
         /**
-         * Opens the specified external component in the external components view. If this component is open in a separate window, it will be closed.
+         * Opens the specified external component in the external components view. If this component is open in a seperate window, it will be closed.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name DisplayDockedExternalComponentById
          * @param ecId The ID of the external component to dock in the viewer.
          * @introduced 2.4
          * @gcx-command-category Integration
          */
-        (commandName: "DisplayDockedExternalComponentById"): TypedCommand<{
+        (commandName: "DisplayDockedExternalComponentById"): framework.commands.TypedCommand<{
             (ecId: string): void;
         }>;
         /**
-         * Opens the specified external component in a separate window from the viewer. If this component is open in the viewer, it will be closed.
+         * Opens the specified external component in a seperate window from the viewer. If this component is open in the viewer, it will be closed.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name DisplayUndockedExternalComponentById
          * @param ecId The ID of the external component to open in a new window.
          * @introduced 2.4
          * @gcx-command-category Integration
          */
-        (commandName: "DisplayUndockedExternalComponentById"): TypedCommand<{
+        (commandName: "DisplayUndockedExternalComponentById"): framework.commands.TypedCommand<{
             (ecId: string): void;
         }>;
         /**
@@ -996,7 +897,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Workflow
          */
-        (commandName: "DisplayWorkflowContainerContent"): TypedCommand<{
+        (commandName: "DisplayWorkflowContainerContent"): framework.commands.TypedCommand<{
             (entry: {
                 containerName: string;
                 view: ui.ViewBase;
@@ -1004,14 +905,26 @@ declare module geocortex.framework.commands {
             }): void;
         }>;
         /**
-          * Edits markup that intersects the extent of the provided geometry.
-          * @docs-gcx-command geocortex.essentialsHtmlViewer
-          * @name EditMarkup
-          * @param geometry The geometry to use for selecting markup to edit.
-          * @introduced 2.0
-          * @gcx-command-category Markup
-          */
-        (commandName: "EditMarkup"): TypedCommand<{
+         * Downloads the viewer bundle for offline use.
+         * @docs-gcx-command geocortex.essentialsHtmlViewer
+         * @name DownloadOfflineResources
+         * @param catalogUri A URI to the viewer's offline catalog.
+         * @introduced 1.3
+         * @gcx-hyperlink-disabled
+         * @gcx-command-category Offline/Online
+         */
+        (commandName: "DownloadOfflineResources"): framework.commands.TypedCommand<{
+            (catalogUri: string): void;
+        }>;
+        /**
+         * Edits markup that intersects the extent of the provided geometry.
+         * @docs-gcx-command geocortex.essentialsHtmlViewer
+         * @name EditMarkup
+         * @param geometry The geometry to use for selecting markup to edit.
+         * @introduced 2.0
+         * @gcx-command-category Markup
+         */
+        (commandName: "EditMarkup"): framework.commands.TypedCommand<{
             (geometry: esri.geometry.Geometry): void;
         }>;
         /**
@@ -1021,7 +934,7 @@ declare module geocortex.framework.commands {
         * @introduced 2.5
         * @gcx-command-category Identify
         */
-        (commandName: "EnableAllLayersForIdentify"): TypedCommand<{
+        (commandName: "EnableAllLayersForIdentify"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1031,7 +944,7 @@ declare module geocortex.framework.commands {
         * @introduced 2.5
         * @gcx-command-category Identify
         */
-        (commandName: "DisableAllLayersForIdentify"): TypedCommand<{
+        (commandName: "DisableAllLayersForIdentify"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1042,18 +955,18 @@ declare module geocortex.framework.commands {
         * @introduced 2.5
         * @gcx-command-category Identify
         */
-        (commandName: "EnableLayerForIdentify"): TypedCommand<{
+        (commandName: "EnableLayerForIdentify"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.identify.LayerDescriptor): void;
         }>;
         /**
         * Disables the specified layer, if it's in the list of identifiable layers, such that it does not participate in Identify operations.
         * @docs-gcx-command geocortex.essentialsHtmlViewer
         * @name DisableLayerForIdentify
-        * @param args A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.identify.LayerDescriptor} object specifying the layer to enable for identify.
+        * @param args A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.identify.LayerDescripto} object specifying the layer to enable for identify.
         * @introduced 2.5
         * @gcx-command-category Identify
         */
-        (commandName: "DisableLayerForIdentify"): TypedCommand<{
+        (commandName: "DisableLayerForIdentify"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.identify.LayerDescriptor): void;
         }>;
         /**
@@ -1063,7 +976,7 @@ declare module geocortex.framework.commands {
         * @introduced 2.4
         * @gcx-command-category Map Widget
         */
-        (commandName: "EnableMapClick"): TypedCommand<{
+        (commandName: "EnableMapClick"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1073,7 +986,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3.1
          * @gcx-command-category Map Widget
          */
-        (commandName: "EnableMapTips"): TypedCommand<{
+        (commandName: "EnableMapTips"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1083,7 +996,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.1
          * @gcx-command-category Pushpins
          */
-        (commandName: "EnablePushpins"): TypedCommand<{
+        (commandName: "EnablePushpins"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1094,7 +1007,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Search
          */
-        (commandName: "EnableSearchRefinement"): TypedCommand<{
+        (commandName: "EnableSearchRefinement"): framework.commands.TypedCommand<{
             (enable?: boolean): void;
         }>;
         /**
@@ -1106,76 +1019,88 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @private
          */
-        (commandName: "ExplodeGraphicsInMemory"): TypedCommand<{
+        (commandName: "ExplodeGraphicsInMemory"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.EditInMemoryArgs): void;
         }>;
-        /**
-         * Exports the data from a feature set to an external data format (csv, xlsx, shp).
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ExportResultsTo
-         * @param args An object with the following members: `format`, `fsc`.
-         * @introduced 2.4
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "ExportResultsTo"): TypedCommand<{
+        (commandName: "ExportResultsTo"): framework.commands.TypedCommand<{
             (args: {
                 format: string;
                 fsc: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection;
             }): void;
         }>;
         /**
-         * Exports the markup layer to a Shapefile.
+         * Caches the data for a given map service URL.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ExportMarkupLayer
-         * @introduced 2.6
-         * @gcx-command-category Markup
+         * @name FeatureLayerCacheData
+         * @param featureLayerServiceId The service ID of the feature layer.
+         * @param query An instance of {@link esri.tasks.Query} that represents the data to cache from the layer service.
+         * @param cacheSuccessCallback A callback to execute upon successfully caching the feature layer data.
+         * @param cachedFailedCallback A callback to execute when there is an error caching the feature layer data.
+         * @introduced 1.1
+         * @deprecated 1.2 Use FeatureLayerSetCacheSpec instead.
+         * @gcx-workflow-disabled
+         * @gcx-command-category Offline/Online
          */
-        (commandName: "ExportMarkupLayer"): TypedCommand<{
+        (commandName: "FeatureLayerCacheData"): framework.commands.TypedCommand<{
+            (featureLayerServiceId: string, query: esri.tasks.Query, cacheSuccessCallback: () => void, cachedFailedCallback: (error: Error) => void): void;
+        }>;
+        /**
+         * Clears the caching spec for a specified feature layer, ensuring it will not be cached on the next sync.
+         * @docs-gcx-command geocortex.essentialsHtmlViewer
+         * @name FeatureLayerClearCacheSpec
+         * @param featureLayerServiceId The service ID of the feature layer.
+         * @introduced 1.2
+         * @gcx-command-category Offline/Online
+         */
+        (commandName: "FeatureLayerClearCacheSpec"): framework.commands.TypedCommand<{
+            (featureLayerServiceId: string): void;
+        }>;
+        /**
+         * Clears the cached data for a given feature layer service.
+         * @docs-gcx-command geocortex.essentialsHtmlViewer
+         * @name FeatureLayerClearData
+         * @param featureLayerServiceId The ID of the feature layer service.
+         * @param clearSuccessCallback A callback to execute upon successfully clearing the feature layer data.
+         * @param clearFailedCallback A callback to execute when there is an error clearing the cached data.
+         * @introduced 1.1
+         * @deprecated 1.2 Use FeatureLayerClearCacheSpec instead.
+         * @gcx-workflow-requirements Note: In order to use this command in a workflow, you must omit the `clearSuccessCallback` and `clearFailedCallback` parameters.
+         * @gcx-command-category Offline/Online
+         */
+        (commandName: "FeatureLayerClearData"): framework.commands.TypedCommand<{
+            (featureLayerServiceId: string, clearSuccessCallback: () => void, clearFailedCallback: (error: Error) => void): void;
+        }>;
+        /**
+         * Refreshes layer edit summaries and the "syncNeeded" flag.
+         * @docs-gcx-command geocortex.essentialsHtmlViewer
+         * @name FeatureLayerModuleRefreshData
+         * @private
+         */
+        (commandName: "FeatureLayerModuleRefreshData"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
-         * Exports graphics layer to the specified format.
+         * Starts the process of synchronizing offline data and edits with an instance of ArcGIS Server.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ExportGraphicsLayer
-         * @introduced 2.6
-         * @param args a {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.ExportGraphicsLayerArgs} object.
-         * @gcx-command-category Export
+         * @name FeatureLayerModuleStartSync
+         * @introduced 1.1
+         * @gcx-command-category Offline/Online
          */
-        (commandName: "ExportGraphicsLayer"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.ExportGraphicsLayerArgs): void;
+        (commandName: "FeatureLayerModuleStartSync"): framework.commands.TypedCommand<{
+            (): void;
         }>;
         /**
-         * Lists all the available metadata for named selections.
+         * Sets the caching spec for the specified layer, ensuring it will be cached on the next sync.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name FindAllSelectionMetadata
-         * @param args A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.FindAllSelectionMetadataArgs} object with the following optional members: `successCallback` and `errorCallback`.
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
+         * @name FeatureLayerSetCacheSpec
+         * @param featureLayerServiceId The service ID of the feature layer.
+         * @param query Instance of esri.tasks.query that defines the data to cache.
+         * @introduced 1.2
+         * @gcx-workflow-disabled
+         * @gcx-command-category Offline/Online
          */
-        (commandName: "FindAllSelectionMetadata"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.FindAllSelectionMetadataArgs): void;
-        }>;
-        /**
-         * Looks up metadata about a particular named selection.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name FindMetadataForSelection
-         * @param args An object with the following optional members: `name`, `featureSetCollectionId`, `successCallback` and `errorCallback`.
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "FindMetadataForSelection"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.FindMetadataForSelectionArgs): void;
-        }>;
-        /**
-         * Looks up a particular named selection.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name FindSelection
-         * @param args An object with the following optional members: `name`, `successCallback` and `errorCallback`.
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "FindSelection"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.FindSelectionArgs): void;
+        (commandName: "FeatureLayerSetCacheSpec"): framework.commands.TypedCommand<{
+            (featureLayerServiceId: string, query: esri.tasks.Query): void;
         }>;
         /**
          * Focuses on the first selectable input in the passed view.
@@ -1185,21 +1110,20 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Region and View
          */
-        (commandName: "FocusOnFirstInputInView"): TypedCommand<{
+        (commandName: "FocusOnFirstInputInView"): framework.commands.TypedCommand<{
             (view: framework.ui.ViewBase): void;
         }>;
         /**
-         * Set the preferred command to open the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} for the given source name.
+         * Set the preferred command to open the {@link FeatureSetCollection} for the given source name.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name FSMCollectionSetCommand
          * @param sourceName The string source name whose command you want to change.
          * @param commandName The command to run for the source name.
          * @introduced 1.2
-         * @deprecated 2.4 This is now an internal implementation detail. For control over how different sources of features
-         * populate the viewer, consult the `resultMappings` option in the viewer's configuration file(s).
+         * @deprecated 2.4 Deprecated in 2.4.
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "FSMCollectionSetCommand"): TypedCommand<{
+        (commandName: "FSMCollectionSetCommand"): framework.commands.TypedCommand<{
             (sourceName: string, commandName: string): void;
         }>;
         /**
@@ -1214,7 +1138,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Geolocation
          */
-        (commandName: "Geolocate"): TypedCommand<{
+        (commandName: "Geolocate"): framework.commands.TypedCommand<{
             (options?: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.GeolocateArgs): void;
         }>;
         /**
@@ -1224,7 +1148,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Geolocation
          */
-        (commandName: "GeolocateFollow"): TypedCommand<{
+        (commandName: "GeolocateFollow"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1234,7 +1158,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Geolocation
          */
-        (commandName: "GeolocateStop"): TypedCommand<{
+        (commandName: "GeolocateStop"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1244,7 +1168,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Geolocation
          */
-        (commandName: "GeolocateTrack"): TypedCommand<{
+        (commandName: "GeolocateTrack"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1254,7 +1178,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Geolocation
          */
-        (commandName: "GeolocateShowBuffer"): TypedCommand<{
+        (commandName: "GeolocateShowBuffer"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1264,7 +1188,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Geolocation
          */
-        (commandName: "GeolocateHideBuffer"): TypedCommand<{
+        (commandName: "GeolocateHideBuffer"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1275,7 +1199,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Editing
          */
-        (commandName: "GetEditLog"): TypedCommand<{
+        (commandName: "GetEditLog"): framework.commands.TypedCommand<{
             (callback: (response: any, responseJson?: any) => void): void;
         }>;
         /**
@@ -1285,7 +1209,7 @@ declare module geocortex.framework.commands {
          * @param feature The current feature in context.
          * @private
          */
-        (commandName: "GetFeatureDetailsProviders"): TypedCommand<{
+        (commandName: "GetFeatureDetailsProviders"): framework.commands.TypedCommand<{
             (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
@@ -1296,14 +1220,13 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "GetRelatedFeatures"): TypedCommand<{
+        (commandName: "GetRelatedFeatures"): framework.commands.TypedCommand<{
             (arg: {
                 mapService: geocortex.essentials.MapService;
                 relationshipId: number;
                 objectId: number;
                 successCallback: (results: esri.Graphic[]) => void;
                 errorCallback: (error: Error) => void;
-                currentFeature?: esri.Graphic | essentialsHtmlViewer.mapping.infrastructure.Feature;
             }): void;
         }>;
         /**
@@ -1314,7 +1237,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Search
          */
-        (commandName: "GlobalSearch"): TypedCommand<{
+        (commandName: "GlobalSearch"): framework.commands.TypedCommand<{
             (searchText: string): void;
         }>;
         /**
@@ -1325,7 +1248,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Share
          */
-        (commandName: "HandleGenerateSharingLink"): TypedCommand<{
+        (commandName: "HandleGenerateSharingLink"): framework.commands.TypedCommand<{
             (callback: (myURL: string) => void): void;
         }>;
         /**
@@ -1337,17 +1260,7 @@ declare module geocortex.framework.commands {
          * since it only hides the editing pane without canceling feature editing.
          * @gcx-command-category Offline/Online
          */
-        (commandName: "HideFeatureAttributeEditor"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Hides the Feature Details dialog.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name HideFeatureDetails
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "HideFeatureDetails"): TypedCommand<{
+        (commandName: "HideFeatureAttributeEditor"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1357,38 +1270,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3.1
          * @gcx-command-category Map Widget
          */
-        (commandName: "HideAllMapTips"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Hides all plotted Coordinates temporarily.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name HideAllCoordinates
-         * @introduced 2.6
-         * @gcx-command-category PlotCoordinates
-         */
-        (commandName: "HideAllCoordinates"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Hides one or many plotted Coordinates temporarily.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name HideCoordinates
-         * @param descIds The string id, or array of string id's of the coordinate(s) to hide.
-         * @introduced 2.6
-         * @gcx-command-category PlotCoordinates
-         */
-        (commandName: "HideCoordinates"): TypedCommand<{
-            (descIds: string | string[]): void;
-        }>;
-        /**
-         * Hides any coordinate actions view that is currently active.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name HideCoordinateActions
-         * @introduced 2.6
-         * @gcx-command-category PlotCoordinates
-         */
-        (commandName: "HideCoordinateActions"): TypedCommand<{
+        (commandName: "HideAllMapTips"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1397,7 +1279,7 @@ declare module geocortex.framework.commands {
          * @name HideFeatureLayerModalMessage
          * @private
          */
-        (commandName: "HideFeatureLayerModalMessage"): TypedCommand<{
+        (commandName: "HideFeatureLayerModalMessage"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1407,17 +1289,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.3
          * @gcx-command-category Editing
          */
-        (commandName: "HideFeatureTemplatePicker"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Deactivates/hides the Home Panel if it is configured to be included.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name HideHomePanel
-         * @introduced 2.7
-         * @gcx-command-category Region and View
-         */
-        (commandName: "HideHomePanel"): TypedCommand<{
+        (commandName: "HideFeatureTemplatePicker"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1427,30 +1299,19 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Log
          */
-        (commandName: "HideLog"): TypedCommand<{
+        (commandName: "HideLog"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
-         * Removes an element previously anchored to the map using the command `ShowMapElement`.
+         * Removes an element previously anchored to the map using {@link Commands.ShowMapElement}.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name HideMapElement
          * @param elementId The ID of the element to remove.
          * @introduced 1.0
          * @gcx-command-category Map Widget
          */
-        (commandName: "HideMapElement"): TypedCommand<{
+        (commandName: "HideMapElement"): framework.commands.TypedCommand<{
             (elementId: string): void;
-        }>;
-        /**
-         * Closes the map service actions view.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name HideMapServiceActions
-         * @introduced 2.7
-         * @gcx-workflow-disabled
-         * @gcx-command-category Layer List
-         */
-        (commandName: "HideMapServiceActions"): TypedCommand<{
-            (): void;
         }>;
         /**
          * Prevents the display of map tips by setting their visibility to `false`, and suspends displaying map tips.  Map tips must be enabled for this command to work.
@@ -1459,17 +1320,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3.1
          * @gcx-command-category Map Widget
          */
-        (commandName: "HideMapTips"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Closes the Layer Properties panel.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name HideLayerPropertiesView
-         * @introduced 2.7
-         * @gcx-command-category Layer Addition
-         */
-        (commandName: "Hide LayerPropertiesView"): TypedCommand<{
+        (commandName: "HideMapTips"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1479,7 +1330,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @private
          */
-        (commandName: "HideMarkers"): TypedCommand<{
+        (commandName: "HideMarkers"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1490,7 +1341,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.1
          * @gcx-command-category Pushpins
          */
-        (commandName: "HidePushpins"): TypedCommand<{
+        (commandName: "HidePushpins"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1502,7 +1353,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Charting
          */
-        (commandName: "HighlightChartFeatureSet"): TypedCommand<{
+        (commandName: "HighlightChartFeatureSet"): framework.commands.TypedCommand<{
             (featureSet: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSet): void;
         }>;
         /**
@@ -1514,7 +1365,7 @@ declare module geocortex.framework.commands {
          * @gcx-hyperlink-disabled
          * @gcx-command-category Highlighting
          */
-        (commandName: "HighlightEsriFeatureSet"): TypedCommand<{
+        (commandName: "HighlightEsriFeatureSet"): framework.commands.TypedCommand<{
             (featureSet: esri.tasks.FeatureSet): void;
         }>;
         /**
@@ -1526,7 +1377,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Highlighting
          */
-        (commandName: "HighlightFeature"): TypedCommand<{
+        (commandName: "HighlightFeature"): framework.commands.TypedCommand<{
             (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
@@ -1539,7 +1390,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Highlighting
          */
-        (commandName: "HighlightFeatureDefault"): TypedCommand<{
+        (commandName: "HighlightFeatureDefault"): framework.commands.TypedCommand<{
             (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
@@ -1551,7 +1402,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Highlighting
          */
-        (commandName: "HighlightFeatureSet"): TypedCommand<{
+        (commandName: "HighlightFeatureSet"): framework.commands.TypedCommand<{
             (featureSet: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSet): void;
         }>;
         /**
@@ -1563,7 +1414,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.0
          * @gcx-command-category Identify
          */
-        (commandName: "Identify"): TypedCommand<{
+        (commandName: "Identify"): framework.commands.TypedCommand<{
             (geometry: esri.geometry.Geometry): void;
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.IdentifyArgs): void;
         }>;
@@ -1575,7 +1426,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Buffering
          */
-        (commandName: "IdentifyBufferedGeometry"): TypedCommand<{
+        (commandName: "IdentifyBufferedGeometry"): framework.commands.TypedCommand<{
             (geometry: esri.geometry.Geometry): void;
         }>;
         /**
@@ -1586,30 +1437,30 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Buffering
          */
-        (commandName: "IdentifyBufferedFeature"): TypedCommand<{
-            (feature: esri.Graphic | essentialsHtmlViewer.mapping.infrastructure.Feature): void;
+        (commandName: "IdentifyBufferedFeature"): framework.commands.TypedCommand<{
+            (feature: esri.Graphic | geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
          * Activates the Buffer Options dialog, buffers the specified feature set geometry using settings specified by the user, places temporary markup on the map and identifies using the buffered geometry.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name IdentifyBufferedFeatureSet
-         * @param featureSetOrFeatureSetColl A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSet} or {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} or `string` representing the
+         * @param featureSetOrFeatureSetColl A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSet} or {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} or {@link string} representing the
          * feature set that has the geometry with which to buffer and identify. If a {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} or {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} ID is specified, the currently selected feature set will be used as input. If no feature set is currently selected, the first one will be used.
          * @introduced 2.5
          * @gcx-command-category Buffering
          */
-        (commandName: "IdentifyBufferedFeatureSet"): TypedCommand<{
-            (featureSetOrFeatureSetColl: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSet | essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection | string): void;
+        (commandName: "IdentifyBufferedFeatureSet"): framework.commands.TypedCommand<{
+            (featureSetOrFeatureSetColl: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSet | geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection | string): void;
         }>;
         /**
          * Activates the Buffer Options dialog, buffers the specified feature set collection geometries using settings specified by the user, places temporary markup on the map and identifies using the buffered geometry.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name IdentifyBufferedFeatureSetCollection
-         * @param fsc A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} or `string` representing the feature set collection that has the geometries with which to buffer and identify.
+         * @param fsc A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} or {@link string} representing the feature set collection that has the geometries with which to buffer and identify.
          * @introduced 2.5
          * @gcx-command-category Buffering
          */
-        (commandName: "IdentifyBufferedFeatureSetCollection"): TypedCommand<{
+        (commandName: "IdentifyBufferedFeatureSetCollection"): framework.commands.TypedCommand<{
             (fsc: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection | string): void;
         }>;
         /**
@@ -1620,7 +1471,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Map Widget
          */
-        (commandName: "InvokeMapTip"): TypedCommand<{
+        (commandName: "InvokeMapTip"): framework.commands.TypedCommand<{
             (geometry: esri.geometry.Geometry): void;
         }>;
         /**
@@ -1631,65 +1482,31 @@ declare module geocortex.framework.commands {
          * @introduced 1.0
          * @gcx-command-category Start-Up
          */
-        (commandName: "InitializeSite"): TypedCommand<{
+        (commandName: "InitializeSite"): framework.commands.TypedCommand<{
             (mapControl: esri.Map): void;
-        }>;
-        /**
-         * Integrate a {@link essentials.MapService} and its sub-components into the viewer and onto the map.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name AddMapService
-         * @param mapService The {@link essentials.MapService} which contains a service layer and Geocortex layers to be integrated
-         * onto the map and into the viewer. Supported map service types include: {@link essentials.FeatureLayerService}, {@link essentials.KmlService},
-         * and {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.LayerIntegrationUtils.LocalFeatureLayerService}.
-         * @introduced 2.6
-         * @gcx-command-category Layer List
-         */
-        (commandName: "AddMapService"): TypedCommand<{
-            (mapService: geocortex.essentials.MapService): void;
         }>;
         /**
          * Lauches a QR scan, then calls the provided callback with the result.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name LaunchBarcodeScannerWithCallback
+         * name LaunchBarcodeScannerWithCallback
          * @param callback When a QR scan completes, this function is called and passed the scanning result object as an argument.
          * @introduced 2.5
          * @gcx-command-category Scanning
          */
-        (commandName: "LaunchBarcodeScannerWithCallback"): TypedCommand<{
+        (commandName: "LaunchBarcodeScannerWithCallback"): framework.commands.TypedCommand<{
             (callback: (result) => void): void;
         }>;
         /**
-         * Wires up a {@link geocortex.essentialsHtmlViewer.integration.PostMessageTransport} and enables
+         * Wires up a {@link essentialsHtmlViewer.integration.PostMessageTransport} and enables
          * bi-directional communication with the component.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ListenToExternalComponentFrame
-         * @param projectArgs An instance of {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.integration.ComponentFrameInfo} describing an external component.
+         * @param projectArgs An instance of {@link ComponentFrameInfo} describing an external component.
          * @introduced 2.4
          * @gcx-command-category Integration
          */
-        (commandName: "ListenToExternalComponentFrame"): TypedCommand<{
+        (commandName: "ListenToExternalComponentFrame"): framework.commands.TypedCommand<{
             (arg: geocortex.essentialsHtmlViewer.mapping.infrastructure.integration.ComponentFrameInfo): void;
-        }>;
-        /**
-         * Loads a project and applies it to the viewer.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name LoadProject
-         * @param project The unique ID of the project to load, or an instance of {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.project.Project} containing the project data.
-         * @introduced 2.6
-         * @gcx-command-category Projects
-         */
-        (commandName: "LoadProject"): TypedCommand<{
-            (project: string | geocortex.essentialsHtmlViewer.mapping.infrastructure.project.Project): void;
-        }>;
-        /**
-         * Presents a user interface for managing the list of available named, saved selections.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ListSelections
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "ListSelections"): TypedCommand<{
-            (): void;
         }>;
         /**
          * Logs an event for Geocortex Optimizer.
@@ -1699,7 +1516,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.1
          * @gcx-command-category Optimizer
          */
-        (commandName: "LogOptimizerEvent"): TypedCommand<{
+        (commandName: "LogOptimizerEvent"): framework.commands.TypedCommand<{
             (eventName: string, eventInfo: string): void;
         }>;
         /**
@@ -1709,7 +1526,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.0
          * @gcx-command-category Map Display
          */
-        (commandName: "MapResize"): TypedCommand<{
+        (commandName: "MapResize"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1720,7 +1537,7 @@ declare module geocortex.framework.commands {
         * @introduced 2.4
         * @gcx-command-category Region and View
         */
-        (commandName: "MaximizePanel"): TypedCommand<{
+        (commandName: "MaximizePanel"): framework.commands.TypedCommand<{
             (viewId: string): void;
         }>;
         /**
@@ -1732,7 +1549,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Measurement
          */
-        (commandName: "MeasureArea"): TypedCommand<{
+        (commandName: "MeasureArea"): framework.commands.TypedCommand<{
             (polygon: esri.geometry.Polygon): void;
         }>;
         /**
@@ -1744,7 +1561,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Measurement
          */
-        (commandName: "MeasureDistance"): TypedCommand<{
+        (commandName: "MeasureDistance"): framework.commands.TypedCommand<{
             (polyline: esri.geometry.Polyline): void;
         }>;
         /**
@@ -1754,7 +1571,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.0
          * @gcx-command-category Region and View
          */
-        (commandName: "OpenDataFrame"): TypedCommand<{
+        (commandName: "OpenDataFrame"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1764,29 +1581,19 @@ declare module geocortex.framework.commands {
          * @introduced 1.3
          * @gcx-command-category Region and View
          */
-        (commandName: "OpenBottomRegion"): TypedCommand<{
+        (commandName: "OpenBottomRegion"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
-         * Opens the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} with the given ID.
+         * Opens the {@link FeatureSetCollection} with the given ID.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name OpenFeatureSetCollection
-         * @param fscId The ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} to open.
+         * @param fscId The ID of the {@link FeatureSetCollection} to open.
          * @introduced 1.1
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "OpenFeatureSetCollection"): TypedCommand<{
+        (commandName: "OpenFeatureSetCollection"): framework.commands.TypedCommand<{
             (fscId: string): void;
-        }>;
-        /**
-         * Opens a new browser window to the authenticated users ArcGIS Portal 'My Content' page.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name OpenPortalMyContentWindow
-         * @introduced 2.6
-         * @gcx-command-category Navigation
-         */
-        (commandName: "OpenPortalMyContentWindow"): TypedCommand<{
-            (): void;
         }>;
         /**
          * Opens the Results Frame in shells where it is present.
@@ -1795,7 +1602,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Region and View
          */
-        (commandName: "OpenResultsFrame"): TypedCommand<{
+        (commandName: "OpenResultsFrame"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1805,7 +1612,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Map Display
          */
-        (commandName: "OpenOverviewMap"): TypedCommand<{
+        (commandName: "OpenOverviewMap"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1816,7 +1623,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.3
          * @gcx-command-category Navigation
          */
-        (commandName: "PanDown"): TypedCommand<{
+        (commandName: "PanDown"): framework.commands.TypedCommand<{
             (panStep?: number): void;
         }>;
         /**
@@ -1827,7 +1634,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.3
          * @gcx-command-category Navigation
          */
-        (commandName: "PanLeft"): TypedCommand<{
+        (commandName: "PanLeft"): framework.commands.TypedCommand<{
             (panStep?: number): void;
         }>;
         /**
@@ -1838,7 +1645,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.3
          * @gcx-command-category Navigation
          */
-        (commandName: "PanRight"): TypedCommand<{
+        (commandName: "PanRight"): framework.commands.TypedCommand<{
             (panStep?: number): void;
         }>;
         /**
@@ -1850,7 +1657,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Navigation
          */
-        (commandName: "PanToAllFeatures"): TypedCommand<{
+        (commandName: "PanToAllFeatures"): framework.commands.TypedCommand<{
             (features: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature[]): void;
         }>;
         /**
@@ -1862,7 +1669,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Navigation
          */
-        (commandName: "PanToFeature"): TypedCommand<{
+        (commandName: "PanToFeature"): framework.commands.TypedCommand<{
             (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
@@ -1874,7 +1681,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Navigation
          */
-        (commandName: "PanToFeatureIfOutsideMapExtent"): TypedCommand<{
+        (commandName: "PanToFeatureIfOutsideMapExtent"): framework.commands.TypedCommand<{
             (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
@@ -1885,7 +1692,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.0
          * @gcx-command-category Navigation
          */
-        (commandName: "PanToPoint"): TypedCommand<{
+        (commandName: "PanToPoint"): framework.commands.TypedCommand<{
             (geometry: esri.geometry.Point): void;
         }>;
         /**
@@ -1896,30 +1703,8 @@ declare module geocortex.framework.commands {
          * @introduced 1.3
          * @gcx-command-category Navigation
          */
-        (commandName: "PanUp"): TypedCommand<{
+        (commandName: "PanUp"): framework.commands.TypedCommand<{
             (panStep?: number): void;
-        }>;
-        /**
-        * Plots a coordinate or a number of coordinates on the map.
-        * @docs-gcx-command geocortex.essentialsHtmlViewer
-        * @name PlotCoordinates
-        * @param baseCoords The (@link infrastructure.coordinates.CoordinateBase} (or array of multiple base coordinates) to plot.
-        * @introduced 2.6
-        * @gcx-command-category PlotCoordinates
-        */
-        (commandName: "PlotCoordinates"): TypedCommand<{
-            (baseCoords: geocortex.essentialsHtmlViewer.mapping.infrastructure.coordinates.CoordinateBase | essentialsHtmlViewer.mapping.infrastructure.coordinates.CoordinateBase[]): void;
-        }>;
-        /**
-         * Populates the LabelOptions view.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name PopulateLabelOptionsView
-         * @param layer The layer that is having its label options changed
-         * @introduced 2.7
-         * @gcx-command-category Label Options
-         */
-        (commandName: "PopulateLabelOptionsView"): TypedCommand<{
-            (layer: geocortex.essentials.Layer): void;
         }>;
         /**
          * Displays a dialog to create a printable map.
@@ -1928,7 +1713,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.3
          * @gcx-command-category Print
          */
-        (commandName: "PrintMap"): TypedCommand<{
+        (commandName: "PrintMap"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -1938,143 +1723,20 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Export
          */
-        (commandName: "ShowExportMapDialog"): TypedCommand<{
+        (commandName: "ShowExportMapDialog"): framework.commands.TypedCommand<{
             (): void;
-        }>;
-        /**
-         * Shows the layer catalog view.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ShowLayerCatalog
-         * @introduced 2.7
-         * @gcx-command-category Layer Catalog
-         */
-        (commandName: "ShowLayerCatalog"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-        * Activates and shows the time slider if time slider profiles have been defined in the site.
-        * @docs-gcx-command geocortex.essentialsHtmlViewer
-        * @name ActivateTimeSlider
-        * @introduced 2.7
-        * @gcx-command-category TimeSlider
-        */
-        (commandName: "ActivateTimeSlider"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-        * Deactivates time settings applied to the map and hides the Time Slider.
-        * @docs-gcx-command geocortex.essentialsHtmlViewer
-        * @name DeactivateTimeSlider
-        * @introduced 2.7
-        * @gcx-command-category TimeSlider
-        */
-        (commandName: "DeactivateTimeSlider"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-        * Hides the time slider if currently visible but does not deactivate time settings applied to the map..
-        * @docs-gcx-command geocortex.essentialsHtmlViewer
-        * @name HideTimeSlider
-        * @introduced 2.7
-        * @gcx-command-category TimeSlider
-        */
-        (commandName: "HideTimeSlider"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-        * Shows the time slider settings view..
-        * @docs-gcx-command geocortex.essentialsHtmlViewer
-        * @name ShowTimeSliderSettings
-        * @introduced 2.7
-        * @gcx-command-category TimeSlider
-        */
-        (commandName: "ShowTimeSliderSettings"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-        * Hides the time slider settings view.
-        * @docs-gcx-command geocortex.essentialsHtmlViewer
-        * @name HideTimeSliderSettings
-        * @introduced 2.7
-        * @gcx-command-category TimeSlider
-        */
-        (commandName: "HideTimeSliderSettings"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-        * Toggles the time slider actions container visibility.
-        * @docs-gcx-command geocortex.essentialsHtmlViewer
-        * @name ToggleTimeSliderActions
-        * @introduced 2.7
-        * @gcx-command-category TimeSlider
-        */
-        (commandName: "ToggleTimeSliderActions"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-        * Validates and sets a specified time slider profile.
-        * @docs-gcx-command geocortex.essentialsHtmlViewer
-        * @name SetTimeSliderProfile
-        * @introduced 2.7
-        * @gcx-command-category TimeSlider
-        */
-        (commandName: "SetTimeSliderProfile"): TypedCommand<{
-            (profile: essentials.TimeSliderProfile): void;
-        }>;
-        /**
-         * Adds catalog layers.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @param args A comma seperated string of layer ids.
-         * @name AddCatalogLayers
-         * @introduced 2.7
-         * @gcx-command-category Layer Catalog
-         */
-        (commandName: "AddCatalogLayers"): TypedCommand<{
-            (args: string): void;
-        }>;
-        /**
-         * Appends catalog layers.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @param args A comma seperated string of layer ids.
-         * @name AppendCatalogLayers
-         * @introduced 2.7
-         * @gcx-command-category Layer Catalog
-         */
-        (commandName: "AppendCatalogLayers"): TypedCommand<{
-            (args: string): void;
-        }>;
-        /**
-         * Clears all catalog layers.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ClearLayerCatalogLayers
-         * @introduced 2.7
-         * @gcx-command-category Layer Catalog
-         */
-        (commandName: "ClearLayerCatalogLayers"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Removes specific layer catalog item like layer or map service(will not work for map service which has multiple layers like dynamicmapService).
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @param arg item to be removed
-         * @name RemoveLayerCatalogItem
-         * @introduced 2.7
-         * @gcx-command-category Layer Catalog
-         */
-        (commandName: "RemoveLayerCatalogItem"): TypedCommand<{
-            (arg: any): void;
         }>;
         /**
          * Calls a geometry service to project geometries between different coordinate systems.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name Project
-         * @param projectArgs An instance of {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.ProjectArgs}.
+         * @param projectArgs An instance of {@link essentialsHtmlViewer.mapping.infrastructure.commandArgs.ProjectArgs}.
          * @introduced 1.1
          * @gcx-hyperlink-disabled
          * @gcx-workflow-disabled
          * @gcx-command-category Projection
          */
-        (commandName: "Project"): TypedCommand<{
+        (commandName: "Project"): framework.commands.TypedCommand<{
             (arg: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.ProjectArgs): void;
         }>;
         /**
@@ -2089,7 +1751,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-recommendations Instead of using the `Prompt` viewer command in workflows, use the `Prompt` workflow activity that is provided in Workflow Designer.
          * @gcx-command-category Dialog
          */
-        (commandName: "Prompt"): TypedCommand<{
+        (commandName: "Prompt"): framework.commands.TypedCommand<{
             (title: string, description: string, defaultText: string, callback: (inputText: string) => void): void;
         }>;
         /**
@@ -2100,7 +1762,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Map Widget
          */
-        (commandName: "PulseStatus"): TypedCommand<{
+        (commandName: "PulseStatus"): framework.commands.TypedCommand<{
             (statusId: string): void;
         }>;
         /**
@@ -2110,17 +1772,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Map Display
          */
-        (commandName: "RecenterMapOnNextMapResize"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Refresh the list of offline maps on the OfflineMapsList view.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name RefreshOfflineMapsList
-         * @introduced 2.6
-         * @gcx-command-category Offline Profiles
-         */
-        (commandName: "RefreshOfflineMapsList"): TypedCommand<{
+        (commandName: "RecenterMapOnNextMapResize"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -2130,90 +1782,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Undo and Redo
          */
-        (commandName: "Redo"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Performs advanced set operations with multiple lists of results.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name CombineResults
-         * @param args A {@link CombineResultsArgs} object with the following members: `combineMode`, `featureSetCollectionIds`, `currentResults` (optional), `successCallback` (optional) and `errorCallback` (optional).
-         * @introduced 2.6
-         * @private
-         */
-        (commandName: "CombineResults"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.CombineResultsArgs): void;
-        }>;
-        /**
-         * Activates a series of views that guide the user to perform advanced set operations with multiple lists of results.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name CombineResultsInteractive
-         * @param operationType One of: `union`, `intersect`, `subtract`, `replace`. If not specified, `replace` is used by default.
-         * @introduced 2.6
-         * @private
-         */
-        (commandName: "CombineResultsInteractive"): TypedCommand<{
-            (args: {
-                mode: string;
-                currentResults: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection | string;
-            }): void;
-        }>;
-        /**
-         * Only keeps results from the current set of results that also appear in the supplied {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection}.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ResultsIntersect
-         * @param args Either a {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} or a string representing the collection ID.
-         * @introduced 2.6
-         * @gcx-workflow-requirements In order to use this command in a workflow, you must use the ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} as the parameter.
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "ResultsIntersect"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection | string): void;
-        }>;
-        /**
-         * Replaces the current set of results with the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} supplied as argument.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ResultsReplace
-         * @param args Either a {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} or a string representing the collection ID.
-         * @introduced 2.6
-         * @gcx-workflow-requirements In order to use this command in a workflow, you must use the ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} as the parameter.
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "ResultsReplace"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection | string): void;
-        }>;
-        /**
-         * Removes the supplied {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} from the current set of results.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ResultsSubtract
-         * @param args Either a {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} or a string representing the collection ID.
-         * @introduced 2.6
-         * @gcx-workflow-requirements In order to use this command in a workflow, you must use the ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} as the parameter.
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "ResultsSubtract"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection | string): void;
-        }>;
-        /**
-         * Adds the supplied {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} to the current set of results.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ResultsUnion
-         * @param args Either a {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} or a string representing the collection ID.
-         * @introduced 2.6
-         * @gcx-workflow-requirements In order to use this command in a workflow, you must use the ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} as the parameter.
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "ResultsUnion"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection | string): void;
-        }>;
-        /**
-         * Refresh the list of browsable projects.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name RefreshProjectsList
-         * @introduced 2.6
-         * @gcx-command-category Projects
-         */
-        (commandName: "RefreshProjectsList"): TypedCommand<{
+        (commandName: "Redo"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -2223,7 +1792,7 @@ declare module geocortex.framework.commands {
          * @param arg An object with the following members: adapter, sourceType.
          * @private
          */
-        (commandName: "RegisterChartPointAdapter"): TypedCommand<{
+        (commandName: "RegisterChartPointAdapter"): framework.commands.TypedCommand<{
             (arg: {
                 adapter: geocortex.charting.ChartPointAdapterInterface;
                 sourceType: string;
@@ -2236,7 +1805,7 @@ declare module geocortex.framework.commands {
          * @param provider The search provider instance to be registered.
          * @private
          */
-        (commandName: "RegisterSearchProvider"): TypedCommand<{
+        (commandName: "RegisterSearchProvider"): framework.commands.TypedCommand<{
             (provider: geocortex.essentialsHtmlViewer.mapping.infrastructure.search.SearchProviderBase): void;
         }>;
         /**
@@ -2246,7 +1815,7 @@ declare module geocortex.framework.commands {
          * @param layer The {@link geocortex.essentials.Layer} to be registered.
          * @gcx-command-category Snapping
          */
-        (commandName: "RegisterSnappingLayer"): TypedCommand<{
+        (commandName: "RegisterSnappingLayer"): framework.commands.TypedCommand<{
             (layer: geocortex.essentials.Layer): void;
         }>;
         /**
@@ -2256,7 +1825,7 @@ declare module geocortex.framework.commands {
          * @param layers An array of {@link geocortex.essentials.Layer} instances to be registered.
          * @gcx-command-category Snapping
          */
-        (commandName: "RegisterSnappingLayers"): TypedCommand<{
+        (commandName: "RegisterSnappingLayers"): framework.commands.TypedCommand<{
             (layers: geocortex.essentials.Layer[]): void;
         }>;
         /**
@@ -2266,7 +1835,7 @@ declare module geocortex.framework.commands {
          * @param layer The {@link geocortex.essentials.Layer} to be removed.
          * @gcx-command-category Snapping
          */
-        (commandName: "RemoveSnappingLayer"): TypedCommand<{
+        (commandName: "RemoveSnappingLayer"): framework.commands.TypedCommand<{
             (layer: geocortex.essentials.Layer): void;
         }>;
         /**
@@ -2276,7 +1845,7 @@ declare module geocortex.framework.commands {
          * @param layers An array of {@link geocortex.essentials.Layer} instances to be removed.
          * @gcx-command-category Snapping
          */
-        (commandName: "RemoveSnappingLayers"): TypedCommand<{
+        (commandName: "RemoveSnappingLayers"): framework.commands.TypedCommand<{
             (layers: geocortex.essentials.Layer[]): void;
         }>;
         /**
@@ -2287,7 +1856,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Bookmark
          */
-        (commandName: "RemoveBookmark"): TypedCommand<{
+        (commandName: "RemoveBookmark"): framework.commands.TypedCommand<{
             (name: string): void;
         }>;
         /**
@@ -2298,7 +1867,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Charting
          */
-        (commandName: "RemoveChartById"): TypedCommand<{
+        (commandName: "RemoveChartById"): framework.commands.TypedCommand<{
             (chartId: string): void;
         }>;
         /**
@@ -2309,53 +1878,41 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Visualization
          */
-        (commandName: "RemoveClusterLayer"): TypedCommand<{
+        (commandName: "RemoveClusterLayer"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.ClusterLayerArgs | string): void;
         }>;
         /**
-         * Removes an individual feature from the current {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} displayed in the results view.
-         * Typically, an end-user would click "Remove from Results" on a map tip to remove the feature from the results.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name RemoveFeatureFromResults
-         * @param feature The {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature} to remove from the results view.
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "RemoveFeatureFromResults"): TypedCommand<{
-            (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
-        }>;
-        /**
-         * Removes the specified collection from the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetManager}.
+         * Removes the specified collection from the {@link FeatureSetManager}.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name RemoveFeatureSetCollection
-         * @param fsc The {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} to remove.
+         * @param fsc The {@link FeatureSetCollection} to remove.
          * @introduced 1.2
          * @gcx-workflow-disabled
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "RemoveFeatureSetCollection"): TypedCommand<{
+        (commandName: "RemoveFeatureSetCollection"): framework.commands.TypedCommand<{
             (fsc: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection): void;
         }>;
         /**
-         * Removes the collection specified by ID from the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetManager}.
+         * Removes the collection specified by ID from the {@link FeatureSetManager}.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name RemoveFeatureSetCollectionById
-         * @param fscId ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} to remove.
+         * @param fscId ID of the {@link FeatureSetCollection} to remove.
          * @introduced 1.2
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "RemoveFeatureSetCollectionById"): TypedCommand<{
+        (commandName: "RemoveFeatureSetCollectionById"): framework.commands.TypedCommand<{
             (fscId: string): void;
         }>;
         /**
          * Removes a heat map visualization from a Geocortex layer.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name RemoveHeatMap
-         * @param args Either {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.HeatMapArgs} or a string representing the Map Service's ID.
+         * @param args Either {@link HeatMapArgs} or a string representing the Map Service's ID.
          * @introduced 2.5
          * @gcx-command-category Visualization
          */
-        (commandName: "RemoveHeatMap"): TypedCommand<{
+        (commandName: "RemoveHeatMap"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.HeatMapArgs | string): void;
         }>;
         /**
@@ -2366,7 +1923,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.2
          * @gcx-command-category Highlighting
          */
-        (commandName: "RemoveHighlightLayer"): TypedCommand<{
+        (commandName: "RemoveHighlightLayer"): framework.commands.TypedCommand<{
             (layerName: string): void;
         }>;
         /**
@@ -2377,19 +1934,8 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @private
          */
-        (commandName: "RemoveMarker"): TypedCommand<{
+        (commandName: "RemoveMarker"): framework.commands.TypedCommand<{
             (id: string): void;
-        }>;
-        /**
-         * Removes a user added {@link essentials.MapService} off of the map and out of the viewer.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name RemoveMapService
-         * @param mapService The {@link essentials.MapService} to be removed.
-         * @introduced 2.7
-         * @gcx-command-category Layer List
-         */
-        (commandName: "RemoveMapService"): TypedCommand<{
-            (mapService: geocortex.essentials.MapService): void;
         }>;
         /**
          * Removes the pushpin from the map for the given feature, if there is one.
@@ -2399,7 +1945,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Pushpins
          */
-        (commandName: "RemovePushpin"): TypedCommand<{
+        (commandName: "RemovePushpin"): framework.commands.TypedCommand<{
             (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
@@ -2410,29 +1956,19 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Pushpins
          */
-        (commandName: "RemovePushpins"): TypedCommand<{
+        (commandName: "RemovePushpins"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
-         * Removes the specified external component from the viewer. If the component is in a separate window, that window will be closed.
+         * Removes the specified external component from the viewer. If the component is in a seperate window, that window will be closed.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name RemoveExternalComponentById
          * @param ecId The ID of the external component to remove.
          * @introduced 2.4
          * @gcx-command-category Integration
          */
-        (commandName: "RemoveExternalComponentById"): TypedCommand<{
+        (commandName: "RemoveExternalComponentById"): framework.commands.TypedCommand<{
             (ecId: string): void;
-        }>;
-        /**
-         * Removes the status indicator from the results list or table.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name RemoveResultsStatus
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "RemoveResultsStatus"): TypedCommand<{
-            (): void;
         }>;
         /**
          * Removes the status indicator with the specified ID from the screen.
@@ -2442,79 +1978,19 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Map Widget
          */
-        (commandName: "RemoveStatus"): TypedCommand<{
+        (commandName: "RemoveStatus"): framework.commands.TypedCommand<{
             (statusId?: string): void;
-        }>;
-        /**
-         * Remove a user added {@link essentials.Layer} (and its parent map service) off of the map and out of the viewer.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name RemoveUserAddedLayer
-         * @param gcxLayer The {@link essentials.Layer} to be removed.
-         * @introduced 2.6
-         * @gcx-command-category Layer List
-         */
-        (commandName: "RemoveUserAddedLayer"): TypedCommand<{
-            (gcxLayer: geocortex.essentials.Layer): void;
         }>;
         /**
          * Removes the visualization from a Geocortex layer, if one is enabled.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name RemoveVisualization
-         * @param args Either a {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.VisualizationArgs} object or a string representing the ID of the map service.
+         * @param args Either a {@link VisualizationArgs} object or a string representing the ID of the map service.
          * @introduced 2.5
          * @gcx-command-category Visualization
          */
-        (commandName: "RemoveVisualization"): TypedCommand<{
+        (commandName: "RemoveVisualization"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.VisualizationArgs | string): void;
-        }>;
-        /**
-         * Removes any custom symbolization from a layer and returns it to the default state.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name RemoveVisualization
-         * @param args An object containing a gcxLayer parameter, which is either a {@link essentials.Layer} or a string giving the layer id.
-         * @introduced 2.7
-         * @gcx-command-category Visualization
-         */
-        (commandName: "RemoveSymbolization"): TypedCommand<{
-            (args: {
-                gcxLayer: essentials.Layer | string;
-            }): void;
-        }>;
-        /**
-         * Applies the supplied renderer to the supplied layer. Layer must be a feature layer or a dynamic mapservice layer that supports resymbolization.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name RemoveVisualization
-         * @param args An object containing a gcxLayer parameter, which is either a {@link essentials.Layer} or a string giving the layer id and a renderer parameter, which is either an esri.renderer.Renderer object or the JSON string representation of one.
-         * @introduced 2.7
-         * @gcx-command-category Visualization
-         */
-        (commandName: "ResymbolizeLayer"): TypedCommand<{
-            (args: {
-                gcxLayer: essentials.Layer | string;
-                renderer: esri.renderer.Renderer | string;
-            }): void;
-        }>;
-        /**
-         * Assigns a new name to a saved selection.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name RenameSelection
-         * @param args A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.RenameSelectionArgs} object with the following members: `newName`, `name`, `featureSetCollection` (optional), `successCallback` (optional) and `errorCallback` (optional).
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "RenameSelection"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.RenameSelectionArgs): void;
-        }>;
-        /**
-         * Loads a named, saved selection into the results view.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name RestoreSelection
-         * @param args A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.SelectionArgs} object with the following members: `name`, `featureSetCollection` (optional), `successCallback` (optional), `errorCallback` (optional).
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "RestoreSelection"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.SelectionArgs): void;
         }>;
         /**
          * Instructs the region hosting a view to restore itself to its previous dimensions, if it supports this action. As of version 2.4, only the `BottomPanelRegion` and its subregions support this action.
@@ -2524,7 +2000,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Region and View
          */
-        (commandName: "RestorePanel"): TypedCommand<{
+        (commandName: "RestorePanel"): framework.commands.TypedCommand<{
             (viewId: string): void;
         }>;
         /**
@@ -2534,7 +2010,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.2.1
          * @gcx-command-category Shell
          */
-        (commandName: "ResizeShell"): TypedCommand<{
+        (commandName: "ResizeShell"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -2544,7 +2020,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3.1
          * @gcx-command-category Map Widget
          */
-        (commandName: "RestoreAllMapTips"): TypedCommand<{
+        (commandName: "RestoreAllMapTips"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -2554,7 +2030,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Map Widget
          */
-        (commandName: "ResumeMapTips"): TypedCommand<{
+        (commandName: "ResumeMapTips"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -2567,7 +2043,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Charting
          */
-        (commandName: "RunChartFeatureActions"): TypedCommand<{
+        (commandName: "RunChartFeatureActions"): framework.commands.TypedCommand<{
             (featureSet: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSet): void;
         }>;
         /**
@@ -2578,7 +2054,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.0
          * @gcx-command-category Workflow
          */
-        (commandName: "RunWorkflowById"): TypedCommand<{
+        (commandName: "RunWorkflowById"): framework.commands.TypedCommand<{
             (workflowId: string): void;
         }>;
         /**
@@ -2591,7 +2067,7 @@ declare module geocortex.framework.commands {
          * @gcx-command-category Workflow
          * @gcx-workflow-requirements Note: In order to use this command in a workflow, you must pass the arg parameter as a `Newtonsoft.Json.Linq.JObject`.
          */
-        (commandName: "RunWorkflowWithArguments"): TypedCommand<{
+        (commandName: "RunWorkflowWithArguments"): framework.commands.TypedCommand<{
             (arg: {
                 workflowId: string;
                 [key: string]: string;
@@ -2606,7 +2082,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Workflow
          */
-        (commandName: "RunWorkflowWithGeometry"): TypedCommand<{
+        (commandName: "RunWorkflowWithGeometry"): framework.commands.TypedCommand<{
             (arg: {
                 workflowId: string;
                 geometry: esri.geometry.Geometry;
@@ -2620,29 +2096,8 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category WCAG
          */
-        (commandName: "ScreenReaderNarrate"): TypedCommand<{
+        (commandName: "ScreenReaderNarrate"): framework.commands.TypedCommand<{
             (inputText: string): void;
-        }>;
-        /**
-         * Disables the "ScreenReaderNarrate" command temporarily.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name DisableScreenReaderNarrate
-         * @introduced 2.6
-         * @gcx-command-category WCAG
-         */
-        (commandName: "DisableScreenReaderNarrate"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Enables screen reader narration if it was previously disabled using "DisableScreenReaderNarrate". Note that it will keep track of the number of calls to the
-         * "DisableScreenReaderNarrate" command and will only reactivate the screen reader once all disable commands have been cancelled by a matching enable command.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name EnableScreenReaderNarrate
-         * @introduced 2.6
-         * @gcx-command-category WCAG
-         */
-        (commandName: "EnableScreenReaderNarrate"): TypedCommand<{
-            (): void;
         }>;
         /**
          * Selects a base map by name and makes it visible. All other base maps are faded out.
@@ -2652,7 +2107,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Basemap
          */
-        (commandName: "SelectBaseMap"): TypedCommand<{
+        (commandName: "SelectBaseMap"): framework.commands.TypedCommand<{
             (basemapName: string): void;
         }>;
         /**
@@ -2663,7 +2118,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.2
          * @gcx-command-category Highlighting
          */
-        (commandName: "SetActiveHighlightLayer"): TypedCommand<{
+        (commandName: "SetActiveHighlightLayer"): framework.commands.TypedCommand<{
             (layerName: string): void;
         }>;
         /**
@@ -2673,7 +2128,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.3
          * @gcx-command-category Highlighting
          */
-        (commandName: "SetActiveHighlightLayerDefault"): TypedCommand<{
+        (commandName: "SetActiveHighlightLayerDefault"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -2684,18 +2139,18 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Map Widget
          */
-        (commandName: "SetActiveTool"): TypedCommand<{
+        (commandName: "SetActiveTool"): framework.commands.TypedCommand<{
             (toolName: string): void;
         }>;
         /**
-         * Sets the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} of interest that will be used to generate data for charts.
+         * Sets the {@link FeatureSetCollection} of interest that will be used to generate data for charts.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name SetCollectionOfInterest
-         * @param fscId The ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} for which to display charts.
+         * @param fscId The ID of the {@link FeatureSetCollection} for which to display charts.
          * @introduced 2.3
          * @gcx-command-category Charting
          */
-        (commandName: "SetCollectionOfInterest"): TypedCommand<{
+        (commandName: "SetCollectionOfInterest"): framework.commands.TypedCommand<{
             (fscId: string): void;
         }>;
         /**
@@ -2707,7 +2162,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Editing
          */
-        (commandName: "SetEditLog"): TypedCommand<{
+        (commandName: "SetEditLog"): framework.commands.TypedCommand<{
             (editLog: any[], errorCallback: (error: Error) => void): void;
         }>;
         /**
@@ -2717,7 +2172,7 @@ declare module geocortex.framework.commands {
          * @param geometry Geometry for the feature currently being edited.
          * @private
          */
-        (commandName: "SetEditorFeatureGeometry"): TypedCommand<{
+        (commandName: "SetEditorFeatureGeometry"): framework.commands.TypedCommand<{
             (geometry: esri.geometry.Geometry): void;
         }>;
         /**
@@ -2728,19 +2183,8 @@ declare module geocortex.framework.commands {
          * @introduced 1.2
          * @gcx-command-category Highlighting
          */
-        (commandName: "SetHighlightBorderColor"): TypedCommand<{
+        (commandName: "SetHighlightBorderColor"): framework.commands.TypedCommand<{
             (color: string): void;
-        }>;
-        /**
-         * Sets the current highlight border width to use, if the feature does not specify one.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name SetHighlightBorderWidth
-         * @param width A number representing the width in pixels.
-         * @introduced 2.7
-         * @gcx-command-category Highlighting
-         */
-        (commandName: "SetHighlightBorderWidth"): framework.commands.TypedCommand<{
-            (width: number): void;
         }>;
         /**
          * Sets the current highlight fill color to use, if the feature does not specify one.
@@ -2750,7 +2194,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.2
          * @gcx-command-category Highlighting
          */
-        (commandName: "SetHighlightFillColor"): TypedCommand<{
+        (commandName: "SetHighlightFillColor"): framework.commands.TypedCommand<{
             (color: string): void;
         }>;
         /**
@@ -2762,19 +2206,8 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Measurement
          */
-        (commandName: "SetMeasurementUnits"): TypedCommand<{
+        (commandName: "SetMeasurementUnits"): framework.commands.TypedCommand<{
             (lengthUnits: string, areaUnits: string): void;
-        }>;
-        /**
-         * Sets the geometry to be used in the offline map being edited.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name SetOfflineMapEditorGeometry
-         * @param geometry The geometry to set, or null to clear.
-         * @introduced 2.0
-         * @gcx-command-category Offline Profiles
-         */
-        (commandName: "SetOfflineMapEditorGeometry"): TypedCommand<{
-            (geometry: esri.geometry.Polygon): void;
         }>;
         /**
          * Sets the time extent for the map.
@@ -2784,7 +2217,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Map Display
          */
-        (commandName: "SetTimeExtent"): TypedCommand<{
+        (commandName: "SetTimeExtent"): framework.commands.TypedCommand<{
             (timeExtent: esri.TimeExtent): void;
         }>;
         /**
@@ -2796,7 +2229,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "StartEditingNewRelatedRecord"): TypedCommand<{
+        (commandName: "StartEditingNewRelatedRecord"): framework.commands.TypedCommand<{
             (item: any, isNew: boolean): void;
         }>;
         /**
@@ -2807,7 +2240,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Share
          */
-        (commandName: "ShareOn"): TypedCommand<{
+        (commandName: "ShareOn"): framework.commands.TypedCommand<{
             (id: string): void;
         }>;
         /**
@@ -2817,7 +2250,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Accessibility
          */
-        (commandName: "ShowAccessibilityView"): TypedCommand<{
+        (commandName: "ShowAccessibilityView"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -2827,73 +2260,8 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Bookmark
          */
-        (commandName: "ShowAddBookmark"): TypedCommand<{
+        (commandName: "ShowAddBookmark"): framework.commands.TypedCommand<{
             (): void;
-        }>;
-        /**
-         * Shows all plotted coordinates (including temporarily hidden ones) on the map.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ShowAllCoordinates
-         * @introduced 2.6
-         * @gcx-command-category PlotCoordinates
-         */
-        (commandName: "ShowAllCoordinates"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Shows one or many plotted, temporarily hidden Coordinates on the map.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ShowCoordinates
-         * @param descIds The string id, or array of string id's of the coordinate(s) to show on the map.
-         * @introduced 2.6
-         * @gcx-command-category PlotCoordinates
-         */
-        (commandName: "ShowCoordinates"): TypedCommand<{
-            (descIds: string | string[]): void;
-        }>;
-        /**
-         * Shows the configured coordinate actions.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ShowCoordinateActions
-         * @param descId The id of the coordinate descriptor for which to display coordinate actions.
-         * @introduced 2.6
-         * @gcx-command-category PlotCoordinates
-         */
-        (commandName: "ShowCoordinateActions"): TypedCommand<{
-            (descId: string): void;
-        }>;
-        /**
-         * Shows the labelOptions view
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ShowLabelOptionsView
-         * @param layer The layer for which the label options view will be opened.
-         * @introduced 2.7
-         * @gcx-command-category Label Options
-         */
-        (commandName: "ShowLabelOptionsView"): TypedCommand<{
-            (layer: geocortex.essentials.Layer): void;
-        }>;
-        /**
-         * Opens the Layer Properties panel from the Layer Actions menu.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ShowLayerPropertiesView
-         * @param layer The layer whose properties may be altered.
-         * @introduced 2.7
-         * @gcx-command-category Layer Addition
-         */
-        (commandName: "ShowLayerPropertiesView"): TypedCommand<{
-            (layer: geocortex.essentials.Layer): void;
-        }>;
-        /**
-         * Displays the available options for refining the current set of results; that is, Union, Subtract, Intersect.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name "ShowSearchOptions"
-         * @param fscOrId The {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} or its ID, to refine.
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "ShowSearchOptions"): TypedCommand<{
-            (fscOrId: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection | string): void;
         }>;
         /**
          * Displays the Bookmarked Locations menu if the `BookmarkViewModel`'s property, `bookmarksEnabled`, is set to `true`.
@@ -2902,7 +2270,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Bookmark
          */
-        (commandName: "ShowBookmarks"): TypedCommand<{
+        (commandName: "ShowBookmarks"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -2912,17 +2280,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Charting
          */
-        (commandName: "ShowChartingView"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Activates the export web map view.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ShowExportWebMapDialog
-         * @introduced 2.6
-         * @gcx-command-category Export
-         */
-        (commandName: "ShowExportWebMapDialog"): TypedCommand<{
+        (commandName: "ShowChartingView"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -2933,68 +2291,78 @@ declare module geocortex.framework.commands {
          * @deprecated 2.3 The feature editor will automatically appear when editing a feature is started.
          * @gcx-command-category Offline/Online
          */
-        (commandName: "ShowFeatureAttributeEditor"): TypedCommand<{
+        (commandName: "ShowFeatureAttributeEditor"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
-         * Creates and displays the Feature Details dialog for the first feature in the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} specified.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ShowFirstFeatureFromCollection
-         * @param arg A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} or its ID, whose first feature's details are to be shown.
-         * @introduced 2.6
-         * @gcx-workflow-requirements In order to use this command in a workflow, you must use the ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} as the parameter.
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "ShowFirstFeatureFromCollection"): TypedCommand<{
-            (arg: string | geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection): void;
-        }>;
-        /**
-         * Creates and displays the Feature Details dialog for the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature} or {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} specified.
+         * Creates and displays the Feature Details dialog for the {@link Feature} or {@link FeatureSetCollection} specified.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ShowFeatureDetails
-         * @param arg A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature} or a {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} ID for which to show the Feature Details component.
+         * @param arg A {@link Feature} or a {@link FeatureSetCollection} ID for which to show the Feature Details component for.
          * @introduced 1.3
-         * @gcx-workflow-requirements In order to use this command in a workflow, you must use the ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} as the parameter.
+         * @gcx-workflow-requirements In order to use this command in a workflow, you must use the ID of the {@link FeatureSetCollection} as the parameter.
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "ShowFeatureDetails"): TypedCommand<{
+        (commandName: "ShowFeatureDetails"): framework.commands.TypedCommand<{
             (arg: any): void;
         }>;
         /**
-         * Creates and displays the Feature Details dialog for the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature} in Compact View mode. If the feature is not specified, details for the last feature will be displayed.
+         * Creates and displays the Feature Details dialog for the {@link Feature} in Compact View mode. If the feature is not specified, details for the last feature will be displayed.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ShowFeatureDetailsCompact
-         * @param feature A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature} for which to show the feature details. If not specified, details for the last feature will be displayed.
+         * @param feature A {@link Feature} for which to show the feature details. If not specified, details for the last feature will be displayed.
          * @introduced 2.4
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "ShowFeatureDetailsCompact"): TypedCommand<{
+        (commandName: "ShowFeatureDetailsCompact"): framework.commands.TypedCommand<{
             (feature?: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
-         * Creates and displays the Feature Details dialog for the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature} in Expanded View mode. If the feature is not specified, details for the last feature will be displayed.
+         * Creates and displays the Feature Details dialog for the {@link Feature} in Expanded View mode. If the feature is not specified, details for the last feature will be displayed.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ShowFeatureDetailsExpanded
-         * @param feature A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature} for which to show the feature details. If not specified, details for the last feature will be displayed.
+         * @param feature A {@link Feature} for which to show the feature details. If not specified, details for the last feature will be displayed.
          * @introduced 2.4
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "ShowFeatureDetailsExpanded"): TypedCommand<{
+        (commandName: "ShowFeatureDetailsExpanded"): framework.commands.TypedCommand<{
             (arg: any): void;
         }>;
         /**
-         * Creates and displays the Feature Details dialog for the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature} in the specified view mode. If the feature is not specified, details for the last feature will be displayed.
+         * Creates and displays the Feature Details dialog for the {@link Feature} in the specified view mode. If the feature is not specified, details for the last feature will be displayed.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ShowFeatureDetails
          * @param args A string specifying the view mode, or a configuration object with two properties: `viewMode` and `feature`. If the feature is not specified, details for the last feature will be displayed.
          * @introduced 2.4
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "SetFeatureDetailsMode"): TypedCommand<{
+        (commandName: "SetFeatureDetailsMode"): framework.commands.TypedCommand<{
             (args: string | {
                 viewMode: string;
                 feature?: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature;
             }): void;
+        }>;
+        /**
+         * Shows the feature layer details view used in setting offline cache behavior for a given feature layer.
+         * @docs-gcx-command geocortex.essentialsHtmlViewer
+         * @name ShowFeatureLayerDetails
+         * @param layer The feature layer to view details for.
+         * @introduced 1.3
+         * @gcx-workflow-disabled
+         * @gcx-command-category Offline/Online
+         */
+        (commandName: "ShowFeatureLayerDetails"): framework.commands.TypedCommand<{
+            (arg: any): void;
+        }>;
+        /**
+         * Shows the feature layer edit log.
+         * @docs-gcx-command geocortex.essentialsHtmlViewer
+         * @name ShowFeatureLayerEditLog
+         * @introduced 1.3
+         * @gcx-command-category Offline/Online
+         */
+        (commandName: "ShowFeatureLayerEditLog"): framework.commands.TypedCommand<{
+            (arg: any): void;
         }>;
         /**
          * Creates a ModalMessageView view and displays the given message.
@@ -3003,7 +2371,7 @@ declare module geocortex.framework.commands {
          * @param message The message to be displayed in the ModalMessageView view.
          * @private
          */
-        (commandName: "ShowFeatureLayerModalMessage"): TypedCommand<{
+        (commandName: "ShowFeatureLayerModalMessage"): framework.commands.TypedCommand<{
             (message: string): void;
         }>;
         /**
@@ -3015,7 +2383,7 @@ declare module geocortex.framework.commands {
          * @param relatedFeature An Esri feature with the information needed to create a related feature.
          * @gcx-command-category Editing
          */
-        (commandName: "ShowFeatureTemplatePicker"): TypedCommand<{
+        (commandName: "ShowFeatureTemplatePicker"): framework.commands.TypedCommand<{
             (layer?: geocortex.essentials.Layer, relatedFeature?: esri.Graphic): void;
         }>;
         /**
@@ -3025,7 +2393,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "ShowFeatureParentDetails"): TypedCommand<{
+        (commandName: "ShowFeatureParentDetails"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3035,7 +2403,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Geolocation
          */
-        (commandName: "ShowGeolocateMenu"): TypedCommand<{
+        (commandName: "ShowGeolocateMenu"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3045,7 +2413,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Region and View
          */
-        (commandName: "ShowHomePanel"): TypedCommand<{
+        (commandName: "ShowHomePanel"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3055,7 +2423,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Integration
          */
-        (commandName: "ShowExternalComponentView"): TypedCommand<{
+        (commandName: "ShowExternalComponentView"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3067,7 +2435,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Layer
          */
-        (commandName: "ShowLayerActions"): TypedCommand<{
+        (commandName: "ShowLayerActions"): framework.commands.TypedCommand<{
             (layer: geocortex.essentials.Layer): void;
         }>;
         /**
@@ -3075,23 +2443,11 @@ declare module geocortex.framework.commands {
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ShowLayerList
          * @introduced 1.1
-         * @deprecated 2.3 Using `ActivateView` and pass the ID `LayerListView`.
+         * @deprecated 2.3
          * @gcx-command-category Layer List
          */
-        (commandName: "ShowLayerList"): TypedCommand<{
+        (commandName: "ShowLayerList"): framework.commands.TypedCommand<{
             (): void;
-        }>;
-        /**
-         * Shows available actions for a given map service.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ShowMapServiceActions
-         * @param mapService The Geocortex map service to show actions for.
-         * @introduced 2.7
-         * @gcx-workflow-disabled
-         * @gcx-command-category Layer List
-         */
-        (commandName: "ShowMapServiceActions"): TypedCommand<{
-            (mapService: geocortex.essentials.MapService): void;
         }>;
         /**
          * Displays previously hidden map tips by setting their visibility to `true`, and resumes displaying map tips.  Map tips must be enabled for this command to work.
@@ -3100,31 +2456,8 @@ declare module geocortex.framework.commands {
          * @introduced 2.3.1
          * @gcx-command-category Map Widget
          */
-        (commandName: "ShowMapTips"): TypedCommand<{
+        (commandName: "ShowMapTips"): framework.commands.TypedCommand<{
             (): void;
-        }>;
-        /**
-         * Displays a dialog to save a {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} as a named selection.
-         * If name is specified, the dialog will pre-populate the name input field.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ShowSaveSelectionDialog
-         * @param fscOrId The {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} or its ID, to save.
-         * @param name (Optional) The name of the selection.
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "ShowSaveSelectionDialog"): TypedCommand<{
-            (fscOrId: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection | string, name?: string): void;
-        }>;
-        /**
-         * Show the offline map editor.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ShowOfflineMapEditor
-         * @param args Arguments to showing the offline map editor.
-         * @gcx-command-category Offline Profiles
-         */
-        (commandName: "ShowOfflineMapEditor"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.ShowOfflineMapEditorArgs): void;
         }>;
         /**
          * Opens the Social Media sharing view.
@@ -3133,7 +2466,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Share
          */
-        (commandName: "ShowShareView"): TypedCommand<{
+        (commandName: "ShowShareView"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3143,7 +2476,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Layer List
          */
-        (commandName: "SwitchToLayerView"): TypedCommand<{
+        (commandName: "SwitchToLayerView"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3153,7 +2486,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Layer List
          */
-        (commandName: "SwitchToLegendView"): TypedCommand<{
+        (commandName: "SwitchToLegendView"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3164,7 +2497,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Log
          */
-        (commandName: "ShowLog"): TypedCommand<{
+        (commandName: "ShowLog"): framework.commands.TypedCommand<{
             (show?: boolean): void;
         }>;
         /**
@@ -3174,7 +2507,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Map Display
          */
-        (commandName: "ShowMap"): TypedCommand<{
+        (commandName: "ShowMap"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3186,7 +2519,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Map Widget
          */
-        (commandName: "ShowMapCallout"): TypedCommand<{
+        (commandName: "ShowMapCallout"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.ShowMapElementArgs): void;
         }>;
         /**
@@ -3198,7 +2531,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Map Widget
          */
-        (commandName: "ShowMapElement"): TypedCommand<{
+        (commandName: "ShowMapElement"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.ShowMapElementArgs): void;
         }>;
         /**
@@ -3210,7 +2543,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Map Widget
          */
-        (commandName: "ShowMapTip"): TypedCommand<{
+        (commandName: "ShowMapTip"): framework.commands.TypedCommand<{
             (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
@@ -3222,30 +2555,30 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Map Widget
          */
-        (commandName: "ShowMapTipInCallout"): TypedCommand<{
+        (commandName: "ShowMapTipInCallout"): framework.commands.TypedCommand<{
             (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
-         * Shows map tip results for a {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} previously added to the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetManager}.
+         * Shows map tip results for a {@link FeatureSetCollection} previously added to the {@link FeatureSetManager}.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ShowMapTipResults
-         * @param fscId The ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} to display.
+         * @param fscId The ID of the {@link FeatureSetCollection} to display.
          * @introduced 1.0
          * @gcx-command-category Map Widget
          */
-        (commandName: "ShowMapTipResults"): TypedCommand<{
+        (commandName: "ShowMapTipResults"): framework.commands.TypedCommand<{
             (fscId: string): void;
         }>;
         /**
-         * Shows map tip results for a {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} previously added to the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetManager},
+         * Shows map tip results for a {@link FeatureSetCollection} previously added to the {@link FeatureSetManager},
          * in a floating callout window on the map.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ShowMapTipResultsInCallout
-         * @param fscId The ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} to display.
+         * @param fscId The ID of the {@link FeatureSetCollection} to display.
          * @introduced 2.4
          * @gcx-command-category Map Widget
          */
-        (commandName: "ShowMapTipResultsInCallout"): TypedCommand<{
+        (commandName: "ShowMapTipResultsInCallout"): framework.commands.TypedCommand<{
             (fscId: string): void;
         }>;
         /**
@@ -3255,7 +2588,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @private
          */
-        (commandName: "ShowMarkers"): TypedCommand<{
+        (commandName: "ShowMarkers"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3265,51 +2598,41 @@ declare module geocortex.framework.commands {
          * @introduced 2.1
          * @gcx-command-category Pushpins
          */
-        (commandName: "ShowPushpins"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Cancels any feature placement while a feature is being created or edited.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name StopFeaturePlacementState
-         * @introduced 2.5
-         * @gcx-command-category FeatureEditing
-         */
-        (commandName: "StopFeaturePlacementState"): framework.commands.TypedCommand<{
+        (commandName: "ShowPushpins"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
          * Presents a user interface for choosing to run a report from a list of reports that are available to the given reportable input (group of features).
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ListReports
-         * @param reportable: A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature}, {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSet}, {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection}, or a {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature} array.
+         * @param reportable: A {@link Feature}, {@link FeatureSet}, {@link FeatureSetCollection}, or a {@link Feature} array.
          * @introduced 2.5
          * @gcx-command-category Reporting
          */
-        (commandName: "ListReports"): TypedCommand<{
-            (reportable: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection | geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSet | geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature | geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature[]): void;
+        (commandName: "ListReports"): framework.commands.TypedCommand<{
+            (reportable: essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection | essentialsHtmlViewer.mapping.infrastructure.FeatureSet | essentialsHtmlViewer.mapping.infrastructure.Feature | essentialsHtmlViewer.mapping.infrastructure.Feature[]): void;
         }>;
         /**
-         * Alias to the command `ListReports` for backwards-compatibility with the Silverlight viewer.
+         * Alias to {@link ListReports} for backwards-compatibility with the Silverlight viewer.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name RunFeatureReport
-         * @param feature: A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature} object.
+         * @param feature: A {@link Feature} object.
          * @introduced 2.5
          * @gcx-command-category Reporting
          */
-        (commandName: "RunFeatureReport"): TypedCommand<{
-            (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
+        (commandName: "RunFeatureReport"): framework.commands.TypedCommand<{
+            (feature: essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
-         * Alias to the command `ListReports` for backwards-compatibility with the Silverlight viewer.
+         * Alias to {@link ListReports} for backwards-compatibility with the Silverlight viewer.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name RunFeaturesReport
-         * @param feature: A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSet} object.
+         * @param feature: A {@link FeatureSet} object.
          * @introduced 2.5
          * @gcx-command-category Reporting
          */
-        (commandName: "RunFeaturesReport"): TypedCommand<{
-            (featureSet: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSet): void;
+        (commandName: "RunFeaturesReport"): framework.commands.TypedCommand<{
+            (featureSet: essentialsHtmlViewer.mapping.infrastructure.FeatureSet): void;
         }>;
         /**
          * Runs a given report on the provided features, and displays the result (a download link to the report file) to the user.
@@ -3322,106 +2645,34 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Reporting
          */
-        (commandName: "RunReport"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.RunReportArgs): void;
+        (commandName: "RunReport"): framework.commands.TypedCommand<{
+            (args: essentialsHtmlViewer.mapping.infrastructure.commandArgs.RunReportArgs): void;
         }>;
         /**
-         * Displays the user interface to fill in details about a project to be saved.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name SaveAsProject
-         * @introduced 2.6
-         * @gcx-command-category Projects
-         */
-        (commandName: "SaveAsProject"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Save the current state of the viewer as a project or displays the user interface to fill in details about the project to be saved.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name SaveProject
-         * @introduced 2.6
-         * @gcx-command-category Projects
-         */
-        (commandName: "SaveProject"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Shows the user interface for editing a project.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ShowProjectEditor
-         * @param project The unique ID of the project to edit, or an instance of {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.project.Project} containing the project to edit.
-         * @introduced 2.6
-         * @gcx-command-category Projects
-         */
-        (commandName: "ShowProjectEditor"): TypedCommand<{
-            (project: string | geocortex.essentialsHtmlViewer.mapping.infrastructure.project.Project): void;
-        }>;
-        /**
-         * Shows the user interface for browsing and loading projects.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ShowProjects
-         * @introduced 2.6
-         * @gcx-command-category Projects
-         */
-        (commandName: "ShowProjects"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Displays the list of features in the given {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} as a list.
+         * Displays the list of features in the given {@link FeatureSetCollection} as a list.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ShowResultsList
-         * @param fsc A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} or the ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection}.
+         * @param fsc A {@link FeatureSetCollection} or the ID of the {@link FeatureSetCollection}.
          * @introduced 1.1
          * @gcx-hyperlink-disabled
-         * @gcx-workflow-requirements In order to use this command in a workflow, you must use the ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} as the parameter.
+         * @gcx-workflow-requirements In order to use this command in a workflow, you must use the ID of the {@link FeatureSetCollection} as the parameter.
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "ShowResultsList"): TypedCommand<{
+        (commandName: "ShowResultsList"): framework.commands.TypedCommand<{
             (fsc: any): void;
         }>;
         /**
-         * Displays the list of features in the given {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} in a tabular view.
+         * Displays the list of features in the given {@link FeatureSetCollection} in a tabular view.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ShowResultsTable
-         * @param fsc A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} or the ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection}.
+         * @param fsc A {@link FeatureSetCollection} or the ID of the {@link FeatureSetCollection}.
          * @introduced 1.0
          * @gcx-hyperlink-disabled
-         * @gcx-workflow-requirements In order to use this command in a workflow, you must use the ID of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} as the parameter.
+         * @gcx-workflow-requirements In order to use this command in a workflow, you must use the ID of the {@link FeatureSetCollection} as the parameter.
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "ShowResultsTable"): TypedCommand<{
+        (commandName: "ShowResultsTable"): framework.commands.TypedCommand<{
             (fsc: any): void;
-        }>;
-        /**
-         * Switches from Results Table to Results List view if the Results Table view is currently active.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name SwitchToListResultsView
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "SwitchToListResultsView"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Switches from Results List to Results Table view if the Results List view is currently active.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name SwitchToTabularResultsView
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "SwitchToTabularResultsView"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Shows the user interface for sharing projects.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ShowShareProject
-         * @param project The unique ID of the project to share, or an instance of {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.project.Project} containing the project to share.
-         * @introduced 2.6
-         * @gcx-command-category Projects
-         */
-        (commandName: "ShowShareProject"): TypedCommand<{
-            (project: string | geocortex.essentialsHtmlViewer.mapping.infrastructure.project.Project): void;
         }>;
         /**
          * Shows the visualization options view for a given Geocortex layer if the layer supports any visualizations.
@@ -3431,7 +2682,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Visualization
          */
-        (commandName: "ShowVisualizationView"): TypedCommand<{
+        (commandName: "ShowVisualizationView"): framework.commands.TypedCommand<{
             (args: geocortex.essentials.Layer | string): void;
         }>;
         /**
@@ -3442,7 +2693,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.2
          * @gcx-command-category User
          */
-        (commandName: "SignIn"): TypedCommand<{
+        (commandName: "SignIn"): framework.commands.TypedCommand<{
             (signInUrl: string): void;
         }>;
         /**
@@ -3452,7 +2703,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.2
          * @gcx-command-category User
          */
-        (commandName: "SignOut"): TypedCommand<{
+        (commandName: "SignOut"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3462,7 +2713,7 @@ declare module geocortex.framework.commands {
          * @param editLogEntry The edit to be changed.
          * @private
          */
-        (commandName: "StartEditingEditLogEntry"): TypedCommand<{
+        (commandName: "StartEditingEditLogEntry"): framework.commands.TypedCommand<{
             (editLogEntry: any): void;
         }>;
         /**
@@ -3473,7 +2724,7 @@ declare module geocortex.framework.commands {
          * @param isNewFeature If the feature is new, set to `true`; otherwise, set to `false`.  The default is `false`.
          * @private
          */
-        (commandName: "StartEditingFeature"): TypedCommand<{
+        (commandName: "StartEditingFeature"): framework.commands.TypedCommand<{
             (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature, isNewFeature?: boolean): void;
         }>;
         /**
@@ -3485,35 +2736,8 @@ declare module geocortex.framework.commands {
          * @param editGeometry Whether to immediately start editing the geometry, defaults to `true`.
          * @private
          */
-        (commandName: "StartEditingNewFeature"): TypedCommand<{
+        (commandName: "StartEditingNewFeature"): framework.commands.TypedCommand<{
             (feature: esri.Graphic, layer: esri.layers.FeatureLayer, editGeometry?: boolean): void;
-        }>;
-        /**
-         * Starts downloading an offline map and displays the progress to the user.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name StartOfflineDownloadAndShowProgress
-         * @param args The arguments to the command.
-         * @introduced 2.6
-         * @gcx-command-category Offline/Online
-         */
-        (commandName: "StartOfflineDownloadAndShowProgress"): TypedCommand<{
-            (args: {
-                offlineMap: geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.OfflineMap;
-            }): void;
-        }>;
-        /**
-         * Starts syncing an offline map and displays the progress to the user.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name StartOfflineSyncAndShowProgress
-         * @param args The arguments to the command.
-         * @introduced 2.6
-         * @gcx-hyperlink-disabled
-         * @gcx-command-category Offline/Online
-         */
-        (commandName: "StartOfflineSyncAndShowProgress"): TypedCommand<{
-            (args: {
-                offlineMap: geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.OfflineMap;
-            }): void;
         }>;
         /**
          * Zooms in a step.
@@ -3522,7 +2746,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.0
          * @gcx-command-category Navigation
          */
-        (commandName: "StepZoomIn"): TypedCommand<{
+        (commandName: "StepZoomIn"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3532,7 +2756,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.0
          * @gcx-command-category Navigation
          */
-        (commandName: "StepZoomOut"): TypedCommand<{
+        (commandName: "StepZoomOut"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3543,7 +2767,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Markup
          */
-        (commandName: "StopEditingMarkup"): TypedCommand<{
+        (commandName: "StopEditingMarkup"): framework.commands.TypedCommand<{
             (clearActiveTool?: boolean): void;
         }>;
         /**
@@ -3553,7 +2777,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.0
          * @gcx-command-category Map Widget
          */
-        (commandName: "SuspendMapTips"): TypedCommand<{
+        (commandName: "SuspendMapTips"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3565,7 +2789,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Layer Theme
          */
-        (commandName: "SwitchToLayerTheme"): TypedCommand<{
+        (commandName: "SwitchToLayerTheme"): framework.commands.TypedCommand<{
             (themeIdentifier: String): void;
         }>;
         /**
@@ -3576,7 +2800,7 @@ declare module geocortex.framework.commands {
          * @gcx-hyperlink-disabled
          * @gcx-command-category Offline/Online
          */
-        (commandName: "TakeApplicationOffline"): TypedCommand<{
+        (commandName: "TakeApplicationOffline"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3591,7 +2815,7 @@ declare module geocortex.framework.commands {
          * @gcx-hyperlink-disabled
          * @gcx-command-category Map Widget
          */
-        (commandName: "TapToDismiss"): TypedCommand<{
+        (commandName: "TapToDismiss"): framework.commands.TypedCommand<{
             (args: {
                 view: framework.ui.ViewBase;
                 onOtherInteracted?: (evt?: Event) => void;
@@ -3606,7 +2830,7 @@ declare module geocortex.framework.commands {
          * @gcx-hyperlink-disabled
          * @gcx-command-category Offline/Online
          */
-        (commandName: "TakeApplicationOnline"): TypedCommand<{
+        (commandName: "TakeApplicationOnline"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3616,19 +2840,8 @@ declare module geocortex.framework.commands {
          * @introduced 1.0
          * @gcx-command-category Region and View
          */
-        (commandName: "ToggleDataFrame"): TypedCommand<{
+        (commandName: "ToggleDataFrame"): framework.commands.TypedCommand<{
             (): void;
-        }>;
-        /**
-         * Toggle Dynamic Labels
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ToggleDynamicLabels
-         * @param layer The layer that will have its labels turned on or off.
-         * @introduced 2.7
-         * @gcx-command-category Label Options
-        */
-        (commandName: "ToggleDynamicLabels"): TypedCommand<{
-            (layer: geocortex.essentials.Layer): void;
         }>;
         /**
          * Activates or deactivates the log view, based on whether or not it is currently active.
@@ -3637,7 +2850,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.0
          * @gcx-command-category Region and View
          */
-        (commandName: "ToggleLogView"): TypedCommand<{
+        (commandName: "ToggleLogView"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3647,7 +2860,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Region and View
          */
-        (commandName: "ToggleMouseCoordinates"): TypedCommand<{
+        (commandName: "ToggleMouseCoordinates"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3657,7 +2870,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Region and View
          */
-        (commandName: "ToggleResultsFrame"): TypedCommand<{
+        (commandName: "ToggleResultsFrame"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3668,7 +2881,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Integration
          */
-        (commandName: "ToggleExternalComponentSyncById"): TypedCommand<{
+        (commandName: "ToggleExternalComponentSyncById"): framework.commands.TypedCommand<{
             (ecId: string): void;
         }>;
         /**
@@ -3678,7 +2891,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.3
          * @gcx-command-category Region and View
          */
-        (commandName: "ToggleToolbar"): TypedCommand<{
+        (commandName: "ToggleToolbar"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3688,7 +2901,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Region and View
          */
-        (commandName: "OpenToolbar"): TypedCommand<{
+        (commandName: "OpenToolbar"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3698,7 +2911,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Region and View
          */
-        (commandName: "CloseToolbar"): TypedCommand<{
+        (commandName: "CloseToolbar"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3708,7 +2921,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @gcx-command-category Undo and Redo
          */
-        (commandName: "Undo"): TypedCommand<{
+        (commandName: "Undo"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3720,7 +2933,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @private
          */
-        (commandName: "UnionGraphicsInMemory"): TypedCommand<{
+        (commandName: "UnionGraphicsInMemory"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.EditInMemoryArgs): void;
         }>;
         /**
@@ -3730,9 +2943,9 @@ declare module geocortex.framework.commands {
          * @param arg An object with the following members: `mapService`, `layer`, `feature`, `featureUrl`, `filename`, `contentType`, `payload`, `successCallback`, `errorCallback`.
          * @private
          */
-        (commandName: "UpdateAttachment"): TypedCommand<{
+        (commandName: "UpdateAttachment"): framework.commands.TypedCommand<{
             (arg: {
-                mapService: essentials.MapService;
+                mapService: geocortex.essentials.MapService;
                 layer: esri.layers.FeatureLayer;
                 feature: esri.Graphic;
                 featureUrl: string;
@@ -3752,8 +2965,13 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "UpdateFeature"): TypedCommand<{
-            (arg: commandArgs.EditFeatureArgs): void;
+        (commandName: "UpdateFeature"): framework.commands.TypedCommand<{
+            (arg: {
+                mapService: geocortex.essentials.MapService;
+                feature: esri.Graphic;
+                successCallback?: () => void;
+                errorCallback?: (error: Error) => void;
+            }): void;
         }>;
         /**
          * Updates existing graphics. These edits are only applied to the graphics layer in memory.
@@ -3763,7 +2981,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @private
          */
-        (commandName: "UpdateGraphicsInMemory"): TypedCommand<{
+        (commandName: "UpdateGraphicsInMemory"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.UpdateGraphicsArgs): void;
         }>;
         /**
@@ -3774,8 +2992,17 @@ declare module geocortex.framework.commands {
          * @introduced 1.1
          * @gcx-command-category Feature and Feature Set
          */
-        (commandName: "UpdateRelatedRecord"): TypedCommand<{
-            (arg: commandArgs.EditRelatedRecordArgs): void;
+        (commandName: "UpdateRelatedRecord"): framework.commands.TypedCommand<{
+            (arg: {
+                mapService: geocortex.essentials.MapService;
+                layer: esri.layers.Layer;
+                feature: esri.Graphic;
+                relatedFeature: esri.Graphic;
+                relationshipOrigin: esri.layers.Relationship;
+                relationshipDestination: esri.layers.Relationship;
+                successCallback: () => void;
+                errorCallback: (error: Error) => void;
+            }): void;
         }>;
         /**
          * Update the visible ModalMessageView to also include the given message.
@@ -3785,7 +3012,7 @@ declare module geocortex.framework.commands {
          * @param type A string constant indicating type.
          * @private
          */
-        (commandName: "UpdateFeatureLayerModalMessage"): TypedCommand<{
+        (commandName: "UpdateFeatureLayerModalMessage"): framework.commands.TypedCommand<{
             (message: string, tyype?: string): void;
         }>;
         /**
@@ -3796,19 +3023,8 @@ declare module geocortex.framework.commands {
          * @introduced 2.5
          * @private
          */
-        (commandName: "UpdateMarker"): TypedCommand<{
+        (commandName: "UpdateMarker"): framework.commands.TypedCommand<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.MarkerArgs): void;
-        }>;
-        /**
-         * Updates an existing named, saved selection with the supplied {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection}.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name UpdateSelection
-         * @param args A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.SelectionArgs} object with the following members: `name`, `featureSetCollection` (optional), `successCallback` (optional), `errorCallback` (optional).
-         * @introduced 2.6
-         * @gcx-command-category Feature and Feature Set
-         */
-        (commandName: "UpdateSelection"): TypedCommand<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.SelectionArgs): void;
         }>;
         /**
          * Updates the message shown on the status indicator.
@@ -3819,20 +3035,9 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-requirements Note: In order to use this command in a workflow, you must pass the `statusArgs` parameter as a string.
          * @gcx-command-category Map Widget
          */
-        (commandName: "UpdateStatus"): TypedCommand<{
+        (commandName: "UpdateStatus"): framework.commands.TypedCommand<{
             (statusArgs: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.AddStatusArgs): void;
             (statusArgs: string): void;
-        }>;
-        /**
-         * Prompt the user to upload layers onto the map straight from their own computer.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name UploadData
-         * @param process Optional `UploadDataProcess` object which can be used to skip dialogs or resume an in-progress upload data process.
-         * @introduced 2.6
-         * @gcx-command-category Upload Data
-         */
-        (commandName: "UploadData"): TypedCommand<{
-            (process?: any): void;
         }>;
         /**
          * Zooms out to the given extent.
@@ -3842,7 +3047,7 @@ declare module geocortex.framework.commands {
          * @param extent The extent to zoom out to.
          * @gcx-command-category Navigation
          */
-        (commandName: "ZoomOutToExtent"): TypedCommand<{
+        (commandName: "ZoomOutToExtent"): framework.commands.TypedCommand<{
             (extent: esri.geometry.Extent): void;
         }>;
         /**
@@ -3854,7 +3059,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Navigation
          */
-        (commandName: "ZoomToAllFeatures"): TypedCommand<{
+        (commandName: "ZoomToAllFeatures"): framework.commands.TypedCommand<{
             (features: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature[]): void;
         }>;
         /**
@@ -3863,10 +3068,10 @@ declare module geocortex.framework.commands {
          * @name ZoomToEsriFeatureSet
          * @param featureSet The featureSet to zoom to.
          * @introduced 1.0
-         * @deprecated 1.1 Use `ZoomToFeatures` instead, passing a Geocortex `FeatureSet` object.
+         * @deprecated 1.1
          * @gcx-command-category Navigation
          */
-        (commandName: "ZoomToEsriFeatureSet"): TypedCommand<{
+        (commandName: "ZoomToEsriFeatureSet"): framework.commands.TypedCommand<{
             (featureSet: esri.tasks.FeatureSet): void;
         }>;
         /**
@@ -3877,7 +3082,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.0
          * @gcx-command-category Navigation
          */
-        (commandName: "ZoomToExtent"): TypedCommand<{
+        (commandName: "ZoomToExtent"): framework.commands.TypedCommand<{
             (extent: esri.geometry.Extent): void;
         }>;
         /**
@@ -3889,7 +3094,7 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Navigation
          */
-        (commandName: "ZoomToFeature"): TypedCommand<{
+        (commandName: "ZoomToFeature"): framework.commands.TypedCommand<{
             (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
@@ -3901,19 +3106,19 @@ declare module geocortex.framework.commands {
          * @gcx-workflow-disabled
          * @gcx-command-category Navigation
          */
-        (commandName: "ZoomToFeatureIfOutsideMapExtent"): TypedCommand<{
+        (commandName: "ZoomToFeatureIfOutsideMapExtent"): framework.commands.TypedCommand<{
             (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
          * Zooms to the extent of all the features in the feature set.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ZoomToFeatures
-         * @param featureSet The {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSet} to which to zoom.
+         * @param featureSet The {@link FeatureSet} to which to zoom.
          * @introduced 1.1
          * @gcx-workflow-disabled
          * @gcx-command-category Navigation
          */
-        (commandName: "ZoomToFeatures"): TypedCommand<{
+        (commandName: "ZoomToFeatures"): framework.commands.TypedCommand<{
             (featureSet: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSet): void;
         }>;
         /**
@@ -3923,7 +3128,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.3
          * @gcx-command-category Navigation
          */
-        (commandName: "ZoomToFullExtent"): TypedCommand<{
+        (commandName: "ZoomToFullExtent"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3933,7 +3138,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.0
          * @gcx-command-category Navigation
          */
-        (commandName: "ZoomToInitialExtent"): TypedCommand<{
+        (commandName: "ZoomToInitialExtent"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3943,7 +3148,7 @@ declare module geocortex.framework.commands {
          * @introduced 2.3
          * @gcx-command-category Navigation
          */
-        (commandName: "ZoomToPreviousExtent"): TypedCommand<{
+        (commandName: "ZoomToPreviousExtent"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
@@ -3954,52 +3159,42 @@ declare module geocortex.framework.commands {
          * @introduced 2.4
          * @gcx-command-category Navigation
          */
-        (commandName: "ZoomToNamedExtent"): TypedCommand<{
+        (commandName: "ZoomToNamedExtent"): framework.commands.TypedCommand<{
             (bookmarkName: string): void;
         }>;
         /**
-         * Zooms to the next recorded map extent (if any).
+         * Zooms to the next recorded map extent (if any)
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ZoomToNextExtent
          * @introduced 2.3
          * @gcx-command-category Navigation
          */
-        (commandName: "ZoomToNextExtent"): TypedCommand<{
-            (): void;
-        }>;
-        /**
-         * Zooms to the current offline map's extent. If there is no current offline map, then nothing happens.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name ZoomToOfflineMapExtent
-         * @introduced 2.6
-         * @gcx-command-category Navigation
-         */
-        (commandName: "ZoomToOfflineMapExtent"): TypedCommand<{
+        (commandName: "ZoomToNextExtent"): framework.commands.TypedCommand<{
             (): void;
         }>;
         /**
          * Zooms to the extent of all the features in a layer.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ZoomToLayerExtent
-         * @param layer The Geocortex layer whose extent to zoom to.
+         * @param layer The geocortex layer whose extent to zoom to.
          * @introduced 1.3
          * @gcx-workflow-disabled
          * @gcx-command-category Navigation
          */
-        (commandName: "ZoomToLayerExtent"): TypedCommand<{
-            (layer: essentials.Layer): void;
+        (commandName: "ZoomToLayerExtent"): framework.commands.TypedCommand<{
+            (layer: geocortex.essentials.Layer): void;
         }>;
         /**
          * Zooms to the scale at which features in a layer become visible.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name ZoomToLayerVisibleScale
-         * @param layer The Geocortex layer whose visibility scale to zoom to.
+         * @param layer The geocortex layer whose visibility scale to zoom to.
          * @introduced 1.3
          * @gcx-workflow-disabled
          * @gcx-command-category Navigation
          */
-        (commandName: "ZoomToLayerVisibleScale"): TypedCommand<{
-            (layer: essentials.Layer): void;
+        (commandName: "ZoomToLayerVisibleScale"): framework.commands.TypedCommand<{
+            (layer: geocortex.essentials.Layer): void;
         }>;
         /**
          * Zooms to the given scale.
@@ -4009,7 +3204,7 @@ declare module geocortex.framework.commands {
          * @introduced 1.3
          * @gcx-command-category Navigation
          */
-        (commandName: "ZoomToScale"): TypedCommand<{
+        (commandName: "ZoomToScale"): framework.commands.TypedCommand<{
             (scale: number): void;
         }>;
     }
@@ -4059,74 +3254,6 @@ declare module geocortex.essentialsHtmlViewer {
          */
         function publicCommands(): CommandMetadata[];
     }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
-    /**
-     * Specifies additional options that can be passed in to the Confirm command.
-     */
-    interface ConfirmOptionsArgs {
-        /**
-         * Custom text to display for the "OK" button (default is the value of the language resource "language-common-ok").
-         */
-        okLabel?: string;
-        /**
-         * Custom text to display for the "Cancel" button (default is the value of the language resource "language-common-cancel").
-         */
-        cancelLabel?: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
-    const enum PolicyFlags {
-        DisableSecurityPrompt = 1,
-        DisablePromptOnImages = 2,
-        TrustExactUrl = 4,
-    }
-    /**
-     * Content Policy Facility screens URIs to ensure their safety.
-     */
-    class ContentPolicy {
-        protected _app: ViewerApplication;
-        protected _siteValidator: validation.SiteUrlValidator;
-        protected _debounceHandle: number;
-        protected _debounceInterval: number;
-        protected _flags: number;
-        constructor(app: ViewerApplication);
-        hasFlag(flag: PolicyFlags): boolean;
-        setFlag(flag: PolicyFlags): void;
-        /**
-         * Screen a collection of URI details.
-         */
-        screenUris(uris: FilterUtils.UriDetails[]): Promise<FilterUtils.UriDetails[]>;
-        tryScreenNavLinkSynchronously(uri: FilterUtils.NavigableLinkUriDetails): boolean;
-        protected _validateUris(uris: FilterUtils.UriDetails[]): Promise<FilterUtils.UriDetails[]>;
-        protected _validateUriAgainstSite(uri: FilterUtils.UriDetails): Promise<validation.ValidationResult<string>>;
-        protected _promptForUris(uris: FilterUtils.UriDetails[]): Promise<FilterUtils.UriDetails[]>;
-        private _enqueueConfirmation(uriConfirmation);
-        private _processConfirmationQueue();
-        private _getConfirmation(uriConfirmation);
-        protected _getMemoizationKey(uri: FilterUtils.UriDetails): string;
-        protected _memoizeResult(uri: FilterUtils.UriDetails, result: boolean): void;
-        protected _getMemoizedResult(uri: FilterUtils.UriDetails): boolean;
-        /**
-         * Screen a data URI.
-         */
-        protected _screenDataUri(uri: string): string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.distances {
-    /**
-   * Returns true if units are convertible.
-   * @param targetUnit The type of unit we want to convert to
-   * @param sourceUnit The type of unit we are converting from
-   */
-    function canConvert(targetUnit: string, sourceUnit: string): boolean;
-    /**
-     * Converts an unit to another
-     * @param targetUnit The type of unit we want to convert to
-     * @param distance Distance in original unit type
-     * @param sourceUnit The type of unit we are converting from
-     */
-    function convert(targetUnit: string, distance: number, sourceUnit: string): number;
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.accessibility {
     class AccessibilityProviderBase {
@@ -4465,7 +3592,7 @@ declare module geocortex.framework.events {
             (): void;
         }>;
         /**
-         * Raised when a user fails to authenticate against a {@link essentials.Site}.
+         * Raised when a user fails to authenticate against a {@link Site}.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name AuthenticationFailedEvent
          * @introduced 1.0
@@ -4539,35 +3666,14 @@ declare module geocortex.framework.events {
             (clusterLayer: any): void;
         }>;
         /**
-        * Raised when a plotted coordinate is temporarily hidden.
+
+        * Raised when buffering is activated for a target command or commands.
         * @docs-gcx-event geocortex.essentialsHtmlViewer
-        * @name CoordinateSetHiddenEvent
-        * @param coordId The coordinate Id that has currently been set hidden.
-        * @introduced 2.6
-        * @gcx-event-category PlotCoordinates
+        * @name BufferingActivatedEvent
+        * @param args A string or array of strings specifying the command(s) for which buffering has been activated.
+        * @introduced 2.5
+        * @gcx-event-category Buffering
         */
-        (eventName: "CoordinateSetHiddenEvent"): TypedEvent<{
-            (coordId: string): void;
-        }>;
-        /**
-        * Raised when a plotted coordinate which was hidden, is set visible again.
-        * @docs-gcx-event geocortex.essentialsHtmlViewer
-        * @name CoordinateSetHiddenEvent
-        * @param coordId The coordinate Id that has currently been set visible.
-        * @introduced 2.6
-        * @gcx-event-category PlotCoordinates
-        */
-        (eventName: "CoordinateSetVisibleEvent"): TypedEvent<{
-            (coordId: string): void;
-        }>;
-        /**
-         * Raised when buffering is activated for a target command or commands.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name BufferingActivatedEvent
-         * @param args A string or array of strings specifying the command(s) for which buffering has been activated.
-         * @introduced 2.5
-         * @gcx-event-category Buffering
-         */
         (eventName: "BufferingActivatedEvent"): TypedEvent<{
             (args: string | string[]): void;
         }>;
@@ -4644,7 +3750,7 @@ declare module geocortex.framework.events {
          * Raised when an external components viewpoint has been updated.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name ComponentViewpointUpdatedEvent
-         * @param arg An instance of {@link essentialsHtmlViewer.mapping.infrastructure.integration.ComponentViewpointMessage}, that represents the updated viewpoint of the component.
+         * @param arg An instance of {@link ComponentViewpointMessage}, that represents the updated viewpoint of the component.
          * @introduced 2.4
          * @gcx-event-category Integration
          */
@@ -4652,86 +3758,11 @@ declare module geocortex.framework.events {
             (arg: geocortex.essentialsHtmlViewer.mapping.infrastructure.integration.ComponentViewpointMessage): void;
         }>;
         /**
-         * Raised when a coordinate is resolved and successfully plotted on the map.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name CoordinateAddedEvent
-         * @param arg An instance of {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.PlotCoordinatesEventArgs}, that represents the coordinate just added to the map.
-         * @introduced 2.6
-         * @gcx-event-category PlotCoordinates
-         */
-        (eventName: "CoordinateAddedEvent"): TypedEvent<{
-            (arg: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.PlotCoordinatesEventArgs): void;
-        }>;
-        /**
-         * Raised when a coordinate is successfully edited.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name CoordinateEditedEvent
-         * @param arg An instance of {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.PlotCoordinatesEventArgs}, that represents the coordinate that was just edited.
-         * @introduced 2.6
-         * @gcx-event-category PlotCoordinates
-         */
-        (eventName: "CoordinateEditedEvent"): TypedEvent<{
-            (arg: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.PlotCoordinatesEventArgs): void;
-        }>;
-        /**
-         * Raised when a coordinate is successfully deleted and removed from the map.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name CoordinateDeletedEvent
-         * @param arg An instance of {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.PlotCoordinatesEventArgs}, that represents the coordinate that was just deleted
-         * @introduced 2.6
-         * @gcx-event-category PlotCoordinates
-         */
-        (eventName: "CoordinateDeletedEvent"): TypedEvent<{
-            (arg: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.PlotCoordinatesEventArgs): void;
-        }>;
-        /**
-         * Raised when a coordinate's id is updated, possibly as a result of another coordinate in the coordinate list being deleted.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name CoordinateIdUpdatedEvent
-         * @param arg An instance of {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.PlotCoordinatesIdUpdatedEventArgs}, that represents the coordinate whose Id was just updated
-         * @introduced 2.6
-         * @gcx-event-category PlotCoordinates
-         */
-        (eventName: "CoordinateIdUpdatedEvent"): TypedEvent<{
-            (arg: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.PlotCoordinatesIdUpdatedEventArgs): void;
-        }>;
-        /**
-         * Raised when a coordinate successfully updates itself in response to a change in the global coordinate system setting.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name CoordinateSystemUpdateAppliedEvent
-         * @param arg An instance of {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.PlotCoordinatesEventArgs}, that represents the coordinate whose coordinate system was just updated.
-         * @introduced 2.6
-         * @gcx-event-category PlotCoordinates
-         */
-        (eventName: "CoordinateSystemUpdateAppliedEvent"): TypedEvent<{
-            (arg: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.PlotCoordinatesEventArgs): void;
-        }>;
-        /**
-         * Raised when the context menu is activated.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name ContextMenuActivated
-         * @introduced 2.6
-         * @gcx-event-category Interface
-         */
-        (eventName: "ContextMenuActivated"): TypedEvent<{
-            (): void;
-        }>;
-        /**
-         * Raised when the context menu is deactivated.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name ContextMenuDeactivated
-         * @introduced 2.6
-         * @gcx-event-category Interface
-         */
-        (eventName: "ContextMenuDeactivated"): TypedEvent<{
-            (): void;
-        }>;
-        /**
-         * Raised when datalinks are discovered for the current {@link essentialsHtmlViewer.mapping.infrastructure.FeatureSet} and resolution begins.
+         * Raised when datalinks are discovered for the current {@link FeatureSet} and resolution begins.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name DatalinkResolutionStartedEvent
          * @param datalinkId The ID of the datalink to resolve.
-         * @param featureSet The {@link essentialsHtmlViewer.mapping.infrastructure.FeatureSet} containing features with datalinks to be resolved.
+         * @param featureSet The {@link FeatureSet} containing features with datalinks to be resolved.
          * @introduced 2.5
          * @gcx-event-category Editing
          */
@@ -4743,7 +3774,7 @@ declare module geocortex.framework.events {
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name DatalinkResolutionCompletedEvent
          * @param datalinkId The ID of the datalink to resolve.
-         * @param featureSet The {@link essentialsHtmlViewer.mapping.infrastructure.FeatureSet} containing features with resolved datalinks.
+         * @param featureSet The {@link FeatureSet} containing features with resolved datalinks.
          * @introduced 2.5
          * @gcx-event-category Editing
          */
@@ -4778,7 +3809,7 @@ declare module geocortex.framework.events {
          * @gcx-event-category Interface
          */
         (eventName: "DataFrameOpenedEvent"): TypedEvent<{
-            (bottomPanelHeightPercent?: number): void;
+            (): void;
         }>;
         /**
          * Raised when the feature editor is closed.
@@ -4805,7 +3836,7 @@ declare module geocortex.framework.events {
          * Raised when a vertex is moved with the keyboard.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name EditVertexMovedEvent
-         * @param args An {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.EditVertexMovedEventArgs} object with the following properties: `sender`, `mapPoint` and `screenPoint`.
+         * @param args An {@link EditVertexMovedEventArgs} object with the following properties: `sender`, `mapPoint` and `screenPoint`.
          * `sender` is the sender.
          * `mapPoint` is the map coordinates of the vertex.
          * `screenPoint` is screen cooridinates of the vertex.
@@ -4863,7 +3894,7 @@ declare module geocortex.framework.events {
          * Raised when an external component has established a {@link essentialsHtmlViewer.integration.PostMessageTransport}.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name ExternalComponentInitializedEvent
-         * @param arg An instance of {@link essentialsHtmlViewer.mapping.infrastructure.integration.ComponentInitializationMessage}, that represents a previous state of the component.
+         * @param arg An instance of {@link ComponentInitializationMessage}, that represents a previous state of the component.
          * @introduced 2.4
          * @gcx-event-category Integration
          */
@@ -4904,17 +3935,6 @@ declare module geocortex.framework.events {
             (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
         }>;
         /**
-        * Raised when the Feature Details module is invoked in order to display results for a given feature.
-        * @docs-gcx-event geocortex.essentialsHtmlViewer
-        * @name FeatureDetailsInvokedEvent
-        * @param feature The current feature for which the Feature Details module is displaying details.
-        * @introduced 2.6
-        * @gcx-event-category Feature Details
-        */
-        (eventName: "FeatureDetailsInvokedEvent"): TypedEvent<{
-            (feature: geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature): void;
-        }>;
-        /**
          * Raised when a feature is created.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name FeatureCreatedEvent
@@ -4924,27 +3944,6 @@ declare module geocortex.framework.events {
          */
         (eventName: "FeatureCreatedEvent"): TypedEvent<{
             (feature: esri.Graphic): void;
-        }>;
-        /**
-         * Raised when a feature data synchronization has completed.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name FeatureDataSyncCompleteEvent
-         * @introduced 2.6
-         * @gcx-event-category Offline/Online
-         */
-        (eventName: "FeatureDataSyncCompletedEvent"): TypedEvent<{
-            (): void;
-        }>;
-        /**
-         * Raised when a feature data synchronization has started.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name FeatureDataSyncStartedEvent
-         * @param parameters The sync parameters that were used to specify which data should be synced.
-         * @introduced 2.6
-         * @gcx-event-category Offline/Online
-         */
-        (eventName: "FeatureDataSyncStartedEvent"): TypedEvent<{
-            (parameters: geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.SyncParameters): void;
         }>;
         /**
          * Raised when a feature is deleted.
@@ -4972,6 +3971,81 @@ declare module geocortex.framework.events {
                 originalFeature: esri.Graphic;
                 editedFeature: esri.Graphic;
             }): void;
+        }>;
+        /**
+         * Raised when the feature layer cache spec has been changed.
+         * @docs-gcx-event geocortex.essentialsHtmlViewer
+         * @name FeatureLayerCacheSpecChanged
+         * @introduced 1.2
+         * @gcx-event-category Offline/Online
+         */
+        (eventName: "FeatureLayerCacheSpecChanged"): TypedEvent<{
+            (): void;
+        }>;
+        /**
+         * Raised when the edit log is updated.
+         * @docs-gcx-event geocortex.essentialsHtmlViewer
+         * @name FeatureLayerEditLogUpdatedEvent
+         * @param editLog The edit log.
+         * @param editLogJson The edit log in JSON format which is updated
+         * @introduced 1.1
+         * @gcx-event-category Editing
+         */
+        (eventName: "FeatureLayerEditLogUpdatedEvent"): TypedEvent<{
+            (editLog: any, editLogJson: any): void;
+        }>;
+        /**
+         * Raised when a Feature Layer goes offline.
+         * @docs-gcx-event geocortex.essentialsHtmlViewer
+         * @name FeatureLayerOfflineEvent
+         * @param mapService The {@link MapService} that represents the Feature Layer that went offline.
+         * @introduced 1.1
+         * @gcx-event-category Offline/Online
+         */
+        (eventName: "FeatureLayerOfflineEvent"): TypedEvent<{
+            (mapService: geocortex.essentials.MapService): void;
+        }>;
+        /**
+         * Raised when a Feature Layer goes online.
+         * @docs-gcx-event geocortex.essentialsHtmlViewer
+         * @name FeatureLayerOnlineEvent
+         * @param mapService The {@link MapService} that represents the Feature Layer that went online.
+         * @introduced 1.1
+         * @gcx-event-category Offline/Online
+         */
+        (eventName: "FeatureLayerOnlineEvent"): TypedEvent<{
+            (mapService: geocortex.essentials.MapService): void;
+        }>;
+        /**
+         * Raised when feature synchronization is complete.
+         * @docs-gcx-event geocortex.essentialsHtmlViewer
+         * @name FeatureLayerModuleSyncCompletedEvent
+         * @introduced 1.1
+         * @gcx-event-category Offline/Online
+         */
+        (eventName: "FeatureLayerModuleSyncCompletedEvent"): TypedEvent<{
+            (): void;
+        }>;
+        /**
+         * Raised when an error is encountered while synchronizing a feature layer.
+         * @docs-gcx-event geocortex.essentialsHtmlViewer
+         * @name FeatureLayerModuleSyncFailedEvent
+         * @param error The error that occurred.
+         * @introduced 1.1
+         * @gcx-event-category Offline/Online
+         */
+        (eventName: "FeatureLayerModuleSyncFailedEvent"): TypedEvent<{
+            (error: Error): void;
+        }>;
+        /**
+         * Raised when synchronization starts.
+         * @docs-gcx-event geocortex.essentialsHtmlViewer
+         * @name FeatureLayerModuleSyncStartedEvent
+         * @introduced 1.1
+         * @gcx-event-category Offline/Online
+         */
+        (eventName: "FeatureLayerModuleSyncStartedEvent"): TypedEvent<{
+            (): void;
         }>;
         /**
          * Raised when a module opens a flyout menu.
@@ -5007,10 +4081,10 @@ declare module geocortex.framework.events {
             (context: geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList.LayerListFolderItem): void;
         }>;
         /**
-         * Raised when a {@link essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} is added to the {@link essentialsHtmlViewer.mapping.infrastructure.FeatureSetManager}.
+         * Raised when a {@link FeatureSetCollection} is added to the {@link FeatureSetManager}.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name FSMCollectionAddedEvent
-         * @param args An instance of {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.FeatureSetManagerEventArgs}.
+         * @param args An instance of {@link FeatureSetManagerEventArgs}.
          * @introduced 1.0
          * @gcx-event-category Feature Set Collection
          */
@@ -5018,10 +4092,10 @@ declare module geocortex.framework.events {
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.FeatureSetManagerEventArgs): void;
         }>;
         /**
-         * Raised when a {@link essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} in the {@link essentialsHtmlViewer.mapping.infrastructure.FeatureSetManager} is altered.
+         * Raised when a {@link FeatureSetCollection} in the {@link FeatureSetManager} is altered.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name FSMCollectionChangedEvent
-         * @param args An instance of {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.FeatureSetManagerEventArgs}.
+         * @param args An instance of {@link FeatureSetManagerEventArgs}.
          * @introduced 1.0
          * @gcx-event-category Feature Set Collection
          */
@@ -5029,10 +4103,10 @@ declare module geocortex.framework.events {
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.FeatureSetManagerEventArgs): void;
         }>;
         /**
-         * Raised when a {@link essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} is closed in the {@link essentialsHtmlViewer.mapping.infrastructure.FeatureSetManager}.
+         * Raised when a {@link FeatureSetCollection} is closed in the {@link FeatureSetManager}.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name FSMCollectionClosedEvent
-         * @param args An instance of {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.FeatureSetManagerEventArgs}.
+         * @param args An instance of {@link FeatureSetManagerEventArgs}.
          * @introduced 1.0
          * @gcx-event-category Feature Set Collection
          */
@@ -5040,10 +4114,10 @@ declare module geocortex.framework.events {
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.FeatureSetManagerEventArgs): void;
         }>;
         /**
-         * Raised when a {@link essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} is opened in the {@link essentialsHtmlViewer.mapping.infrastructure.FeatureSetManager}.
+         * Raised when a {@link FeatureSetCollection} is opened in the {@link FeatureSetManager}.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name FSMCollectionOpenedEvent
-         * @param args An instance of {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.FeatureSetManagerEventArgs}.
+         * @param args An instance of {@link FeatureSetManagerEventArgs}.
          * @introduced 1.0
          * @gcx-event-category Feature Set Collection
          */
@@ -5051,10 +4125,10 @@ declare module geocortex.framework.events {
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.FeatureSetManagerEventArgs): void;
         }>;
         /**
-         * Raised when a {@link essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection} is removed from the {@link essentialsHtmlViewer.mapping.infrastructure.FeatureSetManager}.
+         * Raised when a {@link FeatureSetCollection} is removed from the {@link FeatureSetManager}.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name FSMCollectionRemovedEvent
-         * @param args An instance of {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.FeatureSetManagerEventArgs}.
+         * @param args An instance of {@link FeatureSetManagerEventArgs}.
          * @introduced 1.0
          * @gcx-event-category Feature Set Collection
          */
@@ -5244,27 +4318,6 @@ declare module geocortex.framework.events {
             (gcxLayer: geocortex.essentials.Layer): void;
         }>;
         /**
-         * Raised when label symbolization is changed.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name LabelOptionsChanged
-         * @param gcxLayer The Geocortex layer that has had its label options changed.
-         * @introduced 2.7
-         * @gcx-event-category Label Options
-         */
-        (eventName: "LabelOptionsChanged"): TypedEvent<{
-            (gcxLayer: geocortex.essentials.Layer): void;
-        }>;
-        /**
-        * Raised when label symbolization is reset back to default.
-        * @docs-gcx-event geocortex.essentialsHtmlViewer
-        * @name LabelsResetEvent
-        * @introduced 2.7
-        * @gcx-event-category Label Options
-        */
-        (eventName: "LabelsResetEvent"): TypedEvent<{
-            (): void;
-        }>;
-        /**
          * Raised when a layer has been added to the map.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name LayerAddedEvent
@@ -5309,28 +4362,6 @@ declare module geocortex.framework.events {
         */
         (eventName: "LayerDisabledForIdentifyEvent"): TypedEvent<{
             (layer: geocortex.essentialsHtmlViewer.mapping.infrastructure.identify.LayerDescriptor): void;
-        }>;
-        /**
-        * Raised when a filter is applied using the Filter Builder tool
-        * @docs-gcx-event geocortex.essentialsHtmlViewer
-        * @name FilterBuilderLayerDefinitionAppliedEvent
-        * @param args A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.LayerDefinitionExpressionAppliedEventArgs} object with a `gcxlayer` property referring to the current layer being filtered.
-        * @introduced 2.7
-        * @gcx-event-category Query Builder
-        */
-        (eventName: "FilterBuilderLayerDefinitionAppliedEvent"): TypedEvent<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.LayerDefinitionExpressionAppliedEventArgs): void;
-        }>;
-        /**
-        * Raised when a specific layer's display name has been changed.
-        * @docs-gcx-event geocortex.essentialsHtmlViewer
-        * @name LayerDisplayNameChanged
-        * @param layer The layer whose display name was just changed.
-        * @introduced 2.7
-        * @gcx-event-category Layer Addition
-        */
-        (eventName: "LayerDisplayNameChanged"): TypedEvent<{
-            (layer: geocortex.essentials.Layer): void;
         }>;
         /**
         * Raised when a specific layer has been enabled such that it participates in identify operations.
@@ -5407,7 +4438,7 @@ declare module geocortex.framework.events {
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name LayerUpdateEndedEvent
          * @param serviceLayer The Esri service layer whose attribute has been updated.
-         * @param service The {@link essentials.MapService} specific to this layer.
+         * @param service The {@link MapService} specific to this layer.
          * @introduced 1.1
          * @gcx-event-category Map
          */
@@ -5415,33 +4446,11 @@ declare module geocortex.framework.events {
             (serviceLayer: esri.layers.Layer, service: essentials.MapService): void;
         }>;
         /**
-        * Raised when the provider has finished fetching all expected catalog layers.
-        * @docs-gcx-event geocortex.essentialsHtmlViewer
-        * @name LayerCatalogProviderFinishedEvent
-        * @introduced 2.7
-        * @gcx-event-category Layer Catalog
-        * @private
-        */
-        (eventName: "LayerCatalogProviderFinishedEvent"): TypedEvent<{
-            (): void;
-        }>;
-        /**
-        * Raised when the provider has started fetching all expected catalog layers.
-        * @docs-gcx-event geocortex.essentialsHtmlViewer
-        * @name LayerCatalogProviderStartedEvent
-        * @introduced 2.7
-        * @gcx-event-category Layer Catalog
-        * @private
-        */
-        (eventName: "LayerCatalogProviderStartedEvent"): TypedEvent<{
-            (): void;
-        }>;
-        /**
          * Raised when a layer begins to update its content.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name LayerUpdateStartedEvent
          * @param serviceLayer The Esri service layer whose attribute will be updated.
-         * @param service The {@link essentials.MapService} specific to this layer.
+         * @param service The {@link MapService} specific to this layer.
          * @introduced 1.1
          * @gcx-event-category Map
          */
@@ -5525,17 +4534,6 @@ declare module geocortex.framework.events {
          */
         (eventName: "MapClickedEvent"): TypedEvent<{
             (mouseEvent: MouseEvent): void;
-        }>;
-        /**
-         * Raised when a user triggers the context menu via right-click or long press of the map.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name MapContextMenuPointUpdatedEvent
-         * @param point An instance of {@link esri.geometry.Point}, that represents the point on the map where the user activated the context menu.
-         * @introduced 2.6
-         * @gcx-event-category Interface
-         */
-        (eventName: "MapContextMenuPointUpdatedEvent"): TypedEvent<{
-            (point: esri.geometry.Point): void;
         }>;
         /**
          * Raised as the extent of the map changes.
@@ -5661,7 +4659,7 @@ declare module geocortex.framework.events {
          * Raised when a map service is added to the Essentials Map.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name MapServiceAddedEvent
-         * @param mapService The {@link essentials.MapService} which was added.
+         * @param mapService The {@link MapService} which was added.
          * @introduced 2.2
          * @gcx-event-category Map
          */
@@ -5680,10 +4678,10 @@ declare module geocortex.framework.events {
             (context: geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList.LayerListMapServiceItem): void;
         }>;
         /**
-         * Raised when a {@link essentials.MapService} has layers change by a user.
+         * Raised when a {@link MapService} has layers change by a user.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name MapServiceLayersChangedEvent
-         * @param mapService The {@link essentials.MapService} which layers changed.
+         * @param mapService The {@link MapService} which layers changed.
          * @introduced 2.2
          * @gcx-event-category Map
          */
@@ -5691,10 +4689,10 @@ declare module geocortex.framework.events {
             (mapService: geocortex.essentials.MapService): void;
         }>;
         /**
-         * Raised when a user changes the layers of a {@link essentials.MapService}.  For example, when new dynamic layers are added to the map.
+         * Raised when a {@link MapService} has layers change by a user - for example when new dynamic layers are added to the map.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name MapServiceLayersChangedWithResultEvent
-         * @param args A {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.MapServiceLayersChangedEventArgs} object with the following properties: `mapService`, `newItems` and `oldItems`.
+         * @param args An {@link MapServiceLayersChangedEventArgs} object with the following properties: `mapService`, `newItems` and `oldItems`.
          * @introduced 2.5.2
          * @gcx-event-category Map
          */
@@ -5702,10 +4700,10 @@ declare module geocortex.framework.events {
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.MapServiceLayersChangedEventArgs): void;
         }>;
         /**
-         * Raised when a property on a {@link essentials.MapService} changes.
+         * Raised when a property on a {@link MapService} changes.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name MapServicePropertyChangedEvent
-         * @param mapService The {@link essentials.MapService} which changed.
+         * @param mapService The {@link MapService} which changed.
          * @introduced 2.2
          * @gcx-event-category Map
          */
@@ -5716,7 +4714,7 @@ declare module geocortex.framework.events {
          * Raised when a map service is removed from the Essentials Map.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name MapServiceRemovedEvent
-         * @param mapService The {@link essentials.MapService} which was removed.
+         * @param mapService The {@link MapService} which was removed.
          * @introduced 2.2
          * @gcx-event-category Map
          */
@@ -5728,7 +4726,7 @@ declare module geocortex.framework.events {
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name MapServiceVisibilityChangedEvent
          * @param serviceLayer The Esri service layer whose visibility changed.
-         * @param service The {@link essentials.MapService} specific to this layer.
+         * @param service The {@link MapService} specific to this layer.
          * @introduced 2.3
          * @gcx-event-category Map
          */
@@ -5744,17 +4742,6 @@ declare module geocortex.framework.events {
          */
         (eventName: "MapStartupExtentChangedEvent"): TypedEvent<{
             (extent: esri.geometry.Extent): void;
-        }>;
-        /**
-         * Raised when the time extent of the map changes.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name MapTimeExtentChangedEvent
-         * @param timeExtent The new time extent of the map.
-         * @introduced 2.7
-         * @gcx-event-category Interface
-         */
-        (eventName: "MapTimeExtentChangedEvent"): TypedEvent<{
-            (timeExtent: esri.TimeExtent): void;
         }>;
         /**
          * Raised when the map tip window is closed.
@@ -6000,7 +4987,7 @@ declare module geocortex.framework.events {
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name MenuItemInvokedEvent
          * @param args The event arguments, with the following properties: `menuView`, `menuId` and `menuItem`.
-         * `menuView` is the {@link essentialsHtmlViewer.mapping.infrastructure.menus.MenuView}.
+         * `menuView` is the {@link MenuView}.
          * `menuId` is the ID of the menu.
          * `menuItem` is the menu item itself.
          * @introduced 2.4
@@ -6012,105 +4999,6 @@ declare module geocortex.framework.events {
                 menuId: string;
                 menuItem: essentialsHtmlViewer.mapping.infrastructure.menus.MenuItemViewModel;
             }): void;
-        }>;
-        /**
-         * Raised when the offline manager has finished loading the offline maps from storage.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name OfflineMapsLoadedEvent
-         * @param args Details of the event.ProjectEditorFinishedEventArgs
-         * @introduced 2.6
-         * @gcx-event-category Offline Profiles
-         */
-        (eventName: "OfflineMapsLoadedEvent"): TypedEvent<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.OfflineMapsLoadedEventArgs): void;
-        }>;
-        /**
-         * Raised when a new offline map has been added to the offline manager.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name OfflineMapAddedEvent
-         * @param args Details of the event.
-         * @introduced 2.6
-         * @gcx-event-category Offline Profiles
-         */
-        (eventName: "OfflineMapAddedEvent"): TypedEvent<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.OfflineMapAddedEventArgs): void;
-        }>;
-        /**
-         * Raised when a new offline map has been added to the offline manager.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name OfflineMapRemovedEvent
-         * @param args Details of the event.
-         * @introduced 2.6
-         * @gcx-event-category Offline Profiles
-         */
-        (eventName: "OfflineMapRemovedEvent"): TypedEvent<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.OfflineMapRemovedEventArgs): void;
-        }>;
-        /**
-         * Raised when an offline map has been activated (or null offlineMap arg for none).
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name OfflineMapActivatedEvent
-         * @param args Details of the event.
-         * @introduced 2.6
-         * @gcx-event-category Offline Profiles
-         */
-        (eventName: "OfflineMapActivatedEvent"): TypedEvent<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.OfflineMapActivatedEventArgs): void;
-        }>;
-        /**
-         * Raised when the offline map editor has finished.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name OfflineMapEditorFinishedEvent
-         * @param args Details of the event.
-         * @introduced 2.6
-         * @gcx-event-category Offline Profiles
-         */
-        (eventName: "OfflineMapEditorFinishedEvent"): TypedEvent<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.OfflineMapEditorFinishedEventArgs): void;
-        }>;
-        /**
-         * Raised when a new offline map has been synced.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name OfflineMapSyncedEvent
-         * @param args Details of the event.
-         * @introduced 2.6
-         * @gcx-event-category Offline Profiles
-         */
-        (eventName: "OfflineMapSyncedEvent"): TypedEvent<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.OfflineMapSyncedEventArgs): void;
-        }>;
-        /**
-         * Raised when a named selection has been changed in any way. Renaming a selection raises this event.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name SelectionChangedEvent
-         * @param args The event arguments, with the following properties: `name`, `fsc, `previousName`.
-         * @introduced 2.6
-         * @gcx-event-category Named Selection
-         */
-        (eventName: "SelectionChangedEvent"): TypedEvent<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.SelectionChangedEventArgs): void;
-        }>;
-        /**
-         * Raised when named selection has been successfully saved.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name SelectionCreatedEvent
-         * @param args The event arguments, with the following properties: `name`, `fsc.
-         * @introduced 2.6
-         * @gcx-event-category Named Selection
-         */
-        (eventName: "SelectionCreatedEvent"): TypedEvent<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.SelectionEventArgs): void;
-        }>;
-        /**
-         * Raised when named selection has been removed.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name SelectionRemovedEvent
-         * @param args The event arguments, with the following properties: `name`, `fsc.
-         * @introduced 2.6
-         * @gcx-event-category Named Selection
-         */
-        (eventName: "SelectionRemovedEvent"): TypedEvent<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.SelectionEventArgs): void;
         }>;
         /**
          * Raised when a smart panel starts to be resized.
@@ -6161,26 +5049,6 @@ declare module geocortex.framework.events {
             }): void;
         }>;
         /**
-         * Raised when user selecte a different print layout.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name PrintPreviewLayoutChangedEvent
-         * @introduced 2.6
-         * @gcx-event-category Print
-         */
-        (eventName: "PrintPreviewLayoutChangedEvent"): TypedEvent<{
-            (): void;
-        }>;
-        /**
-        * Raised when user selecte a different print scale.
-        * @docs-gcx-event geocortex.essentialsHtmlViewer
-        * @name PrintPreviewScaleChangedEvent
-        * @introduced 2.6
-        * @gcx-event-category Print
-        */
-        (eventName: "PrintPreviewScaleChangedEvent"): TypedEvent<{
-            (): void;
-        }>;
-        /**
          * Raised when a request to print a template is sent to the server.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name PrintTemplateStartedEvent
@@ -6201,106 +5069,6 @@ declare module geocortex.framework.events {
          */
         (eventName: "PrintTemplateCompletedEvent"): TypedEvent<{
             (template: geocortex.essentials.PrintTemplate): void;
-        }>;
-        /**
-         * Raised when a print template operation has errored.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name PrintTemplateErrorEvent
-         * @param error The error that occurred.
-         * @introduced 2.7
-         * @gcx-event-category Print
-         */
-        (eventName: "PrintTemplateErrorEvent"): TypedEvent<{
-            (error: Error): void;
-        }>;
-        /**
-         * Raised when a project is successfully deleted.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name ProjectDeletedEvent
-         * @param project The ID of the project that was deleted.
-         * @introduced 2.6
-         * @gcx-event-category Projects
-         */
-        (eventName: "ProjectDeletedEvent"): TypedEvent<{
-            (projectId: string): void;
-        }>;
-        /**
-         * Raised when a project has begun being deleted.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name ProjectDeletingEvent
-         * @param project The ID of the project that is being deleted.
-         * @introduced 2.6
-         * @gcx-event-category Projects
-         */
-        (eventName: "ProjectDeletingEvent"): TypedEvent<{
-            (projectId: string): void;
-        }>;
-        /**
-         * Raised when the project editor has finished editing.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name ProjectEditorFinishedEvent
-         * @param args A {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.ProjectEditorFinishedEventArgs} object with the following properties: `canceled`, `existingProject`, and `newProject`.
-         * @introduced 2.6
-         * @gcx-event-category Projects
-         */
-        (eventName: "ProjectEditorFinishedEvent"): TypedEvent<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.ProjectEditorFinishedEventArgs): void;
-        }>;
-        /**
-         * Raised when an attempt to save, load, or delete a project fails.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name ProjectErrorEvent
-         * @param project The project that caused the error.
-         * @param error The error that occurred.
-         * @introduced 2.6
-         * @gcx-event-category Projects
-         */
-        (eventName: "ProjectErrorEvent"): TypedEvent<{
-            (project: geocortex.essentialsHtmlViewer.mapping.infrastructure.project.Project, error: Error): void;
-        }>;
-        /**
-         * Raised when a project is successfully loaded and applied.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name ProjectLoadedEvent
-         * @param project The project that was loaded.
-         * @introduced 2.6
-         * @gcx-event-category Projects
-         */
-        (eventName: "ProjectLoadedEvent"): TypedEvent<{
-            (project: geocortex.essentialsHtmlViewer.mapping.infrastructure.project.Project): void;
-        }>;
-        /**
-         * Raised when a project has begun loading.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name ProjectLoadingEvent
-         * @param projectId The ID of the project that is loading.
-         * @introduced 2.6
-         * @gcx-event-category Projects
-         */
-        (eventName: "ProjectLoadingEvent"): TypedEvent<{
-            (projectId: string): void;
-        }>;
-        /**
-         * Raised when a project is successfully saved.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name ProjectSavedEvent
-         * @param project The project that was saved.
-         * @introduced 2.6
-         * @gcx-event-category Projects
-         */
-        (eventName: "ProjectSavedEvent"): TypedEvent<{
-            (project: geocortex.essentialsHtmlViewer.mapping.infrastructure.project.Project): void;
-        }>;
-        /**
-         * Raised when a project has begun saving.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name ProjectSavingEvent
-         * @param project The project that is saving.
-         * @introduced 2.6
-         * @gcx-event-category Projects
-         */
-        (eventName: "ProjectSavingEvent"): TypedEvent<{
-            (project: geocortex.essentialsHtmlViewer.mapping.infrastructure.project.Project): void;
         }>;
         /**
          * Raised when a pushpin has been clicked.
@@ -6380,21 +5148,10 @@ declare module geocortex.framework.events {
             (graphic: esri.Graphic): void;
         }>;
         /**
-        * Raised after a query is completed using the query builder tool.
-        * @docs-gcx-event geocortex.essentialsHtmlViewer
-        * @name QueryCompletedEvent
-        * @param args An {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.QueryCompletedEventArgs} object with the following properties: `layer`, 'query' and `error` (optional).
-        * @introduced 2.7
-        * @gcx-event-category Query Builder
-        */
-        (eventName: "QueryCompletedEvent"): TypedEvent<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.QueryCompletedEventArgs): void;
-        }>;
-        /**
          * Raised after the Undo Manager performs a redo operation.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name RedoCompletedEvent
-         * @param args An {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.UndoRedoEventArgs`} object with the following properties: `sender` and `operation` (optional).
+         * @param args An {@link UndoRedoEventArgs} object with the following properties: `sender` and `operation` (optional).
          * `sender` is a reference to the sender.
          * `operation` is the operation that triggered the event.
          * @introduced 2.5
@@ -6407,7 +5164,7 @@ declare module geocortex.framework.events {
          * Raised when a redo operation begins.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name RedoStartedEvent
-         * @param args An {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.UndoRedoEventArgs} object with the following properties: `sender` and `operation` (optional).
+         * @param args An {@link UndoRedoEventArgs} object with the following properties: `sender` and `operation` (optional).
          * `sender` is a reference to the sender.
          * `operation` is the operation that triggered the event.
          * @introduced 2.5
@@ -6465,23 +5222,10 @@ declare module geocortex.framework.events {
             (reportId: string, mapServiceId: string, layerId: string): void;
         }>;
         /**
-         * Raised when a `RunReport` command is executed.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name ReportStartedEvent
-         * @param reportId The ID of the layer report template.
-         * @param mapServiceId The ID of the map service that is being used by the report.
-         * @param layerId The ID of the layer that is being used by the report.
-         * @introduced 2.7
-         * @gcx-event-category Reporting
-         */
-        (eventName: "ReportStartedEvent"): TypedEvent<{
-            (reportId: string, mapServiceId: string, layerId: string);
-        }>;
-        /**
          * The result of a successful `RunReport` command, which contains a download link to the report file.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name ReportResultEvent
-         * @param result A {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.ReportResultEventArgs} object with the following properties: `isAsync` and `href`.
+         * @param result A {@link ReportResultEventArgs} object with the following properties: `isAsync` and `href`.
          * `isAsync` is a boolean indicating whether the report result was asynchronous.
          * `href` is the download URL for the resultant report file.  In async mode, this is the URL to the report progress or download page.
          * @introduced 2.5
@@ -6493,7 +5237,7 @@ declare module geocortex.framework.events {
         /**
          * Raised when a `RunReport` command fails in error.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name ReportErrorEventl
+         * @name ReportErrorEvent
          * @param error The Error object returned by the Report JavaScript API.
          * @introduced 2.5
          * @gcx-event-category Reporting
@@ -6579,17 +5323,6 @@ declare module geocortex.framework.events {
             (view: geocortex.framework.ui.ViewBase): void;
         }>;
         /**
-         * Raised when the Results view is closed.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name ResultsViewClosedEvent
-         * @param view The view that was closed.
-         * @introduced 2.6
-         * @gcx-event-category Interface
-         */
-        (eventName: "ResultsViewClosedEvent"): TypedEvent<{
-            (view: geocortex.framework.ui.ViewBase): void;
-        }>;
-        /**
          * Raised when progress updates are available for a search that is in progress.
          * The progress event may represent an error, failure, success etc.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
@@ -6671,7 +5404,7 @@ declare module geocortex.framework.events {
          * Raised when the site begins to initialize.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name SiteInitializingEvent
-         * @param initArgs The Geocortex Essentials {@link essentials.Site} that is beginning to initialize.
+         * @param initArgs The Geocortex Essentials {@link Site} that is beginning to initialize.
          * @introduced 2.5
          * @gcx-event-category Start-Up, Initialization and Shutdown
          */
@@ -6738,20 +5471,10 @@ declare module geocortex.framework.events {
             (): void;
         }>;
         /**
-         * Raised when the bottom panel is closed.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name SmallBottomPanelClosedEvent
-         * @introduced 2.6
-         * @gcx-event-category Interface
-         */
-        (eventName: "SmallBottomPanelClosedEvent"): TypedEvent<{
-            (): void;
-        }>;
-        /**
          * Raised when the SnappingModule handles input movement. Contains the original input location as well as a snapping point or `null` if none was found.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name SnappingFeedbackEvent
-         * @param args A {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.SnappingFeedbackEventArgs} object with the following properties: `snappingPoint` and `inputPoint`.
+         * @param args A {@link SnappingFeedbackEventArgs} object with the following properties: `snappingPoint` and `inputPoint`.
          * `snappingPoint` is the snapping point, or null if there is none.
          * `inputPoint` is the original input point.
          * @introduced 2.5
@@ -6774,7 +5497,7 @@ declare module geocortex.framework.events {
          * Raised when an application state is entered by a triggering command or event.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name StateEnteredEvent
-         * @param args A {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.StateChangedEventArgs} object with the following properties: `stateDefinition`, `activeStates`, `modalState` and `previousModalState`.
+         * @param args A {@link StateChangedEventArgs} object with the following properties: `stateDefinition`, `activeStates`, `modalState` and `previousModalState`.
          * `stateDefinition` defines the state that was entered.
          * `activeStates` is an array of active states.
          * `modalState` is the currently active global state (if any).
@@ -6789,7 +5512,7 @@ declare module geocortex.framework.events {
          * Raised when an application state is exited by a triggering command or event.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name StateEnteredEvent
-         * @param args A {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.StateChangedEventArgs} object with the following properties: `stateDefinition`, `activeStates`, `modalState` and `previousModalState`.
+         * @param args A {@link StateChangedEventArgs} object with the following properties: `stateDefinition`, `activeStates`, `modalState` and `previousModalState`.
          * `stateDefinition` defines the state that was entered.
          * `activeStates` is an array of active states.
          * `modalState` is the currently active global state (if any).
@@ -6811,45 +5534,12 @@ declare module geocortex.framework.events {
             (): void;
         }>;
         /**
-         * Raised after a new time slider profile is set.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name TimeSliderProfileChanged
-         * @param profile A {@link essentials.TimeSliderProfile} object.
-         * @introduced 2.7
-         * @gcx-event-category TimeSlider
-         */
-        (eventName: "TimeSliderProfileChangedEvent"): TypedEvent<{
-            (profile: essentials.TimeSliderProfile): void;
-        }>;
-        /**
-         * Raised when the current timeslider profile starts playing.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name TimeSliderPlayTimelineStartedEvent
-         * @param profile The current {@link essentials.TimeSliderProfile} object.
-         * @introduced 2.7
-         * @gcx-event-category TimeSlider
-         */
-        (eventName: "TimeSliderPlayTimelineStartedEvent"): TypedEvent<{
-            (profile: essentials.TimeSliderProfile): void;
-        }>;
-        /**
-         * Raised when the current timeslider profile stops playing.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name TimeSliderPlayTimelineStoppedEvent
-         * @param profile The current {@link essentials.TimeSliderProfile} object.
-         * @introduced 2.7
-         * @gcx-event-category TimeSlider
-         */
-        (eventName: "TimeSliderPlayTimelineStoppedEvent"): TypedEvent<{
-            (profile: essentials.TimeSliderProfile): void;
-        }>;
-        /**
          * Raised after a toggle button changes its state.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name ToggleButtonStateChangedEvent
-         * @param args A {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.ToggleButtonStateChangedEventArgs} object with the following properties: `toggleButtonEntry` and `state`.
-         * `toggleButtonEntry` is the {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.ToggleButtonStateChangedEventArgs} object that represents the toggle button entry.
-         * `state` is the {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.ToggleButtonStateChangedEventArgs} object that represents the toggle button state.
+         * @param args A {@link ToggleButtonStateChangedEventArgs} object with the following properties: `toggleButtonEntry` and `state`.
+         * `toggleButtonEntry` is the {@link ToolbarToggleButtonEntry} object that represents the toggle button entry.
+         * `state` is the {@link ToggleButtonState} object that represents the toggle button state.
          * @introduced 2.5
          * @gcx-event-category Tool
          */
@@ -6923,7 +5613,7 @@ declare module geocortex.framework.events {
          * Raised when a transient toolbar is activated.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name TransientActivatedEvent
-         * @param args A {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.TransientActivatedEventArgs} object with the following properties: `stateName`, `viewId`, `regionId` and `widgetId`.
+         * @param args A {@link TransientActivatedEventArgs} object with the following properties: `stateName`, `viewId`, `regionId` and `widgetId`.
          * `stateName` is the state name.
          * `viewId` is the ID of the view.
          * `regionId` is the ID of the region.
@@ -6945,21 +5635,10 @@ declare module geocortex.framework.events {
             (): void;
         }>;
         /**
-         * Raised when active toolbar tab is changed.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name ToolbarTabChangedEvent
-         * @param args A {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.ToolbarTabChangedEventArgs} object with a `group` property referring to the currently selected toolbar tab.
-         * @introduced 2.7
-         * @gcx-event-category Tool
-         */
-        (eventName: "ToolbarTabChangedEvent"): TypedEvent<{
-            (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.ToolbarTabChangedEventArgs): void;
-        }>;
-        /**
          * Raised when the last recorded operation has been reversed or rolled back by the Undo Manager.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name UndoCompletedEvent
-         * @param args An {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.UndoRedoEventArgs} object with the following properties: `sender` and `operation` (optional).
+         * @param args An {@link UndoRedoEventArgs} object with the following properties: `sender` and `operation` (optional).
          * `sender` is a reference to the sender.
          * `operation` is the operation that triggered the event.
          * @introduced 2.5
@@ -6972,7 +5651,7 @@ declare module geocortex.framework.events {
          * Raised when a new undo operation is added to the undo stack.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name UndoOperationAddedEvent
-         * @param args An {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.UndoRedoEventArgs} object with the following properties: `sender` and `operation` (optional).
+         * @param args An {@link UndoRedoEventArgs} object with the following properties: `sender` and `operation` (optional).
          * `sender` is a reference to the sender.
          * `operation` is the operation that triggered the event.
          * @introduced 2.5
@@ -6985,7 +5664,7 @@ declare module geocortex.framework.events {
          * Raised when an undo operation is discarded from the undo stack because the stack size exceeded the maximum number of operations.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name UndoOperationAddedEvent
-         * @param args An {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.UndoRedoEventArgs} object with the following properties: `sender` and `operation` (optional).
+         * @param args An {@link UndoRedoEventArgs} object with the following properties: `sender` and `operation` (optional).
          * `sender` is a reference to the sender.
          * `operation` is the operation that triggered the event.
          * @introduced 2.5
@@ -6998,7 +5677,7 @@ declare module geocortex.framework.events {
          * Raised when an undo operation begins.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name UndoStartedEvent
-         * @param args An {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.UndoRedoEventArgs} object with the following properties: `sender` and `operation` (optional).
+         * @param args An {@link UndoRedoEventArgs} object with the following properties: `sender` and `operation` (optional).
          * `sender` is a reference to the sender.
          * `operation` is the operation that triggered the event.
          * @introduced 2.5
@@ -7011,7 +5690,7 @@ declare module geocortex.framework.events {
          * Raised when the undo stack changes.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name UndoStackChangedEvent
-         * @param args An {@link essentialsHtmlViewer.mapping.infrastructure.eventArgs.UndoRedoEventArgs} object with the following properties: `sender` and `operation` (optional).
+         * @param args An {@link UndoRedoEventArgs} object with the following properties: `sender` and `operation` (optional).
          * `sender` is a reference to the sender.
          * `operation` is the operation that triggered the event.
          * @introduced 2.5
@@ -7019,28 +5698,6 @@ declare module geocortex.framework.events {
          */
         (eventName: "UndoStackChangedEvent"): TypedEvent<{
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs.UndoRedoEventArgs): void;
-        }>;
-        /**
-         * Raised when an upload data process completes.
-         * @docs-gcx-event geocortex.essentialsHtmlViewer
-         * @name UploadDataCompletedEvent
-         * @param process The `UploadDataProcess` object containing all of the information about a given upload data process.
-         * @introduced 2.6
-         * @gcx-event-category Upload Data
-         */
-        (eventName: "UploadDataCompletedEvent"): TypedEvent<{
-            (process: any): void;
-        }>;
-        /**
-         * Raised when an upload data process fails.
-         * @docs-gcx-event geocortex.UploadDataProcess
-         * @name UploadDataFailedEvent
-         * @param process The error that caused the upload data process to fail.
-         * @introduced 2.6
-         * @gcx-event-category Upload Data
-         */
-        (eventName: "UploadDataFailedEvent"): TypedEvent<{
-            (error: Error): void;
         }>;
         /**
          * Raised when the user cancels the ArcGIS Online sign in process.
@@ -7125,7 +5782,7 @@ declare module geocortex.framework.events {
          * with an external component and the viewers position has been updated.
          * @docs-gcx-event geocortex.essentialsHtmlViewer
          * @name ViewerPositionUpdatedEvent
-         * @param arg An instance of {@link essentialsHtmlViewer.mapping.infrastructure.integration.MapViewpointMessage}, that represents the updated viewpoint of the viewer.
+         * @param arg An instance of {@link MapViewpointMessage}, that represents the updated viewpoint of the viewer.
          * @introduced 2.4
          * @gcx-event-category Integration
          */
@@ -8168,179 +6825,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.accessibili
         }
     }
 }
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
-    /**
-     * A cancellation token allows you to check if an operation has been cancelled.
-     * Additionally, you can subscribe to be notified when cancellation occurs.
-     * CancellationTokens should only be obtained from the CancellationTokenSource.token property.
-     */
-    interface CancellationToken {
-        /**
-         * Specifies if cancellation has been requested. This value should never be set
-         * explicitly. Instead, a CancellationToken should be cancelled using the CancellationTokenSource
-         * that it was derived from.
-         */
-        isCancellationRequested: boolean;
-        /**
-         * Register a handler to be notified when cancellation occurs.
-         */
-        register(action: () => void): any;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
-    /**
-     * A source for generating CancellationTokens. First create a CancellationTokenSource, then
-     * using the token property to obtain the cancellation token. The token can be cancelled by
-     * calling cancel() on the CancellationTokenSource.
-     */
-    class CancellationTokenSource {
-        private _tokenImpl;
-        private static _none;
-        constructor();
-        /**
-         * Gets the cancellation token.
-         */
-        token(): CancellationToken;
-        /**
-         * Cancels the CancellationToken, setting isCancellationRequested to true, and invoking any registered listeners.
-         */
-        cancel(): void;
-        /**
-         * Removes subscriptions that were created using register().
-         */
-        dispose(): void;
-        /**
-         * Creates a CancellationToken that does nothing.
-         */
-        static none(): CancellationToken;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
-    /**
-     * Describes the arguments for the DownloadOfflineResources command.
-     */
-    interface DownloadOfflineResourcesArgs {
-        /**
-         * The ID to give to the offline resources downloaded.
-         */
-        id: string;
-        /**
-         * An optional callback for success.
-         */
-        successCallback?: () => void;
-        /**
-         * An optional callback on error.
-         * @param error The error of the operation.
-         */
-        errorCallback?: (error: Error) => void;
-        /**
-         * Whether to activate the offline resources immediately upon completion.
-         * Default is false.  Errors from activation will go to the errorCallback
-         * if it is defined.
-         */
-        activateOnSuccess?: boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
-    interface EditAttachmentArgs {
-        feature: esri.Graphic;
-        layer: esri.layers.FeatureLayer;
-        featureUrl: string;
-        filename: string;
-        contentType: string;
-        payload: string;
-        callback: (result: any) => void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
-    interface EditFeatureArgs {
-        mapService: geocortex.essentials.MapService | string;
-        layer: esri.layers.FeatureLayer;
-        feature: esri.Graphic;
-        successCallback?: (graphic?: esri.Graphic) => void;
-        errorCallback?: (error: Error) => void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
-    interface EditRelatedRecordArgs extends EditFeatureArgs {
-        relatedFeature?: esri.Graphic;
-        relationshipOrigin?: esri.layers.Relationship;
-        relationshipDestination?: esri.layers.Relationship;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
-    interface ContextMenuArgs {
-        /**
-         * The absolute X position in pixels of where to position the context menu in respect to the page
-         */
-        pageX: number;
-        /**
-         * The absolute Y position in pixels of where to position the context menu in respect to the page
-         */
-        pageY: number;
-        /**
-         * The view id to activate that is hosted in the ContextMenuContentRegion
-         */
-        viewId?: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
-    interface Bookmark {
-        name: string;
-        extent: esri.geometry.Extent;
-        source: BookmarkSource;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
-    /**
-     * Indicates where a bookmark was loaded from.
-     */
-    enum BookmarkSource {
-        Site = 0,
-        User = 1,
-        Project = 2,
-    }
-    class BookmarkManager {
-        app: ViewerApplication;
-        /** Stores bookmarks that come from a project. */
-        private _projectBookmarks;
-        constructor(app: ViewerApplication);
-        /**
-         * Gets all bookmarks.
-         */
-        getAll(): Promise<Bookmark[]>;
-        /**
-         * Gets the user-defined bookmarks.
-         */
-        getUserBookmarks(): Promise<Bookmark[]>;
-        /**
-         * Gets the bookmarks that are defined in the site.
-         */
-        getSiteBookmarks(): Promise<Bookmark[]>;
-        /**
-         * Gets the bookmarks that were restored from a project.
-         */
-        getProjectBookmarks(): Promise<Bookmark[]>;
-        /**
-         * Adds a new bookmark.
-         */
-        add(bookmark: Bookmark): Promise<void>;
-        /**
-         * Removes a bookmark. Only user-defined bookmarks can be removed this way.
-         * @param bookmark The bookmark to remove, or the name of the bookmark. In the latter case,
-         *     if multiple bookmarks exist with the given name, then ALL user-defined bookmarks with
-         *     the given name will be removed.
-         */
-        remove(bookmark: Bookmark | string): Promise<void>;
-        /**
-         * Exports bookmarks in web map format.
-         */
-        export(sourceTypes?: BookmarkSource[]): Promise<webMap.Bookmark[]>;
-        private _save(bookmarks);
-        private _serialize(bookmark);
-        private _deserialize(serializedBookmark);
-    }
-}
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
     /**
      * Describes the arguments for cutting graphics in memory.
@@ -8373,96 +6857,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs
         /**
          * A callback to execute when there is an error editing the graphics.
          */
-        errorCallback?: (error: Error) => void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
-    interface ExportGraphicsLayerArgs {
-        /** The Graphics Layer to be exported. */
-        graphicLayer: esri.layers.GraphicsLayer;
-        /** The format for exporting the graphics layer. */
-        format: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
-    /**
-     * Argument of the ShowOfflineMapEditor command.
-     */
-    interface ShowOfflineMapEditorArgs {
-        /**
-         * Optional existing OfflineMap to prepopulate the fields with.
-         */
-        existingOfflineMap?: infrastructure.offline.OfflineMap;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
-    interface FindAllSelectionMetadataArgs {
-        /** A callback to execute upon success. */
-        successCallback?: (results: geocortex.essentialsHtmlViewer.mapping.infrastructure.selection.SelectionMetadata[]) => void;
-        /** A callback to execute when there is an error. */
-        errorCallback?: (error: Error) => void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
-    interface FindSelectionArgs {
-        /** The name of the selection. */
-        name: string;
-        /** A callback to execute upon success. */
-        successCallback?: (results: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection) => void;
-        /** A callback to execute when there is an error. */
-        errorCallback?: (error: Error) => void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
-    interface UpdateMetadataForSelectionArgs {
-        /** The metadata to set. */
-        metadata: geocortex.essentialsHtmlViewer.mapping.infrastructure.selection.SelectionMetadata;
-        /** A callback to execute upon success. */
-        successCallback?: () => void;
-        /** A callback to execute when there is an error. */
-        errorCallback?: (error: Error) => void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
-    interface RenameSelectionArgs extends SelectionArgs {
-        /** The new name to use for the selection. */
-        newName: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
-    interface FindMetadataForSelectionArgs {
-        /** The name of the selection. */
-        name?: string;
-        /** The feature set collection ID */
-        featureSetCollectionId?: string;
-        /** A callback to execute upon success. */
-        successCallback?: (metadata: geocortex.essentialsHtmlViewer.mapping.infrastructure.selection.SelectionMetadata) => void;
-        /** A callback to execute when there is an error. */
-        errorCallback?: (error: Error) => void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
-    interface SelectionArgs {
-        /** The name of the selection. */
-        name: string;
-        /** The {@link FeatureSetCollection} backing the results to save, modify or delete. */
-        featureSetCollection?: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection | string;
-        /** A callback to execute upon success. */
-        successCallback?: () => void;
-        /** A callback to execute when there is an error. */
-        errorCallback?: (error: Error) => void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs {
-    interface CombineResultsArgs {
-        /** Describes how the specified features should be combined with existing features in the collection of results. Valid values are: `replace`, `union`, `intersect`, `subtract` */
-        combineMode: string;
-        /** Array of IDs corresponding to the FeatureSetCollections to operate against the current set of results in the results view */
-        featureSetCollectionIds: string[];
-        currentResults?: infrastructure.FeatureSetCollection | string;
-        /** A callback to execute upon successfully modifying the FeatureSetCollections. */
-        successCallback?: (info: infrastructure.selection.CombineResultsResponse) => void;
-        /** A callback to execute when there is an error modifying the FeatureSetCollections. */
         errorCallback?: (error: Error) => void;
     }
 }
@@ -8524,10 +6918,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.buffer {
          * The callback to fire on buffering error.
          */
         errback?: (error: BufferOperationResult) => void;
-        /**
-         * Write buffer to markup layer for later use
-         */
-        writeToMarkupLayer?: boolean;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.buffer {
@@ -8547,10 +6937,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.buffer {
          * The target commands to which these buffer settings will apply.
          */
         targetCommands: string[];
-        /**
-         * Write buffer to markup layer for later use
-         */
-        writeToMarkupLayer?: boolean;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.buffer {
@@ -8767,188 +7153,21 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
         private static ignoreAttributeMatcher;
     }
 }
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
-    /**
-     * Pre-defined format specifiers for use with formatDate().
-     */
-    class DateFormat {
-        /**
-         * A localized representation of a date (e.g. "09/04/1986" for en-US locale).
-         */
-        static DATE_SHORT: string;
-        /**
-         * A localized long representation of a date (e.g. "September 4 1986" for en-US locale).
-         */
-        static DATE_LONG: string;
-        /**
-         * A localized short representation of the time (e.g. "8:30 PM" for en-US locale).
-         */
-        static TIME_SHORT: string;
-        /**
-         * A localized representation of the time including seconds (e.g. "8:30:25 PM" for en-US locale).
-         */
-        static TIME_LONG: string;
-        /**
-         * A localized representation of date and time (e.g. "Sep 4 1986 8:30 PM" for en-US locale).
-         */
-        static DATE_TIME_SHORT: string;
-        /**
-         * A localized long representation of date and time (e.g. "September 4 1986 8:30 PM" for en-US locale).
-         */
-        static DATE_TIME_LONG: string;
-        /**
-         * A localized full representation of date and time, including day of week (e.g. "Thursday, September 4 1986 8:30 PM" for en-US locale).
-         */
-        static FULL: string;
-        /**
-         * The date and time in ISO-8601 format (e.g. "2014-09-08T08:02:17-05:00"). Invariant.
-         */
-        static ISO_8601: string;
-        /**
-         * An invariant representation of a date. Guarantees that the date can be parsed back into the same date, regardless of locale.
-         * Equivalent to ISO-8601.
-         */
-        static ROUND_TRIP: string;
-        /**
-         * The default representation for date values (equivalent to DATE_TIME_SHORT).
-         */
-        static DEFAULT: string;
-        /**
-         * The default set of formats used for parsing date values.
-         */
-        static DEFAULT_PARSING_FORMATS: string[];
-    }
-    /**
-     * Pre-defined format specifiers for use with formatNumber().
-     */
-    class NumberFormat {
-        /**
-         * A localized representation of a number with a decimal separator and group separators (e.g. "12,345.67", "-42" for en-US locale).
-         */
-        static NUMBER: string;
-        /**
-         * A localized representation of a number with a decimal separator (e.g. "12345.67", "-42" for en-US locale).
-         */
-        static FIXED_POINT: string;
-        /**
-         * A localized representation of a monetary amount in a specific currency (e.g. "$123.45" for USD, "£123.45" for GBP for en-US locale).
-         */
-        static CURRENCY: string;
-        /**
-         * Same as CURRENCY, except that negative values are displayed in parentheses instead of using a "-" sign.
-         */
-        static ACCOUNTING: string;
-        /**
-         * A localized representation of a percentage (e.g. 0.99 -> "99%" in the en-US locale).
-         */
-        static PERCENT: string;
-        /**
-         * An invariant representation of a number (e.g. "12345.67"). Guarantees that the number can be parsed back
-         * into the same number, regardless of locale.
-         */
-        static ROUND_TRIP: string;
-        /**
-         * The default representation for number values (equivalent to FIXED_POINT).
-         */
-        static DEFAULT: string;
-    }
-}
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.FormatUtils {
-    interface DateFormatOptions {
-        /**
-         * The timezone in which the data should be interpretted as.
-         */
-        timeZoneId: string;
-        /**
-        * The timezone in which the data should be presented to the user
-        */
-        displayTimeZoneId: string;
-    }
     /**
-     * Formats a value for display in the current locale.
-     * @param value The value to format.
-     */
-    function format(value: any): string;
-    /**
-     * Formats a date for display in the current locale.
-     * @param date The date to format.
-     * @param format One of the {@link DateFormat} constants, or a custom format string.
-     *     The format string syntax is similar to this: https://msdn.microsoft.com/en-us/library/8kb3ddd4.aspx,
-     *     with the following exceptions:
-     *         - "/", and ":" are treated as literal characters.
-     *         - "y" is treated as "yy", and "yyy" is treated as "yyyy".
-     *         - "z" and "zz" and "zzz" are treated as the UTC offset
-     *         - "t" is treated the same as "tt".
-     *         - "F", "FF", "FFF" etc. will behave the same as "f", "ff", "fff", etc.
-     *           Additionally, a maximum of 3 digits (milliseconds) is supported. Longer
-     *           formatters like "fffff" are truncated to 3 digits, rather than padded with zeros.
-     *         - "g", "gg", and "K" are not supported at all and will be ignored.
-     *     The default format is DATE_TIME_SHORT.
-     * @param options {@link DateFormatOptions} specifying the timezone and display timezone of the data.
-     *     If the display timezone is specified and z's appear in the format, the UTC offset will be calculated
-     *     for the display timezone instead of the timezone of the browser.
-     */
-    function formatDate(date: Date, format?: string, options?: DateFormatOptions): string;
-    /**
-     * Formats a date for display in the current locale using relative time.
-     * @param date The date to format.
-     */
-    function formatDateFromNow(date: Date, options?: DateFormatOptions): string;
-    /**
-      * Formats a number for display using the application's current locale.
-      * @param num The number to format.
-      * @param format One of the {@link NumberFormat} constants, or a custom format string.
-      *     The format string syntax is similar to this: https://msdn.microsoft.com/en-us/library/0c899ak8.aspx,
-      *     with the following exceptions:
-      *         - The per-mille placeholder (‰) is not supported.
-      *         - Exponential notation is not supported.
-      *         - Literal characters appearing in the middle of a number will not work properly (e.g "00ABC0.##").
-      * @param options Additional options that further control how numbers are formatted. These only apply
-      *     when using one of the pre-defined constants, NOT for custom formats. Options are:
-      *         - currency: The 3-letter ISO 4217 currency code (e.g "USD", "CAD"). Required when formatting
-      *           a number using NumberFormat.CURRENCY or NumberFormat.ACCOUNTING.
-      *         - fractionalDigits: The number of digits to show after the decimal point. If unspecified, an
-      *           appropriate value is determined based on the locale and currency.
+      * Formats a bumber based on provided local.
+      * @param num The number in the current locale.
+      * @param locale The target locale.
+      * @param fractionalDigits The number of digits to display after the decimal point.
       */
-    function formatNumber(num: number, format?: string, options?: {
-        currency?: string;
-        fractionalDigits?: number;
-    }): string;
-    /**
-     * Parses a value into a Date object, using the application's current locale. The input is assumed to be in local time.
-     * See also {@link parseUtcDate()}.
-     * @param input The input to parse. Numbers are treated as UNIX timestamps (always UTC).
-     * @param format The format that string input is expected to be in. Can be either a single format, or one of several
-     *     possible formats. Formats are either one of the {@link DateFormat} constants, or custom format strings
-     *     (as per {@link formatDate()}).
-     * @return A Date object corresponding to the input, which might be an Invalid Date (i.e. getTime() will be NaN).
-     */
-    function parseDate(input: any, format?: string | string[]): Date;
-    /**
-     * Parses a value into a Date object, using the application's current locale. The input is assumed to be in UTC.
-     * See also {@link parseDate()}.
-     * @param input The input to parse. Numbers are treated as UNIX timestamps.
-     * @param format The format that string input is expected to be in. Can be either a single format, or one of several
-     *     possible formats. Formats are either one of the {@link DateFormat} constants, or custom format strings
-     *     (as per {@link formatDate()}).
-     * @return A Date object corresponding to the input, which might be an Invalid Date (i.e. getTime() will be NaN).
-     */
-    function parseUtcDate(input: any, format?: string | string[]): Date;
-    /**
-     * Parses a value into a number, using the application's current locale.
-     * @param input The input to parse.
-     * @param format The format that string input is expected to be in. Can be either a single format, or one of several
-     *     possible formats. Formats are either one of the {@link NumberFormat} constants, or custom format strings
-     *     (as per {@link formatNumber()}).
-     */
-    function parseNumber(input: any, format?: string | string[]): number;
+    function formatNumber(num: number, locale: string, fractionalDigits: number): string;
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
     class PresentableDelegateFactory {
         static typeIdForLayerAndAttributes(layer: esri.layers.FeatureLayer, attributes: any): any;
         static typeFromLayerAndId(layer: esri.layers.FeatureLayer, id: any): esri.layers.FeatureType;
         static makeValueTruthy(value: any): any;
-        static valuePresenterDelegate(field: string | essentials.Field | gis.FieldInfo, feature: Feature): (value: any) => () => string;
+        static valuePresenterDelegate(field: string | essentials.Field, feature: Feature): (value: string) => () => string;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
@@ -9077,24 +7296,8 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.MapUtils {
      * @param startupPriority The priority of this extent change if called while the map is still loading
      */
     function zoomToExtentWithPriority(app: geocortex.essentialsHtmlViewer.ViewerApplication, extent: esri.geometry.Extent, startupPriority: number, showMap: boolean): void;
-    /**
-     * This function will only be effective when the map has a tiled base map layer. In such cases, simply determining the scale at which a
-     * layer is visible may not be sufficient as this scale may fall between two LOD scale ranges. In such cases, esri will choose the LOD with the nearest scale
-     * to zoom to - but the layer may NOT be visible at that scale. This function fetches the scale of the nearest LOD (either less than or more than the specified scale)
-     * at which the layer will be visible.
-     * @param mode An enum which can be either "lessThan" or "greaterThan"
-     * @param scale The target scale
-    *  @return The nearest LOD with scale less than or more than (depending on mode) the target scale OR the input scale if a tiled base map is not added to the map
-    */
-    function getClosestScale(map: esri.Map, mode: ScaleChangeMode, scale: number): number;
-    enum ScaleChangeMode {
-        LessThan = 0,
-        GreaterThan = 1,
-    }
     function cloneEsriFeature(feature: esri.Graphic): esri.Graphic;
-    function esriFeatureAttributesEqual(attributes1: any, attributes2: any, fieldsToIgnore?: string[]): boolean;
     function esriFeaturesEqual(graphic1: esri.Graphic, graphic2: esri.Graphic): boolean;
-    function esriGeometriesEqual(g1: esri.geometry.Geometry, g2: esri.geometry.Geometry): boolean;
     function compareTypeSR(g1: esri.geometry.Geometry, g2: esri.geometry.Geometry): boolean;
     function esriPointsEqual(thisGeom: esri.geometry.Point, oGeom: esri.geometry.Point): boolean;
     function esriMultipointsEqual(thisGeom: esri.geometry.Multipoint, oGeom: esri.geometry.Multipoint): boolean;
@@ -9109,23 +7312,13 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.MapUtils {
     function findFeatureInLayer(feature: esri.Graphic, layer: esri.layers.FeatureLayer): esri.Graphic;
     /**
      * Finds a feature on the map. This method is crucial for dealing with OnDemand layers, as feature instances
-     * obtained from OnDemand layers became detached from the map and we often need to re-attach to the "fresh"
+     * obtanined from OnDemand layers becomed detached from the map and we often need to re-attach to the "fresh"
      * instance of a feature.
      * @param feature The esri.Graphic to find.
      * @param site The Site, containing the map.
      * @param layerHint A layer possibly containing the feature, to search first.
      */
     function findFeatureInMap(feature: esri.Graphic, site: geocortex.essentials.Site, layerHint?: esri.layers.FeatureLayer): esri.Graphic;
-    /**
-     * Get an image URI for the thumbnail. Can be a hosted image or a data URI.
-     * @param app The application which contains the map to create a thumbnail for.
-     * @param extent The extent to create the thumbnail for. Defaults to the maps current extent.
-     * @param width The width of the thumbnail.
-     * @param height The height of the thumbnail.
-     * @param dpi The DPI to use for the thumbnail resolution.
-     * @return A promise of the thumbnail.
-     */
-    function getThumbnailUri(app: ViewerApplication, extent?: esri.geometry.Extent, width?: number, height?: number, dpi?: number): Promise<string>;
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
     interface FeatureOptions {
@@ -9134,8 +7327,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
         featureLayer?: esri.layers.FeatureLayer;
         resolveLayerFields?: boolean;
         allowUnsafeContent?: boolean;
-        timeZoneId?: string;
-        displayTimeZoneId?: string;
     }
     interface NameValueProperty {
         name: string;
@@ -9210,11 +7401,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * @type String
          */
         borderColor: framework.ui.LazyObservable<number[]>;
-        /**
-        * The border width of the Feature.
-        * @type Number
-        */
-        borderWidth: framework.ui.LazyObservable<number>;
         /**
          * The fill color of the Feature.
          * @type String
@@ -9306,30 +7492,16 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          */
         hasValidGeometry: framework.ui.LazyObservable<boolean>;
         /**
-         * Gets the Esri feature attached to the Geocortex feature.
+         * Gets the Esri feature attached to the geocortex feature.
          * @type esri.Graphic
          */
         esriFeature: Observable<esri.Graphic>;
         /** Observable public members - Layer config overrides */
         iconUri: framework.ui.LazyObservable<string>;
         /** linked data associated with a feature's linked attributes */
-        linkedAttributes: ObservableCollection<AttributeGroup>;
+        linkedAttributes: ObservableCollection<any>;
         /** the features related data links */
         dataLinkingResults: ObservableCollection<DataLinkingResult>;
-        /** The default format to use for displaying number fields that have no explicit format. */
-        defaultNumberFormat: string;
-        /** The default format to use for displaying date fields that have no explicit format. */
-        defaultDateFormat: string;
-        /** Whether the feature attribute data has been locally modified. */
-        isModified: boolean;
-        /** The IANA ID of the time zone in which this feature's field data are current.
-          * Primarily used as a fallback when the FieldInfo object cannot access the appropriate ID.
-          */
-        timeZoneId: string;
-        /** The IANA ID of the time zone in which this feature's field data will be displayed.
-          * Primarily used as a fallback when the FieldInfo object cannot access the appropriate ID.
-          */
-        displayTimeZoneId: string;
         /**
          * Indicates if unsafe web content is allowed for rendering or not
          * @private
@@ -9339,7 +7511,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * Indicates if layer fields are to be resolved or not
          */
         private _resolveLayerFields;
-        private _attributeValueBindingTokens;
         /**
          * Initializes a new instance of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature} class.
          * @class
@@ -9379,11 +7550,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          */
         calculateScaleToMakeVisible(scale: number): number;
         /**
-         * Ensures that a field name can't be used for injection attacks when used to form a field token.
-         * @param fieldName The field name to sanitize.
-         */
-        private _sanitizeFieldName(fieldName);
-        /**
          * @private Returns the default field value
          */
         private _getDefaultFieldValue();
@@ -9401,6 +7567,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * Takes a collection of attributes from an Esri Graphic (feature) and returns a collection of feature attributes with the proper naming.
          * @param attributes attribute Collection of name value pairs to which we will attempt to resolve names using this feature
          * @param resolveLayerFields Whether or not we should attempt to resolve the layers fields. Defaults to true.
+         * @return a collection of FeatureAttribute objects where we have attempted to resolve the names using this feature
          */
         getAttributesFromEsriFeature(attributes: any[], resolveLayerFields?: boolean): FeatureAttribute[];
         /**
@@ -9424,21 +7591,10 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          */
         getType(): esri.layers.FeatureType;
         /**
-         * Determines whether a Geocortex essentials feature is structurally equal to the current instance.
-         *
-         *     Structural equality means that two objects are equal because they have equal values.
-         *     It differs from reference equality, which indicates that two object references are equal because they reference the same physical object.
-         *     Note: This comparison does not take geometry into account
-         *
-         * @param o: The Geocortex essentials feature to compare with the current instance.
-         * @returns `true` if the two objects are equal; otherwise, `false`.
+         * Checks if the given geocortex essentials feature is equal to this feature
+         * @param o: A geocortex essentials feature to be compared
          */
-        structurallyEquals(o: Feature): boolean;
-        /**
-         * Checks if the given Geocortex essentials feature is equal to this feature
-         * @param o: A Geocortex essentials feature to be compared
-         */
-        equals(o: Feature): boolean;
+        equals(o: any): boolean;
         /** @private Load the attachment infos asynchronously */
         private _loadAttachmentsInfos();
         /** The method formatTemplateString was made public to be consistent with silverlight viewer.
@@ -9451,35 +7607,16 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          */
         parseDataLinkId(fieldName: string, result: any): boolean;
         /**@private */
-        protected _getLayerUniqueId(): string;
         private _setupLinkedAttributes();
         private _refreshPresentableValues();
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
-    /** A special property added to an esri feature to indicate that it came from a KML service. */
-    const isKmlProperty: string;
-    /**
-     * A {@link Feature} belonging to a KML service.
-     */
-    class KmlFeature extends Feature {
-        constructor(options?: FeatureOptions);
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
-    enum DataLinksState {
-        Unresolved = 0,
-        Resolving = 1,
-        Resolved = 2,
-    }
     interface FeatureSetOptions {
         esriFeatureSet?: esri.tasks.FeatureSet;
         layer?: geocortex.essentials.Layer;
-        featureLayer?: esri.layers.FeatureLayer;
         allowUnsafeContent?: boolean;
         app?: geocortex.framework.application.Application;
-        defaultNumberFormat?: string;
-        defaultDateFormat?: string;
     }
     class FeatureSet {
         /**
@@ -9501,10 +7638,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * @type geocortex.essentials.Layer
          */
         layer: geocortex.essentials.Layer;
-        /**
-        * The esri feature layer containing metadata about the feature attributes.
-        */
-        featureLayer: esri.layers.FeatureLayer;
         /**
          * An id guaranteed to be unique (auto-generated).
          * @type String
@@ -9543,24 +7676,11 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * Whether the datalinks (if any) for this feature set have been resolved.
          */
         dataLinksResolved: Observable<boolean>;
-        /** The default format to use for displaying number fields that have no explicit format. */
-        defaultNumberFormat: string;
-        /** The default format to use for displaying date fields that have no explicit format. */
-        defaultDateFormat: string;
         /**
          * @private Indicates if unsafe web content is allowed for rendering or not
          * @type boolean
          */
         private _allowUnsafeContent;
-        /** Keeps track of objectIds to ensure we there aren't duplicate features in this FeatureSet */
-        private _objectIds;
-        private _watchHandles;
-        private _dataLinksState;
-        /**
-         * Indicates the current state with regard to resolving data links.
-         */
-        dataLinksState: DataLinksState;
-        protected setDataLinksState(value: DataLinksState): void;
         /**
          * Initializes a new instance of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSet} class.
          * @class
@@ -9582,37 +7702,10 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          */
         setExtendedProperty(name: string, value: any): void;
         /**
-         * Adds a feature to this FeatureSet.
+         * Add a feature to this featureSet.
          * @param feature The feature to add to the featureSet.
-         * @param doNotCheckForDuplicates When `true`, the supplied feature will be added to this set without checking for duplicates. The default value is `false`.
          */
-        addFeature(feature: Feature, doNotCheckForDuplicates?: boolean): boolean;
-        protected _addFeatureWithoutNotification(feature: Feature, doNotCheckForDuplicates?: boolean): boolean;
-        /**
-         * Removes a feature from this FeatureSet.
-         *
-         *     This method determines equality by using the default equality comparer for features, as defined in {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature.equals}().
-         *     This method performs a linear search; therefore, this method is an O(n) operation, where n is the number of features.
-         *
-         * @param feature The feature to remove.
-         * @return `true` if item was successfully removed; otherwise, `false`. This method also returns `false` if item is not found.
-         */
-        removeFeature(feature: Feature): boolean;
-        protected _removeWithoutNotificationAt(index: number): boolean;
-        /**
-         * Determines whether a feature is in this FeatureSet.
-         *
-         *     This method determines equality by using the default equality comparer for features, as defined in {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.Feature.equals}().
-         *     This method performs a linear search; therefore, this method is an O(n) operation, where n is the number of features.
-         *
-         * @param feature The feature to locate in the FeatureSet.
-         * @return `true` if feature is found in the FeatureSet; otherwise, `false`.
-         */
-        containsFeature(feature: Feature): boolean;
-        /**
-         * Removes all features from this FeatureSet.
-         */
-        clearFeatures(): void;
+        addFeature(feature: Feature): void;
         /**
          * Load the geometries for the specified features (if not already loaded).
          * If null is passed in, the geometries for all features will be fetched.
@@ -9623,16 +7716,10 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          */
         loadGeometries(features: Feature[], successCallback?: () => void, errorCallback?: (error: Error) => void): dojo.Deferred;
         /**
-         * Finds the Geocortex feature having the given ID (primary key value).
-         * @param id The ID to search for.
-         * @return The Geocortex feature corresponding to the given ID if it exists, or null.
-         */
-        findFeatureById(id: any): Feature;
-        /**
-         * Finds the Geocortex feature corresponding to the given ESRI feature if it exists in the feature set.
-         * There is an inherent assumption here that a Geocortex feature instance will be unique in a feature set.
-         * @param esriFeature The esri graphic for which the corresponding Geocortex feature needs to be retrieved.
-         * @return The Geocortex feature corresponding to the given ESRI feature, if it exists, or null.
+         * Finds the geocortex feature corresponding to the given ESRI feature if it exists in the feature set.
+         * There is an inherent assumption here that a geocortex feature instance will be unique in a feature set.
+         * @param esriFeature The esri graphic for which the corresponding geocortex feature needs to be retrieved.
+         * @return The geocortex feature corresponding to the given ESRI feature, if it exists, or null.
          */
         findFeatureByEsriFeature(esriFeature: esri.Graphic): Feature;
         /**
@@ -9656,7 +7743,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * Updates the current collection of features.
          * @params args Type of operation done on feature set.
          */
-        featureSetChanged(args: framework.events.CollectionChangedArgs): void;
+        featureSetChanged(args: any): void;
         /**
          * Apply the datalinks with the given featureSet, datalinks and results collection
          * @param featureSet
@@ -9665,7 +7752,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * @param onDataLinkAddedToFeature
          * @private
          */
-        protected _applyDataLinks(featureSet: FeatureSet, features: Feature[], dataLinks: any[], resultsCollection: any[], onDataLinkAddedToFeature?: (feature: Feature) => void): void;
+        _applyDataLinks(featureSet: FeatureSet, dataLinks: any[], resultsCollection: any[], onDataLinkAddedToFeature?: (feature: Feature) => void): void;
         /**
          * Resolves the datalinks (if any) for this feature set
          * @param onDataLinkAddedToFeature Function to be called when a datalink is resolved for a given feature
@@ -9685,58 +7772,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * Adds only those features to the feature set that are not already part of the feature set.
          */
         append(featureSet: FeatureSet): void;
-        /**
-         * Creates a new feature set that contains all elements that are present in either the current set or in the specified feature set.
-         * @param other The feature set to add elements from.
-         * @return A new feature set with the items added; or a copy of the original set if all the items were already in the set.
-         */
-        union(other: FeatureSet): FeatureSet;
-        /**
-         * Modifies the current set to produce the set union of two sequences of {@link Feature}s by using the default equality comparer.
-         * In other words, it adds all of the elements in the second set to this set if they're not already present.
-         * @param other Set containing elements to be added to this set.
-         * @return `true` if this set changed as a result of the call; `false` otherwise.
-         */
-        unionInPlace(other: FeatureSet): boolean;
-        /**
-         * Creates a new feature set that contains elements of the current set that do not appear in the second set.
-         * @param other The feature set whose elements that also occur in the first set will cause those elements to be removed from the returned set.
-         * @return A new feature set that contains the set difference of the elements of two sets.
-         */
-        subtract(other: FeatureSet): FeatureSet;
-        /**
-         * Modifies the current set to produce the set difference of two sequences of {@link Feature}s by using the default equality comparer to compare values.
-         * The set difference of two sets is defined as the elements of the first set that do not appear in the second set.
-         * Note: This method modifies this set to only keep those elements that do not appear in the second set. It does not also include those elements in the second set that do not appear in this set.
-         * @param other Set containing elements to be removed from this set.
-         * @return `true` if this set changed as a result of the call; `false` otherwise.
-         */
-        subtractInPlace(other: FeatureSet): boolean;
-        /**
-         * Creates a new feature set that contains elements that exist in both this set and the specified set.
-         * @param other The feature set to compare to the current set.
-         * @return A new feature set that contains any elements that exist in both sets.
-         */
-        intersect(other: FeatureSet): FeatureSet;
-        /**
-         * Modifies the current set to produce the set intersection of two sequences of {@link Feature}s by using the default equality comparer to compare values.
-         * The intersection of two sets A and B is defined as the set that contains all the elements of A that also appear in B, but no other elements.
-         * @param other Set containing elements to be retained in this set.
-         * @return `true` if this set changed as a result of the call; `false` otherwise.
-         */
-        intersectInPlace(other: FeatureSet): boolean;
-        /**
-         * Performs a shallow copy of this FeatureSet, returning the cloned value.
-         */
-        clone(): FeatureSet;
-        /**
-         * Given a FeatureSet, creates a new empty one just like the original (same layer, name etc)
-         * Note: This method will not copy the features within the original FeatureSet.
-         */
-        cloneStructure(): FeatureSet;
-        protected _cloneEsriStructure(esriFeatureSet: esri.tasks.FeatureSet): esri.tasks.FeatureSet;
-        protected _watchFeatureSetChanges(): dojo.RemovableHandle;
-        protected _unwatchFeatureSetChanges(): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
@@ -9752,10 +7787,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          */
         displayName: Observable<string>;
         /**
-         * Whether the feature set collection has been modified.
-         */
-        isModified: Observable<boolean>;
-        /**
          * The collection of feature set objects constituting the collection.
          * @type ObservableCollection<FeatureSet>
          */
@@ -9769,7 +7800,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * The tag for the feature set collection.
          * @type String
          */
-        tag: any;
+        tag: string;
         /**
          * The extended collection for the feature set collection.
          * @type Array
@@ -9801,16 +7832,10 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          */
         getFeatureSetById(id: string): FeatureSet;
         /**
-         * Returns the FeatureSet having the specified {@link geocortex.essentials.Layer}, or null if none exists.
-         * @param layer The Geocortex Layer of the FeatureSet to return.
-         * @return FeatureSet The FeatureSet found, if any.
-         */
-        getFeatureSetByLayer(layer: geocortex.essentials.Layer): FeatureSet;
-        /**
-         * Searches all contained feature sets for a Geocortex feature corresponding to the specified ESRI feature, and returns it if found.
-         * There is an inherent assumption here that a Geocortex feature instance will be unique among all feature sets in a feature set collection.
-         * @param esriFeature The esri graphic for which the corresponding Geocortex feature needs to be retrieved.
-         * @return The Geocortex feature corresponding to the given ESRI feature, if it exists, or null.
+         * Searches all contained feature sets for a geocortex feature corresponding to the specified ESRI feature, and returns it if found.
+         * There is an inherent assumption here that a geocortex feature instance will be unique among all feature sets in a feature set collection.
+         * @param esriFeature The esri graphic for which the corresponding geocortex feature needs to be retrieved.
+         * @return The geocortex feature corresponding to the given ESRI feature, if it exists, or null.
          */
         findFeatureByEsriFeature(esriFeature: esri.Graphic): Feature;
         /**
@@ -9826,44 +7851,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * Clears the feature collection within each FeatureSet, before clearing the FeatureSet collection.
          */
         clear(): void;
-        /**
-         * Performs a shallow copy of this FeatureSetCollection, returning the cloned value.
-         * @param deepCopy Whether to clone the FeatureSets belonging to this collection. Defaults to `false`
-         */
-        clone(deepCopy?: boolean): FeatureSetCollection;
-        /**
-         * Given a FeatureSetCollection, creates a new empty one just like the original (same layer, name etc)
-         * Note: This method will not copy the feature sets within the original collection.
-         */
-        cloneStructure(): infrastructure.FeatureSetCollection;
-        /**
-         * Produces the set union of two sequences of {@link Feature}s by using the default equality comparer.
-         * In other words, it adds all of the elements in the second set to this set if they're not already present.
-         * @param fsc Set containing elements to be added to this set.
-         * @return `true` if this set changed as a result of the call; `false` otherwise.
-         */
-        unionInPlace(other: FeatureSetCollection): boolean;
-        unionManyInPlace(collections: FeatureSetCollection[]): boolean;
-        /**
-         * Produces the set difference of two sequences of {@link Feature}s by using the default equality comparer to compare values.
-         * The set difference of two sets is defined as the members of the first set that do not appear in the second set.
-         * Note: This method modifies this set to only keep those elements that do not appear in the second set. It does not also include those elements in the second set that do not appear in this set.
-         * @param featureSet Set containing elements to be removed from this set.
-         * @return `true` if this set changed as a result of the call; `false` otherwise.
-         */
-        subtractInPlace(other: FeatureSetCollection): boolean;
-        subtractManyInPlace(collections: FeatureSetCollection[]): boolean;
-        /**
-         * Produces the set intersection of two sequences of {@link Feature}s by using the default equality comparer to compare values.
-         * The intersection of two sets A and B is defined as the set that contains all the elements of A that also appear in B, but no other elements.
-         * @param featureSet Set containing elements to be retained in this set.
-         * @return `true` if this set changed as a result of the call; `false` otherwise.
-         */
-        intersectInPlace(other: FeatureSetCollection): boolean;
-        intersectManyInPlace(collections: FeatureSetCollection[]): boolean;
-        protected _generateLayerKey(mapServiceId: string, layerId: string): string;
-        protected _buildLayerLookup(): Dictionary<FeatureSet>;
-        protected _buildFeatureSetLookup(): Dictionary<FeatureSet>;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
@@ -9885,14 +7872,13 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
          */
         collectionChangedEventArgs: geocortex.framework.events.CollectionChangedArgs;
         /**
-         * Initializes a new instance of the {@link FeatureSetManagerEventArgs} class.
+         * Initializes a new instance of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetManagerEventArgs} class.
          * @param args An object consisting of 3 members: `sender`, `featureSetCollection`, and `featureSetCollectionId`.
          */
         constructor(args: {
             sender: any;
             featureSetCollection: FeatureSetCollection;
             featureSetCollectionId: string;
-            collectionChangedEventArgs?: geocortex.framework.events.CollectionChangedArgs;
         });
     }
 }
@@ -10025,9 +8011,9 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          */
         getCollectionIds(): string[];
         /**
-         * Searches all contained feature set collections for Geocortex feature(s) corresponding to the specified ESRI feature, and returns all existing instances.
-         * @param esriFeature The esri graphic for which the corresponding Geocortex feature(s) needs to be retrieved.
-         * @return The array Geocortex features corresponding to the given ESRI feature, if they exist, or an empty array.
+         * Searches all contained feature set collections for geocortex feature(s) corresponding to the specified ESRI feature, and returns all existing instances.
+         * @param esriFeature The esri graphic for which the corresponding geocortex feature(s) needs to be retrieved.
+         * @return The array geocortex features corresponding to the given ESRI feature, if they exist, or an empty array.
          */
         findFeaturesByEsriFeature(esriFeature: esri.Graphic): Feature[];
         /**
@@ -10070,21 +8056,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ColorUtils 
      * @return The CSS color string or null.
      */
     function getStringFromHex(hexColor: string): string;
-    /**
-     * Generate a selection of random colors that can be used in symbolization.
-     * An attempt has been made to constrain the selection to colors that will 'look good'
-     * while providing the most diverse set of colors possible. Use for up to 12 colors is generally ok.
-     */
-    function generateRandomColors(n?: number): visualization.SymbolColor[];
-    /**
-     * Generate a random saturated color
-     */
-    function generateRandomColor(): visualization.SymbolColor;
-    /**
-     * Detect whether or not the native color input type is supported by the current browser.
-     * Returns true when color input is supported, false otherwise.
-     */
-    function isColorInputSupported(): boolean;
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
     /**
@@ -10100,10 +8071,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * The color scheme to draw the border of the graphics.
          */
         borderColor: esri.Color;
-        /**
-        * The width to draw the border of the graphics.
-        */
-        borderWidth: number;
         /**
          * Matches a member in {@link esri.renderer.Renderer}.
          */
@@ -10136,31 +8103,12 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
-    /**
-     * Represents the saved project state for the highlight manager.
-     */
-    interface HighlightManagerState extends project.ModuleState {
-        /**
-         * The set of highlight layers, keyed by name (as passed to createHighlightLayer(), not the esri layer ID).
-         */
-        highlightLayers: {
-            [name: string]: project.OperationalLayer;
-        };
-        /** The name of the active highlight layer. */
-        activeHighlightLayerName: string;
-        /** A set of feature/layer pairs indicating which features have been highlighted on which highlight layer(s). */
-        highlights: [{
-            /** The feature (esri graphic) that is being highlighted. */
-            feature: project.Feature;
-            /** The highlight layer where this feature is being highlighted (there can be more than one). */
-            highlightLayer: project.OperationalLayer;
-        }];
-    }
     class HighlightManager {
         /**
-         * The {@link ViewerApplication} that this module belongs to.
+         * The {@link geocortex.essentialsHtmlViewer.Application} that this module belongs to.
+         * @type {@link geocortex.essentialsHtmlViewer.Application}
          */
-        app: ViewerApplication;
+        app: geocortex.essentialsHtmlViewer.ViewerApplication;
         /**
          * ID of the currently active highlight layer
          * @private
@@ -10176,6 +8124,11 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * @private
          */
         private _managedGraphics;
+        /**
+         *  The collection of object id of the cloned to graphic to mapping objects that contain the cloned graphic, the managed graphic it was made from, and layer
+         * @private
+         */
+        private _clonedGraphics;
         /**
          *   The next number to be used in the id of one of the managed or clone objects
          * @private
@@ -10240,10 +8193,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
         clearHighlights(graphicsLayer: esri.layers.GraphicsLayer): void;
         clearHighlights(layerName?: string): void;
         /**
-         * Called when LayerVisualizationChangedEvent fires. Will reapply highlight symbology using the renderer currently active on the layer.
-         */
-        refreshHighlights(): void;
-        /**
          * Gets the current fill color.
          * Returns the 6 or 8 digit hex color in RGB or ARGB form.
          */
@@ -10254,37 +8203,21 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          */
         getHighlightBorderColor(): string;
         /**
-         * Gets the current border width.
-         * Returns the width of the border.
-         */
-        getHighlightBorderWidth(): number;
-        /**
          * Sets the fill color to the one specified.
          * @param {String} color The 6 or 8 digit hex color in RGB or ARGB form.
          */
         setHighlightFillColor(color: string): void;
         /**
-         * Sets the border color to the one specified.
+         * Sets the border color to the one specified..
          * @param {String} color The 6 or 8 digit hex color in RGB or ARGB form.
          */
         setHighlightBorderColor(color: string): void;
-        /**
-         * Sets the border width to the one specified.
-         * @param {number} width The number (in pixels) for the width of the hightlight.
-         */
-        setHighlightBorderWidth(width: number): void;
         /**
          * Gets a highlight layer with the specified name.
          * @param {String} layerName The name of the layer to get.
          * @returns {esri.layer.GraphicsLayer} highlight layer
          */
         getHighlightLayer(layerName: string): esri.layers.GraphicsLayer;
-        /**
-         * Gets the set of highlight layers, keyed by name.
-         */
-        getHighlightLayers(): {
-            [name: string]: esri.layers.GraphicsLayer;
-        };
         /**
          * Gets a highlight layer with the specified name, or the active layer if one is not specified.
          * @param {String} [layerName] The name of the layer to get.
@@ -10301,18 +8234,12 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * @returns {esri.Graphic[]} default layer highlighted graphics.
          */
         defaultHighlightLayerGraphics(): esri.Graphic[];
-        exportState(): Promise<HighlightManagerState>;
-        applyState(state: HighlightManagerState): Promise<void>;
         /**
          * Draws the graphic to the specified esri.layer.GraphicsLayer.
          * @param The graphic to be drawn
          * @param The specified graphic layer
          */
         private _drawGraphic(graphic, layer);
-        /**
-         * Keeps track of a pairing of original graphic + cloned graphic for a particular layer.
-         */
-        private _trackGraphic(graphic, clonedGraphic, layer);
         /** @private  Returns the dojo.Color currently set to fill */
         private _getFillColor();
         /** @private  Sets the dojo.Color that should be used to fill graphics by default */
@@ -10321,15 +8248,8 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
         private _getBorderColor();
         /** @private  Sets the dojo.Color that should be used for the borders of graphics */
         private _setBorderColor(color);
-        /** @private Returns the width currently set for borders */
-        private _getBorderWidth();
-        /** @private Sets the width that should be used for the borders of graphics */
-        private _setBorderWidth(width);
-        private _toARGBHex(color);
         /** @private  Returns the next integer that should be used for keying into the layers, if a graphic doesn't already have one. */
         private _nextId();
-        private _getHighlightId(graphic);
-        private _setHighlightId(graphic, id);
         private _showHighlightLayer(layer);
         /** @private Adds the specified layer to the map. This is a convenience method, because it's long, and had to be done lots. */
         private _addLayerToMap(layer);
@@ -10648,7 +8568,8 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.menus {
         * Registers a menu, given from either a MenuEntryConfig or MenuModel object.
         * @param menu The instance of {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.menus.MenuModel} or {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.menus.MenuEntryConfig} to be registered.
         */
-        register(menu: MenuModel | MenuEntryConfig): void;
+        register(menu: MenuModel): void;
+        register(menu: MenuEntryConfig): void;
         /**
          * Unregisters a menu.
          * @param menuId The ID of the menu to be unregistered.
@@ -10678,7 +8599,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.menus {
          * - data-menu-template: (Optional) If provided, this will be used as the template for the menu view being created. Default is Mapping/infrastructure/menus/MenuView.html
          * - data-menu-type: (Optional) If provided, this will be used as the code behind for the menu view being created. Default is geocortex.essentialsHtmlViewer.mapping.infrastructure.menus.MenuView
          * - data-menu-library-id: (Optional) If provided, this will be used as the library id for this menu View. This will override the manual libraryId input parameter if specified.
-         * - data-menu-hoist-disabled: (Optional) If present, the menu will not be hoisted.
          * @param view The view that is requesting the menu widget.
          * @param context The current context of the widget, if available.
          * @param binding The binding expression passed in to the 'resolveWidget' method from which this method will typically be called.
@@ -10706,7 +8626,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.menus {
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.tools {
-    class ToolBase implements ToolConfig {
+    class ToolBase {
         /**
          * The {@link geocortex.essentialsHtmlViewer.ViewerApplication} that this tool instance belongs to.
          */
@@ -10722,30 +8642,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.tools {
          */
         isActive: boolean;
         /**
-         * Status text to display while the tool is active.  Can be i18ned.
-         */
-        statusText: string;
-        /**
-         * Optional, alternate status text to display for keyboard users.  Can be i18ned.
-         */
-        keyboardStatusText: string;
-        /**
-         * Library to look up i18n string keys from.  Required to display i18n strings.
-         */
-        libraryId: string;
-        /**
-         * Optional URI of the icon to display with the status.
-         */
-        iconUri: string;
-        /**
-         * Optional title for the close tool UI element.  Defaults to "Deactivate Tool".
-         */
-        closeTitle: string;
-        /**
-         * Optional CSS class for the status displayed for this tool.
-         */
-        statusClass: string;
-        /**
          * Whether the tool is enabled (can be used).  The tool will be assumed to not support disabling
          * if left undefined.
          */
@@ -10759,7 +8655,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.tools {
          * @param app The {@link geocortex.essentialsHtmlViewer.ViewerApplication} that this tool belongs to.
          * @param mixin An object to provide additional configuration of this tool.
          */
-        constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, mixin: ToolConfig);
+        constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, mixin: any);
         /**
          * Sets the active state of the tool.
          * @param {boolean} active The desired active state of the tool.
@@ -10852,7 +8748,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.tools {
          * @param {boolean} registerTools A flag indicating whether to register the tool with the registry.
          * @return An array of tool objects.
          */
-        createTools(config: ToolConfig[], registerTools: boolean): ToolBase[];
+        createTools(config: any, registerTools: boolean): ToolBase[];
         /**
          * Associates a command with a tool type, allowing tool subtypes to be created and invoked for certain tool commands.
          * @param commandName The name of the command to associate with a tool subtype.
@@ -11019,7 +8915,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.toolbarGrou
         id: string;
         type?: string;
         tooltip?: string;
-        isDefault?: boolean;
         libraryId?: string;
         items?: ToolbarGroupItemBaseEntry[];
     }
@@ -11031,7 +8926,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.toolbarGrou
         name: Observable<string>;
         tooltip: Observable<string>;
         type: string;
-        isDefault: boolean;
         isActive: Observable<boolean>;
         disabled: Observable<boolean>;
         cssClass: Observable<string>;
@@ -11098,12 +8992,12 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.undo {
     /**
      * The UndoManager is a utility object that allows you to easily build applications with undo/redo functionality.
      * Use the UndoManager to add actions (edits, navigation changes, graphics drawing) to the stack. The API includes
-     * a set of edit operations (add, delete, update, cut and union), created by inheriting from the {@link Undoable} class.
-     * You can inherit from the {@link Undoable} class to create custom operations that take advantage of undo/redo.
+     * a set of edit operations (add, delete, update, cut and union), created by inheriting from the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.ActionBase} class.
+     * You can inherit from the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.ActionBase} class to create custom operations that take advantage of undo/redo.
      */
     class UndoManager implements TransactionManager {
-        /** The {@link framework.application.Application} that this undo manager instance belongs to. */
-        app: framework.application.Application;
+        /** The {@link geocortex.framework.application.Application} that this undo manager instance belongs to. */
+        app: geocortex.framework.application.Application;
         /** The maximum number of operations the {@link UndoManager} can perform. If a number less than or equal to zero is provided the number of operations is unlimited. */
         maxOperations: number;
         /** Whether the recording of {@link Undoable} instances in the undo history has been suspended using the Suspend method. */
@@ -11224,467 +9118,11 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.undo {
         protected _updateStatus(status: string): void;
     }
 }
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * A Color is an array of numbers specifying R,G,B, and A.
-     */
-    type Color = number[];
-    module SymbolType {
-        const SIMPLE_MARKER: string;
-        const SIMPLE_LINE: string;
-        const SIMPLE_FILL: string;
-        const PICTURE_MARKER: string;
-        const PICTURE_FILL: string;
-        const TEXT: string;
-    }
-    module SimpleMarkerStyle {
-        const CIRCLE: string;
-        const CROSS: string;
-        const DIAMOND: string;
-        const SQUARE: string;
-        const X: string;
-        const TRIANGLE: string;
-        const PATH: string;
-    }
-    module SimpleLineStyle {
-        const DASH: string;
-        const DASH_DOT: string;
-        const DASH_DOT_DOT: string;
-        const DOT: string;
-        const NONE: string;
-        const SOLID: string;
-    }
-    module SimpleFillStyle {
-        const BACKWARD_DIAGONAL: string;
-        const CROSS: string;
-        const DIAGONAL_CROSS: string;
-        const FORWARD_DIAGONAL: string;
-        const HORIZONTAL: string;
-        const NONE: string;
-        const SOLID: string;
-        const VERTICAL: string;
-    }
-    module VerticalAlignment {
-        const BASELINE: string;
-        const TOP: string;
-        const MIDDLE: string;
-        const BOTTOM: string;
-    }
-    module HorizontalAlignment {
-        const LEFT: string;
-        const RIGHT: string;
-        const CENTER: string;
-        const JUSTIFY: string;
-    }
-    module FontStyle {
-        const ITALIC: string;
-        const NORMAL: string;
-        const OBLIQUE: string;
-    }
-    module FontWeight {
-        const BOLD: string;
-        const BOLDER: string;
-        const LIGHTER: string;
-        const NORMAL: string;
-    }
-    module TextDecoration {
-        const LINE_THROUGH: string;
-        const UNDERLINE: string;
-        const NONE: string;
-    }
-    /**
-     * A symbol representing a feature on the map.
-     *
-     * Part of the Esri ArcGIS REST API (see http://resources.arcgis.com/en/help/rest/apiref/symbol.html).
-     */
-    interface Symbol {
-        /** The type of symbol. One of the SymbolType constants. */
-        type: string;
-    }
-    /**
-     * Simple marker symbols can be used to symbolize point geometries.
-     *
-     * Part of the Esri ArcGIS REST API (see http://resources.arcgis.com/en/help/rest/apiref/symbol.html).
-     */
-    interface SimpleMarkerSymbol extends Symbol {
-        /** One of the SimpleMarkerStyle constants. */
-        style: string;
-        color: Color;
-        size: number;
-        angle: number;
-        path?: string;
-        xoffset: number;
-        yoffset: number;
-        outline?: {
-            color: Color;
-            width: number;
-        };
-    }
-    /**
-     * Simple line symbols can be used to symbolize polyline geometries or outlines for polygon fills.
-     *
-     * Part of the Esri ArcGIS REST API (see http://resources.arcgis.com/en/help/rest/apiref/symbol.html).
-     */
-    interface SimpleLineSymbol extends Symbol {
-        /** One of the SimpleLineStyle constants. */
-        style: string;
-        color: Color;
-        width: number;
-    }
-    /**
-     * Simple fill symbols can be used to symbolize polygon geometries.
-     *
-     * Part of the Esri ArcGIS REST API (see http://resources.arcgis.com/en/help/rest/apiref/symbol.html).
-     */
-    interface SimpleFillSymbol extends Symbol {
-        /** One of the SimpleFillStyle constants. */
-        style: string;
-        color: Color;
-        outline?: SimpleLineSymbol;
-    }
-    /**
-     * Picture marker symbols can be used to symbolize point geometries.
-     *
-     * Part of the Esri ArcGIS REST API (see http://resources.arcgis.com/en/help/rest/apiref/symbol.html).
-     */
-    interface PictureMarkerSymbol extends Symbol {
-        /** Relative URL for static layers and full URL for dynamic layers. Access relative URL using http://<mapservice-url>/<layerId1>/images/<imageUrl11> */
-        url: string;
-        /** Base64 encoded. */
-        imageData: string;
-        contentType: string;
-        width: number;
-        height: number;
-        angle: number;
-        xoffset: number;
-        yoffset: number;
-    }
-    /**
-     * Picture fill symbols can be used to symbolize polygon geometries.
-     *
-     * Part of the Esri ArcGIS REST API (see http://resources.arcgis.com/en/help/rest/apiref/symbol.html).
-     */
-    interface PictureFillSymbol extends Symbol {
-        /** Relative URL for static layers and full URL for dynamic layers. Access relative URL using http://<mapservice-url>/<layerId1>/images/<imageUrl11> */
-        url: string;
-        /** Base64 encoded. */
-        imageData: string;
-        contentType: string;
-        outline?: SimpleLineSymbol;
-        width: number;
-        height: number;
-        angle: number;
-        xoffset: number;
-        yoffset: number;
-        xscale: number;
-        yscale: number;
-    }
-    /**
-     * Text symbols are used to add text to a feature (labeling).
-     *
-     * Part of the Esri ArcGIS REST API (see http://resources.arcgis.com/en/help/rest/apiref/symbol.html).
-     */
-    interface TextSymbol extends Symbol {
-        color: Color;
-        backgroundColor: Color;
-        borderLineSize: number;
-        borderLineColor: Color;
-        haloSize: number;
-        haloColor: Color;
-        /** One of the VerticalAlignment constants. */
-        verticalAlignment: string;
-        /** One of the HorizontalAlignment constants. */
-        horizontalAlignment: string;
-        rightToLeft: boolean;
-        angle: number;
-        xoffset: number;
-        yoffset: number;
-        kerning: boolean;
-        font: {
-            family: string;
-            size: number;
-            /** One of the FontStyle constants. */
-            style: string;
-            /** One of the FontWeight constants. */
-            weight: string;
-            /** One of the TextDecoration constants. */
-            decoration: string;
-        };
-        /** Only applicable when specified as a client-side graphic. */
-        text?: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    const CONVERSION_TYPE_PROPERTY: string;
-    /**
-     * Constants for target types that are handled by WebMapConverter.
-     */
-    module ConversionType {
-        const WEB_MAP_SERVICE_LAYER: string;
-        const WEB_MAP_LAYER: string;
-        const WEB_MAP_FEATURE_SET: string;
-        const WEB_MAP_FEATURE: string;
-        const WEB_MAP_GEOMETRY: string;
-        const WEB_MAP_SYMBOL: string;
-        const WEB_MAP_RENDERER: string;
-        const WEB_MAP_SPATIAL_REFERENCE: string;
-        const WEB_MAP_COLOR: string;
-        const WEB_MAP_DATA: string;
-        const GCX_MAP_SERVICE: string;
-        const GCX_LAYER: string;
-        const GCX_FEATURE_SET: string;
-        const GCX_FEATURE: string;
-        const ESRI_LAYER: string;
-        const ESRI_FEATURE_SET: string;
-        const ESRI_GRAPHIC: string;
-        const ESRI_GEOMETRY: string;
-        const ESRI_SYMBOL: string;
-        const ESRI_RENDERER: string;
-        const ESRI_SPATIAL_REFERENCE: string;
-        const ESRI_COLOR: string;
-        const OBJECT: string;
-    }
-    /**
-     * Provides methods for converting between Geocortex/Esri API objects and their ArcGIS web map equivalents.
-     *
-     * Note that once an input object has been converted, any additional attempts to convert it again will always return
-     * a reference to the same result object (this is a form of the Identity Map pattern). To reset this mapping, use clearCache().
-     */
-    class WebMapConverter {
-        app: ViewerApplication;
-        /**
-         * Maps a result type to a cache of conversion results for that type. Each cache in turn maps input objects to result objects.
-         * Note that it's possible for the same input object to convert to different result types, which is why the cache has this structure.
-         */
-        private _resultCache;
-        /**
-         * The next available unique ID to assign to a symbol object.
-         */
-        private _nextSymbolId;
-        private _nestingLevel;
-        private _hasReferences;
-        private _converting;
-        constructor(app: ViewerApplication);
-        fromGcxMapService(mapService: essentials.MapService): webMap.ServiceLayer;
-        fromGcxLayer(layer: essentials.Layer): webMap.Layer;
-        fromGcxFeatureSet(featureSet: infrastructure.FeatureSet): webMap.FeatureSet;
-        fromGcxFeature(feature: infrastructure.Feature): webMap.Feature;
-        fromEsriLayer(layer: esri.layers.Layer): webMap.ServiceLayer;
-        fromEsriFeatureSet(featureSet: esri.tasks.FeatureSet): webMap.FeatureSet;
-        fromEsriGraphic(graphic: esri.Graphic): webMap.Feature;
-        fromEsriGeometry(geometry: esri.geometry.Geometry): webMap.Geometry;
-        fromEsriSymbol(symbol: esri.symbol.Symbol): webMap.Symbol;
-        fromEsriRenderer(renderer: esri.renderer.Renderer): webMap.Renderer;
-        fromEsriSpatialReference(spatialReference: esri.SpatialReference): webMap.SpatialReference;
-        fromEsriColor(color: esri.Color): webMap.Color;
-        /**
-         * Converts an arbitrary object graph to a format that can be stored in a web map.
-         */
-        fromObject(object: any): any;
-        toGcxMapService(serviceLayer: webMap.ServiceLayer): Promise<essentials.MapService>;
-        toGcxLayer(layer: webMap.Layer, service: webMap.ServiceLayer): Promise<essentials.Layer>;
-        toGcxFeatureSet(featureSet: webMap.FeatureSet): Promise<infrastructure.FeatureSet>;
-        toGcxFeature(feature: webMap.Feature): Promise<infrastructure.Feature>;
-        toEsriLayer(serviceLayer: webMap.ServiceLayer): Promise<esri.layers.Layer>;
-        toEsriFeatureSet(featureSet: webMap.FeatureSet): Promise<esri.tasks.FeatureSet>;
-        toEsriGraphic(feature: webMap.Feature): Promise<esri.Graphic>;
-        toEsriGeometry(geometry: webMap.Geometry): esri.geometry.Geometry;
-        toEsriSymbol(symbol: webMap.Symbol): esri.symbol.Symbol;
-        toEsriRenderer(renderer: webMap.Renderer): esri.renderer.Renderer;
-        toEsriSpatialReference(spatialReference: webMap.SpatialReference): esri.SpatialReference;
-        toEsriColor(color: webMap.Color): esri.Color;
-        /**
-         * Converts serialized web map data back into the original API objects wherever possible. This only
-         * works if the object graph was serialized using fromObject(). Note that prototype chains for object
-         * types other than the specific Geocortex/Esri types handled by this class will NOT be preserved by
-         * toObject(fromObject(someObject)).
-         */
-        toObject(data: any): Promise<any>;
-        clearCache(): void;
-        /**
-         * A wrapper for conversion methods that implements the Identity Map behaviour.
-         */
-        protected _convert(source: any, destType: string, doConversion: (any) => any, args?: any[]): any;
-        /**
-         * Resolves references that were added by _convert() due to cycles in the conversion input.
-         */
-        private _resolveReferences(object);
-        protected _getWebMapLayerDefinitionFromFeatureLayer(featureLayer: esri.layers.FeatureLayer): webMap.LayerDefinition;
-        protected _getWebMapLayerDefinitionFromDynamicLayer(dynamicServiceLayer: esri.layers.ArcGISDynamicMapServiceLayer, layerId: number): webMap.LayerDefinition;
-        /**
-         * Applies a web map service layer configuration to an Essentials map service.
-         */
-        protected _applyWebMapServiceLayerToMapService(serviceLayer: webMap.ServiceLayer, mapService: essentials.MapService): Promise<void>;
-        /**
-         * Applies web map layer configuration to a map service's layers. Returns a boolean indicating whether the map service
-         * will need to be refreshed as a result.
-         */
-        protected _applyWebMapLayersToGcxLayers(serviceLayer: OperationalLayer, mapService: essentials.MapService): Promise<boolean>;
-        /**
-         * Applies web map configuration to an Essentials layer. Returns a boolean indicating whether the map service
-         * will need to be refreshed as a result.
-         */
-        protected _applyWebMapLayerToGcxLayer(layer: webMap.Layer, index: number, gcxLayer: essentials.Layer): Promise<boolean>;
-        protected _applyDrawingInfo(drawingInfo: DrawingInfo, mapService: essentials.MapService): Promise<void>;
-        protected _setGraphicsLayerRenderer(serviceLayer: esri.layers.GraphicsLayer, renderer: esri.renderer.Renderer): void;
-        protected _findMatchingGcxMapService(serviceLayer: webMap.ServiceLayer): essentials.MapService;
-        protected _findMatchingGcxLayer(layer: webMap.Layer | number | string, mapService: essentials.MapService): essentials.Layer;
-        protected _findOrCreateMatchingGcxLayer(layer: webMap.Layer, mapService: essentials.MapService): Promise<essentials.Layer>;
-        protected _findOrCreateMatchingGcxMapService(serviceLayer: webMap.ServiceLayer): Promise<essentials.MapService>;
-        /**
-         * Determines whether a new Essentials Layer object can be created for the given web map layer if
-         * no existing layer matches.
-         */
-        protected _canCreateGcxLayer(layer: webMap.Layer, mapService: essentials.MapService): boolean;
-        /**
-         * Invoked when a new Essentials Layer object needs to be created from the given web map layer.
-         */
-        protected _createGcxLayer(layer: webMap.Layer, mapService: essentials.MapService): Promise<essentials.Layer>;
-        /**
-         * Determines whether a new Essentials MapService object can be created for the given web map service
-         * layer if no existing map service matches.
-         */
-        protected _canCreateGcxMapService(serviceLayer: webMap.ServiceLayer): boolean;
-        /**
-         * Invoked when a new Essentials MapService object needs to be created from the given web map service layer.
-         */
-        protected _createGcxMapService(serviceLayer: webMap.ServiceLayer): Promise<essentials.MapService>;
-        /** Gets the Essentials map service definition from a service layer for use with _createGcxMapService(). */
-        protected _getMapServiceDefinition(serviceLayer: webMap.ServiceLayer): any;
-        protected _isFeatureCollection(serviceLayer: webMap.ServiceLayer): boolean;
-        protected _isKmlLayer(serviceLayer: webMap.ServiceLayer): boolean;
-        protected _isGraphicsLayer(serviceLayer: webMap.ServiceLayer): boolean;
-        protected _isLayerCatalogService(serviceLayer: webMap.ServiceLayer): boolean;
-        /**
-         * Adds a property to a converted object that identifies the type of the original source object.
-         */
-        protected _addSourceType(sourceType: string, object: any): any;
-        /**
-         * Get the value to use for the "layerType" property on a service layer. This property is not part of the
-         * web map specification, but is used by AGOL.
-         */
-        private _getWebMapLayerType(layer);
-        /**
-         * Infers the type of an attribute from a given set of Graphic objects.
-         */
-        protected _inferAttributeType(graphics: esri.Graphic[], attributeName: string): string;
-        /**
-         * Sets a map service's visible layers based on the settings in a web map operational layer. Returns a
-         * boolean indicating whether the service needs to be refreshed, i.e. whether any layer visibilities
-         * have changed.
-         */
-        protected _setVisibleLayers(serviceLayer: webMap.OperationalLayer, mapService: essentials.MapService): boolean;
-        protected _toGcxMapService(serviceLayer: webMap.ServiceLayer): Promise<essentials.MapService>;
-        protected _toGcxLayer(layer: webMap.Layer, serviceLayer: webMap.ServiceLayer): Promise<essentials.Layer>;
-        protected _toGcxFeatureSet(featureSet: webMap.FeatureSet): Promise<infrastructure.FeatureSet>;
-        protected _toEsriLayer(serviceLayer: webMap.ServiceLayer): Promise<esri.layers.Layer>;
-        protected _toEsriGraphicsLayer(serviceLayer: webMap.OperationalLayer): Promise<esri.layers.Layer>;
-        protected _toEsriFeatureLayer(serviceLayer: webMap.OperationalLayer): Promise<esri.layers.Layer>;
-        protected _toEsriFeatureSet(featureSet: webMap.FeatureSet): Promise<esri.tasks.FeatureSet>;
-        protected _toGcxFeature(feature: webMap.Feature): Promise<infrastructure.Feature>;
-        protected _toEsriGraphic(feature: webMap.Feature): Promise<esri.Graphic>;
-        protected _toEsriGeometry(geometry: webMap.Geometry): esri.geometry.Geometry;
-        protected _toEsriSymbol(symbol: webMap.Symbol): esri.symbol.Symbol;
-        protected _toEsriRenderer(renderer: webMap.Renderer): esri.renderer.Renderer;
-        protected _toEsriSpatialReference(spatialReference: webMap.SpatialReference): esri.SpatialReference;
-        protected _toEsriColor(color: webMap.Color): esri.Color;
-        protected _toObject(object: any): Promise<any>;
-        protected _fromGcxMapService(mapService: essentials.MapService): webMap.ServiceLayer;
-        protected _esriFeatureLayerToFeatureCollection(featureLayer: esri.layers.FeatureLayer): FeatureCollection;
-        protected _fromGcxlayer(layer: essentials.Layer): webMap.Layer;
-        protected _fromGcxFeatureSet(featureSet: infrastructure.FeatureSet): webMap.FeatureSet;
-        protected _fromEsriLayer(layer: esri.layers.Layer): webMap.ServiceLayer;
-        protected _fromEsriGraphicsLayer(layer: esri.layers.GraphicsLayer): webMap.ServiceLayer;
-        protected _fromEsriFeatureLayer(layer: esri.layers.FeatureLayer): webMap.ServiceLayer;
-        protected _fromEsriFeatureSet(featureSet: esri.tasks.FeatureSet): webMap.FeatureSet;
-        protected _fromGcxFeature(feature: infrastructure.Feature): webMap.Feature;
-        protected _fromEsriGraphic(graphic: esri.Graphic): webMap.Feature;
-        protected _fromEsriGeometry(geometry: esri.geometry.Geometry): webMap.Geometry;
-        protected _fromEsriSymbol(symbol: esri.symbol.Symbol): webMap.Symbol;
-        protected _fromEsriRenderer(renderer: esri.renderer.Renderer): webMap.Renderer;
-        protected _fromEsriSpatialReference(spatialReference: esri.SpatialReference): webMap.SpatialReference;
-        protected _fromEsriColor(color: esri.Color): webMap.Color;
-        protected _fromObject(object: any): any;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    const PROPERTY_MEASUREMENT_ID: string;
-    const PROPERTY_HIGHLIGHT_ID: string;
-    /**
-     * Provides methods for converting between Geocortex/Esri API objects and their project equivalents.
-     *
-     * Note that once an input object has been converted, any additional attempts to convert it again will always return
-     * a reference to the same result object (this is a form of the Identity Map pattern). To reset this mapping, use clearCache().
-     */
-    class ProjectConverter extends webMap.WebMapConverter {
-        /**
-         * A filter that determines which properties to save and restore for user-added layers.
-         */
-        protected _gcxLayerDefinitionFilter: Object;
-        /**
-         * A filter that determines which properties to save and restore for user-added map services.
-         */
-        protected _gcxMapServiceDefinitionFilter: Object;
-        /**
-         * Maps a result type to a cache of excluded Geocortex/Esri API objects for that type.
-         * Excluded objects are not converted to their project equivalents.
-         */
-        private _exclusionCache;
-        exclude(object: any, destType: string): void;
-        clearExclusionCache(): void;
-        clearCache(): void;
-        fromGcxMapService(mapService: essentials.MapService): project.ServiceLayer;
-        fromGcxLayer(layer: essentials.Layer): project.Layer;
-        fromGcxFeatureSetCollection(fsc: infrastructure.FeatureSetCollection): project.FeatureSetCollection;
-        fromGcxFeatureSet(featureSet: infrastructure.FeatureSet): project.FeatureSet;
-        fromEsriFeatureSet(featureSet: esri.tasks.FeatureSet): project.FeatureSet;
-        fromEsriLayer(layer: esri.layers.Layer): project.ServiceLayer;
-        fromGcxFeature(feature: infrastructure.Feature): project.Feature;
-        fromEsriGraphic(graphic: esri.Graphic): project.Feature;
-        toGcxFeatureSetCollection(fsc: project.FeatureSetCollection): Promise<infrastructure.FeatureSetCollection>;
-        protected _canCreateGcxLayer(layer: webMap.Layer, mapService: essentials.MapService): boolean;
-        protected _canCreateGcxMapService(serviceLayer: webMap.ServiceLayer): boolean;
-        protected _createGcxMapService(serviceLayer: webMap.ServiceLayer): Promise<essentials.MapService>;
-        protected _createGcxLayer(layer: webMap.Layer, mapService: essentials.MapService): Promise<essentials.Layer>;
-        protected _getMapServiceDefinition(serviceLayer: webMap.ServiceLayer): any;
-        protected _getWebMapLayerDefinitionFromDynamicLayer(dynamicServiceLayer: esri.layers.ArcGISDynamicMapServiceLayer, layerId: number): webMap.LayerDefinition;
-        protected _applyDynamicLayerInfo(layer: project.Layer, index: number, gcxLayer: essentials.Layer): void;
-        protected _applyDrawingInfo(drawingInfo: DrawingInfo, mapService: essentials.MapService): Promise<void>;
-        protected _setGraphicsLayerRenderer(serviceLayer: esri.layers.GraphicsLayer, renderer: esri.renderer.Renderer): void;
-        protected _applyWebMapLayerToGcxLayer(layer: webMap.Layer, index: number, gcxLayer: essentials.Layer): Promise<boolean>;
-        protected _toGcxLayer(layer: webMap.Layer, serviceLayer: webMap.ServiceLayer): Promise<essentials.Layer>;
-        protected _toGcxFeatureSetCollection(fsc: project.FeatureSetCollection): Promise<infrastructure.FeatureSetCollection>;
-        protected _toGcxFeatureSet(featureSet: project.FeatureSet): Promise<infrastructure.FeatureSet>;
-        protected _toGcxFeature(feature: project.Feature): Promise<infrastructure.Feature>;
-        protected _createGcxFeature(feature: project.Feature): Promise<infrastructure.Feature>;
-        protected _applyFeatureToGcxFeature(feature: project.Feature, gcxFeature: infrastructure.Feature): Promise<void>;
-        protected _findMatchingGcxFeature(feature: project.Feature, gcxFeatureSet: infrastructure.FeatureSet): Promise<infrastructure.Feature>;
-        protected _queryFeatures(features: project.Feature[], featureSet: project.FeatureSet): Promise<esri.Graphic[]>;
-        protected _toEsriGraphic(feature: webMap.Feature): Promise<esri.Graphic>;
-        protected _toEsriFeatureSet(featureSet: project.FeatureSet): Promise<esri.tasks.FeatureSet>;
-        protected _fromGcxMapService(mapService: essentials.MapService): project.ServiceLayer;
-        protected _fromGcxlayer(layer: essentials.Layer): project.Layer;
-        protected _fromGcxFeatureSetCollection(fsc: infrastructure.FeatureSetCollection): project.FeatureSetCollection;
-        protected _fromGcxFeatureSet(featureSet: infrastructure.FeatureSet): project.FeatureSet;
-        protected _fromGcxFeature(feature: infrastructure.Feature): project.Feature;
-        protected _fromEsriGraphic(graphic: esri.Graphic): webMap.Feature;
-        protected _toGcxExtendedProperties(extendedProperties: {
-            [name: string]: any;
-        }, owner: string): Promise<NameValueProperty[]>;
-        protected _fromGcxExtendedProperties(extendedProperties: ObservableCollection<NameValueProperty>): {
-            [name: string]: any;
-        };
-        /**
-         * Determines whether a feature can be serialized using only its ID, rather than storing all of
-         * its attribute and geometry data. In this case, the original layer will be re-queried during
-         * deserialization to restore the data.
-         */
-        protected _canRequeryFeatureData(feature: infrastructure.Feature): boolean;
-    }
-}
 /**
  * Contains infrastructural components used for authoring and extending the Geocortex Viewer for HTML5.
  */
+declare module geocortex.essentialsHtmlViewer {
+}
 declare module geocortex.essentialsHtmlViewer {
     class ViewerApplication extends geocortex.framework.application.Application {
         version: string;
@@ -11692,75 +9130,26 @@ declare module geocortex.essentialsHtmlViewer {
         site: geocortex.essentials.Site;
         markupLayer: Observable<esri.layers.GraphicsLayer>;
         accessibilityManager: mapping.infrastructure.accessibility.AccessibilityManager;
-        coordinatesManager: mapping.infrastructure.coordinates.CoordinatesManager;
         featureSetManager: mapping.infrastructure.FeatureSetManager;
         searchManager: mapping.infrastructure.search.SearchManager;
         highlightManager: mapping.infrastructure.HighlightManager;
-        nativeManager: mapping.infrastructure.nativeIntegration.NativeManager;
-        offlineManager: mapping.infrastructure.offline.OfflineManager;
         stateManager: mapping.infrastructure.applicationState.StateManager;
         undoManager: mapping.infrastructure.undo.UndoManager;
         menuRegistry: mapping.infrastructure.menus.MenuRegistry;
         toolRegistry: mapping.infrastructure.tools.ToolRegistry;
         toolbarGroupRegistry: mapping.infrastructure.toolbarGroup.ToolbarGroupRegistry;
+        featureLayerModule: any;
+        localServerAddress: string;
         shellName: string;
         isArcGisWebApp: boolean;
         viewerConfigPath: string;
-        project: mapping.infrastructure.project.ProjectManager;
-        webMap: mapping.infrastructure.webMap.WebMapManager;
-        bookmarks: mapping.infrastructure.BookmarkManager;
-        private _applicationContentPolicy;
         private _workflowActivityDispatcher;
         private _activityTypeHandlerQueue;
         private _activityIdHandlerQueue;
-        private _localeResourcesLoaded;
-        private _initialProjectPromise;
         constructor(configObject: any, hostElement?: HTMLElement, id?: string, configTokens?: {
             [token: string]: string;
         });
-        defaultContentPolicy: mapping.infrastructure.ContentPolicy;
-        followNavigationLink(args: {
-            url: string;
-            element: HTMLAnchorElement;
-        }): boolean;
-        protected _registerApplicationLevelCommands(): void;
-        protected _executeOpenWebPage(argument: string | {
-            url: string;
-            element: HTMLAnchorElement;
-        } | {
-            url: string;
-            isLink: boolean;
-        }): boolean;
         initialize(): void;
-        /**
-         * Returns a promise that is fulfilled when the Essentials site is initialized.
-         */
-        waitUntilSiteInitialized(): Promise<void>;
-        /**
-         * Returns a promise that is fulfilled when the Document Store is initialized.
-         */
-        waitUntilDocumentStoreInitialized(): Promise<void>;
-        /**
-         * Returns a promise that is fulfilled when the esri map is loaded (i.e., the first service layer has been
-         * added to the map and its spatial reference set).
-         */
-        waitUntilMapLoaded(): Promise<void>;
-        /**
-         * Returns a promise that is fulfilled when the given service layer has finished loading.
-         */
-        waitUntilServiceLayerLoaded(serviceLayer: esri.layers.Layer): Promise<void>;
-        /**
-         * Returns a promise that is fulfilled when all service layers in the site have finished loading.
-         */
-        waitUntilSiteServiceLayersLoaded(): Promise<void>;
-        /**
-         * Returns a promise that is fulfilled when the all libraries are loaded.
-         */
-        waitUntilAllLibrariesLoaded(): Promise<void>;
-        /**
-         * Returns a promise that is fulfilled when the view with the given ID is initialized.
-         */
-        waitUntilViewInitialized(viewId: string): Promise<framework.ui.ViewBase>;
         registerActivityTypeHandler(typeName: string, handler: Function): void;
         registerActivityIdHandler(id: string, handler: Function): void;
         getWorkflowActivityDispatcher(): geocortex.workflow.ActivityDispatcher;
@@ -11775,44 +9164,7 @@ declare module geocortex.essentialsHtmlViewer {
          * @protected
          */
         onConfigurationLoaded(configObject: any): void;
-        protected getInitialState(moduleName: string, libraryId: string): Promise<any>;
-        private _locale;
-        locale: string;
         doWhenMapInitialized(action: () => void): void;
-        /**
-         * Loads necessary locale resources for 3rd party libraries once the application locale is known.
-         */
-        private _loadThirdPartyLocaleResources();
-        private _loadMomentLocaleData();
-        private _loadGlobalizeLocaleData();
-        /**
-         * A list of locales that are supported by Moment.js.
-         */
-        private _momentLocales;
-        /**
-         * A list of locales that are supported by Globalize.js.
-         */
-        private _globalizeLocales;
-        /**
-         * Maps a locale code to one of the available locales for Moment.js.
-         */
-        private _getMomentLocaleForLocale(locale);
-        /**
-         * Maps a locale code to one of the available locales for Globalize.js.
-         */
-        private _getGlobalizeLocaleForLocale(locale);
-        /**
-         * Given a list of available locales, chooses the most appropriate match for a target locale.
-         */
-        private _getBestMatchLocale(locale, availableLocales);
-        /**
-         * Parses a locale code into its component parts.
-         */
-        private _parseLocale(locale);
-        /**
-         * Converts a locale code to its canonicalized form, e.g. "de-ch" becomes "de-CH", "ZH-HANS-CN" becomes "zh-Hans-CN").
-         */
-        private _canonicalizeLocale(locale);
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.GeometryUtils {
@@ -11947,13 +9299,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.GeometryUti
      * @returns An object with the properties `transformation` and `transformForward`, relating to the datum transform for the given spatial reference parameters.
      */
     function getDatumTransformParameters(from: esri.SpatialReference, to: esri.SpatialReference): DatumTransformParameters;
-    /**
-     * Determines whether or not the geometries intersect.
-     * @param geometry1 The geometry that is tested for the intersects relationship to the other geometry.
-     * @param geometry2 The geometry being intersected.
-     * @return A promise for whether or not the geometries intersect.
-     */
-    function intersects(geometry1: esri.geometry.Geometry, geometry2: esri.geometry.Geometry): Promise<boolean>;
     function unionGeometries(geometries: esri.geometry.Geometry[]): Promise<esri.geometry.Geometry>;
     /**
      * Separate a multi-part geometry into a list of individual geometries.
@@ -11967,10 +9312,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.GeometryUti
      * @param app The {@link geocortex.framework.application.Application}.
      */
     function cutGeometries(geometries: esri.geometry.Geometry[], cutter: esri.geometry.Polyline, app: geocortex.framework.application.Application): Promise<esri.geometry.Geometry[][]>;
-    /**
-     * Converts an envelope to a ring.
-     */
-    function toRing(env: esri.geometry.Extent): number[][];
 }
 /**
  * Static utility class for the buffer module.
@@ -11981,6 +9322,10 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.buffer.Buff
      * be populated with the configured language resources when the buffer module initializes.
      */
     var SUPPORTED_BUFFER_UNITS: infrastructure.buffer.BufferUnits;
+    /**
+     * The range of WKID's that represent a geographic coordinate system.
+     */
+    var geographicWkidRanges: number[][];
     /**
      * The geometry service has no inherent support for yards. Defining our own constant here so we can support it.
      */
@@ -12010,7 +9355,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.buffer.Buff
     /**
      * Checks to see if a given WKID is geographic or not.
      */
-    function isGeographicWkid(wkid: string | number): boolean;
+    function isGeographicWkid(wkid: number): boolean;
     /**
     * Retrieves the unit description from the configuration string used by the Buffer Module.
     * @param config A string containing the configuration value for which the unit description is required. Can be any SUPPORTED_BUFFER_UNITS property value.
@@ -12173,6 +9518,12 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          */
         protected _mapExtentChangedEvent(extent: any, args: any): void;
         /**
+         * Updates the featureLayer associated with the clustering layer when connection status changes to online.
+         * @param mapService The mapService that has been taken online/offline.
+         */
+        protected _handleOnline(mapService: essentials.MapService): void;
+        protected _handleOffline(mapService: essentials.MapService): void;
+        /**
          * Clears the data from the cluster that has been exploded when a maptip is closed.
          */
         protected _mapTipClosedEvent(): void;
@@ -12284,773 +9635,11 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs
         reportParameters?: essentials.ReportParameters;
     }
 }
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.documents {
-    import Grant = geocortex.core.documents.Grant;
-    /**
-     * Model for a Moniker which has grants on a document.
-     */
-    class MonikerModel {
-        /**
-         * The grants that this moniker has on the document.
-         */
-        grants: Grant[];
-        /**
-         * The ID of the moniker.
-         */
-        id: string;
-        /**
-         * The name of the moniker.
-         */
-        name: string;
-        /**
-         * The icon URI for the moniker.
-         */
-        iconUri: string;
-        /**
-         * Whether or not this moniker represents a global grant.
-         */
-        isGlobal: boolean;
-        /**
-         * Whether or not this moniker represents a public grant.
-         */
-        isPublic: boolean;
-        /**
-         * Whether or not this moniker has its grants revoked.
-         */
-        isRevoked: Observable<boolean>;
-        /**
-         * Whether or not this moniker has a reader grant.
-         */
-        canRead: boolean;
-        /**
-         * Whether or not this moniker has a writer grant.
-         */
-        canWrite: boolean;
-        /**
-         * Whether this widget is enabled.  All contained controls will take this value.
-         */
-        enabled: Observable<boolean>;
-        constructor(config: MonikerModelConfig);
-        addGrant(grant: Grant): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.documents {
-    import Grant = geocortex.core.documents.Grant;
-    /**
-     * Configuration for a Moniker Model. Either a grant or ID is required.
-     */
-    interface MonikerModelConfig {
-        /**
-         * The grant the moniker view model was constructed from.
-         */
-        grant?: Grant;
-        /**
-         * The ID of the moniker.
-         */
-        id?: string;
-        /**
-         * The name of the grant.
-         */
-        name?: string;
-        /**
-         * The icon URI for the grant.
-         */
-        iconUri?: string;
-        /**
-         * Whether or not this grant is a global grant.
-         */
-        isGlobal?: boolean;
-        /**
-         * Whether or not this grant is a public grant.
-         */
-        isPublic?: boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
-    interface LayerDefinitionExpressionAppliedEventArgs {
-        gcxlayer: essentials.Layer;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
-    /**
-     * Payload of the OfflineMapEditorFinishedEvent.
-     */
-    interface OfflineMapEditorFinishedEventArgs {
-        canceled: boolean;
-        /**
-         * The existing OfflineMap the editor was started with, if any.
-         */
-        existingOfflineMap?: infrastructure.offline.OfflineMap;
-        /**
-         * The new values for the OfflineMap, unless editing was canceled.
-         */
-        newOfflineMap?: infrastructure.offline.OfflineMap;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.coordinates.AngleDirectionSystem {
-    /**
-    * Polar coordinates. 0 degrees points East, angles are measured counter-clockwise.
-    */
-    const POLAR: string;
-    /**
-    * North azimuth. 0 degrees points North, angles are measured clockwise.
-    */
-    const NORTH_AZIMUTH: string;
-    /**
-    * South azimuth. 0 degrees points South, angles are measured clockwise.
-    */
-    const SOUTH_AZIMUTH: string;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.coordinates.AngleFormat {
-    /**
-    * Decimal degrees.
-    */
-    const DD: string;
-    /**
-    * Whole degrees with decimal minutes.
-    */
-    const DDM: string;
-    /**
-    * Degrees, minutes, seconds.
-    */
-    const DMS: string;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.coordinates {
-    /**
-     * This interface represents a processed base coordinate, projected and formatted in the target coordinate system.
-     */
-    interface Coordinate extends CoordinateBase {
-        /**
-         * The target coordinate system for this coordinate.
-         */
-        targetCoordinateSystem: CoordinateSystem;
-        /**
-         * Formatted X or Latitude depending on the target coordinate system
-         */
-        formattedLatitudeOrX: string;
-        /**
-        * Formatted Y or Longitude depending on the target coordinate system
-        */
-        formattedLongitudeOrY: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.coordinates {
-    /**
-     * The base input coordinate. This could be a {@link esri.geometry.Point} object.
-     */
-    interface CoordinateBase {
-        /**
-         * The 'x' coordinate of the input point.
-         */
-        x: number;
-        /**
-         * The 'y' coordinate of the input point.
-         */
-        y: number;
-        /**
-         * The spatial reference of the coordinates.
-         */
-        spatialReference: esri.SpatialReference;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.coordinates {
-    /**
-     * Configuration options for the {@link CoordinatesModel}.
-     */
-    interface CoordinatesModelConfig {
-        /**
-         * Optional string specifying the id of the CoordinatesModel. If initialized as a view model from the desktop/tablet/handheld json config files, the view model ID will be used. If not, it needs to be specified here.
-         */
-        id?: string;
-        /**
-         * An array defining which unit(s) the primary map coordinates should be displayed in. The options are "xy" - projected, "dd" - decimal degrees, "ddm" - decimal degrees & minutes and "dms" - decimal degrees, minutes, seconds.
-         */
-        defaultCoordinateDisplayTypes: string[];
-        /**
-         * An array of custom coordinate systems defined by the user.
-         */
-        customCoordinateSystems: CoordinateSystem[];
-        /**
-         * An integer denoting the number of fractional digits to round the coordinates to. Defaults to 5 if not specified.
-         */
-        fractionalDigits?: number;
-        /**
-         * The default geographic coordinate system to use. Defaults to 4326 (WGS 1984) if not specified.
-         */
-        defaultGcsWkid?: number;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.coordinates {
-    const featureSetExtendedProperty: string;
-    const coordinateIdentifierProperty: string;
-    /**
-     * The Coordinates Manager manages all the coordinate models registered in the system.
-     * Not only does it act as the central repository for coordinate systems, it is also responsible for mapping between the input source
-     * coordinate stream and the output coordinate stream when needed - i.e. when there are subscribers to the output coordinate stream.
-     */
-    class CoordinatesManager {
-        /**
-        * The {@link geocortex.essentialsHtmlViewer.ViewerApplication} that this accessibility manager instance belongs to.
-        */
-        app: geocortex.essentialsHtmlViewer.ViewerApplication;
-        /** protected variables */
-        protected _defaultCoordinatesModel: CoordinatesModel;
-        protected _registeredCoordinateModels: string[];
-        protected _prevCoord: CoordinateBase;
-        /**
-        * Initializes a new instance of the {@link CoordinatesManager} class.
-        * @param app The {@link framework.application.Application} that this instance belongs to.
-        */
-        constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication);
-        /**
-         * Registers a new {@link CoordinatesModel}
-         * @param setDefault If this is true then the currently registered model will be set as default. Please note that if there is only one model registered in hte system, it will automatically
-         * be set as default, regardless of this setting.
-         * @return The newly created {@link CoordinatesModel} or null on error.
-         */
-        registerModel(model: CoordinatesModel, setDefault?: boolean): boolean;
-        /**
-         Retrieves the coordinates for the provided mapPoint or the current mouse pointer location one time in either the specified Coordinate System or in the currently active one
-         @return Promise<CoordinateInfo> Returns a promise for the coordinate information.
-         */
-        getCoordinate(inputCoordinate: CoordinateBase, targetCoordinateSystem?: CoordinateSystem, coordinateModelId?: string): Promise<Coordinate>;
-        /**
-        * Get the specified coordinate model by id. This function will return valid coordinate model instances, whether or not they have been registered with the coordinates manager.
-        * @param modelId The unique identifier for the coordinate model.
-        * @return Promise<CoordinateModel> A promise for the requested coordinate model, whenever it is registered as a framework object.
-        */
-        getCoordinatesModel(modelId: string): Promise<CoordinatesModel>;
-        /**
-         * Tests to see if a coordinates model is registered with the coordinates manager. If no model id is provided, will check if there is a default model registeed else will check to see if the specified
-         * model has been registered or not.
-         * @param modelId Optional. If provided, will check to see if the specified model is registered, else will check if a default model is registered or not.
-         */
-        hasRegisteredCoordinatesModel(modelId?: string): boolean;
-        protected _validateModelRegistration(coordinatesModel: CoordinatesModel): boolean;
-        protected _validateCoordinateSystem(coordSystem: CoordinateSystem): boolean;
-        protected _processCoordinatesModel(coordsModel: CoordinatesModel): void;
-        /**
-         * We'll need to monitor when subscribers subscribe/unsubscribe to the outputStream observable so we can stop unnecessary coordinate tracking when it's no longer needed. This could be done with a
-         * modification to Events.ts but that will involve an increased memory footprint for functionality that's currently not used anywhere else in the system. After a discussion with <jscharf>, we've
-         * decided to hook into the outputStream bindingEvent subscribe and unsubscribe functions for the time being rather than modify Events.ts to support this. - <sabubaker>
-         */
-        protected _addModelSubscriptionHooks(coordsModel: CoordinatesModel): void;
-        protected _handleModelSubscriptionsChanged(coordsModel: CoordinatesModel, subscriptions: {}): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.coordinates {
-    /**
-     * Represents a coordinate model. A system can contain multiple coordinate models, each with its own coordinate systems. This model must be processed and registered with the {@link CoordinatesManager}.
-     */
-    class CoordinatesModel extends geocortex.framework.ui.ViewModelBase {
-        /**
-         * An observable boolean indicating whether or not this coordinates model is currently active. Automatically activated when there are subscribers to the output stream.
-         */
-        isActive: Observable<boolean>;
-        /**
-         * The coordinate systems supported by this coordinate model.
-         */
-        coordinateSystems: ObservableCollection<CoordinateSystem>;
-        /**
-         * The currently selected coordinate system.
-         */
-        currentCoordinateSystem: Observable<CoordinateSystem>;
-        /**
-         * The number of fractional digits the output coordinates should be rounded off to.
-         */
-        fractionalDigits: number;
-        /**
-         * The default geographic coordinate system to use.
-         */
-        defaultGcsWkid: number;
-        /**
-         * A stream of input base (read raw) coordinates. These can be mapPoints.
-         */
-        inputStream: Observable<CoordinateBase>;
-        /**
-         * Processed output coordinate stream. The coordinateManager will automatically convert the input stream to output when this model is active.
-         */
-        outputStream: Observable<Coordinate>;
-        /**
-         * The configuration settings for this coordinate model. Configuration must be set up by the CoordinateController for the input stream.
-         */
-        configuration: CoordinatesModelConfig;
-        /**
-        * A boolean indicating whether or not this coordinates model has been initialized and registered with the Coordinates Manager.
-        */
-        isRegistered: boolean;
-        /**
-         * Application of configuration settings will be handled by the (@link mapping.modules.Map.MapCoordinatesController} once the map is initialized. This function is simply provided to enable a CoordinatesModel object to be
-         * specified as a view model in the configuration files. In such cases, the initialize function will automatically be invoked with the configuration settings.
-         */
-        initialize(config: CoordinatesModelConfig): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.coordinates {
-    /**
-     * Interface representing a coordinate system configured for a specific {@link CoordinatesModel}.
-     */
-    interface CoordinateSystem {
-        /**
-         * What is displayed to the user in the coordinate selection menu.
-         */
-        displayName: string;
-        /**
-         * The output type for this coordinate system. Can be one of "dd", "dms", "ddm" or "xy".
-         */
-        output: string;
-        /**
-         * The WKID for the coordinate system (if spatial reference is WKID based).
-         */
-        wkid?: number;
-        /**
-         * The WKT for the coordinate system (if spatial reference is WKT based).
-         */
-        wkt?: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.coordinates.CoordinateUtils {
-    /**
-    * Retrieves the coordinates for the provided mapPoint in the target coordinate system.
-    * fracDigits Optional Parameter lets you specify the number of digits the resulting formatted coordinate values should be rounded to.
-    * geographicCoordSys Optional Parameter lets your specify the default geographic coordinate system to use. Defaults to GCS_WGS_1984 (4326)
-    * @return Promise<Coordinate> Returns a promise for the requested Coordinate.
-    */
-    function getCoordinate(app: geocortex.essentialsHtmlViewer.ViewerApplication, mapPoint: esri.geometry.Point, targetCoordSys: CoordinateSystem, fracDigits?: number, geographicCoordSys?: number): Promise<Coordinate>;
-    /**
-     * Convert DMS to Decimal Degrees for deciphering manual user input.
-     */
-    function convertDmsToDecimalDegrees(app: geocortex.essentialsHtmlViewer.ViewerApplication, deg: string, min: string, sec: string, bearing: string): number;
-    /**
-    * Formats an angle for display.
-    * @param angle The angle to format, in decimal degrees.
-    * @param format The format to use. One of the AngleFormat constants.
-    * @param app The Geocortex application.
-    * @param fractionalDigits The number of digits to display after the decimal point, for formats that display
-    *     fractional values.
-    */
-    function formatAngle(angle: number, format: string, app: geocortex.framework.application.Application, fractionalDigits?: number): string;
-    /**
-    * Formats latitude and longitude numbers for display.
-    * @param latitude The degrees of latitude.
-    * @param longitude The degrees of longitude.
-    * @param format The format to use. One of the AngleFormat constants.
-    * @param app The Geocortex application.
-    * @param fractionalDigits The number of digits to display after the decimal point, for formats that display
-    *     fractional values.
-    */
-    function formatLatLon(latitude: number, longitude: number, format: string, app: geocortex.framework.application.Application, fractionalDigits?: number): {
-        latitude: string;
-        longitude: string;
-    };
-    /**
-    * Formats a projected coordinate (X/Y value) for display.
-    * @param coordinate The coordinate to format.
-    * @param app The Geocortex application.
-    * @param fractionalDigits The number of digits to display after the decimal point.
-    */
-    function formatXYCoordinate(coordinate: number, app: geocortex.framework.application.Application, fractionalDigits?: number): string;
-    /**
-    * Formats an angle in quadrant bearing notation, e.g. "N 48.5° E".
-    * @param angle The angle to format, specified in decimal degrees using the North azimuth direction system.
-    * @param format The format to use. One of the AngleFormat constants.
-    * @param app The Geocortex application.
-    * @param fractionalDigits The number of digits to display after the decimal point, for formats that display
-    *     fractional values.
-    */
-    function formatBearing(angle: number, format: string, app: geocortex.framework.application.Application, fractionalDigits?: number): string;
-    /**
-     * Retrieves coordinate string resources from the infrastructure library.
-     * @param app The application that this utilities class belongs to.
-     * @param resource Input resource name. Can be of the form "language-coordinates-xxx" or simply "xxx".
-     */
-    function getResource(app: geocortex.framework.application.Application, resource: string): string;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.documents {
-    import Filter = geocortex.core.documents.Filter;
-    import FrameworkObject = geocortex.framework.FrameworkObject;
-    import QueryParameters = geocortex.essentials.documents.QueryParameters;
-    import QueryResult = geocortex.essentials.documents.QueryResult;
-    import Result = geocortex.essentials.documents.Result;
-    class DocumentCollection<T> extends FrameworkObject {
-        protected _pageSize: number;
-        protected _queryParams: QueryParameters;
-        protected _mapCallback: (result: Result, index: number, array: Result[]) => T;
-        app: ViewerApplication;
-        /**
-         * Whether or not the document collection is successfully initialized.
-         */
-        isInitialized: boolean;
-        /**
-         * Whether or not this collection should stop fetching items from the server.
-         */
-        stopFetching: boolean;
-        /**
-         * The items of the current page.
-         */
-        items: ObservableCollection<T>;
-        /**
-         * The total number of items in the collection.
-         */
-        numberOfItems: Observable<number>;
-        currIndexStart: Observable<number>;
-        currIndexStartFromOne: Observable<number>;
-        currIndexEnd: Observable<number>;
-        currPageNumber: Observable<number>;
-        firstPageNumber: Observable<number>;
-        lastPageNumber: Observable<number>;
-        statusFetching: Observable<boolean>;
-        statusOffline: Observable<boolean>;
-        constructor(app: ViewerApplication, libraryId: string, mapCallback: (result: Result, index: number, array: Result[]) => T);
-        initialize(config?: DocumentCollectionConfig): void;
-        /**
-         * Get the total length of the collection.
-         */
-        getLength(): number;
-        /**
-         * Increments the page number.
-         */
-        nextPage(): void;
-        /**
-         * Decrements the page number.
-         */
-        prevPage(): void;
-        /**
-         * Refreshes the collection.
-         */
-        refresh(): void;
-        /**
-         * Disposes any bindings tracked by this object.
-         */
-        destroy(): void;
-        /**
-         * Set the query parameters used to populate the items.
-         * @param queryParams The query parameters.
-         */
-        setQueryParameters(queryParams: QueryParameters): void;
-        /**
-         * Get the query parameters being used to populate the items.
-         */
-        getQueryParameters(): QueryParameters;
-        /**
-         * Adds a filter to the query. Removes any previous filters with the same filter.
-         * @param filter The filter to add.
-         * @param filterType The type of filter.
-         */
-        addFilter(filter: Filter, filterType?: string): void;
-        /**
-         * Remove filters using a given field.
-         * @param field The field of the filters to remove.
-         * @param filterType The type of filter.
-         */
-        removeFilter(field: string, filterType?: string): void;
-        /**
-         * Sort the documents.
-         * @param sorter The sorter that describes how to sort the documents.
-         */
-        sortBy(sorter: DocumentFieldSorter): void;
-        protected _handlePageChanged(): void;
-        protected _populateFromDocStore(): void;
-        /**
-         * Build the query parameters with paging related properties.
-         */
-        protected _buildQueryParams(): QueryParameters;
-        protected _handleQueryResult(queryResult: QueryResult): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.documents {
-    import QueryParameters = geocortex.essentials.documents.QueryParameters;
-    /**
-     * Configuration for a Document Collection.
-     */
-    interface DocumentCollectionConfig {
-        /**
-         * The file type to filter the documents by.
-         */
-        fileType?: string;
-        pageSize?: number;
-        /**
-         * The initial query parameters used to search for documents.
-         */
-        queryParams?: QueryParameters;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.documents {
-    class GrantEditorView extends framework.ui.ViewBase {
-        app: ViewerApplication;
-        viewModel: GrantEditorViewModel;
-        autoCompleteInput: HTMLElement;
-        autoCompleteMinLength: number;
-        autoCompleteMaxEntries: number;
-        added(widgetViewHost?: framework.ui.ViewBase): void;
-        /**
-         * Called on search input.
-         */
-        handleInputChanged(evt: KeyboardEvent, el: HTMLElement, ctx: any): void;
-        handleAddMonikerButtonClick(evt: Event, el: HTMLElement, ctx: any): void;
-        handleUpdateMoniker(evt: Event, el: HTMLInputElement, ctx: MonikerModel): boolean;
-        handleAutoCompleteBlur(evt: FocusEvent, el: HTMLElement, ctx: any): void;
-        getSuggestions(request: {
-            term: string;
-        }, response: (data: any[]) => void): void;
-        protected _processMonikers(monikers: any[]): Promise<any[]>;
-        protected _setupJQueryAutocomplete(): void;
-        protected _handleAutoCompleteSelect(event: any, ui: any): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.documents {
-    import Document = geocortex.essentials.documents.Document;
-    import Grant = geocortex.core.documents.Grant;
-    import Moniker = geocortex.core.documents.Moniker;
-    class GrantEditorViewModel extends framework.ui.ViewModelBase {
-        protected _supportedGrantKinds: string[];
-        protected _globalGrantIds: string[];
-        protected _allowPublicAccess: boolean;
-        protected _lastSearchResults: Moniker[];
-        app: ViewerApplication;
-        defaultGrantKind: string;
-        userIconUri: string;
-        roleIconUri: string;
-        /**
-         * The underlying document whose grants are being edited.
-         */
-        document: Document;
-        /**
-         * The configured grants.
-         */
-        grants: Grant[];
-        /**
-         * The monikers that have grants on the current document.
-         */
-        monikers: ObservableCollection<MonikerModel>;
-        /**
-         * Whether or not the current search text maps to a valid moniker.
-         */
-        isValidMoniker: Observable<boolean>;
-        monikerKinds: ObservableCollection<MonikerKindDesc>;
-        selectedMonikerKind: Observable<string>;
-        selectedMoniker: Observable<Moniker>;
-        searchText: Observable<string>;
-        enabled: Observable<boolean>;
-        constructor(app: ViewerApplication, libraryId?: string);
-        onSiteInitialized(): void;
-        /**
-         * Load a document's grants from the document store and updates the view model state.
-         * @param id The ID of the document to load.
-         */
-        loadById(id: string): Promise<void>;
-        /**
-         * Add a moniker, updating the document with a grant for the moniker.
-         */
-        addMoniker(): void;
-        /**
-         * Add a grant to the document.
-         * @param id The global ID of the grant
-         * @param kind The kind of grant.
-         * @return The grant that was added
-         */
-        addGrant(id: string, kind: string): Grant;
-        /**
-         * Update the moniker by updating the document grants.
-         * @param moniker The model of the moniker being updated.
-         * @param grantKind The kind of grant to add to the document for the given moniker.
-         */
-        updateMoniker(moniker: MonikerModel, grantKind: string): void;
-        /**
-         * Search for monikers using a given search term. These results will
-         * be limited by the currently selected moniker kind (users or roles).
-         * @param searchTerm The search term to search monikers with.
-         * @return A promise containing a list of monikers.
-         */
-        searchMonikers(searchTerm: string): Promise<Moniker[]>;
-        /**
-         * Validates the search input.
-         */
-        validateSearchInput(): void;
-        /**
-         * Reset the search options.
-         */
-        resetOptions(): void;
-        /**
-         * Set the view model state to defaults.
-         */
-        reset(): void;
-        /**
-         * Gets the selected moniker based off the current search text.
-         * If the text does not match the selected moniker, it will search
-         * through the last search results for monikers.
-         */
-        protected _getSelectedMoniker(): Moniker;
-        /**
-         * Whether a given moniker kind is a user kind.
-         * @param monikerKind The moniker kind.
-         * @return Whether or not the kind is a user kind.
-         */
-        protected _isUserKind(monikerKind: string): boolean;
-        /**
-         * Update the view model with the document of the given ID.
-         * @param id The ID of the document to update this model with.
-         */
-        protected _updateModel(document: Document): void;
-        /**
-         * Updates the monikers list based off the given grants.
-         * @param grants The grants to build the monikers from.
-         */
-        protected _updateMonikers(grants: Grant[]): void;
-        /**
-         * Checks whether or not the moniker already exists based off its ID and aliases.
-         * @param moniker The moniker to check whether it exists.
-         * @return Whether or not the moniker exists.
-         */
-        protected _monikerExists(moniker: Moniker): boolean;
-        protected _setMonikerKinds(): void;
-        private _setMonikerEnableds();
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.documents {
-    /**
-     * Describes how to sort documents by a field.
-     */
-    interface DocumentFieldSorter {
-        /**
-         * The document field names used to sort the documents by, in order of relevance.
-         */
-        fields: string[];
-        /**
-         * The configured display name for this field sorter.
-         */
-        displayName?: string;
-        /**
-         * Whether or not to sort the documents in descending order.
-         */
-        descending?: boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.documents {
-    import Grant = geocortex.core.documents.Grant;
-    /**
-     * Model for a single guest link of a document.
-     */
-    class GuestLinkModel {
-        /**
-         * The name of the guest link.
-         */
-        name: Observable<string>;
-        /**
-         * The grant kind of this guest link.
-         */
-        kind: string;
-        /**
-         * The grant providing access for this guest link.
-         */
-        grant: Grant;
-        /**
-         * The link parameter used to grant access to the document.
-         */
-        link: string;
-        /**
-         * The URL for this guest link.
-         */
-        linkUrl: Observable<string>;
-        constructor(config: GuestLinkModelConfig);
-        reset(): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.documents {
-    /**
-     * Configuration for a Guest Link Model.
-     */
-    interface GuestLinkModelConfig {
-        /**
-         * The grant kind of the guest link.
-         */
-        kind?: string;
-        /**
-         * The name of the guest link.
-         */
-        name?: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.documents {
-    /**
-     * Interface for a describing a moniker kind.
-     */
-    interface MonikerKindDesc {
-        /**
-         * The moniker kind.
-         */
-        kind: string;
-        /**
-         * The display name representing this moniker kind.
-         */
-        displayName: string;
-    }
-}
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
     interface MapServiceLayersChangedEventArgs {
         mapService: geocortex.essentials.MapService | infrastructure.gis.ServiceLayerInfo;
         newItems: geocortex.essentials.Layer[];
         oldItems: geocortex.essentials.Layer[];
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
-    interface OfflineMapsLoadedEventArgs {
-        offlineMaps: infrastructure.offline.OfflineMap[];
-        activeOfflineMap: infrastructure.offline.OfflineMap;
-    }
-    interface OfflineMapAddedEventArgs {
-        offlineMap: infrastructure.offline.OfflineMap;
-    }
-    interface OfflineMapSyncedEventArgs {
-        offlineMap: infrastructure.offline.OfflineMap;
-    }
-    interface OfflineMapRemovedEventArgs {
-        offlineMap: infrastructure.offline.OfflineMap;
-    }
-    interface OfflineMapActivatedEventArgs {
-        offlineMap: infrastructure.offline.OfflineMap;
-        userAction: boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
-    interface PlotCoordinatesIdUpdatedEventArgs {
-        sender: any;
-        oldId: string;
-        updatedId: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
-    interface PlotCoordinatesEventArgs {
-        sender: any;
-        coordinateId: string;
-        coordinate: infrastructure.coordinates.Coordinate;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
-    import Project = project.Project;
-    /**
-     * Describes the arguments for project editor finishing event.
-     */
-    interface ProjectEditorFinishedEventArgs {
-        /**
-         * Whether or not editing the project was canceled.
-         */
-        canceled: boolean;
-        /**
-         * The project the editor started with.
-         */
-        existingProject: Project;
-        /**
-         * The new values for the Project, unless editing was canceled.
-         */
-        newProject: Project;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
-    interface QueryCompletedEventArgs {
-        layer: gis.LayerInfo;
-        query: esri.tasks.Query;
-        error?: Error;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
@@ -13062,2245 +9651,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
         isAsync: boolean;
         /** The download URL for the resultant Report file. In async mode, this is the URL to the report progress/download page. */
         href: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
-    interface ToolbarTabChangedEventArgs {
-        group: infrastructure.toolbarGroup.ToolbarGroupBase;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ExportTilesUtils {
-    interface ExportTilesParameters {
-        /**
-         * Allows exporting either a tile package or a cache raster data set. If the value is true,
-         * output will be in tile package format, and if the value is false, a cache raster data set
-         * is returned. The default value is false
-         */
-        tilePackage?: boolean;
-        /**
-         * The extent (bounding box) of the tile package or the cache dataset to be exported. If extent
-         * does not include a spatial reference, the extent values are assumed to be in the spatial
-         * reference of the map. The default value is full extent of the tiled map service.
-         */
-        exportExtent?: string;
-        /**
-         * Use this parameter to enable compression of JPEG tiles and reduce the size of the downloaded tile
-         * package or the cache raster data set. Compressing tiles slightly compromises the quality of tiles
-         * but helps reduce the size of the download.
-         */
-        optimizeTilesForSize?: boolean;
-        /**
-         * When optimizeTilesForSize=true, you can specify a compression factor. The value must be between 0 and 100.
-         */
-        compressionQuality?: number;
-        /**
-         * The criteria that will be used to select the tile service levels to export. The values can be Level IDs,
-         * cache scales. or the resolution (in the case of image services).
-         * Values: LevelID | Resolution | Scale
-         */
-        exportBy?: string;
-        /**
-         * Specifies the tiled service levels to export. The values should correspond to Level IDs, cache scales.
-         * or the resolution as specified in exportBy parameter. The values can be comma separated values or a range.
-         * Example 1: 1,2,3,4,5,6,7,8,9
-         * Example 2: 1-4,7-9
-         */
-        levels?: string;
-        /**
-         * The areaOfInterest polygon allows exporting tiles within the specified polygon areas. This parameter
-         * supersedes the exportExtent parameter.
-         */
-        areaOfInterest?: string;
-    }
-    interface ExportTilesEstimate {
-        totalSize: number;
-        totalTilesToExport: number;
-    }
-    interface DownloadableFile {
-        name: string;
-        url: string;
-    }
-    /**
-     * Export tiles from a map service supporting the operation.
-     * @param service The map service to export tiles from.
-     * @param params Operation parameters.
-     * @returns A promise of the URL(s) the newly exported tiles can be downloaded from.
-     */
-    function exportTiles(service: string | esri.layers.Layer, params: ExportTilesParameters): Promise<DownloadableFile[]>;
-    /**
-     * Extimate the size of exported tiles from a map service supporting the operation.
-     * @param service The map service to export tiles from.
-     * @param params Operation parameters.
-     * @returns A promise of an estimate of the size of the exported tiles.
-     */
-    function estimateExportTilesSize(service: string | esri.layers.Layer, params: ExportTilesParameters): Promise<ExportTilesEstimate>;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.FilterUtils {
-    /**
-     * Options for {@link sanitize}.
-     */
-    interface SanitizeOptions {
-        allowArbitraryHyperlinks?: boolean;
-        allowFrames?: boolean;
-        /** Function that transforms URIs during the sanitization. */
-        uriTransformer?: (uri: string, details: UriDetails) => string;
-    }
-    /**
-     * Sanitize a string of unsafe HTML to eliminate XSS (cross-site scripting) security risks.
-     * This method allows tags and standard attributes, however `data-` attributes are not allowed.
-     * Script tags are not allowed either.
-     * Note that you must pass a {@link SanitizeOptions.uriTransformer} function in the options
-     * if you wish to allow URIs in your content.
-     * @param unsafeHtml String of HTML to be scrubbed clean.
-     * @param options {@link SanitizeOptions}.
-     * @return Safe HTML that has been sanitized.
-     */
-    function sanitize(unsafeHtml: string, options?: SanitizeOptions): string;
-    /**
-     * Strip all HTML out of a string.
-     * @param unsafe String of text which will have its HTML stripped away.
-     * @return A plain text string without any HTML markup.
-     */
-    function stripHtml(unsafe: string): string;
-    /**
-     * Interfaces and implementation details specific to sanitization.
-     */
-    enum UriType {
-        Markup = 0,
-        Css = 1,
-        NavigableLink = 2,
-    }
-    interface UriDetailsBase {
-        uri: string;
-        type: UriType;
-    }
-    interface MarkupUriDetails extends UriDetailsBase {
-        tag: string;
-        attribute: string;
-    }
-    interface CssUriDetails extends UriDetailsBase {
-        property: string;
-    }
-    interface NavigableLinkUriDetails extends MarkupUriDetails {
-        linkChallengeCallback?: Function;
-        target?: string;
-        forcePrompt?: boolean;
-    }
-    type UriDetails = NavigableLinkUriDetails | MarkupUriDetails | CssUriDetails;
-    /**
-     * A container for HTML content that is not trusted to be safe.
-     * Has getters for accessing either the originally-provided unsafe HTML string, or a safely sanitized version.
-     * Simplifies XSS security matters by making the handling of unsafe HTML obvious and clear.
-     */
-    class UnsafeHtml {
-        /** The unsafe HTML. */
-        protected _unsafeHtml: string;
-        /** The safely sanitized version of the HTML. */
-        protected _safeHtml: string;
-        /**
-         * Create a new container for unsafe HTML.
-         */
-        constructor(unsafeHtml: string, sanitizeOptions?: SanitizeOptions);
-        /**
-         * Update the HTML.
-         */
-        sanitize(unsafeHtml: string, sanitizeOptions?: SanitizeOptions): void;
-        /**
-         * Get the original unsafe HTML.
-         */
-        unsafeHtml: string;
-        /**
-         * Get the safely sanitized version of the HTML.
-         */
-        safeHtml: string;
-    }
-    /**
-     * Utilities for parsing and assessing data URIs.
-     */
-    module DataUri {
-        /** Whitelist for media types (MIME types without parameters like charset) which are allowed in safe data URI's. */
-        var dataUriMediaTypeWhitelist: string[];
-        /**
-         * Data URI sub-components.
-         */
-        interface DataUriComponents {
-            /** Original data URI that has been parsed. */
-            uri: string;
-            /** Meta data preamble of the data URI. */
-            meta: string;
-            /** Media type portion of the meta preamble. If undefined, assume "text/plain". */
-            mediaType: string;
-            /** Character set portion of the meta preamble. Starts with "charset=", or is undefined. */
-            charset: string;
-            /** Extension portion of the meta preamble. Can be 'base64', or undefined. */
-            extension: string;
-            /** Index of the first character of the payload. */
-            payloadIndex: number;
-        }
-        /**
-         * Break a data URI string down into its sub-components.
-         * @param uri Data URI to parse.
-         * @return {@link DataUriComponents} as seen in the URI (no defaults are provided, omitted optionals will be undefined).
-         */
-        function parseDataUri(uri: string): DataUriComponents;
-        /**
-         * Check if a data URI is safe, in that it cannot be used as an XSS attack vector.
-         * The data URI is considered safe when its detected media type (MIME type) is present in the data URI media type whitelist.
-         * @param uri Data URI to scrutinize for XSS safety.
-         * @return True when the data URI is safe, false when the data URI is unsafe or invalid.
-         */
-        function isDataUriSafe(uri: string): boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.highlightedLabel {
-    /**
-     * Interface for the {@link HighlightedLabelGraphic} configuration settings.
-     */
-    interface HighlightedLabelConfig {
-        /**
-         * The id for the layer to which the highlighted label should be added.
-         */
-        layerId: string;
-        /**
-         * The map point associated with this highlighted label.
-         */
-        mapPoint: esri.geometry.Point;
-        /**
-         * The text for the highlighted label. May be separated by a "\n" to span across multiple lines.
-         */
-        text?: string;
-        /**
-         * The x-offset for the highlighted label if required.
-         */
-        labelXoffset?: number;
-        /**
-         * The y-offset for the highlighted label if required.
-         */
-        labelYoffset?: number;
-        /**
-         * The font family to use in the highlighted label. Defaults to "Arial".
-         */
-        fontFamily?: string;
-        /**
-         * The font size for the highlighted label text. Defaults to "12px".
-         */
-        fontSize?: string;
-        /**
-         * The corner radius if the highlight label is required to have rounded corners.
-         */
-        cornerRadius?: number;
-        /**
-         * The angle at which to place the highlighted label.
-         */
-        angle?: number;
-        /**
-         * The position to anchor the label in.
-         */
-        anchor?: HighlightedLabelAnchor;
-        /**
-         * The text color of the text on the highlight label.
-         */
-        textColor?: esri.Color;
-        /**
-         * The highlight color of the highlight label.
-         */
-        highlightColor?: esri.Color;
-        /**
-         * An outline symbol if needed for the highlighted label.
-         */
-        highlightOutlineSymbol?: esri.symbol.SimpleLineSymbol;
-        /**
-         * A boolean indicating whether this highlighted label will be in the style of a rectangular box or a callout with a circular id tag on the left and with an arrow pointing at the mapPoint.
-         */
-        calloutWithIdTag?: boolean;
-        /**
-         * The text that will appear in the id tag placeholder, if this highlight label is a calloutWithIdTag.
-         */
-        idTagText?: string;
-        /**
-         * The size (in pixels) of the callout arrow (width) for the highlight label if in callout mode.
-         */
-        calloutPixelSize?: number;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.highlightedLabel {
-    /**
-     * The highlight label anchor modes. The label can be anchored at the bottom left, the center or as a callout.
-     */
-    enum HighlightedLabelAnchor {
-        BOTTOM_LEFT = 0,
-        MIDDLE = 1,
-        CALLOUT = 2,
-    }
-    /**
-     * Creates a highlighted label and adds it to a specified graphics layer on the map. The label could be a simple rectangle or a callout with an id text tag and a pointer pointing to the map point associated with this label.
-     */
-    class HighlightedLabelGraphic {
-        app: geocortex.essentialsHtmlViewer.ViewerApplication;
-        highlightGraphic: esri.Graphic;
-        highlightIdTagGraphic: esri.Graphic;
-        highlightSymbol: esri.symbol.SimpleMarkerSymbol;
-        highlightIdTagSymbol: esri.symbol.SimpleMarkerSymbol;
-        textGraphics: esri.Graphic[];
-        textSymbols: esri.symbol.TextSymbol[];
-        graphicsLayer: esri.layers.GraphicsLayer;
-        protected _config: HighlightedLabelConfig;
-        protected _key: string;
-        protected _height: number;
-        protected _width: number;
-        protected _padding: number;
-        protected _calloutSizeWidthFraction: number;
-        protected _tagHeightPercentage: number;
-        constructor(config: HighlightedLabelConfig, app: geocortex.essentialsHtmlViewer.ViewerApplication);
-        getTextFontFamily(): string;
-        getTextFontSize(): string;
-        getWidth(): number;
-        getTotalWidth(): number;
-        getHeight(): number;
-        getTotalHeight(): number;
-        getMapPoint(): esri.geometry.Point;
-        getConfig(): HighlightedLabelConfig;
-        addToLayer(show?: boolean): void;
-        removeFromLayer(destroy?: boolean): void;
-        isVisible(): boolean;
-        show(): HighlightedLabelGraphic;
-        hide(): HighlightedLabelGraphic;
-        update(mapPoint: esri.geometry.Point, text: string): void;
-        refresh(newLabelText: string): void;
-        moveToTop(): void;
-        assignGraphicIdentifierKey(key: string, value: string): void;
-        updateIdTagText(newId: string): void;
-        setHighlightColor(color: esri.Color): void;
-        setTextColor(color: esri.Color): void;
-        /**
-         * Exports the state of the label graphic, which can be used to recreate it later.
-         */
-        exportState(app: ViewerApplication): HighlightedLabelState;
-        /**
-         * Creates a HighlightedLabelGraphic from exported state (see exportState()).
-         */
-        static fromExportedState(state: HighlightedLabelState, app: ViewerApplication, prototype?: HighlightedLabelGraphic): Promise<HighlightedLabelGraphic>;
-        protected _executeSetupRoutine(): void;
-        protected setHighlightAnchor(): void;
-        protected setTextAnchor(textLineIndex: number, verticalOffset: number): void;
-        protected initializeHighlightDimensions(): void;
-        protected initializeHighlightGraphic(): void;
-        protected initializeHighlighteIdTagGraphic(): void;
-        protected configureHighlightSymbol(highlightColor: esri.Color, highlightOutlineSymbol: esri.symbol.SimpleLineSymbol, fontSize: string): void;
-        protected configureHighlightIdTagSymbol(highlightColor: esri.Color, fontSize: string): void;
-        protected initializeTextGraphicsAndSymbols(): void;
-        protected configureTextSymbol(textLineIndex: number, lineText: string, textColor: esri.Color, font: esri.symbol.Font, angle: number, verticalOffset: number): void;
-        protected _processConfig(config: HighlightedLabelConfig): boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
-    interface SelectionChangedEventArgs extends SelectionEventArgs {
-        previousName?: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
-    interface SelectionEventArgs {
-        name: string;
-        featureSetCollection?: essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.highlightedLabel {
-    /**
-     * A serializable representation of a highlighted label.
-     */
-    interface HighlightedLabelState {
-        highlightGraphic: infrastructure.webMap.Feature;
-        highlightSymbol: infrastructure.webMap.SimpleMarkerSymbol;
-        textGraphics: infrastructure.webMap.Feature[];
-        textSymbols: infrastructure.webMap.TextSymbol[];
-        layerId: string;
-        mapPoint: infrastructure.webMap.Point;
-        text?: string;
-        labelXoffset?: number;
-        labelYoffset?: number;
-        fontFamily?: string;
-        fontSize?: string;
-        cornerRadius?: number;
-        angle?: number;
-        anchor?: infrastructure.highlightedLabel.HighlightedLabelAnchor;
-        textColor?: infrastructure.webMap.Color;
-        highlightColor?: infrastructure.webMap.Color;
-        highlightOutlineSymbol?: infrastructure.webMap.SimpleLineSymbol;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerCatalog {
-    /** An interface representing an item in a layer catalog. */
-    interface ILayerCatalogEntry {
-        id: string;
-        displayName: string;
-        type: string;
-        parent: ILayerCatalogEntry;
-        expanded: Observable<boolean>;
-        visible: Observable<boolean>;
-        entries: ObservableCollection<ILayerCatalogEntry>;
-    }
-    /** A base class for providing custom filtering logic for a layer catalog. */
-    class LayerCatalogFilterProviderBase {
-        app: geocortex.essentialsHtmlViewer.ViewerApplication;
-        libraryId: string;
-        constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, libraryId: string);
-        /**
-         * Initialize the provider.
-         * @param config The configuration object.
-         */
-        initialize(config: any): void;
-        /**
-         * Performs the search.
-         * @param text The text to filter the catalog entries on.
-         * @param entries The catalog entries to filter.
-         */
-        filter(text: string, entries: ObservableCollection<ILayerCatalogEntry>): Promise<void>;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.LayerIntegrationUtils {
-    /**
-     * Queries the provided map service URL, and returns an array of feature service URLs that were found.
-     * @param url Map service URL to interrogate for feature services.
-     * @returns The promise of an array of feature service URLs.
-     */
-    function discoverFeatureServices(url: string): Promise<string[]>;
-    /**
-     * Build and initialize a populated Geocortex feature layer map service based on the provided feature service URL.
-     * The returned feature layer service will come with a service layer and a single Geocortex layer.
-     * @param url The URL to the feature service endpoint.
-     * @returns The promise of a Geocortex feature layer map service.
-     */
-    function buildFeatureLayerService(serviceUrl: string): Promise<essentials.FeatureLayerService>;
-    /**
-     * Build and initialize a KML map service based on the provided KML service URL.
-     * @param serviceUrl The URL to the esri KML service layer.
-     * @param serviceDefinition A map service definition object containing the properties for the new map service (optional).
-     * @returns The promise of a Geocortex KmlService.
-     */
-    function buildKmlService(serviceUrl: string, serviceDefinition?: any): Promise<essentials.KmlService>;
-    /**
-     * Create a local map service from a serialized feature layer (JSON data called a 'Feature Collection').
-     * @param featureCollection An esri `FeatureCollection`, which is a serialized representation of a feature layer.
-     * @param serviceDefinition A map service definition object containing the properties for the new map service (optional).
-     * @returns A Promise of a local feature layer service that exists in a disconnected state (does not have a valid URL).
-     */
-    function buildLocalFeatureLayerService(featureCollectionObject: webMap.Layer, serviceDefinition?: any): Promise<LocalFeatureLayerService>;
-    /**
-     * Specialized esri feature layer that exists in a disconnected state (no URL).
-     */
-    class LocalFeatureLayer extends esri.layers.FeatureLayer {
-        /**
-         * Create a LocalFeatureLayer from a feature layer that is serialized as a FeatureCollection.
-         * @param options: `LocalFeatureLayerConstructorOptions`.
-         */
-        constructor(featureCollectionObject: webMap.Layer);
-        /**
-         * Special query handling for local feature layers, overriding `queryFeatures` of the Esri API.
-         * The Esri API allows only simple extent-based queries to be performed clientside. For more complex queries (involving polygons, for example), the Esri API will query the server.
-         * Local feature layers, which exist in a disconnected state (no URL), have no associated server endpoint available to query.
-         * In order to perform queries with complex geometry on local feature layers, this method performs the query with a simplified version of the geometry (an extent) which yields false positives, which we then manually filter out by using the Esri geometry engine.
-         */
-        queryFeatures(originalQuery: esri.tasks.Query, callback?: Function, errback?: Function): any;
-    }
-    /**
-     * Specialized Geocortex feature layer map service that exists in a disconnected state (no URL).
-     */
-    class LocalFeatureLayerService extends essentials.FeatureLayerService {
-    }
-    /**
-     * Specialized Geocortex layer that exists in a disconnected state (no URL).
-     */
-    class LocalLayer extends essentials.Layer {
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerSelector {
-    class LayerSelectorViewBase extends geocortex.framework.ui.ViewBase {
-        app: geocortex.essentialsHtmlViewer.ViewerApplication;
-        viewModel: LayerSelectorViewModelBase;
-        selectAllLayers(evt: MouseEvent, el: HTMLElement, context: any): void;
-        clearAllLayers(evt: MouseEvent, el: HTMLElement, context: any): void;
-        handleExpanderClick(evt: MouseEvent, el: HTMLElement, context: LayerSelectorLayerItem): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerSelector {
-    class LayerSelectorViewModelBase extends geocortex.framework.ui.ViewModelBase {
-        app: geocortex.essentialsHtmlViewer.ViewerApplication;
-        appInfo: infrastructure.gis.AppInfo;
-        layerSelector: infrastructure.layerSelector.LayerSelector;
-        items: ObservableCollection<infrastructure.layerSelector.LayerSelectorItem>;
-        selectAllButtonText: Observable<string>;
-        clearAllButtonText: Observable<string>;
-        selectAllButtonTitle: Observable<string>;
-        clearAllButtonTitle: Observable<string>;
-        private _layerSelectorInitialized;
-        constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, libraryId?: string);
-        initialize(config: any): void;
-        /**
-         * This handler fires exactly once when the layer selector is initialized. Override this method in a sub class to define the handler.
-         */
-        onInitialized(layerSelector: infrastructure.layerSelector.LayerSelector): void;
-        /**
-         * Called when a new LayerSelectorFolderItem is created.
-         * Override this method in a sub class to define the handler.
-         * @param folderItem The item created.
-         */
-        onLayerSelectorFolderItemCreated(folderItem: LayerSelectorFolderItem): void;
-        /**
-         * Called when a new LayerSelectorLayerItem is created.
-         * Override this method in a sub class to define the handler.
-         * @param layerItem The item created.
-         */
-        onLayerSelectorLayerItemCreated(layerItem: LayerSelectorLayerItem): void;
-        /**
-         * Called when a new LayerSelectorServiceLayerItem is created.
-         * Override this method in a sub class to define the handler.
-         * @param layerItem The item created.
-         */
-        onLayerSelectorServiceLayerItemCreated(layerItem: LayerSelectorServiceLayerItem): void;
-        /**
-         * The filter based on which the layers are included in the 'items' collection. Can be modified at runtime. Override this
-         * method in a sub class to define the filter.
-         */
-        filter(layerSelectorLayerItem: infrastructure.layerSelector.LayerSelectorLayerItem | infrastructure.layerSelector.LayerSelectorServiceLayerItem): boolean;
-        /**
-         * The handler for a layer state change event. Override this method in a sub class to define the handler.
-         */
-        handleLayerStateChange(layerSelectorLayerItem: infrastructure.layerSelector.LayerSelectorLayerItem | infrastructure.layerSelector.LayerSelectorServiceLayerItem): void;
-        /**
-         * The handler that is invoked when all layers are set to enabled. Override this method in a sub class to define the handler.
-         */
-        handleAllLayersEnabled(): void;
-        /**
-         * The handler that is invoked when all layers are disabled. Override this method in a sub class to define the handler.
-         */
-        handleAllLayersDisabled(): void;
-        /**
-         * Recursively walks the tree of items and returns a flat array of all items.
-         * @returns all LayerSelectorItems of any depth.
-         */
-        getAllItems(): LayerSelectorItem[];
-        /**
-         * Recursively walks the tree of the given items and returns a flat array of all items.
-         * @returns all LayerSelectorItems of any depth.
-         */
-        private static _expandItems(items);
-        protected _setupLayerSelector(): void;
-        protected _subscribeEvents(): void;
-        protected _handleMapServicesAdded(ms: essentials.MapService): void;
-        protected _handleMapServiceRemoved(ms: essentials.MapService): void;
-        protected _handleMapServiceLayersChanged(args: eventArgs.MapServiceLayersChangedEventArgs): void;
-        protected _waitUntilLayerSelectorInitialized(): Promise<void>;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.nativeIntegration {
-    /**
-     * Communication channel for sending messages to GMAF. Includes handling of long running jobs, progress reporting, and cancellation.
-     * @private
-     */
-    class MessageClient {
-        app: ViewerApplication;
-        constructor(app: ViewerApplication);
-        /**
-         * Sends a message to GMAF and returns a Promise that will be resolved when the operation is complete.
-         * Operations can be short running (if there is no cancellation token) or long running (if there is a cancellation token).
-         */
-        message(messageType: string, payload: any, cancellationToken?: CancellationToken, progress?: (status: any) => void): Promise<any>;
-        private cancel(jobId);
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline {
-    /**
-     * @private
-     */
-    function formatByteTransferRateString(app: geocortex.essentialsHtmlViewer.ViewerApplication, bSec: number): string;
-    /**
-     * @private
-     */
-    function formatBytesString(app: geocortex.essentialsHtmlViewer.ViewerApplication, bytes: number): string;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    /**
-     * Provides a set of filters for use with {@link: ObjectFilter.filter} corresponding to common project interfaces.
-     */
-    class ProjectFilter {
-        app: ViewerApplication;
-        private _coordinateSystem;
-        private _drawingInfo;
-        private _feature;
-        private _featureCollection;
-        private _featureSet;
-        private _featureSetCollection;
-        private _graphic;
-        private _layerDefinition;
-        protected _webMapFilter: webMap.WebMapFilter;
-        private _numberValidator;
-        private _urlValidator;
-        private _serviceDiscoveryUrlValidator;
-        private _xssHtmlValidator;
-        constructor(app: ViewerApplication);
-        baseMap: any;
-        baseMapLayer: (baseLayer: BaseMapLayer) => any;
-        bookmark: any;
-        color: any;
-        coordinateSystem: any;
-        domain: any;
-        inheritedDomain: any;
-        rangeDomain: any;
-        codedValueDomain: any;
-        drawingInfo: any;
-        feature: any;
-        featureCollection: any;
-        featureSet: any;
-        featureSetCollection: any;
-        field: any;
-        geometry: any;
-        graphic: any;
-        point: any;
-        multiPoint: any;
-        polyline: any;
-        polygon: any;
-        extent: any;
-        layer: (lyr: Layer) => any;
-        layerDefinition: any;
-        operationalLayer: (opLayer: OperationalLayer) => any;
-        renderer: any;
-        serviceLayer: (svcLayer: ServiceLayer) => any;
-        simpleRenderer: any;
-        uniqueValueRenderer: any;
-        classBreaksRenderer: any;
-        heatmapRenderer: any;
-        spatialReference: any;
-        symbol: any;
-        simpleMarkerSymbol: any;
-        simpleLineSymbol: any;
-        simpleFillSymbol: any;
-        pictureMarkerSymbol: any;
-        pictureFillSymbol: any;
-        textSymbol: any;
-        template: any;
-        type: any;
-        /**
-         * A generic filter for objects whose schema is unknown.
-         */
-        object: any;
-        protected _serviceLayerCommon: any;
-        /**
-         * Gets an appropriate url validator instance based on the supplied layer or service.
-         */
-        protected _getUrlValidator(layerOrService: Layer | ServiceLayer): validation.Validator<string>;
-        private _getUserLayerType(layerOrService);
-        private _isFeatureCollection(serviceLayer);
-        private _isKmlLayer(serviceLayer);
-        private _isLayerCatalogService(serviceLayer);
-    }
-}
-/**
- * Viewer Shell (Desktop, Tablet, Handheld) Utilities.
- */
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ShellUtils {
-    /**
-     * Debounces a given function and runs it once all view related events have settled for a specified timeout (defaults to 400ms). This function cannot guarantee deterministic results and we don't recommend
-     * you use it unless absolutely necessary. There may be points of failure introduced if, for instance, a large number of modules use it and activate views of their own. This may lead to unintended
-     * behavior.
-     * @param app The {@link ViewerApplication} invoking this function.
-     * @param delegate The function to execute after debouncing.
-     * @param settleThreshold Optional parameter that can be used to set the settle threshold. Defaults to 400ms.
-     */
-    function debounceViewEvents(app: ViewerApplication, delegate: Function, settleThresholdMs?: number): void;
-    /**
-     * Debounces a given function and runs it once all target events have settled for a specified timeout (defaults to 200ms). This function cannot guarantee deterministic results and we don't recommend
-     * you use it unless absolutely necessary.
-     * @param app The {@link ViewerApplication} invoking this function.
-     * @param delegate The function to execute after debouncing.
-     * @param targetEvents The list of events that will cause the given delegate to get debounced.
-     * @param settleThreshold Optional parameter that can be used to set the settle threshold. Defaults to 400ms.
-     */
-    function debounceEvents(app: ViewerApplication, delegate: Function, targetEvents: string[], settleThresholdMs?: number): void;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.nativeIntegration {
-    class NativeManager {
-        app: ViewerApplication;
-        private _nativeInitializedPromise;
-        private _nativeInitializedResolve;
-        private _messageClient;
-        private _capabilities;
-        /**
-         * Indicates whether native is initialized.  For a check with an asynchronous
-         * callback use onNativeInitialized().
-         */
-        nativeInitialized: boolean;
-        constructor(app: ViewerApplication);
-        isNative(): boolean;
-        xhrGet(dojoArgs: any): Promise<any>;
-        xhrPost(dojoArgs: any): Promise<any>;
-        appendAuthorizationHeader(dojoArgs: any): void;
-        /**
-         * Sends a message to GMAF and returns a Promise that will be resolved when the operation is complete.
-         * Operations can be short running (if there is no cancellation token) or long running (if there is a cancellation token).
-         */
-        message(messageType: string, body: any, cancellationToken?: CancellationToken, progress?: (status: any) => void): Promise<any>;
-        /**
-         * Gets a promise that will be resolved when the "native ready" message has been received from the native
-         * layer, which indicates that the native infrastructure has been initialized.
-         */
-        onNativeInitialized(): Promise<void>;
-        /**
-         * To be called once by the module that handles the native initialize to indicate that native initialization
-         * is complete. Causes the promise returned by onNativeInitialized() to be resolved.
-         */
-        signalNativeInitialized(): void;
-        /**
-         * Gets the resource info for a viewer resource.
-         * @param fileName The name of the file on the server to get the resource info for.
-         */
-        getViewerResourceInfo(fileName: string): Promise<ResourceInfo>;
-        /**
-         * Tests to see if the app has a certain native capability. Example "editing".
-         */
-        hasNativeCapability(capability: string): Promise<boolean>;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.nativeIntegration {
-    interface ResourceInfo {
-        name: string;
-        exists: boolean;
-        length?: number;
-        lastAccessTime?: Date;
-        lastWriteTime?: Date;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline {
-    /**
-     * Delete basemaps from the device.  Takes an OfflineMapBasemap array instead of an OfflineMap because
-     * the geometry isn't needed and it makes sense to delete a subset of the basemaps.
-     * @param app
-     * @param basemaps
-     * @param cancellationToken
-     * @param progress
-     */
-    function deleteBasemaps(app: ViewerApplication, basemaps: OfflineMapBasemap[]): Promise<void>;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline {
-    /**
-     * Downloads all OfflineBasemaps in the OfflineMap as necessary.
-     * @param offlineMap
-     * @param progress
-     * @private
-     */
-    function downloadBasemaps(app: ViewerApplication, offlineMap: OfflineMap, cancellationToken: CancellationToken, progress?: (progress: Progress) => void): Promise<void>;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle {
-    /**
-     * The Bundle contains the RoutingRules and some resources for an offline
-     * profile.
-     */
-    interface Bundle {
-        /**
-         * The ID of the bundle.
-         */
-        id: string;
-        /**
-         * Local time that the bundle was generated.
-         */
-        timestamp: number;
-        /**
-         * Routing rules that redirect requests to resources in this bundle.
-         */
-        routingRules: RoutingRule[];
-        /**
-         * The resources that make up this bundle.
-         */
-        resources: BundleResourceEntry[];
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle {
-    /**
-     * Builds an offline Bundle.
-     * @return a promise of the Bundle.
-     * @private
-     */
-    function buildBundle(context: BundleBuilderContext): Promise<Bundle>;
-    function cleanUpMapServiceUrl(context: BundleBuilderContext, mapService: geocortex.essentials.MapService): string;
-    function cleanUpRestUrl(context: BundleBuilderContext, url: string): string;
-    /**
-     * Turns a well-formed URL into a regex pattern, which could also be a key for a resource.
-     */
-    function urlToPattern(url: string): string;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle {
-    /**
-     * Context passed in to the BundleBuilder.
-     */
-    interface BundleBuilderContext {
-        /**
-         * The application.
-         */
-        app: geocortex.essentialsHtmlViewer.ViewerApplication;
-        /**
-         * The ID that will be given to the bundle being generated.
-         */
-        bundleId: string;
-        /**
-         * Mapping of requests URL to how to fetch it locally.
-         */
-        basemaps: BundleBuilderContextBasemap[];
-        /**
-         * Information about the data synced to the device.
-         */
-        featureLayerSyncInfo: infrastructure.offline.SyncInfo;
-    }
-    /**
-     * Configured mapping of basemap map service URL to
-     * local map service path (partial URL without host).
-     */
-    interface BundleBuilderContextBasemap {
-        url: string;
-        localServicePath: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle {
-    /**
-     * Builds a bundle of rules on what to do while an offline map is active and applies
-     * them to outgoing network traffic.
-     */
-    class BundleManager {
-        app: ViewerApplication;
-        libraryId: string;
-        private _router;
-        private _esriRequestHacker;
-        private _esriLayerHacker;
-        private _serveResourceHandler;
-        constructor(app: ViewerApplication, libraryId: string);
-        /**
-         * Download Offline Resources.
-         * @param bundleId the ID that will be given to this bundle.
-         * @param basemaps information on how to direct basemap requests.
-         */
-        createBundle(bundleId: string, basemaps: BundleBuilderContextBasemap[]): Promise<void>;
-        /**
-         * Delete all resources stored for the given bundle.
-         * @param bundleId The ID of the existing bundle.
-         */
-        deleteBundle(bundleId: string): Promise<void>;
-        /**
-         * Update all resources stored for the given bundle.
-         * @param bundleId The ID of the existing bundle.
-         * @param basemaps information on how to direct basemap requests.
-         */
-        updateBundle(bundleId: string, basemaps: BundleBuilderContextBasemap[]): Promise<void>;
-        /**
-         * Make the bundle with the given ID the active bundle.  After the returned promise
-         * resolves future offline routing and resources will come from the bundle.
-         * @param bundleId
-         */
-        loadBundle(bundleId: string): Promise<void>;
-        /**
-         * Return to a default state with no active bundle available.
-         * This should always be safe.
-         */
-        unloadBundle(): Promise<void>;
-        /**
-         * Generate the bundle for this viewer.
-         * @param bundleId the ID that will be given to this bundle.
-         * @param basemaps information on how to direct basemap requests.
-         */
-        private _buildBundle(bundleId, basemaps);
-        /**
-         * Adds bundle resources to the offline store.  Does not activate it.
-         * @param bundle The bundle to store.
-         */
-        private _storeBundle(bundle);
-        /**
-         * Get the bundle with the given ID from storage.  Does not make it active.
-         * @param bundleId The ID of the bundle to retrieve.
-         */
-        private _getBundle(bundleId);
-        /**
-         * Get the storage key for the given bundle or bundle ID.
-         * @param bundle
-         */
-        private _getBundleKey(bundle);
-        /**
-         * Get from the store in promise form.  This will hopefully be moved into Store in 3.0.
-         * @param key
-         */
-        private _appStoreGetPromise(key);
-        /**
-         * Set to the store in promise form.  This will hopefully move into Store in 3.0.
-         * @param key
-         * @param value
-         */
-        private _appStoreSetPromise(key, value);
-        /**
-         * Remove from the store in promise form.  This will hopefully move into Store in 3.0.
-         * @param key
-         */
-        private _appStoreRemovePromise(key);
-        getResource(key: string): string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle {
-    /**
-     * A resource that is stored and can be served while offline.  Typically these
-     * are responses from REST endpoints served by the "ServeResource" routing rule.
-     */
-    class BundleResourceEntry {
-        /**
-         * Is the value base64 encoded.
-         */
-        isEncoded: boolean;
-        /**
-         * Is the value JSON.stringified.
-         */
-        isJson: boolean;
-        /**
-         * The key for the resource.  For the "ServeResource" routing rule this matches the
-         * "key" parameter.
-         */
-        key: string;
-        /**
-         * The resource, possibly base64 encoded, possibly JSON.stringified.
-         */
-        value: string;
-        constructor(mixin: BundleResourceEntry);
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle {
-    /**
-     * Applies dirty hacks to the Esri layers to make requests work offline.
-     * This relies upon undocumented functionality and may break between releases.
-     * (But rarely has!  Whew.)
-     */
-    class EsriLayerHacker {
-        app: ViewerApplication;
-        urlRewriter: (url: string) => string;
-        /**
-         * Callback for errors produced by invalid requests.
-         */
-        errorReporter: (error: string) => void;
-        private _hooked_BingMaps_getTileUrl;
-        private _hooked_esri_getTileUrl;
-        private _hooked_esri_getImageUrl;
-        private _hooked_ogc_getImageUrl;
-        private _hooked_ogc_getWMTSTileUrl;
-        private _hooked_WebTiledLayer_getTileUrl;
-        private _bingMaps__tileLoadHandler;
-        private _ogc__tileLoadHandler;
-        private _webTiledLayer__tileLoadHandler;
-        /**
-         * Constructor.
-         * @param urlRewriter The function that rewrites tile requests, or returns null to not rewrite it.
-         *                    Can be set on the fly.
-         */
-        constructor(app: ViewerApplication, urlRewriter: (url: string) => string);
-        private _captureHooks();
-        /**
-         * @private Extend ESRI layers for offline functionality
-         */
-        private _extendEsriLayers();
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle {
-    /**
-     * Applies dirty hacks to esri.request to make requests work offline.
-     * This may break between Esri API releases.
-     */
-    class EsriRequestHacker {
-        app: ViewerApplication;
-        requestHandler: (request: EsriRequest, options: EsriRequestOptions) => dojo.Deferred;
-        private _hooked_esri_request;
-        private _isEnabled;
-        /**
-         * Calls to esri.request will be redirected to the given requestHandler while enabled.
-         * @param app
-         * @param requestHandler
-         */
-        constructor(app: ViewerApplication, requestHandler: (request: EsriRequest, options: EsriRequestOptions) => dojo.Deferred);
-        unhackedRequest(request: EsriRequest, options: EsriRequestOptions): dojo.Deferred;
-        /**
-         * Bypass the hack and allow traffic to flow through normally.
-         */
-        disable(): void;
-        /**
-         * Re-engage the hack.
-         */
-        enable(): void;
-        /**
-         * @private Hook into esri.request. This is for REST requests.
-         */
-        private _setupEsriRequestHooks();
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle.offlineHandlers {
-    /**
-     * Doesn't actually handle anything and just pushes it through to online.
-     */
-    class PassthroughHandler implements OfflineHandler {
-        app: ViewerApplication;
-        unhackedRequesthandler: (request: EsriRequest, options: EsriRequestOptions) => dojo.Deferred;
-        name: string;
-        constructor(app: ViewerApplication, unhackedRequesthandler: (request: EsriRequest, options: EsriRequestOptions) => dojo.Deferred);
-        handle(request: bundle.RequestContext, rule: bundle.RoutingRule, matches: RegExpExecArray, cancellationToken: CancellationToken): boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle.offlineHandlers {
-    /**
-     * Rejects all matching requests.
-     */
-    class FailHandler implements OfflineHandler {
-        name: string;
-        handle(request: RequestContext, rule: RoutingRule, matches: RegExpExecArray, cancellationToken: CancellationToken): boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle.offlineHandlers {
-    /**
-     * A handler for offline requests.  The handler is only called when a rule
-     * with the same name matches a request.  The handler may still refuse to handle
-     * the request.
-     */
-    interface OfflineHandler {
-        /**
-         * The name of the handler.
-         */
-        name: string;
-        /**
-         * Applies a routing rule to the given request.  The rule will have a name
-         * matching the name passed in to OfflineRouter.addHandler() and the rule
-         * pattern will match the request.
-         * @param request The request to handle.
-         * @param rule The rule matching the request.
-         * @param matches Regexp capturing groups from the rule pattern.
-         * @return Whether the rule successfully handled the request.
-         */
-        handle(request: RequestContext, rule: RoutingRule, matches: RegExpExecArray, cancellationToken: CancellationToken): boolean;
-    }
-    /**
-     * A useful util function.  Sets the load and error callbacks onto the deferred
-     * object used by request. This is due to the change from _request
-     * to request. _serveResourceImpl does not hook load and errors itself.
-     */
-    function hookDeferredCallbacks(request: RequestContext): void;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle.offlineHandlers {
-    /**
-     * Rewrites requests and then passes them through the unhackedRequesthandler.
-     */
-    class RewriteHandler implements OfflineHandler {
-        app: ViewerApplication;
-        unhackedRequesthandler: (request: EsriRequest, options: EsriRequestOptions) => dojo.Deferred;
-        constructor(app: ViewerApplication, unhackedRequesthandler: (request: EsriRequest, options: EsriRequestOptions) => dojo.Deferred);
-        name: string;
-        handle(request: bundle.RequestContext, rule: bundle.RoutingRule, matches: RegExpExecArray, cancellationToken: CancellationToken): boolean;
-        /**
-         * Rewrites a request's URL.
-         */
-        rewriteRequest(ctx: RequestContext, rule: RoutingRule, matches: RegExpExecArray): string;
-        /**
-         * Takes a url, and appends the local server token as a URL parameter to create a new URL.
-         */
-        private _appendLocalServerToken(url);
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle.offlineHandlers {
-    /**
-     * Serves resources stored in the bundle.  Some resources are removed from the bundle
-     * and stored separately to shrink what needs to be kept in memory.
-     */
-    class ServeResourceHandler implements OfflineHandler {
-        app: ViewerApplication;
-        resourceGetter: (key: string) => Promise<string>;
-        resourceSetter: (key: string, value: string) => Promise<void>;
-        resourceRemover: (key: string) => Promise<void>;
-        /** The resource length at which it will be put in storage rather than kept in memory. */
-        private static _resourceCachingLength;
-        name: string;
-        isReady: Observable<boolean>;
-        private _bundle;
-        constructor(app: ViewerApplication, resourceGetter: (key: string) => Promise<string>, resourceSetter: (key: string, value: string) => Promise<void>, resourceRemover: (key: string) => Promise<void>);
-        /**
-         * Serve the request using the given rule from the bundle.
-         * @param request The request to serve.
-         * @param rule The rule from the bundle that matches the request.
-         * @param matches Regex capturing groups.
-         * @return Whether the request was successfully handled.
-         */
-        handle(request: RequestContext, rule: RoutingRule, matches: RegExpExecArray, cancellationToken: CancellationToken): boolean;
-        /**
-         * Serve all future requests with resources from the given bundle.
-         * @param bundle The bundle to serve from.
-         */
-        loadBundle(bundle: Bundle): void;
-        /**
-         * Clear all known resources.
-         */
-        clear(): void;
-        /**
-         * Strip large values out of the bundle and store them separately.  This does not make the
-         * bundle active.  That is done with loadBundle.
-         * @param bundle The bundle to process.
-         * @return a promise of the bundle that was passed in, after it is processed.
-         */
-        stripAndStoreBundle(bundle: Bundle): Promise<Bundle>;
-        /**
-         * Unstore all entries stored by stripAndStoreBundle.  The values are not returned to
-         * the bundle.  It's assumed we're just going to throw it away.
-         * @param bundle The bundle to process.
-         * @return a promise of the bundle that was passed in, after it is processed.
-         */
-        unstoreBundle(bundle: Bundle): Promise<Bundle>;
-        /**
-         * Get the resouce for the given key.
-         * @param key
-         */
-        getResourceValue(key: string): Promise<any>;
-        /**
-         * Get the resource from the given entry.
-         * @param entry
-         */
-        private _getResourceValue(entry);
-        private static _getResourceStorageKey(bundle, entry);
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle.offlineHandlers {
-    /**
-     * Handles requests for the site specially to inject the true principal if the user is authed.
-     */
-    class SiteHandler implements OfflineHandler {
-        app: ViewerApplication;
-        siteJsonGetter: (key: string) => Promise<any>;
-        unhackedRequesthandler: (request: EsriRequest, options: EsriRequestOptions) => dojo.Deferred;
-        name: string;
-        /**
-         * @param siteJsonGetter Gets the stored site JSON.  The key passed in comes from the rule parameter.
-         * @param unhackedRequesthandler Unhacked esri.request.
-         */
-        constructor(app: ViewerApplication, siteJsonGetter: (key: string) => Promise<any>, unhackedRequesthandler: (request: EsriRequest, options: EsriRequestOptions) => dojo.Deferred);
-        handle(request: RequestContext, rule: RoutingRule, matches: RegExpExecArray, cancellationToken: CancellationToken): boolean;
-        private _hasToken(request);
-        private _getOnlineSitePrincipal(request);
-        /**
-         * Get a faked up principal object from GMAF using the security information it has.
-         * This only works to present a security context while offline in GMAF, that can be
-         * refreshed automatically when going online.
-         * @param request
-         */
-        private _getGmafPrincipal(storedPrincipal);
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle {
-    /**
-     * Routes offline requests through request handlers.  This is done by hacking esri.request.
-     * The "Rewrite" request handler is the only handler installed by default.
-     */
-    class OfflineRouter {
-        app: geocortex.essentialsHtmlViewer.ViewerApplication;
-        isReady: Observable<boolean>;
-        private _handlers;
-        private _rules;
-        private _defaultHandler;
-        constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication);
-        /**
-         * Add a request handler.  The handler function will be called to handle requests
-         * when a rule matching the given name has a pattern matching the request.
-         * @param handlerName The name of the handler.  This matches the RoutingRule handlerName.
-         * @param handler The handling function for the rule.
-         */
-        addHandler(handler: offlineHandlers.OfflineHandler): void;
-        /**
-         * Remove a request handler.
-         * @param handlerName The name of the handler.
-         * @return Whether a handler was found and removed.
-         */
-        removeHandler(handlerName: string): boolean;
-        /**
-         * Set the handler to use when no other handlers match.  The handler will be called with
-         * rule and matches as null, as there is no rule that matched.
-         * @param handler
-         */
-        setDefaultHandler(handler: offlineHandlers.OfflineHandler): void;
-        /**
-         * Set the rules that determine how (offline) requests are routed.
-         * @param rules
-         */
-        setRoutingRules(rules: RoutingRule[]): void;
-        /**
-         * Set the rules that determine how (offline) requests are routed from a promise.
-         * @param routingRulesJsonStringPromise
-         */
-        setRoutingRulesFromPromise(routingRulesJsonStringPromise: Promise<string>): void;
-        /**
-         * Remove all routing rules.
-         */
-        clearRoutingRules(): void;
-        /**
-         * Check the tile URL against any "Rewrite" rules in the offline manifest and return
-         * the rewritten URL if there is a match.  Return null otherwise.
-         * @param url The URL to rewrite.
-         * @return The rewritten URL or null.
-         */
-        rewriteUrl(url: string): string;
-        /**
-         * Handles (routes) an offline request.
-         */
-        handle(request: EsriRequest, options: EsriRequestOptions): dojo.Deferred;
-        _whenReady(callback: () => void): void;
-        /**
-         * Strips out possible proxy prefix from an offline request.
-         */
-        private _stripOutProxy(url);
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle {
-    /**
-     * Not included in esri's d.ts file.
-     */
-    interface EsriRequest {
-        callbackParamName: string;
-        content?: any;
-        form?: any;
-        handleAs?: string;
-        timeOut?: number;
-        url: string;
-    }
-    /**
-     * Not included in esri's d.ts file.
-     */
-    interface EsriRequestOptions {
-        disableIdentityLookup?: boolean;
-        usePost?: boolean;
-        useProxy?: boolean;
-    }
-    class RequestContext implements EsriRequest {
-        dfd: dojo.Deferred;
-        options: EsriRequestOptions;
-        callbackParamName: string;
-        content: any;
-        form: any;
-        handleAs: string;
-        timeOut: number;
-        url: string;
-        constructor(mixin: EsriRequest, dfd: dojo.Deferred, options: EsriRequestOptions);
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle {
-    /**
-     * A rule for handling an offline request.  When this rule matches a request
-     * it is passed to the OfflineHandler registered with the handlerName,
-     * which then handles the request.  Multiple rules may match the same handler.
-     */
-    interface RoutingRule {
-        /**
-         * The name of the handler.  There can be (should be) many handlers with the same
-         * name.  The difference in how they function is the parameters to this rule
-         * and the matches captured from the pattern.
-         */
-        handlerName: string;
-        /**
-         * A pattern for when to attempt to apply the handler code to the rule.
-         * The code may still refuse to handle the request so this is necessary
-         * but not sufficient.
-         */
-        pattern: string;
-        /**
-         * A lookup for matching on the 'content' of a request - ie. request parameters.
-         * The key is the name of the parameter, and the result is an object with a regex pattern for the match.
-         */
-        queryParameterPatterns?: {
-            [name: string]: {
-                pattern: string;
-            };
-        };
-        /**
-         * Parameters for this rule that dictate behaviour of the handler code.
-         */
-        parameters: {
-            [key: string]: string;
-        };
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle {
-    /**
-     * Builds an array of routing rules in the bundle.
-     * @return a dojo.Deferred<RoutingRule[]>
-     */
-    function buildRoutingRules(context: BundleBuilderContext): RoutingRule[];
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
-    /**
-     * Masks everything outside of a certain area of interest (AOI).
-     */
-    class AreaOfInterestMask {
-        app: ViewerApplication;
-        private _originalMapBackground;
-        private _aoi;
-        private _enabled;
-        /**
-          * Whether to set the map background color to be the same as the fill color. This can be be useful because the
-          * mask may not reach all the way to the outer edges of the map. Setting this to true will ensure full coverage.
-          */
-        matchMapBackground: boolean;
-        /**
-          * The color of the mask.
-          */
-        fillColor: any;
-        /**
-          * The color of the AOI outline.
-          */
-        boundaryColor: esri.Color;
-        /**
-          * The thickness of the AOI otuline.
-          */
-        boundaryWidth: number;
-        /**
-          * The style of the AOI otuline.
-          */
-        boundaryStyle: any;
-        /**
-          * The layer id to use for map graphics.
-          */
-        layerId: string;
-        constructor(app: ViewerApplication, config?: AreaOfInterestMaskConfig);
-        /**
-         * Shows the mask. Will not be shown if the mask is disabled.
-         * @param areaOfInterest The area of interest to to be visible. Everything outside of this will be hidden.
-         */
-        show(areaOfInterest: esri.geometry.Polygon): void;
-        /**
-         * Eliminates the mask.
-         */
-        hide(): void;
-        /**
-         * Enables the mask. If it was not enabled while show() was called, this method will actually show the mask.
-         */
-        enable(): void;
-        /**
-         * Disables the mask. If show() is called while disabled, it will not actually be shown.
-         */
-        disable(): void;
-        /**
-         * Configures this AreaOfInterestMask to match the properties specified in the config. Any properties that are null
-         * or undefined will retain their existing values.
-         */
-        configure(config?: AreaOfInterestMaskConfig): void;
-        private _getLayer();
-        private _getMapNode();
-    }
-    /**
-     * Configuration properties for the AreaOfInterestMask.
-     */
-    interface AreaOfInterestMaskConfig {
-        /**
-          * Whether the mask should be actually shown or not when the show() method is called.
-          * If disabled, it will not be shown, even if show() is called.
-          */
-        enabled?: boolean;
-        /**
-          * The color of the mask.
-          */
-        fillColor?: string | number[];
-        /**
-          * The color of the AOI outline.
-          */
-        boundaryColor?: string | number[];
-        /**
-          * The style of the AOI outline ("null", "solid", "dash", "dot").
-          */
-        boundaryStyle?: string;
-        /**
-          * The thickness of the AOI otuline.
-          */
-        boundaryWidth?: number;
-        /**
-          * The layer id to use for map graphics.
-          */
-        layerId?: string;
-        /**
-          * Whether to set the map background color to be the same as the fill color. This can be be useful because the
-          * mask may not reach all the way to the outer edges of the map. Setting this to true will ensure full coverage.
-          */
-        matchMapBackground?: boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline {
-    /**
-     * Manages offline state.  Chief among the offline state is the offline map
-     * which defines what data will be available offline and how offline requests
-     * are handled.  Offline profiles that are added may be activated when offline.
-     */
-    class OfflineManager {
-        app: ViewerApplication;
-        libraryId: string;
-        /**
-         * A promise for the last offline map operation.  Chain .finally() off this for all operations
-         * that touch the list of profiles or storage to keep the list consistent.  Recursion will
-         * cause deadlocks so keep it simple.
-         */
-        private _lastOperation;
-        private _activeOfflineMapId;
-        private _previousActiveOfflineMapId;
-        private _cancellationTokenSource;
-        private _offlineMaps;
-        private _bundleManager;
-        /** The mask that hides everything outside of the offline map area of interest. Can be configured. */
-        aoiMask: AreaOfInterestMask;
-        /** Information about the currently active offline map. */
-        syncInfo: SyncInfo;
-        /** Whether or not the current job can be canceled */
-        canCancel: Observable<boolean>;
-        /**
-         * An indiciator of whether or not there is an active offline map.
-         * This property is preferable to app.isOffline (which is deprecated) because it more accurately describes
-         * the state of the application. There is no binary online/offline switch, so app.isOffline is misleading.
-         * Even though an offline map is active, the device may still have internet connectivity.
-         */
-        isOfflineMapActive: Observable<boolean>;
-        constructor(app: ViewerApplication, libraryId: string);
-        /**
-         * Add an offline map.  The site information and features are downloaded.
-         * @param offlineMap The offline map to add.
-         * @param progress An optional callback for a stream of progress messages.
-         */
-        addOfflineMap(offlineMap: OfflineMap, progress?: (progress: Progress) => void): Promise<void>;
-        /**
-         * Remove an offline map.  The site information and feature data is deleted.
-         * @param offlineMap The offline map to remove, or its ID.
-         * @param progress An optional callback for a stream of progress messages.
-         */
-        removeOfflineMap(offlineMap: string | OfflineMap, progress?: (message: string) => void): Promise<void>;
-        /**
-         * Remove an offline map right now, without waiting for the previous operation to complete.
-         */
-        private _removeOfflineMapNow(offlineMap, progress?);
-        /**
-         * Sync an offline map.  Edits are sent to the server, then feature data redownloaded,
-         * then the site data is redownloaded.
-         * @param offlineMap The offline map to sync, or its ID.
-         * @param progress An optional callback for a stream of progress messages.
-         */
-        syncOfflineMap(offlineMap: string | OfflineMap, progress?: (progress: Progress) => void): Promise<void>;
-        /**
-         * Updates the bundle for an offline map without syncing.
-         * @param offlineMap The offline map to sync, or its ID.
-         */
-        updateBundle(offlineMap: string | OfflineMap): Promise<void>;
-        /**
-         * Make an offline map active.  When offline this is the data from which offline
-         * data is served.
-         * @param offlineMap The offline map to make active, or its ID.
-         * @param userAction Set to true if the activation is happening as a result of the user
-         * explicitly clicking a button to activate the offline map. Set to false if the activation
-         * is happening automatically without the user explicitly activating the offline map.
-         */
-        activateOfflineMap(offlineMap: string | OfflineMap, userAction?: boolean): Promise<void>;
-        /**
-         * Make no offline map active.  This will succeed even if there is no
-         * active profile.
-         * @param userAction Set to true if the activation is happening as a result of the user
-         * explicitly clicking a button to activate the offline map. Set to false if the activation
-         * is happening automatically without the user explicitly activating the offline map.
-         */
-        deactivateOfflineMap(userAction?: boolean): Promise<void>;
-        /**
-         * Cancels the current sync or download.
-         */
-        cancel(): Promise<void>;
-        /**
-         * Clears out the last operation, so that the next operation can just go ahead without waiting for the last operation to complete.
-         * This should be used with caution, only called in extreme circumstances - for example if the last operation is hung.
-         */
-        forgetLast(): void;
-        /**
-         * Get the offline map with the given ID or null if not found.
-         * @param offlineMapId
-         */
-        getOfflineMapById(offlineMapId: string): OfflineMap;
-        /**
-         * Get all offline maps.
-         */
-        getOfflineMaps(): OfflineMap[];
-        /**
-         * Get the currently active offline map or null if none.
-         */
-        getActiveOfflineMap(): OfflineMap;
-        /**
-         * Refresh the sync info object.  This is automatically done when the active
-         * offline map changes.
-         */
-        refreshSyncInfo(): Promise<void>;
-        /**
-         * Save the state of the OfflineManager to storage.  This goes in the promise chain of anything that
-         * changes the state.
-         */
-        private _save();
-        /**
-         * Load the state of the OfflineManager from storage.  This should only be called on start up.
-         */
-        load(): void;
-        /**
-         * Creates a priority sequence of offline map ids whereby we should use the first one that is workable.
-         */
-        private _prioritizeOfflineMaps(state, offlineMaps);
-        /**
-         * Employs some intelligence to determine which offline map should be loaded, if any.
-         * This method is recursive and will keep trying to initialize with the offline map ids
-         * in the sequence provided until it finds one that is workable.
-         */
-        private _initializeMap(offlineMapIds);
-        /**
-         * Waits for the last operation to complete, absorbing any errors in the process, because we don't care
-         * about errors from the last operation when starting a new operation.
-         */
-        private _waitForLast();
-        /**
-         * Throws an error if cancellation has been requested.
-         */
-        private _throwIfCanceled();
-        private _throwIfNotNativeInitialized();
-        /**
-         * Load an OfflineMap from storage.  Offline profiles are kept in memory so this
-         * is only necessary on start up.
-         * @param offlineMapId
-         */
-        private _loadOfflineMapFromStorage(offlineMapId);
-        /**
-         * There could be user added layers that were stored in the offline map that aren't in the map at startup
-         * We are going to add those layers.
-         * Currently those layers are not removed from the map when the offline map is deactivated. This could be added later.
-         * @param offlineMapId
-         */
-        private _restoreOfflineUserAddedLayers(offlineMap);
-        /**
-         * Get the index of the OfflineMap.  The index of an OfflineMap is never
-         * exposed outside this class.
-         * @param offlineMap The offline map or its ID.
-         */
-        private _getOfflineMapIx(offlineMap);
-        /**
-         * Get the array with information mapping map service URLs to downloaded tpk filename.
-         * @param offlineMap
-         */
-        private _getOfflineMapBasemapMapping(offlineMap);
-        /**
-         * Get the key to retrieve the offline map content from the store.
-         * @param offlineMap The offline map ID or the offline map itself.
-         */
-        private _getOfflineMapKey(offlineMap);
-        /**
-         * Get from the store in promise form.  This will hopefully be moved into Store in 3.0.
-         * @param key
-         */
-        private _appStoreGetPromise(key);
-        /**
-         * Set to the store in promise form.  This will hopefully move into Store in 3.0.
-         * @param key
-         * @param value
-         */
-        private _appStoreSetPromise(key, value);
-        /**
-         * Remove from the store in promise form.  This will hopefully move into Store in 3.0.
-         * @param key
-         */
-        private _appStoreRemovePromise(key);
-        getResource(key: string): string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline {
-    interface OfflineMap extends geocortex.essentials.documents.Document {
-        content?: OfflineMapContent;
-    }
-    interface OfflineMapContent {
-        /**
-         * The geometry to include in the OfflineMap.  This is the JSON representation
-         * of an esri Polygon.
-         */
-        geometry: {
-            /**
-             * Each ring is represented as an array of points. The first point of each ring is
-             * always the same as the last point. And each point in the ring is represented as
-             * a 2-element array. The 0-index is the x-coordinate and the 1-index is the y-coordinate.
-             */
-            rings: number[][][];
-            /**
-             * The spatial reference must be specified using a well-known ID (wkid) or well-known text (wkt).
-             */
-            spatialReference: {
-                wkid?: number;
-                wkt?: string;
-            };
-        };
-        /**
-         * The layers to include in the offline data.
-         */
-        layers: OfflineMapLayer[];
-        /**
-         * The basemaps to include in the offline data.
-         */
-        basemaps: OfflineMapBasemap[];
-        /**
-         * Whether to incluide attachments in the offline data.
-         */
-        includeAttachments: boolean;
-    }
-    interface OfflineMapLayer {
-        /**
-         * The identifier for the layer.
-         * see: geocortex.essentialsHtmlViewer.mapping.infrastructure.gis.LayerInfo
-         */
-        layerInfoUniqueId: string;
-        /**
-         * An optional definition expression to be applied to the query that downloads data.
-         * This is not the same as a where clause on the layer itself, as it is for this offline map only.
-         */
-        definitionExpression?: string;
-        isUserCreated?: boolean;
-        layerJson?: any;
-        serviceInfo?: OfflineServiceInfo;
-    }
-    interface OfflineServiceInfo {
-        url: string;
-        capabilities: string[];
-    }
-    interface OfflineMapBasemap {
-        /**
-         * The identifier for the BaseMap.
-         * see: geocortex.essentials.BaseMap
-         */
-        baseMapId: string;
-        /**
-         * The type of the source of the TPK.  This determines how the TPK is downloaded.
-         * see OfflineMapBasemap.Type.
-         */
-        sourceType: string;
-        /**
-         * The URL to download the TPK or exportTiles.
-         */
-        url: string;
-        /**
-         * The name of the file the basemap should be downloaded to.
-         */
-        filename: string;
-        /**
-         * The size of the basemap in bytes.  This is an estimate for dynamically created TPKs,
-         * and an exact value for static.
-         */
-        size: number;
-        /**
-         * The minimum level to use in the basemap.  Doesn't apply to static type.
-         */
-        minLevel?: number;
-        /**
-         * The maximum level to use in the basemap.  Doesn't apply to static type.
-         */
-        maxLevel?: number;
-        /**
-         * Period in days a TPK is valid before it should be refreshed.
-         */
-        refreshInterval?: number;
-    }
-    module OfflineMap {
-        /**
-         * Perform basic verification on the OfflineMap.  Throws errors if the OfflineMap
-         * is malformed.
-         * @param offlineMap The OfflineMap to verify.
-         */
-        function verify(offlineMap: OfflineMap): void;
-        /**
-         * Compare the two offline maps and return an object containing only the values
-         * that are different in offlineMapB.
-         * @param offlineMapA The offline map to compare from.
-         * @param offlineMapB The offline map to compare to, where differing values will come from.
-         * @return An offline map-like object containing only the differences.
-         */
-        function diff(offlineMapA: OfflineMap, offlineMapB: OfflineMap): OfflineMap;
-    }
-    module OfflineMapBasemap {
-        var Type: {
-            EXPORT_TILES: string;
-            PREGENERATED: string;
-        };
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline {
-    /**
-     * A progress status update message, internal to the offline namespace.
-     * @private
-     */
-    interface Progress {
-        message: string;
-        percentage: number;
-        isWarning?: boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline {
-    interface SyncInfoJson {
-        servers: SyncServerInfo[];
-    }
-    interface SyncServerInfo {
-        /** The URL of the server, not including the layer id - ie. up to /MapServer or /FeatureServer. */
-        featureServiceUrl: string;
-        /** A collection of layers *and* tables that are synced. */
-        layers: SyncLayerInfo[];
-        /** The local server URL that replaces the online feature server when offline. */
-        localServerUrl: string;
-        /** Whether attachments have been downloaded or not. */
-        attachmentsDownloaded: boolean;
-        /** Number of offline feature adds (new records). */
-        numberOfAdds: number;
-        /** Number of offline feature edits. */
-        numberOfEdits: number;
-        /** Number of offline deleted records. */
-        numberOfDeletes: number;
-        /** The size of the database used for storing this data offline. */
-        totalSizeInBytes: number;
-        /** The last sync time. */
-        lastSyncTime: Date;
-    }
-    interface SyncLayerInfo {
-        id: number;
-        canAddAttachments: boolean;
-        canEdit: boolean;
-    }
-    class SyncInfo implements SyncInfoJson {
-        servers: SyncServerInfo[];
-        constructor(syncInfo: SyncInfoJson);
-        isSynced(url: string): boolean;
-        findLayerOrTable(url: string): SyncLayerInfo;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline {
-    import ViewerApplication = geocortex.essentialsHtmlViewer.ViewerApplication;
-    class SyncEngine {
-        static STATUS_IN_PROGRESS: string;
-        static STATUS_SUCCESS: string;
-        static STATUS_ERROR: string;
-        static getSyncInfo(app: ViewerApplication, profileName: string): Promise<SyncInfo>;
-        static sync(app: ViewerApplication, parameters: SyncParameters, cancellationToken: CancellationToken, progress: (progress: SyncProgress) => void): Promise<SyncProgress>;
-        private static _sync(app, options, cancellationToken, progress);
-        private static _cancel(app);
-        static deleteData(app: ViewerApplication, profile: string): Promise<any>;
-        private static _unregisterOfflineDeletedReplicas(app);
-        private static _getFeatureServiceTokenInfo(app);
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline {
-    /**
-     * Parameters to the SyncEngine.sync call.
-     */
-    interface SyncParameters {
-        profile: string;
-        featureServices: FeatureServiceParameters[];
-        geometry: esri.geometry.Geometry;
-        includeAttachments: boolean;
-        mapSpatialReference: esri.SpatialReference;
-    }
-    /**
-     * Feature service parameters in the SyncParameters object.
-     */
-    interface FeatureServiceParameters {
-        url: string;
-        layers: LayerSyncParameter[];
-        capabilities: string[];
-        token?: string;
-    }
-    interface LayerSyncParameter {
-        id: number;
-        where?: string;
-        layerDrawingOptions?: any;
-        dynamicLayerInfo?: any;
-    }
-    module SyncParameters {
-        /**
-         * Builds a SyncParameters object from an OfflineMap.
-         * @param app The app from which the map and appInfo are derived.
-         * @param offlineMap The OfflineMap to build SyncParameters from.
-         */
-        function buildSyncParameters(app: ViewerApplication, offlineMap: OfflineMap): SyncParameters;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline {
-    interface SyncProgress {
-        state: string;
-        text: string;
-        serviceProgress?: number;
-        overallProgress?: number;
-        serviceUrl: string;
-        editsSentToServer?: boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline {
-    /**
-     * @private
-     */
-    interface WorkDescription {
-        saveProfileWork: number;
-        bundleWork: number;
-        featureLayerWork: number;
-        basemapWork: number;
-    }
-    /**
-     * Utility class to calculate work being done for sync.
-     * @private
-     */
-    class WorkCalculator {
-        static calculateFirstDownloadWork(profile: OfflineMap): WorkDescription;
-        static calculateSyncWork(profile: OfflineMap): WorkDescription;
-        static noWork(): WorkDescription;
-        static calculatePercentageComplete(completedWork: WorkDescription, totalWork: WorkDescription): number;
-        private static _calculateTotalWork(work);
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.PortalUtils {
-    /**
-     * Get a arcgis.com or Portal identity if it exists.
-     * @param app The current application instance
-     */
-    function getPortalIdentity(app: geocortex.essentialsHtmlViewer.ViewerApplication): essentials.Identity;
-    /**
-     * Check if the authenticated user has access to Portal.
-     * @param app The current application instance
-     */
-    function hasAccessToPortal(app: geocortex.essentialsHtmlViewer.ViewerApplication): boolean;
-    /**
-     * Check if the authenticated user has create content privilege in Portal.
-     * @param app The current application instance
-     */
-    function hasCreateContentPrivilege(app: geocortex.essentialsHtmlViewer.ViewerApplication): boolean;
-    /**
-     * Check if the authenticated user has publishFeature privilege in Portal.
-     * @param app The current application instance
-     */
-    function hasPublishFeaturePrivilege(app: geocortex.essentialsHtmlViewer.ViewerApplication): boolean;
-    /**
-     * Gets the Portal base URL.
-     * @param app The current application instance
-     */
-    function getPortalBaseUrl(app: geocortex.essentialsHtmlViewer.ViewerApplication): string;
-    /**
-     * Gets the Portal My Content page URL.
-     * @param app The current application instance
-     */
-    function getPortalMyContentUrl(app: geocortex.essentialsHtmlViewer.ViewerApplication): string;
-    /**
-     * Gets the Portal item page URL for the given item id.
-     * @param itemId The item id
-     * @param app The current application instance
-     */
-    function getPortalItemUrl(itemId: string, app: geocortex.essentialsHtmlViewer.ViewerApplication): string;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    interface BaseMapLayer extends webMap.BaseMapLayer, project.ServiceLayer {
-        layers: project.Layer[];
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    interface CoordinateSystem {
-        /** The WKID for the coordinate system. */
-        wkid?: number;
-        /** The WKT for the coordinate system. */
-        wkt?: string;
-        output: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    interface DrawingInfo extends webMap.DrawingInfo {
-        /** Settings used for feature clustering visualization. */
-        clustering?: {
-            radius: number;
-            backgroundColor: webMap.Color;
-            labelColor: webMap.Color;
-            maximumFeatures: number;
-            enabled: boolean;
-        };
-        /** Whether labels for the layer are visible. The default is true. */
-        showLabels?: boolean;
-        /** labelingInfo for customizeable labels **/
-        labelingInfo?: LabelClass[];
-    }
-    interface LabelClass extends webMap.DrawingInfo {
-        labelClass?: {
-            fieldInfos: Object[];
-            labelExpression: string;
-            labelExpressionInfo: Object;
-            labelPlacement: string;
-            maxScale: number;
-            minScale: number;
-            sizeInfo: Object;
-            symbol: {
-                align: string;
-                angle: number;
-                color: {
-                    a: number;
-                    b: number;
-                    g: number;
-                    r: number;
-                };
-                decoration: string;
-                font: {
-                    decoration: string;
-                    family: string;
-                    size: number;
-                    style: string;
-                    variant: string;
-                    weight: string;
-                };
-                haloColor: {
-                    a: number;
-                    b: number;
-                    g: number;
-                    r: number;
-                };
-                haloSize: number;
-                horizontalAlignment: string;
-                kerning: boolean;
-                rotated: boolean;
-                text: string;
-                type: string;
-                verticalAlignment: string;
-                xoffset: number;
-                yoffset: number;
-            };
-            useCodedValues: boolean;
-            where: string;
-        };
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    interface Feature extends webMap.Feature {
-        /** The Essentials layer associated with the feature. Only necessary if {@link featureSet} is not specified. */
-        layer?: project.Layer;
-        /**
-         * The primary key value for the feature. If specified, {@link layer} must also be specified.
-         * In this case, the {@link webMap.Feature.attributes} and {@link webMap.Feature.geometry} should not be specified. Instead,
-         * they will be fetched by querying the layer.
-         */
-        id?: any;
-        /**
-         * The Esri feature layer containing field metadata for formatting attribute data. Only necessary when
-         * the feature is not associated with an Essentials Layer.
-         */
-        featureLayer?: project.ServiceLayer;
-        featureSet: project.FeatureSet;
-        allowUnsafeContent?: boolean;
-        extendedProperties?: {
-            [name: string]: any;
-        };
-        defaultNumberFormat?: string;
-        defaultDateFormat?: string;
-        timeZoneId?: string;
-        displayTimeZoneId?: string;
-        borderColor?: webMap.Color;
-        fillColor?: webMap.Color;
-        borderWidth?: number;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    interface FeatureCollection extends webMap.FeatureCollection {
-        layers: project.Layer[];
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    interface FeatureSet extends webMap.FeatureSet {
-        id?: string;
-        features: project.Feature[];
-        allowUnsafeContent?: boolean;
-        extendedProperties?: {
-            [name: string]: any;
-        };
-        layer?: project.Layer;
-        displayName?: string;
-        iconUri?: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    interface FeatureSetCollection {
-        id: string;
-        displayName: string;
-        featureSets: project.FeatureSet[];
-        sourceName: string;
-        tag: any;
-        extendedProperties?: {
-            [name: string]: any;
-        };
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    interface Layer extends webMap.Layer {
-        serviceLayer: project.ServiceLayer;
-        layerDefinition?: project.LayerDefinition;
-        featureSet?: project.FeatureSet;
-        /** Whether the layer is a dynamic layer. If this is true, then layerDefinition should be specified as well. */
-        isDynamic?: boolean;
-        /** The id of the currently enabled layer style, if any. */
-        layerStyleId?: string;
-        /** Whether or not the layer was created by a user at runtime **/
-        isUserCreated?: boolean;
-        /**
-         * The type of user created layer, if any. One of:
-         *  - LayerAddition - the layer was added by browsing/searching for services and layers in a dialog
-         *  - LayerCatalog - the layer was added from a catalog
-         *  - Upload - the layer was added by uploading a file
-         *
-         * Only applies to layers created at runtime.
-         */
-        userLayerType?: string;
-        /** The geocortex layer definition as returned from essentials.Layer.toJson(). Used for user-added layers. */
-        gcxLayerDefinition?: any;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    interface LayerDefinition extends webMap.LayerDefinition {
-        drawingInfo: project.DrawingInfo;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    /**
-     * Base interface for a module's persistent state.
-     */
-    interface ModuleState {
-        /**
-         * Identifies the version of the serialized project data. The default is 1.
-         * Modules should increment this number whenever there are breaking changes to the
-         * model that need special handling.
-         */
-        serialVersion?: number;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    interface OperationalLayer extends webMap.OperationalLayer, project.ServiceLayer {
-        layers: project.Layer[];
-        featureCollection: project.FeatureCollection;
-        layerDefinition: project.LayerDefinition;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    interface ApplicationState {
-        /** The map's center point. */
-        mapCenter?: infrastructure.webMap.Point;
-        /** The map's scale. */
-        mapScale?: number;
-        /** The project state for each module. */
-        moduleState: {
-            [moduleName: string]: infrastructure.project.ModuleState;
-        };
-        /**
-         * Determines whether special pointers within the project data have been decoded back into shared object references.
-         * See {@link ProjectManager.encodeReferences} and {@link ProjectManager.decodeReferences}.
-         */
-        isDecoded?: boolean;
-    }
-    interface Project extends essentials.documents.Document {
-        content?: ApplicationState;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    const PROJECT_TYPE: string;
-    const SITE_ID_PROPERTY_NAME: string;
-    const VIEWER_ID_PROPERTY_NAME: string;
-    const PROJECT_QUERY_STRING_KEY: string;
-    const VIEWER_QUERY_STRING_KEY: string;
-    class ProjectManager {
-        app: ViewerApplication;
-        convert: ProjectConverter;
-        filter: ProjectFilter;
-        /** The project that is currently loaded (or in the process of loading). */
-        current: Project;
-        /** Whether project state is currently being applied. */
-        isLoading: boolean;
-        /** Reference to the service discovery API */
-        private _serviceDiscovery;
-        constructor(app: ViewerApplication);
-        /**
-         * Creates a new, empty project.
-         */
-        createEmpty(name: string): Project;
-        /**
-         * Creates a new project containing the current state of the application.
-         */
-        create(name: string): Promise<Project>;
-        /**
-         * Updates an existing project with the current state of the application.
-         */
-        update(project: Project): Promise<void>;
-        /**
-         * Removes a project.
-         * @param project Either the project ID, or the actual project to remove.
-         */
-        remove(project: string | Project): Promise<void>;
-        /**
-         * Saves a project by updating the application state then writing to storage.
-         * @param project The project to save.
-         */
-        save(project: Project, updateApplicationState?: boolean): Promise<void>;
-        /**
-         * Loads a project.
-         * @param project Either the project ID, or the actual project to load.
-         */
-        load(project: string | Project): Promise<void>;
-        /**
-         * Writes a project file to storage.
-         */
-        write(project: Project): Promise<Project>;
-        /**
-         * Reads a project from storage.
-         * @param id The project ID.
-         * @param Whether or not to include the project content if retrieving it from the document store.
-         */
-        read(id: string, includeContent?: boolean): Promise<Project>;
-        /**
-         * Gets the given project.
-         * @param project Either the project ID, or the actual project.
-         * @param Whether or not to include the project content if retrieving it from the document store.
-         * @return A promise containing the project.
-         */
-        getProject(project: string | Project, includeContent?: boolean): Promise<Project>;
-        /**
-         * Gets the ID of the given project.
-         * @param project Either the project ID, or the actual project.
-         * @return The project ID.
-         */
-        getProjectID(project: string | Project): string;
-        /**
-         * Gets the URL for the given project, or null if the project does not have an ID.
-         * @param project The project to get the URL for.
-         * @return The project URL or null.
-         */
-        getProjectUrl(project: Project): string;
-        /**
-         * Gets the Essentials site ID that the given project is associated with.
-         */
-        getSiteID(project: Project): string;
-        /**
-         * Gets the Essentials viewer ID that the given project is associated with.
-         */
-        getViewerID(project: Project): string;
-        /**
-         * Validates whether or not the given project is owned by the current user.
-         * @param The project to verify ownership of.
-         * @return A promise containing the project being validated.
-         */
-        validateProjectOwnership(project: Project): Promise<Project>;
-        protected _initializeDiscoveryProvider(): Promise<void>;
-        /**
-         * Validates whether or not the given map service is in the service discovery URL whitelist.
-         */
-        protected _validateAgainstServiceDiscovery(mapService: essentials.MapService): Promise<{
-            mapService: essentials.MapService;
-            trusted: boolean;
-        }>;
-        /**
-         * Provides an opportunity to exclude certain objects from being stored in projects.
-         */
-        protected _excludeUnsafeState(): Promise<void>;
-        /**
-         * Gets the current state of the application.
-         */
-        protected _exportState(): Promise<ApplicationState>;
-        /**
-         * Applies the given state to the viewer.
-         */
-        protected _applyState(state: ApplicationState): Promise<void>;
-        /**
-         * Applies the project's extent to the application's map.
-         */
-        protected _applyMapExtent(project: Project): void;
-        protected _getResource(resource: string): string;
-        /**
-         * Gets all loaded the modules, keyed by name.
-         */
-        protected _getModules(): {
-            [moduleName: string]: any;
-        };
-        _beginLoad(project: Project): Promise<void>;
-        _finishLoad(): void;
-        /**
-         * Filters application state according to the filter defined by each module.
-         * @param state The application state to filter.
-         */
-        _filterApplicationState(state: ApplicationState): Promise<ApplicationState>;
-        /**
-         * Replaces shared references within the object graph with special strings that act as "pointers" to
-         * the shared object. When the object graph is serialized as JSON, this reduces the serialized footprint
-         * and also allows cycles within the object graph, which would normally cause an error.
-         * @param state The application state to encode.
-         */
-        protected encodeReferences(state: ApplicationState): void;
-        /**
-         * Performs the inverse of encodeReferences(), i.e. turns "pointers" back into shared object references.
-         * @param state The application state to decode.
-         */
-        decodeReferences(state: ApplicationState): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
-    interface ServiceLayer extends webMap.ServiceLayer {
-        layers: project.Layer[];
-        /** Whether or not the service was created by a user at runtime **/
-        isUserCreated?: boolean;
-        /**
-         * The type of user created layer, if any. One of:
-         *  - LayerAddition - the layer was added by browsing/searching for services and layers in a dialog
-         *  - LayerCatalog - the layer was added from a catalog
-         *  - Upload - the layer was added by uploading a file
-         *
-         * Only applies to layers created at runtime.
-         */
-        userLayerType?: string;
-        /** The geocortex map service definition as returned from essentials.MapService.toJson(). Used for user-added map services. */
-        gcxMapServiceDefinition?: any;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
-    import Thenable = geocortex.framework.Thenable;
-    module PromiseUtils {
-        /**
-         * Similar to Promise.all(), except that any rejected promises are skipped, rather than causing the entire
-         * promise to be rejected. As a result, the returned array might contain less elements than the original.
-         */
-        function allSkipRejected<R>(values: Thenable<Thenable<R>[]>): Promise<R[]>;
-        function allSkipRejected<R>(values: Thenable<R[]>): Promise<R[]>;
-        function allSkipRejected<R>(values: Thenable<R>[]): Promise<R[]>;
-        function allSkipRejected<R>(values: R[]): Promise<R[]>;
-        /**
-         * Similar to Promise.map(), except that any rejected promises are skipped, rather than causing the entire
-         * promise to be rejected. As a result, the returned array might contain less elements than the original.
-         */
-        function mapSkipRejected<R, U>(values: Thenable<Thenable<R>[]>, mapper: (item: R, index: number, arrayLength: number) => Thenable<U>, option?: {
-            concurrency: number;
-        }): Promise<U[]>;
-        function mapSkipRejected<R, U>(values: Thenable<Thenable<R>[]>, mapper: (item: R, index: number, arrayLength: number) => U, option?: {
-            concurrency: number;
-        }): Promise<U[]>;
-        function mapSkipRejected<R, U>(values: Thenable<R[]>, mapper: (item: R, index: number, arrayLength: number) => Thenable<U>, option?: {
-            concurrency: number;
-        }): Promise<U[]>;
-        function mapSkipRejected<R, U>(values: Thenable<R[]>, mapper: (item: R, index: number, arrayLength: number) => U, option?: {
-            concurrency: number;
-        }): Promise<U[]>;
-        function mapSkipRejected<R, U>(values: Thenable<R>[], mapper: (item: R, index: number, arrayLength: number) => Thenable<U>, option?: {
-            concurrency: number;
-        }): Promise<U[]>;
-        function mapSkipRejected<R, U>(values: Thenable<R>[], mapper: (item: R, index: number, arrayLength: number) => U, option?: {
-            concurrency: number;
-        }): Promise<U[]>;
-        function mapSkipRejected<R, U>(values: R[], mapper: (item: R, index: number, arrayLength: number) => Thenable<U>, option?: {
-            concurrency: number;
-        }): Promise<U[]>;
-        function mapSkipRejected<R, U>(values: R[], mapper: (item: R, index: number, arrayLength: number) => U, option?: {
-            concurrency: number;
-        }): Promise<U[]>;
-        /**
-         * Similar to Promise.props(), except that any rejected promises are skipped, rather than causing the entire
-         * promise to be rejected. As a result, the returned object might contain less properties than the original.
-         */
-        function propsSkipRejected(object: Thenable<Object>): Promise<Object>;
-        function propsSkipRejected(object: Object): Promise<Object>;
-        /**
-         * Logs a warning if the given promise is rejected.
-         * @param promise The promise that might be rejected.
-         * @param app The application
-         * @param warning The warning text to log. May contain a "{0}" placeholder that will be substituted with the actual error.
-         */
-        function warnOnReject<T>(promise: Thenable<T>, app: ViewerApplication, warning: string): Promise<T>;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.reporting {
@@ -15420,10 +9770,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
          * The coordinates of the mouse pointer in screen coordinates.
          */
         screenPoint: esri.geometry.ScreenPoint;
-        /**
-         * The coordinates of the snapping point.
-         */
-        snappingPoint: esri.geometry.Point;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
@@ -15440,10 +9786,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
          * The coordinates of the mouse pointer in screen coordinates.
          */
         screenPoint: esri.geometry.ScreenPoint;
-        /**
-         * The coordinates of the snapping point.
-         */
-        snappingPoint: esri.geometry.Point;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
@@ -15726,8 +10068,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.integration
         heading: number;
         /** The pitch of the viewpoint. */
         pitch: number;
-        /** The time that the viewpoint message originated. */
-        timestamp?: number;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.integration {
@@ -15767,21 +10107,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerSelect
         enableAllLayersHandler: () => void;
         disableAllLayersHandler: () => void;
         onInitializedHandler: (layerSelector: LayerSelector) => void;
-        /**
-         * Called when a new LayerSelectorFolderItem is created.
-         * @param folderItem The item created.
-         */
-        onLayerSelectorFolderItemCreated: (folderItem: LayerSelectorFolderItem) => void;
-        /**
-         * Called when a new LayerSelectorLayerItem is created.
-         * @param layerItem The item created.
-         */
-        onLayerSelectorLayerItemCreated: (layerItem: LayerSelectorLayerItem) => void;
-        /**
-         * Called when a new LayerSelectorServiceLayerItem is created.
-         * @param layerItem The item created.
-         */
-        onLayerSelectorServiceLayerItemCreated: (layerItem: LayerSelectorServiceLayerItem) => void;
         items: ObservableCollection<LayerSelectorItem>;
         initialized: boolean;
         /**
@@ -15803,17 +10128,13 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerSelect
         /** Placeholder folder for user-added layers */
         protected _userAddedLayersFolder: LayerSelectorFolderItem;
         /**
-         * Creates a new instance of the (@link LayerSelector} class.
-         * @param appInfo The {@link gis.AppInfo} that the layer selector belongs to
+         * Creates a new instance of the (@link geocortex.essentials.LayerSelector} class
+         * @param appInfo The {@link geocortex.essentials.mapping.infrastructure.AppInfo} that the layer selector belongs to
          * @param options Optional. An object containing options to configure the layer selector
          */
-        constructor(appInfo: gis.AppInfo, options?: LayerSelectorConfiguration);
+        constructor(appInfo: geocortex.essentialsHtmlViewer.mapping.infrastructure.gis.AppInfo, options?: LayerSelectorConfiguration);
         initialize(): void;
         applyFilter(itemFilter?: (layerSelectorItem: LayerSelectorLayerItem | LayerSelectorServiceLayerItem) => boolean): void;
-        /**
-         * Reapply the last used layer filter.
-         */
-        reapplyFilter(): void;
         setLayerStateChangeHandler(layerStateChangeHandler?: (layerSelectorItem: LayerSelectorLayerItem | LayerSelectorServiceLayerItem) => void): void;
         setEnableAllLayersHandler(enableAllLayersHandler?: () => void): void;
         setDisableAllLayersHandler(disableAllLayersHandler?: () => void): void;
@@ -15826,7 +10147,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerSelect
         protected _loadLayerSelectorItems(): void;
         protected _loadSelectorItemsNotInLayerList(): void;
         protected _createFolderItemFromRestItem(item: RestLayerListItem, isEnabled: boolean, isExpanded: boolean): LayerSelectorFolderItem;
-        protected _creatFolderItemFromServiceLayer(srcItem: LayerSelectorServiceLayerItem, isEnabled: boolean, isExpanded: boolean): LayerSelectorFolderItem;
+        protected _creatFolderFromServiceLayer(srcItem: LayerSelectorServiceLayerItem, isEnabled: boolean, isExpanded: boolean): LayerSelectorFolderItem;
         protected _createLayerItemFromLayer(layer: gis.LayerInfo, isEnabled: boolean, isExpanded: boolean): LayerSelectorLayerItem;
         protected _createServiceLayerItemFromServiceLayer(serviceLayer: gis.ServiceLayerInfo, isEnabled: boolean, isExpanded: boolean): LayerSelectorServiceLayerItem;
         /**
@@ -15844,9 +10165,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerSelect
         enableAllLayersHandler?: () => void;
         disableAllLayersHandler?: () => void;
         onInitializedHandler?: (layerSelector: LayerSelector) => void;
-        onLayerSelectorFolderItemCreated?: (folderItem: LayerSelectorFolderItem) => void;
-        onLayerSelectorLayerItemCreated?: (layerItem: LayerSelectorLayerItem) => void;
-        onLayerSelectorServiceLayerItemCreated?: (layerItem: LayerSelectorServiceLayerItem) => void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerSelector {
@@ -15934,10 +10252,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs
          */
         showBusyIcon: boolean;
         /**
-         * Optional region where status messages are to be shown. If specified, the status messages will be created and activated in this region.
-         */
-        regionName: string;
-        /**
          * Initializes a new instance of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.AddStatusArgs} class.
 
          * @param text The message text to display.
@@ -15974,7 +10288,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs
          * @type Object
          * @ignore
          */
-        content: HTMLElement | framework.ui.ViewBase | string;
+        content: any;
         /**
          * The title to show, if displaying in a map callout. This can either be a string, or a geocortex.framework.ui.ViewBase.
          * The title may also come from the geocortex.framework.ui.ViewBase specified for "content".
@@ -15982,7 +10296,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs
          * @type Object
          * @ignore
          */
-        title: HTMLElement | framework.ui.ViewBase | string;
+        title: any;
         /**
          * Whether to destroy the child content view when this view is destroyed.  Leave this false if the view is going
          * to be reused (for instance as part of a module).  Set this to true if the view was created manually
@@ -15992,12 +10306,12 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs
         /** @private */
         delay: number;
         /**
-         * Initializes a new instance of the {@link ShowMapElementArgs} class.
+         * Initializes a new instance of the {@link geocortex.essentialsHtmlViewer.mapping.infrastructure.ShowMapElementArgs} class.
          * `ShowMapElementArgs` defines the arguments passed to a command relating to a showing an HTML view or element on the map.
          * This class can be used for showing content in a map tip, or for attaching arbitrary HTML content to the map.
          * The content property may be any of the following types:
          * - An HTML DOM Element.
-         * - A framework view, inheriting from {@link framework.ui.ViewBase}.
+         * - A framework view, inheriting from {@link geocortex.framework.ui.ViewBase}.
          * - An HTML content string.
          * @param elementId The ID to use when referring to the newly created element, e.g. when updating or removing it.
          * @param mapPoint The point (in map space) to anchor the element to.
@@ -16021,6 +10335,105 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs
          * Determines if the title property is a {@link geocortex.framework.ui.ViewBase}.
          */
         titleIsView(): boolean;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
+    class AngleFormat {
+        /**
+         * Decimal degrees.
+         */
+        static DD: string;
+        /**
+         * Whole degrees with decimal minutes.
+         */
+        static DDM: string;
+        /**
+         * Degrees, minutes, seconds.
+         */
+        static DMS: string;
+    }
+    class AngleDirectionSystem {
+        /**
+         * Polar coordinates. 0 degrees points East, angles are measured counter-clockwise.
+         */
+        static POLAR: string;
+        /**
+         * North azimuth. 0 degrees points North, angles are measured clockwise.
+         */
+        static NORTH_AZIMUTH: string;
+        /**
+         * South azimuth. 0 degrees points South, angles are measured clockwise.
+         */
+        static SOUTH_AZIMUTH: string;
+    }
+    class CoordinateUtils {
+        /**
+         * Formats an angle for display.
+         * @param angle The angle to format, in decimal degrees.
+         * @param format The format to use. One of the AngleFormat constants.
+         * @param app The Geocortex application.
+         * @param fractionalDigits The number of digits to display after the decimal point, for formats that display
+         *     fractional values.
+         */
+        static formatAngle(angle: number, format: string, app: geocortex.framework.application.Application, fractionalDigits?: number): string;
+        /**
+         * Formats latitude and longitude numbers for display.
+         * @param latitude The degrees of latitude.
+         * @param longitude The degrees of longitude.
+         * @param format The format to use. One of the AngleFormat constants.
+         * @param app The Geocortex application.
+         * @param fractionalDigits The number of digits to display after the decimal point, for formats that display
+         *     fractional values.
+         */
+        static formatLatLon(latitude: number, longitude: number, format: string, app: geocortex.framework.application.Application, fractionalDigits?: number): {
+            latitude: string;
+            longitude: string;
+        };
+        /**
+         * Formats a projected coordinate (X/Y value) for display.
+         * @param coordinate The coordinate to format.
+         * @param app The Geocortex application.
+         * @param fractionalDigits The number of digits to display after the decimal point.
+         */
+        static formatXYCoordinate(coordinate: number, app: geocortex.framework.application.Application, fractionalDigits?: number): string;
+        /**
+         * Formats an angle in quadrant bearing notation, e.g. "N 48.5° E".
+         * @param angle The angle to format, specified in decimal degrees using the North azimuth direction system.
+         * @param format The format to use. One of the AngleFormat constants.
+         * @param app The Geocortex application.
+         * @param fractionalDigits The number of digits to display after the decimal point, for formats that display
+         *     fractional values.
+         */
+        static formatBearing(angle: number, format: string, app: geocortex.framework.application.Application, fractionalDigits?: number): string;
+        /**
+         * Formats an angle as decimal degrees.
+         * @param angle The angle to format, in decimal degrees.
+         * @param app The Geocortex application.
+         * @param fractionalDigits The number of digits to display after the decimal point, for formats that display
+         *     fractional values.
+         * @private
+         */
+        private static _formatAngleAsDd(angle, app, fractionalDigits);
+        /**
+         * Formats an angle as degrees, minutes, and seconds.
+         * @param angle The angle to format, in decimal degrees.
+         * @param app The Geocortex application.
+         * @private
+         */
+        private static _formatAngleAsDms(angle, app, fractionalDigits);
+        /**
+         * Formats an angle as whole degrees and decimal minutes.
+         * @param angle The angle to format, in decimal degrees.
+         * @param app The Geocortex application.
+         * @param fractionalDigits The number of digits to display after the decimal point, for formats that display
+         *     fractional values.
+         */
+        private static _formatAngleAsDdm(angle, app, fractionalDigits);
+        /**
+         * Same as Math.sign(x). Not all browsers support it.
+         */
+        private static _sign(x);
+        private static _getResource(app, resource);
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
@@ -16117,10 +10530,9 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.eventArgs {
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
     class FeatureDescriptionPresenterView extends framework.ui.ViewBase {
-        app: ViewerApplication;
         /** @private A collection of the commands we have seen so far. The position will be used as the ID Key */
         _uris: string[];
-        /** @private An object used as a dictionary to cache known description formats. Compute once, serve many times. */
+        /** @private A object used as a dictionary to cache known description formats. Compute once, serve many times. */
         _descFormats: {
             [descFormat: string]: string;
         };
@@ -16129,71 +10541,28 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * If not specified, the system will default to the long description.
          */
         contentField: string;
-        /** Validator which sanitizes HTML strings. */
-        protected _xssHtmlValidator: validation.XssHtmlValidator;
-        /**
-         * Construct a feature description presenter view.
-         */
-        constructor(app: ViewerApplication, libraryId?: string);
-        /** @inherited */
-        attach(viewModel: Feature): Promise<void>;
+        constructor(app: framework.application.Application, libraryId?: string);
         /**
          * Returns a description for the given feature capable of performing commands in hyperlinks.
          * To be used with features that do not have relationships.
-         * @deprecated 2.6 Use {@link getDescriptionContent} instead.
          * @param feature The feature what we would like to get the description for
+         * @return string
          */
-        descriptionGet(feature: Feature): Promise<string>;
-        getContentFieldFormat(feature: Feature): string;
+        descriptionGet(feature: Feature): string;
         /**
-         * Returns a description for the given feature.
-         * The description is populated with unbound command hyperlinks and image load handlers for handling layout changes.
-         * Consumers must bind this content themselves.
-         * Note that all anchor tags are converted to command hyperlinks that open the URLs only after verification via a {@link ContentPolicy}.
-         * @param feature The feature what we would like to generate the descriptive content for.
-         * @param descriptionFormat Optional parameter. If provided, will override the descriptionFormat for the feature - to be used for eg. when relationship replacement tokens resolve asynchronously.
-         */
-        getDescriptionContent(feature: Feature, descriptionFormat?: string): Promise<string>;
-        /**
-         * Renders a feature description into the provided HTML element, injecting command hyperlinks and image loading handlers.
-         * @deprecated 2.6 Use {@link applyDescriptiveTemplate} instead.
+         * Assigns a description to the provided HTML element for the given feature capable of performing commands in hyperlinks.
+         * Asynchronous method to be used with features that have relationships.
          * @param feature The feature what we would like to get the description for
          * @param viewRoot The HTML element to assign the description to.
+         * @return void
          */
-        descriptionApply(feature: Feature, viewRoot: HTMLElement): Promise<any>;
-        /**
-         * Renders a feature description into the provided HTML element, injecting command hyperlinks and image loading handlers.
-         * @param feature The feature what we would like to get the description for
-         * @param viewRoot The HTML element to assign the description to.
-         */
-        applyDescriptiveTemplate(feature: Feature, viewRoot: HTMLElement): Promise<any>;
-        /**
-         * Extract command hyperlinks and replace them with placeholders.
-         */
-        protected _extractCommandHyperlinks(html: string): CommandHyperlinkPlaceholderState;
-        /**
-         * Inject command hyperlinks back into the subject of a previous extraction.
-         */
-        protected _injectCommandHyperlinks(state: CommandHyperlinkPlaceholderState): string;
-        /**
-         * Sanitize a string of HTML.
-         */
-        protected _sanitizeHtml(html: string): Promise<string>;
+        descriptionApply(feature: Feature, viewRoot: HTMLElement): void;
         /**
          * Creates a cleansed copy of a format with any command hyperlinks replaced with click handlers
-         * @deprecated 2.6 Use {@link insertLinkAndImageBindings} instead.
          * @param Format the format template for this feature
+         * @return String
          */
         cleansedFormatForFormat(descFormat: string): string;
-        /**
-         * Inserts command hyperlinks and image load handlers, the latter for the purpose of handling layout changes.
-         * @param Format the format template for this feature
-         */
-        insertLinkAndImageBindings(descFormat: string): string;
-        /**
-         * Override this method to add custom behavior on image load.
-         */
-        handleImgLoad(evt: HTMLImageElement): void;
         /**
          * Finds the id for the given command hyperlink. If one is not found, creates one and returns that.
          * @param Uri the uri you would like the key for
@@ -16235,9 +10604,9 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * @param context The feature that is related to the description the click occurred in
          * @return Boolean if the event should propogate up
          */
-        handleHyperlinkClick(event: Event, element: HTMLAnchorElement, context: any): boolean;
+        handleHyperlinkClick(event: Event, el: HTMLElement, context: any): boolean;
         /**
-         * An event handler handler designed to stop events from propagating to overzealous parent views.
+         * An event handler handler designed to stop events from propogating to overzelous parent views
          * @param event The event object that was fired with the click
          * @param el The element where the click occurred
          * @param context The feature that is related to the description the click occurred in
@@ -16251,20 +10620,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * @param context The feature context that should be used for token replacements
          */
         runCommand(commandName: string, parameter: any, context: any): void;
-    }
-    /**
-     * Defines the relationship between a command hyperlink and its placeholder.
-     */
-    interface CommandHyperlinkPlaceholder {
-        commandHyperlink: string;
-        placeholder: string;
-    }
-    /**
-     * Keeps state of a command hyperlink extraction so that the hyperlinks can be injected into the place of their placeholders.
-     */
-    interface CommandHyperlinkPlaceholderState {
-        html: string;
-        commandHyperlinkPlaceholders: CommandHyperlinkPlaceholder[];
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.FocusUtils {
@@ -16290,7 +10645,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.GraphicUtil
      * names instead of aliases (as defined in ArcGIS Server).  Those attributes
      * that are defined using attribute names will not be modified.
      * @param graphic The ESRI graphic
-     * @param layer The Geocortex Essentials layer
+     * @param layer The Geocortex Essential layer
      */
     function sanitizeAttributeNames(graphic: esri.Graphic, layer: geocortex.essentials.Layer): void;
     /** @private GVH-3473 Skip attribute names generated by SEP */
@@ -16323,11 +10678,9 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.GraphicUtil
      * @param geometry The geometry defining the area on the specified layer from which to extract markup
      * @param graphicsLayer The esri layer from which to extract markup
      * @param app The current application instance
-     * @param simpleMarkerSymbolBufferDiameter Optional. Represents the diameter of the circle to buffer for a graphic with a simple marker symbol. Defautls to the size of the symbol in pixels.
-     * @param pointBufferDiameter Optional. Represents the diameter of a circle to buffer with the given point geometry as it's center. Defaults to 6.
      * @return An array of esri.Graphic objects contained within the specified geometry on the specified layer.
      */
-    function getMarkupFromGeometry(geometry: esri.geometry.Geometry, graphicsLayer: esri.layers.GraphicsLayer, app: geocortex.essentialsHtmlViewer.ViewerApplication, simpleMarkerSymbolBufferDiameter?: number, pointBufferDiameter?: number): esri.Graphic[];
+    function getMarkupFromGeometry(geometry: esri.geometry.Geometry, graphicsLayer: esri.layers.GraphicsLayer, app: geocortex.essentialsHtmlViewer.ViewerApplication): esri.Graphic[];
     /**
      * Function to rotate any given polygon by a specified angle. Returns a rotated copy of the original polygon.
      * @param degreesClockwise The angle to rotate the polygon in, specified in degrees, in a clockwise direction (as is standard for esri)
@@ -16375,10 +10728,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.GraphicUtil
      * @return The retrieved or created Graphics layer
      */
     function getGraphicsLayer(id: string, create: boolean, app: geocortex.essentialsHtmlViewer.ViewerApplication): esri.layers.GraphicsLayer;
-    /**
-     * Gets the map's graphics layers that are neither associated with the Essentials site nor used internally by GVH.
-     */
-    function getUserGraphicsLayers(app: ViewerApplication): esri.layers.GraphicsLayer[];
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.menus {
     /**
@@ -16460,1197 +10809,8 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.menus {
         context: any;
         /** The ID of the menu represented by this menu widget. */
         menuId: string;
-        /** Whether the menu should be hoisted. */
-        hoistMenu: boolean;
         /** Reference to the DOM element where this menu widget is hosted. */
         domElement: HTMLElement;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.nativeIntegration {
-    interface NativeMessage<T> {
-        type: string;
-        parameters: T;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.SecurityUtils {
-    /**
-     * Get an identity based on the authentication type.
-     * @param authenticationType The authentication type of the identity to find
-     * @param app The current application instance
-     */
-    function getIdentity(authenticationType: string, app: geocortex.essentialsHtmlViewer.ViewerApplication): essentials.Identity;
-    /**
-     * Get a claim based on the claim type.
-     * @param identity The identity in which to search for claims
-     * @param type The claim type to find
-     */
-    function getClaimsByType(identity: essentials.Identity, type: string): essentials.Claim[];
-    /**
-     * Get a claim based on the claim value.
-     * @param identity The identity in which to search for claims
-     * @param value The claim value to find
-     */
-    function getClaimsByValue(identity: essentials.Identity, value: string): essentials.Claim[];
-    /**
-     * Get a claim based on the claim type and value.
-     * @param identity The identity in which to search for claims
-     * @param type The claim type to find
-     * @param value The claim value to find
-     */
-    function getClaimByTypeAndValue(identity: essentials.Identity, type: string, value: string): essentials.Claim;
-    /**
-     * Check if the identity has a given privilege.
-     * @param identity The identity in which to search the claims for a specific privilege
-     * @param value The privilege value to find
-     */
-    function hasPrivilegeClaim(identity: essentials.Identity, value: string): boolean;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.selection {
-    /** Describes how features from one collection should be combined with existing features in another collection. */
-    module CombineMode {
-        /** Replaces the values in one collection with the values from another. */
-        const REPLACE: string;
-        /** Produces the set union, which means unique elements that appear in either of two collections. */
-        const UNION: string;
-        /** Produces the set difference, which means the elements of one collection that do not appear in a second collection. */
-        const SUBTRACT: string;
-        /** Produces the set intersection, which means elements that appear in each of two collections. */
-        const INTERSECT: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.selection {
-    interface CombineResultsResponse {
-        updatedCollection: infrastructure.FeatureSetCollection;
-        combineMode: string;
-        modified: boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.selection {
-    interface SelectionMetadata {
-        id: string;
-        name: string;
-        featureSetCollectionId?: string;
-        count?: number;
-        modified?: boolean;
-        timeCreated?: number;
-        timeModified?: number;
-        timeExpiration?: number;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.selection {
-    /**
-     * Represents a query that is passed in to the {@link SelectionMetadataStore} to search for selection metadata.
-     */
-    interface SelectionMetadataQuery {
-        /**
-         * The latest create date, inclusive, that all search results must match, unless the value is null.
-         */
-        dateCreatedMax?: Date;
-        /**
-         * The earliest create date, inclusive, that all search results must match, unless the value is null.
-         */
-        dateCreatedMin?: Date;
-        /**
-         * The latest expiration date, inclusive, that all search results must match, unless the value is null.
-         */
-        dateExpirationMax?: Date;
-        /**
-         * The earliest expiration date, inclusive, that all search results must match, unless the value is null.
-         */
-        dateExpirationMin?: Date;
-        /**
-         * The latest modified date, inclusive, that all search results must match, unless the value is null.
-         */
-        dateModifiedMax?: Date;
-        /**
-         * The earliest modified date, inclusive, that all search results must match, unless the value is null.
-         */
-        dateModifiedMin?: Date;
-        /**
-         * An array of IDs that all search results must match one of, unless the array is empty.
-         */
-        ids?: string[];
-        /**
-         * An array of feature set collection IDs that all search results must match one of, unless the array is empty.
-         */
-        featureSetCollectionIds?: string[];
-        /**
-         * A string that should be contained in the name of all search results, unless it is null.
-         */
-        name?: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.selection {
-    /**
-     * Helper class that models a storage facility for selection metadata.
-     */
-    class SelectionMetadataStore {
-        /**
-         * The {@link geocortex.essentialsHtmlViewer.ViewerApplication} that this search manager instance belongs to.
-         */
-        app: geocortex.essentialsHtmlViewer.ViewerApplication;
-        /** Internal state holding metadata about saved selections */
-        protected _store: Dictionary<SelectionMetadata>;
-        constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication);
-        findByName(name: string): infrastructure.selection.SelectionMetadata;
-        findByCollectionId(fscId: string): infrastructure.selection.SelectionMetadata;
-        findById(id: string): infrastructure.selection.SelectionMetadata;
-        findAll(): infrastructure.selection.SelectionMetadata[];
-        find(queryParameters?: SelectionMetadataQuery): infrastructure.selection.SelectionMetadata[];
-        add(metadata: infrastructure.selection.SelectionMetadata): string;
-        updateById(id: string, values: infrastructure.selection.SelectionMetadata): void;
-        removeById(id: string): void;
-        clear(): void;
-        protected _update(metadata: infrastructure.selection.SelectionMetadata, values: infrastructure.selection.SelectionMetadata): void;
-        protected _generateId(): string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.results {
-    interface ResultsState extends project.ModuleState {
-        featureSetCollections: project.FeatureSetCollection[];
-        /** The current results in the results view. */
-        results?: project.FeatureSetCollection;
-        /** One of "list" or "table". */
-        viewMode?: string;
-        /** The current page. */
-        page?: number;
-        tableOptions?: {
-            /** Denotes the current tab. */
-            selectedFeatureSet?: project.FeatureSet;
-            /** The column index that the data is sorted by. */
-            sortColumn?: number;
-            /** One of "asc" or "desc". */
-            sortDirection?: string;
-        };
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.TimeSliderUtils {
-    /**
-    * Utility method to convert the given time units to milliseconds.
-    * @param timeUnit The time unit to convert to milliseconds.
-    * @return The number of milliseconds. NaN if an unknown time unit is specified.
-    */
-    function convertTimeUnitToMilliseconds(timeUnit: essentials.TimeUnits): number;
-    /**
-    * Computes the slider time interval in milliseconds. Returns NaN if invalid.
-    * @param timeInterval The configured time interval.
-    * @param timeIntervalUnit The time interval units.
-    */
-    function computeTimeIntervalInMs(timeInterval: number, timeIntervalUnit: essentials.TimeUnits): number;
-}
-/**
- * Time is a tricky business, made more tricky by local implementation of time zones. The two major concepts when dealing with time are that of an
- * "instant" and that of a "clock"; in general, an "instant" is the moment in the history of the Universe when an event precisely occurs (setting aside
- * concerns of relativity and the impossibility of simultinaety), and clocks around the world will say different things to describe this instant. By
- * convention, the "standard" clock is one which is set in Universal Coordinated Time (UTC). All local times (i.e., all other clock times) are offset by
- * some number of minutes from UTC, generally (though not always) in hour or half-hour increments. A "time zone", by definition, is an area of the world
- * in which all clocks agree with one another. Thus the same instant will have the same "clock time" inside a given time zone, but the "clock time" for
- * that same instant will generally differ across different time zones.
- *
- * Computers have tried to make this process as seamless as possible by communicating time via UTC timestamps, and then converting those timestamps to
- * the clock time of their local time zone. So in the viewer, when a user sees a date, that date has been consumed by JavaScript as a timestamp in UTC, and the
- * Date object converts itself to the system time of the client machine when it is presented to the user.
- *
- * TimeZoneUtils solves two problems associated with this behaviour. The first is ArcGIS Server generally communicates dates as UTC timestamps, while
- * administrators do not always store their times in UTC. This can lead to the wrong time showing up when JavaScript automatically converts the timestamp
- * from UTC time to local time, since the timestamp might not actually describe an instant in UTC time. The second problem is that administrators may
- * wish their dates to look the same for all of their users, regardless of the users' time zones; that is, they do not want the dates converted to the
- * users' clock times, but instead to the clock time of a preselected time zone, and they want this time to look the same no matter where the user is
- * located in the world. The various constants and methods in this module are designed with these problems in mind.
- */
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.TimeZoneUtils {
-    const UTC_ZONE_ID: string;
-    /**
-     * Retrieves the time zone from a layer (or the layer's map service, or the site).
-     * @param holder The layer whose time zone we are interrogating.
-     */
-    function getTimeZoneFromLayer(holder: geocortex.essentials.Layer): string;
-    /**
-     * Retrieves the time zone from a map service (or the site).
-     * @param holder The map service whose time zone we are interrogating.
-     */
-    function getTimeZoneFromMapService(holder: geocortex.essentials.MapService): string;
-    /**
-     * Retrieves the display time zone from a map service's site.
-     * @param holder The map service whose display time zone we are interrogating.
-     */
-    function getDisplayTimeZoneFromMapService(holder: geocortex.essentials.MapService): string;
-    /**
-     * This method offsets displayed dates to display to the user in a time zone defined by an administrator. JavaScript's native
-     * Date objects automatically display themselves in the local time of the client machine. For example, if a date reads 3PM in
-     * New York, in general that same date will read 12PM in Los Angeles. This is not appropriate for all applications; sometimes
-     * we would like to make sure a date has the same display value to any user in any location. The current method accomplishes that.
-     * @param date The date to modify for display.
-     * @param databaseTimeZoneId The time zone of the date as stored in the database.
-     * @param displayTimeZoneId The time zone in which the date should be displayed.
-     */
-    function correctDatesForDisplayInDisplayTimeZone(date: Date, databaseTimeZoneId: string, displayTimeZoneId: string): Date;
-    /**
-     * Many users store dates in their local time zones, and they may not advertise this fact to ArcGIS Server.
-     * This may cause a mismatch when ArcGIS Server serializes the date field as a UNIX timestamp,
-     * whose time zone is always UTC (also known as GMT). Thus the browser will offset the dates it displays in local time, assuming
-     * that its Date objects are generated from UNIX timestamps; in this function, dates' presentable values are offset to their true
-     * UTC values, depending on the time zone ID for the layer (or map service, or site) containing this date. If there is no time
-     * zone ID, this function should not be called; if the time zone ID is a UTC equivalent (e.g., Etc/GMT, Etc/UCT, Etc/UCT), then
-     * no offset should be applied.
-     * @param date The date to potentially offset.
-     * @param timeZoneId The IANA ID of the time zone in which the data are recorded in the database
-     */
-    function correctDatesForDisplayInLocalTime(date: Date, timeZoneId: string): Date;
-    /**
-     * Many users store dates in their local time zones, and they may not advertise this fact to ArcGIS Server.
-     * This may cause a mismatch when ArcGIS Server serializes the date field as a UNIX timestamp,
-     * whose time zone is always UTC (also known as GMT). Thus the browser will submit dates to the server in UTC, regardless of
-     * which time zone the data are stored in; in this function, dates' submitted values are offset to their true
-     * UTC values, depending on the time zone ID for the layer (or map service, or site) containing this date. If there is no time
-     * zone ID, this function should not be called; if the time zone ID is a UTC equivalent (e.g., Etc/GMT, Etc/UCT, Etc/UCT), then
-     * no offset should be applied.
-     * @param date The date to offset
-     * @param databaseTimeZoneId The IANA ID of the time zone in which the data are recorded in the database
-     * @param displayTimeZoneId The IANA ID of the time zone in which the data are displayed to the user.
-     */
-    function correctDatesToSubmitInDatabaseTime(date: Date, databaseTimeZoneId: string, displayTimeZoneId?: string): Date;
-    /**
-     * The QueryBuilder takes date objects implicitly in local time (with respect to the browser) and parses them as strings, which
-     * we then submit as a query. This is not always appropriate if, for example, the database is properly-configured in UTC, or if
-     * it happens to be in another time zone. Hence this method corrects a date from the browser's time to the zone corresponding to
-     * the given database and display time zone IDs.
-     * @param date The date to offset
-     * @param databaseTimeZoneId The IANA ID of the time zone in which the data are recorded in the database
-     * @param displayTimeZoneId The IANA ID of the time zone in which the data are displayed.
-     */
-    function correctDatesToQueryInDatabaseTime(date: Date, databaseTimeZoneId: string, displayTimeZoneId?: string): Date;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.tools {
-    interface MapToolConfig extends ToolConfig {
-        /**
-         * The command to execute after completing the tool.
-         */
-        command: string;
-        /**
-         * The mode for drawing on the map.
-         */
-        drawMode: string;
-        /**
-         * Whether the tool is sticky.  Defaults to false.
-         */
-        isSticky?: boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.tools {
-    interface ToolConfig {
-        /**
-         * Optional type name for the tool being constructed.  The default is MapTool.
-         */
-        typeName?: string;
-        /**
-         * The command to execute after completing the tool.  Not all tools have a command.
-         * The command may be associated with a tool type.
-         */
-        command?: string;
-        /**
-         * The name of the tool.
-         */
-        name: string;
-        /**
-         * Optional status text to display while the tool is active.  Can be i18ned.
-         */
-        statusText?: string;
-        /**
-         * Optional, alternate status text to display for keyboard users.  Can be i18ned.
-         */
-        keyboardStatusText?: string;
-        /**
-         * Library to look up i18n string keys from.  Required to display i18n strings.
-         */
-        libraryId?: string;
-        /**
-         * Optional URI of the icon to display with the status.
-         */
-        iconUri?: string;
-        /**
-         * Optional title for the close tool UI element.  Defaults to "Deactivate Tool".
-         */
-        closeTitle?: string;
-        /**
-         * Optional CSS class for the status displayed for this tool.
-         */
-        statusClass?: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.ColorPicker {
-    /**
-     * The ColorPicker widget view.
-     */
-    class ColorPickerView extends framework.ui.ViewBase {
-        /** Configuration for the ColorPicker widget. */
-        configuration: ColorPickerConfiguration;
-        /** View-model of the ColorPicker widget. */
-        viewModel: ColorPickerViewModel;
-        /** Native color input. */
-        protected colorInput: HTMLInputElement;
-        /** Contains color swatch radio buttons. */
-        protected colorSwatchFieldSet: HTMLFieldSetElement;
-        /**
-         * Acquire the currently selected color swatch.
-         */
-        protected getSelectedColorSwatch(): ColorSwatch;
-        activated(): void;
-        /**
-         * Attach this view to its view-model.
-         */
-        attach(viewModel: ColorPickerViewModel): void;
-        /**
-         * This widget attaches a reference to itself onto the parent view.
-         */
-        added(parentView: ColorPickerParentView): void;
-        /**
-         * Reset the ColorPicker widget to its initial state.
-         */
-        reset(): void;
-        /**
-         * Set view-model observables and populate the `symbols` object based on any changes here in the view.
-         */
-        handleChange(): void;
-    }
-    /**
-     * The parent view of this widget contains a reference to this widget.
-     */
-    interface ColorPickerParentView extends framework.ui.ViewBase {
-        /** Parent's reference to the child symbology widget view. */
-        colorPickerWidget?: ColorPickerView;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.ColorPicker {
-    interface ColorPickerConfiguration {
-        /** Whether or not to force color swatches to be used (instead of the native color input). */
-        alwaysUseColorSwatches?: boolean;
-        /** The number of color swatches available to choose from. */
-        numberOfColorSwatches?: number;
-    }
-    /**
-     * View-model for the ColorPicker widget.
-     */
-    class ColorPickerViewModel extends framework.ui.ViewModelBase {
-        /** Configuration for the symbology settings view-model. */
-        configuration: ColorPickerConfiguration;
-        /** Whether or not to use swatches instead of native color input. */
-        useColorSwatches: Observable<boolean>;
-        /** Color swatches available to choose from. */
-        colorSwatches: ObservableCollection<ColorSwatch>;
-        selectedColor: Observable<esri.Color>;
-        defaultColor: Observable<esri.Color>;
-        originalColor: Observable<esri.Color>;
-        swatchSetName: string;
-        constructor(app: any, libraryId: any, swatchName: any);
-        /**
-         * Initialize the widget based on configuration.
-         */
-        initialize(configuration?: ColorPickerConfiguration): void;
-    }
-    /**
-     * A swatch is a color option that the user might choose.
-     */
-    interface ColorSwatch {
-        /** Name to differentiate swatch sets */
-        setName: string;
-        /** RGB color in hex format. */
-        hex: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.PagingControls {
-    class PagingControlsView extends geocortex.framework.ui.ViewBase {
-        app: geocortex.essentialsHtmlViewer.ViewerApplication;
-        viewModel: geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.PagingControls.PagingControlsViewModel;
-        libraryId: string;
-        attach(viewModel?: geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.PagingControls.PagingControlsViewModel): void;
-        handlePageFirst(evt: Event, el: HTMLElement, ctx: any): void;
-        handlePagePrev(evt: Event, el: HTMLElement, ctx: any): void;
-        handlePageNext(evt: Event, el: HTMLElement, ctx: any): void;
-        handlePageLast(evt: Event, el: HTMLElement, ctx: any): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.PagingControls {
-    class PagingControlsViewModel extends geocortex.framework.ui.ViewModelBase {
-        collectionViewModel: any;
-        presentableResults: framework.ui.PresentableCollection<Object>;
-        numberOfItems: number;
-        libraryId: string;
-        constructor(app: essentialsHtmlViewer.ViewerApplication, collectionViewModel: any);
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Slider {
-    /**
-     * The configuration for a {link @Slider} object.
-     */
-    interface SliderConfig {
-        /**
-         * Optional. If true, the slider will have two handles representing a range. Default is false.
-         */
-        range?: boolean;
-        /**
-         * Optional. If true, animation will be enabled for the slider. Defaults to false.
-         */
-        animate: boolean;
-        /**
-         * Disables snapping to data items or labels altogether. Will only work when the slider is in numeric mode i.e. all data item values are numeric. Defaults to true.
-         */
-        disableSnappingForNumericValues?: boolean;
-        /**
-         * If true, and if the slider is in range mode, locks the first slider handle at the slider min val. Defaults to false.
-         */
-        lockMinSliderHandleAtMinVal?: boolean;
-        /**
-         * A language string to be applied to the aria-label of the slider min handle if in range mode. This is for WCAG compliance. If not defined, the currently selected time will be set as the label.
-         */
-        sliderMinHandleAriaLabel?: string;
-        /**
-        * A language string to be applied to the aria-label of the slider max handle if in range mode. This is for WCAG compliance. If not defined, the currently selected time will be set as the label.
-        */
-        sliderMaxHandleAriaLabel?: string;
-        /**
-        * A language string to be applied to the aria-label of the slider handle if it is not in range mode. This is for WCAG compliance. If not defined, the currently selected time will be set as the label.
-        */
-        sliderSingleHandleAriaLabel?: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Slider {
-    /**
-     * The interface for a {link @Slider} object item.
-     */
-    interface SliderItem<T> {
-        /**
-         * The value this slider item represents.
-         */
-        value: T | number;
-        /**
-         * The label for this slider item.
-         */
-        label: string;
-        /**
-         * Indicates whether this data item is currently active i.e. selectable on the slider or not. This will be updated based on
-         * the itemActivePredicate each time this item is selected in the slider. Defaults to true.
-         */
-        active: boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Slider {
-    /**
-     * A  generic slider with the ability to be displayed horizontally or vertically in any target region.
-     */
-    class SliderViewBase<T> extends framework.ui.ViewBase {
-        /**
-         * The view model backing this view.
-         */
-        viewModel: SliderViewModelBase<T>;
-        /**
-         * A reference to the actual slider element in the DOM.
-         */
-        sliderElement: HTMLElement;
-        /**
-         * The HTML element reference for the slider min label.
-         */
-        sliderMinLabelElement: HTMLElement;
-        /**
-         * The HTML element reference for the slider max label.
-         */
-        sliderMaxLabelElement: HTMLElement;
-        /**
-         * The current raw values for the slider handles.
-         */
-        protected _sliderCurrentRawValues: number[];
-        protected _sliderCurrentHandlePos: number[];
-        protected _widgetHostElement: framework.ui.ViewBase;
-        protected _minHandleBindingToken: string;
-        protected _maxHandleBindingToken: string;
-        protected _isEnabledBindingToken: string;
-        protected _isAdded: boolean;
-        protected _minHnadleLocked: boolean;
-        protected _maxHandleLocked: boolean;
-        protected _minHandleTag: string;
-        protected _maxHandleTag: string;
-        protected _currPosForComputedDirection: number[];
-        /** @inherited */
-        attach(viewModel: SliderViewModelBase<T>): void;
-        added(widgetViewHost?: framework.ui.ViewBase): void;
-        onDestroy(): void;
-        refreshLabelPositions(): void;
-        protected _setupViewModelBindings(): void;
-        protected _generateJQuerySlider(): void;
-        protected _applyInitViewModelState(options: any): void;
-        protected _handleSliderRawValueChange(event: Event, ui: {
-            handle: HTMLElement;
-            value: number;
-            values?: number[];
-        }): boolean;
-        protected _dateModeRawValueSlide(event: JQueryEventObject, ui: {
-            handle: HTMLElement;
-            value: number;
-            values?: number[];
-        }): boolean;
-        protected _handleSliderRawValueSlide(event: JQueryEventObject, ui: {
-            handle: HTMLElement;
-            value: number;
-            values?: number[];
-        }, directionRight?: boolean): boolean;
-        protected _getSliderHandleIndex(ui: {
-            handle: HTMLElement;
-            value: number;
-            values?: number[];
-        }): number;
-        /**
-         * Sets the raw slider value if different from the current value and updates the label positions. This function is intended to be invoked automatically
-         * via data binding whenever the selected item is updated in the view model.
-         * @param handleIndex The index of the handle to update.
-         * @param rawValue The raw value to set.
-         */
-        protected _setSliderValueAndUpdateLabels(handleIndex: number, rawValue: number): void;
-        /**
-         * Updates the slider raw value for the given handle, if different from what the current value is.
-         * @param handleIndex The index of the handle to update.
-         * @param rawValue The raw value to set.
-         */
-        protected _setSliderRawValue(handleIndex: number, rawValue: number): void;
-        protected _updateSliderHandleAttributes(handleIndex: number): void;
-        private _updateLabelPosition(handleIndex);
-        /**
-         * Updates the label for the given handle. This will be invoked automatically when the currently selected item is updated in the view model.
-         * @param handleIndex The index of the handle whose label we wish to update.
-         */
-        private _updateLabelPositionImpl(handleIndex);
-        protected _processInitRoutine(): void;
-        protected _initializeIfEnabled(val: boolean): void;
-        protected _cleanUp(clearIsEnabledBinding?: boolean): void;
-        protected _wireInKeyboardSupport(): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Slider {
-    interface SliderTick {
-        position: string;
-    }
-    /**
-     * The view model for the Slider widget.
-     */
-    class SliderViewModelBase<T> extends framework.ui.ViewModelBase {
-        /**
-         * The items that participate in this slider. This collection is automatically set when an underlying collection is attached to.
-         * It need not be set if the slider is configured to display an integer range. This includes a date range measured as milliseconds from epoch.
-         */
-        items: ObservableCollection<SliderItem<T>>;
-        /**
-        * The label for the slider's minimum value.
-        */
-        sliderMinLabel: Observable<string>;
-        /**
-        * The label for the slider's maximum value.
-        */
-        sliderMaxLabel: Observable<string>;
-        /**
-         * The currently selected label for the first slider handle.
-         */
-        sliderMinHandleLabel: Observable<string>;
-        /**
-        * The currently selected label for the second slider handle (if configured as a range slider).
-        */
-        sliderMaxHandleLabel: Observable<string>;
-        /**
-         * The item currently associated with the min slider handle.
-         */
-        sliderMinHandleCurrentItem: Observable<SliderItem<T>>;
-        /**
-         * The item currently associated with the max slider handle if range mode is active.
-         */
-        sliderMaxHandleCurrentItem: Observable<SliderItem<T>>;
-        /**
-         * Indicates whether this slider should be a range slider (two handles) or a solo slider. Defaults to false.
-         */
-        range: boolean;
-        /**
-         * Indicates whether snapping to data items or labels is disabled altogether when the slider is in numeric mode - i.e. all data item values are numeric. Defauls to true.
-         */
-        disableSnappingForNumericValues: boolean;
-        /**
-         * If true, will lock the min slider handle at the min value, provided the slider is in range mode. Ineffective in non-range mode.
-         */
-        lockMinSliderHandleAtMinVal: boolean;
-        /**
-         * Indicates whether the generated slider is animated or not. Defaults to false.
-         */
-        animate: boolean;
-        /**
-         * Indicates whether this slider contains numeric data only or other types of objects.
-         */
-        isNumeric: boolean;
-        /**
-         * Indicates whether the slider is dealing with dates.
-         */
-        isDateMode: boolean;
-        /**
-         * Defines the steps the time slider will take if the data is numeric. This may be overridden if the next available item is not active.
-         */
-        numericSliderStep: number;
-        /**
-         * The min value for the slider if in numeric mode.
-         */
-        numericSliderMinVal: number;
-        /**
-         * The max value for the slider if in numeric mode.
-         */
-        numericSliderMaxVal: number;
-        /**
-        * The label generator function which, if defined, will be applied to compute the labels corresponding to each item in the underlying collection.
-        */
-        labelGenerator: (item: T | number, index: number) => string;
-        /**
-        * The predicate which, will be applied to compute whether an item is active (i.e. selectable) each time it is selected in the slider. Returns true by default.
-        */
-        itemActivePredicate: (item: T | number, index: number) => boolean;
-        /**
-         * The start labels for the slider handles when the slider is in non-numeric mode.
-         */
-        sliderHandleStartLabels: string[];
-        /**
-         * The numeric start values for the slider handles when the slider is in numeric mode.
-         */
-        numericSliderHandleStartValues: number[];
-        /**
-         * The ticks for the slider.
-         */
-        sliderTicks: ObservableCollection<SliderTick>;
-        /**
-         * Enable or disable the slider.
-         */
-        isEnabled: Observable<boolean>;
-        /**
-         * The time interval for this slider if it has been invoked in date mode.
-         */
-        dateModeTimeInterval: number;
-        /**
-         * The time interval unit for this slider if it has been invoked in date mode.
-         */
-        dateModeTimeIntervalUnit: essentials.TimeUnits;
-        /**
-         * A language string to be applied to the aria-label of the slider min handle if in range mode. This is for WCAG compliance. If not defined, the currently selected time will be set as the label.
-         */
-        sliderMinHandleAriaLabel: string;
-        /**
-        * A language string to be applied to the aria-label of the slider max handle if in range mode. This is for WCAG compliance. If not defined, the currently selected time will be set as the label.
-        */
-        sliderMaxHandleAriaLabel: string;
-        /**
-        * A language string to be applied to the aria-label of the slider handle if it is not in range mode. This is for WCAG compliance. If not defined, the currently selected time will be set as the label.
-        */
-        sliderSingleHandleAriaLabel: string;
-        /**
-         * The underlying collection of observable items, if any, that this slider is bound to.
-         * WARNING: Do not modify this collection in any manner whatsoever since it is a reference to an external observableCollection we're binding to.
-         */
-        protected _underlyingCollection: ObservableCollection<T>;
-        /**
-         * The token representing the binding to the underlying collection.
-         */
-        protected _underlyingCollectionBindingToken: string;
-        /**
-         * The configuration options for this slider.
-         */
-        protected _config: SliderConfig;
-        /**
-         * The default label generator for a number series.
-         */
-        protected _defaultNumericLabelGenerator: (item: number, index: number) => string;
-        /**
-         * The default predicate which determines whether a slider item is active (ie selectable) in the slider or not. This function will be executed each time an item is selected.
-         */
-        protected _defaultItemActivePredicate: (item: T | number, index: number) => boolean;
-        /**
-         * In numeric mode, the items collection is kept empty. We create SliderItems based on the actual numeric value the user selects. This is an internal cache of previously created SliderItem
-         * objects so we can reuse older objects once they've been created.
-         */
-        protected _numericSliderItemCache: {};
-        protected _maxSliderTicks: number;
-        protected _defaultSliderDivisions: number;
-        protected _snappableDatePoints: number[];
-        /**@inherited */
-        constructor(app: framework.application.Application, libraryId: string, sliderConfig?: SliderConfig);
-        /**
-         * Initializes the slider configuration. Can either be initialized using the "initialize" method or by passing in the config object directly during instantiation.
-         * Explicitly initializing will overwrite any previous configuration settings that may have been applied during slider instantiation.
-         */
-        initialize(config: SliderConfig): void;
-        /**
-         * Triggered on every mouse-move during slide. The value provided represents the value that the handle will have as a result of the current movement.
-         * @param value The SliderItem corresponding to the current slider value.
-         * @param handleIndex The index of the handle which has currently been slid. This will possible values of 0 or 1.
-         */
-        sliderHandleSlide(value: SliderItem<T>, handleIndex: number): void;
-        setNextSliderItem(handleIndex: number): boolean;
-        setPreviousSliderItem(handleIndex: number): boolean;
-        /**
-         * Set the selected slider item for the specified handle in the view model. This function is intended to be invoked by the view code behind and does not update the slider UI widget itself.
-         * @param handleIndex The index of the slider handle for which to set the selected slider item.
-         * @param item The SliderItem to update the selected handle value to.
-         */
-        setSelectedSliderItem(handleIndex: number, item: SliderItem<T>): void;
-        /**
-         * Attaches to an ObservableCollection and automatically generates relevant SliderItems.
-         * @param collection The collection to attach to.
-         * @param labelGenerator Optional function which will be called for each item in the collection. Generates a string label for the item. For example (item: Feature, index: number) => `${index + 1}: ${item.label.get()}`;
-         * @param itemActivePredicate Optional. A function which determines whether the current item is active (ie is selectable in the slider) or not. This function will be executed each time an item is selected. If not specified, returns true.
-         * @param startItemLabels Optional. An array of strings containing one or two values, depicting the start labels of the handle (or handles if in range mode) of the slider.  These values will be applied on a best effort basis:
-         *                          1) At slider creation time:: If the startup label values are valid, they will be applied.
-         *                          2) When an attached collection is updated:: If the startup label value has not yet been applied and the slider handle has not been moved manually by the user at the point in time
-         *                          when the collection is updated, the startup label values will be applied provided they are valid. Once the user moves either one of the slider handles manually, the startup label values will
-         *                          no longer be respected. If no startup label values are provided, the handles will start at the first and second data points respectively by default.
-         */
-        attachToCollection(collection: ObservableCollection<T>, labelGenerator?: (item: T, index: number) => string, itemActivePredicate?: (item: T, index: number) => boolean, startItemLabels?: string[]): void;
-        /**
-         * Puts the slider into numeric mode. This will clear out all underlying attached collections if attached previously and convert the slider into a vanilla
-         * jQuery numeric slider, albeit with configurable labels. The items collection will remain empty and so will the underlying collection.
-         * @param minVal The minimum value of the numveric range this slider will represent.
-         * @param maxVal The maximum value fo the numeric range this slider will represent.
-         * @param steps Optional parameter defining the number of steps between two data items. If not provided, a default value of 1 will be used for values over 1. 0.1 will be used for values below 1.
-         * @param labelGenerator Optional parameter defining the rules by which labels should be generated. If not provided, the label will be a string representation of the number itself.
-         * @param itemActivePredicate Optional. A function which determines whether the current item is active (ie is selectable in the slider) or not. This function will be executed each time an item is selected. If not specified, returns true.
-         * @param startItemValues Optional. An array of numbers containing one or two values, depicting the start values of the handle (or handles if in range mode) of the slider. These values will be applied on a best effort basis:
-         *                          1) At slider creation time:: If the startup values are valid, they will be applied.
-         *                          2) When an attached collection is updated:: If the startup value has not yet been applied and the slider handle has not been moved manually by the user at the point in time
-         *                          when the collection is updated, the startup values will be applied provided they are valid. Once the user moves either one of the slider handles manually, the startup values will
-         *                          no longer be respected. If no startup values are provided, the handles will start at the first and second data points respectively by default.
-         */
-        setupNumericSlider(minVal: number, maxVal: number, steps?: number, labelGenerator?: (item: number, index: number) => string, itemActivePredicate?: (item: number, index: number) => boolean, startItemValues?: number[]): void;
-        setupDateSlider(minDateMsSinceEpoch: number, maxDateMsSinceEpoch: number, timeInterval: number, timeIntervalUnit: essentials.TimeUnits, labelGenerator?: (item: number, index: number) => string, itemActivePredicate?: (item: number, index: number) => boolean, startItemValues?: number[]): void;
-        /**
-         * Retrieve the updated slider item corresponding to the raw slider value. Returns the slider item if found, null otherwise.
-         * @param sliderValue The raw numeric value returned by the slider. This will represent the index of the item in the items collection if the slider is non numeric and the actual numeric value if it's numeric.
-         */
-        getSliderItemByRawSliderValue(rawSliderValue: number, autoSnapNumericValsToMinMax?: boolean): SliderItem<T>;
-        /**
-         * Retrieve the updated slider item corresponding to the given slider label. Returns the slider item if found, null otherwise. If more than one item exists with the same label, we'll return the first match.
-         * @param label
-         */
-        getSliderItemByItemLabel(label: string): SliderItem<T>;
-        /**
-         * Retrieve the updated slider item corresponding to the given item value. Returns the slider item if found, null otherwise.
-         * @param value
-         */
-        getSliderItemByItemValue(value: T | number): SliderItem<T>;
-        /**
-        * Get the next slider item.
-        * @param sliderItem The current slider item with respect to which we want to find the next item.
-        */
-        getNextSliderItem(sliderItem: SliderItem<T>): SliderItem<T>;
-        /**
-         * Get the next active slider item.
-         * @param sliderItem The current slider item with respect to which we want to find the next active item.
-         */
-        getNextActiveSliderItem(sliderItem: SliderItem<T>): SliderItem<T>;
-        /**
-         * Get the next inactive slider item.
-         * @param sliderItem The current slider item with respect to which we want to find the next inactive item.
-         */
-        getNextInactiveSliderItem(sliderItem: SliderItem<T>): SliderItem<T>;
-        /**
-       * Get the previous slider item.
-       * @param sliderItem The current slider item with respect to which we want to find the previous item.
-       */
-        getPreviousSliderItem(sliderItem: SliderItem<T>): SliderItem<T>;
-        /**
-         * Get the previous active slider item.
-         * @param sliderItem The current slider item with respect to which we want to find the previous active item.
-         */
-        getPreviousActiveSliderItem(sliderItem: SliderItem<T>): SliderItem<T>;
-        /**
-         * Get the previous inactive slider item.
-         * @param sliderItem The current slider item with respect to which we want to find the previous inactive item.
-         */
-        getPreviousInactiveSliderItem(sliderItem: SliderItem<T>): SliderItem<T>;
-        /**
-         * Get the nearest date item snapped to a computed date interval. This will work only in date mode.
-         * @param sliderItem The slider item for which the nearest date item needs to be computed.
-         * @param searchDirection A string - "next" or "prev" - defining which direction to search in.
-         * @param doNotReturnOriginal A boolean which if true will prevent the function from returning the original item if it's already snapped to interval.
-         * @return The closest date item if found. Null otherwise.
-         */
-        getClosestDateItemSnappedToInterval(sliderItem: SliderItem<number>, searchDirection?: string, doNotReturnOriginal?: boolean): SliderItem<number>;
-        /**
-         * Get the raw slider value for a give slider item. Returns the raw slider value or null if the item does not exist.
-         * @param sliderItem
-         */
-        getRawSliderValueForItem(sliderItem: SliderItem<T>): number;
-        cleanUp(): void;
-        protected _setNextOrPreviousSliderItem(handleIndex: number, qualifier: string): boolean;
-        protected _initializeUIObservables(): void;
-        protected _setupSliderTicks(): void;
-        protected _setupSliderMinMaxLabels(): void;
-        /**
-         * Internal implementation to get the next or previous active slider item. Returns the item if it exists, null otherwise.
-         * @param sliderItem The slider item for which we want to retrieve the next or previous active slider item.
-         * @param position May have two distinct values - "next" for the next active slider item or "prev" for the previous active slider item. Defaults to "next"
-         * @param status May have three distinct values - "active" for active slider item, "inactive" for inactive slider item or "any" for a slider item with any status. Defaults to "any".
-         */
-        protected _getAdjacentSliderItem(sliderItem: SliderItem<T>, position?: string, status?: string): SliderItem<T>;
-        protected _getAdjacentNumericItemRawValue(rawValue: number, position?: string, autoSnapNumericValsToMinMax?: boolean): number;
-        protected _resetTimeIntervalBasedOnSliderStep(): void;
-        protected _getClosestDateItemRawValueSnappedToInterval(rawValue: number, searchDirection?: string, doNotReturnOriginal?: boolean): number;
-        protected _generateDateModeSnappablePoints(): void;
-        /**
-         * Apply configuration settings or defaults if no settings are available.
-         */
-        protected _applyConfig(config: SliderConfig): void;
-        /**
-         * Update the items collection as the underlying collection changes.
-         */
-        protected _handleUnderlyingCollectionChanges(args: geocortex.framework.events.CollectionChangedArgs): void;
-        /**
-         * Create a SliderItem for the given underlying item.
-         */
-        protected _createSliderItem(item: T | number, index: number): SliderItem<T>;
-        /**
-         * Get the label for the current item
-         */
-        protected _getItemLabel(item: T | number, index: number): string;
-        protected _updateSliderItem(item: SliderItem<T>, index: number): SliderItem<T>;
-        /**
-         * Retrieve a numeric slider item by value and update the numeric item cache so subsequent retrievals return the same object.
-         */
-        protected _getUpdatedNumericItemAndUpdateCache(value: number, index: number): SliderItem<T>;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Table {
-    enum SortState {
-        UNSORTED = 0,
-        ASCENDING = 1,
-        DESCENDING = 2,
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.WizardPanel {
-    /**
-     * Interface definition for user input validation.
-     */
-    interface ValidationHandler {
-        /**
-         * Performs validation on a dialog, and populates the validation problems observable of the view-model.
-         * @return `true` if the form validates, `false` if it fails.
-         */
-        validate(options?: any): boolean;
-    }
-    /**
-     * A validation problem is a reason for why a validator fails.
-     */
-    interface ValidationProblem {
-        /** Human-readable (internationalized) string serving as the name/label of the validation problem. */
-        title: string;
-        /** Human-readable (internationalized) string serving as the explanatory description of the validation problem. */
-        message: string;
-    }
-    /** A validator is a function that returns an array of validation problems. */
-    type Validator = () => ValidationProblem[];
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.WizardPanel {
-    /**
-     * A wizard fragment is a piece of user interface (i.e. a view) that can be placed within a wizard container.
-     */
-    class WizardFragmentView extends framework.ui.ViewBase implements ValidationHandler {
-        /** Reference to the viewer application. */
-        app: ViewerApplication;
-        /** The View Model backing this view. */
-        viewModel: WizardFragmentViewModel;
-        /** Collection of problems that occurred during the form validation process. */
-        validationProblems: ValidationProblem[];
-        /** The container view that is the parent of this wizard fragment. */
-        protected parentContainer: WizardPanelView;
-        /** Token for the event subscription to the modal region's X button. */
-        protected _viewContainerActivatedEventToken: string;
-        /**
-        * Initializes a new instance of the {@link WizardFragmentView} class.
-        * @param app The {@link geocortex.framework.application.Application} that this view belongs to.
-        * @param libraryId
-        */
-        constructor(app: ViewerApplication, libraryId?: string);
-        /**
-         * Associates this view with its view model and its parental ViewContainerView.
-         */
-        attach(viewModel: any): void;
-        /**
-         * Determines whether this view is hosted within the supplied view container.
-         */
-        protected _isViewHostedInContainer(container: framework.ui.ViewBase): boolean;
-        /**
-         * Completes the wizard.
-         */
-        finishWizard(): void;
-        /**
-         * Cancels the wizard and discards any data that has been entered so far.
-         */
-        cancelWizard(): void;
-        /**
-         * Cleans up the ViewContainerActivatedEvent subscription.
-         */
-        destroy(): void;
-        /**
-         * Validator function that is dedicated to this dialog.
-         * Override this method to provide your own validation rules.
-         * @return Array of validation problems.
-         */
-        protected _validator(): ValidationProblem[];
-        /**
-         * Performs validation on a dialog, and populates the validation problems observable of the view-model.
-         * @param options Optional parameters to use while validating this dialog.
-         * @return `true` if the form validates, `false` if it fails.
-         */
-        validate(options?: any): boolean;
-        /**
-         * Derived classes might override this method to reset a dialog to its default state. Allows dialogs to be reused.
-         */
-        reset(): void;
-        /**
-         * Derived classes might override to this method to fetch data that is to be presented by this wizard fragment.
-         */
-        loadState(): void;
-        /**
-         * Derived classes might override to this method to save the data captured within this wizard fragment.
-         */
-        saveState(...args: any[]): void;
-        /**
-         * Advances the wizard to the next step. Usually involves activating a new dialog and closing the current one.
-         * Must be overridden in derived classes.
-         */
-        goNext(...args: any[]): void;
-        /**
-         * Takes the wizard one step back.
-         * Must be overridden in derived classes.
-         */
-        goBack(...args: any[]): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.WizardPanel {
-    /**
-     * A wizard fragment represents a single page (or step) in the wizard.
-     */
-    interface WizardFragmentViewModel {
-        /** Override this method to reset a wizard fragment to its default state. */
-        reset(): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.SmartPanel {
-    /**
-     * Interface that contains all relevant information when a panel is being resized.
-     */
-    interface ResizeInformation {
-        initialPanelWidth?: number;
-        initialPanelHeight?: number;
-        minWidth?: number;
-        maxWidth?: number;
-        minHeight?: number;
-        maxHeight?: number;
-        initialX?: number;
-        initialY?: number;
-        currentX?: number;
-        currentY?: number;
-    }
-    /**
-     * A Smart Panel is an extension of {@link framework.ui.ViewContainer.ViewContainerView} that adds the ability to "hoist" menu widgets
-     * from views within the panel's managed region.
-     * When a menu is "hoisted" from a view, a new menu view is created for the same menu, and a button appears in the panel's header that
-     * will activate the menu view.
-     * While a menu is hoisted, it is hidden in the originating view.
-     * Any menu created via {@link menus.MenuRegistry.createMenuWidget} can be hoisted.
-     */
-    class SmartPanelView extends geocortex.framework.ui.ViewContainer.ViewContainerView {
-        static HoistedClassName: string;
-        /** @inherited */
-        app: essentialsHtmlViewer.ViewerApplication;
-        /** @inherited */
-        viewModel: SmartPanelViewModel;
-        /** The ID of the menu most recently hoisted. */
-        hoistedMenuId: string;
-        /** The view of the currently hoisted menu. */
-        hoistedMenuOwnerView: menus.MenuView;
-        /** The menu button element. */
-        menuButtonElement: HTMLElement;
-        /** The container area */
-        containerElement: HTMLElement;
-        /** The header area */
-        headerElement: HTMLElement;
-        /** The optional status message region */
-        statusRegionElement: HTMLElement;
-        /** The scroll area */
-        scrollRegionElement: HTMLElement;
-        /** The footer area */
-        footerElement: HTMLElement;
-        /** The parent region that is actually resized when the panel is resized */
-        resizableRegion: HTMLElement;
-        /** An element used to show the changing dimensions panel during resizing */
-        resizePreviewElement: HTMLElement;
-        /** Whether the panel is able to be resized vertically */
-        resizeY: boolean;
-        /** Whether the panel is able to be resized horizontally */
-        resizeX: boolean;
-        /** Set to `true` if the currently active view in the managed region is itself an instance of {@link SmartPanelView}. */
-        protected _activeViewIsASmartPanel: boolean;
-        /** The parent panel of this one, if this view is hosted in a region controlled by another instance of {@link SmartPanelView}. */
-        protected _parentPanel: SmartPanelView;
-        /** Menu views created by this component, tracked to ensure we don't "leak" any instances of {@link MenuView}. */
-        protected _menuViews: {
-            [viewId: string]: menus.MenuView;
-        };
-        /** Subscription token for the binding event for the menu item invoked event */
-        protected _menuItemInvokedSubscriptionToken: string;
-        /** @inherited */
-        attach(viewModelArg?: any): void;
-        protected _initializeEvents(): void;
-        /** When status messages are shown (or dismissed), the position of the scroll region element should be recalculated */
-        protected _handleRegionActivatedOrDeactivated(region: framework.ui.RegionAdapterBase): void;
-        protected _togglePanelMaximized(viewId: String, operation: String): void;
-        protected _canExecuteMaximizeRestoreOperations(): boolean;
-        /** @inherited */
-        protected _handleViewActivatedInContainerEvent(view: framework.ui.ViewBase): void;
-        /** @inherited */
-        activated(): void;
-        /** @inherited */
-        deactivated(): void;
-        /** @inherited */
-        destroy(): void;
-        /**
-         * Opens the hoisted menu as its own view in a particular region.
-         * @param regionName The name of the region to activate the menu view in.
-         */
-        openHoistedMenuInRegion(regionName: string): void;
-        /** @inherited */
-        resolveWidget(widgetId: string, context: any, binding: framework.ui.BindingExpression): any;
-        /**
-         * Creates a new instance of {@link menus.MenuView} with the default menu template.
-         * @param viewModel The view model for the new menu view.
-         */
-        createMenuView(viewModel: menus.MenuViewModel): menus.MenuView;
-        /**
-         * Handles a click or a tap on the hoisted menu button and opens the menu either as a popup, or as a new view in a region
-         * whose name provided in configuration for the view model.
-         */
-        handleTapMenuButton(): void;
-        /**
-         * "Hoists" the first menu found in a given view, hosting a copy of the menu either as a popup/dropdown menu in the header,
-         * or as a new view that will be activated in a region specified in view model configuration.
-         * @param view The view to try hoisting a menu from.
-         */
-        hoistMenuForView(view: framework.ui.ViewBase): void;
-        /**
-         * Sets the parent panel of this one. This allows for nested panels to perform hoisting.
-         * @param parentPanel The panel considered the parent of this one.
-         */
-        setParentPanel(parentPanel: SmartPanelView): void;
-        /**
-         * Handles the maximize or minimize click events
-         * @param evt The triggering event.
-         * @param el The targeted element.
-         * @ctx ctx The current context.
-         */
-        handleMaximizeToggleClick(evt: Event, el: HTMLElement, ctx: any): void;
-        /**
-         * Maximizes the panel.
-         */
-        maximizePanel(): void;
-        /**
-         * Minimizes the panel.
-         */
-        minimizePanel(): void;
-        private _unsubscribeMenuItemInvokedSubscription();
-        handleHeaderMouseDown(evt: MouseEvent, el: HTMLElement, ctx: any): boolean;
-        handleHeaderTouchStart(evt: any, el: HTMLElement, ctx: any): boolean;
-        /** @inherited */
-        resize(): void;
-        resizeSmartPanel(initialX: number, initialY: number): void;
-        protected _handleResizeEnd(evt: JQueryEventObject, resizeInformation: ResizeInformation): void;
-        protected _resizeAccordingToSizeConstraints(resizeInformation: ResizeInformation, elementToResize: HTMLElement): void;
-        protected _destroyHoistedMenuOwnerViewIfExists(): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.WizardPanel {
-    /**
-     * A Wizard Panel is an extension of {@link infrastructure.ui.components.SmartPanel.SmartPanelViewModel} that adds the ability to
-     * create simple step-by-step wizards within the panel's managed region.
-     *
-     * The container header displays a "Back" button along with a "Close" button. The "Back" button takes the wizard back one step.
-     * The "Close" button quits the wizard and discards any data that has been entered so far. The "Back" button is disabled on the first step.
-     *
-     * It is up to the originating views to define what "Next" means. Typically you would activate the dialog for the next step.
-     */
-    class WizardPanelView extends infrastructure.ui.components.SmartPanel.SmartPanelView {
-        /** Reference to the viewer application. */
-        app: essentialsHtmlViewer.ViewerApplication;
-        /** The View Model backing this view. */
-        viewModel: WizardPanelViewModel;
-        /**
-         * Completes the wizard.
-         */
-        finish(): void;
-        /**
-         * Cancels the wizard and discards any data that has been entered so far.
-         */
-        cancel(): void;
-        handleClickBack(evt: Event, el: HTMLElement, ctx: any): void;
-        handleClickClose(evt: Event, el: HTMLElement, ctx: any): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.SmartPanel {
-    /**
-     * Default view model for a {@link SmartPanelView}.
-     */
-    class SmartPanelViewModel extends geocortex.framework.ui.ViewContainer.ViewContainerViewModel {
-        /** An empty menu view model to use when no hoisted menu is available. */
-        static emptyMenuViewModel: menus.MenuViewModel;
-        /**
-         * The view model for the currently hoisted menu.
-         * When there is no hoisted menu present, this should be set to {@link emptyMenuViewModel}.
-         */
-        hoistedMenuViewModel: Observable<menus.MenuViewModel>;
-        /** Whether or not a menu is available for presentation as a hoisted menu. */
-        hasHoistedMenu: Observable<boolean>;
-        /** Whether or not the currently hoisted menu (if present) has any executable menu items. */
-        hasExecutableMenuItems: Observable<boolean>;
-        /**
-         * An option region name specifying a region to activate menu views in.
-         * If specified in configuration, new menu views will be created and activated in this region rather than being dropdowns.
-         */
-        menuRegion: string;
-        /** Whether or not the inline menu is open. */
-        inlineMenuIsOpen: Observable<boolean>;
-        /** Whether or not this panel is currently maximized */
-        panelMaximized: Observable<boolean>;
-        /** Whether to display the maximize button on this smart panel. Defaults to false */
-        showingMaximizeButton: Observable<boolean>;
-        /** Whether the views that are linked to this are able to be resized on the x axis */
-        resizeX: boolean;
-        /** Whether the views that are linked to this are able to be resized on the y axis */
-        resizeY: boolean;
-        /**
-         * Optional region where status messages related to this smart panel are to be shown.
-         * If specified in configuration, the status messages will be created and activated in this region.
-         */
-        statusRegion: string;
-        /** The region type for status messages. Defaults to `geocortex.framework.ui.DivRegionAdapter` */
-        statusRegionType: string;
-        /** @inherited */
-        constructor(app: essentialsHtmlViewer.ViewerApplication, libraryId: string);
-        /** @inherited */
-        initialize(config: any): void;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.WizardPanel {
-    /**
-     * Default view model for a {@link WizardPanelView}.
-     */
-    class WizardPanelViewModel extends infrastructure.ui.components.SmartPanel.SmartPanelViewModel {
-        constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, libraryId?: string);
-        /**
-         * Provides custom logic for showing "Back" and "Close" buttons.
-         */
-        showOrHideCloseButtons(): void;
-        /**
-         * Removes all views from the container region.
-         */
-        closeAllViews(abort?: boolean): void;
-        protected _isWizardFragment(x: any): boolean;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.undo {
@@ -18075,30 +11235,16 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.snapping {
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.taskUtils {
     /**
-    * Gets the url that an esri.tasks.QueryTask can be run against for this layer. Suggested to use `getQueryTask` instead.
+    * Get the url that an esri.tasks.QueryTask can be run against for this layer.
     * @param layer The Geocortex/Esri Layer that is to be queried.
     * @param mapService Required when passing an Esri Layer.
-    * @returns The url for the query endpoint.
-    * @deprecated 2.6 Use `getQueryTask` or `getIntersectTask` instead.
     */
-    function getQueryTaskUrl(layer: essentials.Layer | esri.layers.Layer, mapService?: essentials.MapService): string;
-    /**
-    * Gets an esri.tasks.QueryTask that can be run against for this layer.
-    * @param layer The Geocortex/Esri Layer that is to be queried.
-    * @param mapService Required if using an esri.layers.Layer as the layer parameter.
-    * @returns The constructed esri.tasks.QueryTask for the resource.
-    */
-    function getQueryTask(layer: essentials.Layer | esri.layers.Layer, mapService?: essentials.MapService): esri.tasks.QueryTask;
+    function getQueryTaskUrl(layer: esri.layers.Layer, mapService: geocortex.essentials.MapService): string;
+    function getQueryTaskUrl(layer: geocortex.essentials.Layer): string;
     /**
      * Get the service URL, or return null if we don't support identify operations for that service.
      */
     function getIdentifyTaskUrl(mapService: geocortex.essentials.MapService): string;
-    /**
-     * Gets an esri.tasks.IdentifyTask for a {@link geocortex.essentials.MapService}.
-     * @param mapService The {@link geocortex.essentials.MapService}.
-     * @returns The constructed esri.tasks.IdentifyTask for the resource.
-     */
-    function getIdentifyTask(mapService: geocortex.essentials.MapService): esri.tasks.IdentifyTask;
     /**
      * Takes a (presumably properly formatted) url string and associated MapService returns with an added token if needed.
      * @param url String for the URL that is going to be used in the Task.
@@ -18120,14 +11266,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.taskUtils {
      * @param service A MapService that is to be tested for its ability to be queried.
      */
     function canQueryMapService(mapService: geocortex.essentials.MapService): boolean;
-    /**
-     * Creates a where clause that will search every provided fields with the search text provided.
-     * @param layer The layer to create the where clause for
-     * @param fields The fields that will be part of the where clause
-     * @param searchText The search text to use in those fields
-     * @param trace The trace object for logging purposes (optional)
-     */
-    function getSearchTextWhereClause(layer: geocortex.essentials.Layer, fields: infrastructure.gis.FieldInfo[], searchText: string, trace?: framework.utils.Trace): string;
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.toolbarGroup {
     interface ToggleStateConfig {
@@ -18231,7 +11369,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.tools {
         clientX: number;
         clientY: number;
     }
-    class MapTool extends ToolBase implements MapToolConfig {
+    class MapTool extends ToolBase {
         /**
          * The Esri drawing surface.
          */
@@ -18294,7 +11432,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.tools {
          * @param app The {@link geocortex.essentialsHtmlViewer.ViewerApplication} that this tool belongs to.
          * @param mixin An object to provide additional configuration of this tool.
          */
-        constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, mixin: MapToolConfig);
+        constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, mixin: any);
         private _createDrawObject();
         private _activateToolbar();
         /**
@@ -18376,9 +11514,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.featureDeta
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.gis {
     class ServiceLayerInfo {
         layers: LayerInfo[];
-        tables: LayerInfo[];
         id: string;
-        displayName: string;
         serviceLayer: esri.layers.Layer;
         gcxMapService: geocortex.essentials.MapService;
         serviceLayerFunction: string;
@@ -18386,7 +11522,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.gis {
         isUserCreated: boolean;
         includeInLayerList: boolean;
         isExpanded: boolean;
-        capabilities: string[];
         _esriLayerStateBackup: any[];
         private _delayedRefreshToken;
         constructor();
@@ -18415,10 +11550,8 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.gis {
         refresh(refreshTimeoutMs?: number, disableClientCaching?: boolean): void;
         /**
          * Returns whether or not this service supports layer visibility.
-        */
+         */
         supportsLayerVisibility(): boolean;
-        private _loadedDeferred;
-        loaded(): dojo.Deferred;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
@@ -18445,11 +11578,11 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
          */
         _visibilityBindingToken: string;
         /**
-         * Binding token for {@link LayerListItem.displayItem} (if any), used by the {@link LayerListItemCollection} class.
+         * Binding token for {@link displayItem} (if any), used by the {@link LayerListItemCollection} class.
          */
         _displayItemBindingToken: string;
         /**
-         * Initializes a new instance of the {@link LayerListNode} class.
+         * Initializes a new instance of the {@link geocortex.essentials.LayerListNode} class.
          * @param id The unique string identifier for this node
          * @param parentNode This node's parent node if any
          */
@@ -18555,12 +11688,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
          * The url for the layer list rest endpoint. If null or undefined, the configurable layer list will default to standard simple layer list behaviour
          */
         url: string;
-        /**
-         * If set to true, then changing items' visibilities will not update the map until this setting is turned off,
-         * at which point all the new visibility settings will be applied. This setting is useful when changing the
-         * visibilities of mulitple items at once, since it avoid unnecessary map updates.
-         */
-        suspendMapUpdates: boolean;
         /** Internal members */
         _libraryId: string;
         _addedFolderReferences: LayerListFolderItem[];
@@ -18570,13 +11697,12 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
         /** Private members */
         private _initializing;
         private _groupByOperationalAndBase;
-        /** User added layers destination folder. */
+        /** Placeholder folder for user added layers */
         private _userAddedLayersFolder;
-        private _userAddedLayersDestinationId;
+        private _userAddedFolderInitialized;
         private _layerListRestEndpoint;
-        private _suspendMapUpdates;
         /**
-         * Creates a new instance of the (@link LayerList} class
+         * Creates a new instance of the (@link geocortex.essentials.LayerList} class
          * @param map The {@link geocortex.essentials.models.MapInfo} that the layer list belongs to
          * @param url Optional. The URL for the essentials layer list rest endpoint if the layer list rest endpoint is not available
          * @param layerListRestEndpoint Optional. The layer list rest endpoint if available. If this is available, the url will not be used
@@ -18584,7 +11710,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
          */
         constructor(appInfo: geocortex.essentialsHtmlViewer.mapping.infrastructure.gis.AppInfo, url?: string, layerListRestEndpoint?: RestLayerList, options?: LayerListConfigurationParams);
         /**
-         * Initializes this instance of the {@link LayerList} class.
+         * Initializes this instance of the {@link geocortex.essentials.LayerList} class.
          * This is an asynchronous method, you may subscribe to the {@link onLayerListInitialized}
          * and {@link onLayerListInitializationFailed} events for completion information.
          */
@@ -18592,7 +11718,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
         /**
          * Adds a user-added layer to the Layer List. Returns true if the layer was added, false otherwise.
          */
-        addUserAddedServiceLayer(serviceLayer: geocortex.essentials.MapService | esri.layers.Layer | gis.ServiceLayerInfo, index?: number): boolean;
+        addUserAddedServiceLayer(serviceLayer: geocortex.essentials.MapService | esri.layers.Layer | gis.ServiceLayerInfo): boolean;
         /**
          * Removes the specified service layer from the layer list. Since the layer list is configurable, the sub layers of a particular service layer may be spread out across
          * the list so we need to check all items to ensure that the service layer is completely removed from the list. Returns true if the layer was found and removed, false otherwise.
@@ -18600,7 +11726,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
         removeServiceLayer(servicelayer: geocortex.essentials.MapService): boolean;
         removeServiceLayer(serviceLayer: esri.layers.Layer): boolean;
         removeServiceLayer(servicelayer: gis.ServiceLayerInfo): boolean;
-        private _isItemSafeToBeRemoved(listItem, sl);
         /**
          * Updates the layer list with the adds and removes for the given service. It will not add duplicate items.
          * @param mapService The {@link essentials.MapService} or {@link: infrastructure.gis.ServiceLayerInfo} that contains the updates.
@@ -18615,33 +11740,20 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
          */
         updateServiceLayerLegendSwatch(mapService: geocortex.essentials.MapService): boolean;
         /**
-         * Obtains the index value within the user-added layers folder for a given service layer. Returns the value of the index.
-         * If the index value does not exist, returns null.
-         * @param serviceLayer That service layer whose index number within the user-added layers folder needs to be determined.
-         */
-        getUserAddedLayersFolderIndex(serviceLayer: any): number;
-        /**
          * This is an internal function, though not private to this class. The configurable layer list initializes all layers and filters layer visibilities based on configuration settings
          * and preset rules. In order to avoid flickers on the map and excessive visibility requests, all visibilities are applied at once after processing is complete. This function
          * should be invoked in order to finally apply these visibilities after all processing is completed.
          * @private
          */
         _applyDeferredItemVisibilities(LLItemArray: LayerListItem[]): void;
-        private _enableDeferredItemVisibilities(items);
         /** @private */
         private _layerListInitializationErrorHandler(error);
         /** @private */
         private _layerListInitializationHandler(result);
         /** @private */
         private _configureLayerListFromMapInfo(mapInfo, successCallback, errorCallback);
-        /**
-         * Apply configuration from the layer list's REST endpoint.
-         * @param rest The serialized layer list configuration from the rest endpoint.
-         * @param successCallback Called when the configuration is successfully applied to this layer list.
-         * @param errorCallback Called when an error occurs while attempting to apply the configuration to this layer list.
-         * @private
-         */
-        private _configureLayerListFromRestResponse(rest, successCallback, errorCallback);
+        /** @private */
+        private _configureLayerListFromRestResponse(result, successCallback, errorCallback);
         /**
          * Creates one or more layer list items from the service layer information for the item(s). Multiple items are possible only when the parent mapService is configured
          * to not be included in the layer list whereas it's children are included. This is an edge case we need to support for backwards compatibility.
@@ -18664,7 +11776,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
         /**
          * @private Performs any processing that may be needed for items
          */
-        private _processItem(item, jsonRestItem);
+        private _processItem(item, jsonRestItem?);
         /**
          * @private Edge case: If a tiled map service has nested sublayers, then intermediary layers will be converted into folders. These folders should have "canNotAssignVisibility"
          * set to true because all their children will be layers for which we cannot assign visibility and which in effect, cannot be controlled by the parent.
@@ -18682,24 +11794,15 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
         private isEffectivelyDisplayed(item);
         private _getFoldersContainingSingleMapService();
         private _filterEligibleSingleMsFolders(sourceFolders);
-        private _filterTopLevelFolders(sourceFolders);
         private _selectDeepestLevelSingleMapServiceFolders(sourceFolders);
         private _allFoldersDescendantsOf(targetFolder, foldersToCheck);
         private _allFoldersAncestorsOf(targetFolder, foldersToCheck);
-        private _allFoldersAncestorsOrDescendantsOf(targetFolder, foldersToCheck);
         private _noChildItemsWithMapService(ms, foldersToCheck);
         private _onlyFolderItems(items);
         /** See comments on GVH-4329 */
         private _processUnhandledMapServices();
-        /**
-         * Add layer list items to the indexed position in the user added layers folder.
-         * If no index parameter is included, add the item to the top of the folder.
-         * If the user added layers folder is not designated, items will just be added to the top of the layer list.
-         * @private
-         * @param items Array of layer list items.
-         * @returns Boolean for whether or not all items were added successfully (passing validation).
-         */
-        private _addItemsToUserAddedFolder(items, index?);
+        private _addItemsToUserAddedFolder(items, name?);
+        private _createUserAddedLayerFolder(name?);
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
@@ -18759,7 +11862,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
         KMLFOLDER = 4,
     }
     /**
-     * An item that appears in the {@link LayerList}
+     * An item that appears in the {@link geocortex.essentials.LayerList}
      */
     class LayerListItem extends LayerListNode {
         /**
@@ -18811,21 +11914,17 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
          */
         onDemandItemCollection: ObservableCollection<LayerListItem>;
         /**
-        * Description of layer folder expand/collapse button with name of layer.
+        * Description of layer folder expand/collapse button w/ name of layer.
         */
         layerFolderToggleTooltip: Observable<string>;
         /**
-        * Description of toggle button with name of layer.
+        * Description of toggle button w/ name of layer.
         */
         layerToggleTooltip: Observable<string>;
         /**
-        * Description of layer actions element with name of layer.
+        * Description of layer actions element w/ name of layer.
         */
         layerActionsTooltip: Observable<string>;
-        /**
-        * Description of map service actions element with name of service.
-        */
-        mapServiceActionsTooltip: Observable<string>;
         /**
          * A Collection of legends associated with this Layer List item
          */
@@ -18899,14 +11998,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
          */
         enableLayerActions: boolean;
         /**
-         * A boolean which indicates whether this item should be setup to handle map service actions. False by default.
-         */
-        enableMapServiceActions: boolean;
-        /**
-         * A boolean which indicates whether this item represents a layer or service that was created by the user at runtime. False by default.
-         */
-        isUserCreated: boolean;
-        /**
          * A boolean indicating that this item is the originator of the current user click. It will remain false at all other times.
          */
         currentUserClickOriginator: boolean;
@@ -18919,11 +12010,8 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
         * startup workflows, parameters etc. This will be applied and then the variable deleted, when the applyDeferredInitialVisibility function is called.
         */
         _deferredVisibilitySetting: boolean;
-        private _opacityChangeHandle;
-        private _themeChangingHandle;
-        private _themeChangedHandle;
         /**
-         * Creates a new instance of the {@link LayerListItem} class
+         * Creates a new instance of the {@link geocortex.essentials.LayerListItem} class
          */
         constructor(id: string, type: LayerListItemType, layerList: infrastructure.layerList.LayerList);
         /**
@@ -18934,10 +12022,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
          * Removes the binding to the active theme
          */
         unbindFromActiveTheme(): void;
-        /**
-         * Remove any bindings and perform any necessary logic for item removal
-         */
-        cleanUp(): void;
         notifyActiveThemeChanged(childrenInActiveTheme: boolean): void;
         /**
          * Set the visibility of this item in the layer list. This is a special function which should be called in preference to setting isVisible directly, since
@@ -18963,33 +12047,17 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
         */
         populateMapServicesInParentFolders(): void;
         /**
-         * Returns true if a given layer list item is either not a folder but in the active theme, or if it is a folder, has at least one non-folder item in it's sub tree
-         * which is in the active theme and can be displayed in the layer list OR is hidden but participates in the layer list.
-         * @param item Optional parameter. If specified, will perform computation on the given item, otherwise will defau8lt to this layer list item.
-         */
-        displayInLayerList(item?: LayerListItem): boolean;
-        /**
          * Applies the previously deferred visibility (if any) to this item after the complete layer list model is set up and ready
          */
         _applyDeferredInitialVisibility(): void;
         _setupOpacityBindings(): void;
-        /** @protected */
-        protected _handleLayerThemeChangingEvent(args: {
-            currTheme: geocortex.essentials.LayerTheme;
-            prevTheme: geocortex.essentials.LayerTheme;
-        }): void;
-        /** @protected */
-        protected _handleLayerThemeChangedEvent(args: {
-            currTheme: geocortex.essentials.LayerTheme;
-            prevTheme: geocortex.essentials.LayerTheme;
-        }): void;
-        protected _updateDisplayItem(): void;
+        /** @private */
+        private _notFolderOrContainsAtLeastOneChildLayer(item);
+        /** @private */
+        private _handleLayerThemeChangingEvent(args);
+        private _updateDisplayItem();
         private _onActiveThemeChanged(value);
         private _processLegendVisibility();
-        /**
-         * Set up the descriptive tooltips to include the name of the layer and to state whether the layer is in visible range.
-         * This is done for WCAG purposes.
-         */
         protected _setTooltips(): void;
     }
 }
@@ -19007,7 +12075,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
          */
         private _kmlFolder;
         /**
-         * Initializes a new instance of the {@link LayerListKmlFolderItem} class.
+         * Initializes a new instance of the {@link geocortex.essentials.LayerListKmlFolderItem} class.
          * @param id The unique ID for the item.
          * @param layerList The layer list
          * @param kmlLayer The {@link esri.layers.KMLLayer} object that contains the folder.
@@ -19027,20 +12095,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * Sorts an array based on a particular property or function value.
          */
         static sortBy<T>(items: Array<T>, selector: (item: T) => any): Array<T>;
-        /**
-         * Calculates the sum of all items based on a callback selector value.
-         */
-        static sum<T>(items: T[], callback: (item: T) => number): number;
-        /**
-         * Calculates the maximum of all items based on a callback selector value.
-         */
-        static max<T>(items: T[], callback: (item: T) => any): any;
-        /**
-         * Similar to Array.map, except that any time that an item in the input causes the callback function to throw an error,
-         * an error handler will be invoked rather than aborting. These items will be skipped in the output, so unlike Array.map(),
-         * it's possible that the output array may contain a different number of items from the input.
-         */
-        static mapWithErrorCallback<T, U>(array: T[], callback: (T) => U, errCallback: (item: T, error: Error, result: U[]) => void, thisArg?: any): U[];
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
@@ -19055,8 +12109,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
         containsKey(key: string): boolean;
         get(key: string): TValue;
         set(key: string, value: TValue): void;
-        remove(key: string): boolean;
-        clear(): void;
         values(): TValue[];
         keys(): string[];
     }
@@ -19064,9 +12116,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.results {
     class ResultsViewModel extends geocortex.framework.ui.ViewModelBase {
         private _emptyFeatureSetCollection;
-        private _count;
-        /** Stores binding event subscription tokens so we can unsubscribe later */
-        private _watchHandles;
         app: geocortex.essentialsHtmlViewer.ViewerApplication;
         headerText: Observable<string>;
         searchSuggestion: Observable<string>;
@@ -19075,9 +12124,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.results {
         currentFeature: Observable<Feature>;
         hasFeatureSets: Observable<boolean>;
         isBusy: Observable<boolean>;
-        presentableResults: geocortex.framework.ui.PresentableCollection<infrastructure.Feature>;
-        /** Whether the feature set collection has been modified */
-        isModified: Observable<boolean>;
         defaultIsPaged: boolean;
         defaultPageSize: number;
         constructor(app: geocortex.framework.application.Application, libraryId?: string);
@@ -19090,20 +12136,16 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.results {
         private _openFSC(args);
         private _closeFSC(args);
         private _removeFSC(args);
-        private _changeFSC(args);
         _getEmptyFeatureSetCollection(): geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureSetCollection;
-        registerCommands(): void;
+        registerCommand(): void;
         getResultsFeatureActions(): void;
         _pulseFeatureSetsInCollection(): void;
-        protected _watchDisplayNameChanges(): dojo.RemovableHandle;
-        protected _unwatchDisplayNameChanges(): void;
-        protected _watchIsModifiedChanges(): dojo.RemovableHandle;
-        protected _unwatchIsModifiedChanges(): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.results {
     class FlatResultsViewModel extends ResultsViewModel {
         results: geocortex.framework.ui.ObservableCollectionAggregator<infrastructure.Feature>;
+        presentableResults: geocortex.framework.ui.PresentableCollection<infrastructure.Feature>;
         resultsPage: ObservableCollection<infrastructure.Feature>;
         pageControlsEnabled: Observable<boolean>;
         resultsList: Observable<string>;
@@ -19131,16 +12173,11 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.results {
         * @param context The feature that was updated
         */
         handleFeatureChanged(context: infrastructure.Feature): void;
-        protected _destroyViewForToken(token: string): void;
         showResultsList(fsc: infrastructure.FeatureSetCollection): void;
         showResultsList(fscId: string): void;
-        protected _switchToTabularResultsViewImpl(): void;
-        protected _canExecuteSwitchToTabularResultsView(): boolean;
         getFeatureView(token: string): geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureDescriptionPresenterView;
         setFeatureView(token: string, view: geocortex.essentialsHtmlViewer.mapping.infrastructure.FeatureDescriptionPresenterView): void;
         unbindFeatureSet(): void;
-        exportState(resultsState: ResultsState): void;
-        applyState(args: ApplyResultsViewStateArgs): void;
         _pulseFeatureSetsInCollection(): void;
         protected _clearResetUnderlyingCollection(unbindFeatureSet: boolean): void;
     }
@@ -19251,34 +12288,21 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.results {
         scrollViewTop(position?: number): void;
         resolveWidget(widgetId: string, context: any, binding: geocortex.framework.ui.BindingExpression): geocortex.framework.ui.ViewBase;
         protected _handleShowResultsTable(): void;
-        protected _switchToTabularResultsViewImpl(): void;
-        protected _canExecuteSwitchToTabularResultsView(): boolean;
         /** Fire event only if the view container is active in the data frame */
         protected _dataFrameOpenedEventHandler(): void;
         /** Fire event only if the view container is active in the data frame */
         protected _dataFrameClosedEventHandler(): void;
         /** Invokes the stored delegates to unsubscribe from events. */
         protected _unsubscribeFromEvents(): void;
-        protected _exportState(resultsState: ResultsState): void;
-        protected _applyState(args: ApplyResultsViewStateArgs): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.results {
-    interface ApplyResultsViewStateArgs {
-        state: ResultsState;
-        promises: Promise<void>[];
-    }
     class ResultsModule extends geocortex.framework.application.ModuleBase {
         app: geocortex.essentialsHtmlViewer.ViewerApplication;
         resultMappings: any;
-        schema: any;
         _lastCommand: any;
         _supportedFormats: string[];
-        _showInvisibleAttributes: boolean;
         initialize(config: any): void;
-        getStateFilter(): any;
-        exportState(): Promise<ResultsState>;
-        applyState(state: ResultsState): Promise<void>;
         wireUpResultMapping(): void;
         fsmCollectionOpenedHandler(args: infrastructure.eventArgs.FeatureSetManagerEventArgs): void;
         fsmCollectionSetCommand(sourceName: string, command: string): void;
@@ -19298,7 +12322,8 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.results {
         private getTypeFromEsriFeatures(features, attributeIndex);
         private getTypeFromGcxFeatures(features, attributeIndex);
         private getEsriTypeFromValue(value);
-        private getFeatureSets(fsc);
+        private getFeatureSets(fsc, setLargeNumbersToStringType?);
+        protected _featureSetFeatureAttributeHasInt32Overflow(gcxFeatureSet: FeatureSet, fieldName: string): boolean;
         private fscToJson(fsc);
     }
 }
@@ -19330,12 +12355,8 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.results {
         handleClickFeature(evt: Event, el: HTMLElement, ctx: any): void;
         handleColumnHeadClick(evt: Event, el: HTMLElement, ctx: any): void;
         protected _handleShowResultsList(): void;
-        protected _switchToListResultsViewImpl(): void;
-        protected _canExecuteSwitchToListResultsView(): boolean;
         protected _updateScrollTabDisabledStatus(): void;
         protected _unbindFromPrevFeatureSet(): void;
-        protected _exportState(resultsState: ResultsState): void;
-        protected _applyState(args: ApplyResultsViewStateArgs): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.results {
@@ -19347,7 +12368,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.results {
         currScrollPosWithinTab: {
             [featureSetId: string]: number;
         };
-        presentableResults: framework.ui.PresentableCollection<Feature>;
+        presentableResults: geocortex.framework.ui.PresentableCollection<infrastructure.Feature>;
         resultsPage: ObservableCollection<infrastructure.Feature>;
         pageControlsEnabled: Observable<boolean>;
         tabControlsEnabled: Observable<boolean>;
@@ -19370,37 +12391,39 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.results {
         handleFeatureSetsChanged(changedArgs: geocortex.framework.events.CollectionChangedArgs): void;
         showResultsTable(fsc: infrastructure.FeatureSetCollection): void;
         showResultsTable(fscId: string): void;
-        protected _switchToListResultsViewImpl(): void;
-        protected _canExecuteSwitchToListResultsView(): boolean;
         setCurrentSelectedFeatureSet(featureSet: infrastructure.FeatureSet): void;
         unbindFeatureSets(): void;
         buildColumnHeaders(featureSet: infrastructure.FeatureSet): void;
         setCurrentPageWithinTab(featureSetId: string): void;
         updateCurrentPageAndScrollPosWithinTab(page: number, pos: number): void;
-        exportState(resultsState: ResultsState): void;
-        applyState(args: ApplyResultsViewStateArgs): void;
         protected _handlePageResultsChange(changeArgs?: geocortex.framework.events.CollectionChangedArgs): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.search {
     class SearchHintItem {
+        private BEGIN_EMPHASIS;
+        private END_EMPHASIS;
+        private _emphasis;
+        private _beginRegex;
+        private _endRegex;
         /**
-         * Unsafe HTML that must be sanitized before being injected into the DOM.
+         * Gets or sets the text with markup.
          * @type {String}
          */
         text: Observable<string>;
         /**
-         * Sanitized plain-text version of the unsafe HTML.
+         * Gets the text sans markup.
          * @type {String}
          */
         plainText: Observable<string>;
         /**
-         * Sanitized version of the unsafe HTML.
+         * Gets or sets the text that has been properly sanitized for display in HTML elements.
+         *
          * @type {String}
          */
         safeText: Observable<string>;
         /**
-         * The {@link Observable} icon URI associated with this search hint.
+         * The {@link geocortex.framework.events.Observable} icon URI associated with this search hint.
          * Can be null if no icon is available.
          * @observable
          * @type {String}
@@ -19414,6 +12437,8 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.search {
          * We however want the selection from the autocomplete to not contain
          * embedded markup.
          * That is the purpose of this class - to provide two views of the hints - with and without markup.
+         * @constructs
+         * @memberOf geocortex.essentialsHtmlViewer.mapping.infrastructure.search
          * @param text The text (with markup) to initialize
          * @param options Optional parameter that sets the options for emphasizing text that might also contain unsafe HTML content.
          */
@@ -19466,6 +12491,43 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.tools {
         static UP_ARROW: string;
         static DOWN_ARROW: string;
         static EXTENT: string;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.SmartPanel {
+    /**
+     * Default view model for a {@link SmartPanelView}.
+     */
+    class SmartPanelViewModel extends geocortex.framework.ui.ViewContainer.ViewContainerViewModel {
+        /** An empty menu view model to use when no hoisted menu is available. */
+        static emptyMenuViewModel: menus.MenuViewModel;
+        /**
+         * The view model for the currently hoisted menu.
+         * When there is no hoisted menu present, this should be set to {@link emptyMenuViewModel}.
+         */
+        hoistedMenuViewModel: Observable<menus.MenuViewModel>;
+        /** Whether or not a menu is available for presentation as a hoisted menu. */
+        hasHoistedMenu: Observable<boolean>;
+        /** Whether or not the currently hoisted menu (if present) has any executable menu items. */
+        hasExecutableMenuItems: Observable<boolean>;
+        /**
+         * An option region name specifying a region to activate menu views in.
+         * If specified in configuration, new menu views will be created and activated in this region rather than being dropdowns.
+         */
+        menuRegion: string;
+        /** Whether or not the inline menu is open. */
+        inlineMenuIsOpen: Observable<boolean>;
+        /** Whether or not this panel is currently maximized */
+        panelMaximized: Observable<boolean>;
+        /** Whether to display the maximize button on this smart panel. Defaults to false */
+        showingMaximizeButton: Observable<boolean>;
+        /** Whether the views that are linked to this are able to be resized on the x axis */
+        resizeX: boolean;
+        /** Whether the views that are linked to this are able to be resized on the y axis */
+        resizeY: boolean;
+        /** @inherited */
+        constructor(app: essentialsHtmlViewer.ViewerApplication, libraryId: string);
+        /** @inherited */
+        initialize(config: any): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.MultiPane {
@@ -19527,6 +12589,127 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.componen
          */
         onClose(paneItem: any): void;
         handleClickClose(evt: Event, el: HTMLElement, ctx: any): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.SmartPanel {
+    /**
+     * Interface that contains all relevant information when a panel is being resized.
+     */
+    interface ResizeInformation {
+        initialPanelWidth?: number;
+        initialPanelHeight?: number;
+        minWidth?: number;
+        maxWidth?: number;
+        minHeight?: number;
+        maxHeight?: number;
+        initialX?: number;
+        initialY?: number;
+        currentX?: number;
+        currentY?: number;
+    }
+    /**
+     * A Smart Panel is an extension of {@link framework.ui.ViewContainer.ViewContainerView} that adds the ability to "hoist" menu widgets
+     * from views within the panel's managed region.
+     * When a menu is "hoisted" from a view, a new menu view is created for the same menu, and a button appears in the panel's header that
+     * will activate the menu view.
+     * While a menu is hoisted, it is hidden in the originating view.
+     * Any menu created via {@link menus.MenuRegistry.createMenuWidget} can be hoisted.
+     */
+    class SmartPanelView extends geocortex.framework.ui.ViewContainer.ViewContainerView {
+        static HoistedClassName: string;
+        /** @inherited */
+        app: essentialsHtmlViewer.ViewerApplication;
+        /** @inherited */
+        viewModel: SmartPanelViewModel;
+        /** The ID of the menu most recently hoisted. */
+        hoistedMenuId: string;
+        /** The view of the currently hoisted menu. */
+        hoistedMenuOwnerView: menus.MenuView;
+        /** The menu button element. */
+        menuButtonElement: HTMLElement;
+        /** The header area */
+        headerElement: HTMLElement;
+        /** The parent region that is actually resized when the panel is resized */
+        resizableRegion: HTMLElement;
+        /** An element used to show the changing dimensions panel during resizing */
+        resizePreviewElement: HTMLElement;
+        /** Whether the panel is able to be resized vertically */
+        resizeY: boolean;
+        /** Whether the panel is able to be resized horizontally */
+        resizeX: boolean;
+        /** Set to `true` if the currently active view in the managed region is itself an instance of {@link SmartPanelView}. */
+        protected _activeViewIsASmartPanel: boolean;
+        /** The parent panel of this one, if this view is hosted in a region controlled by another instance of {@link SmartPanelView}. */
+        protected _parentPanel: SmartPanelView;
+        /** Menu views created by this component, tracked to ensure we don't "leak" any instances of {@link MenuView}. */
+        protected _menuViews: {
+            [viewId: string]: menus.MenuView;
+        };
+        /** Subscription token for the binding event for the menu item invoked event */
+        protected _menuItemInvokedSubscriptionToken: string;
+        /** @inherited */
+        attach(viewModelArg?: any): void;
+        protected _initializeEvents(): void;
+        protected _togglePanelMaximized(viewId: String, operation: String): void;
+        protected _canExecuteMaximizeRestoreOperations(): boolean;
+        /** @inherited */
+        protected _handleViewActivatedInContainerEvent(view: framework.ui.ViewBase): void;
+        /** @inherited */
+        activated(): void;
+        /** @inherited */
+        deactivated(): void;
+        /** @inherited */
+        destroy(): void;
+        /**
+         * Opens the hoisted menu as its own view in a particular region.
+         * @param regionName The name of the region to activate the menu view in.
+         */
+        openHoistedMenuInRegion(regionName: string): void;
+        /** @inherited */
+        resolveWidget(widgetId: string, context: any, binding: framework.ui.BindingExpression): any;
+        /**
+         * Creates a new instance of {@link menus.MenuView} with the default menu template.
+         * @param viewModel The view model for the new menu view.
+         */
+        createMenuView(viewModel: menus.MenuViewModel): menus.MenuView;
+        /**
+         * Handles a click or a tap on the hoisted menu button and opens the menu either as a popup, or as a new view in a region
+         * whose name provided in configuration for the view model.
+         */
+        handleTapMenuButton(): void;
+        /**
+         * "Hoists" the first menu found in a given view, hosting a copy of the menu either as a popup/dropdown menu in the header,
+         * or as a new view that will be activated in a region specified in view model configuration.
+         * @param view The view to try hoisting a menu from.
+         */
+        hoistMenuForView(view: framework.ui.ViewBase): void;
+        /**
+         * Sets the parent panel of this one. This allows for nested panels to perform hoisting.
+         * @param parentPanel The panel considered the parent of this one.
+         */
+        setParentPanel(parentPanel: SmartPanelView): void;
+        /**
+         * Handles the maximize or minimize click events
+         * @param evt The triggering event.
+         * @param el The targeted element.
+         * @ctx ctx The current context.
+         */
+        handleMaximizeToggleClick(evt: Event, el: HTMLElement, ctx: any): void;
+        /**
+         * Maximizes the panel.
+         */
+        maximizePanel(): void;
+        /**
+         * Minimizes the panel.
+         */
+        minimizePanel(): void;
+        private _unsubscribeMenuItemInvokedSubscription();
+        handleHeaderMouseDown(evt: MouseEvent, el: HTMLElement, ctx: any): void;
+        handleHeaderTouchStart(evt: any, el: HTMLElement, ctx: any): boolean;
+        resizeSmartPanel(initialX: number, initialY: number): void;
+        protected _handleResizeEnd(evt: JQueryEventObject, resizeInformation: ResizeInformation): void;
+        protected _resizeAccordingToSizeConstraints(resizeInformation: ResizeInformation, elementToResize: HTMLElement): void;
+        protected _destroyHoistedMenuOwnerViewIfExists(): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.MultiPane {
@@ -19719,7 +12902,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.componen
         handleTouchMove(evt: Event, el: HTMLElement, ctx: TableRowViewModelInterface): boolean;
         handleTouchEnd(evt: Event, el: HTMLElement, ctx: TableRowViewModelInterface): boolean;
         handleClick(evt: Event, el: HTMLElement, ctx: TableRowViewModelInterface): boolean;
-        handleClickAttributelink(event: Event, element: HTMLAnchorElement, attribute: infrastructure.FeatureAttribute): boolean;
         private _beginLongPressIfNoEventsInProgress(ctx, eventName);
         private _cancelLongPressIfEventInProgress(eventName);
         private _beginLongPress(ctx);
@@ -19824,213 +13006,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.undo {
         status: string;
     }
 }
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.UrlUtils {
-    /**
-     * Convert a dictionary of query parameters into a string.
-     * @param queryStrings The query string dictionary
-     * @return The string of all the query parameters
-     */
-    function queryStringDictionaryToString(queryStrings: Dictionary<string>): string;
-    /**
-     * Parses a URL query string into a dictionary of key/value pairs.
-     */
-    function queryStringToDictionary(queryString: string): Dictionary<string>;
-    /**
-     * Parses a URL into its component parts.
-     * Note that the object returned from this method will suffer from quirks of IE. It's pathname will not have a leading '/',
-     * Unless we add it to a document. See https://connect.microsoft.com/IE/Feedback/Details/1002846
-     * @param url The URL to parse.
-     */
-    function parseUrl(url: string): Location;
-    /**
-     * Adds (or updates) a query parameter in a URL.
-     * @param url The URL to add a parameter to.
-     * @param parameter The name of the query parameter to add. If it already exists, the value will be updated.
-     * @param value The value for the query parameter.
-     */
-    function addQueryParameter(url: string, parameter: string, value: string): string;
-    /**
-     * Removes a query parameter from a URL, if it exists.
-     * @param url The URL to add a parameter to.
-     * @param parameter The name of the query parameter to remove.
-     */
-    function removeQueryParameter(url: string, parameter: string): string;
-    /**
-     * Gets the URL to the containing "folder" for the given URL. For exmple:
-     * getFolder("http://server.com/foo/bar/img.jpeg") -> "http://server.com/foo/bar/"
-     * getFolder("http://server.com/foo/bar") -> "http://server.com/foo/bar/"
-     * Note that the query string and fragment are discarded in the result.
-     * Note that the object returned from this method will suffer from quirks of IE. It's pathname will not have a leading '/',
-     * Unless we add it to a document. See https://connect.microsoft.com/IE/Feedback/Details/1002846
-     * @param url The URL to extract the folder from.
-     */
-    function getFolder(url: string | Location): Location;
-    /**
-     * Removes all query parameters from the url.
-     * Note that the query string and fragment are discarded in the result.
-     * Note that the object returned from this method will suffer from quirks of IE. It's pathname will not have a leading '/',
-     * Unless we add it to a document. See https://connect.microsoft.com/IE/Feedback/Details/1002846
-     * @param url The URL to extract the new url from which does not contain query parameters.
-     */
-    function removeParameters(url: string | Location): Location;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.validation {
-    /**
-     * Validates that a value is a number. The context may specify a flag "invalidNumbersAsNaN", in which
-     * case values that aren't numbers will be converted to NaN instead of being rejected.
-     */
-    class NumberValidator implements Validator<number> {
-        validate(value: number, context?: any): Promise<ValidationResult<number>>;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.validation {
-    /**
-     * A validator that determines whether the input is a URL that is defined by the Essentials site
-     * (i.e. the URL either matches the site endpoint or one of its services).
-     */
-    class SiteUrlValidator implements Validator<string> {
-        app: ViewerApplication;
-        private _allowedUrls;
-        constructor(app: ViewerApplication);
-        executeClearTrustedUrls(): void;
-        validate(value: string, context?: any): Promise<ValidationResult<string>>;
-        tryValidateSynchronously(value: string): boolean;
-        protected _isMatch(allowedUrl: Location, testUrl: Location): boolean;
-        protected _initializeAllowedUrls(): Promise<void>;
-        protected _allowUrl(url: string): void;
-        protected _extractUrls(text: string): string[];
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.validation {
-    /**
-     * A validator that determines whether the input is a URL that is allowed by the Service Discovery whitelist as defined by the administrator.
-     * It extends {@link SiteUrlValidator} so site URL validation rules apply as well
-     * (i.e. the URL either matches a service connection, the site endpoint or one of its services).
-     */
-    class ServiceDiscoveryUrlValidator extends SiteUrlValidator implements Validator<string> {
-        app: ViewerApplication;
-        /** Reference to the service discovery API */
-        protected _serviceDiscovery: essentials.serviceDiscovery.ServiceDiscoveryProvider;
-        constructor(app: ViewerApplication, discoveryProvider?: essentials.serviceDiscovery.ServiceDiscoveryProvider);
-        getDiscoveryProvider(): essentials.serviceDiscovery.ServiceDiscoveryProvider;
-        setDiscoveryProvider(provider: essentials.serviceDiscovery.ServiceDiscoveryProvider): void;
-        validate(value: string, context?: any): Promise<ValidationResult<string>>;
-        protected _validate(value: string, context?: any): Promise<ValidationResult<string>>;
-        protected _initializeDiscoveryProvider(): Promise<void>;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.validation {
-    /**
-     * Validator which sanitizes HTML content to eliminate XSS (cross-site scripting) security risks.
-     * This validator has some special functionality surrounding the handling of URIs as they are sanitized:
-     *  - When the HTML is sanitized, we place all URIs into an array, replacing them in the HTML with replacement tokens.
-     *  - The URIs are then run through the Content Policy instance, which asynchronously determines the fate of each URI. At this point, the user might be prompted about allowing dangerous URIs. The Content Policy overwrites the URIs in-place.
-     *  - The manipulated URIs are then injected back into the sanitized HTML, and in the correct locations (token replacement).
-     *  - The final sanitized HTML string is returned in the ValidationResult.
-     */
-    class XssHtmlValidator implements Validator<string> {
-        /**
-         * Overriding content policy for this validator.
-         * Takes precedence over the content policy specified as context to validate().
-         */
-        protected _contentPolicy: ContentPolicy;
-        protected _tokenLeft: string;
-        protected _tokenRight: string;
-        protected _tokenLeftEscaped: string;
-        protected _tokenRightEscaped: string;
-        /**
-         * Construct an XSS HTML Validator.
-         * @param options {@link XssHtmlValidatorOptions}
-         */
-        constructor(options?: XssHtmlValidatorConstructorOptions);
-        /**
-         * Sanitize a string of HTML to eliminate XSS risks.
-         *  - Use FilterUtils to sanitize the HTML. Compile all URIs into an array, and replace them in the HTML with replacement tokens.
-         *  - Pass URIs through the Content Policy (which rewrites them), and insert them back into the HTML (token replacement).
-         *  - Return the sanitized HTML.
-         * @param html The string HTML which needs to be sanitized.
-         * @return String of sanitized HTML.
-         */
-        validate(html: string, context?: XssHtmlValidatorContext): Promise<ValidationResult<string>>;
-        /**
-         * Escape the HTML prior to the upcoming insertion of token replacements.
-         */
-        protected _escape(process: XssHtmlValidatorProcess): XssHtmlValidatorProcess;
-        /**
-         * Sanitize the HTML.
-         * Compile all URIs into an array.
-         * Replace all URIs in the HTML with replacement tokens.
-         */
-        protected _sanitize(process: XssHtmlValidatorProcess, sanitizeOptions?: FilterUtils.SanitizeOptions): XssHtmlValidatorProcess;
-        /**
-         * Pass URIs through the Content Policy.
-         */
-        protected _runUrisThroughContentPolicy(process: XssHtmlValidatorProcess): Promise<XssHtmlValidatorProcess>;
-        /**
-         * Insert the rewritten URIs into the HTML (token replacement).
-         */
-        protected _applyUris(process: XssHtmlValidatorProcess): XssHtmlValidatorProcess;
-        /**
-         * Unescape data after replacing tokens.
-         */
-        protected _unescape(process: XssHtmlValidatorProcess): XssHtmlValidatorProcess;
-        /**
-         * Turn an index number into a replacement token.
-         */
-        protected _tokenize(index: number): string;
-    }
-    /**
-     * State involved with performing an XSS HTML validation.
-     */
-    interface XssHtmlValidatorProcess {
-        /** HTML being sanitized. */
-        html: string;
-        /** Collection of details about each URI. */
-        uris: FilterUtils.UriDetails[];
-        /** Content policy that will be used. */
-        contentPolicy: ContentPolicy;
-    }
-    /**
-     * Filter context provided to the validate() method.
-     */
-    interface XssHtmlValidatorContext {
-        sanitizeOptions?: FilterUtils.SanitizeOptions;
-        XssHtmlValidator?: {
-            /** Content policy to be used if one hasn't been provided in the validator's constructor. */
-            defaultContentPolicy?: ContentPolicy;
-        };
-    }
-    /**
-     * Options for the {@link XssHtmlValidator} constructor.
-     */
-    interface XssHtmlValidatorConstructorOptions {
-        /** Content policy that is specific to this validator, overriding the content policy given as context to validate(). */
-        contentPolicy?: ContentPolicy;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.validation {
-    interface ValidationResult<T> {
-        /**
-         * The result of validation. Generally the validated value will be the same as the input value, however
-         * the validator is free to process the original value in some way. For example, an HTML validator may
-         * accept an input string as valid HTML, but may strip out <script> tags.
-         */
-        validatedValue: T;
-    }
-    /**
-     * An object that performs validation on a set of input values.
-     */
-    interface Validator<T> {
-        /**
-         * Determines whether a given value is valid.
-         * @param value The input value to validate
-         * @param context Arbitrary data that provides context for the validation. Some validators may
-         *   change their behaviour based on the context.
-         * @return A promise of a validation result. If the input is invalid, this will be a rejected promise.
-         */
-        validate(value: T, context?: any): Promise<ValidationResult<T>>;
-    }
-}
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.VisualizationUtils {
     /**
      * Gets the feature heat map settings for a geocortex layer.
@@ -20046,720 +13021,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.Visualizati
     function getHeatMapRenderer(gcxLayer: essentials.Layer): esri.renderer.HeatmapRenderer;
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.visualization {
-    /** Base string for creating unique ids for each symbology widget container */
-    const WIDGET_ID_BASE: string;
-    /**
-     * The symbology settings widget view.
-     */
-    class AttributeSymbologySettingsView extends framework.ui.ViewBase {
-        /** The viewer application */
-        app: geocortex.essentialsHtmlViewer.ViewerApplication;
-        /** Configuration for the symbology settings widget. */
-        configuration: AttributeSymbologySettingsConfiguration;
-        /** View-model of the symbology settings widget. */
-        viewModel: AttributeSymbologySettingsViewModel;
-        /** Attribute selector dropdown. */
-        attributeInput: HTMLSelectElement;
-        /** Transparency slider. */
-        protected transparencySlider: HTMLDivElement;
-        /** Marker size slider. */
-        protected markerSizeSlider: HTMLDivElement;
-        /** Line width slider. */
-        protected lineWidthSlider: HTMLDivElement;
-        /** Marker style dropdown. */
-        protected markerStyleInput: HTMLSelectElement;
-        /** Container element that wraps around all symbology settings. */
-        protected container: HTMLDivElement;
-        /** Class breaks slider. */
-        protected classBreaksSlider: HTMLDivElement;
-        /** Native color input. Start of class breaks gradient. */
-        protected startColorInput: HTMLInputElement;
-        /** Contains color swatch radio buttons. */
-        protected startColorSwatchFieldSet: HTMLFieldSetElement;
-        /** Native color input. End of class breaks gradient. */
-        protected endColorInput: HTMLInputElement;
-        /** Contains color swatch radio buttons. */
-        protected endColorSwatchFieldSet: HTMLFieldSetElement;
-        /** Flag to stop change events from being applied while configuring */
-        protected configuring: boolean;
-        /**
-         * Attach this view to its view-model.
-         */
-        attach(viewModel: SymbologySettingsViewModel): void;
-        /**
-         * This widget attaches a reference to itself onto the parent view.
-         */
-        added(parentView: AttributeSymbologySettingsParentView): void;
-        /**
-        * Apply the configured settings to the widget.
-        */
-        applyConfiguration(): void;
-        /**
-         * Restore this widget's settings to the default
-         */
-        reset(): void;
-        /**
-         * Set view-model observables and populate the `symbols` object based on any changes here in the view.
-         */
-        handleChange(): void;
-        /**
-         * Hide / Show symbology widget and set class as selected / unselected
-         * If a selected item is clicked, remove the symbology widget and unselect it
-         * If an unselected item is clicked, show the symbology widget and unselect the currently selected.
-         * The selected color from the widget will be propagated to the swatch in the class list at this point.
-         */
-        handleSymbolClassSelected(event: Event): void;
-        /**
-         * Intialize jQuery sliders so that they work when called upon
-         */
-        protected _setupJQuerySliders(): void;
-        protected _handleSliderValueChanged(event: Event, ui: JQueryUI.SliderUIParams, prop: Observable<number>): void;
-        /**
-         * Acquire the currently selected color swatch.
-         */
-        protected _getSelectedColorSwatch(swatches: ColorSwatch[], swatchFieldSet: HTMLFieldSetElement): ColorSwatch;
-    }
-    /**
-     * The parent view of this widget contains a reference to this widget.
-     */
-    interface AttributeSymbologySettingsParentView extends framework.ui.ViewBase {
-        /** Parent's reference to the child symbology widget view. */
-        attributeSettingsWidget?: AttributeSymbologySettingsView;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.visualization {
-    /**
-     * An object to hold the settings for each rendered class in class breaks or unique value mode
-     */
-    interface SymbolClassInfo {
-        name: string;
-        value?: string;
-        min?: number;
-        max?: number;
-        count?: number;
-        color: string;
-        selected: boolean;
-        widgetId: string;
-    }
-    /**
-     * Wrapper for a field + fieldInfo (used for formatting and coded values)
-     */
-    interface AttributeInfo {
-        field: essentials.Field;
-        fieldInfo: gis.FieldInfo;
-    }
-    /**
-     * Configuration for the widget.
-     */
-    interface AttributeSymbologySettingsConfiguration {
-        /** Whether or not to force color swatches to be used (instead of the native color input). */
-        alwaysUseColorSwatches?: boolean;
-        /** The number of color swatches available to choose from. */
-        numberOfColorSwatches?: number;
-        /** Maximum allowable renderer classes */
-        maxRenderClasses?: number;
-        /** Maximum samples to use to create the classes */
-        maxSamples?: number;
-        /** Default color to use for points that fall outside renderer classes */
-        defaultPointColor?: number[];
-        /** Default size of points that fall outside of renderer classes */
-        defaultPointSize?: number;
-        /** Default color to use for lines that fall outside renderer classes */
-        defaultLineColor?: number[];
-        /** Default line width to use for features that fall outside renderer classes */
-        defaultLineWidth?: number;
-        /** Default color to use for polygons that fall outside renderer classes */
-        defaultFillColor?: number[];
-        /** Default configuration for each class symbology selector widget */
-        defaultSymbologySettingsConfig?: SymbologySettingsConfiguration;
-        /** Range configuration for the transparency slider. */
-        transparency?: RangeConfiguration;
-        /** Range configuration for the marker size slider. */
-        markerSize?: RangeConfiguration;
-        /** Range configuration for the marker size slider. */
-        lineWidth?: RangeConfiguration;
-    }
-    /**
-     * View-model for the attribute symbology settings widget.
-     * This widget
-     * Marker and fill symbolization options are optional.
-     */
-    class AttributeSymbologySettingsViewModel extends framework.ui.ViewModelBase {
-        /** The viewer application */
-        app: geocortex.essentialsHtmlViewer.ViewerApplication;
-        /** Configuration for the symbology settings view-model. */
-        config: AttributeSymbologySettingsConfiguration;
-        /** Attributes to symbolize on */
-        attributes: ObservableCollection<essentials.Field>;
-        currentAttribute: Observable<string>;
-        /** What kind of symbolization is it? */
-        classBreaksMode: Observable<boolean>;
-        /** What kind of field is it? Numeric fields are sometimes unique value renderers if data is limited. */
-        isNumericAttribute: Observable<boolean>;
-        /** Symbology class info for binding to view */
-        symbologyClasses: ObservableCollection<SymbolClassInfo>;
-        /** The currently selected symbology class */
-        selectedClass: string;
-        /** The widgets used to configure the symbology for each class */
-        classSymbolWidgets: SymbologySettingsView[];
-        /** Maximum allowable number of renderer classes */
-        maxRenderClasses: number;
-        /** Max number of samples to use in class creation */
-        maxSamples: number;
-        /** Observable for the selected number of class breaks. */
-        numBreaks: Observable<number>;
-        /** Default symbols for data that does not fall within generated classes */
-        defaultPointSymbol: esri.symbol.SimpleMarkerSymbol;
-        defaultLineSymbol: esri.symbol.SimpleLineSymbol;
-        defaultPolygonSymbol: esri.symbol.SimpleFillSymbol;
-        /** Type of feature being symbolized. One of 'Point' 'Line' or 'Polygon' */
-        featureType: string;
-        /** Whether or not to use swatches instead of native color input. */
-        useColorSwatches: Observable<boolean>;
-        /** Color swatches available to choose from for class breaks gradient */
-        startColorSwatches: ObservableCollection<ColorSwatch>;
-        endColorSwatches: ObservableCollection<ColorSwatch>;
-        /** The selected color swatch, if in fallback color picker mode */
-        selectedStartSwatch: ColorSwatch;
-        selectedEndSwatch: ColorSwatch;
-        /** The colors used in the symbology */
-        startColors: SymbolColor[];
-        endColors: SymbolColor[];
-        /** Observable for the user-selected marker size. */
-        markerSize: Observable<number>;
-        /** The currently selected markerStyle */
-        markerStyleIndex: number;
-        /** Observable for the user-selected line width. */
-        lineWidth: Observable<number>;
-        /** Observable for the user-selected fill transparency. */
-        transparency: Observable<number>;
-        /** Disables availability of marker related options. */
-        noMarker: Observable<boolean>;
-        /** Styles available to point markers. */
-        markerStyles: ObservableCollection<SymbologySettingsStyle>;
-        /** These are used to translate style ids from Esri JS API to Esri REST API form */
-        markerStyleIdLookup: {
-            [id: string]: string;
-        };
-        /**
-         * Temporary cache of ArcGIS Server query responses created by symbolization. Indexed by a hash of url + field + extent. Cleared when changing layers.
-         *
-         * Some configurations of layer extent, map extent and renderer type will cause multiple query requests with the same parameters to occur.
-         * This is bad for two reasons:
-         *
-         * 1:  Requests to ArcGIS Server are often sent with no-cache headers, so the identical requests cannot be counted on to 304.
-         *     But it's ok if they do, as they are separated only by milliseconds in practice.
-         *
-         * 2:  When the requests *do* 304, a strange bug is exposed in *Chrome only* where the esri (dojo) request will timeout
-         *     and not recieve results even though it is an immediate 304. This causes the code to hang for a full minute *before* dropping into the error handler.
-         *     Hopefully this will be fixed in the future, as I can't figure out at all why this should occur, or which part of the stack is at fault here.
-         */
-        queryResults: esri.tasks.FeatureSet[];
-        /** Track when we are in the process of symbolizing, so that the event change handler doesn't initiate multiple symbolization passes */
-        symbolizing: boolean;
-        /**
-         * Initialize the widget based on configuration.
-         */
-        initialize(configuration?: AttributeSymbologySettingsConfiguration): void;
-        /**
-         * Restores settings to the default state
-         */
-        reset(): void;
-        /**
-         * Returns a renderer based on the current widget setttings as a JSON string
-         */
-        getRenderer(): string;
-        /**
-         * Sets the state of the widget based on a supplied class breaks or unique value renderer
-         * @param renderer
-         */
-        setFromRenderer(renderer: esri.renderer.Renderer): void;
-        /**
-         * Given a quantitative value field, automatically create a set of class breaks to use for a renderer
-         * @param attribute
-         */
-        createClassBreaks(attribute: AttributeInfo): void;
-        /**
-         * Given a string field, automatically create a set of unique values to use for a renderer
-         * @param attribute
-         */
-        createUniqueValues(attribute: AttributeInfo): void;
-        /**
-         * Assign default colors to classes and configure the symbology widgets
-         * @param attribute
-         */
-        createRendererClasses(): void;
-        /**
-         * Set up the query task, then return a promise of the results
-         * @param attribute
-         */
-        protected executeQuery(attribute: essentials.Field, extent: esri.geometry.Extent): Promise<esri.tasks.FeatureSet>;
-        /**
-         * Query successively larger extents until the desired number of features return, or no more features are available.
-         * Each query will double the size of the extent used.
-         * @param attribute
-         * @param extent
-         */
-        protected executeExtentQuery(attribute: essentials.Field, extent: esri.geometry.Extent): Promise<esri.geometry.Extent>;
-        /**
-         * For unique values we want to stop increasing the extent when we have reached the maximum number of unique values allowed.
-         * @param attribute
-         * @param extent
-         */
-        protected executeUniqueValueExtentQuery(attribute: essentials.Field, extent: esri.geometry.Extent): Promise<esri.geometry.Extent>;
-        /**
-         * For class breaks we want to keep increasing the extent until we have reached the maximum number of samples allowed.
-         */
-        protected executeClassBreaksExtentQuery(attribute: essentials.Field, extent: esri.geometry.Extent): Promise<esri.geometry.Extent>;
-        /**
-         * Sorts symbol classes by count and closeness to the user, and constrains the collection to 'maxRenderClasses' items
-         * @param results
-         */
-        protected constrainToMaxClasses(attribute: essentials.Field): Promise<any>;
-        /**
-         * Returns distinct values for an attribute in a feature set
-         * Note that a distinct value query using esri's API methods does not work on some layers, specifically FeatureService feature layers
-         * @param featureSet
-         * @param attribute
-         */
-        protected _findDistinctValues(featureSet: esri.tasks.FeatureSet, attribute: string): any[];
-        /**
-         * Given an essentials field, get the fieldInfo object used for formatting and resolving domains
-         * @param field
-         */
-        getFieldInfo(field: essentials.Field): Promise<gis.FieldInfo>;
-        /**
-         * Looking for coded domains *just* on the ESRI field...
-         * fieldInfo.isCodedValueDomain() returns false positives, as it creates fake 'domains' when there is a subtype defined.
-         * @param fieldInfo
-         */
-        hasCodedDomain(fieldInfo: gis.FieldInfo): boolean;
-        stringToHash(input: string): number;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.DataClassification {
-    /**
-    * Ckmeans clustering is an improvement on heuristic-based clustering
-    * approaches like Jenks. The algorithm was developed by
-    * Haizhou Wang and Mingzhou Song (http://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf)
-    * as a dynamic programming(https://en.wikipedia.org/wiki/Dynamic_programming) approach
-    * to the problem of clustering numeric data into groups with the least
-    * within-group sum-of-squared-deviations.
-    *
-    * Minimizing the difference within groups - what Wang & Song refer to as
-    * `withinss`, or within sum-of-squares, means that groups are optimally
-    * homogenous within and the data is split into representative groups.
-    * This is very useful for visualization, where you may want to represent
-    * a continuous variable in discrete color or style groups. This function
-    * can provide groups that emphasize differences between data.
-    *
-    * From the JavaScript implementation by Tom MacWright
-    * https://github.com/simple-statistics
-    * Original copyright notice follows:
-    *
-    * Copyright (c) 2014, Tom MacWright
-    *
-    * Permission to use, copy, modify, and/or distribute this software for any
-    * purpose with or without fee is hereby granted, provided that the above
-    * copyright notice and this permission notice appear in all copies.
-    *
-    * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-    * REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-    * FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-    * INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-    * LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-    * OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-    * PERFORMANCE OF THIS SOFTWARE.
-    *
-    * @param data The data to classify
-    * @param numClusters The number of desired classes
-    */
-    function ckmeans(data: number[], numClusters: number): number[][];
-    /**
-     * Create a new column x row matrix.
-     */
-    function createMatrix(columns: number, rows: number): number[][];
-    /**
-     * For a sorted input, counting the number of unique values
-     * is possible in constant time and constant memory. This is
-     * a simple implementation of the algorithm.
-     *
-     * Values are compared with `===`, so objects and non-primitive objects
-     * are not handled in any special way.
-     */
-    function uniqueCountSorted(input: any[]): number;
-    /**
-     * Attempts to find a reasonable number of significant digits for the created breaks
-     * Probably not possible to be 100% correct with all possible data sets,
-     * but should err on the side of too much significance, rather than too little.
-     * @param numbers
-     */
-    function findSignificanceFactor(numbers: number[]): number;
-    /**
-     * Gets the internationalized decimal separator
-     */
-    function getDecimalSeparator(): string;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.visualization {
-    /**
-     * Representations of esri's Renderer and Symbol JSON objects with just enough information to restore widget settings
-     */
-    interface RendererObject {
-        type: string;
-        field?: string;
-        field1?: string;
-        minValue?: number;
-        symbol?: SymbolObject;
-        uniqueValueInfos?: UniqueValueInfoObject[];
-        classBreakInfos?: ClassBreakInfoObject[];
-        [otherProps: string]: any;
-    }
-    interface SymbolObject {
-        type: string;
-        style: string;
-        color: number[];
-        size?: number;
-        width?: number;
-        outline?: OutlineObject;
-        [otherProps: string]: any;
-    }
-    interface OutlineObject {
-        type?: string;
-        style?: string;
-        color: number[];
-        width: number;
-        [otherProps: string]: any;
-    }
-    interface UniqueValueInfoObject {
-        value: string;
-        symbol: SymbolObject;
-        [otherProps: string]: any;
-    }
-    interface ClassBreakInfoObject {
-        classMinValue: number;
-        classMaxValue: number;
-        symbol: SymbolObject;
-        [otherProps: string]: any;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.visualization {
-    interface RGB {
-        r: number;
-        b: number;
-        g: number;
-    }
-    interface HSV {
-        h: number;
-        s: number;
-        v: number;
-    }
-    /**
-     * Encapulates some common color operations useful for making symbology.
-     * Primary use is to generate the RGB hexidecimal color code for a color in HSV (hue, saturation, value) color space.
-     * This is far preferable to using RGB for mapping applications, as random colors generated
-     * in RGB will trend towards the dark and unsaturated, and often look quite similar.
-     * To use, supply a number between 0 and 1 for each of hue, saturation, and value.
-     * To generate a series of random colors with a consistent tone, supply a random number for 'hue' only.
-     */
-    class SymbolColor {
-        hue: number;
-        value: number;
-        saturation: number;
-        /**
-         * SymbolColor can be instantiated with HSV values, RGB values, or a RGB hex string
-         * All raw values supplied should be in the range 0..1
-         * @param color
-         */
-        constructor(color: HSV | RGB | string);
-        /**
-         * Returns a hexidecimal string representing the color.
-         */
-        toHex(): string;
-        /**
-         * Darkens the color by an amount and returns a new SymbolColor
-         * @param amount ranges from 0..1
-         */
-        darken(amount: number): SymbolColor;
-        /**
-         * Lightens the color by an amount and returns a new SymbolColor
-         * @param amount ranges from 0..1
-         */
-        lighten(amount: number): SymbolColor;
-        /**
-         * Blend this color with another by an amount and return a new SymbolColor
-         * Uses linear interpolation in the RGB colorspace.
-         * @param amount ranges from 0..1
-         * @param color another instance of SymbolColor
-         */
-        blend(amount: number, color: SymbolColor): SymbolColor;
-        /**
-         * Returns the raw RGB values of the color
-         * See https://en.wikipedia.org/wiki/HSL_and_HSV#Converting_to_RGB for a detailed discussion of this algorithm.
-         */
-        toRGB(): RGB;
-        /**
-         * Is this color the same as the supplied color?
-         * @param color
-         */
-        equals(color: SymbolColor): boolean;
-        /**
-         * Converts raw RGB values to their HSV equivalents. Reverse of the above
-         * Also discussed on this page: https://en.wikipedia.org/wiki/HSL_and_HSV
-         * @param color
-         */
-        private fromRGB(color);
-        /**
-         * Convert raw RGB values to a hex string
-         * @param color
-         */
-        private rgbToHex(color);
-        /**
-         * Returns rgb values from 0..1 given an RGB hex string. Short format is acceptable.
-         * See: http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
-         * @param hex
-         */
-        private hexToRGB(hex);
-        /**
-         * Clamp a number between two values
-         * @param n
-         * @param min
-         * @param max
-         */
-        private clamp(n, min, max);
-        /**
-         * Custom type guard for raw values in HSV format
-         * @param a
-         */
-        private isHSV(a);
-        /**
-         * Custom type guard for raw values in RGB format
-         * @param a
-         */
-        private isRGB(a);
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.visualization {
-    /**
-     * The symbology settings widget view.
-     */
-    class SymbologySettingsView extends framework.ui.ViewBase {
-        /** Configuration for the symbology settings widget. */
-        configuration: SymbologySettingsConfiguration;
-        /** View-model of the symbology settings widget. */
-        viewModel: SymbologySettingsViewModel;
-        /** Container element that wraps around all symbology settings. */
-        container: HTMLDivElement;
-        /** A flag to allow setting of slider configuration without triggering the change handler */
-        protected configuring: boolean;
-        /** Native color input. */
-        protected colorInput: HTMLInputElement;
-        /** Contains color swatch radio buttons. */
-        protected colorSwatchFieldSet: HTMLFieldSetElement;
-        /** Transparency slider. */
-        protected transparencySlider: HTMLDivElement;
-        /** Marker size slider. */
-        protected markerSizeSlider: HTMLDivElement;
-        /** Line width slider. */
-        protected lineWidthSlider: HTMLDivElement;
-        /** Marker style dropdown. */
-        protected markerStyleInput: HTMLSelectElement;
-        /** Line style dropdown. */
-        protected lineStyleInput: HTMLSelectElement;
-        /** Fill style dropdown. */
-        protected fillStyleInput: HTMLSelectElement;
-        /**
-         * Acquire the currently selected color swatch.
-         */
-        protected getSelectedColorSwatch(): ColorSwatch;
-        /**
-         * Attach this view to its view-model.
-         */
-        attach(viewModel: SymbologySettingsViewModel): void;
-        /**
-         * This widget attaches a reference to itself onto the parent view.
-         */
-        added(parentView: SymbologySettingsParentView): void;
-        /**
-         * Apply the configured settings to the widget.
-         */
-        applyConfiguration(): void;
-        reset(): void;
-        /**
-         * Set view-model observables and populate the `symbols` object based on any changes here in the view.
-         */
-        handleChange(): void;
-        /**
-         * The sliders need to be set up before they are functional
-         */
-        setupJQuerySliders(): void;
-        protected _handleSliderValueChanged(event: Event, ui: JQueryUI.SliderUIParams, prop: Observable<number>): void;
-    }
-    /**
-     * The parent view of this widget contains a reference to this widget.
-     */
-    interface SymbologySettingsParentView extends framework.ui.ViewBase {
-        /** Parent's reference to the child symbology widget view. */
-        symbologySettingsWidget?: SymbologySettingsView;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.visualization {
-    /**
-     * Configuration for the widget.
-     */
-    interface SymbologySettingsConfiguration {
-        /** Whether or not to force color swatches to be used (instead of the native color input). */
-        alwaysUseColorSwatches?: boolean;
-        /** The number of color swatches available to choose from. */
-        numberOfColorSwatches?: number;
-        /** Whether to allow the outline color to be selected, or auto-generated */
-        selectOutlineColor?: boolean;
-        /** The style of markers for points. */
-        markerStyles?: SymbologySettingsStyle[];
-        /** The style of outlines and polylines. */
-        lineStyles?: SymbologySettingsStyle[];
-        /** The style of polygon fills. */
-        fillStyles?: SymbologySettingsStyle[];
-        /** Range configuration for the transparency slider. */
-        transparency?: RangeConfiguration;
-        /** Range configuration for the marker size slider. */
-        markerSize?: RangeConfiguration;
-        /** Range configuration for the marker size slider. */
-        lineWidth?: RangeConfiguration;
-    }
-    /**
-     * Symbol style available for a user to select from a dropdown.
-     */
-    interface SymbologySettingsStyle {
-        /** Internationalized name for this symbol style. */
-        label: string;
-        /** Shape of the symbol. One of the `(SimpleMarkerSymbol|SimpleLineSymbol|SimpleFillSymbol).STYLE_*` constants. */
-        style: string;
-    }
-    /**
-     * Final resultant symbols offered by the widget.
-     */
-    interface SymbologySettingsSymbols {
-        marker: esri.symbol.SimpleMarkerSymbol;
-        line: esri.symbol.SimpleLineSymbol;
-        fill: esri.symbol.SimpleFillSymbol;
-    }
-    /**
-     * View-model for the symbology settings widget.
-     * Line symbolization options are always needed (of course for polylines, but also for points and polygons as outlines).
-     * Marker and fill symbolization options are optional.
-     */
-    class SymbologySettingsViewModel extends framework.ui.ViewModelBase {
-        /** Configuration for the symbology settings view-model. */
-        config: SymbologySettingsConfiguration;
-        /** Disables availability of marker related options. */
-        noMarker: Observable<boolean>;
-        /** Disables availability of fill related options. */
-        noFill: Observable<boolean>;
-        /** Final resultant symbols, the end-product of this widget. */
-        symbols: SymbologySettingsSymbols;
-        /** Observable for the user-selected fill transparency. */
-        transparency: Observable<number>;
-        /** Observable for the outline transparency */
-        outlineTransparency: Observable<number>;
-        /** Observable for the user-selected marker size. */
-        markerSize: Observable<number>;
-        /** The currently selected markerStyle */
-        markerStyleIndex: number;
-        /** Observable for the user-selected line width. */
-        lineWidth: Observable<number>;
-        /** The currently selected line style  */
-        lineStyleIndex: number;
-        /** The currently selected polygon fill style */
-        fillStyleIndex: number;
-        /** Whether or not to use swatches instead of native color input. */
-        useColorSwatches: Observable<boolean>;
-        /** Color swatches available to choose from. */
-        colorSwatches: ObservableCollection<ColorSwatch>;
-        /** The selected color swatch, if in fallback color picker mode */
-        selectedSwatch: ColorSwatch;
-        /** The colors used in the symbology */
-        colors: SymbolColor[];
-        /** Colors used by the outline when set independently */
-        outlineColors: SymbolColor[];
-        /** These are used to translate style ids from Esri JS API to Esri REST API form */
-        markerStyleIdLookup: {
-            [id: string]: string;
-        };
-        lineStyleIdLookup: {
-            [id: string]: string;
-        };
-        fillStyleIdLookup: {
-            [id: string]: string;
-        };
-        /** Styles available to point markers. */
-        markerStyles: ObservableCollection<SymbologySettingsStyle>;
-        /** Styles available to lines. */
-        lineStyles: ObservableCollection<SymbologySettingsStyle>;
-        /** Styles available to polygon fills. */
-        fillStyles: ObservableCollection<SymbologySettingsStyle>;
-        /**
-         * Initialize the widget based on configuration.
-         */
-        initialize(configuration?: SymbologySettingsConfiguration): void;
-        /**
-         * Returns the widget to the default state (as defined by the configuration object)
-         */
-        reset(): void;
-        /**
-         * Returns a renderer based on the current widget setttings as a JSON string
-         */
-        getRenderer(): string;
-        /**
-         * Returns a symbol as a json string, based on the current widget settings
-         */
-        getSymbol(): string;
-        /**
-         * Returns the currently selected color
-         */
-        getColor(): SymbolColor;
-        /**
-         * Sets the state of the widget based on a supplied simple renderer
-         * @param renderer
-         */
-        setFromRenderer(renderer: esri.renderer.Renderer): void;
-        /**
-         * Sets the state of the widget based on a supplied symbol
-         * @param symbol
-         */
-        setFromSymbol(symbol: esri.symbol.Symbol): void;
-        protected _setFromSymbolObject(so: SymbolObject): void;
-    }
-    /**
-     * The size values in a renderer JSON object need to be converted from points to pixels in order
-     * to be able to recreate the same renderer using the JSAPI. 96dpi is assumed and there are 72 points in an inch.
-     */
-    const POINTS_TO_PIXELS: number;
-    /**
-     * A swatch is a color option that the user might choose.
-     */
-    interface ColorSwatch {
-        /** RGB color in hex format. */
-        hex: string;
-    }
-    /**
-     * Generic definition for the boundaries and default of a numerical range.
-     */
-    interface RangeConfiguration {
-        min: number;
-        max: number;
-        value: number;
-        step: number;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.visualization {
-    /**
-     * Information about an individual visualization
-     */
-    interface VisualizationInfo {
-        provider: infrastructure.visualization.VisualizationProviderBase;
-        name: string;
-        id: string;
-    }
     /**
      * Base implementation of a {@link VisualizationProviderBase}.
      * Not implemented.
@@ -20778,17 +13039,9 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.visualizati
          */
         viewId: string;
         /**
-         * The display name for this provider.
+         * The display name for this provider in the visualization options.
          */
         displayName: string;
-        /**
-         * The information about the visualizations provided by this provider in the visualization options.
-         */
-        visualizations: VisualizationInfo[];
-        /**
-         * The currently enabled visualization for this provider, if any
-         */
-        enabledVisualization: VisualizationInfo;
         /**
          * The current geocortex layer this provider is providing visualization options for.
          */
@@ -20821,7 +13074,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.visualizati
         /**
          * Handles how to activate the visualization for the current layer.
          */
-        handleActivate(visualization?: VisualizationInfo): void;
+        handleActivate(): void;
         /**
          * Handles how to apply the visualization settings for the current layer.
          */
@@ -20849,860 +13102,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.visualizati
          * The display name for this provider in the visualization options.
          */
         displayName?: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.highlightedLabel.HighlightedLabelUtils {
-    /**
-     * Measures the actual rendered size of a text label in pixels. Adding an actual element to the document is expensive, and since the measurement tool will always ask for dimensions of
-     * one single fixed font family and size, we cache dimensions for each letter of a font in a dictionary for later reuse. This ensures  only a limited number of page element additions
-     * and removals no matter how many labels are measured (this may be a large number if we're measuring actual features on the map using layer actions).
-     * @param labelStr The text label to measure label size for
-     * @param fontFamily The font family to be applied to the text
-     * @param size The size of the text in pixels
-     * @return An object with the width and height of the speciified label
-     */
-    function getLabelSize(labelStr: string, fontFamily: string, fontSize: string, layerId: string): {
-        width: number;
-        height: number;
-    };
-    function getTextLines(text: string): string[];
-    function generateSvgHighlightLabelPath(width: any, height: any, radius: any, showPointer?: boolean, pointerWidth?: number): string;
-    function generateSvgCirclePath(radius: number): string;
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * Defines the basemap for the map.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface BaseMap {
-        /** An array of BaseMapLayer objects defining the basemaps used in the web map. */
-        baseMapLayers: BaseMapLayer[];
-        /** A string title for the basemap that can be used in a table of contents. */
-        title: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * Base class for web map operational layers and basemap layers.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface ServiceLayer {
-        /** A unique identifying string for the layer. */
-        id: string;
-        /** The URL to the layer. For well-known basemap types such as Bing Aerial, the URL should be empty. */
-        url?: string;
-        /** Determines whether the layer is initially visible in the web map. */
-        visibility?: boolean;
-        /** The degree of transparency applied to the layer on the client side, where 0 is full transparency and 1 is no transparency. */
-        opacity?: number;
-        /** Not in official spec, but present in some newer web maps. */
-        layerType?: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * Constants for well-known basemap types.
-     */
-    module BaseMapType {
-        const OPEN_STREET_MAP: string;
-        const BING_AERIAL: string;
-        const BING_ROAD: string;
-        const BING_HYBRID: string;
-        const WEB_TILED: string;
-    }
-    /**
-     * A layer within a basemap.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface BaseMapLayer extends ServiceLayer {
-        /**
-         * A special string identifier used when the basemap is from Bing Maps or OpenStreetMap.
-         * When this property is included, the url property is not required. One of the BaseMapType constants.
-         */
-        type?: string;
-        /**
-         * Determines whether the basemap layer appears on top of all operational layers (true) or beneath all operational layers (false).
-         * Typically, this value is set to true on reference layers such as road networks, labels, or boundaries. The default value is false.
-         */
-        isReference?: boolean;
-        /** Not defined in the official spec, but used by AGOL for web tiled layers. */
-        templateUrl?: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * A saved geographic extent within a webmap.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface Bookmark {
-        /** A string name for the bookmark. */
-        name: string;
-        /** An extent defining the rectangular area of the bookmark. */
-        extent: Extent;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    module OperationalLayerType {
-        const CSV: string;
-        const WMS: string;
-        const KML: string;
-    }
-    /**
-     * An operational layer in a web map.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface OperationalLayer extends ServiceLayer {
-        /**
-         * If the layer is referenced through a URL, but is not an ArcGIS web service, then this parameter can be supplied to denote the layer type.
-         * One of the OperationalLayerType constants.
-         */
-        type?: string;
-        /**
-         * A comma-separated string listing which editing operations are allowed on an editable feature service.
-         * Available operations include: Create | Delete | Query | Update | Editing.
-         */
-        capabilities?: string;
-        /**
-         * A featureCollection object defining a layer of features whose geometry and attributes will be stored directly within the web map.
-         * This is only used when no url property is supplied.
-         */
-        featureCollection?: FeatureCollection;
-        /**
-         * Optional string containing the item ID of the service if it is registered on ArcGIS Online or your organization's portal.
-         * The web map applies any styling and pop-up information contained in the saved item.
-         */
-        itemId?: string;
-        /** A LayerDefinition object defining the attribute schema and drawing information for the layer. Used with CSV and feature layers. */
-        layerDefinition?: LayerDefinition;
-        /** An array of Layer objects, allowing overrides on pop-up content and drawing behavior for the individual layers of a map service. Used with map services. */
-        layers?: Layer[];
-        /**
-         * A number representing the maximum scale at which the layer will be visible. The number is the scale's denominator; thus,
-         * a value of 2400 represents a scale of 1/2,400. A value of 0 indicates that the layer will be visible no matter how far
-         * you zoom in.
-         */
-        maxScale?: number;
-        /**
-         * A number representing the minimum scale at which the layer will be visible. The number is the scale's denominator; thus,
-         * a value of 2400 represents a scale of 1/2,400.
-         */
-        minScale?: number;
-        /**
-         * Used with ArcGIS feature services and individual layers in ArcGIS map services, this property determines how the features
-         * are retrieved from the server. This property is represented as 0, 1, or 2.
-         *
-         *   0—Snapshot mode. Immediately retrieves all features when the map is loaded.
-         *   1—On-demand mode. Features within the current view extent are retrieved as the user navigates the map. This is the default and the most common way to use feature services in web maps.
-         *   2—Selection-only mode. No features are initially retrieved. This mode is used when you have a map service and a feature service from the same parent URL that are working together in the same map, with the map service being used for display and the feature service used for editing.
-         */
-        mode?: number;
-        /**
-         * A PopupInfo object defining the content of pop-up windows when you click or query a feature.
-         */
-        popupInfo?: PopupInfo;
-        /** A user-friendly title for the layer that can be used in a table of contents. If this is not included, then a title is derived from the service. */
-        title: string;
-        /**
-         * An array of layers that should appear visible. Used with ArcGIS map services that are not tiled and WMS layers.
-         * Will be an array of numbers for ArcGIS map services, and an array of strings for WMS.
-         */
-        visibleLayers?: any[];
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * A CSV web map layer.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface CsvLayer extends OperationalLayer {
-        /**
-         * A string defining the character used to separate columns in a CSV file. You can set this property
-         * using any of the following: ",", " ", ";", "|", "\t". Used with CSV layers only.
-         */
-        columnDelimiter: string;
-        /**
-         * A LocationInfo object defining how location information will be retrieved from a CSV file. Used with CSV layers only.
-         */
-        locationInfo: LocationInfo;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * Defines how location information will be retrieved from a CSV file referenced through the web.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface LocationInfo {
-        /** A string whose value is always "coordinates". */
-        locationType: string;
-        /** A string defining the field name that holds the latitude (Y) coordinate. */
-        latitudeFieldName: string;
-        /** A string defining the field name that holds the longitude (X) coordinate. */
-        longitudeFieldName: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    module RendererType {
-        const SIMPLE: string;
-        const UNIQUE_VALUE: string;
-        const CLASS_BREAKS: string;
-        const HEATMAP: string;
-    }
-    module NormalizationType {
-        const BY_FIELD: string;
-        const BY_LOG: string;
-        const BY_PERCENT_OF_TOTAL: string;
-    }
-    module ClassificationMethod {
-        const NATURAL_BREAKS: string;
-        const EQUAL_INTERVAL: string;
-        const QUANTILE: string;
-        const STANDARD_DEVIATION: string;
-        const GEOMETRICAL_INTERVAL: string;
-    }
-    /**
-     * Defines how features are rendered on the map.
-     *
-     * Part of the Esri ArcGIS REST API (see http://resources.arcgis.com/en/help/rest/apiref/renderer.html).
-     */
-    interface Renderer {
-        /** The type of renderer. One of the RendererType constants. */
-        type: string;
-    }
-    /**
-     * A renderer that uses one symbol only.
-     *
-     * Part of the Esri ArcGIS REST API (see http://resources.arcgis.com/en/help/rest/apiref/renderer.html).
-     */
-    interface SimpleRenderer extends Renderer {
-        symbol: Symbol;
-        label: string;
-        description: string;
-    }
-    /**
-     * A unique value renderer symbolizes groups of features that have matching field values.
-     *
-     * Part of the Esri ArcGIS REST API (see http://resources.arcgis.com/en/help/rest/apiref/renderer.html).
-     */
-    interface UniqueValueRenderer extends Renderer {
-        field1: string;
-        field2?: string;
-        field3?: string;
-        fieldDelimiter?: string;
-        defaultSymbol?: Symbol;
-        defaultLabel?: string;
-        uniqueValueInfos: UniqueValueInfo[];
-    }
-    interface UniqueValueInfo {
-        value: any;
-        label?: string;
-        description?: string;
-        symbol: Symbol;
-    }
-    /**
-     * A class breaks renderer symbolizes each feature based on the value of some numeric field.
-     *
-     * Part of the Esri ArcGIS REST API (see http://resources.arcgis.com/en/help/rest/apiref/renderer.html).
-     */
-    interface ClassBreaksRenderer extends Renderer {
-        field: string;
-        /** One of the ClassificationMethod constants. */
-        classificationMethod: string;
-        /** One of the NormalizationType constants. */
-        normalizationType?: string;
-        /** Used when normalizationType is NormalizationType.BY_FIELD. */
-        normalizationField?: string;
-        /** Used when normalizationType is NormalizationType.BY_FIELD. */
-        normalizationTotal?: number;
-        defaultSymbol: Symbol;
-        defaultLabel: string;
-        /** Supported only for polygon features. */
-        backgroundFillSymbol?: SimpleFillSymbol;
-        minValue?: number;
-        classBreakInfos: ClassBreakInfo[];
-    }
-    interface ClassBreakInfo {
-        classMinValue?: number;
-        classMaxValue: number;
-        label?: string;
-        description?: string;
-        symbol: Symbol;
-    }
-    interface HeatmapRenderer extends Renderer {
-        blurRadius: number;
-        field?: string;
-        maxPixelIntensity: number;
-        minPixelIntensity: number;
-        colorStops: ColorStop[];
-    }
-    interface ColorStop {
-        ratio: number;
-        color: Color;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    module DomainType {
-        const INHERITED: string;
-        const RANGE: string;
-        const CODED_VALUE: string;
-    }
-    /**
-     * A domain specifies the set of valid values for a field.
-     *
-     * Part of the Esri ArcGIS Server REST API (see http://resources.arcgis.com/en/help/rest/apiref/).
-     */
-    interface Domain {
-        /** One of the DomainType constants. */
-        type: string;
-    }
-    interface InheritedDomain extends Domain {
-    }
-    /**
-     * Range domain specifies a range of valid values for a field.
-     */
-    interface RangeDomain extends Domain {
-        /** The name of the domain. */
-        name: string;
-        /** An array in the format [<minValue>, <maxValue>]. */
-        range: number[];
-    }
-    /**
-     * Coded value domain specifies an explicit set of valid values for a field. Each valid value is assigned a unique name.
-     */
-    interface CodedValueDomain extends Domain {
-        /** The name of the domain. */
-        name: string;
-        /** The set of valid coded values. */
-        codedValues: CodedValue[];
-    }
-    interface CodedValue {
-        /** The human-readable name for the coded value. */
-        name: string;
-        /** The unique code for the coded value. */
-        code: any;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * The drawingInfo object contains drawing information for a feature collection or a single layer in a map service. This object is used in LayerDefinition.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface DrawingInfo {
-        /** A renderer object that provides the symbology for the layer. */
-        renderer?: Renderer;
-        /**
-         * Indicates whether symbols should stay the same size in screen units as you zoom in.
-         * A value of true means the symbols stay the same size in screen units regardless of the map scale.
-         */
-        fixedSymbols?: boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * A feature of the map.
-     *
-     * Part of the Esri ArcGIS Server REST API. See http://resources.arcgis.com/en/help/rest/apiref/.
-     */
-    interface Feature {
-        /**
-         * The feature attributes. It is a JSON object that contains a dictionary of name-value pairs.
-         * The names are the feature field names. The values are the field values and they can be any of the
-         * standard JSON types - string, number and boolean. Note that date values are encoded as numbers.
-         * The number represents the number of milliseconds since epoch (January 1, 1970) in UTC.
-         */
-        attributes?: {
-            [name: string]: any;
-        };
-        /** The feature geometry. */
-        geometry?: Geometry;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * Defines a layer of features whose geometry and attributes will be stored directly within the web map.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface FeatureCollection {
-        /** An array of Layer objects defining all the styling, geometry, and attribute information for the features. */
-        layers: Layer[];
-        /**  Indicates if this layer should be shown in the legend in client applications. The default is true. */
-        showLegend: boolean;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * Contains the geometry and attributes of features in a layer. This object is used with feature collections only. For more information, see Layer.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface FeatureSet {
-        /** An array of Feature objects, each one containing geometry and a set of attributes. */
-        features: Feature[];
-        /** One of the GeometryType constants. */
-        geometryType: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * Contains information about an attribute field. This field could come from a feature collection or a single layer in a map service. Used in layerDefinition.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface Field {
-        /** The field alias (human-readable name). */
-        alias: string;
-        /** A domain object that provides the attribute domain information for the field, if a domain exists. */
-        domain?: Domain;
-        /** Whether this field is editable. */
-        editable: boolean;
-        /** A number defining how many characters are allowed in a string field. */
-        length?: number;
-        /** A string defining the field name. */
-        name: string;
-        /** Whether this field can have a null value. */
-        nullable: boolean;
-        /** One of the EsriFieldTypes constants defined in the Essentials API. */
-        type: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * Geometry type constants used in ArcGIS REST API and web map specifications.
-     */
-    module GeometryType {
-        const POINT: string;
-        const MULTIPOINT: string;
-        const POLYLINE: string;
-        const POLYGON: string;
-        const EXTENT: string;
-        /**
-         * Converts from geometry type constants used in the esri JavaScript API to their web map equivalents.
-         */
-        function fromEsriGeometryType(type: string): string;
-    }
-    /**
-     * A geometry as defined in the ArcGIS REST API and web map specifications.
-     *
-     * See http://resources.arcgis.com/en/help/rest/apiref/geometry.html.
-     */
-    interface Geometry {
-        spatialReference?: SpatialReference;
-    }
-    interface Point extends Geometry {
-        x: number;
-        y: number;
-        z?: number;
-        m?: number;
-    }
-    interface MultiPoint extends Geometry {
-        hasM?: boolean;
-        hasZ?: boolean;
-        points: number[][];
-    }
-    interface Polyline extends Geometry {
-        hasM?: boolean;
-        hasZ?: boolean;
-        paths: number[][][];
-    }
-    interface Polygon extends Geometry {
-        hasM?: boolean;
-        hasZ?: boolean;
-        rings: number[][][];
-    }
-    interface Extent extends Geometry {
-        xmin?: number;
-        xmax?: number;
-        ymin?: number;
-        ymax?: number;
-        zmin?: number;
-        zmax?: number;
-        mmin?: number;
-        mmax?: number;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * This object allows overrides on pop-up content and drawing behavior for individual layers of a web service.
-     * When used with a feature collection, this object also contains geographic features and their attributes.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface Layer {
-        /** A featureSet object containing the geometry and attributes of the features in the layer.Used with feature collections only. */
-        featureSet?: FeatureSet;
-        /** A number indicating the index position of the layer in the WMS or map service. */
-        id?: number;
-        /** An array of LayerDefinition objects defining the attribute schema and drawing information for the layer. */
-        layerDefinition?: LayerDefinition;
-        /**
-         * A URL to a service that should be used for all queries against the layer. Used with hosted tiled map services on
-         * ArcGIS Online when there is an associated feature service that allows for queries.
-         */
-        layerUrl?: string;
-        /** A URL to a legend graphic for the layer.Used with WMS layers.The URL usually contains a GetLegendGraphic request. */
-        legendUrl?: string;
-        /** A unique name for the layer. Used with WMS layers, where it can sometimes be derived from the layer's index position. */
-        name?: string;
-        /** A user-friendly title for the layer that can be used in a table of contents. Used with WMS layers. */
-        title?: string;
-        /** A popupInfo object defining the pop-up window content for the layer. */
-        popupInfo?: PopupInfo;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * The LayerDefinition object defines the attribute schema and drawing information for a layer drawn using
-     * client-side graphics. This could include a feature collection, a CSV file referenced through the web, or
-     * a single layer in an ArcGIS map service. Also used for dynamic layers.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface LayerDefinition {
-        /** An optional SQL-based definition expression that narrows down the data to be displayed in the layer. Used with ArcGIS Server map services. */
-        definitionExpression?: string;
-        /** The name of the field that best summarizes the feature. Values from this field are used by default as the titles for pop-up windows. */
-        displayField?: string;
-        /** A drawingInfo object containing drawing, labeling, and transparency information for the layer. */
-        drawingInfo?: DrawingInfo;
-        /** An array of Field objects containing information about the attribute fields for the feature collection or layer. */
-        fields?: Field[];
-        /** The type of geometry used in the layer definition. One of the GeometryType constants. */
-        geometryType?: string;
-        /** Indicates whether attachments should be loaded for the layer. */
-        hasAttachments?: boolean;
-        /**
-         * A number representing the maximum scale at which the layer definition will be applied. The number is the scale's
-         * denominator; thus, a value of 2400 represents a scale of 1/2,400. A value of 0 indicates that the layer definition
-         * will be applied no matter how far you zoom in.
-         */
-        maxScale?: number;
-        /**
-         * A number representing the minimum scale at which the layer definition will be applied. The number is the scale's
-         * denominator; thus, a value of 2400 represents a scale of 1/2,400.
-         */
-        minScale?: number;
-        /**
-         * A string containing a unique name for the layer that could be displayed in a legend.
-         */
-        name?: string;
-        /**
-         * Indicates the name of the object ID field in the dataset.
-         */
-        objectIdField?: string;
-        /**
-         * An array of template objects describing features that can be created in this layer.
-         * Templates are used with map notes, other feature collections, and editable web-based CSV layers.
-         * They are not used with ArcGIS feature services, which already have feature templates defined in the service.
-         *
-         * Templates are defined as a property of the layer definition when there are no types defined; otherwise, templates
-         * are defined as properties of the types.
-         */
-        templates?: Template[];
-        /** Indicates whether the layerDefinition applies to a "Feature Layer" or a "Table". */
-        type?: string;
-        /**
-         * The name of the field holding the type ID for the features, if types exist for the dataset. Each available type has an ID,
-         * and each feature's typeIdField can be read to determine the type for each feature.
-         */
-        typeIdField?: string;
-        /**
-         * An array of Type objects available for the dataset. This is used when the typeIdField is populated.
-         *
-         * Types contain information about the combinations of attributes that are allowed for features in the dataset. Each feature
-         * in the dataset can have a type, indicated in its typeIdField.
-         */
-        types?: Type[];
-        /** Not documented in spec, but supported by ArcGIS online. Used for dynamic layers. */
-        source?: {
-            type: string;
-            mapLayerId?: number;
-        };
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * Defines the look and feel of pop-up windows when users click or query a feature.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface PopupInfo {
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * Spatial references are defined using a well-known ID (wkid) or well-known text (wkt).
-     *
-     * Part of the Esri ArcGIS REST API (see http://resources.arcgis.com/en/help/rest/apiref/geometry.html).
-     */
-    interface SpatialReference {
-        wkid: number;
-        wkt: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * Templates describe features that can be created in a layer. Templates are used with
-     * map notes, other feature collections, and editable web-based CSV layers. They are not
-     * used with ArcGIS feature services, which already have feature templates defined in the service.
-     *
-     * Templates are defined as a property of the layer definition when there are no types defined;
-     * otherwise, templates are defined as properties of the types.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface Template {
-        /** A detailed description of the template. */
-        description?: string;
-        /** An optional string that can define a client-side drawing tool to be used with this feature. See the web map specification for more details. */
-        drawingTool?: string;
-        /** A string containing a user-friendly name for the template. This name could appear on a menu of feature choices displayed in the client editing environment. */
-        name: string;
-        /** A feature object representing a prototypical feature for the template. */
-        prototype: Feature;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * Types contain information about the combinations of attributes allowed for features in the dataset.
-     * Each feature in the dataset can have a type, indicated in its typeIdField, which is used in LayerDefinition.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface Type {
-        /** A set of domain objects for each domain in the type. */
-        domains: {
-            [fieldName: string]: Domain;
-        };
-        /** A unique numerical ID for the type. */
-        id: number;
-        /** A string containing a user-friendly name for the type. This might be shown on a menu of feature types that editors can create in the collection. */
-        name: string;
-        /**
-         * An array of template objects describing features that can be created in this layer. Templates are used with map notes,
-         * other feature collections, and editable web-based CSV layers. They are not used with ArcGIS feature services, which
-         * already have feature templates defined in the service.
-         *
-         * Templates are defined as a property of the layer definition when there are no types defined; otherwise, templates are
-         * defined as properties of the types.
-         *
-         * You might have more than one template per type if the attributes of available features vary slightly. For example,
-         * you might have a type named Copper pipe containing two templates: one whose DIAMETER property is 12 and another whose
-         * DIAMETER property is 10.
-         */
-        templates: Template[];
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * An Esri web map.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface WebMap {
-        /**
-         * The set of operational layers in the web map.
-         * Layers are drawn based on the index position in the array; The first layer in the array is
-         * the first layer drawn, the next layer in the array is drawn on top of it, and so on.
-         */
-        operationalLayers: OperationalLayer[];
-        /**
-         * The map's basemap layer(s).
-         * Layers are drawn based on the index position in the array; The first layer in the array is
-         * the first layer drawn, the next layer in the array is drawn on top of it, and so on.
-         */
-        baseMap: BaseMap;
-        /**
-         * Bookmarks that are saved with the map.
-         */
-        bookmarks?: Bookmark[];
-        /** The web map specification version. At the time of this writing, this should be "1.7". */
-        version: string;
-        /**
-         * An arbitrary collection of name/value pairs used to store application data.
-         * Not part of the official web map specification, but used with AGOL.
-         */
-        applicationProperties?: {
-            [name: string]: any;
-        };
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * Provides a set of filters for use with {@link: ObjectFilter.filter} corresponding to web map interfaces.
-     */
-    class WebMapFilter {
-        app: ViewerApplication;
-        private _numberValidator;
-        private _urlValidator;
-        private _baseMap;
-        private _baseMapLayer;
-        private _bookmark;
-        private _color;
-        private _csvLayer;
-        private _domain;
-        private _inheritedDomain;
-        private _rangeDomain;
-        private _codedValueDomain;
-        private _drawingInfo;
-        private _feature;
-        private _featureCollection;
-        private _featureSet;
-        private _field;
-        private _geometry;
-        private _point;
-        private _multipoint;
-        private _polyline;
-        private _polygon;
-        private _extent;
-        private _layer;
-        private _layerDefinition;
-        private _locationInfo;
-        private _operationalLayer;
-        private _renderer;
-        private _simpleRenderer;
-        private _uniqueValueRenderer;
-        private _classBreaksRenderer;
-        private _heatmapRenderer;
-        private _serviceLayer;
-        private _spatialReference;
-        private _symbol;
-        private _simpleMarkerSymbol;
-        private _simpleLineSymbol;
-        private _simpleFillSymbol;
-        private _pictureMarkerSymbol;
-        private _pictureFillSymbol;
-        private _textSymbol;
-        private _template;
-        private _type;
-        private _webMap;
-        private _wmsLayer;
-        private _unknown;
-        constructor(app: ViewerApplication);
-        baseMap: any;
-        baseMapLayer: any;
-        bookmark: any;
-        color: any;
-        csvLayer: any;
-        domain: any;
-        inheritedDomain: any;
-        rangeDomain: any;
-        codedValueDomain: any;
-        drawingInfo: any;
-        feature: any;
-        featureCollection: any;
-        featureSet: any;
-        field: any;
-        geometry: any;
-        point: any;
-        multiPoint: any;
-        polyline: any;
-        polygon: any;
-        extent: any;
-        layer: any;
-        layerDefinition: any;
-        locationInfo: any;
-        operationalLayer: any;
-        popupInfo: any;
-        renderer: any;
-        serviceLayer: any;
-        simpleRenderer: any;
-        uniqueValueRenderer: any;
-        classBreaksRenderer: any;
-        heatmapRenderer: any;
-        protected _serviceLayerCommon: any;
-        spatialReference: any;
-        symbol: any;
-        simpleMarkerSymbol: any;
-        simpleLineSymbol: any;
-        simpleFillSymbol: any;
-        pictureMarkerSymbol: any;
-        pictureFillSymbol: any;
-        textSymbol: any;
-        template: any;
-        type: any;
-        webMap: any;
-        wmsLayer: any;
-        /**
-         * A generic filter for objects whose schema is unknown.
-         */
-        object: any;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    class WebMapManager {
-        app: ViewerApplication;
-        convert: WebMapConverter;
-        filter: WebMapFilter;
-        constructor(app: ViewerApplication);
-        /**
-         * Exports the current state of the viewer to ArcGIS web map format.
-         */
-        create(): Promise<WebMap>;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.webMap {
-    /**
-     * A WMS web map layer.
-     *
-     * Part of the Esri web map specification. See http://resources.arcgis.com/en/help/arcgis-web-map-json/.
-     */
-    interface WmsLayer extends OperationalLayer {
-        /** A string containing copyright and access information for a WMS layer. This is copied from the capabilities document exposed by the WMS. */
-        copyright: string;
-        /** The rectangular map extent that should be requested from the service, given in the format [[xmin, ymin],[xmax,ymax]]. */
-        extent: Extent;
-        /**
-         * An optional string containing the image format to be requested from a WMS. The default is png,
-         * and this property only needs to be specified if a different image format will be requested, such as jpg.
-         */
-        format: string;
-        /** The URL of the WMS map. You should also supply the url property, which is the URL of the WMS capabilities document. */
-        mapUrl: string;
-        /** A number defining the maximum height, in pixels, that should be requested from the service. */
-        maxHeight?: number;
-        /** A number defining the maximum width, in pixels, that should be requested from the service. */
-        maxWidth?: number;
-        /** An array of numbers containing well-known IDs for spatial references supported by the service. */
-        spatialReferences: [number];
-        /** A string containing the version number of the service. */
-        version: string;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
-    module ObjectFilter {
-        const FILTERED: {};
-        /**
-         * Filters an object graph according to the rules defined in a filter.
-         * Returns an object graph with the same structure as the original, minus any properties that were removed
-         *     by the filter. Note that prototype chains are NOT preserved by this method -- the result will be a
-         *     simple instance of Object. Cycles and shared object references within the input object will be
-         *     preserved in the output (presuming that they pass the filter).
-         * @param object The object graph to filter.
-         * @param filter A value that determines which properties of the original object are kept in the
-         * result. A filter can take on one of the following values:
-         *   1. A boolean value. If true, then the value will be retained, otherwise it will be discarded.
-         *   2. An object. Each property defined on the filter is itself a filter that is applied to the equivalent
-         * property on the original object. Any properties that are not defined in the filter are automatically
-         * excluded from the original object.
-         *   3. An instance of {@link validation.Validator}. The value will be checked against
-         * the validator's `validate()` method, and will be kept only if the validation is successful.
-         *   4. A callback function. The function will be invoked with the value, and the result will be used to
-         * perform further filtering.
-         *
-         * For array properties, the filter value can be an object containing a single property named `item`. In
-         * this case, the value of the filter's `item` property will be used to filter each item in the array, using
-         * the same rules as above.
-         * @param context Arbitrary data that will be passed to validators and callbacks within the filter.
-         */
-        function filter(object: Object, filter: any, context?: any): Promise<Object>;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.legend {
@@ -21764,12 +13163,12 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.legend {
         static registerLegendItemProvider(provider: LegendItemProvider): void;
         static getProviders(): Array<LegendItemProvider>;
         /**
-         * Convenience method to get legend item using a layerInfo object instance
+         * Convenience method to get legend item using a layerInfo object intance
          */
         static getLegendItemWhenAvailable(layer: infrastructure.gis.LayerInfo, callback: (legendItem: LegendItem) => void): void;
         /**
          * This function will invoke the provided callback only when (and if) the legend Item in question is retrieved. If it's not retrieved because of the legend
-         * module not being loaded or in case of some unforeseen error, it will simply do nothing. Programmers should be aware of this while calling this function.
+         * module not being loaded or in case of some unforseen error, it will simply do nothing. Programmers should be aware of this while calling this function.
          * @param uniqueId A uniqueId parameter which is of the form <mapServiceId.layerId> for layers or simply the mapService id in case of map services
          * @param callback A callback function which will be invoked if, and when, the requested legend item becomes available.
          */
@@ -21853,9 +13252,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.gis {
         domainInfo: DomainInfo;
         domain: esri.layers.Domain;
         isTypeField: boolean;
-        format: string;
-        timeZoneId: string;
-        displayTimeZoneId: string;
         /**
          * A list of the field's domains for each subtype, indexed by type ID.
          */
@@ -21867,7 +13263,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.gis {
         };
         constructor();
         static fromEsriField(esriField: esri.layers.Field, featureLayer?: esri.layers.FeatureLayer, gcxField?: geocortex.essentials.Field): FieldInfo;
-        static fromGcxField(gcxField: geocortex.essentials.Field): FieldInfo;
+        static fromGcxField(gcxField?: geocortex.essentials.Field): FieldInfo;
         isNumeric(): boolean;
         isDate(): boolean;
         isText(): boolean;
@@ -21878,11 +13274,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.gis {
             [typeID: string]: esri.layers.CodedValueDomain;
         };
         resolveCodedDomainValue(code: any, typeID?: string): string;
-        formatValue(value: any, typeID?: string): string;
-        /**
-         * Determines if values should be formatted as a number.
-         */
-        private _isNumericFormat();
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.gis {
@@ -21903,7 +13294,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.gis {
         isUserCreated: boolean;
         includeInLayerList: boolean;
         isExpanded: boolean;
-        relationships: esri.layers.Relationship[];
         /**
         * Whether the layer represented by this layerInfo object is currently visible or not.
         */
@@ -21950,7 +13340,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.gis {
         static fromViewerApp(app: geocortex.essentialsHtmlViewer.ViewerApplication): MapInfo;
         static fromEssentialsMap(map: geocortex.essentials.Map): MapInfo;
         getLayerInfos(): LayerInfo[];
-        getTableInfos(): LayerInfo[];
         getGraphicsLayers(): esri.layers.GraphicsLayer[];
         findMapServiceById(id: string): ServiceLayerInfo;
     }
@@ -22022,13 +13411,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
          */
         configuredVisible: boolean;
         /**
-         * A boolean indicating if this folder has been user created (not to be confused with the User Added Layers folder)
-         * If a folder has been user created, we do not apply theme changes to it. The state of this folder remains consistant across layer theme changes
-         */
-        isUserCreated: boolean;
-        private _layerVisibilityHandle;
-        /**
-         * Initializes a new instance of the {@link LayerListFolderItem} class.
+         * Initializes a new instance of the {@link geocortex.essentials.LayerListCategoryItem} class.
          */
         constructor(id: string, name: string, layerList: infrastructure.layerList.LayerList);
         /**
@@ -22042,20 +13425,8 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
         linkWithMapService(mapService: gis.ServiceLayerInfo): void;
         /** @private */
         _setupOpacityBindings(): void;
-        /**
-         * Remove any bindings and perform any necessary logic for item removal
-         */
-        cleanUp(): void;
-        /** @protected */
-        protected _handleLayerThemeChangingEvent(args: {
-            currTheme: geocortex.essentials.LayerTheme;
-            prevTheme: geocortex.essentials.LayerTheme;
-        }): void;
-        /** @protected */
-        protected _handleLayerThemeChangedEvent(args: {
-            currTheme: geocortex.essentials.LayerTheme;
-            prevTheme: geocortex.essentials.LayerTheme;
-        }): void;
+        /** @private */
+        private _handleLayerThemeChangedEvent(args);
         /**
          * When a layer theme is changed, all folder visibilities are initially set to true so the layer list will
          * respect the visibility change events fired by the javascript api on theme change.
@@ -22080,13 +13451,11 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
      */
     class LayerListLayerItem extends LayerListItem {
         private _themeSyncHandle;
-        private _layerVisibilityHandle;
-        private _zoomEndHandle;
         private _deferRefreshTimeoutMs;
         _forceSetAncestorVisibilityOperationActive: boolean;
         layer: geocortex.essentialsHtmlViewer.mapping.infrastructure.gis.LayerInfo;
         /**
-         * Creates a new instance of the {@link LayerListLayerItem} class.
+         * Creates a new instance of the {@link geocortex.essentials.LayerListLayerItem} class.
          */
         constructor(id: string, layer: geocortex.essentialsHtmlViewer.mapping.infrastructure.gis.LayerInfo, layerList: infrastructure.layerList.LayerList, type?: LayerListItemType);
         /**
@@ -22105,10 +13474,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
          * Removes the binding to the active theme
          */
         unbindFromActiveTheme(): void;
-        /**
-         * Remove any bindings and perform any necessary logic for item removal
-         */
-        cleanUp(): void;
         /** @private */
         private _subscribeEvents();
         /** @private */
@@ -22134,9 +13499,9 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
      */
     class LayerListGraphicsLayerItem extends LayerListLayerItem {
         /**
-         * Creates a new instance of the {@link LayerListLayerItem} class.
+         * Creates a new instance of the {@link geocortex.essentials.LayerListLayerItem} class.
          */
-        constructor(id: string, layer: gis.LayerInfo, layerList: infrastructure.layerList.LayerList);
+        constructor(id: string, layer: geocortex.essentialsHtmlViewer.mapping.infrastructure.gis.LayerInfo, layerList: infrastructure.layerList.LayerList);
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
@@ -22145,9 +13510,8 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
      */
     class LayerListItemCollection extends ObservableCollection<LayerListItem> {
         private _parent;
-        layerList: LayerList;
         /**
-         * Creates a new instance of the {@link LayerListItemCollection} class.
+         * Creates a new instance of the {@link geocortex.essentials.LayerListItemCollection} class.
          */
         constructor(parent: LayerListItem, childItemArray?: LayerListItem[]);
         /**
@@ -22236,12 +13600,11 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
      */
     class LayerListMapServiceItem extends LayerListItem {
         private _themeSyncHandle;
-        private _layerVisibilityHandle;
         private _forceSetAncestorVisibilityOperationActive;
         /**
-         * Creates a new instance of the {@link LayerListMapServiceItem} class.
+         * Creates a new instance of the {@link geocortex.essentials.LayerListMapServiceItem} class.
          */
-        constructor(id: string, mapService: gis.ServiceLayerInfo, layerList: infrastructure.layerList.LayerList);
+        constructor(id: string, mapService: geocortex.essentialsHtmlViewer.mapping.infrastructure.gis.ServiceLayerInfo, layerList: infrastructure.layerList.LayerList);
         /**
          * Set the visibility of this mapService item in the layer list
          * @param visible The visibility of this map service item
@@ -22256,10 +13619,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
          * Removes the binding to the active theme
          */
         unbindFromActiveTheme(): void;
-        /**
-         * Remove any bindings and perform any necessary logic for item removal
-         */
-        cleanUp(): void;
         /** @private */
         private _subscribeEvents();
         /** @private */
@@ -22283,11 +13642,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
          */
         private _createKmlFolders(item, folder, kmlLayer);
         private _updateVisibilityAtCurrentScale();
-        /**
-         * Set up the descriptive tooltips to include the name of the layer and to state whether the layer is in visible range.
-         * This is done for WCAG purposes.
-         */
-        protected _setTooltips(): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.gis.GisUtils {

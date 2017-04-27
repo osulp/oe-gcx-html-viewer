@@ -117,6 +117,7 @@ var oe;
 })(oe || (oe = {}));
 /// <reference path="../../../Libs/Framework.d.ts" />
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+/// <reference path="../../../Libs/arcgis-js-api.d.ts" />
 // module to fire off the StartEditingFeature command since it requires use of the HtmlViewer context not available in workflow.
 var oe;
 (function (oe) {
@@ -125,10 +126,39 @@ var oe;
         var DevelopmentRegistryModule = (function (_super) {
             __extends(DevelopmentRegistryModule, _super);
             function DevelopmentRegistryModule(app, lib) {
+                var _this = this;
                 _super.call(this, app, lib);
+                this.devSubTypesTable = {};
+                // When the layer list initializes we can grab a reference to the layer list object and save it for later.
+                // We'll need this to add our custom layer to the layer list.
+                this.app.eventRegistry.event("LayerListInitializedEvent").subscribe(this, function (sender) {
+                    // look for tables
+                    // sender.mapInfo.serviceLayers[0].serviceLayer.url
+                    _this.layerList = sender;
+                    //let devTypeTableURL = '';
+                    //let devSubTypeTableURL = '';
+                    _this.layerList.mapInfo.serviceLayers.forEach(function (sl) {
+                        if (sl.displayName === "Development Types") {
+                            _this.devTypeTableURL = sl.serviceLayer.url;
+                        }
+                        if (sl.displayName === "Development Subtypes") {
+                            _this.devSubTypeTableURL = sl.serviceLayer.url;
+                        }
+                    });
+                    _this._getDevSubTypes();
+                    // add query parameters to base urls
+                    //let query_params = 'query?where=1%3D1&f=json&token=';
+                    //devTypeTableURL = devTypeTableURL.split('?token=')[0] + query_params + devTypeTableURL.split('?token=')[1];
+                    //devSubTypeTableURL = devSubTypeTableURL.split('?token=')[0] + query_params + devSubTypeTableURL.split('?token=')[1];
+                    //$.when($.ajax(devTypeTableURL), $.ajax(devSubTypeTableURL))
+                    //    .done((dtt, dstt) => {
+                    //        console.log('done getting results from tables', dtt, dstt);
+                    //    });
+                });
             }
             DevelopmentRegistryModule.prototype.initialize = function (config) {
                 var _this = this;
+                this._layerFilters = config.layerFilters;
                 var site = this.app.site;
                 if (site && site.isInitialized) {
                     this._onSiteInitialized(site);
@@ -139,16 +169,105 @@ var oe;
                     });
                 }
             };
-            DevelopmentRegistryModule.prototype._onSiteInitialized = function (site) {
+            DevelopmentRegistryModule.prototype._getDevSubTypes = function () {
                 var _this = this;
+                // add query parameters to base urls
+                var query_params = '/query?where=1%3D1&outFields=Development_Type_ID,Development_Type,Development_SubType&f=json&token=';
+                var devTypeTableURL_query = this.devTypeTableURL.split('?token=')[0]
+                    + query_params
+                    + this.devTypeTableURL.split('?token=')[1];
+                var devSubTypeTableURL_query = this.devSubTypeTableURL.split('?token=')[0]
+                    + query_params
+                    + this.devSubTypeTableURL.split('?token=')[1];
+                $.when($.ajax(devTypeTableURL_query), $.ajax(devSubTypeTableURL_query))
+                    .done(function (dtt, dstt) {
+                    var devTypes = [];
+                    var devSubTypes = [];
+                    if (dtt.length) {
+                        devTypes = JSON.parse(dtt[0]).features
+                            ? JSON.parse(dtt[0]).features
+                            : [];
+                    }
+                    if (dstt.length) {
+                        devSubTypes = JSON.parse(dstt[0]).features
+                            ? JSON.parse(dstt[0]).features
+                            : [];
+                    }
+                    devTypes.forEach(function (dt) {
+                        _this.devSubTypesTable[dt.attributes["Development_Type"]] = {
+                            id: dt.attributes["Development_Type_ID"],
+                            subtypes: devSubTypes
+                                .filter(function (dst) {
+                                return dst.attributes["Development_Type_ID"] === dt.attributes["Development_Type_ID"];
+                            })
+                                .map(function (dstm) {
+                                return dstm.attributes["Development_Subtype"];
+                            })
+                        };
+                    });
+                });
+            };
+            DevelopmentRegistryModule.prototype._processAttributeFilter = function (attributes) {
+                var _this = this;
+                var layerFilters = this._layerFilters;
+                if (attributes.length > 0) {
+                    var devType = attributes.filter(function (f) { return f.name.value === 'dst_cat'; }).length > 0 ? attributes.filter(function (f) { return f.name.value === 'dst_cat'; })[0].value.value : '';
+                    if (devType !== '') {
+                        var filteredFields = attributes.filter(function (f) {
+                            if (f.name.value === 'subcat') {
+                                if (_this.devSubTypesTable && f.valueOptions) {
+                                    console.log('check', _this.devSubTypesTable[devType]);
+                                    var filteredCodedValues = f.domain.codedValues.filter(function (cd) {
+                                        return _this.devSubTypesTable[devType].subtypes.indexOf(cd.name) !== -1;
+                                    });
+                                    f.valueOptions.value = filteredCodedValues;
+                                    f.domain.codedValues = filteredCodedValues;
+                                }
+                            }
+                            return layerFilters[devType] ? layerFilters[devType].indexOf(f.name.value) !== -1 : true;
+                        });
+                        return filteredFields;
+                    }
+                }
+                else {
+                    return [];
+                }
+            };
+            DevelopmentRegistryModule.prototype._onSiteInitialized = function (site) {
                 this.app.commandRegistry.command("showFeatureEditForm").register(this, function () {
                     var collection = this.app.featureSetManager.getCollectionById("add_feature");
                     var feature = null;
                     if (collection.featureSets.length() > 0) {
                         if (collection.featureSets.getAt(0).features.length() > 0) {
                             feature = collection.featureSets.getAt(0).features.getAt(0);
-                            _this.app.commandRegistry.command("StartEditingFeature").execute(feature);
+                            this.app.commandRegistry.command("StartEditingFeature").execute(feature);
                         }
+                    }
+                });
+                this.app.eventRegistry.event("ViewContainerActivatedEvent").subscribe(this, function (args) {
+                    if (args.id === "FeatureEditingContainerView") {
+                        if (args.childRegions.length > 0) {
+                            if (args.childRegions[0].views.length > 1) {
+                                var fields = args.childRegions[0].views[1].viewModel.form.value.fields.getItems();
+                                if (fields.length > 0) {
+                                    var filteredFields = this._processAttributeFilter(fields);
+                                    if (filteredFields.length > 0) {
+                                        args.childRegions[0].views[1].viewModel.form.value.fields.set(filteredFields);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                this.app.eventRegistry.event("FeatureDetailsInvokedEvent").subscribe(this, function (args) {
+                    var filteredAttributes = this._processAttributeFilter(args.attributes.getItems());
+                    if (filteredAttributes) {
+                        var filteredAttrNames = filteredAttributes.map(function (fa) { return fa.name.value; });
+                        args.attributes.getItems().forEach(function (attr) {
+                            if (filteredAttrNames.indexOf(attr.name.value) === -1) {
+                                attr.visible.set(false);
+                            }
+                        });
                     }
                 });
             };

@@ -1,11 +1,15 @@
 /// <reference path="arcgis-js-api.d.ts" />
-/// <reference path="modernizr.d.ts" />
-/// <reference path="bluebird.d.ts" />
 /// <reference path="framework.d.ts" />
 /// <reference path="dojo.d.ts" />
 /// <reference path="LayerTheme.Rest.d.ts" />
 /// <reference path="BaseMap.Rest.d.ts" />
 /// <reference path="LayerList.Rest.d.ts" />
+/// <reference path="Documents.Rest.d.ts" />
+/// <reference path="TimeSlider.Rest.d.ts" />
+/// <reference path="ServiceDiscovery.Rest.d.ts" />
+/// <reference path="modernizr.d.ts" />
+/// <reference path="bluebird.d.ts" />
+/// <reference path="jquery.d.ts" />
 /// <reference path="Chart.Rest.d.ts" />
 /// <reference path="Charting.Infrastructure.d.ts" />
 declare module geocortex.essentials {
@@ -18,7 +22,7 @@ declare module geocortex.essentials {
     * 2. The initialize method is called by something looking to initialize the resource.
     * 3. The subclass asynchronously calls a REST endpoint.
     * 4. Once the asynchronous call has completed, sets the {@link isInitialized} property to true.
-    * 5. If the asynchronous call returned an error, sets the {@link initializationFailure} property to the exception and fires the {@link initializationFailed} event.
+    * 5. If the asynchronous call returned an error, sets the {@link initializationFailure} property to the exception and fires the {@link onInitializationFailed} event.
     * 6. The object fires the {@link onInitialized} event, regardless of whether there were errors or not.
     */
     class AsyncInitializable {
@@ -47,7 +51,7 @@ declare module geocortex.essentials {
          * Initializes a new instance of the {@link geocortex.essentials.AsyncInitializable} class.
          * @param url The remote endpoint to initialize against, typically a REST endpoint serving JSON responses.
          */
-        constructor(url: string);
+        constructor(url?: string);
         /**
          * Initializes the {@link geocortex.essentials.AsyncInitializable}.
          * This is an asynchronous method, you may subscribe to the {@link onInitialized}
@@ -114,7 +118,18 @@ declare module geocortex.essentials.utilities {
          * Gets the server host for a given URI.
          */
         static getHost(uri: string): string;
+        /**
+         * Appends to the path of a url (while preserving the query string, hash, etc).
+         * @param url The url.
+         * @param pathPart The path to append onto the url.
+         */
         static appendToPath(url: string, pathPart: string): string;
+        /**
+         * Removes the specified query parameters from a url.
+         * @param url The url.
+         * @param parameters The parameters (keys) to remove from the url.
+         */
+        static removeQueryParameters(url: string, ...parameters: string[]): string;
     }
 }
 declare module geocortex.essentials.utilities {
@@ -140,6 +155,13 @@ declare module geocortex.essentials.utilities {
          * @param mapService The {@link MapService} to use when substituting a value.
          */
         static replaceMapServicetokens(match: string, mapService: geocortex.essentials.MapService): string;
+        /**
+         * Rest configuration object date strings are converted to the form "/Date(<ms since epoch time>)/" - even when the rest
+         * endpoint returns an ISO formatted date. This  will parse the string and convert it to a date object.
+         * @param restDateString The date string formatted as "/Date(<ms since epoch time>)/"
+         * @return A Date object created by parsing the given string or null on error.
+         */
+        static getDateFromRestDateString(restDateString: string): Date;
     }
 }
 declare module geocortex.essentials {
@@ -274,9 +296,11 @@ declare module geocortex.essentials {
         id: string;
         /** URI to an icon representation of this map service, for display in client applications. */
         iconUri: string;
+        /** Optional URI to a map service supporting the exportTiles operation to represent this basemap as a TPK. */
+        exportTilesMapServiceUri: string;
         /** The properties of the {@link BaseMap}, as defined by the administrator on the server. */
         properties: any;
-        /** The collection of services that belong to this base map. */
+        /** The collection of services that belong to this basemap. */
         services: BaseMapService[];
         constructor(essentialsMap: Map);
     }
@@ -288,7 +312,7 @@ declare module geocortex.essentials {
     class BaseMapService {
         /** The map service. */
         mapService: MapService;
-        /** Reserved for future use, such as per-base map opacity settings. */
+        /** Reserved for future use, such as per-basemap opacity settings. */
         constructor(mapService: MapService);
     }
 }
@@ -303,723 +327,6 @@ declare module geocortex.essentials.catalog {
         isDynamic: boolean;
         /** If the layer is visible. */
         visible: boolean;
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * An object that represents the options for exporting the map image.
-     */
-    class ExportMapImageOptions {
-        /** The default output format of the generated map image. */
-        defaultOutputFormat: string;
-        /** Indicates whether including georeference data in the export is allowed. */
-        allowIncludeGeoreferenceData: boolean;
-        /**
-         * Initializes a new instance of the {@link ExportMapImageOptions} class.
-         * @param defaultOutputFormat The default output format of the generated map image.
-         * @param allowIncludeGeoreferenceData Indicates whether including georeference data in the export is allowed.
-         */
-        constructor(allowIncludeGeoreferenceData: boolean, defaultOutputFormat?: string);
-    }
-}
-/**
- * Environment Type for Bing services.
- * @private
- */
-declare module geocortex.essentials.exportMap.BingEnvironment {
-    /** Represents the production environment. */
-    var PRODUCTION: string;
-}
-declare module geocortex.essentials.exportMap {
-    /**
-     * Represents the dynamic definition of a layer that has been added to the map.
-     * @private
-     */
-    interface ExportDynamicMapLayerDefinition {
-        /** Arbitrary drawing info for the layer to include in the printing request made to Essentials. */
-        drawingInfo?: esri.layers.LayerDrawingOptions;
-        /** The dynamic source for this layer. Used so Essentials can create the dynamic layer. */
-        source?: esri.layers.LayerSource;
-        /** Display name for this layer. */
-        displayName?: string;
-        /** The current definition expression for this layer, if it has one. */
-        definitionExpression?: string;
-    }
-}
-declare module geocortex.essentials.exportMap {
-    /**
-     * Represents a feature to include in the exported map.
-     * @private
-     */
-    interface ExportFeature {
-        /** The geometry of the feature to export .*/
-        geometry: any;
-        /** The exportable representation of the feature's symbol. */
-        symbol: ExportSymbol;
-        /** The attributes of the feature to export. */
-        attributes: any;
-    }
-}
-declare module geocortex.essentials.exportMap {
-    /**
-     * Represents a layer to export, including any exportable features belonging to that layer and present in the viewer on the client side.
-     * @private
-     */
-    interface ExportLayer {
-        /** The definition of the layer's metadata relevant to the export. */
-        layerDefinition: ExportMapLayerDefinition;
-        /** Collection of serialized graphics. */
-        featureSet: ExportLayerFeatureSet;
-    }
-}
-declare module geocortex.essentials.exportMap {
-    /**
-     * Represents a set of features to export.
-     * @private
-     */
-    interface ExportLayerFeatureSet {
-        /** A string representing the type of geometry contained in the features array. */
-        geometryType: string;
-        /** An array of {@link ExportFeature}. */
-        features: ExportFeature[];
-    }
-}
-declare module geocortex.essentials.exportMap {
-    /**
-     * Represents a layer included in the export map.
-     * @private
-     */
-    interface ExportMapLayerDefinition {
-        /** The name of the layer.*/
-        name: string;
-        /** Optional id of this layer. */
-        id?: number;
-        /** The definition expression for the export dynamic layer. Brought out of layerDefinition for Essentials. */
-        layerDef?: string;
-        /** This looks like it was being used by some piece of ExportMapTask and so it exists both here and in the underlying layerDefinition */
-        drawingInfo?: any;
-        /** The display name for this layer. */
-        displayName?: string;
-        /** The dynamic definition for this layer. */
-        layerDefinition?: ExportDynamicMapLayerDefinition;
-        /** A string representing the type of geometry contained in the export layer's features array. */
-        geometryType: string;
-    }
-}
-declare module geocortex.essentials.exportMap {
-    /**
-     * Represents an instance of a symbol present in the exported map.
-     * @private
-     */
-    interface ExportSymbol {
-        /** The URL of the symbol, if it's a {@link esri.symbols.PictureMarkerSymbol} */
-        url: string;
-        /** The base64 encoded representation of the image, if it was available. If not, {@link url} should be used. */
-        data: string;
-        /** The x axis offset. */
-        xoffset: number;
-        /** The y axis offset. */
-        yoffset: number;
-        /** Image height. */
-        height: number;
-        /** Image width. */
-        width: number;
-        /** Angle of the symbol. */
-        angle: number;
-        /**  The type of symbol. */
-        type: string;
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * Describes an object that represents feature clustering settings for a map service.
-     */
-    interface FeatureCluster {
-        /**
-         * Whether Feature Clustering is currently enabled or not.
-         */
-        enabled: boolean;
-        /**
-         * Whether the user has the ability to turn clustering on/off.
-         */
-        userCanToggle: boolean;
-        /**
-         * Radius (in pixels) to group features into clusters by.
-         */
-        radius: number;
-        /**
-         * Maximum number of features for a cluster to contain.
-         */
-        maximumFeatures: number;
-        /**
-         * Background Color of clusters.
-         */
-        backgroundColor: number[];
-        /**
-         * Color of label text for clusters.
-         */
-        labelColor: number[];
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * Describes an object that represents feature heat map settings for a map service.
-     */
-    interface FeatureHeatMap {
-        /**
-         * Whether or not the feature heat map settings are enabled.
-         */
-        enabled: boolean;
-        /**
-         * Whether or not the end users can enable or disable feature heat maps.
-         */
-        userCanToggle: boolean;
-        /**
-         * Whether or not the feature heat map will respect the layer's scale range.
-         */
-        respectScaleRange: boolean;
-        /**
-         * A list of gradient colors represented as a number list in the form [R, G, B, A] to use for the heat map colors.
-         */
-        gradient: number[][];
-        /**
-         * A list of ratios to be used as color stops for the feature heat map.
-         */
-        offset: number[];
-        /**
-         * The heat radius (in pixels) for the feature heat map.
-         */
-        intensity: number;
-        /**
-         * The name of the attribute field used to weight the heatmap points.
-         */
-        field?: string;
-        /**
-         * The layer's default renderer.
-         */
-        defaultRenderer?: esri.renderer.Renderer;
-        /**
-         * The layer's default minimum scale range.
-         */
-        defaultMinScale?: number;
-        /**
-         * The layer's default maximum scale range.
-         */
-        defaultMaxScale?: number;
-    }
-}
-declare module geocortex.essentials {
-    /** Args for the layerThemeChangingEvent and layerThemeChangedEvent thrown by the {@link geocortex.essentials.LayerThemesInfo} object */
-    interface LayerThemeEventArgs {
-        currTheme: geocortex.essentials.LayerTheme;
-        prevTheme: geocortex.essentials.LayerTheme;
-    }
-}
-declare module geocortex.essentials.utilities {
-    /**
-     * Represents an error resulting from an image encoding operation.
-     */
-    interface EncodeImageError {
-        /** The URL which the image was encoded from. */
-        url: string;
-        /** Any errors which occured. */
-        error: any;
-    }
-}
-declare module geocortex.essentials.utilities {
-    /**
-     * Represents a successful result of an image encoding operation.
-     */
-    interface EncodeImageResult {
-        /** The URL which the image was encoded from. */
-        url: string;
-        /** The base64 data. */
-        data: string;
-    }
-}
-declare module geocortex.essentials.exportMap {
-    /**
-     * Represents a collection of features to export, modeled by a collection of layers bearing metadata and feature collections.
-     * @private
-     */
-    interface ExportFeatureCollection {
-        layers: ExportLayer[];
-    }
-}
-/**
- * @private
- * String constants that represent constants used by Esri's Web Map builder.
- */
-declare module geocortex.essentials.exportMap.ExportMapTypes {
-    var WEBTILED: string;
-    var BINGAERIAL: string;
-    var BINGAERIALLABELS: string;
-    var BINGROADS: string;
-    var BINGHYBRID: string;
-}
-declare module geocortex.essentials.exportMap {
-    /**
-     * Export options pertaining to print/render settings.
-     * @private
-     */
-    interface ExportOptions {
-        /** The desired resolution of output image, in DPI (Dots Per Inch). */
-        dpi: number;
-        /** Array of dimensions equal to `{[Width],[Height]}`. */
-        outputSize: number[];
-    }
-}
-declare module geocortex.essentials.exportMap {
-    /**
-     * Layout options for exporting printable maps.
-     * @private
-     */
-    interface ExportLayoutOptions {
-        /** The id of the selected grid to overlay on the output image. */
-        grid: string;
-    }
-}
-declare module geocortex.essentials.exportMap {
-    /**
-     * Represents options to apply to the exported map.
-     * @private
-     */
-    interface ExportMapOptions {
-        /** The map scale. */
-        scale: number;
-        /** The extent of the map. */
-        extent: esri.geometry.Extent;
-        /** The extent of the map. */
-        spatialReference?: esri.SpatialReference;
-        /** The rotation of the map. */
-        rotation?: number;
-        /** Array of time ticks equal to `{BeginTime, EndTime}`. */
-        time?: number[];
-    }
-}
-declare module geocortex.essentials.exportMap {
-    /**
-     * Represents a {@link MapService} bundled for exporting to Essentials for rendering/printing.
-     * @private
-     */
-    interface ExportMapService {
-        /** The ID of the corresponding {@link MapService}. */
-        id: string;
-        /** Opacity to render the {@link MapService} with, ranging from `0` to `1`, where `0` is completely transparent and `1` is fully opaque. */
-        opacity: number;
-        /** The visibility of the corresponding {@link MapService}. Set to `true` is the service is visible, and `false` if not. */
-        visibility?: boolean;
-        /** The URL of the corresponding {@link MapService}. */
-        url?: string;
-        /** IDs of any visible layers belonging to the service.*/
-        visibleLayers?: number[];
-        /** The map service type that this represents. */
-        type?: string;
-        /** A representation of the added dynamic or feature layers. */
-        layers?: any;
-        /** The server type for a Bing service. */
-        serverType?: string;
-        /** The service token if one exists. */
-        token?: string;
-        /** Arbitrary drawing info for consumption by Essentials. */
-        drawingInfo?: any;
-        /** Layer definition for the layers belonging to the {@link MapService}. */
-        layerDefinition?: any;
-        /** The ID of an essentials map service populated based on the `attributionDataUrl` property. */
-        mapServiceId?: string;
-        /** A collection representing layers to export and print and the feature graphics they contain. */
-        featureCollection?: ExportFeatureCollection;
-        /** A `WHERE` clause representing the layer's definition expression. */
-        where?: string;
-        /**
-         * The minimum scale a layer can be visible at.
-         */
-        minScale?: number;
-        /**
-         * The maximum scale a layer can be visible at.
-         */
-        maxScale?: number;
-    }
-}
-declare module geocortex.essentials.exportMap {
-    /**
-     * Represents an object that is sent to Essentials for printing/exporting. It is a mashup of Essentials and Esri JSON.
-     * @private
-     */
-    interface ExportContext {
-        /** Contains options related to the desired state of the printed map. */
-        exportOptions: ExportOptions;
-        /** Contains options related to the desired layout and look of the printed map. */
-        layoutOptions: ExportLayoutOptions;
-        /** Contains options related to the desired location and extent of the printed map. */
-        mapOptions: ExportMapOptions;
-        /**
-         * Representation of the {@link geocortex.essentials.MapService}.
-         */
-        operationalLayers: ExportMapService[];
-        /** The ExportContext version. */
-        version?: string;
-        /** The current Geocortex Essentials product version. */
-        product?: string;
-    }
-}
-/**
- * Contains models and operations used in exporting map images and running print jobs.
- * @private
- */
-declare module geocortex.essentials.exportMap {
-}
-declare module geocortex.essentials.exportMap {
-    /**
-     * Used for exporting a printable representation of the current state of an {@link esri.Map}.
-     * @private
-     */
-    class ExportMapTask {
-        /**
-         * A resource which the Essentials ExportContext print will use. Can be of type {@link Map}, {@link PrintTemplate} or {@link Report}.
-         */
-        resource: essentials.Map | PrintTemplate | Report;
-        private _esriMap;
-        private _essentialsRestUrl;
-        private _site;
-        private _internalLayerIdsToRemove;
-        /**
-         * Creates an instance of a {@link ExportMapTask}.
-         * @param resource A resource which the Essentials ExportContext print will use. Can be of type {@link Map}, {@link PrintTemplate} or {@link Report}.
-         */
-        constructor(resource: Map | PrintTemplate | Report);
-        /**
-         * Infers an {@link ersi.Map}, Essentials REST URL and Essentials Site needed to run the ExportContext operation.
-         * @param resource A resource which the Essentials {@link ExportContext} print will use.
-         */
-        private _populateFromResource(resource);
-        /**
-         * Generates a link to a map image with the given parameters and generated by Essentials.
-         * @param buildParameters The {@link ExportMapParameters} which will be used when creating the printed map.
-         */
-        generateMapImageUrl(buildParameters: ExportMapParameters): dojo.Deferred;
-        /**
-         * Gets a printing definition for an esri Map.
-         * @param printingTask The {@link PrintTask}. This will be used to generate the raw {@link ExportContext} object.
-         * @param map A {@link esri.Map} which will have a printing definition generated for.
-         * @return An {@link ExportContext} object representing the map's printing state.
-         */
-        private _getWebMap(printingTask, map);
-        /**
-         * Gets a printing definition for an {@link esri.Map}.
-         * @return An {@link ExportContext} object representing the map's printing state.
-         */
-        private _getPrintingObjectForEssentials();
-        /**
-         * Removes any layers from the printing context which are not to be printed. Ie: Snapping layers
-         * @param exportContext The {@link ExportContext} which will be modified.
-         */
-        private _removeInternalLayers(exportContext);
-        /**
-         * Converts picture marker symbols from relative urls into encoded data or absolute urls.
-         * @param exportContext The {@link ExportContext} which will be modified.
-         */
-        private _convertSymbolsToBase64(exportContext);
-        /**
-         * Measurement markup needs to be transformed. We need to replace the objects which were created by ESRI with our own which are modified by {@link utilities.PrintUtilities}
-         * @param exportContext The {@link ExportContext} which will be modified.
-         */
-        private _adjustMeasurementSymbols(webMapObject);
-        /**
-         * Text markup needs to be transformed. We need to replace the objects which were created by ESRI with our own which are modified by {@link utilities.PrintUtilities}
-         * @param webMapObject The {@link ExportContext} which will be modified.
-         */
-        private _adjustText(webMapObject);
-        /**
-         * Explicitly sets the visibility of each service layer. Otherwise, Essentials will use the service's default
-         * visibility as configured in the site.
-         */
-        private _setServiceVisibilities(webMapObject);
-        /**
-         * Dynamic Layers need to have their LayerDefinitions changed so Essentials can understand them.
-         * @param exportContext The {@link ExportContext} which will be modified.
-         */
-        private _handleDynamicLayerDefs(exportContext);
-        /**
-         * Feature Layers need some special attential. Esri builds them for us 99%, we just need to move some properties around.
-         * @param exportContext The {@link ExportContext} which will be modified.
-         */
-        private _handleFeatureLayers(exportContext);
-        /**
-         * Removes any -1 values from visible layers array.
-         * A value of -1 will be present if no layers are checked as visible in a map service.
-         * @param exportContext The {@link ExportContext} which will be modified.
-         */
-        private _cleanOutVisibility(exportContext);
-        /**
-         * Modifies potential error causing configuration for WebTiledLayers and BingMaps into Essentials readable config.
-         * @param exportContext The {@link ExportContext} which will be modified.
-         */
-        private _handleWebTiledLayers(exportContext);
-        /**
-         * Assigns an Essentials Map Service Id to the operational layers that contains
-         * an attribution data url. This is needed since the id property of the operational
-         * layer might not be accurate after we use esri's method to serialize the map.
-         * (e.g. the id for a WMS or WMTS layer would be something like 'layer0' instead of the proper id)
-         * @param exportContext The {@link ExportContext} which will be modified.
-         * @param esriMap The {@link esri.Map} that contains information about the attributionDataUrl from which the
-         * essentials map service Id can be extracted.
-         */
-        private _handleLayersAttribution(webMapObject, esriMap);
-        /**
-         * Removes the bitmap image(s) for heatmaps provided by ESRI from webMapObject,
-         * and adds operational layers to webMapObject that correspond to the underlying
-         * heatmap renderer(s) attached to the esriMap.
-         * @param webMapObject the {@link ExportContext} to be modified
-         * @param esriMap the {@link esri.Map} that contains the heatmap renderer(s) from which
-         * the appropriate export information will be extracted
-         */
-        private _handleHeatmapRenderer(webMapObject, esriMap);
-        /**
-         * Removes the ESRI-provided export for clusters and prepares clustering information for export to the server,
-         * where we re-query the feature data in order to provide clustering support for printing at different extents,
-         * including large-format printing.
-         * @param webMapObject the {@link ExportContext} to be modified
-         * @param esriMap the {@link esri.Map} that contains the cluster layer(s) from which
-         * the appropriate export information will be extracted
-         */
-        private _handleClusters(webMapObject, esriMap);
-        /**
-         * Removes any attributes from features which are not needed for printing. Attributes contribute to circular references and extra payload data.
-         * @param exportContext The {@link ExportContext} which will be modified.
-         */
-        private _removeAttributes(exportContext);
-        /**
-         * Important operations to run at the END of {@link ExportContext} modifications.
-         * Introduced as part of GVH-6002.
-         * @param exportContext The {@link ExportContext}.
-        */
-        private _finalizePrintingContext(exportContext);
-        /**
-         * Modifies the {@link ExportContext} for layers so that Essentials can associate them back to their original site configuration.
-         * @param exportContext the {@link ExportContext} to be modified.
-         * @param esriMap the {@link esri.Map} that contains the service layers.
-         * @param site The {@link essentials.Site}.
-         */
-        private _fixMapServiceIds(exportContext, esriMap, site);
-        /**
-         * Creates the request parameters for the ExportContext print operation.
-         * @param buildParameters The {@link WebMapBuilderParameters} which the print operation will be created from.
-         * @return A Promise which will contain the request parameters.
-         */
-        private _marshalContent(buildParameters);
-    }
-}
-declare module geocortex.essentials.utilities {
-    /**
-     * Interoperability interface for modeling the results of {@link PromiseUtilities.settle}.
-     * This is a match for BlueBird's PromiseInspection object.
-     */
-    interface SettleInspection<T> {
-        /** Checks if the underlying promise was fulfilled at the creation time of this inspection object. */
-        isFulfilled(): boolean;
-        /** Checks if the underlying promise was rejected at the creation time of this inspection object. */
-        isRejected(): boolean;
-        /** Checks if the underlying promise was deferred at the creation time of this inspection object. */
-        isPending(): boolean;
-        /**
-         * Gets the fulfillment value of the underlying promise. Throws `TypeError` if the promise wasn't fulfilled at the creation time of this inspection object.
-         * @throws `TypeError`
-         */
-        value(): T;
-        /**
-         * Gets the rejection reason for the underlying promise. Throws `TypeError` if the promise wasn't rejected at the creation time of this inspection object.
-         * @throws `TypeError`
-         */
-        reason(): any;
-    }
-    /**
-     * Contains utilities for working with `Promise` objects, including strategies for interoperating with different implementations of `Promise`.
-     * For more information on Promises, see the [open standard](https://promisesaplus.com/).
-     */
-    class PromiseUtilities {
-        /**
-         * Based on BlueBird's `settle` function. Accepts an array of {@link Thenable} objects and returns a {@link Thenable} that is resolved when all of the
-         * given promises are in a finalized state (i.e. either resolved or rejected).
-         * @param promises An array of {@link Thenables} to settle.
-         */
-        static settle<T>(promises: Thenable<T>[]): Thenable<SettleInspection<T>[]>;
-        /**
-         * Based on BlueBird's `settle` function. Accepts an array of {@link Thenable} objects and returns a {@link Thenable} that is resolved when all of the
-         * given promises are in a finalized state (i.e. either resolved or rejected).
-         * @param promisePromises A promise of an array of {@link Thenables} to settle.
-         */
-        static settle<T>(promisePromises: Thenable<Thenable<T>[]>): Thenable<SettleInspection<T>[]>;
-        /** @private */
-        private static _settleImpl<T>(promises);
-    }
-}
-declare module geocortex.essentials.utilities {
-    /**
-     * Represents a `Promise`-like object. This interface is used for interoperability between different implementations of `Promise`.
-     *
-     */
-    interface Thenable<T> {
-        /**
-         * Adds a callback to be invoked upon successful resolution or erroneous completion of the asynchronous operation.
-         *
-         * ```
-         * doSomethingAsync()
-         *     .then(result => console.log("Success!"), error => console.log("Something went wrong."));
-         * ```
-         *
-         * @param onFulfilled The callback to invoke if the "thenable" resolved successfully.
-         * @param onRejected The callback to invoke if the "thenable" resolved erroneously.
-         * @param onProgress The progress handler to invoke as the underlying asynchronous operation progresses. **Note:** Not all implementations support this operation.
-         */
-        then<U>(onFulfilled: (value: T) => Thenable<U>, onRejected: (error: any) => Thenable<U>, onProgress?: (note: any) => any): Thenable<U>;
-        then<U>(onFulfilled: (value: T) => Thenable<U>, onRejected?: (error: any) => U, onProgress?: (note: any) => any): Thenable<U>;
-        then<U>(onFulfilled: (value: T) => U, onRejected: (error: any) => Thenable<U>, onProgress?: (note: any) => any): Thenable<U>;
-        then<U>(onFulfilled?: (value: T) => U, onRejected?: (error: any) => U, onProgress?: (note: any) => any): Thenable<U>;
-        /**
-         * Successfully resolves the "thenable" with the given value.
-         * @param val The resolved value that the asynchronous operation produced.
-         */
-        resolve(val: T): Thenable<T>;
-        /**
-         * Rejects the "thenable", invoking any attached rejection handlers and applying the supplied arguments.
-         * @param args Abritrary, optional arguments to pass. These typically represent the erroneous state that caused the operation to fail.
-         */
-        reject(...args: any[]): Thenable<T>;
-        /**
-         * Rejects the "thenable", invoking any attached rejection handlers and applying the supplied arguments.
-         * @param args Abritrary, optional arguments to pass. These typically represent the erroneous state that caused the operation to fail.
-         */
-        rejectWith(context: any, ...args: any[]): Thenable<T>;
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * ExtentManager arbitrates potentially conflicting {@link esri.Map}  navigation events. For example, a {@link Workflow} run on application start up may
-     * attempt to zoom the map to a particular location while a custom module attempts to navigate to another.
-     *
-     * In order to classify and prioritize competing map navigation requests, the {@link ExtentManager} offers an arbitrary system of navigation
-     * priorities. These are known as 'extent changes' and each carries a priority value based on the nature of the change (i.e. how 'important' it is).
-     *
-     * @docs-hide-from-nav
-     * @private
-     */
-    class ExtentManager {
-        private _map;
-        private _currentExtentChangePriority;
-        private _queuedExtentChangePriority;
-        private _queuedExtentChange;
-        private _extentChangeInProgress;
-        private _fitTiledMapsToExtent;
-        private _newLayers;
-        private _initialExtent;
-        private currentExtentChangeHandle;
-        private _firstMapResizeExecuted;
-        /**
-         * Initializes a new instance of the {@link ExtentManager} class.
-         * @param map The map that this {@link ExtentManager} arbitrates.
-         * @param fitToExtent Whether or not to force tiled maps to show up completely in the given map extent
-         */
-        constructor(map: esri.Map, fitToExtent?: boolean);
-        setInitialExtent(initialExtent: esri.geometry.Extent): void;
-        private _setInitialExtentImpl(initialExtent);
-        private _onResize(extent, width, height);
-        private _onReposition(x, y);
-        private _onExtentChange();
-        /**
-         * Registers the given layer with the extent manager so that it can wait until the layer has sucessfully loaded to change the extent.
-         * @param layer The layer to register.
-         */
-        registerLayer(layer: esri.layers.Layer): void;
-        /**
-         * Signals that the map has loaded, the initial extent is set after resizing the map appropriately and the extent manager is now allowed to arbitrate future extent changes.
-         */
-        firstResize(): void;
-        /** @private */
-        private _handleNextExtentChange();
-        /**
-         * Invokes the given function if there are no other extent changes in progress.
-         * If there are other extent changes in progress, the priority of this extent change must be
-         * greater than or equal to the priority of the current extent change for it to take effect.
-         *
-         * This methods allows for extent changes to be scheduled, but to not interfere with more "important" ones.
-         *
-         * @param extentChangeFunction The function to be executed if there are no higher priorities. This function most likely attempts to change the map extent.
-         * @param priority The priority to be applied to this operation
-         */
-        changeExtentWithPriority(extentChangeFunction: (map: esri.Map) => dojo.Deferred, priority?: number): void;
-        /**
-         * Changes the map to the given extent if there are no other higher priority extent changes in progress.
-         * If there are other extent changes in progress, the priority of this extent change must be
-         * greater than or equal to the priority of the current extent change for it to take effect.
-         * @param extent The extent to change to.
-         * @param priority The priority to be applied to this operation
-         */
-        setExtentWithPriority(extent: esri.geometry.Extent, priority?: number): void;
-        /**
-         * Centers the map to the given point if there are no other higher priority extent changes in progress.
-         * If there are other extent changes in progress, the priority of this extent change must be
-         * greater than or equal to the priority of the current extent change for it to take effect.
-         * @param center The point to center at.
-         * @param priority The priority to be applied to this operation
-         */
-        centerAtWithPriority(center: esri.geometry.Point, priority?: number): void;
-        /**
-         * Zooms the map to the given scale if there are no other extent changes in progress.
-         * If there are other extent changes in progress, the priority of this extent change must be
-         * greater than or equal to the priority of the current extent change for it to take effect.
-         * @param scale The scale to zoom to.
-         * @param priority The priority to be applied to this operation
-         */
-        setScaleWithPriority(scale: number, priority?: number): void;
-        /**
-         * Resizes the map if there are no other extent changes in progress, as the resize operation may interface with the extent change.
-         * If there are other extent changes in progress, the resize will wait for the current
-         * extent change to finish and prevent all other extent changes until the resize is finished.
-         * @param width The desired width of the map control.
-         * @param width The desired height of the map control.
-         * @param immediate Whether or not to resize immediately.
-         */
-        blockForResize(width: number, height: number, immediate?: boolean): void;
-        /**
-         * Repositions the map within the div if there are no other extent changes in progress.
-         * If there are other extent changes in progress, the reposition will wait for the current
-         * extent change to finish and prevent all other extent changes until the reposition is finished.
-         */
-        blockForReposition(): void;
-        private _isExtentChangeBlocked();
-        private _isRepositionBlocked();
-        private _isResizeBlocked();
-        private _hasLoaded();
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * Represents information about an Essentials {@link Layer}.
-     */
-    class EssentialsLayerInfo {
-        /** The {@link MapService} URL. */
-        mapServiceUrl: string;
-        /** The {@link MapService} ID. */
-        mapServiceId: string;
-        /** The security token of the service. */
-        token: string;
-        /** The value indicating whether the {@link Layer} is set to visible. */
-        isVisible: boolean;
-        /** The value indicating that the {@link Layer} is dynamic. */
-        isDynamic: boolean;
-        /** A dictionary of arbitrary properties. */
-        properties: {
-            [key: string]: any;
-        };
-        /** The {@link Layer} ID. */
-        id: string;
-        /** The name of the {@link Layer} */
-        name: string;
-        /** The alias to use for the {@link Layer} in client applications */
-        displayName: string;
-        /** The {@link Layer} URL. */
-        layerUrl: string;
     }
 }
 /**
@@ -1467,7 +774,7 @@ declare module geocortex {
             preventCache?: boolean;
         };
         /**
-         * If set to true, avoids the use of esri's {@link IdentityManager}, which can sometimes
+         * If set to true, avoids the use of Esri's `IdentityManager`, which can sometimes
          * interfere with certain authentication requests. */
         disableIdentityLookup?: boolean;
         /** Forces the use of the viewer proxy. */
@@ -1507,6 +814,8 @@ declare module geocortex {
     }
     /** @private */
     function _getExtensions(extensions: ExtensionParam[]): geocortex.essentials.Extension[];
+    /** @private */
+    function _extensionsToJson(extensions: geocortex.essentials.Extension[]): ExtensionParam[];
     /** @docs-hide-from-nav */
     interface PropertyParam {
         name: string;
@@ -1514,6 +823,8 @@ declare module geocortex {
     }
     /** @private */
     function _getProperties(properties: PropertyParam[]): any;
+    /** @private */
+    function _propertiesToJson(properties: any): PropertyParam[];
 }
 declare module geocortex.essentials {
     /**
@@ -1867,906 +1178,7 @@ declare module geocortex.essentials.GeometryUtilities {
 }
 declare module geocortex.essentials {
     /**
-     * Represents a FeatureHyperlink configured on a layer by an Administrator.
-     */
-    class FeatureHyperlink {
-        /** Whether to URL encode replacement values in the uri property. */
-        encodeUriReplacementValues: boolean;
-        /** The URI of an image which represents the hyperlink being generated. */
-        iconUri: string;
-        /** The {@link geocortex.essentials.Layer} that this FeatureHyperlink belongs to. */
-        layer: Layer;
-        /** The name of the target browser window which the hyperlink result will populate (e.g., _blank). */
-        target: string;
-        /**  The text to display in place of the hyperlink URI. */
-        text: string;
-        /** The information shown to the user when the hyperlink is hovered over. */
-        toolTip: string;
-        /** A URI format string which can be used to dynamically insert field values within the URI. */
-        uri: string;
-        /**
-         * Initializes a new instance of the {@link geocortex.essentials.FeatureHyperlink} class.
-         * @param featureHyperlinkInfo Associative array of properties to use to populate the members of this object.
-         * @param layer The layer that this FeatureHyperlink is associated with.
-         */
-        constructor(featureHyperlinkInfo: FeatureHyperlink, layer: Layer);
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * A simple descriptor representing a {@link MapGrid}.
-     * A {@link MapGrid} is a series of vertical and horizontal lines with coordinate labels overlayed on top of a map, so that you can interpolate
-     * coordinates for a particular point.
-     */
-    class MapGrid {
-        /** A cross-application boundary identifier. */
-        id: string;
-        /** The user displayable name of the map grid. */
-        displayName: string;
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * An object that represents a unit of distance.
-     */
-    class DistanceUnit {
-        /** The display name of the {@link geocortex.essentials.DistanceUnit}. */
-        name: string;
-        /** The unit type. One of the available {@link geocortex.essentials.DistanceUnitType}s. */
-        type: string;
-        /**
-         * Initializes a new instance of the {@link DistanceUnit} class.
-         * @param name The display name of the {@link DistanceUnit}.
-         * @param type A string constant representing the official unit type. See {@link DistanceUnitType} for a list of supported units.
-         */
-        constructor(name: string, type: string);
-    }
-}
-/**
- * Contains a number of distance unit values.
- */
-declare module geocortex.essentials.DistanceUnitType {
-    var OTHER: string;
-    var INCHES: string;
-    var FEET: string;
-    var US_SURVEY_FEET: string;
-    var YARDS: string;
-    var MILES: string;
-    var NAUTICAL_MILES: string;
-    var MILLIMETERS: string;
-    var CENTIMETERS: string;
-    var DECIMETERS: string;
-    var METERS: string;
-    var KILOMETERS: string;
-    var DEGREES: string;
-    var RADIANS: string;
-    var GRADS: string;
-}
-declare module geocortex.essentials {
-    class Map extends AsyncInitializable {
-        /** The collection of {@link BaseMap}s for the map. */
-        baseMaps: BaseMap[];
-        /** The original URL of the Essentials map REST endpoint. */
-        originalUrl: string;
-        /** The esri.geometry.Extent which represents the full extent of the {@link Map}. */
-        fullExtent: esri.geometry.Extent;
-        /** The esri.geometry.Extent which represents the initial extent of the {@link Map}. */
-        initialExtent: esri.geometry.Extent;
-        /**
-         * Configuration parameter which controls whether to fit tiled maps to extent. When true, for maps that contain tiled map service layers,
-         * you are guaranteed to have the input extent shown completely on the map. The default value is false.
-         */
-        fitTiledMapsToExtent: boolean;
-        /** The collection of {@link geocortex.essentials.MapService} object. */
-        mapServices: MapService[];
-        /**
-         * A view of the map services which are filtered to only include the active services in the application. This will change when, for example,
-         * a layer theme is applied. If no filter (layer theme) is applied, then this collection will be the same as the mapServices collection.
-         **/
-        mapServicesFilteredView: MapService[];
-        /**
-         * The LayerThemesInfo for layer theme's which can be applied to this Map
-         */
-        layerThemesInfo: geocortex.essentials.LayerThemesInfo;
-        /** The primary {@link MapService} of the {@link Map}. */
-        primaryMapService: MapService;
-        /** The collection of supported export formats for the {@link Map}. */
-        supportedExportFormats: string[];
-        /** The {@link ExportMapImageOptions} which outline the options for exporting the map image. */
-        exportMapImageOptions: ExportMapImageOptions;
-        /** The {@link DistanceUnit} that is used by this map. This will be null for the overview map. */
-        units: DistanceUnit;
-        /** Whether esri service layers have yet been added to the {@link esri.Map} object */
-        serviceLayersAdded: boolean;
-        /** The {@link ExtentManager} that manages all extent changes for the esri map. */
-        extentManager: ExtentManager;
-        /** The spatial reference of the map. This should match the spatial reference of the Esri map */
-        spatialReference: esri.SpatialReference;
-        /**
-         * A boolean that manages whether or not the initial extent should be set when all map services have been added
-         * to the esri map or wait until another process manually calls setInitialExtent on the {@link ExtentManager}.
-         */
-        setExtentOnLoad: boolean;
-        /** The esri.Map of the {@link Map}.*/
-        private _esriMap;
-        /** @private */
-        private _onExportComplete;
-        /** @private */
-        private _onExportError;
-        /**
-         * Initializes a new instance of the {@link Map} class.
-         * @param url The URL to the REST endpoint of the {@link Map}.
-         */
-        constructor(url: string);
-        /**
-         * Returns the underlying {@link esri.Map}. */
-        getMap(): esri.Map;
-        /**
-         * Returns a flattened list of all the layers as defined by the {@link Site}.
-         */
-        allLayers(): Layer[];
-        /**
-         * Returns a flattened list of all the layers contained in the filtered mapService collection. (Filtered by Layer Theme settings)
-         */
-        filteredLayers(): Layer[];
-        /**
-         * Loads all the ServiceLayer objects into the ESRI layers collection.
-         * This function is called automatically as part of the {@link Site} initialization process. */
-        loadServiceLayersInMap(map: esri.Map): void;
-        /**
-         * Calculates the current scale of the map and returns it. This method just delegates to
-         * esri.geometry.getScale(), passing it values that corresponding to the current state of the map. */
-        calculateScale(): number;
-        /** @private */
-        private _addServiceLayers(esriMap);
-        /**
-         * Creates a MapService for every service layer provided and adds them to Essentials map.
-         * @param serviceLayers An array of service layers.
-         * @param serviceFunction The logical function of the {@link MapService}, either Base or Operational
-         */
-        addServiceLayers(serviceLayers: esri.layers.Layer[], serviceFunction: string): void;
-        /**
-         * Removes the MapService representing the service layer provided, from the Essentials MapServices array. Note: This will not remove it from the map.
-         * @param serviceLayer The esri service layer, whose corresponding mapService we want to remove
-         */
-        removeServiceLayer(serviceLayer: esri.layers.Layer): void;
-        /** @private */
-        _configureMapServices(mapServiceResults: MapService[], deepInitialize: boolean): void;
-        /** @private */
-        _configureObject(obj: {
-            mapServices: MapService[];
-            primaryMapServiceID: string;
-            initialExtent?: esri.geometry.Extent;
-            fullExtent?: esri.geometry.Extent;
-            units?: geocortex.essentials.DistanceUnit;
-            exportOptions?: geocortex.essentials.ExportMapImageOptions;
-            layerThemes?: RestLayerThemesInfo;
-            baseMaps?: RestBaseMap[];
-        }, deepInitialize?: boolean): void;
-        /**
-         * Find the {@link MapService} matching the specified ID.
-         * @param mapServiceId The ID of the MapService to find.
-         */
-        findMapServiceById(mapServiceId: string): MapService;
-        /**
-         * Sets one {@link Layer} as the exclusively visible layer.
-         * @param layer The layer to make the only visible layer.
-         */
-        setFeatureLayerExclusivelyVisible(layer: Layer): void;
-        /**
-         * Exports the {@link Map} using. This is an asynchronous method, you may provide delegates for completion or error information.
-         * @param exportParameters The export parameters.
-         * @param exportComplete The delegate that will be called when the export has completed
-         * (even if an error occurs). This delegate expects one argument: a String representing the URL of the exported file.
-         * @param exportError The delegate that will be called if an error occurs. This delegate expects an Error as argument.
-         */
-        exportMap(exportParameters: ReportParameters, exportComplete: (results: any) => void, exportError: (error: Error) => void): void;
-        /** @private */
-        private _exportRestComplete(results);
-        /** @private */
-        private _exportRestError(error);
-        /** @private */
-        private _layerLoadedUpdate(esriMap);
-        /**
-         * Applies layer catlog changes to the map.
-         * @param detailsResults The details object which was returned from the Layer Catalog endpoint.
-         */
-        applyCatalogLayersChange(detailsResults: any): void;
-        applyStartupTheme(): void;
-        /**
-         * Refreshes the mapServicesFilteredView collection and the layersFilteredView collection for each of the map services and constituent layers
-         */
-        refreshFilteredCollections(): void;
-        /**
-         * @private
-         * CORE-23: WKT from Site does not match text found in AGS Map. We must thus ensure that we always use the map's wkt and not the one returned by essentials. Also affects
-         * GVH-3186, GVH-3798, GVH-2416 and GVH-4243. This method will switch all spatial references in the site, map and elsewhere in the application to ensure compatibility throughout.
-         **/
-        private _switchSpatialReferenceGlobally(newSpatialReference);
-        /** @private */
-        private _applyCatalogChangesToWmsLayers(detailsResults);
-        /** @private */
-        private _applyCatalogChangesToDynamicLayers(detailsResults);
-        /**
-         * @private: Configure the LayerThemesInfo object from the rest response (if applicable).
-         */
-        private _configureLayerThemesInfo(restLayerThemesInfo);
-        private _addToFilteredView(mapService);
-        /**
-         * @private: The filter used for filtering each service based on layer theme settings
-         */
-        private _layerThemeMapServiceFilter(mapService);
-        /** @private */
-        private _configureBaseMaps(restBaseMaps);
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * Represents a configured scale in a {@link Report}.
-     */
-    class Scale {
-        /** The configured display name of this scale. */
-        displayName: string;
-        /** The configured value of this scale. */
-        scale: string;
-        /**
-         * Initializes a new instance of the {@link geocortex.essentials.Scale} class.
-         * @param displayName The display name of the {@link geocortex.essentials.Scale}.
-         * @param scale The scale.
-         */
-        constructor(displayName: string, scale: string);
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * Describes a resolution used in the generation of a {@link geocortex.essentials.Report}.
-     */
-    class Resolution {
-        /** Configured display name for the {@link Resolution} object. */
-        displayName: string;
-        /** DPI of this resolution. */
-        dpi: number;
-        /**
-         * Initializes a new instance of the {@link Resolution} class.
-         * @param displayName The display name of the {@link Resolution}.
-         * @param dpi The resolution in dots per inch.
-         */
-        constructor(displayName?: string, dpi?: number);
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * Represents a text field used in a {@link Report}.
-     */
-    class TextField {
-        /** The display name of the {@link TextField}. */
-        displayName: string;
-        /** The ID of the {@link TextField}. */
-        id: string;
-        /** Whether the {@link TextField} is a multiline field. */
-        multiline: boolean;
-        /** The value of the {@link TextField}. */
-        value: string;
-        /**
-         * Initializes a new instance of the {@link geocortex.essentials.TextField} class.
-         * @param id The ID of the text field.
-         * @param name The name of the text field.
-         * @param value The value of the text field.
-         * @param multiline Indicates whether the text field is a multiline field.
-         */
-        constructor(id: string, displayName: string, value: string, multiline: boolean);
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * A class to hold parameters that will be used by the {@link Report} and
-     * {@link PrintTemplate} classes to produce their output.
-     */
-    class ReportParameters {
-        /** The custom extent to use if the extentType property is set to customExtent. */
-        customExtent: esri.geometry.Extent;
-        /** The type of extent that will be used for the map image in the report. */
-        extentType: string;
-        /** The list of fields that are defined for the report. */
-        fields: TextField[];
-        /** The map grid to include in the report. */
-        grid: MapGrid;
-        /** The image hight in pixels. */
-        imageHeight: number;
-        /** The image width in pixels. */
-        imageWidth: number;
-        /** Indicates whether to include georeference data in the output. */
-        includeGeoreferenceData: boolean;
-        /** The graphics that will be used on the map image in the report.  */
-        mapGraphicsLayers: {
-            layers: {
-                elements: any[];
-                opacity: number;
-            }[];
-            symbols: esri.symbol.Symbol[];
-        };
-        /** The email address to which to send a notification upon print completion. */
-        notificationEmailAddress: string;
-        /** The format for the report output. */
-        outputFormat: string;
-        /** Array of feature ID strings on which to run the report. */
-        featureIds: string[];
-        /** The resolution that will be used to create the report. */
-        resolution: Resolution;
-        /** The scale that will be used for the map image in the report. */
-        scale: Scale;
-        /** The spatial reference in which to create the printed map. */
-        targetSpatialReference: esri.SpatialReference;
-        /** Indicates whether to use a transparent background when rendering the map image.*/
-        useTransparentBackground: boolean;
-        /**
-         * String constant representing the current extent of the map.
-         * @private
-         */
-        static CURRENT_EXTENT: string;
-        /**
-         * String constant representing a custom extent.
-         * @private
-         */
-        static CUSTOM_EXTENT: string;
-        /**
-         * String constant representing the full extent of the map.
-         * @private
-         */
-        static FULL_EXTENT: string;
-        /**
-         * String constant representing the initial extent.
-         * @private
-         */
-        static INITIAL_EXTENT: string;
-        /**
-         * Given an {@link esri.Map} and a {@link essentials.Map}, turns the {@link ReportParameters} into a JSON object
-         * ready for serialization.
-         */
-        toJson(esriMap: esri.Map, essentialsMap: Map): any;
-        /**
-         * Extracts the geometries and symbols from the map graphics layers.
-         * @param esriMap The {@link esri.Map} that contains the graphics layers.
-         */
-        populateMapGraphicsLayers(esriMap: esri.Map): void;
-        private _extractGraphicInformation(layer, layers, symbols);
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * Represents a {@link Report} for a specific {@link Layer}.
-     * A report displays information about some of the features of a specific {@link Layer}.
-     * When a report is generated, a {@link Query} must be provided that indicates which features to include in the report.
-     * Report generation requires a report template created by the Geocortex Report Designer and stored on the server.
-     */
-    class Report extends AsyncInitializable {
-        /** The description of the {@link Report}. */
-        description: string;
-        /** The display name of the {@link Report}. */
-        displayName: string;
-        /** The extensions of the {@link PrintTemplate}, as defined by an administrator. */
-        extensions: Extension[];
-        /** The ID of the {@link Report}.*/
-        id: string;
-        /** The visibility of the {@link Report}. */
-        visible: boolean;
-        /** The {@link Layer} that the {@link Report} belongs to. */
-        layer: Layer;
-        /** The properties of the {@link PrintTemplate}, as defined by an administrator. */
-        properties: any;
-        /** The collection of supported {@link Scale}s for the {@link Report}. */
-        supportedMapScales: Scale[];
-        /** The collection of supported output formats for the {@link Report}. */
-        supportedOutputFormats: string[];
-        /** The collection of supported {@link Resolution}s for the {@link Report}. */
-        supportedResolutions: Resolution[];
-        /** The collection of {@link TextField} objects for the {@link Report}. */
-        textFields: TextField[];
-        /** @private */
-        private _running;
-        /** @private */
-        private _onRunReportComplete;
-        /** @private */
-        private _onRunReportError;
-        /**
-         * Initializes a new instance of the {@link Report} class.
-         * @param url The URL to the REST endpoint of the {@link Report}.
-         */
-        constructor(url: string);
-        /**
-         * Whether the {@link Report} is currently running (being generated). */
-        isRunning(): boolean;
-        /**
-         * Runs the report using a {@link esri.tasks.Query} and the {@link ReportParameters}.
-         * This is an asynchronous method, you may provide delegates for completion or error information.
-         * @param query The {@link esri.tasks.Query} to use to select features from the {@link Layer} to report on.
-         * @param reportParameters The report parameters.
-         * @param runReportComplete The delegate that will be called when the report has finished running
-         * (even if an error occurs). This delegate expects one argument: a String representing the URL of the prepared report.
-         * @param runReportError The delegate that will be called if an error occurs. This delegate expects two arguments: a reference to the Report instance, and an Error.
-         */
-        run(query: esri.tasks.Query, reportParameters: ReportParameters, runReportComplete: (results: any) => void, runReportError: (error: Error) => void): void;
-        /** @private */
-        _configureObject(results: any, deepInitialize?: boolean): void;
-        /** @private */
-        private _runRestComplete(results);
-        /** @private */
-        private _runRestError(error);
-    }
-}
-/**
- * Contains string constants that represent a type of {@link Report}.
- */
-declare module geocortex.essentials.ReportType {
-    var LAYER_TEMPLATE_REPORT: string;
-    var MAP_TEMPLATE_REPORT: string;
-}
-declare module geocortex.essentials {
-    /**
-     * Represents the basic layer type of a {@link Layer}.
-     */
-    class LayerType {
-        static UNKNOWN: number;
-        static FEATURE_LAYER: number;
-        static RASTER_LAYER: number;
-        static GROUP_LAYER: number;
-        static GEO_RSS_LAYER: number;
-    }
-}
-declare module geocortex.essentials {
-    class EsriFieldTypes {
-        static esriFieldTypeSmallInteger: string;
-        static esriFieldTypeInteger: string;
-        static esriFieldTypeSingle: string;
-        static esriFieldTypeDouble: string;
-        static esriFieldTypeString: string;
-        static esriFieldTypeDate: string;
-        static esriFieldTypeOID: string;
-        static esriFieldTypeGeometry: string;
-        static esriFieldTypeBlob: string;
-        static esriFieldTypeRaster: string;
-        static esriFieldTypeGUID: string;
-        static esriFieldTypeGlobalID: string;
-        static esriFieldTypeXML: string;
-    }
-    class EssentialsFieldTypes {
-        static essentialsFieldTypeSmallInteger: string;
-        static essentialsFieldTypeInteger: string;
-        static essentialsFieldTypeSingle: string;
-        static essentialsFieldTypeDouble: string;
-        static essentialsFieldTypeString: string;
-        static essentialsFieldTypeDate: string;
-        static essentialsFieldTypeGUID: string;
-        static essentialsFieldTypeObject: string;
-    }
-    /**
-     * Represents an attribute of a spatial layer, as configured by Essentials.
-     */
-    class Field {
-        /** The field alias.*/
-        alias: string;
-        /** The type of data the field contains. */
-        dataType: string;
-        /** Alias to use when displaying the field's name. */
-        displayName: string;
-        /** Whether this field is a focus field or not. */
-        focusField: boolean;
-        /** The label, when used in a hyperlink. */
-        hyperlinkLabel: string;
-        /** Name of the field. */
-        name: string;
-        /** Whether the field will be searched as part of the layer search. */
-        searchable: boolean;
-        /** Whether the field is visible in reports. */
-        visible: boolean;
-        /**
-         * Initializes a new instance of the {@link Field} class.
-         * @param field A {@link Field}like object to clone.
-         */
-        constructor(fieldInfo: {
-            alias: string;
-            dataType: string;
-            displayName: string;
-            focusField?: boolean;
-            hyperlinkLabel: string;
-            name: string;
-            searchable?: boolean;
-            visible?: boolean;
-        });
-        /**
-         * Converts an ESRI field type to a Geocortex Essentials type which is a .NET type name.
-         * @returns esriFieldType Name of the system type that corresponds to ESRI field type.
-         * @param esriFieldType Name of the ESRI field type to convert.
-         */
-        static convertFromEsriType(esriFieldType: string): string;
-        /**
-         * Converts a Geocortex Essentials field type (which is a .NET type name) to an esri field type.
-         * @returns Name of the esri field type that corresponds to the Essentials type.
-         * @param geocortexType Name of the Geocortex Essentials field type to convert.
-         */
-        static convertToEsriFieldType(geocortexType: string): string;
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * Represents a parameter in a {@link geocortex.essentials.DataLink} relationship to an external data source.
-     */
-    class DataLinkParameter {
-        /** The name of the feature field of the {@link DataLinkParameter}. */
-        featureField: string;
-        /** The ID of the {@link geocortex.essentials.DataLinkParameter}. */
-        id: string;
-        /** The name of the {@link geocortex.essentials.DataLinkParameter}. */
-        name: string;
-        /** The type of the {@link geocortex.essentials.DataLinkParameter}. */
-        type: string;
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * Represents a DataLink as defined by a {@link geocortex.essentials.Layer}.
-     * A data link is a data relation between spatial attributes and tabular data from a foreign data source, such as a SQL database or a spreadsheet.
-     * {@link DataLink}s allow data from external data sources to be pulled into web mapping applications.
-     */
-    class DataLink extends AsyncInitializable {
-        /** The display name. */
-        displayName: string;
-        /**
-         * The collection of {@link geocortex.essentials.Extension}s associated with the data link.
-         * Extensions can be defined by the administrator on the server.
-         */
-        extensions: Extension[];
-        /** The ID of the {@link DataLink} */
-        id: string;
-        /** The visibility of the {@link DataLink}. */
-        visible: boolean;
-        /**
-         * Indicates whether the data fetched by the datalink represents a one to one relationship with the feature.
-         */
-        isOneToOne: boolean;
-        /** The {@link Layer} that this {@link DataLink} belongs to. */
-        layer: Layer;
-        /** The parameters of the data link. */
-        parameters: DataLinkParameter[];
-        /**
-         * Arbitrary properties associated with this {@link DataLink}.
-         * The properties are defined by the administrator on the server.
-         */
-        properties: any;
-        /** @private */
-        private _dataLinking;
-        /** @private */
-        private _onDataLinkingComplete;
-        /** @private */
-        private _onDataLinkingError;
-        /**
-         * Initializes a new instance of the {@link geocortex.essentials.DataLink} class.
-         * @param The URL to a DataLink endpoint.
-         */
-        constructor(url: string);
-        /**
-         * Gets whether the {@link geocortex.essentials.DataLink} is currently performing data linking.
-         * @return {boolean} True if datalinking is currently being performed, false otherwise.
-         */
-        isDataLinking(): boolean;
-        /**
-         * Performs the data linking operation using set of feature attributes required during the operation. This is an asynchronous method; you may provide delegates for completion or error information.
-         * @param featureSetParameters An esri.tasks.FeatureSet that contains the attributes defined in the parameters. The method uses only the required attributes and ignores any other attributes in the feature set.
-         * @param dataLinkingComplete The delegate that will be called when the operation has completed, even if an error occurs. This delegate expects one argument: an Object containing the result.
-         * @param dataLinkingError The delegate that will be called if an error occurs during the operation. This delegate expects two arguments: a reference to the DataLink instance, and an Error.
-         */
-        performDataLinking(featureSetParameters: any, dataLinkingComplete: (results: any) => void, dataLinkingError: (error: Error) => void): void;
-        /** @private */
-        _configureObject(results: any, deepInitialize?: boolean): void;
-        /** @private */
-        private _dataLinkingRestComplete(result);
-        private _parseConvertDates(jsonObject);
-        /** @private */
-        private _dataLinkRestError(er);
-        /** @private */
-        private _prepParamValue(param);
-    }
-}
-declare module geocortex.essentials.utilities {
-    /**
-     * Utility methods for comparing resource IDs.
-     * @private
-     */
-    class SiteResourceIdComparer {
-        static separator: string;
-        /**
-         * Determines if one string is equal to another string.
-         * @param resourceId The resource ID to compare.
-         * @param match The string to compare for a possible match.
-         */
-        static equals(resourceId: string, match: string): boolean;
-        /**
-         * Looks up the matching ID in the resources array and returns the found item.
-         * @param resourceArray The resource array to check for `match`. Elements in the array must have an `id` property.
-         * @param match the string value to check the resource array for.
-         */
-        static lookUp(resourceArray: {
-            id: string;
-        }[], match: string): any;
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * Represents a layer configured in a {@link MapService}.
-     * A Geocortex layer should not be confused with an _ArcGISDynamicMapServiceLayer_ or an _ArcGISTiledMapServiceLayer_. It is more akin to the esri.layers.LayerInfo class.
-     * The layer provides additional configuration beyond what is defined in an ArcGIS server map service sub layer.
-     * For example, the layer might have reports and datalinks defined. Also, the layer's configuration overrides the default visibility of the layer.
-     * In order for sub - layers of {@link layers.ArcGISDynamicMapServiceLayer} to appear on the map, they must be explicitly defined in the layer collection of the {@link MapService}.
-     */
-    class Layer extends AsyncInitializable {
-        /** Whether or not the layer supports toggling labels. */
-        canToggleLabels: boolean;
-        /** Array of charts associated with this layer*/
-        charts: LayerChart[];
-        /** The layer's initial visibility, defined in the site.  This will be true if the layer  was configured to be visible by default, false otherwise. */
-        configuredVisible: boolean;
-        /** Gets the collection of {@link DataLink} objects that belongs to the {@link Layer}. */
-        dataLinks: DataLink[];
-        /** The name of the underlying data provider for the layer, e.g. "SqlServer" or "Oracle". */
-        dataProvider: string;
-        /** Whether or not the layer is visible by default in the service. */
-        defaultVisibility: boolean;
-        /** The field to use as the primary representative of the layer in reports. */
-        displayField: Field;
-        /** The alias to use for the layer in client applications. */
-        displayName: string;
-        /** The description to use for the layer in client applications. */
-        description: string;
-        /** The layer's draw index that determines its drawing order (only applies to dynamic map services). */
-        drawIndex: number;
-        /** The dynamic definition of the {@link Layer}. */
-        dynamicDefinition: string;
-        /** The extensions of the Layer, as defined by an administrator.*/
-        extensions: Extension[];
-        /** The border color used when highlighting a feature from this layer. */
-        featureBorderColor: number[];
-        /** The format for a description of a feature from this layer. */
-        featureDescription: string;
-        /** The fill color used when highlighting a feature from this layer, represented as an array of RGB values in the range of 0-255. */
-        featureFillColor: number[];
-        /** Array of feature hyperlinks associated with this layer*/
-        featureHyperlinks: FeatureHyperlink[];
-        /** The format for a label of a feature. */
-        featureLabel: string;
-        /** The format for a long description of a feature. */
-        featureLongDescription: string;
-        /**
-         * Shape type of the layer. One of:
-         *  - None
-         *  - Point
-         *  - Multipoint
-         *  - Polygon
-         *  - Line
-         */
-        featureType: string;
-        /**
-         * Zoom factor to use to expand the extent by when zooming to a feature.  For example,
-         * if this value is set to 3, then the extent will be expanded by a factor of 3 when zooming to that feature.
-         * This property is not applicable to point layers since points do not have an extent to expand.
-         */
-        featureZoomFactor: number;
-        /**
-         * Scale to which the map should zoom when a standard viewer "zoom to feature" concept is invoked, from a list of results or otherwise.  This value should
-         * be respected by implementing clients and viewers. If no value has been configured in the Essentials site for this, it will remain null.
-         */
-        featureZoomScale: number;
-        /** Array of fields associated with this layer. */
-        fields: Field[];
-        /** The full extent of the layer. */
-        fullExtent: esri.geometry.Extent;
-        /** Whether the {@link Layer} contains a collection of {@link AttachmentInfo} objects. */
-        hasAttachments: boolean;
-        /** Whether the {@link Layer} contains a collection of {@link DataLink} objects. This information is available even if the {@link Layer} has not been initialized. */
-        hasDataLinks: boolean;
-        /**
-         * Whether the {@link Layer} contains a collection of {@link Report} objects.
-         * This information is available even if the {@link Layer} has not been initialized.
-         */
-        hasReports: boolean;
-        /** URI to an icon representing this layer in the client application. */
-        iconUri: string;
-        /** The ID of the {@link Layer}. */
-        id: string;
-        /** Whether or not this layer can be identified in the client application. */
-        identifiable: boolean;
-        /** Whether or not this layer can be identified in the client application at scales it's not visible at. */
-        identifiableAtAllScales: boolean;
-        /** Whether or not to include this layer in the a layer list. */
-        includeInLayerList: boolean;
-        /** Whether or not to include this layer in the legend. */
-        includeInLegend: boolean;
-        /** Whether the {@link Layer} is dynamic. */
-        isDynamic: boolean;
-        /** Whether or not the layer will be expanded by default when shown in a layer list.  Only applies to group layers. */
-        isExpanded: boolean;
-        /** If the layer was added from the catalog **/
-        isUserCreated: boolean;
-        /** Array of representation of a layer hyperlink for this layer. */
-        layerHyperlinks: any[];
-        /** The URL of the image for the layer legend. */
-        legendUrl: string;
-        /** The map service that the {@link Layer} belongs to. */
-        mapService: MapService;
-        /** The layer's maximum scale. */
-        maxScale: number;
-        /** The layer's minimum scale. */
-        minScale: number;
-        /** The name of the {@link Layer}. */
-        name: string;
-        /** Gets the ID of the parent {@link Layer}. */
-        parentLayerId: string;
-        /** Field to use as the layer's primary key. */
-        primaryKeyField: Field;
-        /** The properties of the {@link Layer}, as defined by the administrator on the server. */
-        properties: any;
-        /** A flag indicating whether the layer is queryable or not. */
-        queryable: boolean;
-        /** Array of relationships associated with this layer. */
-        relationships: esri.layers.Relationship[];
-        /** The collection of {@link .Report} objects that belongs to the {@link Layer}. */
-        reports: Report[];
-        /**  Indicates if the layer is searchable. */
-        searchable: boolean;
-        /**
-         * The display preference for feature hyperlinks. One of:
-         *    ShowAll
-         *    DisableBrokenLinks
-         *    HideBrokenLinks
-         **/
-        showFeatureHyperlinks: string;
-        /** Whether this layer should show its labels. */
-        showLabels: boolean;
-        /** Whether the client application is to show map tips for this layer. */
-        showMapTips: boolean;
-        /** Whether the layer can be snapped. */
-        snappable: boolean;
-        /** Whether the layer is enabled for snapping by default. */
-        snappingEnabled: boolean;
-        /** Indicates whether or not this layer supports the Identify task/endpoint. This is not the same as identifiable which is affected by user preference. */
-        supportsIdentify: boolean;
-        /** Indicates whether or not this layer supports the Query task/endpoint. This is not the same as queryable which is affected by user preference. */
-        supportsQuery: boolean;
-        /** The style name, for WMS requests. */
-        styleName: string;
-        /** Gets the IDs of all {@link Layer} objects that are sub-layers (children) of this {@link Layer}. The value is only set when the layer is a group layer. */
-        subLayerIds: string[];
-        /** The type of the layer, such as feature layer, raster layer, group layer, etc. Represented as a numerical value, defined by {@link LayerType}. */
-        type: number;
-        /** A flag used when changing map services and preserving user visibility settings. */
-        visibleStateForRefresh: geocortex.essentials.RefreshVisibility;
-        /**
-         * The name of the WMS layer. This is the actual layer name from the capabilities, unlike
-         * the name property of this Layer which is actually the title in the capabilities.
-         */
-        wmsLayerName: string;
-        /**
-         * An observable indicating whether this layer is participating in the currently configured layer theme or not
-         */
-        inActiveTheme: boolean;
-        /**
-         * A collection containing the layer theme settings for this layer.
-         */
-        layerThemeSettings: LayerThemeSetting[];
-        /**
-         * Whether the {@link Layer} is currently visible or not.
-         * @private
-         */
-        _visible: boolean;
-        /**
-         * Caches the value for getFeatureLayer().
-         */
-        private _featureLayerPromise;
-        /**
-         * Initializes a new instance of the {@link Layer} class.
-         * @param url The URL to the REST endpoint of the {@link Layer}.
-         */
-        constructor(url: string);
-        /** Gets the feature layer associated with this layer. Not supported for all layers types, in which case the value will be null. */
-        getFeatureLayer(): Promise<esri.layers.FeatureLayer>;
-        /**
-         * Returns a Feature Layer for a given relationship ID.
-         * @param relationshipId The id of the relationship.
-         * @param callbackResults A callback to invoke upon success.
-         * @param callbackErrors A callback to invoke if an error is encountered.
-         */
-        getRelatedFeatureLayer(relationshipId: number, callbackResults: (result: any) => void, callbackErrors: (error: Error) => void): dojo.Deferred;
-        /**
-         * Gets a value representing whether or not all of this layer's ancestors are currently visible in the map. */
-        areAllAncestorsVisible(): boolean;
-        /**
-         * Gets the URL to the actual Esri layer. */
-        getLayerUrl(): string;
-        private _fieldLookup;
-        /**
-         * Given a field name, returns the field object by that name.
-         * @param name of the field to return
-         */
-        getFieldByName(name: string): Field;
-        /**
-         * Returns whether or not the layer is currently visible in the map. */
-        isVisible(): boolean;
-        /**
-         * Sets the visibility of the {@link Layer}. If the {@link Layer} is part of a tiled (or image) service, then the whole {@link MapService} visibility is set.
-         * @param visible The visibility value to set.
-         */
-        setVisibility(value: boolean, doNotRefresh?: boolean): void;
-        /**
-         * Sets the inActiveTheme property of the {@link Layer}. Raises the "LayerInActiveThemeChangedEvent" event.
-         * @param value The value to set.
-         */
-        setInActiveTheme(value: boolean): void;
-        /**
-         * Find the Report matching the specified report ID.
-         * @param reportId The Id of the Report to find.
-         */
-        findReportById(reportId: string): Report;
-        /**
-         * Determines if the specified scale is within this layer's min and max scale.
-         * If a value is not provided for this parameter, then the map's current scale value will be used.
-         * @param scale The scale value to test if it is between this layer's min and max scale.
-         */
-        withinScaleRange(scale?: number): boolean;
-        /** @private */
-        private _configureDataLinks(dataLinkResults, deepInitialize);
-        /** @private */
-        private _idIsUnique(id);
-        /** @private */
-        private _getUniqueId();
-        /**
-         * Populates the *Layer* from a dynamic object which represents a layer.
-         * @param layerDefinition An object which represents the Layer.
-         */
-        createFromDefinition(layerDefinition: any): void;
-        /** @private */
-        _createFrom(results: any): void;
-        /** @private */
-        _configureObject(results: any, deepInitialize?: boolean): void;
-        /** @private */
-        private _configureReports(reportResults, deepInitialize);
-        /**
-         * Determine what the Esri OBJECTID field name is for the feature in the layer. */
-        getObjectIdFieldName(): string;
-        /** @private */
-        private _convertLayerType(layerType);
-        /** @private */
-        _getRelation(relationshipId: number): esri.layers.Relationship;
-        /**
-       * Returns a string representing the layers definition expression.
-       * Uses a service layer if passed in to find the most up to date definition expression.
-       * If no service layer, get the definition expression for the layers dynamic definition json.
-       * A service layer would be useless here if you were initializing these layers for the first time. (ie. it is not added yet.)
-       * @param serviceLayer Service layer.
-       * @return The definition expression.
-       */
-        getDefinitionExpression(serviceLayer?: esri.layers.Layer): string;
-        /** @private */
-        private _createDynamicLayerInfo();
-        /**
-         * Gets the layers drawing options from the dynamicDefinition.
-         * @returns The *LayerDrawingOptions* for the layer or null.
-         */
-        getLayerDrawingOptions(): esri.layers.LayerDrawingOptions;
-        /**
-         * Retrieves the layer theme settings for this layer by specified layer theme or layer theme id
-         */
-        getLayerThemeSettings(layerTheme: LayerTheme): LayerThemeSetting;
-        getLayerThemeSettings(layerThemeId: string): LayerThemeSetting;
-        /**
-         * Accessor method for the LayerVisibilityEventManager class in MapService.ts to sync layer visibility with
-         * programmatic layer visibility changed made using esri's setLayerVisibility method.
-         * @private
-         */
-        _syncProgramaticallyChangedLayerVisibility(visible: boolean): void;
-    }
-}
-declare module geocortex.essentials {
-    /**
-     * Represents a map service defined in a {@link EssentialsMap}.
+     * Represents a map service defined in a {@link Map}.
      * A {@link MapService} is related to an Esri map service layer. It contains a reference to that Esri service in the {@link serviceLayer} property.
      */
     class MapService extends AsyncInitializable {
@@ -2800,6 +1212,10 @@ declare module geocortex.essentials {
         dataProvider: string;
         /** Description of the map service.  */
         description: string;
+        /** The default format string used for formatting date values originating from this map service. */
+        defaultDateFormat: string;
+        /** The default format string used for formatting numeric values originating from this map service. */
+        defaultNumberFormat: string;
         /** Whether or not to disable caching of the MapService on the client. */
         disableClientCaching: boolean;
         /** The display name of the {@link MapService}. */
@@ -2816,6 +1232,12 @@ declare module geocortex.essentials {
         extensions: Extension[];
         /** The failure action, which describes how the end user application should deal with a failed service. */
         failureAction: string;
+        /** The timeout (in seconds) before this mapService will be deemed to have failed */
+        failureTimeout: number;
+        /** Boolean indicating whether the map service has timed out yet. This does not, in itself indicate an error. Subsequent resolution is possible. */
+        failureTimeoutThresholdExceeded: boolean;
+        /** function invoked when the failure timeout threshold is exceeded */
+        onFailureTimeoutThresholdExceeded: () => void;
         /** Used to indicate what the MapService is capable of and is currently doing regarding clustering */
         featureClustering: FeatureCluster;
         /** The URL of the geometry service.*/
@@ -2826,6 +1248,8 @@ declare module geocortex.essentials {
         iconUri: string;
         /** The ID of the {@link MapService}. */
         id: string;
+        /** The catalog id */
+        catalogId: string;
         /** The original URL of the Essentials map service REST endpoint. */
         originalUrl: string;
         /** Format in which images will be drawn. */
@@ -2841,8 +1265,19 @@ declare module geocortex.essentials {
         isServiceLayerLoaded: boolean;
         /** Indicates whether or not a mapService was created by a user at runtime **/
         isUserCreated: boolean;
+        /**
+         * The type of user created layer. One of:
+         *  - LayerAddition - the layer was added by browsing/searching for services and layers in a dialog
+         *  - LayerCatalog - the layer was added from a catalog
+         *  - Upload - the layer was added by uploading a file
+         *
+         * Only applies to layers created at runtime.
+         */
+        userLayerType: string;
         /** The collection of {@link Layer} objects. */
         layers: Layer[];
+        /** The collection of table objects. */
+        tables: Layer[];
         /**
          * A view of the layers which is filtered to only include the active layers in the application. This will change,
          * when, for example, a layer theme is applied. If no filter (layer theme) has been applied, then this collection
@@ -2885,6 +1320,8 @@ declare module geocortex.essentials {
          * A collection containing the layer theme settings for this map service.
          */
         layerThemeSettings: LayerThemeSetting[];
+        /** A collection of LayerHyperlinks associated with this map service. */
+        layerHyperlinks: LayerHyperlink[];
         /**  The properties of the {@link MapService}, as defined by the administrator on the server. */
         properties: any;
         /** The proxy URL for this service. */
@@ -2915,6 +1352,14 @@ declare module geocortex.essentials {
          * An object in the same form as provided by Esri's REST API, and that is used  as a property for certain classes such as
          * {@link esri.layers.WMTSLayer.tileInfo}. */
         tileInfo: esri.layers.TileInfo;
+        /** The URL used to retrieve tile images in the case of a RESTful WMTS service, which may be a URL template. */
+        tileRestUrl: string;
+        /** Boolean indicating whether this map service is time aware or not */
+        isTimeAware: boolean;
+        /** The time information for this map service - if it is time aware. */
+        timeInfo: TimeInfo;
+        /** The IANA ID of the time zone in which the data in this layer's fields are current. */
+        timeZoneId: string;
         /**
          * Gets or sets the interval period (in seconds) for updating the specified map service.
          * It must be set to null, 0 or a value > 10 seconds. */
@@ -2935,13 +1380,20 @@ declare module geocortex.essentials {
         private _updateIntervalId;
         private _delayedRefreshToken;
         private _layersInfoPromise;
+        private _styleUrl;
+        private _restStartTimeOverrideString;
+        private _restEndTimeOverrideString;
+        /**
+         * Caches the value for getFeatureLayer().
+         */
+        private _featureLayerPromise;
         /** Whether or not the map service is initially visible. */
         protected _initiallyVisible: boolean;
         /**
          * Initializes a new instance of the {@link MapService} class.
          * @param url The URL to the REST endpoint of the {@link MapService}.
          */
-        constructor(url: string);
+        constructor(url?: string);
         /**
          * @private
          * Gets metadata about all layers and tables from the map server's REST endpoint. This is an internal function used
@@ -3005,15 +1457,51 @@ declare module geocortex.essentials {
          * Gets the access token for the map service, if there is one, by looking in a number of places. */
         findServiceToken(): string;
         /**
+         * @private
+         * Find the item by Id in the specified collection.
+         * @param id The id of the item to find.
+         * @param collection The collection to search.
+         */
+        private _findById(id, collection);
+        /**
+         * @private
+         * Find the item by name in the specified collection.
+         * @param name The name of the item to find.
+         * @param collection The collection to search.
+         */
+        private _findByName(name, collection);
+        /**
          * Find the {@link Layer} matching the specified name.
          * @param layerName The name of the {@link Layer} to find.
          */
         findLayerByName(layerName: string): Layer;
         /**
-         * Find the Layer matching the specified ID.
+         * Find the Layer matching the specified Id.
          * @param layerId The Id of the Layer to find.
          */
         findLayerById(layerId: string): Layer;
+        /**
+         * Find the Table matching the specified name.
+         * @param tableName The name of the Table to find.
+         */
+        findTableByName(tableName: string): Layer;
+        /**
+         * Find the Table matching the specified Id.
+         * @param tableId The Id of the Table to find.
+         */
+        findTableById(tableId: string): Layer;
+        /**
+         * Find the Layer or Table matching the specified name.
+         * If the specified name matches both a Layer and Table, the Layer will be returned.
+         * @param name The name of the Layer or Table to find.
+         */
+        findLayerOrTableByName(name: string): Layer;
+        /**
+         * Find the Layer or Table matching the specified Id.
+         * If the specified Id matches both a Layer and Table, the Layer will be returned.
+         * @param id The Id of the Layer or Table to find.
+         */
+        findLayerOrTableById(id: string): Layer;
         /**
          * Refreshes the map service by making a new request to the server.
          * @param refreshTimeoutMs An optional parameter which if specified, will cause the map refresh to occur after the specified timeout. Any previous refresh timeouts
@@ -3027,8 +1515,24 @@ declare module geocortex.essentials {
         refreshFilteredCollections(): void;
         /** @private */
         _configureLayers(layerResults: any, deepInitialize: boolean): void;
+        /** @private - Note - this method needs to be called after the service layer has loaded. */
+        _configureTimeInfo(): void;
+        /** Internal static function. Used by Layers as well */
+        static getGcxTimeInfo(timeInfo: esri.layers.TimeInfo, restStartTimeOverrideString?: string, restEndTimeOverrideString?: string): TimeInfo;
+        /** @private */
+        _configureTables(tableResults: any, deepInitialize: boolean): void;
         /** @private */
         _createFrom(obj: any): void;
+        /**
+         * Populates the map service from a dynamic object which represents a map service.
+         * @param serviceDefinition An object which represents the map service.
+         */
+        createFromDefinition(serviceDefinition: any): void;
+        /**
+         * Exports the state of the map service as a JSON object. This can be used to recreate the
+         * layer again via createFromDefinition().
+         */
+        toJson(): Object;
         /** @private */
         _configureObject(obj: any, deepInitialize?: boolean): void;
         /** @private */
@@ -3044,6 +1548,8 @@ declare module geocortex.essentials {
         private _removeDefinitionExpression(layer, serviceLayer);
         /** @private */
         _createServiceLayer(): void;
+        initiateServiceFailureTimer(): void;
+        private _applyAttributionUrl(lyr);
         private _prefixProxy(url);
         private _constructWmsLayerInfos();
         private _getWmsVisibleLayers();
@@ -3124,6 +1630,11 @@ declare module geocortex.essentials {
          */
         getLayerThemeSettings(layerTheme: LayerTheme): LayerThemeSetting;
         getLayerThemeSettings(layerThemeId: string): LayerThemeSetting;
+        /**
+         * Gets the feature layer associated with this service. Only applicable for single-layer service types such as
+         * feature layers and image services. For other types of services, use getFeatureLayer() on individual layers.
+         */
+        getFeatureLayer(): Promise<esri.layers.FeatureLayer>;
         /** If the current layer is a dynamic map service layer and the interval is reasonable, then refresh the map service periodically */
         private _resetUpdateTimer();
         /** When the timer goes off, refresh the map service */
@@ -3143,6 +1654,7 @@ declare module geocortex.essentials {
          * Gets the default geometry service security token. Returns null if none found.
          */
         protected _getDefaultGeometryServiceToken(): string;
+        private _corsRequest(url, withCredentials?, doNotRetry?);
     }
 }
 declare module geocortex.essentials {
@@ -3218,7 +1730,7 @@ declare module geocortex.essentials {
          * Initializes a new instance of the {@link FeatureLayerService} class.
          * @param url The URL of the service.
          */
-        constructor(url: string);
+        constructor(url?: string);
         /**
          * Gets an empty feature collection that can be used when creating new FeatureLayer from a feature collection.
          * It contains the layer definition of this Feature Layer but no actual features.
@@ -3485,15 +1997,15 @@ declare module geocortex.essentials {
         constructor(url: string);
         /**
          * Return an array of ArgumentInfo that represents the inputs that can be populated with values and provided to the startWorkflow method of
-         * {@link WorkflowControllerProxy}.
+         * {@link workflow.WorkflowControllerProxy}.
          */
         getInputs(): geocortex.workflow.ArgumentInfo[];
         /**
-         * Return an array of {@link ArgumentInfo} that represents the
+         * Return an array of {@link workflow.ArgumentInfo} that represents the
          * metadata about the outputs that will be returned when the workflow has completed. It does
          * not contain actual running values. The real outputs will be provided by the workflowComplete
-         * method of any class implementing the {@link IActivityDispatcher}
-         * interface such as the {@link SimpleActivityDispatcher}.
+         * method of any class implementing the {@link workflow.ActivityDispatcher}
+         * interface such as the {@link workflow.SimpleActivityDispatcher}.
          */
         getOutputsMetadata(): geocortex.workflow.ArgumentInfo[];
         /** @private */
@@ -3563,6 +2075,471 @@ declare module geocortex.essentials {
     }
 }
 declare module geocortex.essentials {
+    /**
+     * A simple descriptor representing a {@link MapGrid}.
+     * A {@link MapGrid} is a series of vertical and horizontal lines with coordinate labels overlayed on top of a map, so that you can interpolate
+     * coordinates for a particular point.
+     */
+    class MapGrid {
+        /** A cross-application boundary identifier. */
+        id: string;
+        /** The user displayable name of the map grid. */
+        displayName: string;
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * An object that represents a unit of distance.
+     */
+    class DistanceUnit {
+        /** The display name of the {@link geocortex.essentials.DistanceUnit}. */
+        name: string;
+        /** The unit type. One of the available {@link geocortex.essentials.DistanceUnitType}s. */
+        type: string;
+        /**
+         * Initializes a new instance of the {@link DistanceUnit} class.
+         * @param name The display name of the {@link DistanceUnit}.
+         * @param type A string constant representing the official unit type. See {@link DistanceUnitType} for a list of supported units.
+         */
+        constructor(name: string, type: string);
+    }
+}
+/**
+ * Contains a number of distance unit values.
+ */
+declare module geocortex.essentials.DistanceUnitType {
+    var OTHER: string;
+    var INCHES: string;
+    var FEET: string;
+    var US_SURVEY_FEET: string;
+    var YARDS: string;
+    var MILES: string;
+    var NAUTICAL_MILES: string;
+    var MILLIMETERS: string;
+    var CENTIMETERS: string;
+    var DECIMETERS: string;
+    var METERS: string;
+    var KILOMETERS: string;
+    var DEGREES: string;
+    var RADIANS: string;
+    var GRADS: string;
+}
+declare module geocortex.essentials {
+    /**
+     * ExtentManager arbitrates potentially conflicting {@link esri.Map}  navigation events. For example, a {@link Workflow} run on application start up may
+     * attempt to zoom the map to a particular location while a custom module attempts to navigate to another.
+     *
+     * In order to classify and prioritize competing map navigation requests, the {@link ExtentManager} offers an arbitrary system of navigation
+     * priorities. These are known as 'extent changes' and each carries a priority value based on the nature of the change (i.e. how 'important' it is).
+     *
+     * @docs-hide-from-nav
+     * @private
+     */
+    class ExtentManager {
+        private _map;
+        private _currentExtentChangePriority;
+        private _queuedExtentChangePriority;
+        private _queuedExtentChange;
+        private _extentChangeInProgress;
+        private _fitTiledMapsToExtent;
+        private _newLayers;
+        private _initialExtent;
+        private currentExtentChangeHandle;
+        private _firstMapResizeExecuted;
+        /**
+         * Initializes a new instance of the {@link ExtentManager} class.
+         * @param map The map that this {@link ExtentManager} arbitrates.
+         * @param fitToExtent Whether or not to force tiled maps to show up completely in the given map extent
+         */
+        constructor(map: esri.Map, fitToExtent?: boolean);
+        setInitialExtent(initialExtent: esri.geometry.Extent): void;
+        private _setInitialExtentImpl(initialExtent);
+        private _onResize(extent, width, height);
+        private _onReposition(x, y);
+        private _onExtentChange();
+        /**
+         * Registers the given layer with the extent manager so that it can wait until the layer has sucessfully loaded to change the extent.
+         * @param layer The layer to register.
+         */
+        registerLayer(layer: esri.layers.Layer): void;
+        /**
+         * Signals that the map has loaded, the initial extent is set after resizing the map appropriately and the extent manager is now allowed to arbitrate future extent changes.
+         */
+        firstResize(): void;
+        /** @private */
+        private _handleNextExtentChange();
+        /**
+         * Invokes the given function if there are no other extent changes in progress.
+         * If there are other extent changes in progress, the priority of this extent change must be
+         * greater than or equal to the priority of the current extent change for it to take effect.
+         *
+         * This methods allows for extent changes to be scheduled, but to not interfere with more "important" ones.
+         *
+         * @param extentChangeFunction The function to be executed if there are no higher priorities. This function most likely attempts to change the map extent.
+         * @param priority The priority to be applied to this operation
+         */
+        changeExtentWithPriority(extentChangeFunction: (map: esri.Map) => dojo.Deferred, priority?: number): void;
+        /**
+         * Changes the map to the given extent if there are no other higher priority extent changes in progress.
+         * If there are other extent changes in progress, the priority of this extent change must be
+         * greater than or equal to the priority of the current extent change for it to take effect.
+         * @param extent The extent to change to.
+         * @param priority The priority to be applied to this operation
+         */
+        setExtentWithPriority(extent: esri.geometry.Extent, priority?: number): void;
+        /**
+         * Centers the map to the given point if there are no other higher priority extent changes in progress.
+         * If there are other extent changes in progress, the priority of this extent change must be
+         * greater than or equal to the priority of the current extent change for it to take effect.
+         * @param center The point to center at.
+         * @param priority The priority to be applied to this operation
+         */
+        centerAtWithPriority(center: esri.geometry.Point, priority?: number): void;
+        /**
+         * Zooms the map to the given scale if there are no other extent changes in progress.
+         * If there are other extent changes in progress, the priority of this extent change must be
+         * greater than or equal to the priority of the current extent change for it to take effect.
+         * @param scale The scale to zoom to.
+         * @param priority The priority to be applied to this operation
+         */
+        setScaleWithPriority(scale: number, priority?: number): void;
+        /**
+         * Resizes the map if there are no other extent changes in progress, as the resize operation may interface with the extent change.
+         * If there are other extent changes in progress, the resize will wait for the current
+         * extent change to finish and prevent all other extent changes until the resize is finished.
+         * @param width The desired width of the map control.
+         * @param width The desired height of the map control.
+         * @param immediate Whether or not to resize immediately.
+         */
+        blockForResize(width: number, height: number, immediate?: boolean): void;
+        /**
+         * Repositions the map within the div if there are no other extent changes in progress.
+         * If there are other extent changes in progress, the reposition will wait for the current
+         * extent change to finish and prevent all other extent changes until the reposition is finished.
+         */
+        blockForReposition(): void;
+        private _isExtentChangeBlocked();
+        private _isRepositionBlocked();
+        private _isResizeBlocked();
+        private _hasLoaded();
+    }
+}
+declare module geocortex.essentials {
+    class Map extends AsyncInitializable {
+        /** The collection of {@link BaseMap}s for the map. */
+        baseMaps: BaseMap[];
+        /** The original URL of the Essentials map REST endpoint. */
+        originalUrl: string;
+        /** The esri.geometry.Extent which represents the full extent of the {@link Map}. */
+        fullExtent: esri.geometry.Extent;
+        /** The esri.geometry.Extent which represents the initial extent of the {@link Map}. */
+        initialExtent: esri.geometry.Extent;
+        /**
+         * Configuration parameter which controls whether to fit tiled maps to extent. When true, for maps that contain tiled map service layers,
+         * you are guaranteed to have the input extent shown completely on the map. The default value is false.
+         */
+        fitTiledMapsToExtent: boolean;
+        /** The collection of {@link geocortex.essentials.MapService} object. */
+        mapServices: MapService[];
+        /**
+         * A view of the map services which are filtered to only include the active services in the application. This will change when, for example,
+         * a layer theme is applied. If no filter (layer theme) is applied, then this collection will be the same as the mapServices collection.
+         **/
+        mapServicesFilteredView: MapService[];
+        /**
+         * The LayerThemesInfo for layer theme's which can be applied to this Map
+         */
+        layerThemesInfo: geocortex.essentials.LayerThemesInfo;
+        /** The primary {@link MapService} of the {@link Map}. */
+        primaryMapService: MapService;
+        /** The collection of supported export formats for the {@link Map}. */
+        supportedExportFormats: string[];
+        /** The {@link ExportMapImageOptions} which outline the options for exporting the map image. */
+        exportMapImageOptions: ExportMapImageOptions;
+        /** The {@link DistanceUnit} that is used by this map. This will be null for the overview map. */
+        units: DistanceUnit;
+        /** Whether esri service layers have yet been added to the {@link esri.Map} object */
+        serviceLayersAdded: boolean;
+        /** The {@link ExtentManager} that manages all extent changes for the esri map. */
+        extentManager: ExtentManager;
+        /** The spatial reference of the map. This should match the spatial reference of the Esri map */
+        spatialReference: esri.SpatialReference;
+        /**
+         * A boolean that manages whether or not the initial extent should be set when all map services have been added
+         * to the esri map or wait until another process manually calls setInitialExtent on the {@link ExtentManager}.
+         */
+        setExtentOnLoad: boolean;
+        /** The esri.Map of the {@link Map}.*/
+        private _esriMap;
+        /** @private */
+        private _onExportComplete;
+        /** @private */
+        private _onExportError;
+        /**
+         * Initializes a new instance of the {@link Map} class.
+         * @param url The URL to the REST endpoint of the {@link Map}.
+         */
+        constructor(url: string);
+        /**
+         * Returns the underlying {@link esri.Map}. */
+        getMap(): esri.Map;
+        /**
+         * Returns a flattened list of all the layers as defined by the {@link Site}.
+         */
+        allLayers(): Layer[];
+        /**
+         * Returns a flattened list of all the tables as defined by the {@link Site}.
+         */
+        allTables(): Layer[];
+        /**
+         * Returns a flattened list of all the layers and tables as defined by the {@link Site}.
+         */
+        allLayersAndTables(): Layer[];
+        /**
+         * Returns a flattened list of all the layers contained in the filtered mapService collection. (Filtered by Layer Theme settings)
+         */
+        filteredLayers(): Layer[];
+        /**
+         * Loads all the ServiceLayer objects into the ESRI layers collection.
+         * This function is called automatically as part of the {@link Site} initialization process. */
+        loadServiceLayersInMap(map: esri.Map): void;
+        /**
+         * Calculates the current scale of the map and returns it. This method just delegates to
+         * esri.geometry.getScale(), passing it values that corresponding to the current state of the map. */
+        calculateScale(): number;
+        /** @private */
+        private _addServiceLayers(esriMap);
+        /**
+         * Creates a MapService for every service layer provided and adds them to Essentials map.
+         * @param serviceLayers An array of service layers.
+         * @param serviceFunction The logical function of the {@link MapService}, either Base or Operational
+         */
+        addServiceLayers(serviceLayers: esri.layers.Layer[], serviceFunction: string): void;
+        /**
+         * Removes the MapService representing the service layer provided, from the Essentials MapServices array. Note: This will not remove it from the map.
+         * @param serviceLayer The esri service layer, whose corresponding mapService we want to remove
+         */
+        removeServiceLayer(serviceLayer: esri.layers.Layer): void;
+        /**
+         * Integrate a Geocortex map service into the viewer and onto the map.
+         * @param mapService The Geocortex map service, containing a service layer and Geocortex layers, to be integrated onto the map and into the viewer. Must be of type {@link essentials.FeatureLayerService} or {@link essentials.KmlService}.
+         */
+        addMapService(mapService: essentials.MapService): void;
+        /**
+         * Removes a map service from both the Essentials map and the Esri map.
+         * @param mapService The map service to be removed.
+         */
+        removeMapService(mapService: MapService): void;
+        /** @private */
+        _configureMapServices(mapServiceResults: MapService[], deepInitialize: boolean): void;
+        /** @private */
+        _configureObject(obj: {
+            mapServices: MapService[];
+            primaryMapServiceID: string;
+            initialExtent?: esri.geometry.Extent;
+            fullExtent?: esri.geometry.Extent;
+            units?: geocortex.essentials.DistanceUnit;
+            exportOptions?: geocortex.essentials.ExportMapImageOptions;
+            layerThemes?: RestLayerThemesInfo;
+            baseMaps?: RestBaseMap[];
+        }, deepInitialize?: boolean): void;
+        /**
+         * Find the {@link MapService} matching the specified ID.
+         * @param mapServiceId The ID of the MapService to find.
+         */
+        findMapServiceById(mapServiceId: string): MapService;
+        /**
+         * Sets one {@link Layer} as the exclusively visible layer.
+         * @param layer The layer to make the only visible layer.
+         */
+        setFeatureLayerExclusivelyVisible(layer: Layer): void;
+        /**
+         * Exports the {@link Map} using. This is an asynchronous method, you may provide delegates for completion or error information.
+         * @param exportParameters The export parameters.
+         * @param exportComplete The delegate that will be called when the export has completed
+         * (even if an error occurs). This delegate expects one argument: a String representing the URL of the exported file.
+         * @param exportError The delegate that will be called if an error occurs. This delegate expects an Error as argument.
+         */
+        exportMap(exportParameters: ReportParameters, exportComplete: (results: any) => void, exportError: (error: Error) => void): void;
+        /**
+         * Searches the {@link Map} for the layer corresponding to the input esri FeatureLayer.
+         * @param layer The {@link esri.layers.FeatureLayer} whose Geocortex layer we want to find.
+         */
+        findLayerFromMatchingEsriFeatureLayer(layer: esri.layers.FeatureLayer): essentials.Layer;
+        /** @private */
+        private _exportRestComplete(results);
+        /** @private */
+        private _exportRestError(error);
+        /** @private */
+        private _layerLoadedUpdate(esriMap);
+        /**
+         * Applies layer catlog changes to the map.
+         * @param detailsResults The details object which was returned from the Layer Catalog endpoint.
+         */
+        applyCatalogLayersChange(detailsResults: any): void;
+        applyStartupTheme(): void;
+        /**
+         * Refreshes the mapServicesFilteredView collection and the layersFilteredView collection for each of the map services and constituent layers
+         */
+        refreshFilteredCollections(): void;
+        /**
+         * @private
+         * CORE-23: WKT from Site does not match text found in AGS Map. We must thus ensure that we always use the map's wkt and not the one returned by essentials. Also affects
+         * GVH-3186, GVH-3798, GVH-2416 and GVH-4243. This method will switch all spatial references in the site, map and elsewhere in the application to ensure compatibility throughout.
+         **/
+        private _switchSpatialReferenceGlobally(newSpatialReference);
+        /** @private */
+        private _applyCatalogChangesToWmsLayers(detailsResults);
+        /** @private */
+        private _applyCatalogChangesToDynamicLayers(detailsResults);
+        /**
+         * @private: Configure the LayerThemesInfo object from the rest response (if applicable).
+         */
+        private _configureLayerThemesInfo(restLayerThemesInfo);
+        private _addToFilteredView(mapService);
+        /**
+         * @private: The filter used for filtering each service based on layer theme settings
+         */
+        private _layerThemeMapServiceFilter(mapService);
+        /** @private */
+        private _configureBaseMaps(restBaseMaps);
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Represents a configured scale in a {@link Report}.
+     */
+    class Scale {
+        /** The configured display name of this scale. */
+        displayName: string;
+        /** The configured value of this scale. */
+        scale: string;
+        /**
+         * Initializes a new instance of the {@link geocortex.essentials.Scale} class.
+         * @param displayName The display name of the {@link geocortex.essentials.Scale}.
+         * @param scale The scale.
+         */
+        constructor(displayName: string, scale: string);
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Describes a resolution used in the generation of a {@link geocortex.essentials.Report}.
+     */
+    class Resolution {
+        /** Configured display name for the {@link Resolution} object. */
+        displayName: string;
+        /** DPI of this resolution. */
+        dpi: number;
+        /**
+         * Initializes a new instance of the {@link Resolution} class.
+         * @param displayName The display name of the {@link Resolution}.
+         * @param dpi The resolution in dots per inch.
+         */
+        constructor(displayName?: string, dpi?: number);
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Represents a text field used in a {@link Report}.
+     */
+    class TextField {
+        /** The display name of the {@link TextField}. */
+        displayName: string;
+        /** The ID of the {@link TextField}. */
+        id: string;
+        /** Whether the {@link TextField} is a multiline field. */
+        multiline: boolean;
+        /** The value of the {@link TextField}. */
+        value: string;
+        /**
+         * Initializes a new instance of the {@link geocortex.essentials.TextField} class.
+         * @param id The ID of the text field.
+         * @param name The name of the text field.
+         * @param value The value of the text field.
+         * @param multiline Indicates whether the text field is a multiline field.
+         */
+        constructor(id: string, displayName: string, value: string, multiline: boolean);
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * A class to hold parameters that will be used by the {@link Report} and
+     * {@link PrintTemplate} classes to produce their output.
+     */
+    class ReportParameters {
+        /** The extent to use. */
+        customExtent: esri.geometry.Extent;
+        /** The type of extent that will be used for the map image in the report. */
+        extentType: string;
+        /** The list of fields that are defined for the report. */
+        fields: TextField[];
+        /** The map grid to include in the report. */
+        grid: MapGrid;
+        /** The image hight in pixels. */
+        imageHeight: number;
+        /** The image width in pixels. */
+        imageWidth: number;
+        /** Include BASE64 encoded data of the file in the output when available. */
+        includeData: boolean;
+        /** Indicates whether to include georeference data in the output. */
+        includeGeoreferenceData: boolean;
+        /** The graphics that will be used on the map image in the report.  */
+        mapGraphicsLayers: {
+            layers: {
+                elements: any[];
+                opacity: number;
+            }[];
+            symbols: esri.symbol.Symbol[];
+        };
+        /** The email address to which to send a notification upon print completion. */
+        notificationEmailAddress: string;
+        /** The format for the report output. */
+        outputFormat: string;
+        /** Array of feature ID strings on which to run the report. */
+        featureIds: string[];
+        /** The resolution that will be used to create the report. */
+        resolution: Resolution;
+        /** The scale that will be used for the map image in the report. */
+        scale: Scale;
+        /** The spatial reference in which to create the printed map. */
+        targetSpatialReference: esri.SpatialReference;
+        /** Indicates whether to use a transparent background when rendering the map image.*/
+        useTransparentBackground: boolean;
+        /**
+         * String constant representing the current extent of the map.
+         * @private
+         */
+        static CURRENT_EXTENT: string;
+        /**
+         * String constant representing a custom extent.
+         * @private
+         */
+        static CUSTOM_EXTENT: string;
+        /**
+         * String constant representing the full extent of the map.
+         * @private
+         */
+        static FULL_EXTENT: string;
+        /**
+         * String constant representing the initial extent.
+         * @private
+         */
+        static INITIAL_EXTENT: string;
+        /**
+         * Given an {@link esri.Map} and a {@link essentials.Map}, turns the {@link ReportParameters} into a JSON object
+         * ready for serialization.
+         */
+        toJson(esriMap: esri.Map, essentialsMap: Map): any;
+        /**
+         * Extracts the geometries and symbols from the map graphics layers.
+         * @param esriMap The {@link esri.Map} that contains the graphics layers.
+         */
+        populateMapGraphicsLayers(esriMap: esri.Map): void;
+        private _extractGraphicInformation(layer, layers, symbols);
+    }
+}
+declare module geocortex.essentials {
     class PrintTemplate extends AsyncInitializable {
         /** The description of the {@link PrintTemplate}. */
         description: string;
@@ -3594,10 +2571,16 @@ declare module geocortex.essentials {
         grids: MapGrid[];
         /** The type of report. One of {@link ReportType}. (currently only supporting `MAP_TEMPLATE_REPORT`). */
         type: string;
+        /** The width of the main Map control on the print template. */
+        mainMapWidth: number;
+        /** The height of the main Map control on the print template. */
+        mainMapHeight: number;
         /** Whether or not this print template is default. */
         isDefault: boolean;
         /** Default map scale for this print template. */
         defaultMapScale: Scale;
+        /** Default map scale name for this print template. */
+        defaultMapScaleName: string;
         /** Default resolution for this print template. */
         defaultResolution: Resolution;
         /** Default grid for this print template. */
@@ -3680,11 +2663,11 @@ declare module geocortex.essentials {
         geoprocessorType: string;
         /** The URL of the geoprocessor service published by ArcGIS Server. */
         geoprocessorUrl: string;
-        /** The {@link Site} that the {@link Endpoint} belongs to. */
+        /** The {@link Site} that the {@link GeoprocessingEndpoint} belongs to. */
         site: Site;
         /**
-         * Initializes a new instance of the {@link geocortex.essentials.GeoprocessingEndpoint} class.
-         * @param url The URL to the REST endpoint of the {@link eoprocessingEndpoint}.
+         * Creates a new instance of the {@link GeoprocessingEndpoint} class.
+         * @param url The URL to the REST endpoint of the {@link GeoprocessingEndpoint}.
          */
         constructor(url: string);
         /** @private */
@@ -3763,7 +2746,10 @@ declare module geocortex.essentials {
         displayName: string;
         serviceType: string;
         includeInGlobalSearch: boolean;
+        isDefaultBatchGeocoder: boolean;
+        isDefaultReverseGeocoder: boolean;
         connectionString: string;
+        iconUri: string;
         properties: geocortex.PropertyParam[];
         extensions: geocortex.ExtensionParam[];
         globalSearchKey: string;
@@ -3794,23 +2780,29 @@ declare module geocortex.essentials {
         /** The type of {@link GeocodingEndpoint}, representing by a value from {@link GeocodingEndpointType}. */
         geocoderType: string;
         /**
-         * The URL of the geocoder service published by ArcGIS Server, if the {@link serviceType} of this GeocodingEndpoint is an ArcGisGeocoder.
+         * The URL of the geocoder service published by ArcGIS Server, if the {@link geocoderType} of this GeocodingEndpoint is 'ArcGisGeocoder'.
          * If this is a Bing geocoder, this value will be null.
          */
         geocoderUrl: string;
         /**
-         * The security token that must be provided when requesting the service from ArcGIS Server, if the {@link serviceType} of
-         * this GeocodingEndpoint is an ArcGisGeocoder. If this is a Bing geocoder, this value will be null.
+         * The security token that must be provided when requesting the service from ArcGIS Server, if the {@link geocoderType} of
+         * this GeocodingEndpoint is 'ArcGisGeocoder'. If this is a Bing geocoder, this value will be null.
          */
         geocoderToken: string;
         /** Whether or not this particular geocoder should be invoked when a user performs a global search operation. */
         includeInGlobalSearch: boolean;
+        /** Icon Uri for this geocoding service. */
+        iconUri: string;
+        /** Whether this geocoding endpoint is the default endpoint for reverse geocode operations. */
+        isDefaultReverseGeocoder: boolean;
         /** The {@link Site} that the {@link GeocodingEndpoint} belongs to. */
         site: Site;
         /** The geocoding endpoint parameters of {@link GeocodingEndpoint}. */
         parameters: GeocodingEndpointParameter[];
         /** The global search key of {@link GeocodingEndpoint}. */
         globalSearchKey: string;
+        /** Whether or not this particular geocoder is the default for batch geocoding. */
+        isDefaultBatchGeocoder: boolean;
         /**
          * Creates a new instance of the {@link GeocodingEndpoint} class.
          * @param url The URL to the REST endpoint of the {@link GeocodingEndpoint}.
@@ -3825,6 +2817,29 @@ declare module geocortex.essentials {
 declare module geocortex.essentials.GeocodingEndpointType {
     var ARCGIS_GEOCODER: string;
     var BING_GEOCODER: string;
+}
+declare module geocortex.essentials.utilities {
+    /**
+     * Utility methods for comparing resource IDs.
+     * @private
+     */
+    class SiteResourceIdComparer {
+        static separator: string;
+        /**
+         * Determines if one string is equal to another string.
+         * @param resourceId The resource ID to compare.
+         * @param match The string to compare for a possible match.
+         */
+        static equals(resourceId: string, match: string): boolean;
+        /**
+         * Looks up the matching ID in the resources array and returns the found item.
+         * @param resourceArray The resource array to check for `match`. Elements in the array must have an `id` property.
+         * @param match the string value to check the resource array for.
+         */
+        static lookUp(resourceArray: {
+            id: string;
+        }[], match: string): any;
+    }
 }
 declare module geocortex.essentials {
     /**
@@ -3940,7 +2955,7 @@ declare module geocortex.essentials {
         static cancel(): boolean;
         /**
          * This refresh method uses the system browser which is assumed to not be the
-         * current browser.  In practice this only happens on GMAF.
+         * current browser.
          */
         openSystemBrowser(): void;
         /**
@@ -3973,9 +2988,9 @@ declare module geocortex.essentials {
             rid: string;
         }): boolean;
         /**
-         * When the system browser (and not this browser) does the log in then it must
-         * also do the refresh because it holds cookie state necessary to refresh.
-         * In practice this only happens on GMAF.
+         * Always returns false.
+         * @deprecated Sign in used to be performed in the system browser for GMAF.
+         * As of GMAF 2.0.1, sign in is done within GMAF, and so this method just returns false now.
          */
         useSystemBrowser(): boolean;
     }
@@ -3990,7 +3005,7 @@ declare module geocortex.essentials {
     /**
      * Represents a Geocortex Essentials {@link Site} that is configured on the server and accessed via a REST endpoint.
      * You must call the {@link initialize} method on the {@link Site} before using it.
-     * To determine if the {@link Site} has already been initialized, check the {@link isInitialized} property.
+     * To determine if the {@link Site} has already been initialized, check the {@link AsyncInitializable.isInitialized} property.
      * The {@link Site} is initialized asynchronously, so you must attach an event handler to determine when the initialization has finished.
      * You can also attach a handler to the event that will report initialization errors.
      */
@@ -4019,6 +3034,8 @@ declare module geocortex.essentials {
         arcGisPortalSecurityContext: ArcGisPortalSecurityContext;
         /** The display name of the {@link Site}. */
         displayName: string;
+        /** The Document Store of the Essentials instance. */
+        documentStore: documents.DocumentStore;
         /** The interval period (in seconds) for updating the secured map services tokens. */
         updateInterval: number;
         /** The Essentials {@link Map} defined in the {@link Site}. */
@@ -4043,6 +3060,8 @@ declare module geocortex.essentials {
         hasNamedExtents: boolean;
         /** Whether the {@link Site} contains a north arrow configuration. */
         hasNorthArrow: boolean;
+        /** Whether the {@link Site} contains time slider information */
+        hasTimeSliders: boolean;
         /** Whether the {@link Site} contains an overview map. */
         hasOverviewMap: boolean;
         /** Whether the {@link Site} contains a collection of {@link PrintTemplate} objects. */
@@ -4053,6 +3072,8 @@ declare module geocortex.essentials {
         hasVirtualDirectory: boolean;
         /** Whether the {@link Site} contains a collection of {@link Workflow} objects. */
         hasWorkflows: boolean;
+        /** Whether the {@link Site} contains a collection of {@link SearchTable} objects. */
+        hasSearchTables: boolean;
         /** Whether the {@link Site} contains a collection of {@link WebMapReference} objects. */
         hasWebMaps: boolean;
         /** The ID of the {@link Site}. */
@@ -4065,6 +3086,12 @@ declare module geocortex.essentials {
         printTemplates: PrintTemplate[];
         /** The properties of the {@link Site}, as defined by the administrator on the server.*/
         properties: Object;
+        /** Collection of {@link TimeSliderProfile} objects associated with the {@link Site} */
+        timeSliders: TimeSliderProfile[];
+        /** The trusted urls of the {@link Site}, as defined by the administrator on the server.*/
+        trustedUrls: Object[];
+        /** Collection of {@link LayerCatalog} objects associated with the {@link Site}. */
+        layerCatalogs: LayerCatalog[];
         /** A boolean indicating that the esri service layers have been loaded in the map */
         serviceLayersLoaded: boolean;
         /** The URL to a Geocortex Essentials {@link Site}'s REST endpoint. */
@@ -4072,6 +3099,13 @@ declare module geocortex.essentials {
         /**
          * Collection of {@link Workflow} objects associated with the {@link Site}. */
         workflows: Workflow[];
+        /** Collection of {@link SearchTable} objects associated with the {@link Site}.
+          Note: To use Search Tables with a version of Essentials prior to 4.5, you must use "deep initialization" with the site. GVH does this always. */
+        searchTables: SearchTable[];
+        /**  The IANA ID of the time zone in which this site's field data are current. */
+        timeZoneId: string;
+        /** The IANA ID of the time zone in which this site's field data should be displayed. */
+        displayTimeZoneId: string;
         /**
          * The object that represents information about web maps and
          * the collection of {@link WebMapReference} objects associated with the {@link Site}.
@@ -4107,19 +3141,30 @@ declare module geocortex.essentials {
         private _geocodingEndpointsInitialized;
         private _geometryEndpointsInitialized;
         private _geoprocessingEndpointsInitialized;
+        private _kmlServiceInitialized;
         private _mapInitialized;
         private _namedExtentsInitialized;
         private _overviewMapInitialized;
         private _printTemplatesInitialized;
         private _workflowsInitialized;
+        private _searchTablesInitialized;
+        private _timeSlidersInitialized;
         private _webMapsInitialized;
         private _initializedHandlerCalled;
         private _signInEnabled;
         private _signOutEnabled;
-        /** @private This redirect uri comes from the site definition and does not take prescedence over the manual setting. */
+        /** @private This redirect uri comes from the site definition and does not take precedence over the manual setting. */
         private _signOutRedirectUrl;
         /** @private - Handle to the setInterval code for updating tokens. In case we ever wanted to clearInterval. */
         private _tokenIntervalHandle;
+        /** @private - A deferred that is stored while update tokens that can be returned if another call to update tokens is
+        before the first call asyncrhonously completes. */
+        private _serviceTokenRefresh;
+        /** @private - Specifies if service tokens are currently stale because an update failed. This can happen while offline.
+        When connectivity is restored, a call to updateServiceTokensIfStale() can be made to try again. */
+        private _serviceTokensStale;
+        /** This array stores dojo.Deferred for updating tokens of base site and catalog sites. */
+        private _allDeferredDojosForUpdatingTokens;
         /**
          * Initializes a new instance of the {@link Site} class.
          * @param url URL to a Geocortex Essentials {@link Site} endpoint.
@@ -4129,7 +3174,7 @@ declare module geocortex.essentials {
         /**
          * Initializes the {@link Site}.
          * This is an asynchronous method; for completion information, subscribe to the
-         * {@link AsyncInitializable} {@link AsyncInitializable.initialized} and {2link AsyncInitializable.initializationFailed}events.
+         * {@link AsyncInitializable.onInitialized} and {@link AsyncInitializable.onInitializationFailed} events.
          *
          *     // Create a new empty ESRI map object
          *     var map = new esri.Map("map");
@@ -4171,6 +3216,7 @@ declare module geocortex.essentials {
          */
         getMap(): esri.Map;
         getEssentialsVersion(): number;
+        getDefaultBatchGeocoder(): GeocodingEndpoint;
         /**
          * Performs a search query operation.
          * This is an asynchronous method, you may provide delegates for completion or error information.
@@ -4183,12 +3229,12 @@ declare module geocortex.essentials {
         /** @private */
         private _parseSearchResponse(searchResults, jsonObject);
         /**
-         * Create the feature sets coming from geocortex search endpoint.
+         * Create the feature sets coming from Geocortex search endpoint.
          * @private
          */
         private _createFeatureSets(jsonArray, includeHighlights);
         /**
-         * Create a result feature coming from geocortex search endpoint.
+         * Create a result feature coming from Geocortex search endpoint.
          * @private
          */
         private _createFeature(jsonFeature, layer, includeHighlights);
@@ -4204,6 +3250,8 @@ declare module geocortex.essentials {
         private _initGeocodingEndpointsHandler(results);
         /** @private */
         private _initGeometryEndpointsHandler(results);
+        /** @private */
+        private _initKmlEndpointHandler(result);
         /**
          * Gets the layer catalog asynchronously.
          * @param catalogParams The application.
@@ -4220,6 +3268,13 @@ declare module geocortex.essentials {
          * @param loadError The callback to run when loading errors.
          */
         getLayerCatalogDetails(catalogParams: geocortex.essentials.catalog.LayerCatalogDetailsParams, loadBegin: () => void, loadComplete: (results: any) => void, loadError: (e: Error) => void): void;
+        /**
+         * Gets the offline basemaps asynchronously.
+         * @param catalogParams The application.
+         * @param loadComplete The callback to run when loading completes.
+         * @param loadError The callback to run when loading errors.
+         */
+        getOfflineBasemaps(loadComplete: (results: OfflineBasemap[]) => void, loadError?: (e: Error) => void): void;
         /** @private */
         private _initGeoprocessingEndpointsHandler(results);
         /**
@@ -4269,6 +3324,13 @@ declare module geocortex.essentials {
         getTokenFromPrincipal(url: string, type: any): string;
         private _updateDefaultToken(token);
         /**
+         * Detects if CORS is both necessary (Essentials is on a different origin than the host page) and enabled.
+         * If so, the corsEnabledServers are updated to include the Essentials server host.
+         * @return A deferred that is resolved when the detection is complete. The deferred is never rejected.
+         * @private
+         */
+        private _detectAndConfigureCors();
+        /**
          * Initializes the {@link Site} from the server.
          * {@link Site} needs to override the base initialize because it needs to initialize from more than one rest endpoint.</p>
          * @private
@@ -4280,20 +3342,33 @@ declare module geocortex.essentials {
         private _initMapErrorHandler(error);
         /** @private */
         private _initNamedExtentsHandler(results);
+        private _initTimeSlidersHandler(results);
         /** @private */
         private _initOverviewMapHandler();
         /** @private */
         private _initOverviewMapErrorHandler(error);
         /** @private */
         private _initPrintTemplatesHandler(results);
-        /** @private */
+        /**
+         * Refreshes the services tokens if they're currently stale. Otherwise returns a
+         * resolved deferred.
+         */
+        updateServiceTokensIfStale(): dojo.Deferred;
+        /**
+         * Updates the service tokens for each of the token secured map services.
+         * @private
+         */
         private _getUpdatedServiceTokens();
         /** @private */
-        private _processServiceTokensHandler(results);
+        private _updateServiceTokensBySendingRestRequest(siteId, dojoVar);
         /** @private */
-        private _processServiceTokensErrorHandler(error);
+        private _isTokenUpdateRequired(siteId);
         /** @private */
-        private _updateServiceTokens(map, tokens);
+        private _processServiceTokensHandler(siteId, dojoVar, results);
+        /** @private */
+        private _processServiceTokensErrorHandler(dojoVar, error);
+        /** @private */
+        private _updateServiceTokens(map, tokens, siteId);
         /** @private */
         private _updateServiceTokensFromPrincipal(map);
         /** @private */
@@ -4307,14 +3382,23 @@ declare module geocortex.essentials {
         updatePrincipal(principal: Principal): void;
         /** @private */
         private _getCredential(url, options?);
+        /**
+         * Get the server as it should be formatter for the esri.Credential object.
+         * @param url
+         */
+        private _getCredentialServer(url);
         /** @private */
         private _hookGetCredential();
         /** @private */
         private _initSiteHandler(results);
         /** @private */
+        private _updateServiceTokensOfAllSites();
+        /** @private */
         private _initSiteErrorHandler(error);
         /** @private */
         private _initWorkflowsHandler(results);
+        /** @private */
+        private _initSearchTablesHandler(results);
         /** @private */
         private _initWebMapHandler(results);
         /** @private */
@@ -4389,6 +3473,200 @@ declare module geocortex.essentials {
 }
 declare module geocortex.essentials {
     /**
+     * Represents a FeatureHyperlink configured on a layer by an Administrator.
+     */
+    class FeatureHyperlink {
+        /** Whether to URL encode replacement values in the uri property. */
+        encodeUriReplacementValues: boolean;
+        /** The URI of an image which represents the hyperlink being generated. */
+        iconUri: string;
+        /** The {@link geocortex.essentials.Layer} that this FeatureHyperlink belongs to. */
+        layer: Layer;
+        /** The name of the target browser window which the hyperlink result will populate (e.g., _blank). */
+        target: string;
+        /**  The text to display in place of the hyperlink URI. */
+        text: string;
+        /** The information shown to the user when the hyperlink is hovered over. */
+        toolTip: string;
+        /** A URI format string which can be used to dynamically insert field values within the URI. */
+        uri: string;
+        /**
+         * Initializes a new instance of the {@link geocortex.essentials.FeatureHyperlink} class.
+         * @param featureHyperlinkInfo Associative array of properties to use to populate the members of this object.
+         * @param layer The layer that this FeatureHyperlink is associated with.
+         */
+        constructor(featureHyperlinkInfo: FeatureHyperlink, layer: Layer);
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Represents a {@link Report} for a specific {@link Layer}.
+     * A report displays information about some of the features of a specific {@link Layer}.
+     * In order to generate a report, a query must be provided that indicates which features to include in the report.
+     * Report generation requires a report template created by the Geocortex Report Designer and stored on the server.
+     */
+    class Report extends AsyncInitializable {
+        /** The description of the {@link Report}. */
+        description: string;
+        /** The display name of the {@link Report}. */
+        displayName: string;
+        /** The extensions of the {@link PrintTemplate}, as defined by an administrator. */
+        extensions: Extension[];
+        /** The ID of the {@link Report}.*/
+        id: string;
+        /** The visibility of the {@link Report}. */
+        visible: boolean;
+        /** The {@link Layer} that the {@link Report} belongs to. */
+        layer: Layer;
+        /** The properties of the {@link PrintTemplate}, as defined by an administrator. */
+        properties: any;
+        /** The collection of supported {@link Scale}s for the {@link Report}. */
+        supportedMapScales: Scale[];
+        /** The collection of supported output formats for the {@link Report}. */
+        supportedOutputFormats: string[];
+        /** The collection of supported {@link Resolution}s for the {@link Report}. */
+        supportedResolutions: Resolution[];
+        /** The collection of {@link TextField} objects for the {@link Report}. */
+        textFields: TextField[];
+        /** @private */
+        private _running;
+        /** @private */
+        private _onRunReportComplete;
+        /** @private */
+        private _onRunReportError;
+        /**
+         * Initializes a new instance of the {@link Report} class.
+         * @param url The URL to the REST endpoint of the {@link Report}.
+         */
+        constructor(url: string);
+        /**
+         * Whether the {@link Report} is currently running (being generated). */
+        isRunning(): boolean;
+        /**
+         * Runs the report using a {@link esri.tasks.Query} and the {@link ReportParameters}.
+         * This is an asynchronous method, you may provide delegates for completion or error information.
+         * @param query The {@link esri.tasks.Query} to use to select features from the {@link Layer} to report on.
+         * @param reportParameters The report parameters.
+         * @param runReportComplete The delegate that will be called when the report has finished running
+         * (even if an error occurs). This delegate expects one argument: a String representing the URL of the prepared report.
+         * @param runReportError The delegate that will be called if an error occurs. This delegate expects two arguments: a reference to the Report instance, and an Error.
+         */
+        run(query: esri.tasks.Query, reportParameters: ReportParameters, runReportComplete: (results: any) => void, runReportError: (error: Error) => void): void;
+        /** @private */
+        _configureObject(results: any, deepInitialize?: boolean): void;
+        /** @private */
+        private _runRestComplete(results);
+        /** @private */
+        private _runRestError(error);
+    }
+}
+/**
+ * Contains string constants that represent a type of {@link Report}.
+ */
+declare module geocortex.essentials.ReportType {
+    var LAYER_TEMPLATE_REPORT: string;
+    var MAP_TEMPLATE_REPORT: string;
+}
+declare module geocortex.essentials {
+    /**
+     * Represents the basic layer type of a {@link Layer}.
+     */
+    class LayerType {
+        static UNKNOWN: number;
+        static FEATURE_LAYER: number;
+        static RASTER_LAYER: number;
+        static GROUP_LAYER: number;
+        static GEO_RSS_LAYER: number;
+        static TABLE_LAYER: number;
+    }
+}
+declare module geocortex.essentials {
+    class EsriFieldTypes {
+        static esriFieldTypeSmallInteger: string;
+        static esriFieldTypeInteger: string;
+        static esriFieldTypeSingle: string;
+        static esriFieldTypeDouble: string;
+        static esriFieldTypeString: string;
+        static esriFieldTypeDate: string;
+        static esriFieldTypeOID: string;
+        static esriFieldTypeGeometry: string;
+        static esriFieldTypeBlob: string;
+        static esriFieldTypeRaster: string;
+        static esriFieldTypeGUID: string;
+        static esriFieldTypeGlobalID: string;
+        static esriFieldTypeXML: string;
+    }
+    class EssentialsFieldTypes {
+        static essentialsFieldTypeSmallInteger: string;
+        static essentialsFieldTypeInteger: string;
+        static essentialsFieldTypeSingle: string;
+        static essentialsFieldTypeDouble: string;
+        static essentialsFieldTypeString: string;
+        static essentialsFieldTypeDate: string;
+        static essentialsFieldTypeGUID: string;
+        static essentialsFieldTypeObject: string;
+    }
+    /**
+     * Represents an attribute of a spatial layer, as configured by Essentials.
+     */
+    class Field {
+        /** The field alias.*/
+        alias: string;
+        /** The type of data the field contains. */
+        dataType: string;
+        /** Alias to use when displaying the field's name. */
+        displayName: string;
+        /** Whether this field is a focus field or not. */
+        focusField: boolean;
+        /** The label, when used in a hyperlink. */
+        hyperlinkLabel: string;
+        /** The {@link Layer} that this field belongs to. */
+        layer: Layer;
+        /** Name of the field. */
+        name: string;
+        /** Whether the field will be searched as part of the layer search. */
+        searchable: boolean;
+        /** Whether the field is visible in reports. */
+        visible: boolean;
+        /** A custom format string for displaying the field's value. **/
+        format: string;
+        /**
+         * Initializes a new instance of the {@link Field} class.
+         * @param field A {@link Field}like object to clone.
+         */
+        constructor(fieldInfo: {
+            layer: Layer;
+            alias: string;
+            dataType: string;
+            displayName: string;
+            focusField?: boolean;
+            hyperlinkLabel: string;
+            name: string;
+            searchable?: boolean;
+            visible?: boolean;
+            format?: string;
+        });
+        /**
+         * Exports the state of the field as a JSON object. This can be used to recreate the
+         * field again via the constructor.
+         */
+        toJson(): Object;
+        /**
+         * Converts an ESRI field type to a Geocortex Essentials type which is a .NET type name.
+         * @returns esriFieldType Name of the system type that corresponds to ESRI field type.
+         * @param esriFieldType Name of the ESRI field type to convert.
+         */
+        static convertFromEsriType(esriFieldType: string): string;
+        /**
+         * Converts a Geocortex Essentials field type (which is a .NET type name) to an esri field type.
+         * @returns Name of the esri field type that corresponds to the Essentials type.
+         * @param geocortexType Name of the Geocortex Essentials field type to convert.
+         */
+        static convertToEsriFieldType(geocortexType: string): string;
+    }
+}
+declare module geocortex.essentials {
+    /**
      * Client representation of a layer hyperlink object attached to a layer.
      */
     class LayerHyperlink {
@@ -4396,8 +3674,13 @@ declare module geocortex.essentials {
         encodeUriReplacementValues: boolean;
         /** The URI of an image which represents the hyperlink being generated. */
         iconUri: string;
-        /** The {@link geocortex.essentials.Layer} that this LayerHyperlink belongs to. */
+        /**
+          * The {@link geocortex.essentials.Layer} that this LayerHyperlink belongs to.
+          * Only has a value when this LayerHyperlink was constructed directly on a layer.
+          */
         layer: Layer;
+        /** The {@link geocortex.essentials.MapService} that this Layerhyperlink belongs to. */
+        mapService: MapService;
         /** The name of the target browser window which the hyperlink result will populate (e.g., _blank). */
         target: string;
         /** The text to display in place of the hyperlink URI. */
@@ -4418,7 +3701,1892 @@ declare module geocortex.essentials {
             toolTip: string;
             uri: string;
             iconUri: string;
-        }, layer: any);
+        }, layerOrMapService: Layer | MapService);
+        /**
+         * Exports the state of the hyperlink as a JSON object. This can be used to recreate the
+         * hyperlink again via the constructor.
+         */
+        toJson(): Object;
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Represents a layer configured in a {@link MapService}.
+     * A Geocortex layer should not be confused with an _ArcGISDynamicMapServiceLayer_ or an _ArcGISTiledMapServiceLayer_. It is more akin to the esri.layers.LayerInfo class.
+     * The layer provides additional configuration beyond what is defined in an ArcGIS server map service sub layer.
+     * For example, the layer might have reports and datalinks defined. Also, the layer's configuration overrides the default visibility of the layer.
+     * In order for sub-layers to appear on the map, they must be explicitly defined in the layer collection of the {@link MapService}.
+     */
+    class Layer extends AsyncInitializable {
+        /** Whether or not this layer should allow the end user to configure custom symbolization */
+        allowSymbolization: boolean;
+        /** Whether or not the layer supports toggling labels. */
+        canToggleLabels: boolean;
+        /** Array of charts associated with this layer*/
+        charts: LayerChart[];
+        /** The layer's initial visibility, defined in the site.  This will be true if the layer  was configured to be visible by default, false otherwise. */
+        configuredVisible: boolean;
+        /** Gets the collection of {@link DataLink} objects that belongs to the {@link Layer}. */
+        dataLinks: DataLink[];
+        /** The name of the underlying data provider for the layer, e.g. "SqlServer" or "Oracle". */
+        dataProvider: string;
+        /** Whether or not the layer is visible by default in the service. */
+        defaultVisibility: boolean;
+        /** The field to use as the primary representative of the layer in reports. */
+        displayField: Field;
+        /** The alias to use for the layer in client applications. */
+        displayName: string;
+        /** The default format string used for formatting date values originating from this layer. */
+        defaultDateFormat: string;
+        /** The default format string used for formatting numeric values originating from this layer. */
+        defaultNumberFormat: string;
+        /** The description to use for the layer in client applications. */
+        description: string;
+        /** The layer's draw index that determines its drawing order (only applies to dynamic map services). */
+        drawIndex: number;
+        /** The dynamic definition of the {@link Layer}. */
+        dynamicDefinition: string;
+        /** The extensions of the Layer, as defined by an administrator.*/
+        extensions: Extension[];
+        /** The border color used when highlighting a feature from this layer. */
+        featureBorderColor: number[];
+        /** The width of the border for a feature from this layer. */
+        featureBorderWidth: number;
+        /** The format for a description of a feature from this layer. */
+        featureDescription: string;
+        /** The fill color used when highlighting a feature from this layer, represented as an array of RGB values in the range of 0-255. */
+        featureFillColor: number[];
+        /** Array of feature hyperlinks associated with this layer*/
+        featureHyperlinks: FeatureHyperlink[];
+        /** The format for a label of a feature. */
+        featureLabel: string;
+        /** The format for a long description of a feature. */
+        featureLongDescription: string;
+        /**
+         * Shape type of the layer. One of:
+         *  - None
+         *  - Point
+         *  - Multipoint
+         *  - Polygon
+         *  - Line
+         */
+        featureType: string;
+        /**
+         * Zoom factor to use to expand the extent by when zooming to a feature.  For example,
+         * if this value is set to 3, then the extent will be expanded by a factor of 3 when zooming to that feature.
+         * This property is not applicable to point layers since points do not have an extent to expand.
+         */
+        featureZoomFactor: number;
+        /**
+         * Scale to which the map should zoom when a standard viewer "zoom to feature" concept is invoked, from a list of results or otherwise.  This value should
+         * be respected by implementing clients and viewers. If no value has been configured in the Essentials site for this, it will remain null.
+         */
+        featureZoomScale: number;
+        /** Array of fields associated with this layer. */
+        fields: Field[];
+        /** The full extent of the layer. */
+        fullExtent: esri.geometry.Extent;
+        /** Whether the {@link Layer} has attachments associated with it. */
+        hasAttachments: boolean;
+        /** Whether the {@link Layer} contains a collection of {@link DataLink} objects. This information is available even if the {@link Layer} has not been initialized. */
+        hasDataLinks: boolean;
+        /**
+         * Whether the {@link Layer} contains a collection of {@link Report} objects.
+         * This information is available even if the {@link Layer} has not been initialized.
+         */
+        hasReports: boolean;
+        /** URI to an icon representing this layer in the client application. */
+        iconUri: string;
+        /** The ID of the {@link Layer}. */
+        id: string;
+        /** Whether or not this layer can be identified in the client application. */
+        identifiable: boolean;
+        /** Whether or not this layer can be identified in the client application at scales it's not visible at. */
+        identifiableAtAllScales: boolean;
+        /** Whether or not to include this layer in the a layer list. */
+        includeInLayerList: boolean;
+        /** Whether or not to include this layer in the legend. */
+        includeInLegend: boolean;
+        /** Whether the {@link Layer} is dynamic. */
+        isDynamic: boolean;
+        /** Whether or not the layer will be expanded by default when shown in a layer list.  Only applies to group layers. */
+        isExpanded: boolean;
+        /** Indicates whether or not a layer was created by a user at runtime **/
+        isUserCreated: boolean;
+        /**
+         * The type of user created layer. One of:
+         *  - LayerAddition - the layer was added by browsing/searching for services and layers in a dialog
+         *  - LayerCatalog - the layer was added from a catalog
+         *  - Upload - the layer was added by uploading a file
+         *
+         * Only applies to layers created at runtime.
+         */
+        userLayerType: string;
+        /** The catalog id */
+        catalogId: string;
+        /** An array of hyperlinks associated with this layer. */
+        layerHyperlinks: geocortex.essentials.LayerHyperlink[];
+        /** The URL of the image for the layer legend. */
+        legendUrl: string;
+        /** The map service that the {@link Layer} belongs to. */
+        mapService: MapService;
+        /** The layer's maximum scale. */
+        maxScale: number;
+        /** The layer's minimum scale. */
+        minScale: number;
+        /** The name of the {@link Layer}. */
+        name: string;
+        /** Gets the ID of the parent {@link Layer}. */
+        parentLayerId: string;
+        /** Field to use as the layer's primary key. */
+        primaryKeyField: Field;
+        /** The properties of the {@link Layer}, as defined by the administrator on the server. */
+        properties: any;
+        /** A flag indicating whether the layer is queryable or not. */
+        queryable: boolean;
+        /** Array of relationships associated with this layer. */
+        relationships: esri.layers.Relationship[];
+        /** The collection of {@link Report} objects that belongs to the {@link Layer}. */
+        reports: Report[];
+        /**  Indicates if the layer is searchable. */
+        searchable: boolean;
+        /**
+         * The display preference for feature hyperlinks. One of:
+         *    - "ShowAll"
+         *    - "DisableBrokenLinks"
+         *    - "HideBrokenLinks"
+         */
+        showFeatureHyperlinks: string;
+        /** Whether this layer should show its labels. */
+        showLabels: boolean;
+        /** Whether the client application is to show map tips for this layer. */
+        showMapTips: boolean;
+        /** Whether the layer can be snapped. */
+        snappable: boolean;
+        /** Whether the layer is enabled for snapping by default. */
+        snappingEnabled: boolean;
+        /** Indicates whether or not this layer supports the Identify task/endpoint. This is not the same as identifiable which is affected by user preference. */
+        supportsIdentify: boolean;
+        /** Indicates whether or not this layer supports the Query task/endpoint. This is not the same as queryable which is affected by user preference. */
+        supportsQuery: boolean;
+        /** The style name, for WMS requests. */
+        styleName: string;
+        /** A list of predefined renderers that can be applied to this layer */
+        styles: LayerStyle[];
+        /** Gets the IDs of all {@link Layer} objects that are sub-layers (children) of this {@link Layer}. The value is only set when the layer is a group layer. */
+        subLayerIds: string[];
+        /** The IANA ID of the time zone in which the data in this layer's fields are current. */
+        timeZoneId: string;
+        /** The type of the layer, such as feature layer, raster layer, group layer, etc. Represented as a numerical value, defined by {@link LayerType}. */
+        type: number;
+        /** A flag used when changing map services and preserving user visibility settings. */
+        visibleStateForRefresh: geocortex.essentials.RefreshVisibility;
+        /**
+         * The name of the WMS layer. This is the actual layer name from the capabilities, unlike
+         * the name property of this Layer which is actually the title in the capabilities.
+         */
+        wmsLayerName: string;
+        /**
+         * An observable indicating whether this layer is participating in the currently configured layer theme or not
+         */
+        inActiveTheme: boolean;
+        /**
+         * A collection containing the layer theme settings for this layer.
+         */
+        layerThemeSettings: LayerThemeSetting[];
+        /**
+         * Whether the {@link Layer} is currently visible or not.
+         * @private
+         */
+        _visible: boolean;
+        /**
+         * Caches the value for getFeatureLayer().
+         */
+        private _featureLayerPromise;
+        private _timeInfo;
+        private _gcxTimeInfo;
+        /**
+         * Initializes a new instance of the {@link Layer} class.
+         * @param url The URL to the REST endpoint of the {@link Layer}.
+         */
+        constructor(url?: string);
+        /** Gets the feature layer associated with this layer. Not supported for all layers types, in which case the value will be null. */
+        getFeatureLayer(): Promise<esri.layers.FeatureLayer>;
+        /**
+         * Returns a Feature Layer for a given relationship ID.
+         * @param relationshipId The id of the relationship.
+         * @param callbackResults A callback to invoke upon success.
+         * @param callbackErrors A callback to invoke if an error is encountered.
+         */
+        getRelatedFeatureLayer(relationshipId: number, callbackResults: (result: any) => void, callbackErrors: (error: Error) => void): dojo.Deferred;
+        /**
+         * Gets a value representing whether or not all of this layer's ancestors are currently visible in the map. */
+        areAllAncestorsVisible(): boolean;
+        /**
+         * Gets the URL to the actual Esri layer. */
+        getLayerUrl(): string;
+        private _fieldLookup;
+        /**
+         * Given a field name, returns the field object by that name.
+         * @param name of the field to return
+         */
+        getFieldByName(name: string): Field;
+        /**
+         * Returns whether or not the layer is currently visible in the map. */
+        isVisible(): boolean;
+        /**
+         * Sets the visibility of the {@link Layer}. If the {@link Layer} is part of a tiled (or image) service, then the whole {@link MapService} visibility is set.
+         * @param visible The visibility value to set.
+         */
+        setVisibility(value: boolean, doNotRefresh?: boolean): void;
+        /**
+         * Sets the inActiveTheme property of the {@link Layer}. Raises the "LayerInActiveThemeChangedEvent" event.
+         * @param value The value to set.
+         */
+        setInActiveTheme(value: boolean): void;
+        /**
+         * Find the Report matching the specified report ID.
+         * @param reportId The Id of the Report to find.
+         */
+        findReportById(reportId: string): Report;
+        /**
+         * Determines if the specified scale is within this layer's min and max scale.
+         * If a value is not provided for this parameter, then the map's current scale value will be used.
+         * @param scale The scale value to test if it is between this layer's min and max scale.
+         */
+        withinScaleRange(scale?: number): boolean;
+        /** @private */
+        private _configureDataLinks(dataLinkResults, deepInitialize, site);
+        /** @private */
+        private _idIsUnique(id);
+        /** @private */
+        private _getUniqueId();
+        /**
+         * Populates the *Layer* from a dynamic object which represents a layer.
+         * @param layerDefinition An object which represents the Layer.
+         */
+        createFromDefinition(layerDefinition: any): void;
+        /** @private */
+        _createFrom(results: any): void;
+        /** @private */
+        _configureObject(results: any, deepInitialize?: boolean): void;
+        /**
+         * Exports the state of the layer as a JSON object. This can be used to recreate the
+         * layer again via createFromDefinition().
+         */
+        toJson(): Object;
+        /** @private */
+        private _configureReports(reportResults, deepInitialize);
+        /** Retrieve the layer time info if available. This method needs to be called after the service layers have loaded. */
+        getLayerTimeInfo(): essentials.TimeInfo;
+        /**
+         * Determine what the Esri OBJECTID field name is for the feature in the layer. */
+        getObjectIdFieldName(): string;
+        /** @private */
+        private _layerTypeStringToEssentialsLayerType(layerType);
+        /** @private */
+        private _essentialsLayerTypeToLayerTypeString(layerType);
+        /** @private */
+        _getRelation(relationshipId: number): esri.layers.Relationship;
+        /**
+       * Returns a string representing the layers definition expression.
+       * Uses a service layer if passed in to find the most up to date definition expression.
+       * If no service layer, get the definition expression for the layers dynamic definition json.
+       * A service layer would be useless here if you were initializing these layers for the first time. (ie. it is not added yet.)
+       * @param serviceLayer Service layer.
+       * @return The definition expression.
+       */
+        getDefinitionExpression(serviceLayer?: esri.layers.Layer): string;
+        /** @private */
+        private _createDynamicLayerInfo();
+        /**
+         * Gets the layers drawing options from the dynamicDefinition.
+         * @returns The *LayerDrawingOptions* for the layer or null.
+         */
+        getLayerDrawingOptions(): esri.layers.LayerDrawingOptions;
+        /**
+         * Retrieves the layer theme settings for this layer by specified layer theme or layer theme id
+         */
+        getLayerThemeSettings(layerTheme: LayerTheme): LayerThemeSetting;
+        getLayerThemeSettings(layerThemeId: string): LayerThemeSetting;
+        /**
+         * Accessor method for the LayerVisibilityEventManager class in MapService.ts to sync layer visibility with
+         * programmatic layer visibility changed made using esri's setLayerVisibility method.
+         * @private
+         */
+        _syncProgramaticallyChangedLayerVisibility(visible: boolean): void;
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Represents a parameter in a {@link geocortex.essentials.DataLink} relationship to an external data source.
+     */
+    class DataLinkParameter {
+        /** The name of the feature field of the {@link DataLinkParameter}. */
+        featureField: string;
+        /** The ID of the {@link geocortex.essentials.DataLinkParameter}. */
+        id: string;
+        /** The name of the {@link geocortex.essentials.DataLinkParameter}. */
+        name: string;
+        /** The type of the {@link geocortex.essentials.DataLinkParameter}. */
+        type: string;
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Represents a DataLink as defined by a {@link geocortex.essentials.Layer}.
+     * A data link is a data relation between spatial attributes and tabular data from a foreign data source, such as a SQL database or a spreadsheet.
+     * {@link DataLink}s allow data from external data sources to be pulled into web mapping applications.
+     */
+    class DataLink extends AsyncInitializable {
+        /** The display name. */
+        displayName: string;
+        /**
+         * The collection of {@link geocortex.essentials.Extension}s associated with the data link.
+         * Extensions can be defined by the administrator on the server.
+         */
+        extensions: Extension[];
+        /** The ID of the {@link DataLink} */
+        id: string;
+        /** The visibility of the {@link DataLink}. */
+        visible: boolean;
+        /**
+         * Indicates whether the data fetched by the datalink represents a one to one relationship with the feature.
+         */
+        isOneToOne: boolean;
+        /** The {@link Layer} that this {@link DataLink} belongs to. */
+        layer: Layer;
+        /** The parameters of the data link. */
+        parameters: DataLinkParameter[];
+        /** The collection of search tables for the data link. */
+        searches: DataLinkSearch[];
+        /**
+         * Arbitrary properties associated with this {@link DataLink}.
+         * The properties are defined by the administrator on the server.
+         */
+        properties: any;
+        /** The number of outstanding requests to fetch data links. */
+        private _numDataLinkingRequests;
+        /**
+         * Initializes a new instance of the {@link geocortex.essentials.DataLink} class.
+         * @param The URL to a DataLink endpoint.
+         */
+        constructor(url: string);
+        /**
+         * Gets whether the {@link geocortex.essentials.DataLink} is currently performing data linking.
+         * @return {boolean} True if datalinking is currently being performed, false otherwise.
+         */
+        isDataLinking(): boolean;
+        /**
+         * Performs the data linking operation using set of feature attributes required during the operation. This is an asynchronous method; you may provide delegates for completion or error information.
+         * @param featureSetParameters An esri.tasks.FeatureSet that contains the attributes defined in the parameters. The method uses only the required attributes and ignores any other attributes in the feature set.
+         * @param dataLinkingComplete The delegate that will be called when the operation has completed, even if an error occurs. This delegate expects one argument: an Object containing the result.
+         * @param dataLinkingError The delegate that will be called if an error occurs during the operation. This delegate expects two arguments: a reference to the DataLink instance, and an Error.
+         */
+        performDataLinking(featureSetParameters: any, dataLinkingComplete: (results: any) => void, dataLinkingError: (error: Error) => void): void;
+        /** @private */
+        _configureObject(results: any, deepInitialize?: boolean): void;
+        private _parseConvertDates(jsonObject);
+        /** @private */
+        private _prepParamValue(param);
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Represents a DataLinkSearch as defined by a {@link geocortex.essentials.DataLink}.
+     * A data link search is a connection between the data link and a defined search table.
+     */
+    interface DataLinkSearch {
+        /** The ID of the {@link DataLinkSearch} */
+        id: string;
+        /** The display name of the {@link DataLinkSearch}. */
+        displayName: string;
+        /** The search table ID of the {@link DataLinkSearch}. */
+        searchTableId: string;
+        /** The feature field of the {@link DataLinkSearch}. */
+        featureField: string;
+        /** The table field of the {@link DataLinkSearch}. */
+        tableField: string;
+        /** The data link that this search is for. */
+        dataLink: DataLink;
+    }
+}
+declare module geocortex.essentials.documents {
+    /**
+     * The Documents that are sent to and come back from the Document Store.
+     * The document content may not be returned based upon the server request.
+     * @private
+     */
+    interface Document extends geocortex.core.documents.Document {
+        /**
+         * The content of the document. The bytes may be interpreted based on the content-type.
+         */
+        content?: any;
+        /**
+         * The the ID of the document. This is set by the server on creation.
+         */
+        id?: string;
+        /**
+         * The date the document was created. This value is managed by the server.
+         */
+        timeOfCreation?: Date;
+        /**
+         * The date the document will delete. The value is managed by the client
+         * but the expiration is implemented by the server.
+         */
+        timeOfDeletion?: Date;
+        /**
+         * The date the document will expire. The value is managed by the client
+         * but the expiration is implemented by the server.
+         */
+        timeOfExpiration?: Date;
+        /**
+         * The date the document was last accessed. This value is managed by the server.
+         */
+        timeOfLastAccess?: Date;
+        /**
+         * The date the document was last modified. This value is managed by the server.
+         */
+        timeOfLastModification?: Date;
+        /**
+         * The title of the document. This is non-unique and user-defined.
+         */
+        title?: string;
+    }
+}
+declare module geocortex.essentials.documents {
+    /**
+     * String constants that represent the various fields of a {@link Document}.
+     * @private
+     */
+    module DocumentField {
+        const AUTHOR_DESCRIPTION: string;
+        const AUTHOR_ISSUER_TITLE: string;
+        const AUTHOR_TITLE: string;
+        const DESCRIPTION: string;
+        const EDITOR_DESCRIPTION: string;
+        const EDITOR_ISSUER_TITLE: string;
+        const EDITOR_TITLE: string;
+        const FILE_TYPE: string;
+        const GRANT_TOKEN: string;
+        const ISSUER_TITLE: string;
+        const TAGS: string;
+        const TIME_CREATION: string;
+        const TIME_LAST_ACCESS: string;
+        const TIME_LAST_MODIFICATION: string;
+        const TITLE: string;
+    }
+    /**
+     * String constants that represent the content types of a {@link Document}.
+     * @private
+     */
+    module ContentType {
+        const BLOB: string;
+        const JSON: string;
+        const TEXT: string;
+        const XML: string;
+    }
+    /**
+     * String constants that represent the formats of the {@link Document} content.
+     * @private
+     */
+    module DocumentFormat {
+        const BLOB: string;
+        const JSON: string;
+        const TEXT: string;
+        const XML: string;
+    }
+    /**
+     * String constants that represent the grant kinds of a {@link Document}.
+     * @private
+     */
+    module GrantKind {
+        const FROZEN: string;
+        const OWNER: string;
+        const READER: string;
+        const WRITER: string;
+        const READER_LINK: string;
+        const WRITER_LINK: string;
+        const GLOBAL_CREATE: string;
+        const GLOBAL_READER: string;
+        const GLOBAL_WRITER: string;
+    }
+    /**
+     * String constants that represent the global grant IDs of a {@link Document}.
+     * @private
+     */
+    module GrantID {
+        /** The identifier for a grant that identifies any user. */
+        const PUBLIC: string;
+        /** The identifier for a grant that identifies any authenticated user. */
+        const USER: string;
+    }
+    /**
+     * String constants that represent the moniker kinds of a {@link Document}.
+     * @private
+     */
+    module MonikerKind {
+        const LINK: string;
+        const ROLE: string;
+        const USER: string;
+        const POLICY: string;
+    }
+    /**
+     * String constants that represent the filter methods for a {@link Document}.
+     * @private
+     */
+    module FilterMethod {
+        const RANGES: string;
+        const SPATIAL_DISJOINT: string;
+        const SPATIAL_INTERSECTS: string;
+        const SPATIAL_WITHIN: string;
+        const MATCHES: string;
+        const VALUES: string;
+    }
+    /**
+     * String constants that represent the filter types for a {@link Document}.
+     * @private
+     */
+    module FilterType {
+        const REQUIRE: string;
+        const EXCLUDE: string;
+        const INCLUDE: string;
+    }
+}
+/** @private */
+declare module geocortex.essentials.documents {
+    import CoreDocuments = geocortex.core.documents;
+    import CoreResults = geocortex.core.documents.results;
+    import Filter = geocortex.core.documents.Filter;
+    import Moniker = geocortex.core.documents.Moniker;
+    import Thenable = geocortex.essentials.utilities.Thenable;
+    const LINK_QUERY_STRING_KEY: string;
+    /**
+     * Interface to the Geocortex Essentials Document Store. Allows full create, read,
+     * update, delete operations on documents that persist between sessions.
+     * Not supported on versions of Essentials before 4.5. Check the ```supported```
+     * member after the Site is initialized.
+     * @private
+     */
+    class DocumentStore {
+        protected _site: Site;
+        protected _initializeAttemptThenable: Thenable<void>;
+        protected _initializeDeferred: dojo.Deferred;
+        protected _rootUrl: string;
+        protected _guestLink: string;
+        /**
+         * These fields can be filtered using the 'matches' filter type as they are full text fields
+         */
+        static matchesFilterFields: string[];
+        /**
+         * Indicates whether the Document Store is supported on this version of Essentials.
+         * This can only be true once the Document Store is initialized.
+         */
+        supported: boolean;
+        /**
+         * Whether or not the document store is successfully initialized.
+         */
+        isInitialized: boolean;
+        /**
+         * The monikers returned by the document store self endpoint.
+         * This will be available once the Document Store is initialized.
+         */
+        self: Moniker[];
+        /**
+         * The monikers that represent the current user.
+         * This will be available once the Document Store is initialized.
+         */
+        userMonikers: Moniker[];
+        /**
+         * The monikers that represent the document store policy.
+         * This will only be available once the Document Store is initialized.
+         */
+        policyMonikers: Moniker[];
+        /**
+         * A filter for searching documents owned by the current user.
+         */
+        userFilter: Filter;
+        /**
+         * Initialize the Document Store.
+         * @param site the Site to initialize with.
+         */
+        initialize(site: Site): Thenable<void>;
+        /**
+         * A thenable for when the document store is initialized.  This will resolve when/if the document
+         * store initializes or rejects if the document store can not be supported.  While being offline
+         * prevents the document store from initializing this will remain pending.
+         */
+        onInitialized(): Thenable<void>;
+        /**
+         * A thenable for a document store initialization attempt.  This is different from onInitialized()
+         * in that it will reject for a single attempt failure.  This call *may* itself trigger an attempt.
+         */
+        onInitializeAttempt(): Thenable<void>;
+        /**
+         * Get the root url.
+         */
+        getRootUrl(): string;
+        /**
+         * Whether or not the current user can create content.
+         */
+        canCreate(): boolean;
+        /**
+         * Whether or not the document store has a policy matching the predicate.
+         * @param predicate The predicate to match against some policy grant.
+         * @return Whether or not the policy grant exists.
+         */
+        hasPolicyGrant(predicate?: (grant: CoreDocuments.Grant, index?: number) => boolean): boolean;
+        /**
+         * Add a Document to the Document Store.
+         * @param doc The Document to add.
+         * @return A Thenable of the Document that was added to the store, after it was processed.
+         */
+        add(doc: Document): Thenable<Document>;
+        /**
+         * Add a Document to the Document Store from the given form data.
+         * @param formData The form data specifying the Document fields.
+         * @return A Thenable of the Document that was added to the store, after it was processed.
+         */
+        addFromFormData(formData: FormData): Thenable<Document>;
+        /**
+         * Add a Document to the Document Store from the given form.
+         * @param formData The form specifying the Document fields.
+         * @return A Thenable of the Document that was added to the store, after it was processed.
+         */
+        addFromForm(form: HTMLFormElement): Thenable<Document>;
+        /**
+         * Get the Document from the Document Store with the given ID.
+         * @param id The ID of the Document to get.
+         * @param includeContent Whether or not to retrieve the document content.
+         * @param format The format of the document content.
+         * @return A Thenable of the Document with the given ID.
+         */
+        getById(id: string, includeContent?: boolean, format?: string): Thenable<Document>;
+        /**
+         * Get the URL raw content can be found at for the Document, or for the given Document ID
+         * assuming that document exists. If the mime-type of the Document is an image
+         * this can be used as the ```src``` of an ```img``` tag.
+         * @param id The ID of the Document.
+         * @return A URL.
+         */
+        getContentUrl(docOrId: string | Document): string;
+        /**
+         * Update the Document in the Document Store with the given ID to have
+         * the given values. Only values present in the values object are updated.
+         * @param id The ID of the Document to update.
+         * @param values The values to update.
+         * @return A Thenable of the Document with its updated values.
+         */
+        updateById(id: string, values: Document): Thenable<Document>;
+        /**
+         * Delete the Document from the Document Store with the given ID.
+         * @param id The ID of the Document to delete.
+         * @return A Thenable of the Document that was deleted.
+         */
+        deleteById(id: string): Thenable<Document>;
+        /**
+         * Search the Document Store and get all matching Documents. Only Documents
+         * the user has permission to access will be returned.
+         * @param queryParams The parameters of the search.
+         * @return A Thenable of the search result containing the documents.
+         */
+        query(queryParams: QueryParameters): Thenable<QueryResult>;
+        /**
+         * Perform a request to the document store.
+         * @param request The request to perform.
+         * @param usePost Whether or not to use POST for the request.
+         * @return A Thenable of the batch request response.
+         */
+        perform(request: CoreDocuments.BatchRequest, usePost?: boolean): Thenable<CoreDocuments.BatchRequest>;
+        /**
+         * Tries to verify whether or not the document is owned by the current user. If the document
+         * does not contain sufficient meta data, this will return true.
+         * @param doc The document to check ownership of.
+         * @return Whether or not the current user owns the document.
+         */
+        isOwner(doc: Document): boolean;
+        /**
+         * Verifies whether or not the document is read only for the current user. If the document
+         * does not contain the access property, this returns false.
+         * @param doc The document to check read only status for.
+         * @return Whether or not the document is read only for the current user.
+         */
+        isReadOnly(doc: Document): boolean;
+        /**
+         * Tries to verify whether or not the document has been updated to be shared publicly. If the
+         * document does not contain sufficient meta data, this will return false.
+         * @param doc The document to check whether it has been shared publicly.
+         * @return Whether or not the document has been shared publicly.
+         */
+        isPublic(doc: Document): boolean;
+        /**
+         * Sets the guest link used on requests to the document store.
+         * @param guestLink The guest link.
+         */
+        setGuestLink(guestLink: string): void;
+        /**
+         * Process the ajax result and throw the Error if it is an error.
+         * @param result
+         * @return {}
+         */
+        protected static _processError(result: any): any;
+        /**
+         * Process the Core Document so that dates are Date objects (and
+         * anything else to keep the Document consistent).
+         * @param doc The Core Document to process.
+         * @return The same Document.
+         */
+        protected _processDocument(doc: CoreDocuments.Document): Document;
+        /**
+         * Process the Read Document Result so we can extract and attach the document content.
+         * @param result The Read Document Result to process.
+         * @param format The format that the content is in.
+         * @return The resulting Document.
+         */
+        protected static _processReadDocumentResponse(result: CoreResults.ReadDocumentResult, format: string): Document;
+        /**
+         * Process the Self Result on initialization, so we can setup the policy and user if avilable.
+         * @param result The Self Result to process.
+         */
+        protected _processSelf(result: CoreResults.SelfResult): void;
+        /**
+         * Verify that the Document ID is valid, throwing an exception if it isn't.
+         * @param id The Document ID.
+         */
+        protected _verifyDocId(id: string): void;
+        /**
+         * Verify that the Document Store is supported, throwing an exception if it isn't.
+         */
+        protected _verifySupported(): void;
+    }
+}
+/**
+ * Builds batch requests for the document store REST endpoints.
+ * @private
+ */
+declare module geocortex.essentials.documents.BatchRequestBuilder {
+    import BatchRequest = geocortex.core.documents.BatchRequest;
+    import DocumentContent = geocortex.core.documents.DocumentContent;
+    import Moniker = geocortex.core.documents.Moniker;
+    import Query = geocortex.core.documents.Query;
+    import ScrubOptions = geocortex.core.documents.ScrubOptions;
+    function cloneDocument(id: string, document: Document, createOnly: boolean): BatchRequest;
+    function createDocument(document: Document, streamId: string): BatchRequest;
+    function createMoniker(moniker: Moniker, createOnly: boolean): BatchRequest;
+    function deleteDocument(id: string): BatchRequest;
+    function deleteMoniker(id: string): BatchRequest;
+    function describe(streamId: string): BatchRequest;
+    function generateLinks(count: number): BatchRequest;
+    function modifyDocument(document: Document, streamId: string): BatchRequest;
+    function openDocument(id: string, streamId: string, startPosition: number): BatchRequest;
+    function peekDocument(id: string, throwIfMissing?: boolean): BatchRequest;
+    function peekDocumentAccess(id: string): BatchRequest;
+    function peekMoniker(id: string, throwIfMissing?: boolean): BatchRequest;
+    function peekMonikerAccess(id: string): BatchRequest;
+    function previewDocument(id: string, streamId: string): BatchRequest;
+    function previewMoniker(id: string, streamId: string): BatchRequest;
+    function readDocument(id: string, format: string): BatchRequest;
+    function restoreDocument(globalId: string): BatchRequest;
+    function restoreMoniker(globalId: string): BatchRequest;
+    function resumeDocument(globalId: string, streamId: string): BatchRequest;
+    function scrub(scrubOptions: ScrubOptions): BatchRequest;
+    function searchDocuments(documentQuery: Query<Document>): BatchRequest;
+    function searchMonikers(monikerQuery: Query<Moniker>): BatchRequest;
+    function searchRoles(searchClause: string): BatchRequest;
+    function searchUsers(searchClause: string): BatchRequest;
+    function self(): BatchRequest;
+    function touchDocument(id: string, modify: boolean, throwIfMissing: boolean): BatchRequest;
+    function updateDocument(document: Document): BatchRequest;
+    function updateMoniker(moniker: Moniker): BatchRequest;
+    function writeDocument(content: DocumentContent): BatchRequest;
+}
+declare module geocortex.essentials.documents {
+    /**
+     * Query search parameters.
+     * @private
+     */
+    interface QueryParameters extends geocortex.core.documents.Query<Document> {
+    }
+    /**
+     * Query search results.
+     * @private
+     */
+    interface QueryResult extends geocortex.core.documents.ResultSet<Document> {
+    }
+    /**
+     * An individual document Query result.
+     * @private
+     */
+    interface Result extends geocortex.core.documents.Result<Document> {
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * An object that represents the options for exporting the map image.
+     */
+    class ExportMapImageOptions {
+        /** The default output format of the generated map image. */
+        defaultOutputFormat: string;
+        /** Indicates whether including georeference data in the export is allowed. */
+        allowIncludeGeoreferenceData: boolean;
+        /**
+         * Initializes a new instance of the {@link ExportMapImageOptions} class.
+         * @param defaultOutputFormat The default output format of the generated map image.
+         * @param allowIncludeGeoreferenceData Indicates whether including georeference data in the export is allowed.
+         */
+        constructor(allowIncludeGeoreferenceData: boolean, defaultOutputFormat?: string);
+    }
+}
+/**
+ * Environment Type for Bing services.
+ * @private
+ */
+declare module geocortex.essentials.exportMap.BingEnvironment {
+    /** Represents the production environment. */
+    var PRODUCTION: string;
+}
+declare module geocortex.essentials.exportMap {
+    /**
+     * Represents the dynamic definition of a layer that has been added to the map.
+     * @private
+     */
+    interface ExportDynamicMapLayerDefinition {
+        /** Arbitrary drawing info for the layer to include in the printing request made to Essentials. */
+        drawingInfo?: esri.layers.LayerDrawingOptions;
+        /** The dynamic source for this layer. Used so Essentials can create the dynamic layer. */
+        source?: esri.layers.LayerSource;
+        /** Display name for this layer. */
+        displayName?: string;
+        /** The current definition expression for this layer, if it has one. */
+        definitionExpression?: string;
+    }
+}
+declare module geocortex.essentials.exportMap {
+    /**
+     * Represents a feature to include in the exported map.
+     * @private
+     */
+    interface ExportFeature {
+        /** The geometry of the feature to export .*/
+        geometry: any;
+        /** The exportable representation of the feature's symbol. */
+        symbol: ExportSymbol;
+        /** The attributes of the feature to export. */
+        attributes: any;
+    }
+}
+declare module geocortex.essentials.exportMap {
+    /**
+     * Represents a layer to export, including any exportable features belonging to that layer and present in the viewer on the client side.
+     * @private
+     */
+    interface ExportLayer {
+        /** The definition of the layer's metadata relevant to the export. */
+        layerDefinition: ExportMapLayerDefinition;
+        /** Collection of serialized graphics. */
+        featureSet: ExportLayerFeatureSet;
+    }
+}
+declare module geocortex.essentials.exportMap {
+    /**
+     * Represents a set of features to export.
+     * @private
+     */
+    interface ExportLayerFeatureSet {
+        /** A string representing the type of geometry contained in the features array. */
+        geometryType: string;
+        /** An array of {@link ExportFeature}. */
+        features: ExportFeature[];
+    }
+}
+declare module geocortex.essentials.exportMap {
+    /**
+     * Represents a layer included in the export map.
+     * @private
+     */
+    interface ExportMapLayerDefinition {
+        /** The name of the layer.*/
+        name: string;
+        /** Optional id of this layer. */
+        id?: number;
+        /** The definition expression for the export dynamic layer. Brought out of layerDefinition for Essentials. */
+        layerDef?: string;
+        /** This looks like it was being used by some piece of ExportMapTask and so it exists both here and in the underlying layerDefinition */
+        drawingInfo?: any;
+        /** The display name for this layer. */
+        displayName?: string;
+        /** The dynamic definition for this layer. */
+        layerDefinition?: ExportDynamicMapLayerDefinition;
+        /** A string representing the type of geometry contained in the export layer's features array. */
+        geometryType: string;
+        /** The name of the field to use for display purposes for this layer. */
+        displayField?: string;
+    }
+}
+declare module geocortex.essentials.exportMap {
+    /**
+     * Represents an instance of a symbol present in the exported map.
+     * @private
+     */
+    interface ExportSymbol {
+        /** The URL of the symbol, if it's a {@link esri.symbols.PictureMarkerSymbol} */
+        url: string;
+        /** The base64 encoded representation of the image, if it was available. If not, {@link url} should be used. */
+        data: string;
+        /** The x axis offset. */
+        xoffset: number;
+        /** The y axis offset. */
+        yoffset: number;
+        /** Image height. */
+        height: number;
+        /** Image width. */
+        width: number;
+        /** Angle of the symbol. */
+        angle: number;
+        /**  The type of symbol. */
+        type: string;
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Describes an object that represents feature clustering settings for a map service.
+     */
+    interface FeatureCluster {
+        /**
+         * Whether Feature Clustering is currently enabled or not.
+         */
+        enabled: boolean;
+        /**
+         * Whether the user has the ability to turn clustering on/off.
+         */
+        userCanToggle: boolean;
+        /**
+         * Radius (in pixels) to group features into clusters by.
+         */
+        radius: number;
+        /**
+         * Maximum number of features for a cluster to contain.
+         */
+        maximumFeatures: number;
+        /**
+         * Background Color of clusters.
+         */
+        backgroundColor: number[];
+        /**
+         * Color of label text for clusters.
+         */
+        labelColor: number[];
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Describes an object that represents feature heat map settings for a map service.
+     */
+    interface FeatureHeatMap {
+        /**
+         * Whether or not the feature heat map settings are enabled.
+         */
+        enabled: boolean;
+        /**
+         * Whether or not the end users can enable or disable feature heat maps.
+         */
+        userCanToggle: boolean;
+        /**
+         * Whether or not the feature heat map will respect the layer's scale range.
+         */
+        respectScaleRange: boolean;
+        /**
+         * A list of gradient colors represented as a number list in the form [R, G, B, A] to use for the heat map colors.
+         */
+        gradient: number[][];
+        /**
+         * A list of ratios to be used as color stops for the feature heat map.
+         */
+        offset: number[];
+        /**
+         * The heat radius (in pixels) for the feature heat map.
+         */
+        intensity: number;
+        /**
+         * The name of the attribute field used to weight the heatmap points.
+         */
+        field?: string;
+        /**
+         * The layer's default renderer.
+         */
+        defaultRenderer?: esri.renderer.Renderer;
+        /**
+         * The layer's default minimum scale range.
+         */
+        defaultMinScale?: number;
+        /**
+         * The layer's default maximum scale range.
+         */
+        defaultMaxScale?: number;
+        /**
+         * Whether or not to include the heatmap in the legend.
+         */
+        includeInLegend?: boolean;
+    }
+}
+declare module geocortex.essentials {
+    /**
+     *  Represents a 'style' that can be applied to a resymbolizable layer.
+     *  Contains a renderer represented as a JSON string, a display name and id,
+     *  and a flag to determine whether the style is currently being applied or not.
+     *  Calling the 'getRenderer' function will convert the string to a renderer ready to apply to the layer.
+     */
+    class LayerStyle {
+        displayName: string;
+        id: string;
+        enabled: boolean;
+        private rendererJson;
+        constructor(rendererJson: string, displayName: string, id: string, enabled?: boolean);
+        getRenderer(): esri.renderer.Renderer;
+        setRenderer(renderer: esri.renderer.Renderer | string): void;
+        isSimple(): boolean;
+    }
+}
+declare module geocortex.essentials {
+    /** Args for the layerThemeChangingEvent and layerThemeChangedEvent thrown by the {@link geocortex.essentials.LayerThemesInfo} object */
+    interface LayerThemeEventArgs {
+        currTheme: geocortex.essentials.LayerTheme;
+        prevTheme: geocortex.essentials.LayerTheme;
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Represents a Layer Catalog defined in a {@link Site}.
+     */
+    class LayerCatalog {
+        /** The siteId of the Layer Catalog */
+        siteId: string;
+        /**
+         * Initializes a new instance of the {@link LayerCatalog} class.
+         * @param siteId The site id of the {@link LayerCatalog}.
+         */
+        constructor(siteId: string);
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Defines the time options for a {link Layer} which is time aware.
+     */
+    interface LayerTimeOptions {
+        /**
+         * If true, the layer will draw all features from the beginning of the data's time extent.
+         */
+        timeDataCumulative: boolean;
+        /**
+         * The length of time the data is offset from the time when the data was recorded.
+         */
+        timeOffset: number;
+        /**
+         * Temporal unit in which the time offset is measured.
+         */
+        timeOffsetUnits: TimeUnits;
+        /**
+         * If true, the layer participates in time-related rendering and query operations.
+         */
+        useTime: boolean;
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Represents a Search Table defined by a {@link Site}.
+     */
+    class SearchTable extends AsyncInitializable {
+        /** The display name of the {@link SearchTable}. */
+        displayName: string;
+        /** The parameters of the {@link SearchTable}, as defined by an administrator. */
+        parameters: SearchTableParameter[];
+        /** The ID of the {@link SearchTable}.*/
+        id: string;
+        /** The {@link Site} that the {@link SearchTable} belongs to. */
+        site: Site;
+        /** The format for a description of a feature. */
+        featureDescription: string;
+        /** The format for a label of a feature. */
+        featureLabel: string;
+        /** The format for a long description of a feature. */
+        featureLongDescription: string;
+        /** URI to an icon representing this search table. */
+        iconUri: string;
+        /** Indicates if the search table should participate in Global Search. */
+        includeInGlobalSearch: boolean;
+        /** @private */
+        private _searching;
+        /** @private */
+        private _onSearchingComplete;
+        /** @private */
+        private _onSearchingError;
+        /**
+         * Initializes a new instance of the {@link SearchTable} class.
+         * @param url The URL to the REST endpoint of the {@link SearchTable}.
+         */
+        constructor(url: string);
+        /** @private */
+        _configureObject(obj: any, deepInitialize?: boolean): void;
+        /**
+         * Gets whether the {@link geocortex.essentials.SearchTable} is currently performing a search.
+         * @return {boolean} True if searchTable is currently being performed, false otherwise.
+         */
+        isSearching(): boolean;
+        /**
+         * The task exercises the SearchTables/Search operation seen on site for the Essentials 3.8 or greater.
+         * @param searchParameters Contains an object in which key/value represent the parameters for the search.
+         * @param searchComplete The delegate that will be called when the operation has completed, even if an error occurs. This delegate expects one argument: an Object containing the result.
+         * @param searchError The delegate that will be called if an error occurs during the operation. This delegate expects two arguments: a reference to the SearchTable instance, and an Error.
+         */
+        performSearch(searchParameters: {}, searchComplete: (results: esri.tasks.FeatureSet) => void, searchError: (error: Error) => void): void;
+        /** @private */
+        private _searchRestComplete(result);
+        /** @private */
+        private _searchRestError(er);
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Represents a parameter in a {@link geocortex.essentials.SearchTable}.
+     */
+    class SearchTableParameter {
+        /** The name of the {@link geocortex.essentials.SearchTableParameter}. */
+        name: string;
+        /** The type of the {@link geocortex.essentials.SearchTableParameter}. */
+        type: string;
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * An offline basemap configured in Essentials.
+     */
+    interface OfflineBasemap {
+        /**
+         * The ID of the offline basemap.
+         */
+        id: string;
+        /**
+         * The name the file should take when downloaded.
+         */
+        filename: string;
+        /**
+         * The display name for the offline basemap.
+         */
+        displayName: string;
+        /**
+         * The URL the offline basemap can be downloaded from.
+         */
+        url: string;
+        /**
+         * The URI of the thumbnail of the offline basemap.  This can be a network
+         * location or a data URI.
+         */
+        thumbnailUri: string;
+        /**
+         * The estimated size of the offline basemap in bytes.
+         */
+        size: number;
+        /**
+         * The extent covered by the offline basemap.
+         */
+        extent: {
+            xmin: number;
+            ymix: number;
+            xmax: number;
+            ymax: number;
+            spatialReference: {
+                wkid?: number;
+                wkt?: string;
+            };
+        };
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Represents the time extent of a time aware {@link MapService}.
+     */
+    interface TimeExtent {
+        /**
+         * The start time for this {link TimeExtent}
+         */
+        startTime: Date;
+        /**
+         * The end time for this {link TimeExtent}
+         */
+        endTime: Date;
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Defines the time options for a {@link MapService} or {@link Layer} which is time aware.
+     */
+    interface TimeInfo {
+        /**
+         * The name of the attribute field that contains the end time information..
+         */
+        endTimeField?: string;
+        /**
+         * Default time-related export options for a layer.
+         */
+        exportOptions?: LayerTimeOptions;
+        /**
+         * The name of the attribute field that contains the start time information.
+         */
+        startTimeField?: string;
+        /**
+         * The time extent for all the data in the {link MapService} or {link Layer}.
+         */
+        timeExtent: TimeExtent;
+        /**
+         * Information about how the time was measured..
+         */
+        timeReference?: TimeReference;
+        /**
+         * The field that contains the trackId.
+         */
+        trackIdField?: string;
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Contains read-only information about how the time was captured when the data, as defined in a {link TimeInfo} object, was created.
+     * Time data in the {link TimeInfo} object will always be reported as UTC time.
+     */
+    interface TimeReference {
+        /**
+         * Indicates whether the time reference takes into account daylight savings time.
+         */
+        respectsDaylightSavings?: boolean;
+        /**
+         * The time zone in which the data was captured.
+         */
+        timeZone?: string;
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Represents the modes of operation for a {@TimeSliderProfile}
+     */
+    enum TimeSliderMode {
+        Extent = 0,
+        Cumulative = 1,
+        Instant = 2,
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Represents settings for a time slider profile displayed in the time slider when there are time aware map services in the map.
+     */
+    class TimeSliderProfile extends AsyncInitializable {
+        /** The ID of the {@link TimeSliderProfile} */
+        id: string;
+        /** The display name for the {@link TimeSliderProfile}. */
+        displayName: string;
+        /** The description for the {@link TimeSliderProfile}. */
+        description: string;
+        /** The mode of operation for this {@link TimeSliderProfile} */
+        mode: TimeSliderMode;
+        /** The display format for this {@link TimeSliderProfile} */
+        displayFormat: string;
+        /** The complete time extent this slider will display */
+        timeExtent: TimeExtent;
+        /** The initial time extent this slider will be set to */
+        initialTimeExtent: TimeExtent;
+        /** The time interval this time slider profile will be divided into */
+        timeInterval: number;
+        /** The unit of time that describes the time interval */
+        timeIntervalUnit: TimeUnits;
+        /** A boolean which indicates whether this time slider will snap to the defined time intervals or not */
+        snapToTimeIntervals: boolean;
+        /**
+         * The collection of {@link Extension} objects associated with the time slider profile.
+         * Extensions can be defined by the administrator on the server.
+         */
+        extensions: Extension[];
+        /**
+         * The properties of the {@link TimeSliderProfile}, as defined by the administrator on the server.
+         */
+        properties: any;
+        /**
+         * Initializes a new instance of the {@link TimeSliderProfile} class.
+         * @param url The URL to the REST endpoint of the {@link PrintTemplate}.
+         */
+        constructor(url: string);
+        _configureObject(results: RestTimeSlider, deepInitialize?: boolean): void;
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Different time measurement units.
+     */
+    class TimeUnits {
+        /** 	Indicates a value measured in centuries. */
+        static UNIT_CENTURIES: string;
+        /** 	Indicates a value measured in days. */
+        static UNIT_DAYS: string;
+        /** 	Indicates a value measured in decades. */
+        static UNIT_DECADES: string;
+        /** 	Indicates a value measured in hours. */
+        static UNIT_HOURS: string;
+        /** 	Indicates a value measured in milliseconds. */
+        static UNIT_MILLISECONDS: string;
+        /** 	Indicates a value measured in minutes. */
+        static UNIT_MINUTES: string;
+        /** 	Indicates a value measured in months. */
+        static UNIT_MONTHS: string;
+        /** 	Indicates a value measured in seconds. */
+        static UNIT_SECONDS: string;
+        /** 	Indicates a value measured in weeks. */
+        static UNIT_WEEKS: string;
+        /** 	Indicates a value measured in years. */
+        static UNIT_YEARS: string;
+        /** 	Indicates a value measured in unknown units. */
+        static UNIT_UNKNOWN: string;
+    }
+    /**
+     * Essentials Time Unit constant to TimeUnit constant mapping.
+     */
+    class EssentialsTimeUnits {
+        static Century: TimeUnits;
+        static Day: TimeUnits;
+        static Decade: TimeUnits;
+        static Hour: TimeUnits;
+        static MilliSecond: TimeUnits;
+        static Minute: TimeUnits;
+        static Month: TimeUnits;
+        static Second: TimeUnits;
+        static Week: TimeUnits;
+        static Year: TimeUnits;
+    }
+}
+/** @private */
+declare module geocortex.essentials.serviceDiscovery {
+    /** @private */
+    interface ResultItem extends geocortex.essentials.rest.serviceDiscovery.ResultItem {
+        isWhitelisted?: boolean;
+    }
+    interface ResultPageInfo {
+        page: number;
+        startCounter: number;
+        resultsPerPage: number;
+        totalResults: number;
+        useNextPageInfo: boolean;
+    }
+    interface ServiceConnection {
+        id: string;
+    }
+}
+declare module geocortex.essentials.serviceDiscovery {
+    interface ServiceDiscoveryProvider {
+        suggestHints(term: string): framework.Thenable<string[]>;
+        findServices(term: string, options?: FindServicesOptions): framework.Thenable<ResultItem[]>;
+        expandService(item: ResultItem): framework.Thenable<ResultItem>;
+        realizeMapService(item: ResultItem, sr: string): framework.Thenable<MapService>;
+    }
+    /**
+     * A set of parameters used in a service discovery find operation.
+     */
+    interface FindServicesOptions {
+        providerName?: string;
+        page?: number;
+        startCounter?: number;
+        resultsPerPage?: number;
+        totalResults?: number;
+        useNextPageInfo?: boolean;
+        whitelistOnly?: boolean;
+    }
+}
+declare module geocortex.essentials.serviceDiscovery {
+    /**
+     * Interface to the Geocortex Essentials Service Discovery. Allows searching for matching services against the Service Discovery REST endpoints.
+     *  - Not supported on versions of Essentials prior to 4.5. Check the `supported` member after the class is initialized.
+     *  - Requires an initialized Site to work.
+     *  - Sets `rootUrl` to "{SITE_URL}/../../../connections".
+     */
+    class SiteServiceDiscoveryProvider implements ServiceDiscoveryProvider {
+        protected _rootUrl: string;
+        protected _site: Site;
+        supported: boolean;
+        initialized: boolean;
+        constructor();
+        /**
+         * TODO Document
+         * @param site
+         */
+        initialize(site: Site): void;
+        /**
+         * TODO Document
+         */
+        getRootUrl(): string;
+        /**
+         * TODO Document
+         * @param term
+         */
+        suggestHints(term: string): framework.Thenable<string[]>;
+        /**
+         * TODO Document
+         * @param term
+         * @param options
+         */
+        findServices(term: string, options?: FindServicesOptions): framework.Thenable<ResultItem[]>;
+        /**
+         * TODO Document
+         * @param item
+         */
+        expandService(item: ResultItem): framework.Thenable<ResultItem>;
+        /**
+         * TODO Document
+         * @param item
+         * @param sr
+         */
+        realizeMapService(item: ResultItem, sr: string): framework.Thenable<MapService>;
+        protected sendRequest<T>(url: string, request: any): framework.Thenable<T>;
+        protected _getConnectionId(item: ResultItem): string;
+        /**
+          * Processes the ajax result, throwing an exception if it is an error response.
+          * @param result The ajax response.
+          */
+        protected _processError(result: any): any;
+        protected _processItem(coreItem: geocortex.essentials.rest.serviceDiscovery.ResultItem): ResultItem;
+        protected _createMapService(item: ResultItem, serviceDefinition: geocortex.essentials.rest.serviceDiscovery.results.RealizeMapServiceResult): framework.Thenable<MapService>;
+        /**
+         * Verify that Service Discovery is supported, throwing an exception if it isn't.
+         */
+        protected _verifySupported(): void;
+        /**
+         * Verify that this class is initialized, throwing an exception if it isn't.
+         */
+        protected _verifyInitialized(): void;
+    }
+}
+declare module geocortex.essentials.utilities {
+    /**
+     * Represents an error resulting from an image encoding operation.
+     */
+    interface EncodeImageError {
+        /** The URL which the image was encoded from. */
+        url: string;
+        /** Any errors which occured. */
+        error: any;
+    }
+}
+declare module geocortex.essentials.utilities {
+    /**
+     * Represents a successful result of an image encoding operation.
+     */
+    interface EncodeImageResult {
+        /** The URL which the image was encoded from. */
+        url: string;
+        /** The base64 data. */
+        data: string;
+    }
+}
+declare module geocortex.essentials.exportMap {
+    /**
+     * Represents a collection of features to export, modeled by a collection of layers bearing metadata and feature collections.
+     * @private
+     */
+    interface ExportFeatureCollection {
+        layers: ExportLayer[];
+    }
+}
+/**
+ * @private
+ * String constants that represent constants used by Esri's Web Map builder.
+ */
+declare module geocortex.essentials.exportMap.ExportMapTypes {
+    var WEBTILED: string;
+    var BINGAERIAL: string;
+    var BINGAERIALLABELS: string;
+    var BINGROADS: string;
+    var BINGHYBRID: string;
+}
+declare module geocortex.essentials.exportMap {
+    /**
+     * Export options pertaining to print/render settings.
+     * @private
+     */
+    interface ExportOptions {
+        /** The desired resolution of output image, in DPI (Dots Per Inch). */
+        dpi: number;
+        /** Array of dimensions equal to `{[Width],[Height]}`. */
+        outputSize: number[];
+    }
+}
+declare module geocortex.essentials.exportMap {
+    /**
+     * Layout options for exporting printable maps.
+     * @private
+     */
+    interface ExportLayoutOptions {
+        /** The id of the selected grid to overlay on the output image. */
+        grid: string;
+    }
+}
+declare module geocortex.essentials.exportMap {
+    /**
+     * Represents options to apply to the exported map.
+     * @private
+     */
+    interface ExportMapOptions {
+        /** The map scale. */
+        scale: number;
+        /** The extent of the map. */
+        extent: esri.geometry.Extent;
+        /** The extent of the map. */
+        spatialReference?: esri.SpatialReference;
+        /** The rotation of the map. */
+        rotation?: number;
+        /** Array of time ticks equal to `{BeginTime, EndTime}`. */
+        time?: number[];
+    }
+}
+declare module geocortex.essentials.exportMap {
+    /**
+     * Represents a {@link MapService} bundled for exporting to Essentials for rendering/printing.
+     * @private
+     */
+    interface ExportMapService {
+        /** The ID of the corresponding {@link MapService}. */
+        id: string;
+        /** Opacity to render the {@link MapService} with, ranging from `0` to `1`, where `0` is completely transparent and `1` is fully opaque. */
+        opacity: number;
+        /** The visibility of the corresponding {@link MapService}. Set to `true` is the service is visible, and `false` if not. */
+        visibility?: boolean;
+        /** The URL of the corresponding {@link MapService}. */
+        url?: string;
+        /** IDs of any visible layers belonging to the service.*/
+        visibleLayers?: number[];
+        /** The map service type that this represents. */
+        type?: string;
+        /** A representation of the added dynamic or feature layers. */
+        layers?: any;
+        /** The server type for a Bing service. */
+        serverType?: string;
+        /** The service token if one exists. */
+        token?: string;
+        /** Arbitrary drawing info for consumption by Essentials. */
+        drawingInfo?: any;
+        /** Layer definition for the layers belonging to the {@link MapService}. */
+        layerDefinition?: any;
+        /** The ID of an essentials map service populated based on the `attributionDataUrl` property. */
+        mapServiceId?: string;
+        /** A collection representing layers to export and print and the feature graphics they contain. */
+        featureCollection?: ExportFeatureCollection;
+        /** A `WHERE` clause representing the layer's definition expression. */
+        where?: string;
+        /** The specific version of the layer if set.  */
+        gdbVersion?: string;
+        /**
+         * The minimum scale a layer can be visible at.
+         */
+        minScale?: number;
+        /**
+         * The maximum scale a layer can be visible at.
+         */
+        maxScale?: number;
+    }
+}
+declare module geocortex.essentials.exportMap {
+    /**
+     * Represents an object that is sent to Essentials for printing/exporting. It is a mashup of Essentials and Esri JSON.
+     * @private
+     */
+    interface ExportContext {
+        /** Contains options related to the desired state of the printed map. */
+        exportOptions: ExportOptions;
+        /** Contains options related to the desired layout and look of the printed map. */
+        layoutOptions: ExportLayoutOptions;
+        /** Contains options related to the desired location and extent of the printed map. */
+        mapOptions: ExportMapOptions;
+        /**
+         * Representation of the {@link geocortex.essentials.MapService}.
+         */
+        operationalLayers: ExportMapService[];
+        /** The ExportContext version. */
+        version?: string;
+        /** The current Geocortex Essentials product version. */
+        product?: string;
+    }
+}
+/**
+ * Contains models and operations used in exporting map images and running print jobs.
+ * @private
+ */
+declare module geocortex.essentials.exportMap {
+}
+declare module geocortex.essentials.exportMap {
+    /**
+     * Used for exporting a printable representation of the current state of an {@link esri.Map}.
+     * @private
+     */
+    class ExportMapTask {
+        /**
+         * A resource which the Essentials ExportContext print will use. Can be of type {@link Map}, {@link PrintTemplate} or {@link Report}.
+         */
+        resource: essentials.Map | PrintTemplate | Report;
+        private _esriMap;
+        private _essentialsRestUrl;
+        private _site;
+        private _internalLayerIdsToRemove;
+        /**
+         * Creates an instance of a {@link ExportMapTask}.
+         * @param resource A resource which the Essentials ExportContext print will use. Can be of type {@link Map}, {@link PrintTemplate} or {@link Report}.
+         */
+        constructor(resource: Map | PrintTemplate | Report);
+        /**
+         * Infers an {@link ersi.Map}, Essentials REST URL and Essentials Site needed to run the ExportContext operation.
+         * @param resource A resource which the Essentials {@link ExportContext} print will use.
+         */
+        private _populateFromResource(resource);
+        /**
+         * Generates a link to a map image with the given parameters and generated by Essentials.
+         * @param buildParameters The {@link ExportMapParameters} which will be used when creating the printed map.
+         */
+        generateMapImageUrl(buildParameters: ExportMapParameters): dojo.Deferred;
+        /**
+         * Gets a printing definition for an esri Map.
+         * @param printingTask The {@link PrintTask}. This will be used to generate the raw {@link ExportContext} object.
+         * @param map A {@link esri.Map} which will have a printing definition generated for.
+         * @param scale The scale for printing.
+         * @return An {@link ExportContext} object representing the map's printing state.
+         */
+        private _getWebMap(printingTask, map, scale);
+        /**
+         * Gets a printing definition for an {@link esri.Map}.
+         * @param scale The scale for printing.
+         * @return An {@link ExportContext} object representing the map's printing state.
+         */
+        private _getPrintingObjectForEssentials(scale);
+        /**
+         * Removes any layers from the printing context which are not to be printed. Ie: Snapping layers
+         * @param exportContext The {@link ExportContext} which will be modified.
+         */
+        private _removeInternalLayers(exportContext);
+        /**
+         * Converts picture marker symbols from relative urls into encoded data or absolute urls.
+         * @param exportContext The {@link ExportContext} which will be modified.
+         */
+        private _convertSymbolsToBase64(exportContext);
+        private _adjustMeasurementsMarkup(webMapObject);
+        private _adjustPlotCoordinatesMarkup(webMapObject);
+        private _adjustPlotCoordinatesMarkupOrder(webMapObject);
+        private _getLayer(webMapObject, layerIdContains);
+        /**
+         * SVG symbols need to be transformed. We need to replace the esriPMS symbols which were created by ESRI with
+         * our simpleMarkerSymbols that contain the SVG path.
+         * @param lyr The {@link ExportMapService} which will be modified.
+         */
+        private _adjustSvgSymbols(lyr);
+        /**
+         * Text markup needs to be transformed. We need to replace the objects which were created by ESRI with our own which are modified by {@link utilities.PrintUtilities}
+         * @param webMapObject The {@link ExportContext} which will be modified.
+         */
+        private _adjustText(webMapObject);
+        /**
+         * Explicitly sets the visibility of each service layer. Otherwise, Essentials will use the service's default
+         * visibility as configured in the site.
+         */
+        private _setServiceVisibilities(webMapObject);
+        /**
+         * Dynamic Layers need to have their LayerDefinitions changed so Essentials can understand them.
+         * @param exportContext The {@link ExportContext} which will be modified.
+         */
+        private _handleDynamicLayerDefs(exportContext);
+        /**
+         * Feature Layers need some special attention. Esri builds them for us 99%, we just need to move some properties around.
+         * @param exportContext The {@link ExportContext} which will be modified.
+         */
+        private _handleFeatureLayers(exportContext);
+        /**
+         * Removes any -1 values from visible layers array.
+         * A value of -1 will be present if no layers are checked as visible in a map service.
+         * @param exportContext The {@link ExportContext} which will be modified.
+         */
+        private _cleanOutVisibility(exportContext);
+        /**
+         * Modifies potential error causing configuration for WebTiledLayers and BingMaps into Essentials readable config.
+         * @param exportContext The {@link ExportContext} which will be modified.
+         */
+        private _handleWebTiledLayers(exportContext);
+        /**
+         * Assigns an Essentials Map Service Id to the operational layers that contains
+         * an attribution data url. This is needed since the id property of the operational
+         * layer might not be accurate after we use esri's method to serialize the map.
+         * (e.g. the id for a WMS or WMTS layer would be something like 'layer0' instead of the proper id)
+         * @param exportContext The {@link ExportContext} which will be modified.
+         * @param esriMap The {@link esri.Map} that contains information about the attributionDataUrl from which the
+         * essentials map service Id can be extracted.
+         */
+        private _handleLayersAttribution(webMapObject, esriMap);
+        /**
+         * Removes the bitmap image(s) for heatmaps provided by ESRI from webMapObject,
+         * and adds operational layers to webMapObject that correspond to the underlying
+         * heatmap renderer(s) attached to the esriMap.
+         * @param webMapObject the {@link ExportContext} to be modified
+         * @param esriMap the {@link esri.Map} that contains the heatmap renderer(s) from which
+         * the appropriate export information will be extracted
+         */
+        private _handleHeatmapRenderer(webMapObject, esriMap);
+        /**
+         * Removes the ESRI-provided export for clusters and prepares clustering information for export to the server,
+         * where we re-query the feature data in order to provide clustering support for printing at different extents,
+         * including large-format printing.
+         * @param webMapObject the {@link ExportContext} to be modified
+         * @param esriMap the {@link esri.Map} that contains the cluster layer(s) from which
+         * the appropriate export information will be extracted
+         */
+        private _handleClusters(webMapObject, esriMap);
+        /**
+         * Removes any attributes from features which are not needed for printing. Attributes contribute to circular references and extra payload data.
+         * @param exportContext The {@link ExportContext} which will be modified.
+         */
+        private _removeAttributes(exportContext);
+        /**
+         * Important operations to run at the END of {@link ExportContext} modifications.
+         * Introduced as part of GVH-6002.
+         * @param exportContext The {@link ExportContext}.
+        */
+        private _finalizePrintingContext(exportContext);
+        /**
+         * Modifies the {@link ExportContext} for layers so that Essentials can associate them back to their original site configuration.
+         * @param exportContext the {@link ExportContext} to be modified.
+         * @param esriMap the {@link esri.Map} that contains the service layers.
+         * @param site The {@link essentials.Site}.
+         */
+        private _fixMapServiceIds(exportContext, esriMap, site);
+        /**
+         * Creates the request parameters for the ExportContext print operation.
+         * @param buildParameters The {@link WebMapBuilderParameters} which the print operation will be created from.
+         * @return A Promise which will contain the request parameters.
+         */
+        private _marshalContent(buildParameters);
+    }
+}
+declare module geocortex.essentials.utilities {
+    /**
+     * Interoperability interface for modeling the results of {@link PromiseUtilities.settle}.
+     * This is a match for BlueBird's `PromiseInspection` object.
+     */
+    interface SettleInspection<T> {
+        /** Checks if the underlying promise was fulfilled at the creation time of this inspection object. */
+        isFulfilled(): boolean;
+        /** Checks if the underlying promise was rejected at the creation time of this inspection object. */
+        isRejected(): boolean;
+        /** Checks if the underlying promise was deferred at the creation time of this inspection object. */
+        isPending(): boolean;
+        /**
+         * Gets the fulfillment value of the underlying promise. Throws `TypeError` if the promise wasn't fulfilled at the creation time of this inspection object.
+         * @throws `TypeError`
+         */
+        value(): T;
+        /**
+         * Gets the rejection reason for the underlying promise. Throws `TypeError` if the promise wasn't rejected at the creation time of this inspection object.
+         * @throws `TypeError`
+         */
+        reason(): any;
+    }
+    /**
+     * Contains utilities for working with `Promise` objects, including strategies for interoperating with different implementations of `Promise`.
+     * For more information on Promises, see the [open standard](https://promisesaplus.com/).
+     */
+    class PromiseUtilities {
+        /**
+         * Based on BlueBird's `settle` function. Accepts an array of {@link Thenable} objects and returns a {@link Thenable} that is resolved when all of the
+         * given promises are in a finalized state (i.e. either resolved or rejected).
+         * @param promises An array of {@link Thenable} objects to settle.
+         */
+        static settle<T>(promises: Thenable<T>[]): Thenable<SettleInspection<T>[]>;
+        /**
+         * Based on BlueBird's `settle` function. Accepts an array of {@link Thenable} objects and returns a {@link Thenable} that is resolved when all of the
+         * given promises are in a finalized state (i.e. either resolved or rejected).
+         * @param promisePromises A promise of an array of {@link Thenable} objects to settle.
+         */
+        static settle<T>(promisePromises: Thenable<Thenable<T>[]>): Thenable<SettleInspection<T>[]>;
+        /** @private */
+        private static _settleImpl<T>(promises);
+    }
+}
+declare module geocortex.essentials.utilities {
+    /**
+     * Static utility methods for discovering and creating map services.
+     */
+    class ServiceDiscoveryUtilities {
+        /**
+         * Build and initialize a Geocortex map service based on the provided service URL.
+         * @param essentialsMap The Geocortex map that the map service belongs to.
+         * @param serviceDefinition A map service definition object containing the properties for the new map service.
+         * @returns The promise of a Geocortex map service.
+         */
+        static buildMapService(essentialsMap: essentials.Map, serviceDefinition: any): framework.Thenable<essentials.MapService>;
+    }
+}
+declare module geocortex.essentials.utilities {
+    /**
+     * Represents a `Promise`-like object. This interface is used for interoperability between different implementations of `Promise`.
+     *
+     */
+    interface Thenable<T> {
+        /**
+         * Adds a callback to be invoked upon successful resolution or erroneous completion of the asynchronous operation.
+         *
+         * ```
+         * doSomethingAsync()
+         *     .then(result => console.log("Success!"), error => console.log("Something went wrong."));
+         * ```
+         *
+         * @param onFulfilled The callback to invoke if the "thenable" resolved successfully.
+         * @param onRejected The callback to invoke if the "thenable" resolved erroneously.
+         * @param onProgress The progress handler to invoke as the underlying asynchronous operation progresses. **Note:** Not all implementations support this operation.
+         */
+        then<U>(onFulfilled: (value: T) => Thenable<U>, onRejected: (error: any) => Thenable<U>, onProgress?: (note: any) => any): Thenable<U>;
+        then<U>(onFulfilled: (value: T) => Thenable<U>, onRejected?: (error: any) => U, onProgress?: (note: any) => any): Thenable<U>;
+        then<U>(onFulfilled: (value: T) => U, onRejected: (error: any) => Thenable<U>, onProgress?: (note: any) => any): Thenable<U>;
+        then<U>(onFulfilled?: (value: T) => U, onRejected?: (error: any) => U, onProgress?: (note: any) => any): Thenable<U>;
+        /**
+         * Successfully resolves the "thenable" with the given value.
+         * @param val The resolved value that the asynchronous operation produced.
+         */
+        resolve(val: T): Thenable<T>;
+        /**
+         * Rejects the "thenable", invoking any attached rejection handlers and applying the supplied arguments.
+         * @param args Abritrary, optional arguments to pass. These typically represent the erroneous state that caused the operation to fail.
+         */
+        reject(...args: any[]): Thenable<T>;
+        /**
+         * Rejects the "thenable", invoking any attached rejection handlers and applying the supplied arguments.
+         * @param args Abritrary, optional arguments to pass. These typically represent the erroneous state that caused the operation to fail.
+         */
+        rejectWith(context: any, ...args: any[]): Thenable<T>;
+    }
+}
+declare module geocortex.essentials {
+    /**
+     * Represents information about an Essentials {@link Layer}.
+     */
+    class EssentialsLayerInfo {
+        /** The {@link MapService} URL. */
+        mapServiceUrl: string;
+        /** The {@link MapService} ID. */
+        mapServiceId: string;
+        /** The security token of the service. */
+        token: string;
+        /** The value indicating whether the {@link Layer} is set to visible. */
+        isVisible: boolean;
+        /** The value indicating that the {@link Layer} is dynamic. */
+        isDynamic: boolean;
+        /** A dictionary of arbitrary properties. */
+        properties: {
+            [key: string]: any;
+        };
+        /** The {@link Layer} ID. */
+        id: string;
+        /** The name of the {@link Layer} */
+        name: string;
+        /** The alias to use for the {@link Layer} in client applications */
+        displayName: string;
+        /** The {@link Layer} URL. */
+        layerUrl: string;
     }
 }
 /** @private */
@@ -4480,38 +5648,6 @@ declare module geocortex.essentials {
          * @returns The observable source representing the query.
          */
         getRequest<T>(query: string, member?: string): Rx.IObservable<T>;
-    }
-}
-/** @private */
-declare module geocortex.essentials.serviceDiscovery {
-    /** @private */
-    interface ResultItem {
-        id: string;
-        displayName: string;
-        name: string;
-        description: string;
-        discoveryProviderName: string;
-        serviceProviderName: string;
-        url: string;
-        serviceType: string[];
-        thumbnailUrl: string;
-        boundingBox: any;
-        children: ResultItem[];
-        hasChildren: boolean;
-        currentPageInfo: {
-            page: number;
-            startCounter: number;
-            resultPerPage: number;
-            totalResults: number;
-            useNextPageInfo: boolean;
-        };
-        connection: {
-            id: string;
-        };
-        isContainerForRealResult: boolean;
-        layerMask: string;
-        mapStyle: string;
-        osLastItemOfPage: string;
     }
 }
 declare module geocortex.essentials {
@@ -4631,6 +5767,26 @@ declare module geocortex.essentials.utilities {
          * @param url The URL to simplify.
          */
         static simplify(url: string): string;
+        /**
+         * Gets the components of a url (eg. host, protocol, path, query, etc.).
+         */
+        static getUrlComponents(url: string): {
+            host: string;
+            hostname: string;
+            protocol: string;
+            port: string;
+            query: string;
+            hash: string;
+            path: string;
+            origin: string;
+        };
+        /**
+         * Resolves a relative URL, returning a fully qualified URL.
+         * @param baseAddress The base URL being resolved against.
+         * @param relativeUrl The URL being resolved.
+         * @param normalize Optional. If set to `true`, will simplify the URL before returning.
+         */
+        static resolveUrl(baseAddress: string, relativeUrl: string, normalize?: boolean): string;
     }
 }
 declare module geocortex.essentials.exportMap {
@@ -4698,6 +5854,11 @@ declare module geocortex.essentials.utilities {
     class LayerUtilities {
         /** @private */
         static createFeatureLayerFromCsv(layerContext: any, limitOption: any): dojo.Deferred;
+        static decomposeFeatureLayerUrl(layerUrl: string): {
+            serviceUrl: string;
+            layerId: number;
+            queryString: string;
+        };
     }
 }
 declare module geocortex.essentials {
@@ -4709,7 +5870,7 @@ declare module geocortex.essentials {
         error: Error;
         /** The results of the search, if any. */
         results: SearchResultSet[];
-        /** The {@link Query} that this {@link SearchResults} resulted from. */
+        /** The {@link SearchQuery} that this {@link SearchResults} resulted from. */
         queryParams: SearchQuery;
     }
 }
@@ -4777,9 +5938,10 @@ declare module geocortex.essentials.utilities {
          * Adjusts text symbols to bring the ArcGIS API for JavaScript's interpretation of them in line with the Geocortex Essentials print and export map rest endpoints'
          * interpretation, which may differ since Essentials caters to both the Silverlight and HTML5 viewers which handle text symbols slightly differently.
          * @param graphic The esri {@link esri.Graphic} object containing the text symbol.
+         * @layerId string The Id of the layer containing the text symbol.
          * @returns A copy of the original text symbol with the adjustments applied or `null` if the supplied graphic does not contain a text symbol.
          */
-        static adjustTextSymbol(graphic: esri.Graphic): esri.symbol.TextSymbol;
+        static adjustTextSymbol(graphic: esri.Graphic, layerId?: string): esri.symbol.TextSymbol;
         /**
          * Adjusts picture marker symbols to ensure that they are sent to the Essentials REST endpoint in the format in which it's expecting them.
          * @param graphic The graphic for which to adjust the marker symbol for.
@@ -5238,6 +6400,10 @@ declare module geocortex.forms.items {
          * @type Observable(String)
          */
         layerSourceJson: Observable<string>;
+        /**
+         * An optional callback that can be used to format the query results.
+         */
+        formatCallback: (value: any, type: string) => string;
         /** @private */
         private _queryId;
         private formItem;
@@ -5357,10 +6523,9 @@ declare module geocortex.forms.items {
          */
         timeFormat: Observable<string>;
         /**
-         * The time format string.
-         * @type String
+         * If true, will display time in the jQuery time picker as a highlighted info message (if the jQuery time picker is active).
          */
-        _timeFormatStr: Observable<string>;
+        jQueryPickerTimeAsInfoMsg: Observable<boolean>;
         /**
          * Initializes a new instance of the {@link geocortex.forms.items.TimePickerFormItem} class.
          * @param xmlNode Xml node containing the form item definition.
@@ -5410,11 +6575,6 @@ declare module geocortex.forms.items {
          * Gets or sets a value indicating whether the user can clear the control's value.
          */
         nullable: Observable<boolean>;
-        /**
-         * The date format string.
-         * @type String
-         */
-        _dateFormatStr: Observable<string>;
         /**
          * Initializes a new instance of the {@link DatePickerFormItem} class.
          * @param xmlNode Xml node containing the form item definition.
@@ -6149,6 +7309,7 @@ declare module geocortex.essentials.MapServiceType {
     var WMTS: string;
     var GEORSS: string;
     var WEBTILED: string;
+    var VECTORTILE: string;
     var KML: string;
     var GRAPHICS: string;
     var LABEL: string;
@@ -6181,6 +7342,14 @@ declare module geocortex.essentials.FailureAction {
     var WARN: string;
     var ERROR: string;
 }
+/**
+ * Constants for the userLayerType property of layers and service layers.
+ */
+declare module geocortex.essentials.UserLayerType {
+    const LAYER_ADDITION: string;
+    const LAYER_CATALOG: string;
+    const UPLOAD: string;
+}
 declare module geocortex.essentials {
     /**
      * Represents a set of layers which are grouped together in a meaningful way for a certain use case.
@@ -6207,7 +7376,7 @@ declare module geocortex.essentials {
          */
         properties: geocortex.PropertyParam[];
         /**
-         * The {@link LayerThemeInfo} object contained in the map.
+         * The {@link LayerThemesInfo} object contained in the map.
          */
         layerThemesInfo: LayerThemesInfo;
         /**
@@ -6253,7 +7422,7 @@ declare module geocortex.essentials {
          */
         visible: boolean;
         /**
-         * Initializes a new instance of the {@link LayerThemeSettings} class
+         * Creates a new instance of the {@link LayerThemeSetting} class
          */
         constructor(theme: LayerTheme, visible: boolean);
     }
@@ -6347,6 +7516,7 @@ declare module geocortex.essentials {
  */
 declare module geocortex.workflow {
 }
+/** @docs-hide-from-nav */
 declare module geocortex.workflow.CacheActivityHandlers {
     /** @private */
     function handleGetExternalValue(activityContext: ActivityContext): void;
@@ -6527,7 +7697,7 @@ declare module geocortex.workflow {
         /**
          * Initializes a new instance of the {@link geocortex.workflow.SimpleActivityDispatcher} class.
          * @class
-         * Represents a simple implementation of the IActivityDispatcher that allows the use of callback
+         * Represents a simple implementation of the ActivityDispatcher that allows the use of callback
          * functions to handle the dispatching functions. This is useful for unit testing.
          * @constructs
          * @param {Function} [dispatchHandler] The callback function that will handle the dispatching of activities. The function should expect an ActivityContext as parameter.
@@ -6604,6 +7774,7 @@ declare module geocortex.workflow {
         handleOpenReportUrl(url: string, activityContext: ActivityContext): void;
     }
 }
+/** @docs-hide-from-nav */
 declare module geocortex.workflow.MapActivityHandlers {
     /** @private */
     function _pickSupported(list: string[], item: string): string;

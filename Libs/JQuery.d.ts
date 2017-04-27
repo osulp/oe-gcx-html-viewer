@@ -269,6 +269,7 @@ interface JQueryStatic {
     holdReady(hold: boolean): any;
 
     (selector: string, context?: any): JQuery;
+    (element: HTMLElement, context?: any): JQuery;
     (element: Element): JQuery;
     (object: {}): JQuery;
     (elementArray: Element[]): JQuery;
