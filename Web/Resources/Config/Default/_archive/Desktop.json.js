@@ -1,6 +1,6 @@
 {
     "configuration": {
-        "version": "2.6",
+        "version": "2.7",
         "application": {
             "proxyUri": "proxy.ashx?",
             "allowUnsafeContent": true,
@@ -60,10 +60,6 @@
                 ]
             },
             {
-                "id": "RightClickMenu",
-                "uri": "Libraries/Custom/Compiled/rightClickMenu.js"
-            },
-            {
                 "id":"Custom",
                 "uri":"Libraries/Custom/Compiled/Custom.js",
                 "locales":[
@@ -96,68 +92,125 @@
                         "configuration": {}
                     }
                 ]
-            },                       
+            },
             {
                 "moduleName": "LayerActionsExtension",
                 "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
                 "libraryId": "Custom",
-                "configuration": {}                                            
-            }, 
+                "configuration": {}
+            },
             {
-                "moduleName": "AddCommunityData",
-                "moduleType": "oe.add_community_data.AddCommunityDataModule",
+                "moduleName": "M49",
+                "moduleType": "oe.M49.M49Module",
                 "libraryId": "Custom",
-                "configuration": {}                                            
-            }, 
+                "configuration": {}
+            },
+             {
+                 "moduleName": "CustomFormM49",
+                 "moduleType": "oe.customform49.CustomFormM49Module",
+                 "libraryId": "Custom",
+                 "configuration": {},
+                 "views": [
+                  {
+                      "id": "CustomForm49ModuleView",
+                      "title": "Measure 49 Estimated Constraints",
+                      "viewModelId": "CustomFormM49ModuleViewModel",
+                      "visible": false,
+                      "markup": "Modules/CustomFormM49/CustomFormM49ModuleView.html",
+                      "type": "oe.customform49.CustomForm49ModuleView",
+                      "region": "DataRegion",
+                      "configuration": {}
+                  }
+                 ],
+                 "viewModels": [
+                   {
+                       "id": "CustomFormM49ModuleViewModel",
+                       "type": "oe.customform49.CustomFormM49ModuleViewModel",
+                       "configuration": {}
+                   }
+                 ]
+             },
             {
                 "moduleName": "HyperlinkBanner",
                 "moduleType": "oe.hyperlink_banner.HyperlinkBannerModule",
                 "libraryId": "Custom",
                 "configuration": {
                     "linkUri": "http://oregonexplorer.info"
-                }                                            
-            }, 
+                }
+            },
+          {
+              "moduleName" : "Elevation",
+              "moduleType" : "oe.elevation.ElevationModule",
+              "libraryId" : "Custom",
+              "configuration" : {},
+              "views" : [{
+                  "id" : "ElevationModuleView",
+                  "viewModelId" : "ElevationModuleViewModel",
+                  "visible" : false,
+                  "markup" : "Modules/Elevation/ElevationModuleView.html",
+                  "type" : "oe.elevation.ElevationModuleView",
+                  "region" : "LeftFooterRegion",
+                  "configuration" : {}
+              }
+              ],
+              "viewModels" : [{
+                  "id" : "ElevationModuleViewModel",
+                  "type" : "oe.elevation.ElevationModuleViewModel",
+
+                  "configuration" : {}
+              }
+              ]
+          },
             {
-                "moduleName": "Elevation",
-                "moduleType": "oe.elevation.ElevationModule",
-                "libraryId": "Custom",
-                "configuration": {
-
-                },
-                "views": [
-                   {
-                       "id": "ElevationModuleView",
-                       "viewModelId": "ElevationModuleViewModel",
-                       "visible": true,
-                       "markup": "Modules/Elevation/ElevationModuleView.html",
-                       "type": "oe.elevation.ElevationModuleView",
-                       "region": "LeftFooterRegion",
-                       "configuration": {
-
-                       }
-                   }
-                ],
-                "viewModels": [
-                   {
-                       "id": "ElevationModuleViewModel",
-                       "type": "oe.elevation.ElevationModuleViewModel",
-                       "configuration": {               
-                       }
-                   }
-                ]
+                "moduleName" : "RasterFunctions",
+                "moduleType" : "oe.raster_functions.RasterFunctionsModule",
+                "libraryId" : "Custom",
+                "configuration" : {}
             },
             {
-                "moduleName": "RasterFunctions",
-                "moduleType": "oe.raster_functions.RasterFunctionsModule",
-                "libraryId": "Custom",
-                "configuration": {                    
-                }                                            
-            }, 
+                "moduleName" : "DevelopmentRegistry",
+                "moduleType" : "oe.development_registry.DevelopmentRegistryModule",
+                "libraryId" : "Custom",
+                "configuration" : {
+                    "layerFilters": {
+                        "Mining (Non-Coal)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "cmdty", "subcat", "rcl_stat"],
+                        "Infrastructure (Tower)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "hgt", "guy_wr_ext", "guy_wr_nr", "anti_perch", "row_dim", "subcat", "rcl_stat"],
+                        "Infrastructure (Road)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "rd_wt", "subcat", "on_lse", "off_lse", "rcl_stat"],
+                        "Infrastructure (Recreation)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "rd_wt", "subcat", "rcl_stat"],
+                        "Infrastructure (Railroad)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "row_wt", "subcat", "rcl_stat"],
+                        "Infrastructure (Power Line)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "row_wt", "vltg", "hgt", "max_arm_wt", "guy_wr_ext", "guy_wr_nr", "anti_perch", "subcat", "rcl_stat"],
+                        "Infrastructure (Pipeline)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "pplne_cnts", "row_wt", "pplne_tp", "on_lse", "off_lse", "subcat", "rcl_stat"],
+                        "Infrastructure (Military)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
+                        "Infrastructure (Airports)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
+                        "Energy (Wind)": ["dst_cat", "dst_tp", "const_dt",  "or_dev_reg_proj_id","dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "hub_hgt", "rotor_hgt", "rotor_dia", "subcat", "rcl_stat"],
+                        "Energy (Tar Sands)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
+                        "Energy (Solar)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "cap_kw", "slrplnt_tp", "twr_hgt", "twr_nr", "subcat", "rcl_stat"],
+                        "Energy (Oil & Gas)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "wl_nr", "subcat", "rcl_stat"],
+                        "Energy (Oil Shale In-Situ)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
+                        "Energy (Oil Shale Ex-Situ)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
+                        "Energy (Nuclear)": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "reactor_tp", "subcat", "rcl_stat"],
+                        "Energy (Hydroelectric)": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
+                        "Energy (Geothermal)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "cap_kw", "subcat", "rcl_stat"],
+                        "Energy (Coal Mine)": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "cap_kw", "subcat", "rcl_stat"],
+                        "Farm/Forest Resource": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
+                        "Natural Resource": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
+                        "Residential": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
+                        "Commercial": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
+                        "Utility/Solid Waste Disposal Facility": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
+                        "Park/Public/Quasi-Public": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
+                        "Outdoor Gathering": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
+                        "Agriculture": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
+                        "Up-zoned Land": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
+                        "Other": ["dst_cat", "dst_tp", "const_dt", "or_dev_reg_proj_id", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"]
+                    }
+                }
+            },
             {
                 "moduleName": "Accessibility",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.accessibility.AccessibilityModule",
                 "configuration": {
                     "keyboardFocusIndicatorEnabled": true,
+                    "keyboardFocusIndicatorColor": "#550055",
                     "expandedMapKeyboardAccessibility": true,
                     "automaticElementFocusing": true,
                     "includeProviders": true,
@@ -332,12 +385,13 @@
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.banner.BannerViewModel",
                         "configuration": {
                             "applicationTitle": "Map Viewer",
-                            "applicationSubtitle": "Search, identify, analyze and share",
+                            "applicationSubtitle": "Search, identify, analyze and share!",
                             "titleColor": "#615042",
                             "subtitleColor": "#959398",
                             "backgroundColor": "#FFFFFF",
                             "backgroundImage": "Resources/Images/Banners/default-banner-bg.png",
                             "leftImage": "Resources/Images/Custom/oe-default-banner.png",
+                            "leftImageDescription": "@language-banner-title",
                             "rightImage": "",
                             "rightImageDescription": "",
                             "height": 60
@@ -446,7 +500,7 @@
                 "moduleName": "Browser",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.browser.BrowserModule",
                 "configuration": {
-                    "title": "@language-browser-title"
+                    "title": "Oregon Explorer Viewer"
                 }
             },
             {
@@ -863,6 +917,39 @@
                                     "tooltip": "@language-toolbar-snapping-select-layers-tooltip"
                                 }
                             ]
+                        },
+                        {
+                            "stateName": "PlotCoordinatesState",
+                            "widgetId": "CompactToolbarTransientBase",
+                            "region": "CompactToolbarTransientRegion",
+                            "items": [
+                                {
+                                    "id": "PlotCoordinatesSnappingToggle",
+                                    "type": "toggleButton",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/snapping-24.png",
+                                    "toggleStateName": "SnappingState",
+                                    "toggleOn": {
+                                        "name": "@language-toolbar-snapping-enable",
+                                        "command": "ActivateSnapping",
+                                        "tooltip": "@language-toolbar-snapping-alt-enable"
+                                    },
+                                    "toggleOff": {
+                                        "name": "@language-toolbar-snapping-disable",
+                                        "command": "DeactivateSnapping",
+                                        "tooltip": "@language-toolbar-snapping-alt-disable"
+                                    }
+                                },
+                                {
+                                    "id": "PlotCoordinatesSnappingLayersButton",
+                                    "type": "button",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/layers-snapping-24.png",
+                                    "command": "ActivateSelectLayersForSnapping",
+                                    "commandParameter": null,
+                                    "hideOnDisable": false,
+                                    "name": "@language-toolbar-snapping-select-layers",
+                                    "tooltip": "@language-toolbar-snapping-select-layers-tooltip"
+                                }
+                            ]
                         }
                     ],
                     "toolbarGroups": [
@@ -870,7 +957,6 @@
                             "id": "compactToolbar",
                             "type": "toolbarGroup",
                             "name": "Compact Toolbar",
-                            "isDefault": false,
                             "items": [
                                 {
                                     "id": "HomeButton",
@@ -924,7 +1010,8 @@
                                     "name": "@language-toolbar-tasks-export-map",
                                     "tooltip": "@language-toolbar-tasks-export-map-tooltip"
                                 }
-                            ]
+                            ],
+                            "layout": "Large"
                         }
                     ]
                 },
@@ -977,53 +1064,55 @@
                 }
             },
             {
-                "moduleName" : "Coordinates",
-                "moduleType" : "geocortex.essentialsHtmlViewer.mapping.modules.coordinates.CoordinatesModule",
-                "configuration" : {},
-                "views" : [{
-                    "id" : "CoordinatesView",
-                    "viewModelId" : "CoordinatesViewModel",
-                    "markup" : "Mapping/modules/Coordinates/CoordinatesView.html",
-                    "type" : "geocortex.essentialsHtmlViewer.mapping.modules.coordinates.CoordinatesView",
-                    "region" : "LeftFooterRegion",
-                    "visible" : false,
-                    "configuration" : {}
-
-                }
-                ],
-                "viewModels" : [{
-                    "id" : "CoordinatesViewModel",
-                    "type" : "geocortex.essentialsHtmlViewer.mapping.modules.coordinates.CoordinatesViewModel",
-                    "configuration" : {
-                        "isEnabled" : false,
-                        "openByDefault" : true,
-                        "useBasemapCoordinates" : false,
-                        "numDigits" : 3,
-                        "coordinateSystems" : [{
-                            "displayName" : "Lat/Long",
-                            "wkid" : 4326,
-                            "output" : "latLon"
-                        }, 
-                        {
-                            "displayName" : "Degree Minute Second",
-                            "wkid" : 4326,
-                            "output" : "dms"
-                        },
-                        {
-                            "displayName" : "Degree Decimal Minutes",
-                            "wkid" : 4326,
-                            "output" : "ddm"
-                        },
-                        {
-                            "displayName" : "Oregon State Plane",
-                            "wkid" : 2292,
-                            "output": "xy"
-                        }
-                        ]
+                "moduleName": "Coordinates",
+                "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.coordinates.CoordinatesModule",
+                "configuration": {},
+                "views": [
+                    {
+                        "id": "CoordinatesView",
+                        "viewModelId": "CoordinatesViewModel",
+                        "markup": "Mapping/modules/Coordinates/CoordinatesView.html",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.coordinates.CoordinatesView",
+                        "region": "LeftFooterRegion",
+                        "visible": true,
+                        "configuration": {}
                     }
-                }
+                ],
+                "viewModels": [
+                    {
+                        "id": "CoordinatesViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.coordinates.CoordinatesViewModel",
+                        "configuration": {
+                            "isEnabled": true,
+                            "openByDefault" : true,
+                            "useBasemapCoordinates" : false,
+                            "coordinatesModel": "MapCoordinatesModel",
+                            "numDigits" : 3,
+                            "coordinateSystems" : [{
+                                "displayName" : "Lat/Long",
+                                "wkid" : 4326,
+                                "output" : "latLon"
+                            },
+                            {
+                                "displayName" : "Degree Minute Second",
+                                "wkid" : 4326,
+                                "output" : "dms"
+                            },
+                            {
+                                "displayName" : "Degree Decimal Minutes",
+                                "wkid" : 4326,
+                                "output" : "ddm"
+                            },
+                            {
+                                "displayName" : "Oregon State Plane",
+                                "wkid" : 2292,
+                                "output": "xy"
+                            }
+                            ]
+                        }
+                    }
                 ]
-            },             
+            },
             {
                 "moduleName": "Editing",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.editing.EditingModule",
@@ -1117,7 +1206,7 @@
                                     "drawMode": "RECTANGLE",
                                     "isSticky": false,
                                     "iconUri": "Resources/Images/Icons/Toolbar/identify-rectangle-24.png",
-                                    "statusText": "@language-feature-editing-mbl-rectangle-tool"
+                                    "statusText": "@language-feature-editing-dsk-rectangle-tool"
                                 }
                             ]
                         }
@@ -1500,17 +1589,42 @@
                             "description": "@language-menu-footer-menu-desc",
                             "items": [
                                 {
-                                    "text": "@language-menu-latitude-geographics",
-                                    "description": "@language-menu-latitude-geographics-desc",
-                                    "command": "OpenWebPage",
-                                    "commandParameter": "http://www.latitudegeo.com/"
+                                    "text" : "Oregon Explorer",
+                                    "description" : "Tool of the Oregon Explorer.  Click to go to web site.",
+                                    "command" : "OpenWebPage",
+                                    "commandParameter" : "http://oregonexplorer.info"
                                 },
                                 {
-                                    "text": "@language-menu-powered-by-geocortex",
-                                    "description": "@language-menu-powered-by-geocortex-desc",
+                                    "text": "Feedback",
                                     "command": "OpenWebPage",
-                                    "commandParameter": "http://www.geocortex.com/"
+                                    "commandParameter": "mailto:virtualoregon.support@oregonstate.edu?Subject=Map Viewer Feedback"
                                 }
+                            ]
+                        }, {
+                            "id" : "SocialLinks",
+                            "description" : "@language-menu-social-links-menu-desc",
+                            "moduleId" : "Footer",
+                            "items" : [{
+                                "iconUri" : "Resources/Images/Icons/Custom/twitter-grey-16.png",
+                                "command" : "ShareOn",
+                                "commandParameter" : "twitter"
+                            }, {
+                                "iconUri" : "Resources/Images/Icons/Custom/facebook-grey-16.png",
+                                "command" : "ShareOn",
+                                "commandParameter" : "facebook"
+                            }, {
+                                "iconUri" : "Resources/Images/Icons/Custom/linkedin-grey-16.png",
+                                "command" : "ShareOn",
+                                "commandParameter" : "linkedin"
+                            }, {
+                                "iconUri" : "Resources/Images/Icons/Custom/google-plus-grey-16.png",
+                                "command" : "ShareOn",
+                                "commandParameter" : "googleplus"
+                            }, {
+                                "iconUri" : "Resources/Images/Icons/Custom/contact-16.png",
+                                "command" : "ShareOn",
+                                "commandParameter" : "email"
+                            }
                             ]
                         }
                     ]
@@ -1525,6 +1639,18 @@
                         "region": "FooterRegion",
                         "configuration": {}
                     },
+                     {
+                         "id" : "FooterSocialView",
+                         "viewModelId" : "FooterSocialViewModel",
+                         "libraryId" : "Mapping.Infrastructure",
+                         "type" : "geocortex.essentialsHtmlViewer.mapping.infrastructure.menus.MenuView",
+                         "markup" : "Mapping/infrastructure/menus/MenuView.html",
+                         "region" : "RightFooterRegion",
+                         "visible" : true,
+                         "configuration" : {
+                             "menuId" : "SocialLinks"
+                         }
+                     },
                     {
                         "id": "FooterMenuView",
                         "viewModelId": "FooterMenuViewModel",
@@ -1551,6 +1677,11 @@
                         "id": "FooterMenuViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.menus.MenuViewModel",
                         "configuration": {}
+                    },
+                    {
+                        "id" : "FooterSocialViewModel",
+                        "type" : "geocortex.essentialsHtmlViewer.mapping.infrastructure.menus.MenuViewModel",
+                        "configuration" : {}
                     }
                 ]
             },
@@ -1584,14 +1715,14 @@
                         "id": "GeolocateViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.geolocate.GeolocateViewModel",
                         "configuration": {
-                            "geolocateEnabled": true,
-                            "trackingEnabled": true,
-                            "followingEnabled": true,
+                            "geolocateEnabled": false,
+                            "trackingEnabled": false,
+                            "followingEnabled": false,
                             "enableHighAccuracy": true,
                             "singleGeolocationProfiles": {
                                 "default": {
                                     "accuracyThreshold": 10,
-                                    "timeLimit": 2000
+                                    "timeLimit": 30000
                                 },
                                 "coarse": {
                                     "accuracyThreshold": 250,
@@ -1602,9 +1733,9 @@
                                     "timeLimit": 60000
                                 }
                             },
-                            "geolocateAccuracyCircleEnabled": false,
+                            "geolocateAccuracyCircleEnabled": true,
                             "adjustExtentZoomOnGeolocate": true,
-                            "geolocateExtentZoomLevel": 5000,
+                            "geolocateExtentZoomLevel": 50000,
                             "geolocationIndicator": "Resources/Images/Icons/geolocate-position-32.png"
                         }
                     },
@@ -1612,11 +1743,11 @@
                         "id": "GeolocateStatusViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.geolocate.GeolocateStatusViewModel",
                         "configuration": {
-                            "showGeolocateCoordinates": true,
+                            "showGeolocateCoordinates": false,
                             "showTrackingCoordinates": true,
                             "showFollowingCoordinates": true,
                             "coordinateFormat": "dd",
-                            "coordinateWkid": 4326,
+                            "coordinateWkid": null,
                             "coordinateFractionalDigits": 4,
                             "geolocateIcon": "Resources/Images/Icons/geolocate-24.png",
                             "busyIcon": "Resources/Images/loader-small.gif"
@@ -1635,33 +1766,33 @@
                             "defaultIconUri": "Resources/Images/Icons/check-24.png",
                             "items": [
                                 {
-                                    "iconUri": "Resources/Images/Icons/user-16.png",
+                                    "iconUri": "Resources/Images/Icons/user-24.png",
                                     "text": "@language-user-sign-in",
                                     "description": "@language-user-sign-in-desc",
                                     "command": "SignIn",
                                     "hideOnDisable": true
                                 },
                                 {
-                                    "iconUri": "Resources/Images/Icons/user-16.png",
+                                    "iconUri": "Resources/Images/Icons/user-24.png",
                                     "text": "@language-user-sign-out",
                                     "description": "@language-user-sign-out-desc",
                                     "command": "SignOut",
                                     "hideOnDisable": true
                                 },
                                 {
-                                    "iconUri": "Resources/Images/Icons/open-16.png",
+                                    "iconUri": "Resources/Images/Icons/open-24.png",
                                     "text": "@language-menu-global-open",
                                     "description": "@language-menu-global-open-desc",
                                     "command": "ShowProjects"
                                 },
                                 {
-                                    "iconUri": "Resources/Images/Icons/save-16.png",
+                                    "iconUri": "Resources/Images/Icons/save-24.png",
                                     "text": "@language-menu-global-save",
                                     "description": "@language-menu-global-save-desc",
                                     "command": "SaveProject"
                                 },
                                 {
-                                    "iconUri": "Resources/Images/Icons/save-as-16.png",
+                                    "iconUri": "Resources/Images/Icons/save-as-24.png",
                                     "text": "@language-menu-global-save-as",
                                     "description": "@language-menu-global-save-as-desc",
                                     "command": "SaveAsProject"
@@ -1726,7 +1857,8 @@
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.Highlight.HighlightModule",
                 "configuration": {
                     "fillColor": "#99ECEC3A",
-                    "borderColor": "#FFCCCC33"
+                    "borderColor": "#FFCCCC33",
+                    "borderWidth": 2
                 }
             },
             {
@@ -1760,7 +1892,7 @@
                             "drawMode": "POINT",
                             "isSticky": false,
                             "iconUri": "Resources/Images/Icons/Toolbar/identify-24.png",
-                            "statusText": "@language-mbl-identify-point-tool",
+                            "statusText": "@language-dsk-identify-point-tool",
                             "keyboardStatusText": "@language-toolbar-identify-point-desc-keyboard"
                         },
                         {
@@ -1777,7 +1909,7 @@
                             "drawMode": "POLYLINE",
                             "isSticky": false,
                             "iconUri": "Resources/Images/Icons/Toolbar/identify-polyline-24.png",
-                            "statusText": "@language-mbl-identify-polyline-tool",
+                            "statusText": "@language-dsk-identify-polyline-tool",
                             "keyboardStatusText": "@language-toolbar-identify-polyline-desc-keyboard"
                         },
                         {
@@ -1842,7 +1974,10 @@
                     {
                         "id": "IdentifyOptionsViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.identify.IdentifyOptionsViewModel",
-                        "configuration": {}
+                        "configuration": {
+                            "bufferIconUri": "Resources/Images/Icons/Toolbar/buffer-identify-24.png",
+                            "selectLayersIconUri": "Resources/Images/Icons/Toolbar/layers-filtered-24.png"
+                        }
                     },
                     {
                         "id": "IdentifyLayerSelectorViewModel",
@@ -1882,7 +2017,7 @@
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.insightIntegration.InsightIntegrationModule",
                 "configuration": {
                     "enabled": false,
-                    "dataRelayUri": "http://localhost/Geocortex/Insight/Insight/ClientRelay",
+                    "dataRelayUri": "http://localhost/Geocortex/Analytics/ClientRelay",
                     "dataRelayIntervalInSeconds": 30
                 }
             },
@@ -1964,7 +2099,14 @@
                                     "description": "@language-menu-bookmark-add-desc",
                                     "command": "ShowAddBookmark",
                                     "hideOnDisable": true
-                                }
+                                },
+                               {
+                                   "iconUri": "{ViewerConfigUri}../../../Resources/Images/Custom/profile-tool-24.png",
+                                   "text": "Calculate M49 Constraints",
+                                   "description": "Find the percent area constrained by M49 overlays",
+                                   "command": "RunWorkflowById",
+                                   "commandParameter": "calculateConstraintsCustomForm"
+                               }
                             ]
                         }
                     ]
@@ -1977,7 +2119,6 @@
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.IWantToMenu.IWantToMenuButtonView",
                         "markup": "Mapping/modules/IWantToMenu/IWantToMenuButtonView.html",
                         "region": "NavigationMapRegion",
-                        "title": "@language-menu-title",
                         "configuration": {}
                     },
                     {
@@ -1999,7 +2140,186 @@
                         "configuration": {
                             "showMenu": true,
                             "showGlobalMenu": true,
-                            "menuTitle": "@language-menu-title"
+                            "menuTitle": "@language-menu-title",
+                            "primaryButtonColor": "#C34500"
+                        }
+                    }
+                ]
+            },
+            {
+                "moduleName": "LabelOptions",
+                "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.labelOptions.LabelOptionsModule",
+                "configuration": {},
+                "views": [
+                    {
+                        "id": "LabelOptionsView",
+                        "title": "@language-labelOptions-title",
+                        "visible": false,
+                        "viewModelId": "LabelOptionsViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.labelOptions.LabelOptionsView",
+                        "markup": "Mapping/modules/LabelOptions/LabelOptionsView.html",
+                        "region": "LayerDataContainerRegion",
+                        "configuration": {}
+                    }
+                ],
+                "viewModels": [
+                    {
+                        "id": "LabelOptionsViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.labelOptions.LabelOptionsViewModel",
+                        "configuration": {
+                            "showLabels": true,
+                            "fontSizeExtraSmall": 10,
+                            "fontSizeSmall": 12,
+                            "fontSizeMedium": 14,
+                            "fontSizeLarge": 16,
+                            "fontSizeExtraLarge": 18,
+                            "fontSizeChoiceIsEnabled": true,
+                            "fontSize": 14,
+                            "fontColor": "#000000",
+                            "fontFamilies": [
+                                "Arial",
+                                "Cambria",
+                                "Georgia",
+                                "Times New Roman",
+                                "Verdana"
+                            ],
+                            "fontIsBold": false,
+                            "fontIsItalic": false,
+                            "fontIsUnderline": false,
+                            "haloSize": 0,
+                            "haloColor": "#000000",
+                            "showLabelsIsVisible": true,
+                            "fieldIsVisible": true,
+                            "fontSizeIsVisible": true,
+                            "fontColorIsVisible": true,
+                            "labelPlacementIsVisible": true,
+                            "fontFamiliesIsVisible": false,
+                            "fontStyleIsVisible": false,
+                            "haloSizeIsVisible": false,
+                            "haloColorIsVisible": false
+                        }
+                    }
+                ]
+            },
+            {
+                "moduleName": "LayerAddition",
+                "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.layerAddition.LayerAddition",
+                "configuration": {},
+                "views": [
+                    {
+                        "id": "AddLayerDialogView",
+                        "viewModelId": "LayerAdditionViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerAddition.AddLayerDialogView",
+                        "markup": "Mapping/modules/LayerAddition/Dialogs/AddLayerDialogView.html",
+                        "title": "@language-layer-addition-search-title",
+                        "region": "LayerAdditionContainerRegion",
+                        "visible": false,
+                        "configuration": {}
+                    },
+                    {
+                        "id": "ServiceConnectionsDialogView",
+                        "viewModelId": "LayerAdditionViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerAddition.ServiceConnectionsDialogView",
+                        "markup": "Mapping/modules/LayerAddition/Dialogs/ServiceConnectionsDialogView.html",
+                        "title": "@language-layer-addition-service-connections-title",
+                        "region": "LayerAdditionContainerRegion",
+                        "visible": false,
+                        "configuration": {}
+                    },
+                    {
+                        "id": "MapServicesDialogView",
+                        "viewModelId": "LayerAdditionViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerAddition.MapServicesDialogView",
+                        "markup": "Mapping/modules/LayerAddition/Dialogs/MapServicesDialogView.html",
+                        "title": "@language-layer-addition-map-services-title",
+                        "region": "LayerAdditionContainerRegion",
+                        "visible": false,
+                        "configuration": {}
+                    },
+                    {
+                        "id": "SubLayersDialogView",
+                        "viewModelId": "LayerAdditionViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerAddition.SubLayersDialogView",
+                        "markup": "Mapping/modules/LayerAddition/Dialogs/SubLayersDialogView.html",
+                        "title": "@language-layer-addition-sub-layers-title",
+                        "region": "LayerAdditionContainerRegion",
+                        "visible": false,
+                        "configuration": {}
+                    },
+                    {
+                        "id": "LayerPropertiesView",
+                        "title": "@language-layer-addition-layer-properties",
+                        "visible": false,
+                        "viewModelId": "LayerPropertiesViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerAddition.LayerPropertiesView",
+                        "markup": "Mapping/modules/LayerAddition/LayerPropertiesView.html",
+                        "region": "LayerDataContainerRegion",
+                        "configuration": {}
+                    }
+                ],
+                "viewModels": [
+                    {
+                        "id": "LayerAdditionViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerAddition.LayerAdditionViewModel",
+                        "configuration": {
+                            "zoomToUserAddedLayers": true,
+                            "layerDefaults": {
+                                "searchable": true,
+                                "identifiable": true,
+                                "queryable": true,
+                                "showMapTips": true
+                            }
+                        }
+                    },
+                    {
+                        "id": "LayerPropertiesViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerAddition.LayerPropertiesViewModel",
+                        "configuration": {}
+                    }
+                ]
+            },
+            {
+                "moduleName": "LayerCatalog",
+                "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.layerCatalog.LayerCatalogModule",
+                "configuration": {
+                    "layerCatalogProviders": [
+                        {
+                            "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerCatalog.EssentialsSiteProvider",
+                            "enabled": true
+                        },
+                        {
+                            "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerCatalog.AssemblyProvider",
+                            "enabled": false
+                        }
+                    ]
+                },
+                "views": [
+                    {
+                        "id": "LayerCatalogView",
+                        "viewModelId": "LayerCatalogViewModel",
+                        "visible": false,
+                        "title": "@language-layer-catalog-layercatalogview-title",
+                        "region": "ModalWindowRegion",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerCatalog.LayerCatalogView",
+                        "markup": "Mapping/modules/LayerCatalog/LayerCatalogView.html",
+                        "configuration": {
+                            "autocompleteEnabled": true,
+                            "minFilterLength": 3
+                        }
+                    }
+                ],
+                "viewModels": [
+                    {
+                        "id": "LayerCatalogViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerCatalog.LayerCatalogViewModel",
+                        "configuration": {
+                            "infoLink": {
+                                "enabled": false,
+                                "command": "",
+                                "iconUri": "Resources/Images/Icons/info-12.png",
+                                "tooltip": "",
+                                "text": ""
+                            }
                         }
                     }
                 ]
@@ -2023,7 +2343,9 @@
                         "region": "LayerDataContainerRegion",
                         "isManaged": false,
                         "visible": false,
-                        "configuration": {}
+                        "configuration": {
+                            "showStatusMessages": true
+                        }
                     },
                     {
                         "id": "LayerActionsView",
@@ -2036,6 +2358,19 @@
                         "region": "LayerDataContainerRegion",
                         "configuration": {
                             "menuId": "LayerActions"
+                        }
+                    },
+                    {
+                        "id": "MapServiceActionsView",
+                        "viewModelId": "MapServiceActionsViewModel",
+                        "visible": false,
+                        "iconUri": "Resources/Images/Icons/Toolbar/layers-menu-24.png",
+                        "markup": "Mapping/modules/LayerList/MapServiceActions/MapServiceActionsView.html",
+                        "title": "@language-mapservice-actions-title",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerList.MapServiceActionsView",
+                        "region": "LayerDataContainerRegion",
+                        "configuration": {
+                            "menuId": "MapServiceActions"
                         }
                     }
                 ],
@@ -2052,6 +2387,11 @@
                         "id": "LayerActionsViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerList.LayerActionsViewModel",
                         "configuration": {}
+                    },
+                    {
+                        "id": "MapServiceActionsViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.menus.MenuViewModel",
+                        "configuration": {}
                     }
                 ]
             },
@@ -2061,6 +2401,28 @@
                 "configuration": {},
                 "views": [],
                 "viewModels": []
+            },
+            {
+                "moduleName": "LayerStyles",
+                "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.layerStyles.LayerStylesModule",
+                "configuration": {},
+                "views": [
+                {
+                    "id": "LayerStyleSelectorView",
+                    "markup": "Mapping/modules/LayerStyles/LayerStyleSelectorView.html",
+                    "viewModelId": "LayerStyleSelectorViewModel",
+                    "title": "@language-layerstyles-name",
+                    "region": "LayerVisualizationRegion",
+                    "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerStyles.LayerStyleSelectorView",
+                    "visible": false
+                }
+                ],
+                "viewModels": [
+                {
+                    "id": "LayerStyleSelectorViewModel",
+                    "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerStyles.LayerStyleSelectorViewModel"
+                }
+                ]
             },
             {
                 "moduleName": "Legend",
@@ -2091,7 +2453,7 @@
                 "moduleName": "Map",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.map.MapModule",
                 "configuration": {
-                    "panDuration": 0,
+                    "panDuration": 350,
                     "panRate": 50,
                     "zoomDuration": 500,
                     "zoomRate": 50,
@@ -2128,6 +2490,13 @@
                             "name": "MapOnFeatureClickBehavior",
                             "commands": [
                                 "ShowMapTip"
+                            ]
+                        },
+                        {
+                            "name": "MapTimeExtentChangedBehavior",
+                            "event": "MapTimeExtentChangedEvent",
+                            "commands": [
+                                "RemovePushpins"
                             ]
                         }
                     ],
@@ -2175,7 +2544,7 @@
                             "command": "PanToPoint",
                             "drawMode": "POINT",
                             "isSticky": true,
-                            "statusText": "@language-mbl-map-center"
+                            "statusText": "@language-dsk-map-center"
                         },
                         {
                             "name": "ZoomInTool",
@@ -2253,8 +2622,7 @@
                         "id": "MapViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.map.MapViewModel",
                         "configuration": {
-                            "stepZoomFactor": 0.5,
-                            "panStep": 0.333
+                            "stepZoomFactor": 0.5
                         }
                     },
                     {
@@ -2288,15 +2656,31 @@
                         "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.coordinates.CoordinatesModel",
                         "configuration": {
                             "defaultCoordinateDisplayTypes": [
-                                "dd",
-                                "ddm",
-                                "dms",
-                                "xy"
                             ],
-                            "customCoordinateSystems": [],
-                            "fractionalDigits": 5,
-                            "defaultGcsWkid": "4326",
-                            "disableMouseLocationMonitoring": true
+                            "customCoordinateSystems": [
+                                 {
+                                     "displayName": "Lat/Long",
+                                     "wkid": 4326,
+                                     "output": "latLon"
+                                 },
+                                {
+                                    "displayName": "Degree Minute Second",
+                                    "wkid": 4326,
+                                    "output": "dms"
+                                },
+                                {
+                                    "displayName": "Degree Decimal Minutes",
+                                    "wkid": 4326,
+                                    "output": "ddm"
+                                },
+                                {
+                                    "displayName": "Oregon State Plane",
+                                    "wkid": 2292,
+                                    "output": "xy"
+                                }
+                            ],
+                            "fractionalDigits": 3,
+                            "defaultGcsWkid": "4326"
                         }
                     }
                 ]
@@ -2637,10 +3021,55 @@
                                     "hideOnDisable": true
                                 },
                                 {
+                                    "text": "@language-layer-addition-edit-layer-properties",
+                                    "description": "@language-layer-addition-edit-layer-properties-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/layer-options-24.png",
+                                    "command": "ShowLayerPropertiesView",
+                                    "hideOnDisable": true
+                                },
+                                {
                                     "text": "@language-menu-remove-user-added-layer",
                                     "description": "@language-menu-remove-user-added-layer-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/layer-remove-24.png",
                                     "command": "RemoveUserAddedLayer",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-menu-label-options-toggle",
+                                    "description": "@language-menu-label-options-toggle-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/label-24.png",
+                                    "command": "ToggleDynamicLabels",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-menu-label-options",
+                                    "description": "@language-menu-label-options-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/label-options-24.png",
+                                    "command": "ShowLabelOptionsView",
+                                    "hideOnDisable": true
+                                },
+                                  {
+                                      "text": "View metadata",
+                                      "description": "View the layer's metadata",
+                                      "iconUri": "Resources/Images/Icons/details-24.png",
+                                      "command": "showMetadata",
+                                      "commandParameter": "{{context}}",
+                                      "hideOnDisable": true
+                                  },
+                                {
+                                    "text": "View Service Info",
+                                    "description": "View the layer web service information",
+                                    "iconUri": "Resources/Images/Icons/window-new-24.png",
+                                    "command": "showServiceInfo",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "Download layer",
+                                    "description": "Download the layer",
+                                    "iconUri": "Resources/Images/Icons/download-24.png",
+                                    "command": "showDownload",
+                                    "commandParameter": "{{context}}",
                                     "hideOnDisable": true
                                 }
                             ]
@@ -2714,7 +3143,7 @@
                                 },
                                 {
                                     "text": "@language-native-attach-file",
-                                    "description": "@language-native-attach-photo",
+                                    "description": "@language-native-file-from-browser",
                                     "iconUri": "Resources/Images/Icons/Toolbar/attach-file-photo-24.png",
                                     "command": "AttachFileToFeature",
                                     "hideOnDisable": true
@@ -2770,6 +3199,28 @@
                                             "command": "RemoveFeatureFromResults",
                                             "commandParameter": "{{context}}",
                                             "abortBatchOnFailure": true
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "MapServiceActions",
+                            "description": "@language-mapservice-actions-desc",
+                            "defaultIconUri": "Resources/Images/Icons/arrow-right-alt-24.png",
+                            "items": [
+                                {
+                                    "text": "@language-menu-remove-user-added-mapservice",
+                                    "description": "@language-menu-remove-user-added-mapservice-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/layer-remove-24.png",
+                                    "hideOnDisable": true,
+                                    "batch": [
+                                        {
+                                            "command": "RemoveMapService",
+                                            "commandParameter": "{{context}}"
+                                        },
+                                        {
+                                            "command": "HideMapServiceActions"
                                         }
                                     ]
                                 }
@@ -3045,18 +3496,21 @@
                             "items": [
                                 {
                                     "text": "@language-common-share",
+                                    "description": "@language-menu-project-share-project-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/share-24.png",
                                     "command": "ShowShareProject",
                                     "hideOnDisable": true
                                 },
                                 {
                                     "text": "@language-project-actions-edit",
+                                    "description": "@language-menu-project-edit-project-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/edit-24.png",
                                     "command": "ShowProjectEditor",
                                     "hideOnDisable": true
                                 },
                                 {
                                     "text": "@language-common-delete",
+                                    "description": "@language-menu-project-delete-project-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/trash-24.png",
                                     "command": "DeleteProject",
                                     "hideOnDisable": true
@@ -3176,11 +3630,11 @@
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.offlineMaps.OfflineMapsModule",
                 "configuration": {
                     "aoiMask": {
-                        "enabled": true,
+                        "enabled": false,
                         "fillColor": null,
                         "boundaryColor": "black",
                         "boundaryWidth": 2,
-                        "boundaryStyle": "dash",
+                        "boundaryStyle": "solid",
                         "layerId": "OfflineMapsAOIMask",
                         "matchMapBackground": false
                     }
@@ -3700,8 +4154,17 @@
                         "id": "PrintingViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.printing.PrintingViewModel",
                         "configuration": {
-                            "previewBackgroundColor" :[207, 76, 64, 0.3],
-                            "previewBorderColor":[128, 128, 128],
+                            "previewBackgroundColor": [
+                                207,
+                                76,
+                                64,
+                                0.3
+                            ],
+                            "previewBorderColor": [
+                                128,
+                                128,
+                                128
+                            ],
                             "previewBorderThickness": 2,
                             "previewCenterImageUrl": "Resources/Images/center-cross-32.png"
                         }
@@ -3847,7 +4310,7 @@
                         "title": "@language-querybuilder-simple-title",
                         "configuration": {
                             "wildcard": "%",
-                            "dateQueryFormat": "DATE '{0:yyyy-MM-dd}'",
+                            "dateQueryFormat": "DATE '{0:yyyy-MM-dd HH:mm:ss}'",
                             "textComparisonQueryFormat": "LOWER({0}) LIKE LOWER({1})",
                             "numberToTextComparisonQueryFormat": "CAST({0} AS VARCHAR(50)) LIKE '{1}'",
                             "doesNotContainQueryFormat": "LOWER({0}) NOT LIKE LOWER({1})",
@@ -3867,7 +4330,7 @@
                         "title": "@language-querybuilder-simple-filter-title",
                         "configuration": {
                             "wildcard": "%",
-                            "dateQueryFormat": "DATE '{0:yyyy-MM-dd}'",
+                            "dateQueryFormat": "DATE '{0:yyyy-MM-dd HH:mm:ss}'",
                             "textComparisonQueryFormat": "LOWER({0}) LIKE LOWER({1})",
                             "numberToTextComparisonQueryFormat": "CAST({0} AS VARCHAR(50)) LIKE '{1}'",
                             "doesNotContainQueryFormat": "LOWER({0}) NOT LIKE LOWER({1})",
@@ -4026,7 +4489,7 @@
                         "configuration": {
                             "contentField": "longDescription",
                             "isPaged": true,
-                            "pageSize": 20
+                            "pageSize": 50
                         }
                     },
                     {
@@ -4040,7 +4503,7 @@
                         "visible": false,
                         "configuration": {
                             "isPaged": true,
-                            "pageSize": 15
+                            "pageSize": 50
                         }
                     }
                 ],
@@ -4062,6 +4525,19 @@
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.scalebar.ScalebarModule",
                 "configuration": {},
                 "views": [
+                      {
+                          "id": "ScalebarView",
+                          "visible": true,
+                          "type": "geocortex.essentialsHtmlViewer.mapping.modules.scalebar.ScalebarView",
+                          "markup": "Mapping/modules/Scalebar/ScalebarView.html",
+                          "region": "BottomLeftMapRegion",
+                          "configuration": {
+                              "scalebarStyle": "ruler",
+                              "scalebarUnit": "english",
+                              "showBackground": true
+                          },
+                          "viewModelId": "ScalebarViewModel"
+                      },
                     {
                         "id": "ScaleInputBoxButtonView",
                         "visible": true,
@@ -4072,23 +4548,10 @@
                     },
                     {
                         "id": "ScaleInputBoxView",
-                        "visible": false,
+                        "visible": true,
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.scalebar.ScaleInputBoxView",
                         "markup": "Mapping/modules/Scalebar/ScaleInputBoxView.html",
                         "region": "BottomLeftMapRegion",
-                        "viewModelId": "ScalebarViewModel"
-                    },
-                    {
-                        "id": "ScalebarView",
-                        "visible": true,
-                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.scalebar.ScalebarView",
-                        "markup": "Mapping/modules/Scalebar/ScalebarView.html",
-                        "region": "BottomLeftMapRegion",
-                        "configuration": {
-                            "scalebarStyle": "ruler",
-                            "scalebarUnit": "english",
-                            "showBackground": true
-                        },
                         "viewModelId": "ScalebarViewModel"
                     }
                 ],
@@ -4096,7 +4559,12 @@
                     {
                         "id": "ScalebarViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.scalebar.ScalebarViewModel",
-                        "configuration": {}
+                        "configuration": {
+                            "scaleInputBox": {
+                                "isEnabled": true,
+                                "openByDefault": false
+                            }
+                        }
                     }
                 ]
             },
@@ -4333,8 +4801,8 @@
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.shells.ShellModule",
                 "configuration": {
                     "css": [
-                        "Resources/Styles/Tablet.css",
-                        "{ViewerConfigUri}../../Styles/Custom/Tablet.css"
+                        "Resources/Styles/Desktop.css",
+                        "{ViewerConfigUri}../../Styles/Custom/Desktop.css"
                     ],
                     "homePanelVisible": true
                 },
@@ -4344,7 +4812,7 @@
                         "viewModelId": "ShellViewModel",
                         "visible": true,
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.shells.LargeShellView",
-                        "markup": "Mapping/modules/Shells/TabletShellView.html",
+                        "markup": "Mapping/modules/Shells/DesktopShellView.html",
                         "region": "ApplicationRegion",
                         "configuration": {}
                     },
@@ -4420,8 +4888,8 @@
                         "isManaged": false,
                         "title": "@language-common-welcome",
                         "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",
-                        "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.SmartPanel.SmartPanelView",
                         "libraryId": "Mapping.Infrastructure",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.SmartPanel.SmartPanelView",
                         "markup": "Mapping/infrastructure/ui/components/SmartPanel/SmartPanelView.html",
                         "region": "DataRegion",
                         "configuration": {
@@ -4452,8 +4920,8 @@
                         "isManaged": false,
                         "title": "@language-querybuilder-simple-title",
                         "iconUri": "Resources/Images/Icons/query-24.png",
-                        "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.SmartPanel.SmartPanelView",
                         "libraryId": "Mapping.Infrastructure",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.SmartPanel.SmartPanelView",
                         "markup": "Mapping/infrastructure/ui/components/SmartPanel/SmartPanelView.html",
                         "region": "DataRegion",
                         "configuration": {
@@ -4465,11 +4933,11 @@
                         "id": "SimpleFilterBuilderContainerView",
                         "viewModelId": "SimpleFilterBuilderViewContainerViewModel",
                         "visible": false,
-                        "isManaged": false,
+                        "isManaged": true,
                         "title": "@language-querybuilder-simple-filter-title",
                         "iconUri": "Resources/Images/Icons/filter-24.png",
-                        "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.SmartPanel.SmartPanelView",
                         "libraryId": "Mapping.Infrastructure",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.SmartPanel.SmartPanelView",
                         "markup": "Mapping/infrastructure/ui/components/SmartPanel/SmartPanelView.html",
                         "region": "DataRegion",
                         "configuration": {
@@ -4510,6 +4978,22 @@
                         }
                     },
                     {
+                        "id": "TimeSliderContainerView",
+                        "viewModelId": "TimeSliderContainerViewModel",
+                        "visible": false,
+                        "isManaged": true,
+                        "title": "@language-common-results",
+                        "iconUri": "Resources/Images/Icons/Toolbar/coordinates-map-tip-24.png",
+                        "libraryId": "Mapping.Infrastructure",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.SmartPanel.SmartPanelView",
+                        "markup": "Mapping/infrastructure/ui/components/SmartPanel/SmartPanelView.html",
+                        "region": "DataRegion",
+                        "configuration": {
+                            "resizableParentRegion": "LeftPanelRegion",
+                            "resizeX": true
+                        }
+                    },
+                    {
                         "id": "ProjectContainerView",
                         "viewModelId": "ProjectContainerViewModel",
                         "visible": false,
@@ -4518,6 +5002,21 @@
                         "iconUri": "Resources/Images/Icons/Toolbar/open-24.png",
                         "libraryId": "Mapping.Infrastructure",
                         "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.SmartPanel.SmartPanelView",
+                        "markup": "Mapping/infrastructure/ui/components/SmartPanel/SmartPanelView.html",
+                        "region": "DataRegion",
+                        "configuration": {
+                            "resizableParentRegion": "LeftPanelRegion",
+                            "resizeX": true
+                        }
+                    },
+                    {
+                        "id": "LayerAdditionContainerView",
+                        "viewModelId": "LayerAdditionContainerViewModel",
+                        "visible": false,
+                        "isManaged": false,
+                        "iconUri": "Resources/Images/Icons/Toolbar/layers-add-24.png",
+                        "libraryId": "Mapping.Infrastructure",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.WizardPanel.WizardPanelView",
                         "markup": "Mapping/infrastructure/ui/components/SmartPanel/SmartPanelView.html",
                         "region": "DataRegion",
                         "configuration": {
@@ -4565,6 +5064,7 @@
                         "libraryId": "Mapping.Infrastructure",
                         "configuration": {
                             "containerRegionName": "DataFrameResultsContainerRegion",
+                            "statusRegionName": "DataFrameResultsStatusRegion",
                             "headerIsVisible": true,
                             "backButtonOnRootView": true,
                             "showBackButtonAsX": true,
@@ -4586,10 +5086,11 @@
                             "showHostedViews": true,
                             "ordering": {
                                 "LayerListView": 0,
-                                "LayerActionsView": 1,
-                                "LegendView": 2,
-                                "FeatureLayerListView": 3,
-                                "FeatureLayerDetailsView": 4
+                                "MapServiceActionsView": 1,
+                                "LayerActionsView": 2,
+                                "LegendView": 3,
+                                "FeatureLayerListView": 4,
+                                "FeatureLayerDetailsView": 5
                             }
                         }
                     },
@@ -4631,7 +5132,7 @@
                             "containerRegionName": "ModalWindowRegion",
                             "backButtonOnRootView": true,
                             "showBackButtonAsX": true,
-                            "closeOnEscape": true
+                            "closeOnEscape": false
                         }
                     },
                     {
@@ -4708,6 +5209,21 @@
                         }
                     },
                     {
+                        "id": "TimeSliderContainerViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.SmartPanel.SmartPanelViewModel",
+                        "libraryId": "Mapping.Infrastructure",
+                        "configuration": {
+                            "containerRegionName": "TimeSliderContainerRegion",
+                            "headerIsVisible": true,
+                            "backButtonOnRootView": true,
+                            "showBackButtonAsX": true,
+                            "showHostedViews": true,
+                            "ordering": {
+                                "TimeSliderSettingsView": 0
+                            }
+                        }
+                    },
+                    {
                         "id": "ProjectContainerViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.SmartPanel.SmartPanelViewModel",
                         "libraryId": "Mapping.Infrastructure",
@@ -4719,14 +5235,34 @@
                             "showHostedViews": true,
                             "ordering": {}
                         }
+                    },
+                    {
+                        "id": "LayerAdditionContainerViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.WizardPanel.WizardPanelViewModel",
+                        "libraryId": "Mapping.Infrastructure",
+                        "configuration": {
+                            "containerRegionName": "LayerAdditionContainerRegion",
+                            "headerIsVisible": true,
+                            "backButtonOnRootView": true,
+                            "showBackButtonAsX": true,
+                            "showHostedViews": false,
+                            "ordering": {
+                                "AddLayerDialogView": 0,
+                                "ServiceConnectionsDialogView": 1,
+                                "MapServicesDialogView": 2,
+                                "SubLayersDialogView": 3
+                            }
+                        }
                     }
                 ]
             },
             {
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
-                "configuration": {                    
-                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/Copy_of__watershed_restoration"
+                "configuration": {
+                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
+                    "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
+                    "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg"
                 },
                 "views": [
                     {
@@ -4752,6 +5288,72 @@
                         "id": "ServiceLayersFailureViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.site.ServiceLayersFailureViewModel",
                         "configuration": {}
+                    }
+                ]
+            },
+            {
+                "moduleName": "Snapping",
+                "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.snapping.SnappingModule",
+                "configuration": {
+                    "threshold": "25",
+                    "radiusFillColor": "#ffffff",
+                    "radiusFillOpacity": ".2",
+                    "radiusBorderColor": "#000000",
+                    "radiusBorderSize": "1",
+                    "pointColor": "#ffffff",
+                    "pointSize": "5",
+                    "toggleKey": 70,
+                    "supportedDrawModes": [
+                        "POINT",
+                        "MULTI_POINT",
+                        "LINE",
+                        "POLYGON",
+                        "POLYLINE"
+                    ],
+                    "snappingProvider": {
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.snapping.EsriSnappingProvider",
+                        "configuration": {
+                            "graphicsLayers": [
+                                "Drawings_measurement",
+                                "Drawings"
+                            ]
+                        }
+                    },
+                    "behaviors": [
+                        {
+                            "name": "SelectLayersForSnappingActivatedBehavior",
+                            "event": "SelectLayersForSnappingActivatedEvent",
+                            "commands": [
+                                "OpenDataFrame"
+                            ]
+                        },
+                        {
+                            "name": "SelectLayersForSnappingDeactivatedBehavior",
+                            "event": "SelectLayersForSnappingDeactivatedEvent",
+                            "commands": [
+                                "CloseDataFrame"
+                            ]
+                        }
+                    ]
+                },
+                "views": [
+                    {
+                        "id": "SnappingLayerSelectorView",
+                        "viewModelId": "SnappingLayerSelectorViewModel",
+                        "title": "@language-snapping-layer-selector-title",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.snapping.SnappingLayerSelectorView",
+                        "markup": "Mapping/modules/LayerSelector/LayerSelectorView.html",
+                        "iconUri": "Resources/Images/Icons/Toolbar/layers-snapping-24.png",
+                        "region": "DataRegion",
+                        "visible": false,
+                        "isManaged": false,
+                        "configuration": {}
+                    }
+                ],
+                "viewModels": [
+                    {
+                        "id": "SnappingLayerSelectorViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.snapping.SnappingLayerSelectorViewModel"
                     }
                 ]
             },
@@ -4784,7 +5386,34 @@
                             "stateName": "MeasureState",
                             "widgetId": "TabbedToolbarTransientBase",
                             "region": "MeasurementToolControlRegion",
-                            "items": []
+                            "items": [
+                                {
+                                    "id": "MeasureSnappingToggle",
+                                    "type": "toggleButton",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/snapping-24.png",
+                                    "toggleStateName": "SnappingState",
+                                    "toggleOn": {
+                                        "name": "@language-toolbar-snapping-enable",
+                                        "command": "ActivateSnapping",
+                                        "tooltip": "@language-toolbar-snapping-alt-enable"
+                                    },
+                                    "toggleOff": {
+                                        "name": "@language-toolbar-snapping-disable",
+                                        "command": "DeactivateSnapping",
+                                        "tooltip": "@language-toolbar-snapping-alt-disable"
+                                    }
+                                },
+                                {
+                                    "id": "MeasureSelectSnappingLayersButton",
+                                    "type": "button",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/layers-snapping-24.png",
+                                    "command": "ActivateSelectLayersForSnapping",
+                                    "commandParameter": null,
+                                    "hideOnDisable": false,
+                                    "name": "@language-toolbar-snapping-select-layers",
+                                    "tooltip": "@language-toolbar-snapping-select-layers-tooltip"
+                                }
+                            ]
                         },
                         {
                             "stateName": "MeasureState",
@@ -4796,6 +5425,32 @@
                             "widgetId": "TabbedToolbarTransientBase",
                             "region": "MarkupEditRegion",
                             "items": [
+                                {
+                                    "id": "MarkupSnappingToggle",
+                                    "type": "toggleButton",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/snapping-24.png",
+                                    "toggleStateName": "SnappingState",
+                                    "toggleOn": {
+                                        "name": "@language-toolbar-snapping-enable",
+                                        "command": "ActivateSnapping",
+                                        "tooltip": "@language-toolbar-snapping-alt-enable"
+                                    },
+                                    "toggleOff": {
+                                        "name": "@language-toolbar-snapping-disable",
+                                        "command": "DeactivateSnapping",
+                                        "tooltip": "@language-toolbar-snapping-alt-disable"
+                                    }
+                                },
+                                {
+                                    "id": "MarkupSnappingLayersButton",
+                                    "type": "button",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/layers-snapping-24.png",
+                                    "command": "ActivateSelectLayersForSnapping",
+                                    "commandParameter": null,
+                                    "hideOnDisable": false,
+                                    "name": "@language-toolbar-snapping-select-layers",
+                                    "tooltip": "@language-toolbar-snapping-select-layers-tooltip"
+                                },
                                 {
                                     "id": "ChangeMarkupStyle",
                                     "type": "button",
@@ -4811,6 +5466,32 @@
                             "widgetId": "TabbedToolbarTransientBase",
                             "region": "EditControlRegion",
                             "items": [
+                                {
+                                    "id": "EditingSnappingToggle",
+                                    "type": "toggleButton",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/snapping-24.png",
+                                    "toggleStateName": "SnappingState",
+                                    "toggleOn": {
+                                        "name": "@language-toolbar-snapping-enable",
+                                        "command": "ActivateSnapping",
+                                        "tooltip": "@language-toolbar-snapping-alt-enable"
+                                    },
+                                    "toggleOff": {
+                                        "name": "@language-toolbar-snapping-disable",
+                                        "command": "DeactivateSnapping",
+                                        "tooltip": "@language-toolbar-snapping-alt-disable"
+                                    }
+                                },
+                                {
+                                    "id": "EditingSnappingLayersButton",
+                                    "type": "button",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/layers-snapping-24.png",
+                                    "command": "ActivateSelectLayersForSnapping",
+                                    "commandParameter": null,
+                                    "hideOnDisable": false,
+                                    "name": "@language-toolbar-snapping-select-layers",
+                                    "tooltip": "@language-toolbar-snapping-select-layers-tooltip"
+                                },
                                 {
                                     "id": "ChangeMarkupStyle",
                                     "type": "button",
@@ -4883,6 +5564,32 @@
                                     }
                                 },
                                 {
+                                    "id": "FindDataSnappingToggle",
+                                    "type": "toggleButton",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/snapping-24.png",
+                                    "toggleStateName": "SnappingState",
+                                    "toggleOn": {
+                                        "name": "@language-toolbar-snapping-enable",
+                                        "command": "ActivateSnapping",
+                                        "tooltip": "@language-toolbar-snapping-alt-enable"
+                                    },
+                                    "toggleOff": {
+                                        "name": "@language-toolbar-snapping-disable",
+                                        "command": "DeactivateSnapping",
+                                        "tooltip": "@language-toolbar-snapping-alt-disable"
+                                    }
+                                },
+                                {
+                                    "id": "FindDataSnappingLayersButton",
+                                    "type": "button",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/layers-snapping-24.png",
+                                    "command": "ActivateSelectLayersForSnapping",
+                                    "commandParameter": null,
+                                    "hideOnDisable": false,
+                                    "name": "@language-toolbar-snapping-select-layers",
+                                    "tooltip": "@language-toolbar-snapping-select-layers-tooltip"
+                                },
+                                {
                                     "id": "ChangeIdentifiableLayers",
                                     "type": "button",
                                     "name": "@language-toolbar-identify-layers-change",
@@ -4909,851 +5616,966 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/geolocate.png"
                                 }
                             ]
+                        },
+                        {
+                            "stateName": "FeaturePlacementGraphicState",
+                            "widgetId": "TabbedToolbarTransientBase",
+                            "region": "CreateNewFeatureControlRegion",
+                            "items": [
+                                {
+                                    "id": "FeatureEditingSnappingToggle",
+                                    "type": "toggleButton",
+                                    "tooltip": "@language-toolbar-identify-snapping-tooltip",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/snapping-24.png",
+                                    "toggleStateName": "SnappingState",
+                                    "toggleOn": {
+                                        "name": "@language-toolbar-snapping-enable",
+                                        "command": "ActivateSnapping",
+                                        "tooltip": "@language-toolbar-snapping-alt-enable"
+                                    },
+                                    "toggleOff": {
+                                        "name": "@language-toolbar-snapping-disable",
+                                        "command": "DeactivateSnapping",
+                                        "tooltip": "@language-toolbar-snapping-alt-disable"
+                                    }
+                                },
+                                {
+                                    "id": "FeatureEditingSnappingLayersButton",
+                                    "type": "button",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/layers-snapping-24.png",
+                                    "command": "ActivateSelectLayersForSnapping",
+                                    "commandParameter": null,
+                                    "hideOnDisable": false,
+                                    "name": "@language-toolbar-snapping-select-layers",
+                                    "tooltip": "@language-toolbar-snapping-select-layers-tooltip"
+                                }
+                            ]
+                        },
+                        {
+                            "stateName": "PlotCoordinatesState",
+                            "widgetId": "TabbedToolbarTransientBase",
+                            "region": "PlotCoordinatesToolControlRegion",
+                            "items": [
+                                {
+                                    "id": "PlotCoordinatesSnappingToggle",
+                                    "type": "toggleButton",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/snapping-24.png",
+                                    "toggleStateName": "SnappingState",
+                                    "toggleOn": {
+                                        "name": "@language-toolbar-snapping-enable",
+                                        "command": "ActivateSnapping",
+                                        "tooltip": "@language-toolbar-snapping-alt-enable"
+                                    },
+                                    "toggleOff": {
+                                        "name": "@language-toolbar-snapping-disable",
+                                        "command": "DeactivateSnapping",
+                                        "tooltip": "@language-toolbar-snapping-alt-disable"
+                                    }
+                                },
+                                {
+                                    "id": "PlotCoordinatesSnappingLayersButton",
+                                    "type": "button",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/layers-snapping-24.png",
+                                    "command": "ActivateSelectLayersForSnapping",
+                                    "commandParameter": null,
+                                    "hideOnDisable": false,
+                                    "name": "@language-toolbar-snapping-select-layers",
+                                    "tooltip": "@language-toolbar-snapping-select-layers-tooltip"
+                                }
+                            ]
                         }
                     ],
                     "toolbarGroups": [
-                      {
-                          "id": "MainTab",
-                          "type": "flyout",
-                          "name": "Find",
-                          "items": [
-                            {
-                                "id": "HomeButton",
-                                "type": "button",
-                                "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",
-                                "command": "ActivateHomePanel",
-                                "commandParameter": null,
-                                "hideOnDisable": false,
-                                "name": "@language-toolbar-home-sub",
-                                "tooltip": "@language-toolbar-navigation-home-tooltip"
-                            },
-                            {
-                                "id": "NavigationGroup",
-                                "type": "toolbarGroup",
-                                "name": "@language-toolbar-group-navigation",
-                                "items": [
-                                  {
-                                      "id": "ZoomInTool",
-                                      "type": "tool",
-                                      "iconUri": "Resources/Images/Icons/Toolbar/zoom-in-24.png",
-                                      "command": "ZoomToExtent",
-                                      "drawMode": "EXTENT",
-                                      "name": "@language-toolbar-navigation-zoom-in",
-                                      "tooltip": "@language-toolbar-navigation-zoom-in-tooltip",
-                                      "hideOnDisable": false,
-                                      "isSticky": false,
-                                      "statusText": "@language-toolbar-navigation-zoom-in-desc"
-                                  },
-                                  {
-                                      "id": "ZoomOutTool",
-                                      "type": "tool",
-                                      "iconUri": "Resources/Images/Icons/Toolbar/zoom-out-24.png",
-                                      "command": "ZoomOutToExtent",
-                                      "drawMode": "EXTENT",
-                                      "name": "@language-toolbar-navigation-zoom-out",
-                                      "tooltip": "@language-toolbar-navigation-zoom-out-tooltip",
-                                      "hideOnDisable": false,
-                                      "isSticky": false,
-                                      "statusText": "@language-toolbar-navigation-zoom-out-desc"
-                                  },
-                                  {
-                                      "id": "InitialExtentButton",
-                                      "type": "button",
-                                      "iconUri": "Resources/Images/Icons/Toolbar/zoom-initial-24.png",
-                                      "command": "ZoomToInitialExtent",
-                                      "commandParameter": null,
-                                      "hideOnDisable": false,
-                                      "name": "@language-toolbar-navigation-initial-extent",
-                                      "tooltip": "@language-toolbar-navigation-initial-extent-tooltip"
-                                  },
-                                  {
-                                      "id": "FullExtentButton",
-                                      "type": "button",
-                                      "iconUri": "Resources/Images/Icons/Toolbar/zoom-full-24.png",
-                                      "command": "ZoomToFullExtent",
-                                      "commandParameter": null,
-                                      "hideOnDisable": false,
-                                      "name": "@language-toolbar-navigation-full-extent",
-                                      "tooltip": "@language-toolbar-navigation-full-extent-tooltip"
-                                  },
-                                  {
-                                      "id": "PreviousExtentButton",
-                                      "type": "button",
-                                      "iconUri": "Resources/Images/Icons/Toolbar/zoom-previous-32.png",
-                                      "command": "ZoomToPreviousExtent",
-                                      "commandParameter": null,
-                                      "hideOnDisable": false,
-                                      "name": "@language-toolbar-navigation-previous-extent",
-                                      "tooltip": "@language-toolbar-navigation-previous-extent-tooltip"
-                                  },
-                                  {
-                                      "id": "NextExtentButton",
-                                      "type": "button",
-                                      "iconUri": "Resources/Images/Icons/Toolbar/zoom-next-32.png",
-                                      "command": "ZoomToNextExtent",
-                                      "commandParameter": null,
-                                      "hideOnDisable": false,
-                                      "name": "@language-toolbar-navigation-next-extent",
-                                      "tooltip": "@language-toolbar-navigation-next-extent-tooltip"
-                                  },
-                                  {
-                                      "id": "BookmarksButton",
-                                      "type": "button",
-                                      "iconUri": "Resources/Images/Icons/bookmark-24.png",
-                                      "command": "ShowBookmarks",
-                                      "commandParameter": null,
-                                      "hideOnDisable": false,
-                                      "name": "@language-toolbar-bookmark",
-                                      "tooltip": "@language-toolbar-bookmark-open"
-                                  }
-                                ],
-                                "layout": "Large"
-                            },
-                            {
-                                "id": "FindDataGroup-Home",
-                                "type": "toolbarGroup",
-                                "name": "@language-toolbar-group-find-data",
-                                "items": [
-                                  {
-                                      "id": "PointIdentifyTool-Navigation",
-                                      "type": "tool",
-                                      "iconUri": "Resources/Images/Icons/Toolbar/identify-24.png",
-                                      "command": "Identify",
-                                      "drawMode": "RECTANGLE",
-                                      "name": "@language-toolbar-tasks-identify",
-                                      "tooltip": "@language-toolbar-identify-point-tooltip",
-                                      "hideOnDisable": false,
-                                      "isSticky": false,
-                                      "statusText": "@language-toolbar-identify-point-desc"
-                                  },
-                                  {
-                                      "id": "IdentifyToolControlRegion",
-                                      "type": "region",
-                                      "regionName": "IdentifyToolControlRegion"
-                                  }
-                                ],
-                                "layout": "Large"
+
+                        {
+                            "id" : "CustomTabFile",
+                            "type" : "toolbarGroup",
+                            "name" : "File",
+                            "isDefault" : false,
+                            "items" : [{
+                                "id" : "FileGroup",
+                                "type" : "toolbarGroup",
+                                "name" : "@language-toolbar-group-global-tasks",
+                                "layout" : "Large",
+                                "items" : [{
+                                    "id" : "OpenButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/open-24.png",
+                                    "command" : "ShowProjects",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-menu-global-open",
+                                    "tooltip" : "@language-toolbar-menu-global-open-desc"
+                                }, {
+                                    "id" : "SaveButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/save-24.png",
+                                    "command" : "SaveProject",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-menu-global-save",
+                                    "tooltip" : "@language-toolbar-menu-global-save-desc"
+                                }, {
+                                    "id" : "SaveAsButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/save-as-24.png",
+                                    "command" : "SaveAsProject",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-menu-global-save-as",
+                                    "tooltip" : "@language-toolbar-menu-global-save-as-desc"
+                                }, {
+                                    "id" : "PrintMapButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/Toolbar/print-24.png",
+                                    "command" : "PrintMap",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-tasks-print-map",
+                                    "tooltip" : "@language-toolbar-tasks-print-map-tooltip"
+                                }
+                                ]
                             }
-                          ],
-                          "layout": "Large"
-                      },
-                      {
-                          "id": "MapTab",
-                          "type": "toolbarGroup",
-                          "name": "Layers",
-                          "items": [
-                            {
-                                "id": "MlFsZpyZ",
-                                "type": "toolbarGroup",
-                                "name": "@language-toolbar-group-navigation",
-                                "items": [
-                                  {
-                                      "id": "NavigationGroup",
-                                      "type": "flyout",
-                                      "name": "@language-toolbar-group-navigation",
-                                      "items": [
-                                        {
-                                            "id": "ZoomInTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-in-24.png",
-                                            "command": "ZoomToExtent",
-                                            "drawMode": "EXTENT",
-                                            "name": "@language-toolbar-navigation-zoom-in",
-                                            "tooltip": "@language-toolbar-navigation-zoom-in-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": false,
-                                            "statusText": "@language-toolbar-navigation-zoom-in-desc"
-                                        },
-                                        {
-                                            "id": "ZoomOutTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-out-24.png",
-                                            "command": "ZoomOutToExtent",
-                                            "drawMode": "EXTENT",
-                                            "name": "@language-toolbar-navigation-zoom-out",
-                                            "tooltip": "@language-toolbar-navigation-zoom-out-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": false,
-                                            "statusText": "@language-toolbar-navigation-zoom-out-desc"
-                                        },
-                                        {
-                                            "id": "InitialExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-initial-24.png",
-                                            "command": "ZoomToInitialExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-initial-extent",
-                                            "tooltip": "@language-toolbar-navigation-initial-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "FullExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-full-24.png",
-                                            "command": "ZoomToFullExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-full-extent",
-                                            "tooltip": "@language-toolbar-navigation-full-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "PreviousExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-previous-32.png",
-                                            "command": "ZoomToPreviousExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-previous-extent",
-                                            "tooltip": "@language-toolbar-navigation-previous-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "NextExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-next-32.png",
-                                            "command": "ZoomToNextExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-next-extent",
-                                            "tooltip": "@language-toolbar-navigation-next-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "BookmarksButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/bookmark-24.png",
-                                            "command": "ShowBookmarks",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-bookmark",
-                                            "tooltip": "@language-toolbar-bookmark-open"
-                                        }
-                                      ],
-                                      "layout": "Large"
-                                  }
-                                ],
-                                "layout": "Large"
+                            ]
+                        },
+
+                        {
+                            "id" : "CustomTabFind",
+                            "type" : "toolbarGroup",
+                            "name" : "Find",
+                            "isDefault" : true,
+                            "items" : [{
+                                "id" : "HomeButton",
+                                "type" : "button",
+                                "iconUri" : "Resources/Images/Icons/Toolbar/home-24.png",
+                                "command" : "ActivateHomePanel",
+                                "commandParameter" : null,
+                                "hideOnDisable" : false,
+                                "name" : "@language-toolbar-home-sub",
+                                "tooltip" : "@language-toolbar-home-tooltip"
+                            }, {
+                                "id" : "NavigationGroup",
+                                "type" : "toolbarGroup",
+                                "name" : "@language-toolbar-group-navigation",
+                                "layout" : "Small",
+                                "items" : [{
+                                    "id" : "ZoomInTool",
+                                    "type" : "tool",
+                                    "iconUri" : "Resources/Images/Icons/Toolbar/zoom-in-24.png",
+                                    "command" : "ZoomToExtent",
+                                    "drawMode" : "EXTENT",
+                                    "name" : "@language-toolbar-navigation-zoom-in",
+                                    "tooltip" : "@language-toolbar-navigation-zoom-in-tooltip",
+                                    "hideOnDisable" : false,
+                                    "isSticky" : false,
+                                    "statusText" : "@language-toolbar-navigation-zoom-in-desc"
+                                }, {
+                                    "id" : "ZoomOutTool",
+                                    "type" : "tool",
+                                    "iconUri" : "Resources/Images/Icons/Toolbar/zoom-out-24.png",
+                                    "command" : "ZoomOutToExtent",
+                                    "drawMode" : "EXTENT",
+                                    "name" : "@language-toolbar-navigation-zoom-out",
+                                    "tooltip" : "@language-toolbar-navigation-zoom-out-tooltip",
+                                    "hideOnDisable" : false,
+                                    "isSticky" : false,
+                                    "statusText" : "@language-toolbar-navigation-zoom-out-desc"
+                                }, {
+                                    "id" : "InitialExtentButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/Toolbar/zoom-initial-24.png",
+                                    "command" : "ZoomToInitialExtent",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-navigation-initial-extent",
+                                    "tooltip" : "@language-toolbar-navigation-initial-extent-tooltip"
+                                }, {
+                                    "id" : "FullExtentButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/Toolbar/zoom-full-24.png",
+                                    "command" : "ZoomToFullExtent",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-navigation-full-extent",
+                                    "tooltip" : "@language-toolbar-navigation-full-extent-tooltip"
+                                }, {
+                                    "id" : "PreviousExtentButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/Toolbar/zoom-previous-32.png",
+                                    "command" : "ZoomToPreviousExtent",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-navigation-previous-extent",
+                                    "tooltip" : "@language-toolbar-navigation-previous-extent-tooltip"
+                                }, {
+                                    "id" : "NextExtentButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/Toolbar/zoom-next-32.png",
+                                    "command" : "ZoomToNextExtent",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-navigation-next-extent",
+                                    "tooltip" : "@language-toolbar-navigation-next-extent-tooltip"
+                                }
+                                ]
+                            }, {
+                                "id" : "FindDataGroup",
+                                "type" : "toolbarGroup",
+                                "name" : "@language-toolbar-group-find-data",
+                                "layout" : "Large",
+                                "items" : [{
+                                    "id" : "PointIdentifyTool-Navigation",
+                                    "type" : "tool",
+                                    "iconUri" : "Resources/Images/Icons/Toolbar/identify-24.png",
+                                    "command" : "Identify",
+                                    "drawMode" : "RECTANGLE",
+                                    "name" : "@language-toolbar-tasks-identify",
+                                    "tooltip" : "@language-toolbar-identify-point-tooltip",
+                                    "hideOnDisable" : false,
+                                    "isSticky" : false,
+                                    "statusText" : "@language-toolbar-identify-point-desc"
+                                }, {
+                                    "id" : "IdentifyToolControlRegion",
+                                    "type" : "region",
+                                    "regionName" : "IdentifyToolControlRegion"
+                                }
+                                ]
                             },
                             {
-                                "id": "LayersGroup",
+                                "id": "EeD54kqL",
                                 "type": "toolbarGroup",
-                                "name": "@language-toolbar-group-layers",
+                                "name": "Oregon Developments",
+                                "layout": "Large",
                                 "items": [
                                   {
-                                      "id": "ShowLayerListButton",
+                                      "id": "XWVepsnv",
                                       "type": "button",
-                                      "iconUri": "Resources\\Images\\Icons\\Toolbar\\layers-24.png",
-                                      "command": "ShowLayerList",
-                                      "commandParameter": null,
+                                      "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/feature-create-24.png",
+                                      "command": "RunWorkflowById",
+                                      "commandParameter": "add_project",
                                       "hideOnDisable": false,
-                                      "name": "@language-toolbar-show-layerlist",
-                                      "tooltip": "@language-toolbar-show-layerlist-desc"
+                                      "name": "Add Development",
+                                      "tooltip": "Add Development"
                                   },
                                   {
-                                      "id": "ShowSimpleFilterBuilderButton",
+                                      "id": "2iVZdrT2",
                                       "type": "button",
-                                      "iconUri": "Resources/Images/Icons/filter-24.png",
-                                      "command": "ActivateView",
-                                      "commandParameter": "SimpleFilterBuilderView",
-                                      "hideOnDisable": false,
-                                      "name": "@language-querybuilder-simple-filter-title",
-                                      "tooltip": "@language-querybuilder-simple-filter-tooltip"
-                                  },
-                                  {
-                                      "id": "ShowSimpleQueryBuilderButton",
-                                      "type": "button",
-                                      "iconUri": "Resources/Images/Icons/query-24.png",
-                                      "command": "ActivateView",
-                                      "commandParameter": "SimpleQueryBuilderView",
-                                      "hideOnDisable": false,
-                                      "name": "@language-querybuilder-simple-title",
-                                      "tooltip": "@language-querybuilder-simple-tooltip"
+                                      "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/feature-edit-24.png",
+                                      "command": "runAddEditDevFeatures",
+                                      "commandParameter": "",
+                                      "hideOnDisable": true,
+                                      "name": "Edit Project",
+                                      "tooltip": "Edit Project"
                                   }
-                                ],
-                                "layout": "Large"
+                                ]
                             },
                             {
-                                "id": "ExternalMapsGroup",
+                                "id": "ordevreports",
                                 "type": "toolbarGroup",
-                                "name": "@language-toolbar-group-3rd-party-maps",
+                                "name": "Oregon PAC Reports",
+                                "layout": "Large",
                                 "items": [
                                   {
-                                      "id": "ShowExternalComponentViewButton",
+                                      "id": "pacreport",
                                       "type": "button",
-                                      "iconUri": "Resources/Images/Icons/Toolbar/map-3rd-party-24.png",
-                                      "command": "ShowExternalComponentView",
-                                      "commandParameter": null,
+                                      "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/reports-24.png",
+                                      "command": "RunWorkflowById",
+                                      "commandParameter": "development_report",
                                       "hideOnDisable": false,
-                                      "name": "@language-toolbar-3rd-party-maps-show-maps",
-                                      "tooltip": "@language-toolbar-3rd-party-maps-show-maps-tooltip"
+                                      "name": "Development Report",
+                                      "tooltip": "Get report on development caps for a PAC."
                                   }
-                                ],
-                                "layout": "Large"
+                                ]
                             }
-                          ],
-                          "layout": "Large"
-                      },
-                      {
-                          "id": "ToolsTab",
-                          "type": "toolbarGroup",
-                          "name": "Create & Share",
-                          "items": [
-                            {
-                                "id": "pm2UD5pa",
-                                "type": "toolbarGroup",
-                                "name": "@language-toolbar-group-navigation",
-                                "items": [
-                                  {
-                                      "id": "NavigationGroup",
-                                      "type": "flyout",
-                                      "name": "@language-toolbar-group-navigation",
-                                      "items": [
-                                        {
-                                            "id": "ZoomInTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-in-24.png",
-                                            "command": "ZoomToExtent",
-                                            "drawMode": "EXTENT",
-                                            "name": "@language-toolbar-navigation-zoom-in",
-                                            "tooltip": "@language-toolbar-navigation-zoom-in-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": false,
-                                            "statusText": "@language-toolbar-navigation-zoom-in-desc"
-                                        },
-                                        {
-                                            "id": "ZoomOutTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-out-24.png",
-                                            "command": "ZoomOutToExtent",
-                                            "drawMode": "EXTENT",
-                                            "name": "@language-toolbar-navigation-zoom-out",
-                                            "tooltip": "@language-toolbar-navigation-zoom-out-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": false,
-                                            "statusText": "@language-toolbar-navigation-zoom-out-desc"
-                                        },
-                                        {
-                                            "id": "InitialExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-initial-24.png",
-                                            "command": "ZoomToInitialExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-initial-extent",
-                                            "tooltip": "@language-toolbar-navigation-initial-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "FullExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-full-24.png",
-                                            "command": "ZoomToFullExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-full-extent",
-                                            "tooltip": "@language-toolbar-navigation-full-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "PreviousExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-previous-32.png",
-                                            "command": "ZoomToPreviousExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-previous-extent",
-                                            "tooltip": "@language-toolbar-navigation-previous-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "NextExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-next-32.png",
-                                            "command": "ZoomToNextExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-next-extent",
-                                            "tooltip": "@language-toolbar-navigation-next-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "BookmarksButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/bookmark-24.png",
-                                            "command": "ShowBookmarks",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-bookmark",
-                                            "tooltip": "@language-toolbar-bookmark-open"
-                                        }
-                                      ],
-                                      "layout": "Large"
-                                  }
-                                ],
-                                "layout": "Large"
-                            },
-                            {
-                                "id": "TasksGroup",
-                                "type": "toolbarGroup",
-                                "name": "Print & Share",
-                                "items": [
-                                  {
-                                      "id": "PrintMapButton",
-                                      "type": "button",
-                                      "iconUri": "Resources/Images/Icons/Toolbar/print-24.png",
-                                      "command": "PrintMap",
-                                      "commandParameter": null,
-                                      "hideOnDisable": false,
-                                      "name": "@language-toolbar-tasks-print-map",
-                                      "tooltip": "@language-toolbar-tasks-print-map-tooltip"
-                                  },
-                                  {
-                                      "id": "ExportMapButton",
-                                      "type": "button",
-                                      "iconUri": "Resources/Images/Icons/Toolbar/share-map-24.png",
-                                      "command": "ShowExportMapDialog",
-                                      "commandParameter": null,
-                                      "hideOnDisable": false,
-                                      "name": "@language-toolbar-tasks-export-map",
-                                      "tooltip": "@language-toolbar-tasks-export-map-tooltip"
-                                  },
-                                  {
-                                      "id": "ShareButton",
-                                      "type": "button",
-                                      "iconUri": "Resources/Images/Icons/Toolbar/share-24.png",
-                                      "command": "ShowShareView",
-                                      "commandParameter": null,
-                                      "hideOnDisable": false,
-                                      "name": "@language-toolbar-tasks-share",
-                                      "tooltip": "@language-toolbar-tasks-share-tooltip"
-                                  }
-                                ],
-                                "layout": "Large"
-                            },
-                            {
-                                "id": "DrawingGroup",
-                                "type": "toolbarGroup",
-                                "name": "@language-toolbar-group-draw",
-                                "items": [
-                                  {
-                                      "id": "DrawingTools",
-                                      "type": "flyout",
-                                      "name": "@language-toolbar-markup-drawing-tools",
-                                      "items": [
-                                        {
-                                            "id": "PointMarkupTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/draw-point-24.png",
-                                            "command": "AddMarkup",
-                                            "drawMode": "POINT",
-                                            "name": "@language-toolbar-markup-point",
-                                            "tooltip": "@language-toolbar-markup-point-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": true,
-                                            "statusText": "@language-toolbar-markup-point-desc"
-                                        },
-                                        {
-                                            "id": "TextMarkupTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/draw-text-24.png",
-                                            "command": "AddTextMarkup",
-                                            "drawMode": "POINT",
-                                            "name": "@language-toolbar-markup-text",
-                                            "tooltip": "@language-toolbar-markup-text-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": true,
-                                            "statusText": "@language-toolbar-markup-text-desc"
-                                        },
-                                        {
-                                            "id": "PolylineMarkupTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/draw-polyline-24.png",
-                                            "command": "AddMarkup",
-                                            "drawMode": "POLYLINE",
-                                            "name": "@language-toolbar-markup-polyline",
-                                            "tooltip": "@language-toolbar-markup-polyline-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": true,
-                                            "statusText": "@language-toolbar-markup-polyline-desc"
-                                        },
-                                        {
-                                            "id": "FreehandMarkupTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/draw-freehand-24.png",
-                                            "command": "AddMarkup",
-                                            "drawMode": "FREEHAND_POLYLINE",
-                                            "name": "@language-toolbar-markup-freehand",
-                                            "tooltip": "@language-toolbar-markup-freehand-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": true,
-                                            "statusText": "@language-toolbar-markup-freehand-desc"
-                                        },
-                                        {
-                                            "id": "FreehandMarkupPolygonTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/draw-polygon-freehand-24.png",
-                                            "command": "AddMarkup",
-                                            "drawMode": "FREEHAND_POLYGON",
-                                            "name": "@language-toolbar-markup-freehand-polygon",
-                                            "tooltip": "@language-toolbar-markup-freehand-polygon-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": true,
-                                            "statusText": "@language-toolbar-markup-freehand-polygon-desc"
-                                        },
-                                        {
-                                            "id": "EllipseMarkupTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/draw-ellipse-24.png",
-                                            "command": "AddMarkup",
-                                            "drawMode": "ELLIPSE",
-                                            "name": "@language-toolbar-markup-ellipse",
-                                            "tooltip": "@language-toolbar-markup-ellipse-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": true,
-                                            "statusText": "@language-toolbar-markup-ellipse-desc"
-                                        },
-                                        {
-                                            "id": "CircleMarkupTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/draw-circle-24.png",
-                                            "command": "AddMarkup",
-                                            "drawMode": "CIRCLE",
-                                            "name": "@language-toolbar-markup-circle",
-                                            "tooltip": "@language-toolbar-markup-circle-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": true,
-                                            "statusText": "@language-toolbar-markup-circle-desc"
-                                        },
-                                        {
-                                            "id": "PolygonMarkupTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/draw-polygon-24.png",
-                                            "command": "AddMarkup",
-                                            "drawMode": "POLYGON",
-                                            "name": "@language-toolbar-markup-polygon",
-                                            "tooltip": "@language-toolbar-markup-polygon-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": true,
-                                            "statusText": "@language-toolbar-markup-polygon-desc"
-                                        },
-                                        {
-                                            "id": "RectangleMarkupTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/draw-rectangle-24.png",
-                                            "command": "AddMarkup",
-                                            "drawMode": "RECTANGLE",
-                                            "name": "@language-toolbar-markup-rectangle",
-                                            "tooltip": "@language-toolbar-markup-rectangle-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": true,
-                                            "statusText": "@language-toolbar-markup-rectangle-desc"
-                                        }
-                                      ],
-                                      "layout": "Large"
-                                  },
-                                  {
-                                      "id": "MarkupEditRegion",
-                                      "type": "region",
-                                      "regionName": "MarkupEditRegion"
-                                  },
-                                  {
-                                      "id": "EditFlyout",
-                                      "type": "flyout",
-                                      "name": "@language-toolbar-markup-edit",
-                                      "items": [
-                                        {
-                                            "id": "EditMarkupTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/draw-edit-24.png",
-                                            "command": "EditMarkup",
-                                            "drawMode": "POINT",
-                                            "name": "@language-toolbar-markup-edit",
-                                            "tooltip": "@language-toolbar-markup-edit-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": true,
-                                            "statusText": "@language-toolbar-markup-edit-desc"
-                                        },
-                                        {
-                                            "id": "EraseMarkupTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/erase-24.png",
-                                            "command": "DeleteMarkup",
-                                            "drawMode": "POINT",
-                                            "name": "@language-toolbar-markup-delete",
-                                            "tooltip": "@language-toolbar-markup-delete-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": true,
-                                            "statusText": "@language-toolbar-markup-delete-desc"
-                                        },
-                                        {
-                                            "id": "ClearAllTool",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/clear-24.png",
-                                            "command": "ClearMarkup",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-markup-clear",
-                                            "tooltip": "@language-toolbar-markup-clear-tooltip"
-                                        }
-                                      ],
-                                      "layout": "Large"
-                                  },
-                                  {
-                                      "id": "EditControlRegion",
-                                      "type": "region",
-                                      "regionName": "EditControlRegion"
-                                  }
-                                ],
-                                "layout": "Large"
+                            ]
+                        },
+
+                        {
+                            "id" : "CustomTabLayers",
+                            "type" : "toolbarGroup",
+                            "name" : "Layers",
+                            "isDefault" : false,
+                            "items" : [{
+                                "id" : "7tlCoPP6",
+                                "type" : "toolbarGroup",
+                                "name" : "Navigation",
+                                "layout" : "Large",
+                                "items" : [{
+                                    "id" : "NavigationGroup",
+                                    "type" : "flyout",
+                                    "name" : "@language-toolbar-group-navigation",
+                                    "layout" : "Large",
+                                    "items" : [{
+                                        "id" : "ZoomInTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-in-24.png",
+                                        "command" : "ZoomToExtent",
+                                        "drawMode" : "EXTENT",
+                                        "name" : "@language-toolbar-navigation-zoom-in",
+                                        "tooltip" : "@language-toolbar-navigation-zoom-in-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : false,
+                                        "statusText" : "@language-toolbar-navigation-zoom-in-desc"
+                                    }, {
+                                        "id" : "ZoomOutTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-out-24.png",
+                                        "command" : "ZoomOutToExtent",
+                                        "drawMode" : "EXTENT",
+                                        "name" : "@language-toolbar-navigation-zoom-out",
+                                        "tooltip" : "@language-toolbar-navigation-zoom-out-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : false,
+                                        "statusText" : "@language-toolbar-navigation-zoom-out-desc"
+                                    }, {
+                                        "id" : "InitialExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-initial-24.png",
+                                        "command" : "ZoomToInitialExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-initial-extent",
+                                        "tooltip" : "@language-toolbar-navigation-initial-extent-tooltip"
+                                    }, {
+                                        "id" : "FullExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-full-24.png",
+                                        "command" : "ZoomToFullExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-full-extent",
+                                        "tooltip" : "@language-toolbar-navigation-full-extent-tooltip"
+                                    }, {
+                                        "id" : "PreviousExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-previous-32.png",
+                                        "command" : "ZoomToPreviousExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-previous-extent",
+                                        "tooltip" : "@language-toolbar-navigation-previous-extent-tooltip"
+                                    }, {
+                                        "id" : "NextExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-next-32.png",
+                                        "command" : "ZoomToNextExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-next-extent",
+                                        "tooltip" : "@language-toolbar-navigation-next-extent-tooltip"
+                                    }, {
+                                        "id" : "BookmarksButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/bookmark-24.png",
+                                        "command" : "ShowBookmarks",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-bookmark",
+                                        "tooltip" : "@language-toolbar-bookmark-open"
+                                    }
+                                    ]
+                                }
+                                ]
+                            }, {
+                                "id" : "TZ2A3c7R",
+                                "type" : "toolbarGroup",
+                                "name" : "Layers",
+                                "layout" : "Large",
+                                "items" : [{
+                                    "id" : "ShowChartingViewButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources\\Images\\Icons\\Toolbar\\layers-24.png",
+                                    "command" : "ShowLayerList",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-show-layerlist",
+                                    "tooltip" : "@language-toolbar-show-layerlist-desc"
+                                }, {
+                                    "id" : "ShowSimpleFilterBuilderButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/filter-24.png",
+                                    "command" : "ActivateView",
+                                    "commandParameter" : "SimpleFilterBuilderView",
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-querybuilder-simple-filter-title",
+                                    "tooltip" : "@language-querybuilder-simple-filter-tooltip"
+                                }, {
+                                    "id" : "ShowSimpleQueryBuilderButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/query-24.png",
+                                    "command" : "ActivateView",
+                                    "commandParameter" : "SimpleQueryBuilderView",
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-querybuilder-simple-title",
+                                    "tooltip" : "@language-querybuilder-simple-tooltip"
+                                }, {
+                                    "id" : "AddLayersButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/Toolbar/layers-add-24.png",
+                                    "command" : "AddMapLayerInteractive",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-tasks-add-layers",
+                                    "tooltip" : "@language-toolbar-tasks-add-layers-tooltip"
+                                }, {
+                                    "id" : "UploadDataButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/Toolbar/upload-24.png",
+                                    "command" : "UploadData",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-tasks-upload-data",
+                                    "tooltip" : "@language-toolbar-tasks-upload-data-tooltip"
+                                }
+                                ]
+                            }, {
+                                "id" : "H6SFdOwu",
+                                "type" : "toolbarGroup",
+                                "name" : "Linked Maps",
+                                "layout" : "Large",
+                                "items" : [{
+                                    "id" : "ShowExternalComponentViewButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/Toolbar/map-3rd-party-24.png",
+                                    "command" : "ShowExternalComponentView",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-3rd-party-maps-show-maps",
+                                    "tooltip" : "@language-toolbar-3rd-party-maps-show-maps-tooltip"
+                                }
+                                ]
                             }
-                          ],
-                          "layout": "Large"
-                      },
-                      {
-                          "id": "cuN7A3pv",
-                          "type": "toolbarGroup",
-                          "name": "Tools",
-                          "items": [
-                            {
-                                "id": "TmTNorTT",
-                                "type": "toolbarGroup",
-                                "name": "@language-toolbar-group-navigation",
-                                "items": [
-                                  {
-                                      "id": "NavigationGroup",
-                                      "type": "flyout",
-                                      "name": "@language-toolbar-group-navigation",
-                                      "items": [
-                                        {
-                                            "id": "ZoomInTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-in-24.png",
-                                            "command": "ZoomToExtent",
-                                            "drawMode": "EXTENT",
-                                            "name": "@language-toolbar-navigation-zoom-in",
-                                            "tooltip": "@language-toolbar-navigation-zoom-in-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": false,
-                                            "statusText": "@language-toolbar-navigation-zoom-in-desc"
-                                        },
-                                        {
-                                            "id": "ZoomOutTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-out-24.png",
-                                            "command": "ZoomOutToExtent",
-                                            "drawMode": "EXTENT",
-                                            "name": "@language-toolbar-navigation-zoom-out",
-                                            "tooltip": "@language-toolbar-navigation-zoom-out-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": false,
-                                            "statusText": "@language-toolbar-navigation-zoom-out-desc"
-                                        },
-                                        {
-                                            "id": "InitialExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-initial-24.png",
-                                            "command": "ZoomToInitialExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-initial-extent",
-                                            "tooltip": "@language-toolbar-navigation-initial-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "FullExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-full-24.png",
-                                            "command": "ZoomToFullExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-full-extent",
-                                            "tooltip": "@language-toolbar-navigation-full-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "PreviousExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-previous-32.png",
-                                            "command": "ZoomToPreviousExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-previous-extent",
-                                            "tooltip": "@language-toolbar-navigation-previous-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "NextExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-next-32.png",
-                                            "command": "ZoomToNextExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-next-extent",
-                                            "tooltip": "@language-toolbar-navigation-next-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "BookmarksButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/bookmark-24.png",
-                                            "command": "ShowBookmarks",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-bookmark",
-                                            "tooltip": "@language-toolbar-bookmark-open"
-                                        }
-                                      ],
-                                      "layout": "Large"
-                                  }
-                                ],
-                                "layout": "Large"
-                            },
-                            {
-                                "id": "MeasurementTools",
-                                "type": "flyout",
-                                "name": "@language-toolbar-group-measurement-tools",
-                                "items": [
-                                  {
-                                      "id": "MeasureDistanceTool",
-                                      "type": "tool",
-                                      "iconUri": "Resources/Images/Icons/Toolbar/measure-distance-24.png",
-                                      "command": "MeasureDistance",
-                                      "drawMode": "POLYLINE",
-                                      "name": "@language-measurement-measure-distance-tool-name",
-                                      "tooltip": "@language-measurement-measure-distance-tool-tooltip",
-                                      "hideOnDisable": false,
-                                      "isSticky": true,
-                                      "statusText": "@language-measurement-measure-distance-tool-status"
-                                  },
-                                  {
-                                      "id": "MeasureAreaTool",
-                                      "type": "tool",
-                                      "iconUri": "Resources/Images/Icons/Toolbar/measure-area-24.png",
-                                      "command": "MeasureArea",
-                                      "drawMode": "POLYGON",
-                                      "name": "@language-measurement-measure-area-tool-name",
-                                      "tooltip": "@language-measurement-measure-area-tool-tooltip",
-                                      "hideOnDisable": false,
-                                      "isSticky": true,
-                                      "statusText": "@language-measurement-measure-area-tool-status"
-                                  }
-                                ],
-                                "layout": "Large"
-                            },
-                            {
-                                "id": "MeasurementToolControlRegion",
-                                "type": "region",
-                                "regionName": "MeasurementToolControlRegion"
-                            },
-                            {
-                                "id": "AnalysisGroup",
-                                "type": "toolbarGroup",
-                                "name": "@language-toolbar-group-analysis",
-                                "items": [
-                                  {
-                                      "id": "ShowChartingViewButton",
-                                      "type": "button",
-                                      "iconUri": "Resources/Images/Icons/Toolbar/charting-24.png",
-                                      "command": "ShowChartingView",
-                                      "commandParameter": null,
-                                      "hideOnDisable": false,
-                                      "name": "@language-toolbar-charting-show-charts",
-                                      "tooltip": "@language-toolbar-charting-show-charts-tooltip"
-                                  }
-                                ],
-                                "layout": "Large"
+                            ]
+                        },
+
+                        {
+                            "id" : "CustomTabCreateShare",
+                            "type" : "toolbarGroup",
+                            "name" : "Create & Share",
+                            "isDefault" : false,
+                            "items" : [{
+                                "id" : "pTDE1WIl",
+                                "type" : "toolbarGroup",
+                                "name" : "@language-toolbar-group-navigation",
+                                "layout" : "Large",
+                                "items" : [{
+                                    "id" : "NavigationGroup",
+                                    "type" : "flyout",
+                                    "name" : "@language-toolbar-group-navigation",
+                                    "layout" : "Large",
+                                    "items" : [{
+                                        "id" : "ZoomInTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-in-24.png",
+                                        "command" : "ZoomToExtent",
+                                        "drawMode" : "EXTENT",
+                                        "name" : "@language-toolbar-navigation-zoom-in",
+                                        "tooltip" : "@language-toolbar-navigation-zoom-in-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : false,
+                                        "statusText" : "@language-toolbar-navigation-zoom-in-desc"
+                                    }, {
+                                        "id" : "ZoomOutTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-out-24.png",
+                                        "command" : "ZoomOutToExtent",
+                                        "drawMode" : "EXTENT",
+                                        "name" : "@language-toolbar-navigation-zoom-out",
+                                        "tooltip" : "@language-toolbar-navigation-zoom-out-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : false,
+                                        "statusText" : "@language-toolbar-navigation-zoom-out-desc"
+                                    }, {
+                                        "id" : "InitialExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-initial-24.png",
+                                        "command" : "ZoomToInitialExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-initial-extent",
+                                        "tooltip" : "@language-toolbar-navigation-initial-extent-tooltip"
+                                    }, {
+                                        "id" : "FullExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-full-24.png",
+                                        "command" : "ZoomToFullExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-full-extent",
+                                        "tooltip" : "@language-toolbar-navigation-full-extent-tooltip"
+                                    }, {
+                                        "id" : "PreviousExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-previous-32.png",
+                                        "command" : "ZoomToPreviousExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-previous-extent",
+                                        "tooltip" : "@language-toolbar-navigation-previous-extent-tooltip"
+                                    }, {
+                                        "id" : "NextExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-next-32.png",
+                                        "command" : "ZoomToNextExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-next-extent",
+                                        "tooltip" : "@language-toolbar-navigation-next-extent-tooltip"
+                                    }, {
+                                        "id" : "BookmarksButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/bookmark-24.png",
+                                        "command" : "ShowBookmarks",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-bookmark",
+                                        "tooltip" : "@language-toolbar-bookmark-open"
+                                    }
+                                    ]
+                                }
+                                ]
+                            }, {
+                                "id" : "TaskGroup",
+                                "type" : "toolbarGroup",
+                                "name" : "@language-toolbar-group-tasks",
+                                "layout" : "Large",
+                                "items" : [{
+                                    "id" : "PrintMapButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/Toolbar/print-24.png",
+                                    "command" : "PrintMap",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-tasks-print-map",
+                                    "tooltip" : "@language-toolbar-tasks-print-map-tooltip"
+                                }, {
+                                    "id" : "ExportMapButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/Toolbar/share-map-24.png",
+                                    "command" : "ShowExportMapDialog",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-tasks-export-map",
+                                    "tooltip" : "@language-toolbar-tasks-export-map-tooltip"
+                                }, {
+                                    "id" : "ShareButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/Toolbar/share-24.png",
+                                    "command" : "ShowShareView",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-tasks-share",
+                                    "tooltip" : "@language-toolbar-tasks-share-tooltip"
+                                }
+                                ]
+                            }, {
+                                "id" : "DrawingTools",
+                                "type" : "toolbarGroup",
+                                "name" : "@language-toolbar-markup-drawing-tools",
+                                "layout" : "Large",
+                                "items" : [{
+                                    "id" : "DrawingTools",
+                                    "type" : "flyout",
+                                    "name" : "@language-toolbar-markup-drawing-tools",
+                                    "layout" : "Large",
+                                    "items" : [{
+                                        "id" : "PointMarkupTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/draw-point-24.png",
+                                        "command" : "AddMarkup",
+                                        "drawMode" : "POINT",
+                                        "name" : "@language-toolbar-markup-point",
+                                        "tooltip" : "@language-toolbar-markup-point-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : true,
+                                        "statusText" : "@language-toolbar-markup-point-desc"
+                                    }, {
+                                        "id" : "TextMarkupTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/draw-text-24.png",
+                                        "command" : "AddTextMarkup",
+                                        "drawMode" : "POINT",
+                                        "name" : "@language-toolbar-markup-text",
+                                        "tooltip" : "@language-toolbar-markup-text-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : true,
+                                        "statusText" : "@language-toolbar-markup-text-desc"
+                                    }, {
+                                        "id" : "PolylineMarkupTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/draw-polyline-24.png",
+                                        "command" : "AddMarkup",
+                                        "drawMode" : "POLYLINE",
+                                        "name" : "@language-toolbar-markup-polyline",
+                                        "tooltip" : "@language-toolbar-markup-polyline-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : true,
+                                        "statusText" : "@language-toolbar-markup-polyline-desc"
+                                    }, {
+                                        "id" : "FreehandMarkupTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/draw-freehand-24.png",
+                                        "command" : "AddMarkup",
+                                        "drawMode" : "FREEHAND_POLYLINE",
+                                        "name" : "@language-toolbar-markup-freehand",
+                                        "tooltip" : "@language-toolbar-markup-freehand-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : true,
+                                        "statusText" : "@language-toolbar-markup-freehand-desc"
+                                    }, {
+                                        "id" : "FreehandMarkupPolygonTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/draw-polygon-freehand-24.png",
+                                        "command" : "AddMarkup",
+                                        "drawMode" : "FREEHAND_POLYGON",
+                                        "name" : "@language-toolbar-markup-freehand-polygon",
+                                        "tooltip" : "@language-toolbar-markup-freehand-polygon-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : true,
+                                        "statusText" : "@language-toolbar-markup-freehand-polygon-desc"
+                                    }, {
+                                        "id" : "EllipseMarkupTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/draw-ellipse-24.png",
+                                        "command" : "AddMarkup",
+                                        "drawMode" : "ELLIPSE",
+                                        "name" : "@language-toolbar-markup-ellipse",
+                                        "tooltip" : "@language-toolbar-markup-ellipse-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : true,
+                                        "statusText" : "@language-toolbar-markup-ellipse-desc"
+                                    }, {
+                                        "id" : "CircleMarkupTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/draw-circle-24.png",
+                                        "command" : "AddMarkup",
+                                        "drawMode" : "CIRCLE",
+                                        "name" : "@language-toolbar-markup-circle",
+                                        "tooltip" : "@language-toolbar-markup-circle-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : true,
+                                        "statusText" : "@language-toolbar-markup-circle-desc"
+                                    }, {
+                                        "id" : "PolygonMarkupTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/draw-polygon-24.png",
+                                        "command" : "AddMarkup",
+                                        "drawMode" : "POLYGON",
+                                        "name" : "@language-toolbar-markup-polygon",
+                                        "tooltip" : "@language-toolbar-markup-polygon-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : true,
+                                        "statusText" : "@language-toolbar-markup-polygon-desc"
+                                    }, {
+                                        "id" : "RectangleMarkupTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/draw-rectangle-24.png",
+                                        "command" : "AddMarkup",
+                                        "drawMode" : "RECTANGLE",
+                                        "name" : "@language-toolbar-markup-rectangle",
+                                        "tooltip" : "@language-toolbar-markup-rectangle-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : true,
+                                        "statusText" : "@language-toolbar-markup-rectangle-desc"
+                                    }
+                                    ]
+                                }, {
+                                    "id" : "MarkupEditRegion",
+                                    "type" : "region",
+                                    "regionName" : "MarkupEditRegion"
+                                }, {
+                                    "id" : "EditingFlyout",
+                                    "type" : "flyout",
+                                    "name" : "@language-toolbar-group-editing",
+                                    "layout" : "Large",
+                                    "items" : [{
+                                        "id" : "EditMarkupTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/draw-edit-24.png",
+                                        "command" : "EditMarkup",
+                                        "drawMode" : "POINT",
+                                        "name" : "@language-toolbar-markup-edit",
+                                        "tooltip" : "@language-toolbar-markup-edit-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : true,
+                                        "statusText" : "@language-toolbar-markup-edit-desc"
+                                    }, {
+                                        "id" : "DeleteMarkupTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/erase-24.png",
+                                        "command" : "DeleteMarkup",
+                                        "drawMode" : "POINT",
+                                        "name" : "@language-toolbar-markup-delete",
+                                        "tooltip" : "@language-toolbar-markup-delete-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : true,
+                                        "statusText" : "@language-toolbar-markup-delete-desc"
+                                    }, {
+                                        "id" : "ClearMarkup",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/clear-24.png",
+                                        "command" : "ClearMarkup",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-markup-clear",
+                                        "tooltip" : "@language-toolbar-markup-clear-tooltip"
+                                    }
+                                    ]
+                                }, {
+                                    "id" : "EditControlRegion",
+                                    "type" : "region",
+                                    "regionName" : "EditControlRegion"
+                                }
+                                ]
                             }
-                          ],
-                          "layout": "Large"
-                      },
-                      {
-                          "id": "ru5HEVZv",
-                          "type": "toolbarGroup",
-                          "name": "Reports",
-                          "items": [
-                            {
-                                "id": "tya0lkLQ",
-                                "type": "toolbarGroup",
-                                "name": "@language-toolbar-group-navigation",
-                                "items": [
-                                  {
-                                      "id": "NavigationGroup",
-                                      "type": "flyout",
-                                      "name": "@language-toolbar-group-navigation",
-                                      "items": [
-                                        {
-                                            "id": "ZoomInTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-in-24.png",
-                                            "command": "ZoomToExtent",
-                                            "drawMode": "EXTENT",
-                                            "name": "@language-toolbar-navigation-zoom-in",
-                                            "tooltip": "@language-toolbar-navigation-zoom-in-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": false,
-                                            "statusText": "@language-toolbar-navigation-zoom-in-desc"
-                                        },
-                                        {
-                                            "id": "ZoomOutTool",
-                                            "type": "tool",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-out-24.png",
-                                            "command": "ZoomOutToExtent",
-                                            "drawMode": "EXTENT",
-                                            "name": "@language-toolbar-navigation-zoom-out",
-                                            "tooltip": "@language-toolbar-navigation-zoom-out-tooltip",
-                                            "hideOnDisable": false,
-                                            "isSticky": false,
-                                            "statusText": "@language-toolbar-navigation-zoom-out-desc"
-                                        },
-                                        {
-                                            "id": "InitialExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-initial-24.png",
-                                            "command": "ZoomToInitialExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-initial-extent",
-                                            "tooltip": "@language-toolbar-navigation-initial-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "FullExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-full-24.png",
-                                            "command": "ZoomToFullExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-full-extent",
-                                            "tooltip": "@language-toolbar-navigation-full-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "PreviousExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-previous-32.png",
-                                            "command": "ZoomToPreviousExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-previous-extent",
-                                            "tooltip": "@language-toolbar-navigation-previous-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "NextExtentButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-next-32.png",
-                                            "command": "ZoomToNextExtent",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-navigation-next-extent",
-                                            "tooltip": "@language-toolbar-navigation-next-extent-tooltip"
-                                        },
-                                        {
-                                            "id": "BookmarksButton",
-                                            "type": "button",
-                                            "iconUri": "Resources/Images/Icons/bookmark-24.png",
-                                            "command": "ShowBookmarks",
-                                            "commandParameter": null,
-                                            "hideOnDisable": false,
-                                            "name": "@language-toolbar-bookmark",
-                                            "tooltip": "@language-toolbar-bookmark-open"
-                                        }
-                                      ],
-                                      "layout": "Large"
-                                  }
-                                ],
-                                "layout": "Large"
+                            ]
+                        },
+
+                        {
+                            "id" : "CustomTabTools",
+                            "type" : "toolbarGroup",
+                            "name" : "Tools",
+                            "isDefault" : false,
+                            "items" : [{
+                                "id" : "K5vP1TA5",
+                                "type" : "toolbarGroup",
+                                "name" : "@language-toolbar-group-navigation",
+                                "layout" : "Large",
+                                "items" : [{
+                                    "id" : "NavigationGroup",
+                                    "type" : "flyout",
+                                    "name" : "@language-toolbar-group-navigation",
+                                    "layout" : "Large",
+                                    "items" : [{
+                                        "id" : "ZoomInTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-in-24.png",
+                                        "command" : "ZoomToExtent",
+                                        "drawMode" : "EXTENT",
+                                        "name" : "@language-toolbar-navigation-zoom-in",
+                                        "tooltip" : "@language-toolbar-navigation-zoom-in-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : false,
+                                        "statusText" : "@language-toolbar-navigation-zoom-in-desc"
+                                    }, {
+                                        "id" : "ZoomOutTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-out-24.png",
+                                        "command" : "ZoomOutToExtent",
+                                        "drawMode" : "EXTENT",
+                                        "name" : "@language-toolbar-navigation-zoom-out",
+                                        "tooltip" : "@language-toolbar-navigation-zoom-out-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : false,
+                                        "statusText" : "@language-toolbar-navigation-zoom-out-desc"
+                                    }, {
+                                        "id" : "InitialExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-initial-24.png",
+                                        "command" : "ZoomToInitialExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-initial-extent",
+                                        "tooltip" : "@language-toolbar-navigation-initial-extent-tooltip"
+                                    }, {
+                                        "id" : "FullExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-full-24.png",
+                                        "command" : "ZoomToFullExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-full-extent",
+                                        "tooltip" : "@language-toolbar-navigation-full-extent-tooltip"
+                                    }, {
+                                        "id" : "PreviousExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-previous-32.png",
+                                        "command" : "ZoomToPreviousExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-previous-extent",
+                                        "tooltip" : "@language-toolbar-navigation-previous-extent-tooltip"
+                                    }, {
+                                        "id" : "NextExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-next-32.png",
+                                        "command" : "ZoomToNextExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-next-extent",
+                                        "tooltip" : "@language-toolbar-navigation-next-extent-tooltip"
+                                    }, {
+                                        "id" : "BookmarksButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/bookmark-24.png",
+                                        "command" : "ShowBookmarks",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-bookmark",
+                                        "tooltip" : "@language-toolbar-bookmark-open"
+                                    }
+                                    ]
+                                }
+                                ]
+                            }, {
+                                "id" : "iTPml8Vr",
+                                "type" : "toolbarGroup",
+                                "name" : "Measure",
+                                "layout" : "Large",
+                                "items" : [{
+                                    "id" : "MeasurementTools",
+                                    "type" : "flyout",
+                                    "name" : "@language-toolbar-group-measurement-tools",
+                                    "layout" : "Large",
+                                    "items" : [{
+                                        "id" : "MeasureDistanceTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/measure-distance-24.png",
+                                        "command" : "MeasureDistance",
+                                        "drawMode" : "POLYLINE",
+                                        "name" : "@language-measurement-measure-distance-tool-name",
+                                        "tooltip" : "@language-measurement-measure-distance-tool-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : true,
+                                        "statusText" : "@language-measurement-measure-distance-tool-status"
+                                    }, {
+                                        "id" : "MeasureAreaTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/measure-area-24.png",
+                                        "command" : "MeasureArea",
+                                        "drawMode" : "POLYGON",
+                                        "name" : "@language-measurement-measure-area-tool-name",
+                                        "tooltip" : "@language-measurement-measure-area-tool-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : true,
+                                        "statusText" : "@language-measurement-measure-area-tool-status"
+                                    }
+                                    ]
+                                }
+                                ]
+                            }, {
+                                "id" : "MeasurementToolControlRegion",
+                                "type" : "region",
+                                "regionName" : "MeasurementToolControlRegion"
+                            }, {
+                                "id" : "AnalysisGroup",
+                                "type" : "toolbarGroup",
+                                "name" : "@language-toolbar-group-analysis",
+                                "layout" : "Large",
+                                "items" : [{
+                                    "id" : "ShowChartingViewButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/Toolbar/charting-24.png",
+                                    "command" : "ShowChartingView",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-charting-show-charts",
+                                    "tooltip" : "@language-toolbar-charting-show-charts-tooltip"
+                                }, {
+                                    "id" : "ShowTimeSliderButton",
+                                    "type" : "button",
+                                    "iconUri" : "Resources/Images/Icons/settings-24.png",
+                                    "command" : "ActivateTimeSlider",
+                                    "commandParameter" : null,
+                                    "hideOnDisable" : false,
+                                    "name" : "@language-toolbar-timeslider-showtimeslider",
+                                    "tooltip" : "@language-toolbar-timeslider-showtimeslider-tooltip"
+                                }
+                                ]
                             }
-                          ],
-                          "layout": "Large"
-                      }
+                            ]
+                        },
+
+                        {
+                            "id" : "CustomTabReports",
+                            "type" : "toolbarGroup",
+                            "name" : "Reports",
+                            "isDefault" : false,
+                            "items" : [{
+                                "id" : "ta1o2XnO",
+                                "type" : "toolbarGroup",
+                                "name" : "@language-toolbar-group-navigation",
+                                "layout" : "Large",
+                                "items" : [{
+                                    "id" : "NavigationGroup",
+                                    "type" : "flyout",
+                                    "name" : "@language-toolbar-group-navigation",
+                                    "layout" : "Large",
+                                    "items" : [{
+                                        "id" : "ZoomInTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-in-24.png",
+                                        "command" : "ZoomToExtent",
+                                        "drawMode" : "EXTENT",
+                                        "name" : "@language-toolbar-navigation-zoom-in",
+                                        "tooltip" : "@language-toolbar-navigation-zoom-in-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : false,
+                                        "statusText" : "@language-toolbar-navigation-zoom-in-desc"
+                                    }, {
+                                        "id" : "ZoomOutTool",
+                                        "type" : "tool",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-out-24.png",
+                                        "command" : "ZoomOutToExtent",
+                                        "drawMode" : "EXTENT",
+                                        "name" : "@language-toolbar-navigation-zoom-out",
+                                        "tooltip" : "@language-toolbar-navigation-zoom-out-tooltip",
+                                        "hideOnDisable" : false,
+                                        "isSticky" : false,
+                                        "statusText" : "@language-toolbar-navigation-zoom-out-desc"
+                                    }, {
+                                        "id" : "InitialExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-initial-24.png",
+                                        "command" : "ZoomToInitialExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-initial-extent",
+                                        "tooltip" : "@language-toolbar-navigation-initial-extent-tooltip"
+                                    }, {
+                                        "id" : "FullExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-full-24.png",
+                                        "command" : "ZoomToFullExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-full-extent",
+                                        "tooltip" : "@language-toolbar-navigation-full-extent-tooltip"
+                                    }, {
+                                        "id" : "PreviousExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-previous-32.png",
+                                        "command" : "ZoomToPreviousExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-previous-extent",
+                                        "tooltip" : "@language-toolbar-navigation-previous-extent-tooltip"
+                                    }, {
+                                        "id" : "NextExtentButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/Toolbar/zoom-next-32.png",
+                                        "command" : "ZoomToNextExtent",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-navigation-next-extent",
+                                        "tooltip" : "@language-toolbar-navigation-next-extent-tooltip"
+                                    }, {
+                                        "id" : "BookmarksButton",
+                                        "type" : "button",
+                                        "iconUri" : "Resources/Images/Icons/bookmark-24.png",
+                                        "command" : "ShowBookmarks",
+                                        "commandParameter" : null,
+                                        "hideOnDisable" : false,
+                                        "name" : "@language-toolbar-bookmark",
+                                        "tooltip" : "@language-toolbar-bookmark-open"
+                                    }
+                                    ]
+                                }
+                                ]
+                            }
+                            ]
+                        }
+
                     ]
                 },
                 "viewModels": [
@@ -5762,11 +6584,12 @@
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.toolbar.TabbedToolbarViewModel",
                         "configuration": {
                             "toolbarGroupRefs": [
-                                "MainTab",
-                                "MapTab",
-                                "ToolsTab",
-                                "cuN7A3pv",
-                                "ru5HEVZv"
+                                "CustomTabFile",
+                                "CustomTabFind",
+                                "CustomTabLayers",
+                                "CustomTabCreateShare",
+                                "CustomTabTools",
+                                "CustomTabReports"
                             ],
                             "toolbarOpenByDefault": false
                         }
@@ -5805,6 +6628,64 @@
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.toolbar.ToolbarFlyoutView",
                         "markup": "Mapping/modules/Toolbar/Templates/ToolbarFlyoutDropdownTemplate.html",
                         "configuration": {}
+                    }
+                ]
+            },
+            {
+                "moduleName": "TimeSlider",
+                "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.timeSlider.TimeSliderModule",
+                "configuration": {
+                    "behaviors": [
+                        {
+                            "name": "TimeSliderCloseTimelineActionInvokedBehavior",
+                            "commands": [
+                                "HideTimeSliderSettings",
+                                "CloseDataFrame",
+                                "HideTimeSlider"
+                            ]
+                        },
+                        {
+                            "name": "TimeSliderMoreSettingsActionInvokedBehavior",
+                            "commands": [
+                                "ToggleTimeSliderActions",
+                                "ShowTimeSliderSettings"
+                            ]
+                        }
+                    ]
+                },
+                "views": [
+                    {
+                        "id": "TimeSliderView",
+                        "viewModelId": "TimeSliderViewModel",
+                        "visible": false,
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.timeSlider.TimeSliderView",
+                        "markup": "Mapping/modules/TimeSlider/TimeSliderView.html",
+                        "region": "TopCenterMapRegion",
+                        "configuration": {}
+                    },
+                    {
+                        "id": "TimeSliderSettingsView",
+                        "viewModelId": "TimeSliderViewModel",
+                        "visible": false,
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.timeSlider.TimeSliderSettingsView",
+                        "markup": "Mapping/modules/TimeSlider/TimeSliderSettingsView.html",
+                        "region": "TimeSliderContainerRegion",
+                        "title": "@language-timeslider-settings-view-heading",
+                        "iconUri": "Resources/Images/Icons/Toolbar/coordinates-map-tip-24.png",
+                        "configuration": {}
+                    }
+                ],
+                "viewModels": [
+                    {
+                        "id": "TimeSliderViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.timeSlider.TimeSliderViewModel",
+                        "configuration": {
+                            "enabled": true,
+                            "animateSlider": true,
+                            "activateOnStartup": true,
+                            "maxTimeExtentDisplayUnits": 3,
+                            "noOfflineSupportStatusMsgTimeoutSecs": 10
+                        }
                     }
                 ]
             },
@@ -6060,14 +6941,14 @@
                         "id": "SignInViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.User.SignInViewModel",
                         "configuration": {
-                            "linkColor": "#1B7DBF"
+                            "linkColor": "#1A72C4"
                         }
                     },
                     {
                         "id": "UserInfoViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.User.UserInfoViewModel",
                         "configuration": {
-                            "linkColor": "#1B7DBF",
+                            "linkColor": "#1A72C4",
                             "textColor": "#333333",
                             "backgroundColor": "#FFFFFF"
                         }
@@ -6100,6 +6981,15 @@
                             "containerTitle": "@language-visualization-title",
                             "visualizationProviders": [
                                 {
+                                    "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerStyles.CustomLayerStylesVisualizationProvider",
+                                    "viewId": "LayerStyleSelectorView",
+                                    "displayName": "@language-layerstyles-name"
+                                },
+                                {
+                                    "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerStyles.LayerStylesVisualizationProvider",
+                                    "displayName": "@language-layerstyles-custom-name"
+                                },
+                                {
                                     "type": "geocortex.essentialsHtmlViewer.mapping.modules.heatMaps.HeatMapVisualizationProvider",
                                     "viewId": "HeatMapsView",
                                     "displayName": "@language-heat-maps-name"
@@ -6123,7 +7013,7 @@
                     "defaultContainerTitle": "@language-workflow-title",
                     "defaultContainerIconUri": "Resources/Images/Icons/Toolbar/workflow-24.png",
                     "showCaptureStatusMessages": true,
-                    "displayResultPickerTemplateComplexity": "simple",
+                    "displayResultPickerTemplateComplexity": "complex",
                     "startupWorkflows": [],
                     "formItems": {},
                     "icons": {
@@ -6153,15 +7043,13 @@
                         {
                             "name": "ModalWindow",
                             "title": "@language-workflow-title",
-                            "regionName": "DataRegion"
+                            "regionName": "ModalWindowRegion"
                         },
                         {
                             "name": "ModalWindowNoCloseButton",
                             "title": "@language-workflow-title",
                             "regionName": "ModalWindowRegion",
-                            "isManaged": false,
-                            "allowClose": false,
-                            "iconUri": "Resources/Images/Icons/Toolbar/workflow-24.png"
+                            "allowClose": false
                         }
                     ]
                 },
@@ -6200,6 +7088,126 @@
         ],
         "widgets": [
             {
+                "id": "AttributeSymbologySettings",
+                "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.visualization.AttributeSymbologySettingsView",
+                "markup": "Mapping/infrastructure/visualization/SymbologySettings/AttributeSymbologySettingsView.html",
+                "viewModelType": "geocortex.essentialsHtmlViewer.mapping.infrastructure.visualization.AttributeSymbologySettingsViewModel",
+                "libraryId": "Mapping.Infrastructure",
+                "configuration": {
+                    "maxRenderClasses": 12,
+                    "maxSamples": 1000,
+                    "defaultPointColor": [
+                        150,
+                        150,
+                        150,
+                        0.8
+                    ],
+                    "defaultPointSize": 12,
+                    "defaultLineColor": [
+                        75,
+                        75,
+                        75,
+                        1
+                    ],
+                    "defaultLineWidth": 2,
+                    "defaultFillColor": [
+                        150,
+                        150,
+                        150,
+                        0.3
+                    ],
+                    "defaultSymbologySettingsConfig": {
+                        "selectOutlineColor": true,
+                        "alwaysUseColorSwatches": false,
+                        "numberOfColorSwatches": 6,
+                        "transparency": {
+                            "min": 0,
+                            "max": 90,
+                            "value": 10,
+                            "step": 5
+                        },
+                        "lineWidth": {
+                            "min": 0,
+                            "max": 5,
+                            "value": 2,
+                            "step": 1
+                        },
+                        "markerSize": {
+                            "min": 1,
+                            "max": 50,
+                            "value": 16,
+                            "step": 1
+                        },
+                        "markerStyles": [
+                            {
+                                "style": "circle",
+                                "label": "@language-symbology-settings-marker-style-circle"
+                            },
+                            {
+                                "style": "diamond",
+                                "label": "@language-symbology-settings-marker-style-diamond"
+                            },
+                            {
+                                "style": "cross",
+                                "label": "@language-symbology-settings-marker-style-cross"
+                            },
+                            {
+                                "style": "x",
+                                "label": "@language-symbology-settings-marker-style-x"
+                            },
+                            {
+                                "style": "square",
+                                "label": "@language-symbology-settings-marker-style-square"
+                            }
+                        ],
+                        "lineStyles": [
+                            {
+                                "style": "solid",
+                                "label": "@language-symbology-settings-line-style-solid"
+                            },
+                            {
+                                "style": "dash",
+                                "label": "@language-symbology-settings-line-style-dash"
+                            },
+                            {
+                                "style": "dot",
+                                "label": "@language-symbology-settings-line-style-dot"
+                            },
+                            {
+                                "style": "dashdot",
+                                "label": "@language-symbology-settings-line-style-dashdot"
+                            }
+                        ],
+                        "fillStyles": [
+                            {
+                                "style": "solid",
+                                "label": "@language-symbology-settings-fill-style-solid"
+                            },
+                            {
+                                "style": "forwarddiagonal",
+                                "label": "@language-symbology-settings-fill-style-forward-diagonal"
+                            },
+                            {
+                                "style": "backwarddiagonal",
+                                "label": "@language-symbology-settings-fill-style-backward-diagonal"
+                            },
+                            {
+                                "style": "cross",
+                                "label": "@language-symbology-settings-fill-style-cross"
+                            },
+                            {
+                                "style": "horizontal",
+                                "label": "@language-symbology-settings-fill-style-horizontal"
+                            },
+                            {
+                                "style": "vertical",
+                                "label": "@language-symbology-settings-fill-style-vertical"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
                 "id": "AutoCompleteBoxFormItem",
                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.workflow.forms.items.AutoCompleteBoxFormItemView",
                 "markup": "Mapping/modules/Workflow/Forms/Items/AutoCompleteBoxFormItemView.html"
@@ -6219,7 +7227,7 @@
                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.workflow.forms.items.ContainerFormItemView",
                 "markup": "Mapping/modules/Workflow/Forms/Items/ContainerFormItemView.html",
                 "configuration": {
-                    "allowHorizontal": false
+                    "allowHorizontal": true
                 }
             },
             {
@@ -6237,7 +7245,7 @@
                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.workflow.forms.items.GroupBoxFormItemView",
                 "markup": "Mapping/modules/Workflow/Forms/Items/GroupBoxFormItemView.html",
                 "configuration": {
-                    "allowHorizontal": false
+                    "allowHorizontal": true
                 }
             },
             {
@@ -6272,10 +7280,10 @@
             },
             {
                 "id": "SymbologySettings",
-                "type": "geocortex.essentialsHtmlViewer.mapping.modules.uploadData.widgets.symbologySettings.SymbologySettingsView",
-                "markup": "Mapping/modules/UploadData/Widgets/SymbologySettings/SymbologySettingsView.html",
-                "viewModelType": "geocortex.essentialsHtmlViewer.mapping.modules.uploadData.widgets.symbologySettings.SymbologySettingsViewModel",
-                "libraryId": "Mapping",
+                "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.visualization.SymbologySettingsView",
+                "markup": "Mapping/infrastructure/visualization/SymbologySettings/SymbologySettingsView.html",
+                "viewModelType": "geocortex.essentialsHtmlViewer.mapping.infrastructure.visualization.SymbologySettingsViewModel",
+                "libraryId": "Mapping.Infrastructure",
                 "configuration": {
                     "alwaysUseColorSwatches": false,
                     "numberOfColorSwatches": 6,
@@ -6286,7 +7294,7 @@
                         "step": 5
                     },
                     "lineWidth": {
-                        "min": 1,
+                        "min": 0,
                         "max": 5,
                         "value": 2,
                         "step": 1
@@ -6333,8 +7341,8 @@
                             "label": "@language-symbology-settings-line-style-dot"
                         },
                         {
-                            "style": "null",
-                            "label": "@language-symbology-settings-line-style-null"
+                            "style": "dashdot",
+                            "label": "@language-symbology-settings-line-style-dashdot"
                         }
                     ],
                     "fillStyles": [
@@ -6401,17 +7409,6 @@
                 "viewModelId": "MeasurementViewModel"
             },
             {
-                "id": "BasemapsListController",
-                "type": "geocortex.essentialsHtmlViewer.mapping.modules.basemap.BasemapSwitcherViewControllerView",
-                "markup": "Mapping/modules/Basemap/BasemapSwitcherViewControllerView.html",
-                "configuration": {
-                    "grid": {
-                        "numberOfRows": 1,
-                        "numberOfColumns": 4
-                    }
-                }
-            },
-            {
                 "id": "CompactToolbarTransientBase",
                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.toolbar.transients.TransientView",
                 "markup": "Mapping/modules/Toolbar/Templates/TransientItems.html",
@@ -6422,6 +7419,17 @@
                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.toolbar.transients.TransientView",
                 "markup": "Mapping/modules/Toolbar/Templates/TransientItems.html",
                 "viewModelId": "TabbedToolbarTransientViewModel"
+            },
+            {
+                "id": "BasemapsListController",
+                "type": "geocortex.essentialsHtmlViewer.mapping.modules.basemap.BasemapSwitcherViewControllerView",
+                "markup": "Mapping/modules/Basemap/BasemapSwitcherViewControllerView.html",
+                "configuration": {
+                    "grid": {
+                        "numberOfRows": 1,
+                        "numberOfColumns": 4
+                    }
+                }
             }
         ]
     }

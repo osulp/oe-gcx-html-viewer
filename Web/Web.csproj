@@ -60,8 +60,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="favicon.ico" />
+    <Content Include="favicon_oe.ico" />
     <Content Include="Handheld.html" />
+    <Content Include="IndexOE.html" />
     <Content Include="Index.html" />
     <Content Include="Libraries\Custom\Compiled\Custom.js" />
     <Content Include="Libraries\Custom\Compiled\featureTooltips.js" />
@@ -81,6 +82,9 @@
     <Content Include="Resources\Config\Default\Desktop.json.js" />
     <Content Include="Resources\Config\Default\Handheld.json.js" />
     <Content Include="Resources\Config\Default\Tablet.json.js" />
+    <Content Include="Resources\Config\Default\_archive\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\_archive\Handheld.json.js" />
+    <Content Include="Resources\Config\Default\_archive\Tablet.json.js" />
     <Content Include="Resources\Config\OfflineManifestParameters.xml" />
     <Content Include="Resources\Images\banner-background.png" />
     <Content Include="Resources\Images\banner-logo.png" />
