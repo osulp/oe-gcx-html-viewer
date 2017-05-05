@@ -1,22 +1,2 @@
-﻿/* Put custom handheld styling in this file. Put custom images in the Custom subfolder of the Images directory. */
+/* Put custom handheld styling in this file. Put custom images in the Custom subfolder of the Images directory. */
 
-.wtm-button, .wtm-list h2 {
-    background-color: #c34500 !important;
-    /*font-size:1.2em !important;*/
-}
-
-#oe_layer_desc{
-    padding:20px;
-    font-size:.9em;
-    color:rgba(128, 128, 128, 0.83);
-}
-
-#oe_layer_desc_toggle_more{
-    float:right;
-    color:#c34500;
-}
-
-#oe_layer_desc_toggle_more:hover{
-    text-decoration:underline;
-    cursor:pointer;
-}

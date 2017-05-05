@@ -1,4 +1,4 @@
-﻿
+
 /* Begin Script: Mapping/modules/small.css ------------------------- */ 
 
 /* GLOBAL STYLING  (SMALL)-------------------------*/
@@ -63,7 +63,6 @@ button {
 
 .list-menu-item {
     padding: 1em;
-    border-bottom: 1px solid #F0F0F0;
     -webkit-tap-highlight-color: #DEF2FF;
 }
 
@@ -108,11 +107,6 @@ a.list-menu-item {
 
 
 /* TREEVIEW (SMALL) -------------------------*/
-
-.tree-expander {
-  /*  width: 24px;
-    height: 24px;*/
-}
 
 .tree-expander.expanded {
    background: url(../Images/Icons/minus-24.png) left center no-repeat;
@@ -272,9 +266,80 @@ a.list-menu-item {
 /* End Script: Mapping/modules/Bookmarks/CSS/small.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/Collaboration/CSS/small.css ------------------------- */ 
+/* mobile mode transition animation support */
+
+.event-list-container {
+    -webkit-transition-property: top bottom;
+    -webkit-transition-duration: 0.2s;
+    transition-property: top, bottom;
+    transition-duration: 0.2s;
+    top: 2.5em;
+}
+
+.event-list-container.room-selector-open {
+    top: 2.5em;
+}
+
+.room-selector {
+    transition: height 0.2s;
+    -webkit-transition: height 0.2s;
+}
+
+.room-selector .fui-selector-header button {
+    margin: 0.25em 0;
+}
+
+.room-selector .fui-selector-header {
+    padding: 0 0.25em;
+}
+
+.room-selector .fui-selector-body {
+    width: calc(100% - 0.65em);
+    right: 0.25em;
+    top: 2.25em;
+}
+
+.chat-controls {
+    transition: bottom 0.2s;
+    -webkit-transition: bottom 0.2s;
+}
+
+.chat-controls.minimized-mode .chat-text-box {
+    border-width: 0;
+    padding: 1em 0.5em;
+    height: 2.5em;
+}
+
+.chat-controls.minimized-mode .image-upload,
+.chat-controls.minimized-mode .drawing-multi-tool,
+.chat-controls.minimized-mode .post-type-selector {
+    display: none;
+}
+
+.chat-controls.minimized-mode {
+    bottom: -8em;   
+}
+
+.event-list-container.minimized-mode {
+    bottom: 3.5em;
+}
+
+.room-selector .new-rooms-notification {
+    top: 2.5em;
+}
+
+.room-selector.new .notification-clear-button {
+    top: 2.5em;
+}
+
+/* End Script: Mapping/modules/Collaboration/CSS/small.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/ContextMenu/CSS/small.css ------------------------- */ 
 .MapContextMenuView .map-menu-coordinates,
 .MapContextMenuView .map-menu-reverse-geocode {
+   word-wrap: break-word;
    background-color: #EEEEEE;
    padding: 0.25em 1em;
    border-bottom: 1px solid #D9D9D9;
@@ -499,6 +564,330 @@ a.list-menu-item {
 /* End Script: Mapping/modules/IWantToMenu/CSS/small.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/LayerCatalog/CSS/small.css ------------------------- */ 
+.lc-filter,
+.lc-search,
+.lc-show-selected,
+.lc-entries ul li,
+.cancel-button,
+.bottom,
+.lc-actions,
+.lc-filter  {
+    -webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.lc-status {
+    position: absolute;
+    width: 100%;
+    height: 24px;
+    text-align: center;
+    left: 0;
+}
+
+/* ------ START: Layer Catalog Search Filter ------ */
+.lc-filter {
+    position: relative;
+    clear: both;
+    width: 100%;
+    padding: 0.75em 9em 0.75em 0.75em;
+    background: #F8F8F8;
+    border-bottom: 1px solid #D9D9D9;
+}
+.lc-search {
+    position: relative;
+    width: 100%;
+    padding-right: 7em;
+    background: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-radius: 0.25rem;
+}
+.lcSearchDisable {
+    opacity: 0.5;
+}
+.lc-search input.search-field,
+.lc-search .search-button {
+    border: none;
+    background: transparent;
+    height: 2.5em;
+}
+.lc-search .search-button, 
+.lc-show-selected {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.layer-catalog .lc-search .search-button {
+    background: #EEEEEE url("../../Resources/Images/Icons/search-16.png") center center no-repeat;
+    width: 3.5em;
+    border-left: 1px solid #CCCCCC;
+    border-radius: 0.25rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.lc-show-selected {
+    width: 9em;
+    line-height: 2.5em;
+    padding: 0.75em;
+    text-align: center;
+}
+.lc-search .clear-button {
+    background: url("../../Resources/Images/Icons/delete-16.png") center center no-repeat;
+    width: 3.5em;
+    height: 2.5em;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 3.5em;
+}
+.selected-indicator {
+    font-size:0.8em;
+    color: #999999;
+    margin-left: 0.5em;
+}
+/* ------ END: Layer Catalog Search Filter ------ */
+
+/* ------ START: jQuery Autocomplete Overrides ------ */
+.ui-autocomplete .ui-state-focus {
+    border: 1px solid #D9D9D9;
+    background: #F8F8F8;
+    font-weight: normal;
+    color: #1B7DBF;
+}
+/* ------ START: jQuery Autocomplete Overrides ------ */
+
+.layer-catalog {
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+}
+.lc-right {
+    float: right;
+}
+.lc-left {
+    float: left;
+}
+.bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 0.75em;
+}
+.layer-catalog .cancel-button {
+    display: block;
+    text-align: center;
+    border: 1px solid #CA3231;
+    color: #CA3231;
+    width: 100%;
+    padding: 0.5em;
+    border-radius: 0.25rem;
+}
+.lc-status {
+    top: 50%;
+}
+.layer-catalog .cancel-button:focus,
+.layer-catalog .cancel-button:hover {
+    background: #CA3231;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+.showNone {
+    display: none;
+}
+/* ------ START: Header ------ */
+.layer-catalog .panel-header h2 {
+    margin: 0 4.5em;
+}
+.layer-catalog .panel-header .button-text-link {
+    padding: 0 0.5em;
+    display: block;
+    width: 4.5em;
+    height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.lc-left {
+    text-align: left;
+}
+.lc-right {
+    text-align: right;
+}
+/* ------ END: Header ------ */
+
+/* ------ START: Layer Catalog Entries ------ */
+.lc-entries {
+    padding-bottom: 4em;
+}
+.lc-entries ul,
+.lc-entris ul li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.catalog-item-button,
+.layer-item-label {
+    position: relative;
+    min-height: 4em;
+    border-bottom: 1px solid #D9D9D9;
+    padding: 1.25em 2em 1.25em 3em;
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+}
+.layer-item {
+    position: relative;
+}
+.selected-state {
+    position: absolute;
+    top: 0em;
+    left: 0;
+    width: 3em;
+    height: 4em;
+    border: none;
+}
+input[type="checkbox"].selected-state {
+    margin: 1em 0.5em;
+}
+.selected-state-checkbox {
+    top:1em;
+    left:0.5em;
+}
+.selected-state-folder{
+    background: url(../../Resources/Images/icons/selected-none-24.png) center center no-repeat;
+}
+.lc-item-label {
+    pointer-events: none;
+}
+.layer-catalog a:focus.lc-item-label,
+.layer-catalog a:active.lc-item-label {
+    color: #1B7DBF;
+}
+.lc-details {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2em;
+    height: 100%;
+    text-align: center;
+    cursor: pointer;
+}
+.lc-details img {
+    max-height: 16px;
+}
+.folder-item.chevron-right-24 {
+    background-position: right center;
+    background-repeat: no-repeat;
+}
+.folderSomeSelected {
+    background-color: #E9F6FF;
+}
+.folderAllSelected,
+.layerSelected {
+    background-color: #ACCDE4;
+}
+.folderSomeSelectedImage {
+    background: url(../../Resources/Images/icons/selected-partial-24.png) center center no-repeat !important;
+}
+.folderAllSelectedImage {
+    background: url(../../Resources/Images/icons/selected-all-24.png) center center no-repeat !important;
+}
+.catalog-folder-select {
+    background-color: #DEF2FF;
+}
+.catalog-folder-select .layer-item-label {
+    font-style: italic;
+    color: #666666;
+}
+/* ------ END: Layer Catalog Entries ------ */
+
+.ui-menu
+{
+    padding: 2px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    list-style: none;
+}
+
+.ui-menu .ui-menu-item a 
+{
+    text-decoration: none;
+    display: block;
+    padding: 2px .4em;
+    line-height: 1.5;
+    zoom: 1;
+    font-weight: normal;
+}
+
+.ui-helper-hidden-accessible
+{
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+
+/* ------ START: jQuery Autocomplete Overrides ------ */
+.ui-autocomplete {
+    max-height: 65%;
+    width: 90%;
+    overflow-y: auto;
+}
+.ui-autocomplete.ui-menu .ui-menu-item a {
+    padding: 1em 0.5em;
+}
+/* ------ START: jQuery Autocomplete Overrides ------ */
+
+.lc-layers-text {
+    padding: 1em 0em 0em 1.2em;
+    font-weight: bold;
+}
+
+/* End Script: Mapping/modules/LayerCatalog/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/LayerDrawingOrder/CSS/small.css ------------------------- */ 
+.reorder-list-button {
+    min-height: 3.44em;
+}
+
+.reorder-arrow-btns {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 6.88em;
+    border: none;
+}
+
+.reorder-arrow-up,
+.reorder-arrow-down {
+    height: 100%;
+    width: 3.44em;
+    border-bottom: none;
+    border-right: solid 1px #eeeeee;
+}
+
+.reorder-arrow-up {
+    left: 0;
+}
+
+.reorder-arrow-down {
+    right: 0;
+}
+
+.selected .reorder-list-button {
+    padding-left: 8em;
+}
+
+/* End Script: Mapping/modules/LayerDrawingOrder/CSS/small.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/LayerList/CSS/small.css ------------------------- */ 
 
 /* LAYER LIST (SMALL) -------------------------*/
@@ -510,6 +899,9 @@ a.list-menu-item {
 }
 .layer-list {
     overflow-x: hidden;
+}
+.panel-status-region.region-active + .layer-list-wrapper {
+    top: 4em;
 }
 .layer-item-ctrl input[type="checkbox"] {
     margin: 0.05em 0;
@@ -559,8 +951,24 @@ ui-slider-handle.ui-state-focus::after,
 
 .layer-list input[type=checkbox],
 .layer-info .contents,
+.mapservice-actions,
 .layer-actions {
     -webkit-tap-highlight-color: #DEF2FF;
+}
+
+.mapservice-actions.bound-visible + .layer-actions.bound-invisible + .widget.bound-invisible + .layer-contents,
+.mapservice-actions.bound-invisible + .layer-actions.bound-visible + .widget.bound-invisible + .layer-contents { /* actions are on */
+    padding-right: 5.25em;
+}
+
+.mapservice-actions.bound-invisible + .layer-actions.bound-invisible + .widget.bound-visible + .layer-contents,
+.mapservice-actions.bound-invisible + .layer-actions.bound-invisible + .widget.bound-visible-inline + .layer-contents { /* slider is on */
+    padding-right: 6.25em;
+}
+
+.mapservice-actions.bound-visible + .layer-actions.bound-invisible + .widget.bound-visible + .layer-contents,
+.mapservice-actions.bound-invisible + .layer-actions.bound-visible + .widget.bound-visible + .layer-contents { /* actions and slider are on */
+    padding-right: 9.75em;
 }
 
 
@@ -582,6 +990,46 @@ ui-slider-handle.ui-state-focus::after,
     max-width: 80%;
 }
 
+.viewer-loader-error .MapView {
+    padding-top: 0;
+}
+
+/* BEGIN: Top map region (compact toolbar) - slide up and down */
+
+.map-top-slide-down {
+    transform: translate3d(0, 0, 1px);
+    animation: map-top-slide-down 100ms forwards;
+    animation-delay: 400ms;
+    animation-timing-function: ease-in;
+}
+
+.map-top-slide-up {
+    transform: translate3d(0, 0, 1px);
+    animation: map-top-slide-up 100ms forwards;
+    animation-timing-function: ease-out;
+}
+
+@keyframes map-top-slide-down {
+  from {
+    top: 0em;
+  }
+
+  to {
+    top: 1.7em;
+  }
+}
+
+@keyframes map-top-slide-up {
+  from {
+    top: 1.7em;
+  }
+
+  to {
+    top: 0em;
+  }
+}
+/* END: Top map region (compact toolbar) - slide up and down */
+
 /* End Script: Mapping/modules/Map/CSS/small.css ------------------------- */ 
 
 
@@ -595,13 +1043,14 @@ ui-slider-handle.ui-state-focus::after,
     z-index: auto !important;
 }
 
-.map-tip-view .feature-description {
-    height: 150px;
-}
+    .map-tip-view .feature-description {
+        height: 100%;
+    }
 
-.map-tip-nav a.prev, .map-tip-nav a.next {
-    width: 24px;
-}
+    .map-tip-view .panel-header-button {
+        display: none;
+    }
+
 
 .map-navigation-region .map-tip-view,
 .map-center-region .map-tip-view,
@@ -615,6 +1064,76 @@ ui-slider-handle.ui-state-focus::after,
 .map-bottom-center .map-tip-view,
 .map-bottom-right .map-tip-view {
     background: #FFFFFF;
+}
+
+.map-tip-widget-header {
+    text-align: center;
+}
+
+.map-tip-widget-nav-inner select {
+    width: auto;
+}
+
+.shell-small .panel-header {
+    height: auto !important;
+    z-index: 99;
+}
+
+.map-tip-widget-header .menu-hyperlinks .list-menu {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    white-space: nowrap;
+}
+
+.map-tip-widget-header .menu-hyperlinks .list-menu-item {
+    padding: 0;
+    border-left: none;
+}
+
+.map-tip-actions .list-menu-button {
+    display: inline-block;
+    height: 100%;
+    padding: 0.5em;
+}
+
+    .map-tip-actions .list-menu-button:hover {
+        background-color: #DEF2FF;
+    }
+
+        .map-tip-actions .list-menu-button:hover.bound-disabled,
+        .shell-small .list-menu-item:hover {
+            background-color: transparent !important;
+        }
+
+.map-tip-widget-nav {
+    padding: 0 10.5em 0 3.5em;
+}
+
+.no-touch .map-tip-widget-nav {
+    padding: 0 8.25em 0 2.75em;
+}
+
+.panel-header-paging-prev,
+.panel-header-paging-next {
+    position: absolute;
+    top: 0;
+}
+
+.panel-header-paging-prev {
+    left: 0;
+}
+
+.panel-header-paging-next {
+    right: 7em;
+}
+
+.no-touch .panel-header-paging-next {
+    right: 5.5em;
+}
+
+.bottom-panel.panel-minimized .MapTipView {
+    display: none;
 }
 
 /* End Script: Mapping/modules/MapTips/CSS/small.css ------------------------- */ 
@@ -814,6 +1333,13 @@ ui-slider-handle.ui-state-focus::after,
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+.sync-checkbox-close:after {
+    content: "";
+    display: block;
+    height: 0;
+    padding-top: 1em;
+    clear: both;
+}
 
 /* End Script: Mapping/modules/OfflineMaps/CSS/small.css ------------------------- */ 
 
@@ -837,6 +1363,14 @@ ui-slider-handle.ui-state-focus::after,
 }
 
 /* End Script: Mapping/modules/Project/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/QueryBuilder/CSS/small.css ------------------------- */ 
+.simple-query-builder .ui-autocomplete {
+    max-width: 255px!important;
+}
+
+/* End Script: Mapping/modules/QueryBuilder/CSS/small.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/Scalebar/CSS/small.css ------------------------- */ 
@@ -863,6 +1397,7 @@ ui-slider-handle.ui-state-focus::after,
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
+    border: none;
 }
 
 .scale-input-box-container .scale-input-box {
@@ -965,20 +1500,6 @@ ui-slider-handle.ui-state-focus::after,
     position: relative;
     width: 100%;
 }
-.global-search input {
-    width: 100%;
-    padding: 3px 30px 4px 9px;
-    background: #FFFFFF;
-    border: 1px solid #D9D9D9;
-    border-radius: 0.25rem;
-    font-size: 1.6em;
-    color: #656169;
-    -webkit-appearance: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-.global-search input:focus {
-    -webkit-user-modify: read-write-plaintext-only; /* Android 3.0+ fix */
-}
 .search-hints-region {
     position: absolute;
     width: 100%;
@@ -1077,6 +1598,70 @@ ui-slider-handle.ui-state-focus::after,
 /* End Script: Mapping/modules/Status/CSS/small.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/TimeSlider/CSS/small.css ------------------------- */ 
+.TimeSliderView {
+    width: 100%;
+    top: 3.3em;
+    -webkit-transition: top 500ms; /* Safari */
+    transition: top 500ms;
+}
+
+.timeslider-container {
+    width: 100%;
+    min-width: initial;
+    max-width: initial;
+    top: 0;
+    margin: 0;
+    z-index: 100;
+    left: 0;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    overflow-y: auto;
+}
+
+.header-region.hidden-by-screen-element .TimeSliderView {
+    top: 0;
+}
+
+/** .shell-small needs to be prepended to the css rule below to override SmallShell.css which sets .shell-small .region.header-region .view.inactive to display block.*/
+.shell-small .region.header-region .view.TimeSliderView.inactive {
+    display: none;
+}
+
+.timeslider-container .actions-container .slider-date-pickers .inline-block button.ui-datepicker-trigger {
+    padding: .6em;
+}
+
+.ui-timepicker-div .ui-slider .ui-slider-handle {
+    top: -9px!important;
+}
+
+/*-----START: Media Queries for Scroll Bar-----*/
+@media all and ( min-height: 0px) {
+    .timeslider-container {
+        max-height: 200px;
+    }
+}
+@media all and ( min-height: 400px) {
+    .timeslider-container {
+        max-height: 300px;
+    }
+}
+@media all and ( min-height: 500px) {
+    .timeslider-container {
+        max-height: 400px;
+    }
+}
+@media all and ( min-height: 600px) {
+    .timeslider-container {
+        max-height: 500px;
+    }
+}
+
+/* End Script: Mapping/modules/TimeSlider/CSS/small.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/Toolbar/CSS/small.css ------------------------- */ 
 /* TOOLBAR (SMALL) -------------------------*/
 .toolbar-toggle-button {
@@ -1084,6 +1669,9 @@ ui-slider-handle.ui-state-focus::after,
     margin: 0;
     border-bottom: 0;
     position: initial;
+}
+.toolbar-toggle-button .tool-label {
+    display: none;
 }
 
 .toolbar {
@@ -1819,8 +2407,28 @@ button.toolbar-item.button.tool {
     margin-bottom: -2.70em;
 }
 .transient-toolbar {
-    min-height: 5.65em;
+    height: 5em !important;
     min-width: 0.75em;
+    box-sizing: border-box;
+    border: none;
+    background: transparent;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+}
+.transient-toolbar .toolbar-item {
+    max-width: 6em;
+}
+.transient-toolbar .toolbar-item p {
+    font-size: 0.8em;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 0.5em 0.5em;
 }
 .flyout-menu-transient .transient-toolbar + .transient-measurement {
     margin-top: -5.8em;
@@ -1839,7 +2447,92 @@ button.toolbar-item.button.tool {
 /* End Script: Mapping/modules/Toolbar/CSS/small.css ------------------------- */ 
 
 
-/* Begin Script: Mapping/modules/Workflow/Forms/Items/CSS/small.css ------------------------- */ 
+/* Begin Script: Mapping/infrastructure/menus/CSS/small.css ------------------------- */ 
+/* MENU -------------------------*/
+
+.map-tip-actions .list-menu-item {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+/* End Script: Mapping/infrastructure/menus/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/infrastructure/results/CSS/small.css ------------------------- */ 
+
+/* RESULTS PAGING CONTROL (SMALL) -------------------------*/
+.results-table,
+.results-list {
+    bottom: 4.8em;
+}
+.paging-control {
+}
+.paging-control.has-pages {
+	height: 5em;
+}
+.paging-result-info {
+    float: left;
+    padding: .5em 0;
+    font-size: 0.9em;
+    height: 1.7em;
+}
+.view.ResultsListView .paging-buttons,
+.paging-buttons {
+    float: right;
+    padding:0.6em 0.5em;
+}
+.paging-result-info button {
+    display: none;
+}
+.paging-buttons button {
+    padding: 0 0.25em;
+    height: 2.2em;
+    line-height: 1.2em;
+}
+
+@media only screen and (max-width: 420px) {
+
+   .view.ResultsListView .paging-buttons,
+   .paging-result-info,
+   .paging-buttons {
+        float: none;
+        margin:0 auto;
+        padding:0.2em 0;
+        width:auto;
+    }
+    .paging-result-info {
+        padding:0.5em 0 0.2em 0;
+    }
+    .paging-buttons {
+        padding: 0 0 0.5em 0;
+    }    
+    .paging-buttons a {
+        width: 14%;
+        min-width:5%;
+        text-align:center;
+    }
+    
+    .paging-buttons .paging-buttons-info {
+        width: auto;
+        text-align: center;
+        vertical-align: middle;
+        padding: 0.2em;
+    } 
+    
+}
+
+.screen-region .ResultsViewContainerView {
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+/* End Script: Mapping/infrastructure/results/CSS/small.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/infrastructure/ui/components/Forms/CSS/small.css ------------------------- */ 
 
 /* FORM ITEMS (SMALL) -------------------------*/
 
@@ -1942,90 +2635,5 @@ input[type='radio']:disabled {
     overflow: auto;
 }
 
-/* End Script: Mapping/modules/Workflow/Forms/Items/CSS/small.css ------------------------- */ 
-
-
-/* Begin Script: Mapping/infrastructure/menus/CSS/small.css ------------------------- */ 
-/* MENU -------------------------*/
-
-.map-tip-actions .list-menu-item {
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
-
-/* End Script: Mapping/infrastructure/menus/CSS/small.css ------------------------- */ 
-
-
-/* Begin Script: Mapping/infrastructure/results/CSS/small.css ------------------------- */ 
-
-/* RESULTS PAGING CONTROL (SMALL) -------------------------*/
-.results-table,
-.results-list {
-    bottom: 4.8em;
-}
-.paging-control {
-}
-.paging-control.has-pages {
-	height: 5em;
-}
-.paging-result-info {
-    float: left;
-    padding: .5em 0;
-    font-size: 0.9em;
-    height: 1.7em;
-}
-.view.ResultsListView .paging-buttons,
-.paging-buttons {
-    float: right;
-    padding:0.6em 0.5em;
-}
-.paging-result-info button {
-    display: none;
-}
-.paging-buttons button {
-    padding: 0 0.25em;
-    height: 2.2em;
-    line-height: 1.2em;
-}
-
-@media only screen and (max-width: 420px) {
-
-   .view.ResultsListView .paging-buttons,
-   .paging-result-info,
-   .paging-buttons {
-        float: none;
-        margin:0 auto;
-        padding:0.2em 0;
-        width:auto;
-    }
-    .paging-result-info {
-        padding:0.5em 0 0.2em 0;
-    }
-    .paging-buttons {
-        padding: 0 0 0.5em 0;
-    }    
-    .paging-buttons a {
-        width: 14%;
-        min-width:5%;
-        text-align:center;
-    }
-    
-    .paging-buttons .paging-buttons-info {
-        width: auto;
-        text-align: center;
-        vertical-align: middle;
-        padding: 0.2em;
-    } 
-    
-}
-
-.screen-region .ResultsViewContainerView {
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    height: 100%;
-    width: 100%;
-}
-
-/* End Script: Mapping/infrastructure/results/CSS/small.css ------------------------- */ 
+/* End Script: Mapping/infrastructure/ui/components/Forms/CSS/small.css ------------------------- */ 
 

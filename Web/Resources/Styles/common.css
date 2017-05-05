@@ -1,4 +1,4 @@
-﻿
+
 /* Begin Script: Mapping/infrastructure/documents/CSS/common.css ------------------------- */ 
 .grant-editor-options {
     width: 100%;
@@ -60,19 +60,24 @@
 }
 
 .grant-editor-table td {
-    position: relative;
-    padding: 0.4em 0.2em;
-    text-align: center;
-    width: 5%;
+    position:relative;
+    padding: 0%;
+    width:100%
 }
 
 .grant-editor-table .grant-name-column {
-    width: 35%;
+    width: 55%;
     text-align: left;
+    padding: 0em 0.4em;
 }
 
 .grant-editor-table .grant-name-label {
-    margin-left: 20px;
+    margin-left: 1.9em;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+    width: calc(100% - 1.9em);
 }
 
 .grant-editor-table .global-grant {
@@ -87,7 +92,31 @@
 .grant-editor-table img {
     position: absolute;
     height: 18px;
+    margin-left: 0.2em;
 }
+
+.grant-editor-table table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.grant-editor-table td {
+    position: relative;
+    padding: 0.4em 0.2em;
+    text-align: center;
+    width: 5%;
+}
+
+.grant-editor-table th.owner-column,
+.grant-editor-table td.owner-column {
+    display: none !important;
+}
+
+.grant-editor-table.show-owner th.owner-column,
+.grant-editor-table.show-owner td.owner-column {
+    display: table-cell !important;
+}
+
 /*---END: Grant Editor Table---*/
 
 /*---START: Project Status---*/
@@ -262,6 +291,13 @@
     margin-bottom: 1em;
 }
 
+.view.ResultsListView.active,
+.layer-addition.map-services-dialog,
+.panel-group,
+.gcx-list-menu {
+    height: 100%;
+}
+
 
 /* RESULTS PAGING CONTROL (COMMON) -------------------------*/
 .paging-control.has-pages {
@@ -413,11 +449,12 @@
 .ResultsTableView .tab-left-scroll, 
 .ResultsTableView .tab-right-scroll {
     vertical-align: top;
-    background-color: #FFFFFF;
-    border-right: 1px solid #D9D9D9;
     width: 2.75em;
     position: relative;
     z-index: 100;
+}
+.ResultsTableView .tab-left-scroll {
+    border-right: 1px solid #D9D9D9;
 }
 .ResultsTableView .tab-right-scroll {
     border-left: 1px solid #D9D9D9;
@@ -432,6 +469,7 @@
     width: 100%;
     height: 100%;
     background: #ffffff;
+    height: 2.2em;
 }
 .ResultsTableView .tab-left-scroll.disabled button, 
 .ResultsTableView .tab-right-scroll.disabled button {
@@ -448,8 +486,1377 @@
     zoom: 1;
 }
 
+.gcx-list-button-poc {
+    padding-left: 3em;
+}
+
+.gcx-list-label-poc {
+    width: 100%;
+    padding-right: 0.25em;
+    padding-left: 2.5em;
+}
+
+.list-menu-icon-poc {
+    margin-left: 0.313em;
+    height: 1.6em;
+}
+
+.gcx-list-menu-icon {
+    margin-left: 0.313em;
+    height: 1.6em;
+}
+
+.has-icon .list-menu-icon-poc {
+    float: left;
+}
 
 /* End Script: Mapping/infrastructure/results/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/infrastructure/symbology/common.css ------------------------- */ 
+/** Image symbology widget */
+
+.MarkupImageSelectorView {
+    height: 100%
+}
+
+.no-symbol-library {
+    margin-top: 1em;
+}
+
+.style-selector {
+    max-width: 540px;
+    height: 90%;
+}
+
+.swatch-container {
+    overflow-y: scroll;
+    padding: 0.5em;
+    margin-top: 0.5em;
+    border: 1px solid #DDDDDD;
+    min-height: 15em;
+}
+
+.template-container {
+    height: calc(100% - 5em);
+}
+
+.text .template-container {
+    height: calc(100% - 8em);
+}
+
+.image-container {
+    height: 32em;
+}
+
+.symbology-classes .image-container {
+    height: 8em;
+    background-color: #FFFFFF;
+}
+
+div.style-selector.markup.image .symbology-sliders {
+    margin: -1em 0 0 0;
+}
+
+.style-selector .markup-swatch.markup-swatch-image {
+    margin: 0.5em;
+    padding: 0;
+    width: 3em;
+    height: 3em;
+}
+
+.style-selector .markup-swatch:hover {
+    -webkit-box-shadow: 0px 0px 0px 4px #C8E9FF;
+    -moz-box-shadow: 0px 0px 0px 4px #C8E9FF;
+    box-shadow: 0px 0px 0px 4px #C8E9FF;
+ }
+
+.style-selector .markup-swatch.selected {
+    -webkit-box-shadow: 0px 0px 0px 4px #77c9ff;
+    -moz-box-shadow: 0px 0px 0px 4px #77c9ff;
+    box-shadow: 0px 0px 0px 4px #77c9ff;
+    background: #E9F6FF;
+    background-repeat: no-repeat;
+    background-position: center;
+ }
+
+img.markup-swatch-image {
+    display: block;
+    margin: auto;
+    max-width: 3em;
+    max-height: 3em;
+}
+
+.image-library-selector {
+  margin-top: 10px;
+  white-space: nowrap;
+}
+
+.image-library-selector .symbology-label {
+    display: inline-block;
+}
+
+.image-library-selector select {
+    margin-left: 1em;
+    max-width: 20em;
+}
+
+.symbol-button-label {
+    font-size: 0;
+    height: 1px;
+    float: left;
+}
+
+.symbol-name {
+  display: block;
+  margin: 10px auto 0;
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  letter-spacing: 0.05em;
+  min-height: 1.25em;
+}
+
+/* Kendo Slider */
+
+.symbology-numberinput .k-slider {
+    width: 100%;
+    margin-right: 0.5em;
+}
+
+.k-slider-horizontal .k-slider-track {
+  background-color: #d5d5d5;
+}
+
+.k-state-selected, .k-slider-selection, .k-state-selected:link, .k-draghandle.k-state-selected:hover {
+  background-color: #1A72C4;
+  border-color: #1A72C4;
+}
+
+.k-state-focused.k-state-selected {
+  box-shadow: inset 0 0 3px 1px #1862a7;
+}
+
+.k-draghandle {
+  border-color: #1A72C4;
+}
+
+.gcx-slider-input {
+  display: block;
+  float: left;
+  width: 20%;
+  padding-left: 1em;
+  box-sizing: border-box;
+}
+
+.gcx-slider-width {
+    float: left;
+    width: 18em;
+    margin-right: 0.5em;
+}
+
+div.symbology-classes .gcx-slider-width {
+    width: 8em;
+}
+
+.attribute-symbology-settings .gcx-slider-width {
+    width: 10em;
+}
+
+.symbology-classes .symbology-settings {
+    background-color: #EEEEEE;
+    border-radius: 0.5em;
+    padding-top: 0em;
+    padding-bottom: 0.1em;
+}
+
+/* Kendo Color Picker */
+
+.k-flatcolorpicker .k-selected-color {
+    background-image: url(../Images/transtexture.png);
+}
+
+.k-flatcolorpicker .k-transparency-slider .k-slider-track {
+    background-image: url(../Images/transparency.png);
+}
+
+.k-icon {
+    background-image: url(../Images/sprite.png);
+}
+
+/*--- Symbology Settings Widget ---*/
+
+.symbology-label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.symbology-numberinput {
+    width: 100%;
+    margin-left: 5px;
+}
+
+.numeric-input-wrapper {
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.symbology-numberinput input[type=number] {
+    width: 3.5em;
+    padding: 0.2em;
+    border: 1px solid #aaa;
+    border-radius: 2px;
+    margin-left: 0.25em;
+}
+
+.symbology-colors .symbology-label {
+    display: inline-block;
+}
+
+.color-picker {
+    margin-right: 1em;
+}
+
+.symbology-label::after {
+    content: ":";
+}
+
+.symbology-numberinput .symbology-label {
+    margin-left: -5px;
+}
+
+.symbology-colors .symbology-label {
+    display: inline-block;
+    margin: 8px 8px 8px 0;
+    vertical-align: middle;
+}
+
+.symbology-settings input[type=color] {
+    width: 4em;
+    height: 3.5em;
+    padding: 0.1em 0.3em;
+    background-color: #EEE;
+    border: 1px solid #CCC;
+    vertical-align: middle;
+}
+
+.symbology-settings input[type="color"]:hover,
+.symbology-settings input[type="color"]:active {
+    border: 1px solid #AAA;
+}
+
+.symbology-sliders {
+    margin: 1em 0;
+}
+
+.symbology-sliders .symbology-label {
+    float: left;
+    display: inline-block;
+    white-space: nowrap;
+    width: 6em;
+}
+
+.symbology-sliders .numeric-input {
+    margin-top: 0.6em;
+    display: inline-block;
+    white-space: nowrap;
+    margin-left: 0.5em;
+}
+
+.symbology-sliders .numeric-units {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.symbology-drop-downs {
+    margin: 1em 0 1.75em 0;
+}
+
+.symbology-drop-downs select, .symbology-select, .image-library-selector select {
+  height: 2.2em;
+  padding: 0.2em;
+}
+
+.symbology-drop-down {
+    margin: 0.5em 0;
+}
+
+.symbology-drop-downs .symbology-label {
+    margin-bottom: 0.25em;
+}
+
+/*--- Attribute Symbology Settings Widget ---*/
+
+.symbology-classbreak-colorpicker {
+    display: inline-block;
+    margin-left: 1em;
+}
+
+.symbology-classbreak-colorpicker input[type=color] {
+    width: 3em;
+    height: 2.75em;
+}
+
+
+.symbology-classes button.symbology-class {
+    position: relative;
+    font-weight: normal;
+    width: 100%;
+    height: 2em;
+    margin: 0.2em;
+    background: #ffffff;
+    color: #444444;
+    white-space: nowrap;
+}
+
+.symbology-classes button.symbology-class:hover {
+    background: #94dbff;
+    color: #1A72C4;
+}
+
+.symbology-classes button.symbology-class.selected {
+    background: #94dbff;
+    color: #1A72C4;
+}
+
+.symbology-classes .symbology-text {
+    position: absolute;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    top: 0.15em;
+    width: 70%;
+    height: 1.6em;
+}
+
+.symbology-classes .symbology-color {
+    height: 1.65em;
+    width: 20%;
+    right: 0.05em;
+    top: 0.1em;
+    position: absolute;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+}
+
+.symbology-classes .symbology-image {
+    float: right;
+    max-height: 1.9em;
+    margin-top: -0.5em;
+}
+
+/*-- Text Symbology Settings Widget --*/
+
+.symbology-checkbox {
+    display: inline-block;
+    padding-right: 0.5em;
+    margin-top: 0.5em;
+    margin-bottom: 1.5em;
+}
+
+.symbology-form-control {
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.text-symbology-settings .symbology-sliders {
+    margin: 0em;
+}
+
+/* End Script: Mapping/infrastructure/symbology/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/infrastructure/ui/components/FilterControl/CSS/common.css ------------------------- */ 
+.filter-control,
+.filter-control-search {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.filter-control {
+    height: 100%;
+    width: 100%;
+    padding: 0.5em;
+    background: #F8F8F8;
+    border-bottom: 1px solid #D9D9D9;
+}
+
+.filter-control-search {
+    z-index: 200;
+    position: relative;
+    width: 100%;
+    background: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-radius: 0.25rem;
+    height: 2.5em;
+}
+
+.filter-control-search .search-field {
+    display: block;
+    width: calc(100% - 4.7em);
+    height: 100%;
+    padding: 0.05em 0.25em 0.10em 0.25em;
+    font-size: 1.6em;
+    border: none;
+    border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.k-edge .filter-control-search .search-field {
+    font-size: 1em;
+}
+
+.filter-control-search .status-img {
+    background: #FFFFFF url(../../Resources/Images/loader-small.gif) center center no-repeat;
+    width: 2.5em;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 7.5em;
+}
+
+.filter-control-search .clear-button {
+    background: #FFFFFF url(../../Resources/Images/Icons/delete-16.png) center center no-repeat;
+    width: 2.5em;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 5em;
+}
+
+.filter-control-search .filter-button {
+    height: 100%;
+    width: 5em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: .5em;
+    background: #F5F5F5;
+    font-weight: 600;
+    color: #1A72C4;
+    text-align: center;
+    line-height: 100%;
+    border-radius: 0 0.25rem 0.25rem 0;
+    border-left: 1px solid #CCCCCC;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* End Script: Mapping/infrastructure/ui/components/FilterControl/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/infrastructure/ui/components/Forms/CSS/common.css ------------------------- */ 
+
+/* FORM ITEMS -------------------------*/
+
+.form-container * {
+    box-sizing: border-box; /* Standardize the box model for form items */
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+input,
+select,
+textarea,
+.form-label,
+.checkbox-group,
+.radio-group {
+    padding: 0.3em;
+}
+select {
+    padding: 0;
+    font-weight: 400;
+    color: #000000;
+}
+
+input[type='text'],
+input[type='date'],
+input[type='datetime'],
+input[type='password'],
+select,
+textarea {
+    max-width: 100%; /* Don't exceed the width of the container */
+    width: 100%;
+    outline: none;
+    border: 1px solid #AAAAAA;
+    border-radius: 2px;
+}
+input[type='date'] {
+    width: 60%;
+}
+input[type='checkbox'],
+input[type='radio'] {
+    margin: 0;
+    padding: 0;
+}
+
+fieldset {
+    margin: 0;
+    padding: .5em .75em .75em .75em;
+    border-radius: 0.25rem;
+}
+
+fieldset legend{
+
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+}
+
+select {
+    min-width: 100px;
+}
+
+textarea {
+    height: 5em;
+    resize: none;
+}
+
+.form-item {
+    padding: .5em 0.1em 0.5em 0;
+}
+
+.form-item:after {
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+    content: "_";
+}
+
+.form-label,
+.form-control {
+    float: left;
+    position: relative;
+}
+
+.form-label {
+    overflow: hidden;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+.label-left .form-label {
+    min-width: 30%;
+}
+.form-horizontal .label-left .form-label {
+    display: block;
+    padding: 0;
+    margin: 0;
+    width: auto;
+}
+.form-horizontal .form-label.right {
+    margin-right: 0.5em;
+}
+.form-horizontal .form-label.bound-invisible {
+    display: none;
+}
+.form-horizontal select,
+.form-horizontal input {
+    min-width: 4.6em;
+}
+.form-horizontal select {
+    padding: 0.25em;
+}
+.form-horizontal input[type=checkbox],
+.form-horizontal input[type=radio] {
+    min-width: 0;
+}
+.form-horizontal > .form > .form-item, 
+.form-horizontal > .form-item {
+    display: inline-block;
+    width: auto;
+    vertical-align: top;
+    margin-right: 0.25em;
+}
+.form-horizontal .checkbox .form-item {
+    vertical-align: middle;
+}
+.form-control {
+    min-width: 69.9%;
+    max-width: 100%;
+    text-align: left;
+}
+/*.form-horizontal .form-control select,
+.form-horizontal .form-control input {
+    width: auto;
+}*/
+.form-horizontal .form-control { 
+    width: auto;
+}
+
+.autocomplete .form-control {
+    position: inherit;
+}
+
+.autocomplete-input {
+    display: inline;
+    position: relative;
+}
+
+.autocomplete-menu {
+    position: absolute;
+    margin-top: 2px;
+    z-index: 999;
+}
+
+.autocomplete-menu ul {
+    max-height: 200px;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    overflow-y: scroll;
+    background: #FFFFFF;
+    border: 1px solid #999999;
+    border-radius: 0.25rem;
+}
+
+.autocomplete-menu li {
+    cursor: pointer;
+    white-space: inherit;
+}
+
+.autocomplete-menu.inactive {
+    display: none;
+}
+
+.combobox,
+.listbox {
+    max-width: 100%;
+}
+
+.combobox .loader {
+    left: 6px;
+}
+
+.listbox {
+    position: relative;
+    width: auto;
+}
+
+.listbox .loader {
+    left: 0;
+    width: 80px;
+}
+
+.checkbox-group label,
+.checkbox-group input,
+.radio-group label,
+.radio-group input {
+    width: auto;
+    cursor: pointer;
+}
+.radiobtn input,
+.checkbox input {
+    width: 1em;
+}
+.checkbox td,
+.radiobtn td {
+    padding: 0.3em;
+    width: 1em;
+}
+.checkbox .form-label,
+.radiobtn .form-label {
+    width: auto;
+    min-width: 0%;
+}
+
+.checkbox input,
+.checkbox span,
+.radiobtn input,
+.radiobtn span {
+    display: block;
+    vertical-align: middle;
+}
+
+
+
+.form-control .date-picker {
+    padding: 0;
+}
+
+.groupbox fieldset {
+    border: 1px solid #999999;
+}
+
+.hyperlink a {
+    word-wrap: break-word;
+    text-decoration: underline;
+}
+
+.form-btns {
+    margin-top: .75em;
+    text-align: right;
+}
+
+.form-btns button {
+    margin-left: 0.25em;
+}
+
+.form-btns input[type='Submit'] {
+    margin: 0;
+    padding: 0.25em .5em;
+    cursor: pointer;
+}
+.file-input,
+.file-input-clear {
+    display: block;
+    height: 2em;
+}
+.file-input {
+    padding-right: 32px;
+    position: relative;
+}
+.file-input-browser {
+    position: relative;
+    width: 100%;
+}
+.file-input input {}
+.file-input-clear {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 0;
+    right: 0;
+    border: none;
+    background: url("../Images/Icons/clear-24.png") no-repeat;
+    text-indent: -99999px;
+    cursor: pointer;
+    margin: 0.4em 0;
+}
+
+/* DATE - TIME PICKER VARIATIONS -------------------------*/
+
+.datetime-select {
+    /*white-space: nowrap;*/
+    text-align: left;
+}
+
+.date-picker select,
+.time-picker select {
+    display: inline-block;
+    width: auto;
+    margin: 0;
+}
+
+.datetime-select select {
+    min-width: 0;
+    width: auto;
+}
+
+.datepicker .form-control {
+    white-space: nowrap;
+}
+.datepicker .form-control > div {
+    width: 80%;
+}
+.datepicker .form-control div {
+    vertical-align: top;
+}
+input.hasDatepicker {
+    width: 82%;
+    float: left;
+}
+.datepicker .ui-datepicker-trigger {
+    border: 1px solid #cccccc;
+    border-radius: .25rem;
+    display: block;
+    float: left;
+    height: auto;
+    padding: 0.3em 0.5em;
+}
+.datetime-btn-container {
+    display: inline;
+}
+
+button.datetime-btn {
+    width: 2em;
+    height: 2em;
+}
+
+button.datetime-btn.nullify {
+    background: url("../Images/Icons/clear-24.png") center no-repeat;
+}
+
+button.datetime-btn.un-nullify {
+    background: url("../Images/Icons/add-24.png") center no-repeat;
+}
+
+.ui-datepicker {
+    z-index: 1100 !important;
+}
+
+
+/* FORM VARIATIONS -------------------------*/
+
+.ltr {
+    direction: ltr;
+}
+
+.rtl {
+    direction: rtl;
+}
+
+.rtl .form-label,
+.rtl .form-control {
+    float: right;
+}
+
+.rtl .form-label {
+    border-left: .25em solid transparent;
+    border-right: none;
+}
+
+.label-left .form-label {
+    text-align: left;
+    padding: 0 0.3em 0 0;
+}
+
+.label-right .form-label {
+    text-align: right;
+}
+
+.label-stacked .form-label {
+    text-align: left;
+    padding-left: 0;
+    padding-right: 0;
+}
+.label-stacked .form-label,
+.label-stacked .form-control,
+.editor .label-stacked .form-label,
+.editor .label-stacked .form-control {
+    width: 100%;
+}
+.label-stacked .form-control-date-picker .hasDatepicker {
+    max-width: 100%;
+    width: 90%;
+}
+.form-control-date-picker input[type=date] {
+    margin-bottom: 0.5em;
+}
+.label-stacked .form-control .inline-block {
+    width: 87.5%;
+}
+.label-stacked .form-control .inline-block + .inline-block {
+    width: 1.5em;
+    float: right;
+}
+
+.label-top .form-label,
+.label-top .form-control {
+    display: block;
+    float: none;
+    padding-left: 0;
+    padding-right: 0;
+    width: auto;
+}
+
+.label-top .form-item {
+    padding: 0 0 .5em 0;
+}
+
+.ltr .form-buttons {
+    text-align: right;
+}
+
+.rtl .form-buttons {
+    text-align: left;
+}
+
+.checkbox .form-label.right,
+.radiobtn .form-label.right {
+    float: none;
+}
+.form-stacked .form-label {
+    padding-left: 0;
+    width: 100%;
+}
+.form-stacked .form-control {
+    width: 100%;
+}
+
+
+/* VALIDATION -------------------------*/
+
+.form-validation {
+    display: block;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    list-style-type: none;
+    margin: 0.5em 0;
+    padding: 0.25em;
+    border-radius: 0.25rem;
+    background-color: #FFBABA;
+    border: 1px solid #D8000C;
+    color: #660000;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+}
+
+.form-item.invalid input[type='text'],
+.form-item.invalid select,
+.form-item.invalid textarea {
+    background-color: #FFFCCC;
+    border: 1px solid red !important;
+}
+
+.form-item.invalid input[type='text']:focus,
+.form-item.invalid select:focus,
+.form-item.invalid textarea:focus {
+    box-shadow: 1px 1px 2px #CCCCCC inset, 0 0 2px Red;
+    -webkit-box-shadow: 1px 1px 2px #CCCCCC inset, 0 0 2px Red;
+}
+
+.indicator {
+    font-weight: 600;
+}
+
+.form-item.invalid .indicator {
+    color: Red;
+}
+
+
+/* JQUERY DEFAULTS -------------------------*/
+
+
+/* Layout helpers
+----------------------------------*/
+.ui-helper-hidden { display: none; } /*.ui-helper-hidden-accessible { position: absolute !important; clip: rect(1px 1px 1px 1px); clip: rect(1px,1px,1px,1px); }*/
+.ui-helper-reset { margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none; }
+.ui-helper-clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+.ui-helper-clearfix { display: inline-block; } /* required comment for clearfix to work in Opera \*/
+* html .ui-helper-clearfix { height:1%; }
+.ui-helper-clearfix { display:block; } /* end clearfix */
+.ui-helper-zfix { width: 100%; height: 100%; top: 0; left: 0; position: absolute; opacity: 0; filter:Alpha(Opacity=0); }
+
+
+/* Component containers
+----------------------------------*/
+.ui-widget { font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif; font-size: 1.1em; }
+.ui-widget .ui-widget { font-size: 1em; }
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif; font-size: 1em; }
+.ui-widget-content { border: 1px solid #dddddd; background: #eeeeee url(./Images/Datepicker/ui-bg_highlight-soft_100_eeeeee_1x100.png) 50% top repeat-x; color: #333333; }
+.ui-widget-content a { color: #333333; }
+.ui-widget-header { border: 1px solid #e78f08; background: #f6a828 url(./Images/Datepicker/ui-bg_gloss-wave_35_f6a828_500x100.png) 50% 50% repeat-x; color: #ffffff; font-weight: 600; }
+.ui-widget-header a { color: #ffffff; }
+
+/* Interaction states
+----------------------------------*/
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { border: 1px solid #cccccc; background: #f6f6f6 url(../Images/Datepicker/ui-bg_glass_100_f6f6f6_1x400.png) 50% 50% repeat-x; font-weight: 600; color: #1c94c4; }
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #1c94c4; text-decoration: none; }
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { border: 1px solid #fbcb09; background: #fdf5ce url(./Images/Datepicker/ui-bg_glass_100_fdf5ce_1x400.png) 50% 50% repeat-x; font-weight: 600; color: #c77405; }
+.ui-state-hover a, .ui-state-hover a:hover { color: #c77405; text-decoration: none; }
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { border: 1px solid #fbd850; background: #ffffff url(../Images/Datepicker/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x; font-weight: 600; color: #eb8f00; }
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #eb8f00; text-decoration: none; }
+.ui-widget :active { outline: none; }
+
+/* Interaction Cues
+----------------------------------*/
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {border: 1px solid #fed22f; background: #ffe45c url(../Images/Datepicker/ui-bg_highlight-soft_75_ffe45c_1x100.png) 50% top repeat-x; color: #363636; }
+.ui-state-highlight a, .ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a { color: #363636; }
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {border: 1px solid #cd0a0a; background: #b81900 url(../Images/Datepicker/ui-bg_diagonals-thick_18_b81900_40x40.png) 50% 50% repeat; color: #ffffff; }
+.ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a { color: #ffffff; }
+.ui-state-error-text, .ui-widget-content .ui-state-error-text, .ui-widget-header .ui-state-error-text { color: #ffffff; }
+.ui-priority-primary, .ui-widget-content .ui-priority-primary, .ui-widget-header .ui-priority-primary { font-weight: 600; }
+.ui-priority-secondary, .ui-widget-content .ui-priority-secondary,  .ui-widget-header .ui-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); font-weight: normal; }
+.ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled { opacity: .35; filter:Alpha(Opacity=35); background-image: none; }
+
+
+/* Icons
+----------------------------------*/
+.ui-icon { width: 16px; height: 16px; background-image: url(../Images/Datepicker/ui-icons_222222_256x240.png); }
+.ui-widget-content .ui-icon {background-image: url(../Images/Datepicker/ui-icons_222222_256x240.png); }
+.ui-widget-header .ui-icon {background-image: url(../Images/Datepicker/ui-icons_ffffff_256x240.png); }
+.ui-state-default .ui-icon { background-image: url(../Images/Datepicker/ui-icons_ef8c08_256x240.png); }
+.ui-state-hover .ui-icon, .ui-state-focus .ui-icon {background-image: url(../Images/Datepicker/ui-icons_ef8c08_256x240.png); }
+.ui-state-active .ui-icon {background-image: url(../Images/Datepicker/ui-icons_ef8c08_256x240.png); }
+.ui-state-highlight .ui-icon {background-image: url(../Images/Datepicker/ui-icons_228ef1_256x240.png); }
+.ui-state-error .ui-icon, .ui-state-error-text .ui-icon {background-image: url(../Images/Datepicker/ui-icons_ffd27a_256x240.png); }
+.ui-icon-circle-triangle-e { background-position: -48px -192px; }
+.ui-icon-circle-triangle-s { background-position: -64px -192px; }
+.ui-icon-circle-triangle-w { background-position: -80px -192px; }
+
+
+/* Datepicker 
+----------------------------------*/
+.ui-datepicker { width: 17em; padding: .2em .2em 0; display: none; }
+.ui-datepicker .ui-datepicker-header { position:relative; padding:.2em 0; }
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 1.8em; height: 1.8em; }
+.ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover { top: 1px; }
+.ui-datepicker .ui-datepicker-prev { left:2px; }
+.ui-datepicker .ui-datepicker-next { right:2px; }
+.ui-datepicker .ui-datepicker-prev-hover { left:1px; }
+.ui-datepicker .ui-datepicker-next-hover { right:1px; }
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span { display: block; position: absolute; left: 50%; margin-left: -8px; top: 50%; margin-top: -8px;  }
+.ui-datepicker .ui-datepicker-title { margin: 0 2.3em; line-height: 1.8em; text-align: center; }
+.ui-datepicker .ui-datepicker-title select { font-size:1em; margin:1px 0; }
+.ui-datepicker select.ui-datepicker-month-year {width: 100%;}
+.ui-datepicker select.ui-datepicker-month, 
+.ui-datepicker select.ui-datepicker-year { width: 49%;}
+.ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin:0 0 .4em; }
+.ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: 600; border: 0;  }
+.ui-datepicker td { border: 0; padding: 1px; }
+.ui-datepicker td span, .ui-datepicker td a { display: block; padding: .2em; text-align: right; text-decoration: none; }
+.ui-datepicker .ui-datepicker-buttonpane { background-image: none; margin: .7em 0 0 0; padding:0 .2em; border-left: 0; border-right: 0; border-bottom: 0; }
+.ui-datepicker .ui-datepicker-buttonpane button { float: right; margin: .5em .2em .4em; cursor: pointer; padding: .2em .6em .3em .6em; width:auto; overflow:visible; }
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current { float:left; }
+
+/* with multiple calendars */
+.ui-datepicker.ui-datepicker-multi { width:auto; }
+.ui-datepicker-multi .ui-datepicker-group { float:left; }
+.ui-datepicker-multi .ui-datepicker-group table { width:95%; margin:0 auto .4em; }
+.ui-datepicker-multi-2 .ui-datepicker-group { width:50%; }
+.ui-datepicker-multi-3 .ui-datepicker-group { width:33.3%; }
+.ui-datepicker-multi-4 .ui-datepicker-group { width:25%; }
+.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header { border-left-width:0; }
+.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header { border-left-width:0; }
+.ui-datepicker-multi .ui-datepicker-buttonpane { clear:left; }
+.ui-datepicker-row-break { clear:both; width:100%; font-size:0em; }
+
+/* RTL support */
+.ui-datepicker-rtl { direction: rtl; }
+.ui-datepicker-rtl .ui-datepicker-prev { right: 2px; left: auto; }
+.ui-datepicker-rtl .ui-datepicker-next { left: 2px; right: auto; }
+.ui-datepicker-rtl .ui-datepicker-prev:hover { right: 1px; left: auto; }
+.ui-datepicker-rtl .ui-datepicker-next:hover { left: 1px; right: auto; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane { clear:right; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane button { float: left; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current { float:right; }
+.ui-datepicker-rtl .ui-datepicker-group { float:right; }
+.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
+.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
+
+/* Slider 
+----------------------------------*/
+.ui-slider { position: relative; text-align: left; }
+.ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 1.2em; height: 1.2em; cursor: default; }
+.ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; }
+
+.ui-slider-horizontal { height: .8em; }
+.ui-slider-horizontal .ui-slider-handle { top: -.3em; margin-left: -.6em; }
+.ui-slider-horizontal .ui-slider-range { top: 0; height: 100%; }
+.ui-slider-horizontal .ui-slider-range-min { left: 0; }
+.ui-slider-horizontal .ui-slider-range-max { right: 0; }
+
+.ui-slider-vertical { width: .8em; height: 100px; }
+.ui-slider-vertical .ui-slider-handle { left: -.3em; margin-left: 0; margin-bottom: -.6em; }
+.ui-slider-vertical .ui-slider-range { left: 0; width: 100%; }
+.ui-slider-vertical .ui-slider-range-min { bottom: 0; }
+.ui-slider-vertical .ui-slider-range-max { top: 0; }
+
+.ui-slider-handle {
+    text-indent: -9999px;
+}
+
+/* JQUERY OVERRIDES
+----------------------------------*/
+
+.ui-widget {
+    font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
+    font-size: .95em;
+}
+
+.ui-widget-content {
+    background: #FFFFFF;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.ui-datepicker {
+    padding: .25em;
+    border: 1px solid #999999;
+}
+
+.ui-datepicker .ui-datepicker-header,
+.ui-datepicker-buttonpane.ui-widget-content {
+    background: #EEEEEE;
+    border: none;
+}
+
+.ui-datepicker .ui-datepicker-header {
+    padding-top: .25em;
+    padding-bottom: .25em;
+    color: #000000;
+    font-weight: 600;
+}
+
+.ui-datepicker .ui-datepicker-buttonpane {
+    overflow: hidden;
+    margin-top: .5em;
+}
+
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-next {
+    position:absolute;
+    top: 0;
+    width: 1.8em;
+    height: 100%;
+    overflow: hidden;
+    color: transparent;
+    cursor: pointer;
+    opacity: 0.5;
+    filter:alpha(opacity=50);
+}
+
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-prev-hover {
+    background: url("../Images/Icons/chevron-left-16.png") no-repeat scroll center center;
+    border: none;
+    left: 0;
+}
+
+.ui-datepicker .ui-datepicker-next,
+.ui-datepicker .ui-datepicker-next-hover {
+    background: url("../Images/Icons/chevron-right-16.png") no-repeat scroll center center;
+    border: none;
+    right: 0;
+}
+
+.ui-datepicker .ui-datepicker-next-hover,
+.ui-datepicker .ui-datepicker-prev-hover {
+    opacity: 1;
+}
+
+.ui-datepicker .ui-datepicker-prev span,
+.ui-datepicker .ui-datepicker-next span {
+    display: none;
+ }
+
+.ui-datepicker .ui-datepicker-title select {
+    margin: 0;
+}
+
+.ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+    width: auto;
+    min-width: 0;
+}
+
+.ui-datepicker-trigger {
+    margin-left: .15em;
+    padding: .15em
+}
+
+.ui-datepicker-buttonpane .ui-state-default {
+    background: #EEEEEE;
+    background: linear-gradient(top, #EEEEEE 0%,#CCCCCC 100%); 
+    background: -moz-linear-gradient(top, #EEEEEE 0%, #CCCCCC 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#EEEEEE), color-stop(100%,#CCCCCC));  
+    background: -webkit-linear-gradient(top, #EEEEEE 0%,#CCCCCC 100%); 
+    background: -o-linear-gradient(top, #EEEEEE 0%,#CCCCCC 100%);
+    background: -ms-linear-gradient(top, #EEEEEE 0%,#CCCCCC 100%);
+    border: 1px solid #AAAAAA;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    color: #333333;
+    text-shadow: 1px 1px #FFFFFF;
+}
+
+.ui-timepicker-div {
+    margin-top: .75em;
+    font-size: .9em;
+}
+
+.ui-timepicker-div dd {
+    padding: .25em .5em;
+}
+
+.ui-timepicker-div dt {
+    padding: 0 .5em;
+}
+
+.ui_tpicker_time_label,
+.ui_tpicker_time {
+    font-weight: 600;
+}
+
+.ui-timepicker-div dd.ui_tpicker_time {
+    padding-top: 0;
+    padding-bottom: .5em;
+}
+
+.ui-slider.ui-widget-content {
+    background: #EEEEEE;
+    border: 1px solid #999999;
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+    margin-left: -0.7em;
+    top: -0.3em;
+    overflow: hidden;
+}
+
+.ui-datepicker-calendar .ui-state-highlight,
+.ui-datepicker-calendar .ui-widget-content .ui-state-highlight,
+.ui-datepicker-calendar .ui-widget-header .ui-state-highlight,
+.ui-timepicker-div .ui-state-highlight,
+.ui-timepicker-div .ui-widget-content .ui-state-highlight,
+.ui-timepicker-div .ui-widget-header .ui-state-highlight {
+    background: #999999;
+    border: 1px solid #666666;
+    color: #FFFFFF;
+}
+
+.ui-datepicker-calendar .ui-state-active,
+.ui-datepicker-calendar .ui-widget-content .ui-state-active,
+.ui-datepicker-calendar .ui-widget-header .ui-state-active,
+.ui-timepicker-div .ui-state-active,
+.ui-timepicker-div .ui-widget-content .ui-state-active,
+.ui-timepicker-div .ui-widget-header .ui-state-active {
+    background: #666666;
+    border: 1px solid #333333;
+    color: #FFFFFF;
+}
+
+.ui-datepicker-calendar .ui-state-hover,
+.ui-datepicker-calendar .ui-widget-content .ui-state-hover,
+.ui-datepicker-calendar .ui-widget-header .ui-state-hover,
+.ui-datepicker-calendar .ui-state-focus,
+.ui-datepicker-calendar .ui-widget-content .ui-state-focus,
+.ui-datepicker-calendar .ui-widget-header .ui-state-focus,
+.ui-timepicker-div .ui-state-hover,
+.ui-timepicker-div .ui-widget-content .ui-state-hover,
+.ui-timepicker-div .ui-widget-header .ui-state-hover,
+.ui-timepicker-div .ui-state-focus,
+.ui-timepicker-div .ui-widget-content .ui-state-focus,
+.ui-timepicker-div .ui-widget-header .ui-state-focus {
+    background: #999999;
+    border: 1px solid #666666;
+    color: #FFFFFF;
+}
+
+.ui-datepicker-buttonpane button.ui-datepicker-current,
+.ui-datepicker-buttonpane button.ui-datepicker-close {
+    opacity: 1;
+    filter: Alpha(Opacity=100);
+}
+
+.ui-datepicker-buttonpane button:hover {
+    background: #EEEEEE;
+}
+
+/* End Script: Mapping/infrastructure/ui/components/Forms/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/infrastructure/ui/components/Slider/CSS/common.css ------------------------- */ 
+.gcx-slider-container {
+    position: relative;
+    width: 100%;
+    padding: 0.9em 3.5em 0 2em;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.gcx-slider-current-label-container {
+    margin-bottom: 0.75em;
+}
+
+.gcx-slider-label {
+    display: inline-block;
+    width: 50%;
+    font-size: 0.85em;
+    white-space: nowrap;
+    color: #333333;
+    cursor: default;
+}
+
+.gcx-slider-label-container {
+    margin: 0.5em 0.5em 0 0;
+}
+
+.gcx-slider-label-min,
+.gcx-slider-label-max {
+    max-width: 48%;
+    color: #333333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gcx-slider-label-max {
+    float: right;
+    text-align: right;
+}
+
+.gcx-slider-label-current-min,
+.gcx-slider-label-current-max {
+    width: auto;
+    position: absolute;
+    top: 0;
+    margin: 0.25em 0 0 0;
+    padding: 0.3em;
+    font-weight: normal;
+    background-color: #DDDDDD;
+    border: 1px solid white;
+    border-radius: 0.25em;
+}
+
+.gcx-slider,
+.gcx-slider-ticks {
+    margin: 0 1.5em 0 0em;
+}
+
+.gcx-slider-ticks {
+    position: relative;
+    clear: both;
+    height: 1em;
+}
+
+.gcx-tick {
+    position: absolute;
+    height: 0.8em;
+    border-left: 1px solid #999999;
+    top: 1em;
+}
+
+.gcx-slider.ui-slider.ui-widget {
+    font-family: "Segoe UI", "Helvetica Neue", "Droid Sans", "Helvetica", "Arial", "sans-serif";
+    font-size: 0.85em;
+    background: rgba(102,102,102,0.125);
+}
+
+.gcx-slider .ui-slider-handle {
+    top: -0.8em !important;
+    z-index: 2;
+}
+
+.gcx-slider .ui-slider-handle::before {
+    content: "";
+    display: block;
+    border-top: 5px solid #DDDDDD;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 5px solid transparent;
+    position: absolute;
+    top: -1em;
+}
+
+.shell-small .gcx-slider .ui-slider-handle::before {
+    top: -0.3em;
+    left: 0.5em;
+}
+
+.gcx-slider .ui-slider-range {
+    background: #1A72C4;
+}
+
+.shell-large .gcx-slider .ui-slider-handle.ui-state-default.ui-corner-all,
+.shell-large .gcx-slider .ui-slider-handle.ui-state-default.ui-corner-all.ui-state-hover,
+.gcx-slider .ui-slider-handle::after {
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+    border: 5px solid #1A72C4 !important;
+    border-radius: 50%;
+}
+
+/* End Script: Mapping/infrastructure/ui/components/Slider/CSS/common.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/infrastructure/ui/components/SmartPanel/CSS/common.css ------------------------- */ 
@@ -478,6 +1885,7 @@
 }
 .smart-panel-hoisted-menu-inline .has-icon .list-menu-details {
     margin-left: 2.4em;
+    padding-left: 0;
 }
 .smart-panel-hoisted-menu-inline .list-menu-icon {
     margin-right: 0.5em;
@@ -486,15 +1894,23 @@
     position: absolute;
     z-index: 1000;
     right: 0;
-    top: 3.75em;
     background: #fff;
     border: 1px solid #ddd;
     border-top: none;
-    min-width: 100px;
+    min-width: 6.250em;
 }
 
-.no-touch .smart-panel-hoisted-menu-inline {
+.smart-panel-hoisted-menu-inline {
+    top: 2.5em;
+}
+
+.touch .panel-header .smart-panel-hoisted-menu-inline {
     top: 3em;
+}
+
+.no-touch .smart-panel-hoisted-menu-inline.inline-menu-open-up {
+    top: auto;
+    bottom: 100%;
 }
 
 .resize-hint {
@@ -542,6 +1958,10 @@
     background-image: url("../Images/Icons/arrow-down-small-16.png");
 }
 
+.panel-header .smart-panel-hoisted-menu-inline {
+    top: 3em;
+}
+
 /* ------ START: Panel Resize ------ */
 .bottom-panel-resize.resize-handle {
     display: block;
@@ -565,6 +1985,33 @@
     margin-left: -1.75em;
 }
 /* ------ END: Panel Resize ------ */
+
+/* ------ START: Results Table Resize------ */
+.bottom-region .ResultsRegionViewContainerView .panel-title {
+    margin: 0;
+    display: inline-block;
+    max-width: calc(100% - 10.5em);
+    user-select: initial;
+    cursor: default;
+    height: 2.75em;
+}
+.bottom-region .ResultsRegionViewContainerView .panel-title-contents {
+    user-select: initial;
+    cursor: default;
+}
+
+.no-touch .bottom-region .ResultsRegionViewContainerView .panel-title {
+    max-width: calc(100% - 7.5em);
+}
+
+.bottom-region .ResultsRegionViewContainerView .panel-header-contents {
+    display: inline;
+}
+
+.bottom-region .ResultsRegionViewContainerView .panel-header {
+    text-align: center;
+}
+ /* ------ END: Results Table Resize------ */
 
 /* End Script: Mapping/infrastructure/ui/components/SmartPanel/CSS/common.css ------------------------- */ 
 
@@ -670,7 +2117,7 @@ th:hover .sort {
 /* Begin Script: Mapping/modules/common.css ------------------------- */ 
 /* CSS RESET -------------------------*/
 
-body, div, dl, dt, dd, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
+body, div, dl, dt, dd, h1, h2, h3, h4, h5, h6, pre, form, fieldset, p, blockquote, th, td {
     margin: 0;
     padding: 0;
 }
@@ -710,23 +2157,50 @@ body {
 
 input, select, textarea {
     font-family: "Segoe UI", "Helvetica Neue", "Droid Sans", Helvetica, Arial, sans-serif;
-    font-weight: lighter;
     font-size: 1em;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;	
 }
 
-a, a:active, a:hover, a:visited {
-   outline: none;
-  /* text-decoration: none;*/
-   color: #1A72C4; 
+input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #767676;
+    font-style: italic;
+    font-size: 0.8em;
 }
 
-a:hover,
-a:focus {
-    color: #666666;
+input::-moz-placeholder { /* Firefox 19+ */
+    color: #767676;
+    font-style: italic;
+    font-size: 0.8em;
+    opacity: 1;
 }
+
+input:-ms-input-placeholder { /* IE 10+ */
+    color: #767676;
+    font-style: italic;
+    font-size: 0.8em;
+}
+
+input:-moz-placeholder { /* Firefox 18- */
+    color: #767676;
+    font-style: italic;
+    font-size: 0.8em;
+    opacity: 1;
+}
+
+a, a:active, a:visited, a:focus {
+   outline: none;
+   color: #1A72C4;
+   text-decoration: none;
+}
+
+a:hover {
+    outline: none;
+    color: #666666;
+    text-decoration: underline;
+}
+
 /* Killing browser focus states ONLY because 
    we are relying on the focus states included with the
     focus states included in the accessibility module */
@@ -951,14 +2425,18 @@ input::-ms-clear {
 .resize-horizontal-hint .panel-title {
     cursor: ew-resize;
 }
+.panel-filter-widget {
+    height: 3.5em;
+    position: relative;
+    width: 100%;
+    top: 0;
+}
 .panel-scroll-container {
     width: 100%;
     overflow: auto;
     overflow-x: hidden;
     background: white;
 }
-
-
 .panel-footer {
     position: absolute;
     width: 100%;
@@ -1017,7 +2495,7 @@ input::-ms-clear {
 input[type="submit"] {
     padding: .5em;
     outline: none;
-    background: #F2F2F2;
+    background: #F5F5F5;
     border: 1px solid #CCCCCC;
     border-radius: 0.25rem;
     font-weight: 600;
@@ -1186,6 +2664,8 @@ button img {
 .list-menu-item {
     padding: .54em;
     cursor: pointer;
+    border-bottom: 1px solid #EEEEEE;
+    position: relative;
 }
 
 .list-menu-item:after {
@@ -1202,10 +2682,12 @@ button img {
 
 .list-menu-details {
     display: block;
+    padding-left: 2.5em;
 }
 
 .list-menu-details span {
-    display: block;
+    display: inline;
+    background-color: transparent !important;
 }
 
 .list-menu-details .list-menu-desc span {
@@ -1217,6 +2699,7 @@ button img {
     font-weight: 600;
     font-size: 1em;
     display: block;
+    line-height: normal;
 }
 a.list-menu-item {
     text-decoration: none;
@@ -1232,29 +2715,271 @@ a.list-menu-item {
 
 a.list-menu-item {
     display: block;
-    /*text-decoration: none;*/
 }
 
-.has-icon .list-menu-details {
-    margin-left: 2.5em;
-}
+/*.has-icon .list-menu-details {
+    padding-left: 2.5em;
+}*/
 
-/* ---- Are these unnessesary with the standard .disabled and .bound-disabled classes?
-.list-menu-item.disabled,
-.list-menu-item.bound-disabled {
-    cursor: default;
-}
-
-.list-menu-item.disabled *,
-.list-menu-item.bound-disabled * {
-    opacity: 0.5;
-    filter: alpha(opacity = 50);
-} ---- */
+/*.LayerActionsView .list-menu-details {
+    padding-left: 2.5em;
+}*/
 
 .static .list-menu-item {
     cursor: default;
 }
 
+
+/* GCX List Menu -------------------------- */
+.icon-right {
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+.icon-right,
+.gcx-list-button.icon-right {
+    padding-right: 0.5em;
+}
+.gcx-list-button.icon-right.chevron-right-24 {
+    background-image: none;
+}
+.gcx-list-button.icon-right:after {
+    display: block;
+    content: " ";
+    position: absolute;
+    top: 0.3em;
+    right: 0;
+    /*bottom: 0;*/
+    width: 3.5em;
+    height: 2.50em;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+}
+.gcx-list-button.icon-right:after {
+    background-image: url("../Images/Icons/chevron-right-24.png");
+}
+.has-action-1 .gcx-list-button.icon-right {
+    padding-right: 0;
+}
+.has-action-1 .gcx-list-button.icon-right:after {
+    right: 3.500em;
+    width: 2em;
+}
+.gcx-list-menu,
+.gcx-list-menu * {
+    box-sizing: border-box;
+}
+.gcx-list-menu {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    position: relative;
+}
+.gcx-list-item {
+    border-bottom: 1px solid #EEEEEE;
+    position: relative;
+}
+.gcx-list-item .list-menu-details {
+    margin-left: 0!important;
+    padding-left: 0!important;
+}
+.gcx-list-content,
+.gcx-list-button {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 2.50em;
+    padding: 0.5em;
+    position: relative;
+}
+.gcx-list-label,
+.gcx-list-desc {
+    word-break: break-all;
+    word-wrap: break-word;
+}
+.gcx-list-label {
+    margin-bottom: .1em;
+    padding-right: 5.5em;
+    font-weight: 600;
+    font-size: 1em;
+    display: block;
+}
+.gcx-list-desc {
+    color: #666666;
+}
+.gcx-list-desc img {
+    width: 100%!important;
+    height: auto!important;
+    padding-top: 0.938em;
+    padding-bottom: 0.313em;
+    padding-right: 0.3em;
+}
+.gcx-list-item.has-action-1 {
+    /*padding-right: 3.5em;*/
+}
+.list-menu-details .gcx-list-desc .feature-description {
+    /* Preserve white space and new lines*/
+    white-space: pre-wrap;
+}
+.gcx-action-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    /*bottom: 0;*/
+    width: 3.5em;
+    height: 2.50em;
+}
+.gcx-action-button:before {
+    display: block;
+    content: '';
+    width: 0.063em;
+    height: 1.563em;
+    border-left: 1px solid #aeaeae;
+}
+.gcx-action-button.icon {
+    background-position: center center;
+}
+.gcx-list-button:hover,
+.gcx-action-button:hover {
+    background-color: #DEF2FF;
+}
+.bound-disabled.gcx-list-button:hover,
+.bound-disabled.gcx-action-button:hover {
+    background-color: inherit;
+}
+
+/* ERRORS -------------------------*/
+
+.gcx-error-message {
+    display: block;
+    padding: 0.85em 1em 1em 3em;
+    background: rgba(183,29,29,0.05) url("../Images/Icons/status-error-16.png") no-repeat 1em 1em;
+    border: 1px solid #B71D1D;
+}
+
+.gcx-error-text {
+    color: #B71D1D;
+}
+
+
+/* ------ START: Checkbox Toggle ------ */
+.gcx-toggle {
+    display: block;
+    position: relative;
+    padding-left: 3em;
+    background-color: #1A72C4;
+    width: 100%;
+    box-sizing: border-box;
+}
+.gcx-toggle .input-label {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0.25em 0 0.25em 0.5em;
+    background-color: #FFFFFF;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.touch .gcx-toggle .input-label {
+    pointer-events: none;
+}
+.gcx-toggle .input-checkbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    zoom: 1;
+	filter: alpha(opacity=0);
+	opacity: 0;
+}
+.gcx-toggle .input-label:before {
+    display: block;
+    width: 3em;
+    height: 1.75em;
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #CCCCCC;
+    border: 1px solid #AAAAAA;
+    border-radius: 0.25rem;
+    box-shadow: 0 0 0 0.25em #FFFFFF;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: background-color 0.1s linear 0s;
+}
+.gcx-toggle.toggle-round .input-label:before {
+	border-radius: 0.875em;	
+    box-shadow: 0 0 0 0.5em #FFFFFF;
+}
+.gcx-toggle .input-checkbox:checked + .input-label:before {
+    background-color: transparent;
+    transition: background-color 0.1s linear 0s;
+}
+.gcx-toggle .input-label:after {
+    display: block;
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0.25em;
+    width: 1.25em;
+    height: 1.25em;
+    background-color: #FFFFFF;
+    border: 1px solid #AAAAAA;
+    border-radius: 0.125rem;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: all 0.1s ease-out 0s;
+}
+.gcx-toggle.toggle-round .input-label:after {
+	border-radius: 0.625em;
+}
+.gcx-toggle .input-checkbox:checked + .input-label:after {
+    left: 1.25em;
+    transition: all 0.1s ease-out 0s;
+}
+
+.keyboard-focus-active .gcx-toggle .input-checkbox:focus + .input-label:before {
+    border: 2px solid #550055;
+}
+/* ------ END: Checkbox Toggle ------ */
+/* ------ START: Sticky Header / Sticky Footer ------ */
+.gcx-sticky-content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.gcx-sticky-content.has-header {
+    top: 5em; /* Matches sticky header height */
+}
+.gcx-sticky-content.has-footer {
+    bottom: 4.25em; /* Matches sticky footer height */
+}
+.gcx-sticky-header,
+.gcx-sticky-footer {
+    position: absolute;
+    width: 100%;
+    box-sizing: border-box;
+}
+.gcx-sticky-header {
+    top: 0;
+    height: 5em; /* Matches sticky content top offset */
+    padding: 0.5em;
+    border-bottom: 1px solid #D9D9D9;
+    background: #F8F8F8;
+}
+.gcx-sticky-footer {
+    bottom: 0;
+    height: 4.25em; /* Matches sticky content bottom offset */
+    padding: 0.75em;
+    border-top: 1px solid #D9D9D9;
+    background-color: #FFFFFF;
+}
+/* ------ END: Sticky Header / Sticky Footer ------ */
 /* TAB CONTROL -------------------------*/
 
 .tab-container,
@@ -1302,7 +3027,6 @@ a.list-menu-item {
 	margin: 0.4em 4px 0 0;
 	position: relative;
 	z-index: 200;
-	/*max-width: 120px;*/
 }
 
 .tab-control,
@@ -1331,6 +3055,11 @@ a.list-menu-item {
 	border: 1px solid #CCCCCC;
     border-bottom: 0;
     opacity: 0.75;
+    max-width: 20em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: max-width 0.3s ease-in-out;
 }
 
 .tab:hover,
@@ -1349,6 +3078,11 @@ a.list-menu-item {
     opacity: 1;
     z-index: 100;
     position: relative;
+    max-width: 40em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: max-width 0.3s ease-in-out;
 }
 
 .tab-active span {
@@ -1560,6 +3294,18 @@ a.list-menu-item {
     background-image: url("../Images/Icons/arrow-left-24.png");
 }
 
+.close-24 {
+    background-image: url("../Images/Icons/close-24.png");
+}
+
+.chevron-up-24 {
+    background-image: url("../Images/Icons/chevron-up-24.png");
+}
+
+.chevron-down-24 {
+    background-image: url("../Images/Icons/chevron-down-24.png");
+}
+
 .chevron-right-24 {
     background-image: url("../Images/Icons/chevron-right-24.png");
 }
@@ -1692,8 +3438,9 @@ ul.fui-selector-body li .selector-checkbox {
     position: absolute;
     z-index: -1;
 }
-.keyboard-focus-active :focus {
-    outline: 2px solid #550055;
+.keyboard-focus-active :focus,
+.keyboard-focus-active #map_root:focus:after{
+    outline: 2px solid;
     outline-offset: -2px;
 }
 .keyboard-focus-active #map_root:focus:after {
@@ -1703,7 +3450,6 @@ ul.fui-selector-body li .selector-checkbox {
     top: 0;
     bottom: 0;
     display: block;
-    border: 2px solid #550055;
     z-index: 10;
     position: absolute;
     pointer-events: none;
@@ -1723,7 +3469,7 @@ ul.fui-selector-body li .selector-checkbox {
     width: 2.5em;
     height: 2.5em;
     padding: 0.25em 0.5em;
-    background: #FFFFFF url(../Images/Icons/accessibility-32.png) center center no-repeat;
+    background: url(../Images/Icons/accessibility-32.png) center center no-repeat;
     background-size: 2.5em 2.5em;
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
@@ -1800,15 +3546,21 @@ ul.fui-selector-body li .selector-checkbox {
 
 
 /* Begin Script: Mapping/modules/BarcodeScanner/CSS/common.css ------------------------- */ 
-.BarcodeScannerView video {
+.BarcodeScannerView,
+.BarcodeScannerView video,
+.splash-blurred,
+.BarcodeScannerView canvas {
     width: 100%;
     height: 100%;
     margin: 0;
 }
 
-.BarcodeScannerView canvas {
-    width: 640px;
-    height: 480px;
+.BarcodeScannerView {
+    position: relative;
+}
+
+.BarcodeScannerView video {
+    object-fit: cover;
 }
 
 .BarcodeScannerView .camera-controls,
@@ -1962,7 +3714,7 @@ ul.fui-selector-body li .selector-checkbox {
 }
 
 .list-menu-item.selected {
-    background-color: #F2F2F2;
+    background-color: #F5F5F5;
 }
 
 .basemap-list .has-icon .list-menu-details {
@@ -2197,12 +3949,12 @@ ul.fui-selector-body li .selector-checkbox {
     overflow-y: auto; /* Vertical scrollbars for overflow */
 }
 .bkmk-list .has-icon .list-menu-details {
-    /*width: 14.5em;*/
+    width: auto;
+    float: left;
+    margin-left: 2.5em;
+    padding: 0.3em 0.5em 0.5em 0;
     white-space: normal;
     text-overflow: ellipsis;
-    float: left;
-    padding: 0.5em;
-    width: 78%;
 }
 
 .bkmk-list .list-menu-item {
@@ -2228,7 +3980,6 @@ ul.fui-selector-body li .selector-checkbox {
 .bkmk-list .list-menu.bkmk-add {
     background: #EEEEEE;
     display: block;
-    min-height: 3.4em;
     border-top: 1px solid #dddddd;
     border-radius: 0 0 0.25rem 0.25rem;
 }
@@ -2291,34 +4042,34 @@ ul.fui-selector-body li .selector-checkbox {
 
 /* -- START: Media Queries for the scrollbars to appear -- */
 
+/*@media all and ( min-height: 0px) {
+    .bkmk-list {
+        max-height: 60px;
+    }
+}*/
 @media all and ( min-height: 0px) {
     .bkmk-list {
         max-height: 60px;
     }
 }
-@media all and ( min-height: 400px) {
+@media all and ( min-height: 500px) {
     .bkmk-list {
         max-height: 100px;
     }
 }
-@media all and ( min-height: 500px) {
-    .bkmk-list {
-        max-height: 150px;
-    }
-}
 @media all and ( min-height: 600px) {
     .bkmk-list {
-        max-height: 250px;
+        max-height: 200px;
     }
 }
 @media all and ( min-height: 700px) {
     .bkmk-list {
-        max-height: 400px;
+        max-height: 300px;
     }
 }
 @media all and ( min-height: 900px) {
     .bkmk-list {
-        max-height: 600px;
+        max-height: 500px;
     }
 }
 /* -- END: Media Queries for the scrollbars to appear -- */
@@ -2331,12 +4082,1148 @@ ul.fui-selector-body li .selector-checkbox {
     padding: 1em;
 }
 
+input[type='checkbox'] {
+    vertical-align: middle;
+}
+
 /* End Script: Mapping/modules/Buffer/CSS/common.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/ClusterLayers/CSS/common.css ------------------------- */ 
 
 /* End Script: Mapping/modules/ClusterLayers/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Collaboration/CSS/common.css ------------------------- */ 
+.collaboration-panel {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+}
+
+.collaboration-sign-in {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 40%;
+    text-align: center;
+}
+
+.collaboration-sign-in-link {
+    color: #1A72C4;
+    cursor: pointer;
+}
+
+.collaboration-create-room-panel {
+    position: absolute;
+    width: 100%;
+    box-sizing: border-box;
+    top: 0;
+    bottom: 0;
+    padding: 1em;
+    overflow: auto;
+}
+
+.collaboration-select-room-prompt {
+    position: absolute;
+    text-align: center;
+    color: #767676;
+    top: 40%;
+    left: 0;
+    right: 0;
+}
+
+.collaboration-message-notification,
+.new-rooms-notification {
+    position: absolute;
+    height: 32px;
+    width: 100%;
+    bottom: 0;
+    z-index: 5;
+    background-color: #fff6c0;
+    color: #333333;
+    border-top: 1px solid #D9D9D9;
+    border-bottom: 1px solid #D9D9D9;
+    text-align: center;
+    overflow: hidden;
+    -webkit-transition: height 0.1s;
+    transition: height 0.1s;
+}
+
+.room-selector .new-rooms-notification {
+    top: 3em;
+}
+
+.collaboration-message-notification.hide,
+.notification-clear-button.hide,
+.new-rooms-notification.hide {
+    height: 0em;
+    padding: 0em;
+    border: none;
+}
+
+/* chat controls */
+
+.chat-controls .filepicker .form-label {
+    position: absolute;
+    width: 65px;
+    height: 55px;
+    margin-top: 0.75em;
+    background-image: url('../images/icons/toolbar/attach-file-photo-24.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 1px solid #CCCCCC;
+    border-radius: 0.25em;
+    -webkit-border-radius: 0.25em;
+    cursor: pointer;
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+.chat-controls .image-upload .form-control {
+    min-width: 0;
+    position: absolute;
+}
+
+.chat-text-box.text-post {
+    padding-left: 0.5em;
+}
+
+.chat-text-box {
+    height: 8em;
+    width: 100%;
+    padding: 0.5em 2em 0.5em 5.5em;
+    border-width: 1px 0 1px 0;
+    border-style: solid;
+    border-color: #D9D9D9;
+    overflow: auto;
+    padding-right: 1.5em;
+}
+
+.chat-text-box.text-post textarea {
+    height: 100%;
+    width: 100%;
+    border: none;
+}
+
+.post-type-selector {
+    padding: 0.25em 0 0.25em 0;
+    height: 2.3em;
+}
+
+.selector-bar {
+    width: 100%;
+    height:100%;
+}
+
+.selector-list {
+    display: flex;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+}
+
+.selector-list .list-item {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    margin-right: 1em;
+}
+
+.selector-list .list-item.text {
+    display: none;
+}
+
+.selector-list .list-item label {
+    display: block;
+    background-repeat: no-repeat;
+    background-position: 0.5em center;
+    padding: 0.5em 0.5em 0.5em 2.75em;
+    border-radius: 0.25em;
+    opacity: 0.75;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.selector-list .list-item.text label  {
+    background-image: url("../images/icons/text-field-inactive-24.png");
+}
+
+.selector-list .list-item.text input[type="radio"]:checked + label {
+    background-image: url("../images/icons/text-field-24.png");
+}
+
+.selector-list .list-item.markup label {
+    background-image: url("../images/icons/edit-markup-inactive-24.png");
+}
+
+.selector-list .list-item.markup input[type="radio"]:checked + label {
+    background-image: url("../images/icons/edit-markup-active-24.png");
+}
+
+.selector-list .list-item.image label {
+    background-image: url("../images/icons/photo-inactive-24.png");
+}
+
+.selector-list .list-item.image input[type="radio"]:checked + label {
+    background-image: url("../images/icons/photo-active-24.png");
+}
+
+.post-type-selector input[type='radio'] {
+    display: none;
+}
+
+.selector-list input[type="radio"]:checked + label {
+    padding: 0.5em 2.5em 0.5em 2.75em;
+    color: #FFFFFF;
+    background-color: #1A72C4;
+    opacity: 1;
+}
+
+.selector-list input[type="radio"]:checked + label + .clear-button {
+    display: block;
+}
+
+.post-desc {
+    display: inline-block;
+    width: calc(100% - 15.5em);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #999999;
+    top: 0.25em;
+    right: 0.25em;
+    position: relative;
+
+}
+
+@media only screen and (max-width: 400px) {
+    .post-desc {
+        display: none;
+    }
+}
+
+.post-container .room-selector,
+.copy-event-room-selector {
+    width: 10em;
+    padding: 0 0 0 0.5em;
+    margin-left: 0.25em;
+    height: 2.5em;
+    color: #333333;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+}
+
+.copy-event-room-selector {
+    width: 22em;
+}
+
+.chat-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 0.5em 0 0.5em;
+    background-color: white;
+    border-top: 1px solid #D9D9D9;
+    z-index: 100;
+}
+
+.chat-controls .post-container {
+    text-align: right;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.chat-controls .form-label input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.chat-controls-input-area {
+    position: relative;
+    height: 8em;
+}
+
+.chat-controls .clear-button {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100%;
+    background: url("../images/icons/clear-active-16.png") no-repeat 92%;
+    z-index: 10;
+}
+
+.chat-controls .clear-button:hover {
+    opacity: 0.75;
+}
+
+.post-container .send-button.bound-disabled:hover {
+    opacity: 0.5;
+}
+
+.post-container .send-button:hover {
+    opacity: 0.75;
+}
+
+.post-container .send-button.bound-disabled {
+    border-color: #D9D9D9 !important;
+    background-color: #D9D9D9 !important;
+    color: #767676 !important;
+}
+
+.collaboration-markup-style-selector {
+    position: absolute;
+    overflow-y: auto;
+    height: Calc(100% - 1em);
+    padding-bottom: 1em;
+}
+
+.collaboration-markup-style-selector .form-btns {
+    padding-right: 1em;
+}
+
+/* End chat controls */
+
+/* Event list */
+
+.event-list-container {
+    position: absolute;
+    top: 3em;
+    bottom: 2.75em;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    background-color: #e8e8e8;
+    border-bottom: 1px solid #D9D9D9;
+    border-top: 1px solid #D9D9D9;
+    box-shadow: inset 0px 0px 6px #DDDDDD;
+}
+
+.event-list-container.control-mode {
+    bottom: 14.2em;
+}
+
+.room-color-swatch {
+    display: inline-block;
+    width: 0.75em;
+    height: 0.75em;
+    border-radius: 100%;
+    margin-right: 0.25em;
+}
+
+.chat-entry-container {
+    height: 100%;
+    float: left;
+    position: relative;
+    margin-right: 2em;
+    background-color: #FFFFFF;
+    border-left: none;
+    box-shadow: 0px 3px 6px #DDDDDD;
+}
+
+.chat-entry-container:hover {
+    box-shadow: 0px 5px 6px #DDDDDD;
+    transition: all 0.1s linear; 
+}
+
+.chat-entry-container.clickable {
+    cursor: pointer;
+}
+
+.chat-entry-container.user-entry {
+    margin-right: 0;
+    margin-left: 2em;
+    float: right;
+    background-color: #E9F6FF;
+}
+
+.chat-entry-container::after {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: -1em;
+    border: 1.15em solid;
+    border-color: #FFFFFF transparent transparent transparent;
+    pointer-events: none;
+}
+
+.chat-entry-container.user-entry::after {
+    right: -1em;
+    top: 0;
+    left: auto;
+    border-color: #E9F6FF transparent transparent transparent;
+}
+
+.event-metadata-container {
+    display: inline-block;
+    color: #959398;
+    padding: 0.5em 0.75em 0.5em 0.75em;
+    word-break: break-word;
+    font-size: 11px;
+}
+
+.event-metadata-container.menu-enabled {
+    margin-right: 3em;
+}
+
+.collaboration-panel.single-room .event-metadata-container.lower {
+    display: none;
+}
+
+.event-created,
+.name-date-separator,
+.event-createdby {
+    display: inline-block;
+}
+
+.room-name-container {
+    color: #959398;
+    font-size: 11px;
+    padding: 0 0.75em 0.5em 0.75em;
+}
+
+.event-data-type {
+    display: block;
+    color: #1A72C4;
+}
+
+.image-event-data {
+    margin-bottom: 0.5em;
+    color: #1A72C4;
+    word-wrap: break-word;
+    cursor: pointer;
+}
+
+.event-data-container {
+    padding-bottom: 0.5em;
+    margin: 0 0.5em 0 0.5em;
+    border-bottom: 1px solid #D9D9D9;
+    font-size: 1.25em;
+    word-break: break-word;
+}
+
+.event-data-container .markup {
+    background: url("../images/icons/edit-markup-24.png") no-repeat left top;
+    color: #1A72C4;
+    padding-left: 2em;
+    min-height: 1.5em;
+}
+
+.collaboration-panel.single-room .event-data-container {
+    border-bottom: none;
+}
+
+.event-image-container {
+    display: inline-block;
+    position: relative;
+    min-width: 3em;
+    min-height: 2em;
+}
+
+.image-open-full-button {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: url("../images/icons/link-external-24.png") no-repeat left top;
+    background-color: #FFFFFF;
+    opacity: 0.8;
+}
+
+.event-banner-data {
+    max-width: 95%;
+    margin: auto;
+    text-align: center;
+    word-break: break-word;
+    color: #959398;
+    font-size: 11px;
+}
+
+.event-data-container .markup.bound-disabled {
+    background: url("../images/icons/edit-markup-inactive-24.png") no-repeat left top; 
+    color: #D9D9D9;
+}
+
+.event-data-container .markup-meta-text {
+    margin-top: 0.5em;
+    word-wrap: break-word;
+    font-size: 11px;
+}
+
+.CollaborationContainerView .panel-scroll-container {
+    overflow-y: hidden;
+}
+
+.historical-events-button {
+    color: #1A72C4;
+    border: none;
+    text-align: center;
+    width: 100%;
+    padding: 0.25em 0 0.25em 0;
+}
+
+.historical-events-button:hover {
+    color: white;
+    background: #1A72C4;
+}
+
+.event-menu-button {
+    height: 2.25em;
+    width: 2.75em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: url("../images/Icons/menu-hoisted-24.png") center no-repeat;
+    opacity: 0.75;
+}
+
+.event-menu-button.bound-disabled,
+.event-menu-button.bound-disabled:hover {
+    opacity: 0.3;
+}
+
+.event-menu-button:hover,
+.image-open-full-button:hover,
+.room-selector-button:hover,
+.selector-list .list-item label:hover,
+.notification-clear-button:hover {
+    opacity: 1;
+}
+
+.event-feed {
+    overflow-y: auto;
+    height: 100%;
+}
+
+.event-list {
+    margin: 0;
+    padding: 0;
+    padding-bottom: 0.5em;
+    list-style-type: none;
+}
+
+.event-list-item {
+    padding: 0.25em 1em 0.25em 1em;
+    position: relative;
+}
+
+.event-list-item:after {
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.event-actions-widget {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    top: 2.25em;
+    background: #FFFFFF;
+    border: 1px solid #DDDDDD;
+}
+
+.event-actions-menu {
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    list-style-type: none;
+    min-width: 10em;
+    max-width: 100%;
+}
+
+.event-actions-menu .list-menu-item {
+    padding: 0;
+}
+
+.event-actions-menu .list-menu-item:last-child {
+    border-bottom: none;
+}
+
+.event-actions-menu .list-menu-item:hover {
+    background-color: #f9f9f9;
+}
+
+.event-actions-button {
+    position: relative;
+    padding: 0.54em;
+    width: 100%;
+    min-height: 2.5em;
+}
+
+.event-actions-button .list-menu-name {
+    padding-left: 2.4em;
+    word-break: break-word;
+    color: #333333;
+}
+
+.event-actions-button .list-menu-icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+}
+
+/* End event list */
+
+/* Room selector */
+
+.room-selector .selector-item {
+    width: 100%;
+}
+
+.room-selector .selector-item:hover, 
+.room-selector .selector-item:hover .gcx-toggle .input-label {
+    background-color: #F9F9F9;
+}
+
+.room-selector-list {
+    position: relative; 
+    padding: 0.35em;
+}
+
+.room-selector-buttons {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0.15em;
+    cursor: default;
+}
+
+.room-selector-button {
+    background: url("../images/Icons/vertical-ellipsis.png") no-repeat center;
+    height: 2.25em;
+    width: 2em;
+    position: relative; 
+    float: right; 
+    opacity: 0.75;
+}
+
+.room-selector {
+    position: relative;
+    height: 4em;
+    margin: auto;
+}
+
+.collaboration-panel.single-room .post-container .room-selector {
+    display: none;
+}
+
+.post-container .room-name {
+    display: none;
+    position: relative;
+    width: 8.35em;
+    padding: 0.5em 0.75em;
+    margin-right: 0.25em;
+    color: #333333;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+    text-align: left;
+    cursor: default;
+}
+
+.collaboration-panel.single-room .post-container .room-name {
+    display: inline-block;
+}
+
+.member-count {
+    position: relative;
+    top: 0.1em;
+    margin-right: 0.25em;
+}
+
+.members-icon {
+    display: inline-block;
+    height: 2em;
+    width: 1.25em;
+    background: url("../images/Icons/user-inactive-16.png") no-repeat center center;    
+    opacity: 0.75;
+}
+
+.members-number {
+    position: relative;
+    bottom: 0.25em;
+    left: 0.25em;
+    font-size: 0.85em;
+    color: #8c8c8c;
+}
+
+.fui-selector-body-sublist .add-room-list-item {
+    width: 100%;
+}
+
+/*.fui-selector-body-sublist .add-room-list-item:hover {
+    background-color: #DEF2FF;
+}*/
+
+.fui-selector-body-sublist .add-room-button {
+    width: 100%;
+    padding: 0.5em;
+    text-align: center;
+    cursor: pointer;
+}
+
+.fui-selector-body-sublist .add-room-button:hover {
+    background: #f9f9f9;
+}
+
+.fui-selector-body-sublist .add-label {
+    background: url("../images/Icons/add-16.png") no-repeat left center;
+    padding: 0 0.5em 0 1.5em;
+    color: #333333;
+    text-align: center;
+}
+
+.room-selector .fui-selector {
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+}
+
+.room-selector .fui-selector-header {
+    width: 100%;
+    padding: 0 0.5em 0 0.5em;
+    box-sizing: border-box;
+    background: #F8F8F8;
+}
+
+.room-selector .fui-selector-header.bound-visible.no-selector-items {
+    margin: 1.4em 0 1.4em 1em;
+    height: 0;
+}
+
+.room-selector .fui-selector-header button {
+    display: inline-block;
+    width: 100%;
+    height: 2em;
+    padding-left: 0.5em;
+    margin: 0.5em 0;
+    border: 1px solid #AAAAAA;
+    border-radius: 2px;
+    background-color: #FFFFFF;
+}
+
+.room-selector .fui-selector-body {
+    right: 0.5em;
+    top: 2.5em;
+    width: calc(100% - 1.1em);
+    overflow-y: auto;
+    box-shadow: 1px 1px 3px #D9D9D9;
+    padding: 0;
+    max-height: none;
+    z-index: 10000;
+}
+
+.room-selector ul.fui-selector-body li {
+    overflow: initial;
+}
+
+.fui-selector-body-sublist {
+    margin :0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.fui-selector-body-sublist.room-item-list {
+    overflow: auto;
+    max-height: 200px;
+    box-shadow: 1px 2px 3px #D9D9D9;
+    position: relative;
+}
+
+.fui-selector-body-sublist.room-selector-actions {
+    display: block;
+    box-shadow: none;
+    background-color: #F1F1F1;
+    text-align: center;
+}
+
+.room-selector .selector-checkbox {
+    display: none;
+}
+
+.room-selector .selector-item .room-selector-list-item {
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box; 
+    padding-right: 5em;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    vertical-align: middle;
+}
+
+.room-selector .selector-item:hover .gcx-toggle .input-label:before {
+    box-shadow: 0 0 0 0.5em #F9F9F9;
+}
+
+.room-selector-list-item .gcx-toggle {
+    padding-left: 2.5em;
+    cursor: pointer;
+}
+
+/*.room-selector.new .fui-selector-header button,*/
+.room-selector-list-item .new .input-label {
+    color: #1A72C4;
+}
+
+.room-selector-list-item .gcx-toggle .input-label:before {
+    width: 2.5em;
+    height: 1.5em;
+    top: 0.15em;
+    box-shadow: 0 0 0 0.5em #FFFFFF;
+}
+
+.room-selector-list-item .gcx-toggle .input-label:after {
+    top: 0.15em;
+    width: 1em;
+    height: 1em;
+}
+
+.room-selector-list-item .gcx-toggle .input-checkbox:checked + .input-label:after {
+    left: 1em;
+}
+
+.notification-clear-button {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background: url("../Images/Icons/panel-close.png") center no-repeat;
+    right: 0;
+    top: 3em;
+    opacity: 0.75;
+    z-index: 10;
+    -webkit-transition: height 0.1s;
+    transition: height 0.1s;
+}
+
+.event-feed .notification-clear-button {
+    top: auto;
+    bottom: 0;
+}
+
+.new-rooms-notification:hover, 
+.collaboration-message-notification:hover {
+    color: #000000;
+}
+
+/* End room selector*/
+
+.event-data-container .event-image {
+    max-width: 8em;
+    max-height: 8em;
+    min-width: 2em;
+    vertical-align: top;
+}
+
+.event-data-container .event-image.erased {
+    cursor: initial;
+}
+
+.collaboration-create-room-panel .form-item label {
+    display: block;
+    font-weight: bold;
+}
+
+.collaboration-create-room-panel .form-item label.color-swatch {
+    display: inline-block;
+}
+
+.color-swatches fieldset {
+    padding: 0.5em 0 0 0;
+}
+
+.collaboration-create-room-panel .grant-editor-table .grant-name-label {
+    width: 100%;
+    box-sizing: border-box;
+    margin-left: 1.75em;
+    padding-right: 1.9em;
+}
+
+.collaboration-create-room-panel .grant-editor-table img {
+    height: auto;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+}
+
+.collaboration-create-room-panel .grant-editor-table .grant-name-column {
+    padding: 0.4em;
+}
+
+.collaboration-create-room-panel input:-ms-input-placeholder {
+    font-size: 1em;
+}
+
+.collaboration-create-room-panel .grant-editor-search-options {
+    padding: 0;
+}
+
+.collaboration-create-room-panel .grant-editor-search-options select {
+    padding: 0;
+}
+
+.collaboration-create-room-panel .display-name-input {
+    margin-top: 0.3em;
+}
+
+.member-name-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    height: 15em;
+    overflow-y: auto;
+    border: #D9D9D9 solid 1px;
+}
+
+.active-member-count:before {
+    content: "(";
+}
+
+.active-member-count:after {
+    content: ")";
+}
+
+
+.member-name-list li {
+    padding: 0.25em 0.5em;
+}
+
+.collaboration-room-details-field {
+    display: inline-block;
+    word-break: break-all;
+}
+
+/* Drawing multi-tool */
+
+.open-flyout-button {
+    box-sizing: border-box;
+    cursor: pointer;
+    border: 1px solid transparent;
+    width: 2.25em;
+    height: 2.75em;
+    text-align: center;
+    border-radius: 0.25rem;
+    box-shadow: none;
+    padding: 0;
+    background: url("../images/icons/arrow-down-small-24.png") no-repeat center;
+    background-size: 1.95em;
+    pointer-events: auto;
+}
+
+.open-flyout-button.disabled:hover,
+.open-flyout-button.disabled:focus,
+.drawing-tool-item.disabled:hover,
+.drawing-tool-item.disabled:focus {
+    background-color: none !important;
+    border-color: none !important;
+}
+
+.open-flyout-button:hover,
+.open-flyout-button.highlight,
+.drawing-tool-item:hover,
+.drawing-tool-item.highlight,
+location-button:hover,
+.chat-controls .filepicker .form-label:hover,
+.style-button:hover,
+.location-button:hover,
+.location-button.active,
+.chat-controls-input-area .drawing-multi-tool-item.active .drawing-tool-item,
+.location-button:hover:not(.bound-disabled) {
+    cursor: pointer;
+    border: 1px solid #1A72C4;
+    background-color: #E9F6FF;
+    color: #333333;
+}
+
+.drawing-tool-item {
+    min-width: 4em;
+    padding: 0;
+    border-radius: 0.25rem;
+    box-shadow: none;
+    text-align: center;
+    border: 1px solid transparent;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.drawing-tool-item p,
+.drawing-tool-item label {
+    margin: 0 0.5em 0.5em 0.5em;
+    line-height: 1.25em;
+    word-wrap: break-word;
+}
+
+.drawing-tool-item.selected {
+    border: 1px solid #1A72C4;
+    background: #E9F6FF;
+}
+
+.drawing-tool-item.highlight {
+    border: 1px solid #C8E9FF;
+    background: #E9F6FF;
+}
+
+.drawing-tool-item.bound-disabled {
+    opacity: 0.3;
+    filter: alpha(opacity=30);
+    cursor: default;
+}
+
+.drawing-tool-item > img,
+.drawing-tool-item > span.icon {
+    display: block;
+    margin: 0.5em auto;
+    width: 24px;
+    height: 24px;
+}
+
+.drawing-multi-tool {
+    width: 5em;
+    position: absolute;
+    margin-top: 0.75em;
+    z-index: 10;
+}
+
+.drawing-tool-item-label {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 0;
+    text-align: center;
+    font-size: 0.8em;
+}
+
+.drawing-multi-tool .drawing-tool-item {
+    width: 5em;
+}
+
+.drawing-multi-tool-item .drawing-tool-item > img {
+    padding: 0.25em 2.15em 0.5em 0.5em;
+    margin: 0 auto;
+}
+
+.drawing-multi-tool-item.multi-tool-chooser .drawing-tool-item {
+    min-width: 0;
+}
+
+.drawing-multi-tool-item.multi-tool-chooser .drawing-tool-item > img {
+    padding: 0;
+    margin: 0.5em auto;
+}
+
+.drawing-multi-tool-item {
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25em;
+}
+
+.drawing-multi-tool-chooser {
+    width: 2.25em;
+    top: 1px;
+    right: -1px;
+    margin: 0;
+    pointer-events: none;
+}
+
+.drawing-multi-tool-chooser img {
+    border-left: 1px solid #D9D9D9;
+    border-right: 1px solid transparent;
+}
+
+.drawing-multi-tool-chooser:hover img {
+    border-left-color: transparent;
+}
+
+.touch .drawing-multi-tool-chooser .drawing-tool-item img {
+    padding: 0 0.75em;
+}
+
+.drawing-tool-list {
+    margin: 0;
+    padding: 0;
+}
+
+.drawing-tool-list li {
+    float: left;
+    display: inline-block;
+}
+
+.drawing-tool-list > li p {
+    font-size: 0.9em;
+}
+
+.drawing-multi-tool-dropdown {
+    position: absolute;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    padding: 0.125em;
+    -webkit-border-bottom-right-radius: 0.25em;
+    -webkit-border-bottom-left-radius: 0.25em;
+    -moz-border-radius-bottomright: 0.25em;
+    -moz-border-radius-bottomleft: 0.25em;
+    border-bottom-right-radius: 0.25em;
+    border-bottom-left-radius: 0.25em;
+    max-width: 20em;
+    z-index: 601;
+    bottom: 4.15em;
+}
+
+.collaboration-multi-tool-dropdown-container {
+    position: relative;
+    width: 22em;
+}
+
+.style-button {
+    width:100%; 
+    text-align:center;
+    padding :0.25em 0.25em 0.25em 1.5em;
+    margin: 0.3em 0 0.25em 0;
+    background: url("../images/icons/toolbar/styles-24.png") no-repeat 0.25em center;
+    background-size: 1.25em;
+}
+
+.location-button {
+    position: absolute;
+    top: 5em;
+    width: 65px;
+    margin-top: 0.5em;
+    text-align: center;
+    padding: 0;
+    padding-bottom: 0.25em;
+    background-color: transparent;
+    z-index: 10;
+}
+
+.location-button.bound-disabled {
+    cursor: default;
+    opacity: 0.3;
+}
+
+
+/* End drawing multi-tool */
+
+
+/* End Script: Mapping/modules/Collaboration/CSS/common.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/ContextMenu/CSS/common.css ------------------------- */ 
@@ -2354,6 +5241,7 @@ ul.fui-selector-body li .selector-checkbox {
 
 .ContextMenuView .map-menu-coordinates,
 .ContextMenuView .map-menu-reverse-geocode {
+   word-wrap: break-word;
    font-size: 0.9em;
    background-color: #EEEEEE;
    padding: 0.25em 1em;
@@ -2403,12 +5291,15 @@ ul.fui-selector-body li .selector-checkbox {
 	background-color: #FFFFFF;
 	zoom: 1;
     height: 3.5em;
+    border: 1px solid #d9d9d9;
+    box-sizing: border-box;
 }
 .no-touch .coords-info {
     height: 2.75em;
 }
 .region.footer-region .coords-info {
     background-color: transparent;
+    border: none;
 }
 .coords-toggle,
 .coords-select-btn {
@@ -2423,7 +5314,7 @@ ul.fui-selector-body li .selector-checkbox {
 .coords-toggle {
     display: block;
 	width: 3.5em;
-	background: url("../../Resources/Images/Icons/coordinates-24.png") no-repeat center center #F8F8F8;
+	background: url("../../Resources/Images/Icons/coordinates-24.png") no-repeat center center #FFFFFF;
 	text-indent: -99999em;
     border-radius: 0.25rem;
     float: left;
@@ -2451,11 +5342,13 @@ ul.fui-selector-body li .selector-checkbox {
 .coords-toggle-left.coords-toggle-active {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    border-right: none;
 }
 .coords-toggle-right.coords-toggle-active:hover,
 .coords-toggle-right.coords-toggle-active {
 	border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+    border-left: none;
 }
 .coords-select-btn {
 	padding: 0 0.8em;
@@ -2463,16 +5356,13 @@ ul.fui-selector-body li .selector-checkbox {
 	display: inline-block;
 	float: left;
     color: #333333;
-    height: 3.9em;
-}
-.no-touch .coords-select-btn {
-    height: 3.1em;
+    height: 100%;
 }
 .coords-select-btn:hover {
     color: #333333;
 }
 .coords-select {
-    position:absolute;
+    position: absolute;
 	cursor: pointer;
 	bottom: 3.5em;
     border-bottom: 1px solid #DDDDDD;
@@ -2530,11 +5420,13 @@ ul.fui-selector-body li .selector-checkbox {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0; 
     float: right;
+    border-right: none;
 }
 .coords-info-float-left {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     float: left;
+    border-left: none;
 }
 .map-bottom-left .coords-info {
     float: left;
@@ -2809,7 +5701,6 @@ ul.fui-selector-body li .selector-checkbox {
 .FeatureDetailsCompactView .panel-group h3,
 .FeatureDetailsView .panel-group h3 {
     background: none;
-    padding: 0 0 0.4em 0;
     font-size: 1.5em;
 }
 
@@ -2826,8 +5717,14 @@ ul.fui-selector-body li .selector-checkbox {
     display: block;
     width: 100%;
 }
+.feature-description-provider h3, .feature-details-content, .FeatureAttributesProviderView h3 {
+    word-break: break-word;
+    word-wrap: break-word;
+    padding-right: 1em;
+}
 .feature-details-content {
     padding-left: 1em;
+    white-space: pre-wrap;
 }
 .feature-details-content > iframe,
 .feature-details-content > img { /* Have the feature image or iframe float so the content will line up next to it. */
@@ -3004,6 +5901,103 @@ ul.fui-selector-body li .selector-checkbox {
     padding-left: 1em;
 }
 
+.FeatureDetailsCompactView .panel-group .list-menu .attachment.list-menu-item {
+    padding-left: 0;
+}
+
+/* Attachments */
+
+.attachment.list-menu-item {
+    padding: 0;
+}
+
+.attachment.list-menu-item:hover {
+    background: none;
+}
+
+.attachment.list-menu-item a {
+    display: block;
+    padding: 0.5em 0.5em 0.5em 1em;
+}
+
+.attachment.list-menu-item.has-delete-button a {
+    margin-right: 3.5em;
+}
+
+.attachment.list-menu-item a:hover {
+    background: #DEF2FF;
+}
+
+.attachment .list-item-button.button-delete {
+    border-left: none;
+    background: #FFFFFF;
+    min-height: 0;
+}
+
+.attachment .button-delete:hover {
+    background-color: #DEF2FF;
+}
+
+/* GVH-10122: Tags for tab controls copied from Mapping/infrastructure/results/CSS/common.css */
+
+.FeatureDetailsExpandedView .tab-container {
+    overflow: hidden;
+}
+
+.FeatureDetailsExpandedView .tab-container table {
+    table-layout: fixed;
+    width: 100%;
+    overflow: hidden;
+}
+
+.FeatureDetailsExpandedView .tab-left-scroll, 
+.FeatureDetailsExpandedView .tab-right-scroll {
+    vertical-align: top;
+    width: 2.75em;
+    position: relative;
+    z-index: 100;
+}
+.FeatureDetailsExpandedView .tab-left-scroll {
+    border-right: 1px solid #D9D9D9;
+}
+.FeatureDetailsExpandedView .tab-right-scroll {
+    border-left: 1px solid #D9D9D9;
+}
+.FeatureDetailsExpandedView .tab-left-scroll img, 
+.FeatureDetailsExpandedView .tab-right-scroll img {
+    margin: 0 auto;
+    display: block;
+}
+.FeatureDetailsExpandedView .tab-left-scroll button, 
+.FeatureDetailsExpandedView .tab-right-scroll button {
+    width: 100%;
+    height: 2.2em;
+    background: #ffffff;
+}
+.FeatureDetailsExpandedView .tab-left-scroll.disabled button, 
+.FeatureDetailsExpandedView .tab-right-scroll.disabled button {
+    background: #eeeeee;
+}
+.FeatureDetailsExpandedView .results .widget.bound-visible {
+    top: 2.15em;
+}
+
+.FeatureDetailsExpandedView .tab-control {
+    /* Width inherit is required so tab control offset width can be compared to that of the tab container to check whether to display tab scroll buttons */
+    width: inherit;
+    display: inline-block !important;
+    zoom: 1;
+}
+
+.FeatureDetailsExpandedView .tab-control {
+    /* Width inherit is required so tab control offset width can be compared to that of the tab container to check whether to display tab scroll buttons */
+    width: inherit;
+    display: inline-block !important;
+    zoom: 1;
+}
+
+/* end of tab control tags */
+
 @media all and (min-width: 0px) and (max-width: 450px) {
     .FeatureDetailsExpandedView .multi-column-container {
         padding-top: 1em;
@@ -3154,6 +6148,7 @@ ul.fui-selector-body li .selector-checkbox {
 }
 .geolocate-list .has-icon .list-menu-details {
     margin-left: 2.5em;
+    padding-left: 0;
     width: 15em;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -3381,15 +6376,12 @@ ul.fui-selector-body li .selector-checkbox {
     font-size: 1.6em;
     text-decoration: none;
     border-radius: 0.25rem;
-    background: #1A72C4;
-    color: #FFFFFF;
     overflow: hidden;
     white-space: nowrap;
     opacity: 1.0;
     filter: alpha(opacity = 100);
     color: #FFFFFF;
     text-overflow: ellipsis;
-    white-space: nowrap;
 }
 .no-touch .wtm-button {
     min-height: 0em;
@@ -3405,7 +6397,6 @@ ul.fui-selector-body li .selector-checkbox {
 }
 .wtm-active .wtm-button,
 .wtm-active .wtm-button:hover {
-    background: #FFFFFF;
     border: 1px solid #D9D9D9;
     border-bottom: 0;
     border-bottom-right-radius: 0;
@@ -3433,6 +6424,10 @@ ul.fui-selector-body li .selector-checkbox {
     max-height: 400px; /* Default max-height for IE8 */
     overflow-y: auto; /* Vertical scrollbars for overflow */
 }
+.wtm-list .list-menu-item.no-items {
+    padding: 1em;
+    font-style: italic;
+}
 .wtm-list .list-menu-item {
     padding: 0;
 }
@@ -3447,6 +6442,7 @@ ul.fui-selector-body li .selector-checkbox {
 }
 .wtm-list .list-menu-name,
 .wtm-list .list-menu-desc {
+    display: block;
     margin-left: 2.5em;
 }
 .wtm-list button {
@@ -3501,8 +6497,240 @@ ul.fui-selector-body li .selector-checkbox {
 /* End Script: Mapping/modules/IWantToMenu/CSS/common.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/LabelOptions/CSS/common.css ------------------------- */ 
+.labelOptions-selector {
+    margin-bottom: 2em; 
+}
+
+.labelOptions{
+    font-weight: normal;
+}
+
+.labelOptions .form-btns {
+    margin-top: 2em;
+}
+
+.labelOptions-item-ctrl {
+    display: block;
+    padding-right: 0.5em;
+}
+
+.labelOptions-item-ctrl.font-ctrl-label {
+    padding-bottom: 0.5em;
+}
+
+.labelOptions-selector .radio-container {
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+
+.warning-label {
+    padding: 0.5em 0.1em 0.5em 0px;
+    color: #777777;
+    font-style: italic;
+}
+
+.labelOptions .form-item {
+    padding: 0;
+}
+
+/* End Script: Mapping/modules/LabelOptions/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/LayerAddition/CSS/common.css ------------------------- */ 
+/*---Layer Addition: Common---*/
+.layer-addition .form-btns,
+.layer-addition.add-layer-dialog {
+    padding: 1em;
+}
+.layer-addition.add-layer-dialog .form-btns {
+    padding: 0;
+}
+.layer-addition-properties {
+    font-weight: normal;
+}
+.layer-addition-properties-selector{
+    margin-bottom: 2em; 
+}
+.layer-addition-properties-item-ctrl {
+    display: block;
+    padding-right: 0.5em;
+}
+.layer-addition-properties-item-ctrl input[type="checkbox"],
+.layer-addition-item-ctrl input[type="radio"] {
+    margin: 0.25em  0.375em 0em 0.375em;
+}
+.layer-addition-properties-selector .radio-container {
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+
+.layer-addition .gcx-list-desc {
+    display: inline-block;
+    margin-top: 0.5em;
+}
+
+/*---Layer Addition: Add Layer Dialog---*/
+
+/* End Script: Mapping/modules/LayerAddition/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/LayerDrawingOrder/CSS/common.css ------------------------- */ 
+/*---START: Layer Groups Panel---*/
+
+.reorder-list {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 4.5em;
+    overflow-y: auto;
+}
+
+.warning-label.reorder-info {
+    border-bottom: 1px solid #EEEEEE;
+    padding: 1em;
+}
+
+.reorder-list .ui-sortable-placeholder {
+    background-color: #F8F8F8;
+    visibility: visible !important; /* Using !important to override jquery's default option for the element*/
+}
+
+.ui-sortable-helper {
+    border-top: solid 1px #EEEEEE;
+}
+
+.reorder-list-item {
+    background-color: white;
+}
+
+.reorder-list-button {
+    min-height: 3em;
+    padding: 1em;
+    position: relative;
+    z-index:0;
+    -webkit-transition: padding 0.1s ease-in-out;
+    -o-transition: padding 0.1s ease-in-out;
+    -moz-transition: padding 0.1s ease-in-out;
+    transition: padding 0.1s ease-in-out;
+    padding-left: 2.5em;
+    background-image: url(../Images/Icons/drag-16.png);
+    background-repeat: no-repeat;
+    background-position: 0.75em 1em;
+}
+
+.layer-groups-list .reorder-list-button {
+    padding-left: 1em;
+}
+
+.reorder-list-button .gcx-list-label {
+    display: inline-block;
+}
+
+.reorder-list-dragHandle {
+    position:absolute;
+    height:100%;
+    width:12%;
+    z-index: 1;
+}
+
+.meta-info-icon {
+    height: 16px;
+    display: inline;
+    margin: 0.5em 0.25em 0 0;
+    display: inline;
+}
+
+.meta-info-text {
+    display: inline-block;
+    margin-right: 5.5em;
+    font-style: italic;
+    color: #666666;
+}
+
+.reorder-arrow-btns {
+    height: 100%;
+    width: 3.5em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    border-right: solid 1px #eeeeee;
+}
+
+.reorder-arrow-up,
+.reorder-arrow-down {
+    position: absolute;
+    height: 50%;
+    width: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.reorder-arrow-up:hover,
+.reorder-arrow-down:hover {
+    background-color: #DEF2FF;
+}
+
+.reorder-arrow-up {
+    top: 0;
+    background-image: url(../Images/Icons/arrow-up-small-24.png);
+    border-bottom: solid 1px #eeeeee;
+}
+
+.reorder-arrow-down {
+    bottom: 0;
+    background-image: url(../Images/Icons/arrow-down-small-24.png);
+}
+
+.reorder-btns {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 4.5em;
+    padding: 1em;
+    box-sizing: border-box;
+}
+
+
+/*---END: Layer Groups Panel---*/
+
+/*---START: Selected State ---*/
+
+.selected .reorder-list-button {
+    padding-left: 4.5em;
+}
+
+.selected .reorder-arrow-btns {
+    opacity: 1;
+}
+
+.selected .reorder-list-button {
+    background-image: none;
+}
+
+/*---END: Selected State ---*/
+
+/* End Script: Mapping/modules/LayerDrawingOrder/CSS/common.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/LayerList/CSS/common.css ------------------------- */ 
 /* LAYER LIST */
+
+.layer-list-wrapper {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+}
+
+.panel-status-region.region-active + .layer-list-wrapper {
+    top: 3.125em;
+    margin-top: 1px;
+}
 
 .layer-list ul,
 .layer-list li {
@@ -3539,10 +6767,8 @@ ul.fui-selector-body li .selector-checkbox {
 }
 
 .layer-theme-switcher {
-    width: 99.8%;
-    height: 3.2em;
-    position: absolute;
-    top: 0px;
+    width: 100%;
+    position: relative;
     z-index: 200;
     padding: 0.5em;
     background: #F8F8F8;
@@ -3554,21 +6780,21 @@ ul.fui-selector-body li .selector-checkbox {
 
 .layer-theme-switcher select {
     width: 100%;
-    height: 2.2em;
+    height: 2.5em;
     padding: 0.2em;
 }
 .layer-list {
     font-size: 1em;
     position: absolute;
     overflow: auto;
-    top: 2.98em;
+    top: 3.5em;
     left: .5em;
     right: 0;
     bottom: 0;
 }
 
-.bound-invisible + .layer-list {
-    top: 0;
+.layer-theme-switcher.bound-visible ~ .layer-list {
+    top: 7em;
 }
 
 .layer-list-footer {
@@ -3593,14 +6819,14 @@ ul.fui-selector-body li .selector-checkbox {
 }
 
 .layer-item-ctrl {
-    display: block;
-    float: left;
     padding-right: 0.5em;
+    vertical-align: middle;
 }
 
 .layer-item-ctrl input[type="checkbox"],
 .layer-item-ctrl input[type="radio"] {
-    margin: 0.25em  0.375em 0em 0.375em;
+    vertical-align: middle;
+    margin-left: 0.5em;
 }
 .layer-item-ctrl a,
 .layer-item-ctrl span {
@@ -3620,7 +6846,7 @@ ul.fui-selector-body li .selector-checkbox {
 }
 .legend-item-parent .tree-expander.collapsed,
 .legend-item-parent .tree-expander.expanded {
-    padding: 0 2em;
+    padding: 0 0 0 2em;
     margin: 0;
 }
 .layer-item-expander .tree-expander {
@@ -3649,24 +6875,21 @@ ul.fui-selector-body li .selector-checkbox {
     width: 100%;
     height: auto;
     min-height: 3em;
-    line-height: 2.25em;
+    line-height: 2em;
     padding: 0.25em 3.5em 0.35em 0;
     border-bottom: 1px solid #EEEEEE;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     z-index: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-   /* white-space: nowrap;*/
 }
 .no-touch .layer-contents {
-    padding: 0.5em 2.75em 0.2em 0;
-    line-height: inherit;
+    padding: 0.2em 3.5em 0.2em 0.2em;
     margin: 0;
 }
 .no-touch .legend-item.layer-contents {
     padding-top: 0.25em;
+    padding-right: 0.5em;
     min-height: 2.5em;
 }
 .legend-item.leaf:last-child,
@@ -3674,17 +6897,20 @@ ul.fui-selector-body li .selector-checkbox {
     margin: 0;
     padding: 0;
 }
-.layer-actions.bound-visible + .widget.bound-invisible + .layer-contents { /* actions are on */
+
+.mapservice-actions.bound-visible + .layer-actions.bound-invisible + .widget.bound-invisible + .layer-contents,
+.mapservice-actions.bound-invisible + .layer-actions.bound-visible + .widget.bound-invisible + .layer-contents { /* actions are on */
     padding-right: 3.5em;
 }
 
-.layer-actions.bound-visible + .widget.bound-visible + .layer-contents { /* actions and slider are on */
-    padding-right: 8em;
+.mapservice-actions.bound-invisible + .layer-actions.bound-invisible + .widget.bound-visible + .layer-contents,
+.mapservice-actions.bound-invisible + .layer-actions.bound-invisible + .widget.bound-visible-inline + .layer-contents { /* slider is on */
+    padding-right: 4.5em;
 }
 
-.layer-actions.bound-invisible + .widget.bound-visible + .layer-contents,
-.layer-actions.bound-invisible + .widget.bound-visible-inline + .layer-contents { /* slider is on */
-    padding-right: 4.5em;
+.mapservice-actions.bound-visible + .layer-actions.bound-invisible + .widget.bound-visible + .layer-contents,
+.mapservice-actions.bound-invisible + .layer-actions.bound-visible + .widget.bound-visible + .layer-contents { /* actions and slider are on */
+    padding-right: 8em;
 }
 
 .layer-contents:hover {
@@ -3693,9 +6919,9 @@ ul.fui-selector-body li .selector-checkbox {
 }
 
 .layer-contents .display-name {
-    padding: 0 0em 0em 0.5em;
-    display: block;
-    width: 95%;
+    padding: 0;
+    display: inline;
+    vertical-align: middle;
     word-wrap: break-word;
 }
 
@@ -3705,6 +6931,7 @@ ul.fui-selector-body li .selector-checkbox {
     padding: 0;
 }
 
+.mapservice-actions button,
 .layer-actions button {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -3730,6 +6957,7 @@ ul.fui-selector-body li .selector-checkbox {
     padding: 1em 0.5em;
 }
 
+.mapservice-actions button:hover,
 .layer-actions button:hover {
     background-color: #DEF2FF;
 }
@@ -3764,7 +6992,8 @@ ul.fui-selector-body li .selector-checkbox {
     z-index: 99;
 }
 
-.layer-actions.bound-visible + .widget .transparency-slider {
+.mapservice-actions.bound-visible ~ .widget .transparency-slider,
+.layer-actions.bound-visible + .widget .transparency-slider { /* slider position when actions are on */
     right: 3.5em;
 }
 
@@ -3778,11 +7007,6 @@ ul.fui-selector-body li .selector-checkbox {
     overflow: hidden;
 }
 
-.layer-list-mapservice-icon,
-.layer-list-layer-icon {
-    float: left;
-}
-
 .layer-list-layer-icon img, .layer-list-mapservice-icon img {
     width: 24px;
     height: 24px;
@@ -3790,6 +7014,10 @@ ul.fui-selector-body li .selector-checkbox {
 .layer-list-legend-icon .simple-swatch {
    height: auto;
     width: 24px;
+}
+
+.layer-list-legend-icon img {
+    max-width: 250px;
 }
 /* IDENTIFY LAYER LIST */
 
@@ -3802,6 +7030,9 @@ ul.fui-selector-body li .selector-checkbox {
 }
 .identify-layers .layers .layer {
     padding-left: 2em;
+}
+
+.no-results-below-theme-switcher {
 }
 
 /* End Script: Mapping/modules/LayerList/CSS/common.css ------------------------- */ 
@@ -3833,6 +7064,14 @@ ul.fui-selector-body li .selector-checkbox {
 /* End Script: Mapping/modules/LayerSelector/CSS/common.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/LayerStyles/CSS/common.css ------------------------- */ 
+.layer-style-image-selector {
+    height: 70%
+}
+
+/* End Script: Mapping/modules/LayerStyles/CSS/common.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/Legend/CSS/common.css ------------------------- */ 
 /* START: Legend --------------- */
 .layer .legend-list {
@@ -3851,14 +7090,15 @@ ul.fui-selector-body li .selector-checkbox {
 .legend-swatch {
     display: inline-block;
     margin-right: 0.5em;
-    min-width: 2em;
+    min-width: 3em;
+    vertical-align: middle;
 }
 
 .legend-swatch img {
     display: block;
-    margin-left: 0.5em;
-    width: 24px;
-    height: 24px;
+    margin: 0 auto;
+    width: auto;
+    height: auto;
 }
 
 .legend-swatch img.wms-legend-swatch {
@@ -3880,33 +7120,33 @@ ul.fui-selector-body li .selector-checkbox {
 .legend-item-parent .tree-expander {
     margin: 0.25em 0;
 }
-.legend-item.leaf:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
+.legend .legend-item.leaf:last-child {
+    margin-bottom: 0.25em;
+    padding-bottom: 0.25em;
 }
 .layer-list.legend .tree-expander {
     position: relative !important;
     width: 100%;
     border: 0;
 }
-
 .legend-item-parent {
     position: relative;
 }
-
-.legend-item-label {
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
 .legend-item-label {
     padding: 0.25em 0;
+    display: block;
+    vertical-align: middle;
+    word-wrap: break-word;
+    width: 100%;
+    box-sizing: border-box;
 }
 .legend-item-parent .legend-item-label {
     padding: 0.65em 0 0.65em 0.65em;
     font-weight: 600;
 }
-
+.legend-list .templ-item .legend-item.leaf {
+    padding: 0.25em 0;
+}
 .legend-item.leaf.clear:after,
 .legend-item-parent:after {
     content: "";
@@ -3916,35 +7156,45 @@ ul.fui-selector-body li .selector-checkbox {
     height: 0;
     visibility: hidden;
 }
-
-
+.legend-item.leaf .legend-item-label {
+    display: inline;
+}
 .legend-item.children .templ-group {
     margin-left: -1em;
 }
-
 .simple-swatch {
-    float: left;
+    display: inline-block;
+    position: relative;
+    margin-bottom: -0.35em;
+}
+.layer-list-legend-icon .simple-swatch {
+    top: 0.35em;
     margin-left: 0.5em;
 }
-.layer-list-legend-icon .simple-swatch.square,
+.legend-item .legend-swatch .simple-swatch {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.simple-swatch.square,
 .square {
     width: 20px;
     height: 20px;
     border-style: solid;
     border-width: 2px;
 }
-.layer-list-legend-icon .simple-swatch.line,
+.simple-swatch.line,
 .line {
     width: 24px;
     height: 0px;
-    margin-top: 12px;
+    top: -5px;
     border-style: solid;
-    border-width: 1px;
+    border-width: 2px;
 }
 .layer-list-footer button {
     padding: .5em;
     outline: none;
-    background: #F2F2F2;
+    background: #F5F5F5;
     border: 1px solid #CCCCCC;
     border-radius: 0.25rem;
     font-weight: 600;
@@ -3970,34 +7220,103 @@ ul.fui-selector-body li .selector-checkbox {
 }
 
 .logview-header {
-    height: 50px;
     position: relative;
-    padding-left: 0.8em;
-    background: #DDDDDD;
+    padding: 0.75em;
 }
 
-.logview-header h2 {
-    font-size: 1.2em;
-    font-weight: 600;
-    line-height: 48px;
+.logview-header .title {
+    position: relative;
+    font-size: 1.25em;
+    font-weight: 500;
+}
+
+.logview-header .panel-header-button.right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
 }
 
 .logview-header-buttons {
-    position: absolute;
-    right: 10px;
-    top: 10px;
+    position: relative;
+    border-top: 1px solid #DDDDDD;
+    border-bottom: 1px solid #DDDDDD;
+    padding: 0.5em 0.75em;
+    background: #f0f0f0;
 }
 
-.logview-header-buttons button {
-    display: block;
-    float: left;
-    margin-left: .25em;
-    margin-right: 0;
+.logview .clear-button {
+    position: relative;
+    background: url(../Images/Icons/trashcan-16.png) no-repeat left center;
+    padding: 0 0.5em 0 1.5em;
+    top: 0.15em;
+}
+
+.logview .filters {
+    position: absolute;
+    width: 100%;
+    right: 0;
+    left: 0;
+    top: 2.55em;
+    padding: 0.5em 0.25em;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.logview input#filter,
+.logview .filters input {
+    position: absolute;
+    opacity: 0;
+}
+
+input#debug.bound-disabled + .filter-option {
+    opacity: 0.5;
+}
+
+input#debug.bound-disabled {
+    display: none;
+}
+
+.keyboard-focus-active input#filter:focus + .filter-toggle, 
+.keyboard-focus-active input:focus + label {
+    outline: 2px solid #550055;
+}
+
+.level-filters {
+    margin-right: 4em;
+}
+
+.filters .filter-option {
+    padding: 0.25em 0.5em;
+    border-radius: 0.25em;
+    margin: 0 0.1em;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.logview .filters input:checked + .filter-option,
+.filters .filter-option:hover {
+    background-color: #9d9ea1;
+    color: #FFFFFF;
+}
+
+.logview .filter-toggle {
+    background: url('../Images/Icons/filter-off-16.png') no-repeat left center;
+    padding: 0 0.5em 0 1.5em;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.logview input#filter:checked + .filter-toggle {
+    background: url('../Images/Icons/Toolbar/filter-on-16.png') no-repeat left center;
 }
 
 .logview {
     position: relative;
     height: 100%;
+}
+
+.logview .no-results {
+    text-align: center;
 }
 
 .logview table {
@@ -4042,11 +7361,27 @@ ul.fui-selector-body li .selector-checkbox {
 
 .logview-inner {
     position: absolute;
-    top: 50px;
+    top: 5.75em;
     bottom: 0;
     left: 0;
     right: 0;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.logview-inner.filters-visible {
+    top: 8.35em;
+}
+
+@media screen and (max-width: 475px) {
+    .source-filters.bound-visible,
+    .source-filters.bound-visible-inline {
+        display: block;
+        margin-top: 1em;
+    }
+    .logview-inner.filters-visible.source-filters-visible {
+        top: 10.75em;
+    }
 }
 
 /* End Script: Mapping/modules/Log/CSS/common.css ------------------------- */ 
@@ -4070,6 +7405,15 @@ ul.fui-selector-body li .selector-checkbox {
     display: inline-block;
 }
 
+.map-top-left.map-top-hidden {
+    top: 3.05em;
+}
+
+.map-top {
+    background-color: white;
+    position: relative;
+}
+
 .no-touch .map-top-left {
     /*top: 3.05em;*/
 }
@@ -4082,10 +7426,10 @@ ul.fui-selector-body li .selector-checkbox {
     float: left;
 }
 
-    .map-bottom-left .active {
-        display: inline-block !important;
-        vertical-align: bottom;
-    }
+.map-bottom-left .active {
+    display: inline-block !important;
+    vertical-align: bottom;
+}
 
 .map .bingLogo-lg {
     background-image: url("../../Resources/Images/bing-logo-70x40.png");
@@ -4185,10 +7529,69 @@ ul.fui-selector-body li .selector-checkbox {
     height: 100%;
 }
 
+.viewer-loader-error .MapView {
+    padding-top: 5em;
+}
+
 .map-keyboard-focus > div {
     border: none !important;
 }
 
+/*Ripple click animation inspired by the Boris Animation http://tympanus.net/Development/ClickEffects/*/
+
+/* Ripple Click animation styling */
+#rippleClickElem {
+    position: absolute;
+    background: #1A72C4; /* Viewer blue */
+    border-radius: 100%;
+    -ms-transform: scale(0);
+    transform: scale(0);
+    opacity: 0.75;
+    z-index:1;
+    pointer-events: none;
+}
+
+/*Ripple click animation effect*/
+/*  adding the animate class to a ripple click element triggers the animation. 
+    The element grows in size and simultaneously fades.
+    I use this in combination with the Animation Framework to create a ripple click */
+#rippleClickElem.animate {
+    -webkit-transition: all 0.5s cubic-bezier(0, 0, 0, 1.02); 
+    transition: all 0.5s cubic-bezier(0, 0, 0, 1.02); /*the animation function*/
+    opacity: 0;
+}
+
+@media all and ( min-width: 0px) {
+    #rippleClickElem.animate {
+        -ms-transform: scale(0.15);
+        -webkit-transform: scale(0.15);
+        transform: scale(0.15); /*the size of the ripple*/
+    }
+}
+
+@media all and ( min-width: 500px) {
+    #rippleClickElem.animate {
+        -ms-transform: scale(0.1);
+        -webkit-transform: scale(0.1);
+        transform: scale(0.1); /*the size of the ripple*/
+    }
+}
+
+@media all and ( min-width: 1000px) {
+    #rippleClickElem.animate {
+        -ms-transform: scale(0.075);
+        -webkit-transform: scale(0.075);
+        transform: scale(0.075); /*the size of the ripple*/
+    }
+}
+
+@media all and ( min-width: 1500px) {
+    #rippleClickElem.animate {
+        -ms-transform: scale(0.05);
+        -webkit-transform: scale(0.05);
+        transform: scale(0.05); /*the size of the ripple*/
+    }
+}
 /* Map Elements positioning/spacing, region specific */
 .region.map-navigation-region .view,
 .region.footer-left .view,
@@ -4234,6 +7637,10 @@ ul.fui-selector-body li .selector-checkbox {
     width: 15em;
 }
 
+.context-menu-region .MapContextMenuView .list-menu-details {
+    padding-left: 0.5em;
+}
+
 .context-menu-region.offset-up .MapContextMenuView {
     position: absolute;
     top: -40px;
@@ -4259,6 +7666,13 @@ ul.fui-selector-body li .selector-checkbox {
     margin: 0.4em 0 0 0.4em;
 }
 
+.MapTipView .map-tip-view .view .view {
+    margin: 0;
+}
+
+.map-tip-view .menu-hyperlinks .list-menu {
+    padding-bottom: 0;
+}
 .map-callout-wrapper {
     margin-bottom: 2em;
     overflow: visible;
@@ -4343,8 +7757,12 @@ ul.fui-selector-body li .selector-checkbox {
 .map-tip-view .list-menu {
     width: 100%;
     display: inline-block;
-    text-align: right;
-    padding-bottom: 0;
+    text-align: left;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.no-touch .map-tip-view .list-menu {
+    white-space: normal;
 }
 
 .map-callout-pointer-image {
@@ -4381,8 +7799,8 @@ ul.fui-selector-body li .selector-checkbox {
     clear: both;
 }
 .map-tip-nav.bound-visible + .map-tip-title {
-    padding-top: 1em;
-    line-height: 1em;
+    padding-top: 0.75em;
+    line-height: 1.5em;
 }
 .map-tip-title span {
     overflow: hidden;
@@ -4445,52 +7863,66 @@ ul.fui-selector-body li .selector-checkbox {
 
 /* Begin Script: Mapping/modules/Markup/CSS/common.css ------------------------- */ 
 /* START: Markup ----------------*/
-.style-selector {
-    padding: 0em 1em 1em 1em;
-    max-width: 540px;
-}
-/*.style-selector div {
-    display: block;
-    float: left;
-    margin: 0;
+.MarkupStyleView .form-item {
     padding: 0;
-}*/
+}
+
+.MarkupTemplateSelectorView {
+    height: 100%
+}
+
+.MarkupImageSelectorView .image-container {
+    height: calc(100% - 14em);
+}
+
+.template-library-selector {
+    margin-top: 10px;
+    white-space: nowrap;
+    position: absolute;
+    bottom: 0em;
+}
+
+.markup-style-selector {
+    position:absolute;
+    bottom: 0;
+    top: 6em;
+    width: 92%;
+}
+
 .style-selector .markup-swatch {
     list-style: none;
     display: inline-block;
-    /*float: left;*/
-    margin: 1em;
-    padding: 1em;
-    border: 1px solid #EEEEEE;
-    width: 5em !important; /* !important styles are for IE8 support */
-    height: 4.5em !important; /* !important styles are for IE8 support */
+    margin: 0.5em;
+    border: 1px solid #DDDDDD;
+    width: 5em;
+    height: 5em;
     cursor: pointer;
     text-align: center;
-    background: #FFFFFF;
+    background: #F8F8F8;
     text-align: center;
 }
+
 .style-selector .form-btns {
     clear: both;
     text-align: right;
 }
-.style-selector div { /* IE8 support to center the swatch elements */
-    position: relative !important;
-    margin: 0 auto !important;
-    text-align: center;
-}
+
 .icon-swatch-picker-24 {
     width: 24px;
     height: 24px;
     background-image: url("../../Resources/Images/Icons/Toolbar/styles-24.png");
 }
+
 .icon-draw-edit-24 {
     width: 24px;
     height: 24px;
     background-image: url("../../Resources/Images/Icons/Toolbar/draw-edit-24.png");
 }
+
 .markup-edit {
     margin-top: -0.4em;
 }
+
 .toolbar-body .MarkupEditView  .toolbar-small-layout {
     padding: 0.5em;
 }
@@ -4698,7 +8130,87 @@ ul.fui-selector-body li .selector-checkbox {
     font-weight: 600;
 }
 
+.native-test-button {
+    background-color: #FF5252;
+    color: white;
+    padding: 5px;
+    font-size: 12pt;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
 /* End Script: Mapping/modules/Native/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/Notifications/CSS/common.css ------------------------- */ 
+.gcx-notify {
+    background-color: #FFF6C0;
+    padding: 0.5em 0 0 0.75em;
+    min-height: 3.25em;
+    max-height: 6em;
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+}
+.shell-large .gcx-notify {
+    padding-left: 3.5em;
+}
+.touch .shell-large .gcx-notify {
+    padding-left: 4.5em;
+}
+.shell-small .gcx-notify-content {
+    font-size: 0.9em;
+    line-height: 1.375em;
+}
+.notify-item {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0 0.75em 0.5em 0;
+}
+.gcx-notify-content.notify-item {
+    text-align: left;
+}
+.gcx-icon.flex-item,
+.gcx-panel-close.flex-item  {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 1.875em;
+}
+.icon-button {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.gcx-panel-close {
+    width: 3.25em;
+    height: 3.25em;
+    box-sizing: border-box;
+}
+.gcx-buttons-list,
+.gcx-button-item {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.gcx-buttons-list {
+    white-space: nowrap;
+    text-align: center;
+}
+.gcx-button-item {
+    display: inline-block;
+    padding: 0 0.5em 0.5em 0;
+    margin-bottom: -4px; /* Offsetting inline element inherit spacing */
+}
+.gcx-notify-container {
+    display: inline;
+    max-width: 50em;
+}
+
+/* End Script: Mapping/modules/Notifications/CSS/common.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/Offline/CSS/common.css ------------------------- */ 
@@ -4707,11 +8219,15 @@ ul.fui-selector-body li .selector-checkbox {
 
 
 /* Begin Script: Mapping/modules/OfflineMaps/CSS/common.css ------------------------- */ 
+.string-wrap {
+    word-break: break-all;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
 .offline-heading {
     font-size: 1.3em;
     font-weight: normal;
 }
-
 .offline-heading,
 .error-message-text {
     display: block;
@@ -4743,37 +8259,37 @@ ul.fui-selector-body li .selector-checkbox {
     width: 100%;
     padding: 0.25em 4em 0.25em 6.5em;
     min-height: 5em;
-}
-.offline-profiles .list-item-button.bound-disabled {
-    opacity: 1;
+    word-wrap: break-word;
 }
 .profile-manage .list-item-button.button-delete {
     padding-right: 0em;
 }
-.online-only .list-item-button {
-    background-color: #F8F8F8;
-}
 .offline-thumbnail {
     position: absolute;
-    height: 100%;
     top: 0;
-    left: 0.5em;
+    left: 0;
+    margin: 0.5em;
 }
-
-.offline-thumbnail-helper {
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-}
-
 .list-item-img {
     position: relative !important;
-    vertical-align: middle;
     border: 1px solid #d9d9d9;
 }
 
 .progress-message {
     background: #eee;
+}
+
+.list-menu-desc.sync-incomplete {
+    padding-left: 1.75em;
+    background-image: url(../Images/Icons/Toolbar/alert-16.png);
+    background-repeat: no-repeat;
+    background-position: left bottom;
+
+}
+
+.icon-container {
+    display: inline-block;
+    position: relative;
 }
 
 .list-item-button.button-delete,
@@ -4789,6 +8305,17 @@ ul.fui-selector-body li .selector-checkbox {
     background: #FFFFFF;
 }
 
+.action-button .sync-incomplete::after {
+  content: " ";
+  background-image: url(../Images/Icons/Toolbar/alert-16.png);
+  background-repeat: no-repeat;
+  position: absolute;
+  height: 1.25em;
+  width: 1.25em;
+  right: -0.25em;
+  bottom: -0.5em;
+}
+
 .list-item-button.action-button.sync-button {
     right: 3.5em;
 }
@@ -4799,15 +8326,27 @@ ul.fui-selector-body li .selector-checkbox {
 .offline-profile-basemap-more-detail {
     float: right;
 }
-.basemap-editor .display-name {
-    font-weight: 600;
-    display: block;
-}
+
 .basemap-editor .display-name,
 .basemap-editor form,
 .basemap-editor .error-message {
+    display: block;
     margin-bottom: 0.5em;
 }
+.basemap-editor .layer-item-ctrl {
+    display: inline-block;
+    margin-bottom: -5px;
+}
+.basemap-editor .display-name {
+    display: inline-block;
+    font-weight: 600;
+}
+.basemap-editor form {
+    margin-top: 0.7em;
+}
+.basemap-editor .error-message-text {
+     margin: 0.5em 1em 1em 0;
+ }
 
 .edits-badge,
 .sync-badge {
@@ -4956,11 +8495,34 @@ ul.fui-selector-body li .selector-checkbox {
 .active-profile button:hover .status-icon,
 .active-profile button .status-icon:hover,
 .list-item-button:hover,
-.online-only .list-item-butto:hover {
+.online-only .list-item-button:hover {
     background-color: #DEF2FF;
     cursor: pointer;
 }
-
+.active-profile button.bound-disabled,
+.active-profile button.bound-disabled:hover .status-icon,
+.active-profile button.bound-disabled .status-icon:hover,
+.list-item-button.bound-disabled,
+.list-item-button.bound-disabled:hover,
+.online-only .list-item-button.bound-disabled:hover {
+    background-color: #EEEEEE;
+    cursor: default;
+}
+.active-list-item .list-item-button.bound-disabled,
+.online-only .list-item-button.bound-disabled {
+    zoom: 1;
+	filter: alpha(opacity=100);
+	opacity: 1;
+    background-color: #DEF2FF;
+}
+.active-list-item button.list-item-button[disabled],
+.online-only button.list-item-button[disabled] {
+    color: #333333;
+}
+.active-list-item button.list-item-button[disabled] .list-menu-desc,
+.online-only button.list-item-button[disabled] .list-menu-desc {
+    color: #666666;
+}
 .button-delete:hover {
     background-color: #999999;
 }
@@ -4989,7 +8551,7 @@ ul.fui-selector-body li .selector-checkbox {
     min-width: 35em;
     padding: 2em;
 }
-.sync-status-heading {
+.sync-status-spacer {
     margin-bottom: 1em;
 }
 .sync-status-details-toggle {
@@ -5014,16 +8576,12 @@ ul.fui-selector-body li .selector-checkbox {
     border: 1px solid #D9D9D9;
     border-radius: 0.25rem;
 }
-.sync-checkbox-close{
+.sync-checkbox-close {
     margin-right: 1em;
     position: relative;
-    padding-left: 2.5em;
-    padding-top: 0.35em;
 }
 .sync-checkbox-close input[type="checkbox"] {
-    position: absolute;
-    top: 0.2em;
-    left: 0;
+    margin-right: 0.5em;
 }
 .sync-status .success {
     color: green;
@@ -5031,7 +8589,13 @@ ul.fui-selector-body li .selector-checkbox {
 .sync-status .error {
     color: #990000;
 }
-
+.touch .sync-checkbox-close input[type="checkbox"] {
+    margin-right: 1em;
+}
+.touch .sync-checkbox-close input[type="checkbox"] + span {
+    display: inline-block;
+    margin: 0.5em 0;
+}
 .status-icon {
     position: absolute;
     right: 0;
@@ -5159,6 +8723,7 @@ ul.fui-selector-body li .selector-checkbox {
 .overview-map-container {
     position: relative;
     max-width: 210px;
+    z-index: 101;
 }
 
 .overview-map-container-top-position {
@@ -5554,7 +9119,7 @@ button.item-contents:focus {
     padding: 1em;
 }
 
-.projects .filter-box {
+/*.projects .project-filter-widget {
     position: relative;
     width: 100%;
     height: 4em;
@@ -5563,7 +9128,7 @@ button.item-contents:focus {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-}
+}*/
 
 .projects .filter-input {
     width: 100%;
@@ -5577,7 +9142,7 @@ button.item-contents:focus {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-.projects .filter-button {
+/*.projects .filter-button {
     position: absolute;
     top: 1px;
     right: 1px;
@@ -5587,7 +9152,7 @@ button.item-contents:focus {
     cursor: pointer;
     overflow: hidden;
     text-indent: -999em;
-}
+}*/
 
 .projects-options {
     border-bottom: 1px solid #D9D9D9;
@@ -5688,7 +9253,7 @@ span.project-selector-dropdown {
     float: left;
     height: 50px;
     width: 70px;
-    padding: 0.3em 0.2em 0.2em 0.3em;
+    padding: 0.3em 0.2em 0 0.3em;
 }
 
 .projects .list-item-button {
@@ -5700,7 +9265,7 @@ span.project-selector-dropdown {
 }
 
 .profile-manage .list-item-button {
-    padding-right: 4.5em;
+    padding-right: 7.5em;
 }
 
 .list-item-img {
@@ -5787,15 +9352,16 @@ span.project-selector-dropdown {
 .project-modified,
 .project-created {
     width: 100%;
+    display: block;
     color: #666666;
     font-weight: 300;
     font-style: italic;
     font-size: 0.9em;
-    margin-bottom: 0.2em;
+    line-height: 1.4em;
 }
 
 .project-created {
-    float: left;
+    margin-bottom: 0.2em;
 }
 
 /* ------ START Button States ------*/
@@ -5850,183 +9416,197 @@ span.project-selector-dropdown {
     background: url(../Images/Icons/Toolbar/add-16.png) center no-repeat;
 }
 
+.share-project .share-project-buttons {
+    margin-top: 3.5em;
+}
+
 /* End Script: Mapping/modules/Project/CSS/common.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/QueryBuilder/CSS/common.css ------------------------- */ 
+.query-group,
+.query-group li,
+.add-buttons {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.simple-query-builder hr {
+    margin: 1em 0 0.5em;
+}
+
 .simple-query-builder select,
 .simple-query-builder input {
-    margin: 0 0 0 .25em;
-    font-size: 0.9em;
-    min-width: 65px;
+    height: 2em;
+    min-width: 0;
+    padding: 0;
+    font-weight: normal;
 }
-.simple-query-builder button {
-    cursor: pointer;
-    margin: 0 0 1% 1%;
-    padding: 0.25em;
+
+    .simple-query-builder input {
+        padding: 0 0.3em;
+    }
+
+.logical-operators {
+    margin-bottom: 1em;
 }
-.simple-query-builder button:hover {
-    background-color: #DEF2FF;
-    border-radius: 0.25rem;
+
+.logical-operator-toggle {
+    display: block;
 }
-.simple-query-builder .jimu-btn.add {
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    font-size: 1em;
-}
-.simple-query-builder input {
-    padding: 0.3em;
-    vertical-align: middle;
-    width: auto;
-}
-.simple-query-builder form span {
-    vertical-align: middle;
-}
-.simple-query-builder select {
-    width: auto;
-   /* width: 60%;*/
-    margin-left: 2%;
-    padding: 0.25em;
-}
-.simple-query-builder .datetime-select {
-    margin-bottom: 0;
-    font-size:0.85em;
-}
-.simple-query-builder .datetime-select select {
-    padding:.31em 0;
-}
-.simple-query-builder .auto-complete,
-.simple-query-builder input.ui-autocomplete-input {
-    /*min-width: 142px;*/
-    width: 100%;
-}
-.simple-query-builder .select-box {
-    display: table;
-    width: 100%;
-}
-.simple-query-builder .select-box span {
-    display: table-cell;
-    width: 25%;
-}
-.simple-query-builder .select-box select {
-    display: table-cell;
-    width: 98%;
-}
-.simple-query-builder .find-records {
-    margin-bottom: 0.25em;
-}
-.simple-query-builder .query-clause-row .query-clause-content {
-    padding: 1em 0;
-    position: relative;
-    height: 24px;
-}
-.simple-query-builder .operator-selector,
-.simple-query-builder .field-selector {
-    margin-right: 2px;
-    vertical-align: middle;
-    white-space: nowrap;   
-}
-.simple-query-builder .auto-field {
-    vertical-align: middle;
-    width: 100%;
-}
-.simple-query-builder .query-clause-row {
+
+.touch .logical-operator-toggle {
     margin-bottom: 0.5em;
 }
-.simple-query-builder .query-clause-row a {
-    vertical-align: middle;
-    margin-right: 2px;
+
+.logical-operator-toggle .label {
+    font-style: italic;
+    font-size: 0.9em;
+    margin-left: 0.25em;
 }
-.simple-query-builder .query-clause-row td.delete { vertical-align:middle;}
-.simple-query-builder .query-clause-row .delete-button {
+
+.logical-operators input {
+    height: initial;
+    vertical-align: middle;
+}
+
+.simple-query-builder .hidden-label {
+    height: 0;
     display: block;
+    text-indent: -9999em;
+}
+
+.query-row-input {
+    display: inline-block;
+    vertical-align: middle;
+    min-width: 0;
+    width: calc(33.33% - 4px); /*-4px to account for inline-block spacing*/
+}
+
+.query-row-input .date-picker .form-label {
+    padding: 0;
+}
+
+.query-row-delete {
     background-image: url("../Images/Icons/delete-16.png");
     background-repeat: no-repeat;
     background-position: center center;
-    width: 18px;
-    height: 18px;
-    margin-left: 8px;
+    width: 1.875em;
+    height: 1.875em;
+    vertical-align: middle;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
-.simple-query-builder .query-clause-row .disabled {
+
+.conjunction {
+    display: block;
+    padding: 0.5em;
+    text-align:center;
+    margin-bottom: -1em;
+    z-index: 1;
+    position: relative;
+}
+
+.conjunction-text {
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 0.25em 0.75em;
+    font-size: 0.85em;
+    border: 1px solid #CCCCCC;
+    background: #DEF2FF;
     cursor: default;
+    user-select: none;
+    transition: border-radius 0.2s ease-in;
 }
-.simple-query-builder .query-clause-row a.presentable-query-item {
+
+.conjunction-text.and {
+    border-radius: 0.125rem;
+}
+
+.conjunction-text.or {
+    border-radius: 2rem;
+}
+
+.simple-query-builder .text-button {
     color: #1A72C4;
-}
-.simple-query-builder .query-clause-row a.presentable-query-item:hover {
     text-decoration: underline;
 }
-.simple-query-builder .and-text {
-    margin: 0px 0px 4px 10px;
-}
-.simple-query-builder .search-button-container {
-    margin-top: 15px;
-}
-.simple-query-builder .search-button-container button {
-    float: right;
-}
-.simple-query-builder hr {
-    border: 1px solid #ccc;
-    border-bottom: none;
-    margin: 10px 0px 10px 0px;
-}
-.simple-query-builder .empty-text-placeholder {
-    font-style: italic;
-}
-.simple-query-builder .add-query-container {
-    margin-top: 15px;
+
+.simple-query-builder .add-buttons {
+    list-style: none;
+    margin-top: 1em;
 }
 
-/* Begin: Date picker */
-.simple-query-builder .date-picker {
-    display: block;
-    white-space: nowrap;
-}
-.simple-query-builder .date-picker .form-label {
-    display: none;
-}
-.simple-query-builder .date-picker input {
-    float: none;
-    width: 85%;
-}
-.simple-query-builder .date-picker .form-control {
+.simple-query-builder .add-buttons li {
     display: inline-block;
-    width: 100%;
-    vertical-align: middle;
+    vertical-align: bottom;
+    margin-right: 0.5em;
 }
-.simple-query-builder .ui-datepicker-trigger {
-    padding-top: 0.2em;
-    vertical-align: middle;
-    padding-bottom: 0.2em;
-}
-.simple-query-builder .form-control .inline-block {
-    display: block;
-}
-.simple-query-builder .form-control .inline-block.bound-invisible {
-    display: none;
-}
-/* End: Date picker */
 
-
-.simple-query-builder td {
-    max-width: 100%;
-}
-.simple-query-builder a {
-    padding-right: 0.25em;
-}
-.simple-query-builder td.delete {
-    min-width: 30px;
-    width: 100%;
-    text-align: center;
-}
-.simple-query-builder .autocomplete-container {
-    width: 100%;
-    padding-left: 10px;
-    padding-right: 26px;
-    box-sizing: border-box;
-}
-.simple-query-builder {
+.query-subgroup {
+    background: #EEEEEE;
+    width: calc(100% + 1em);
     position: relative;
+    padding: 1em 0.5em;
+    box-sizing: border-box;
+    left: -0.5em;
+    box-shadow: inset 0.125em 0.125em 0.5em 0 #CCCCCC;
+    border-radius: 0.125rem;
+    border: 1px solid #D9D9D9;
+}
+
+.query-builder-form {
+    padding: 0 1em 0 1em;
+}
+
+.query-item {
+    position: relative;
+}
+
+.query-item-inputs {
+    display: block;
+    padding-right: 2.188em;
+    margin-top: 1em;
+}
+
+.simple-query-builder .form-item {
+    margin-top: 0.5em;
+    padding: 0;
+}
+
+.main-level-add {
+    margin-top: 1em;
+}
+
+.query-subgroup + .conjunction {
+    margin-top: -1em;
+}
+
+.query-conditions-area {
+    margin-top: 0.5em;
+}
+
+.find-results {
+    margin-bottom: 0.5em;
+}
+
+.list-queries-view .gcx-list-desc {
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+.list-queries-view .results-list {
+    bottom: 5.25em;
+}
+
+.list-queries-view .has-pages {
+    height: 5.25em;
+}
+
+.simple-query-builder .info-message {
+    margin-top: 1em;
 }
 
 /* End Script: Mapping/modules/QueryBuilder/CSS/common.css ------------------------- */ 
@@ -6192,7 +9772,7 @@ span.project-selector-dropdown {
     display: block;
     float: left;
     margin: 0;
-    background: url("../../Resources/Images/Icons/Toolbar/scale-input-24.png") no-repeat center center #F8F8F8;
+    background: url("../../Resources/Images/Icons/Toolbar/scale-input-24.png") no-repeat center center #FFFFFF;
     text-indent: -99999em;
     border-radius: 0.25rem;
     border: 1px solid #D9D9D9;
@@ -6215,14 +9795,13 @@ span.project-selector-dropdown {
 }
 
 .touch .scale-input-box-container {
-    width: 19em;
     height: 3.5em;
-    padding: 0 0.5em 0 1em;
+    padding: 0.35em 0.5em 0 1em;
 }
 
 .scale-input-box-container {
     margin-left: -1em;
-    width: 19em;
+    width: auto;
     height: 2.75em;
     padding: 0 0.3em 0 1em;
 }
@@ -6268,6 +9847,12 @@ span.project-selector-dropdown {
     padding: 0.1em;
 }
 
+.scale-input-box .scale-selector:focus {
+    position: absolute;
+    z-index: 10;
+    outline-offset: 0px;
+}
+
 .scale-selector-select {
     height: 100%;
 }
@@ -6307,11 +9892,8 @@ span.project-selector-dropdown {
 
 .scale-input-box-container .form-btns {
     margin: 0 0 0 0.2em;
+    display: inline-block;
 } 
-
-.touch .scale-input-box-container .form-btns {
-    margin: 0.65em 0 0.75em 0.2em;
-}
 
 .scale-input-box-container .go-button::-moz-focus-inner {
     border: 0;
@@ -6322,8 +9904,10 @@ span.project-selector-dropdown {
 .region.footer-region .view.ScaleInputBoxView .scale-input-box-container .go-button {
     padding: 0.3em 0.5em;
     border: 1px solid #CCCCCC;
-    background-color: #F2F2F2;
-    margin-right: 0.25em;
+    background-color: #F5F5F5;
+    max-width: 10em;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .scale-input-box-container .go-button:hover,
@@ -6336,6 +9920,23 @@ span.project-selector-dropdown {
 
 
 /* Begin Script: Mapping/modules/Search/CSS/common.css ------------------------- */ 
+.global-search input[type="text"] {
+    width: 100%;
+    padding: 3px 30px 4px 9px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+    font-size: 1.6em;
+    color: #444444;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    font-weight: lighter;
+}
+
+.global-search input:focus {
+    -webkit-user-modify: read-write-plaintext-only; /* Android 3.0+ fix */
+}
+
 .hints-list {
     background-color: #FFFFFF;
     border: 1px solid #BBBBBB;
@@ -6426,6 +10027,11 @@ span.project-selector-dropdown {
     padding: 1em;
 }
 
+.save-selection-view .save-button.bound-disabled:hover {
+    background-color: #F5F5F5;
+    color: #1A72C4;
+}
+
 /* LOAD SELECTIONS -------------------------*/
 
 .list-selections-view .no-item p.description {
@@ -6440,6 +10046,12 @@ span.project-selector-dropdown {
 .list-selections-view .list-menu-item {
     padding: 0;
     position: relative;
+}
+.list-selections-view .list-menu-item .list-menu-name {
+    display: block;
+}
+.list-selections-view .list-menu-desc {
+    float: left;
 }
 .list-selections-view .list-menu-item:hover {
     background-color: transparent;
@@ -6459,7 +10071,7 @@ span.project-selector-dropdown {
     top: 0;
     right: 3em;
     width: 3em;
-    height: 3em;
+    height: 100%;
     border-left: 1px solid #EEEEEE;
     background-repeat: no-repeat;
     background-position: center;
@@ -6477,7 +10089,7 @@ span.project-selector-dropdown {
 /* REFINE RESULTS -------------------------*/
 .list-refine-results-header {
     border-bottom: 1px solid #D9D9D9;
-    background-color: #F2F2F2;
+    background-color: #F5F5F5;
     width: 100%;
     padding: .54em;
     -webkit-box-sizing: border-box;
@@ -6578,6 +10190,9 @@ span.project-selector-dropdown {
     width: 3.9em;
     height: 3.8em;
     margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 .data-frame-button {
     width: 3.9em;
@@ -6782,6 +10397,427 @@ span.project-selector-dropdown {
 /* ------ END: Panel Status ------ */
 
 /* End Script: Mapping/modules/Status/CSS/common.css ------------------------- */ 
+
+
+/* Begin Script: Mapping/modules/TimeSlider/CSS/common.css ------------------------- */ 
+/*-----START: Main Row-----*/
+
+.timeslider-container {
+    position: absolute;
+    top: 0.4em;
+    left: 33%;
+    width: 33%;
+    min-width: 25em;
+    max-width: 35em;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25em;
+    background-color: #FFFFFF;
+    z-index: 101;
+}
+
+.current-profile-title {
+    padding: 0.25em;
+    background: #FFFFFF;
+    color: #959398;
+    font-size: 1.1em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    cursor: default;
+    border-bottom: 1px solid #D9D9D9;
+    border-top-left-radius: 0.25em;
+    border-top-right-radius: 0.25em;
+}
+
+.main-row {
+    position: relative;
+}
+
+.main-row .gcx-slider-container {
+    width: 100%;
+}
+
+.slider-actions-toggle {
+    height: 100%;
+}
+
+.slider-actions-toggle button {
+    border: none;
+    border-bottom-right-radius: 0.25em;
+}
+
+.slider-actions-toggle button,
+.slider-actions-toggle button:focus {
+    background-color: transparent;
+}
+
+/*-----END: Main Row-----*/
+
+.info-message {
+    display: block;
+    padding: 0.5em;
+    background: #FFFACD;
+    font-size: 0.9em;
+    text-align: left;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25em;
+    cursor: default;
+    line-height: 1.5em;
+}
+
+.timeslider-container .info-message {
+    padding: 0.25em;
+    text-align: center;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+}
+
+/*-----START: Slider Date Pickers-----*/
+
+.slider-date-pickers {
+    padding: 0.5em;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #D9D9D9;
+}
+
+.slider-date-pickers,
+.slider-actions {
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.slider-actions::after,
+.slider-date-pickers::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.slider-date-pickers .form-label {
+    padding: 0;
+}
+
+.slider-date-pickers .form-control,
+.slider-date-pickers .inline-block {
+    width: 100%;
+}
+
+.slider-start-date-picker,
+.slider-end-date-picker {
+    width: 100%;
+}
+
+.no-touch .slider-start-date-picker,
+.no-touch .slider-end-date-picker {
+    width: 47.5%;
+    background-color: #FFFFFF;
+    box-sizing: border-box;
+}
+
+.no-touch .slider-start-date-picker {
+    float: left;
+    padding-right: 0.25em;
+}
+
+.no-touch .slider-end-date-picker {
+    float: right;
+    padding-left: 0.25em;
+}
+
+.dp-tp-select {
+    display: block;
+}
+
+.slider-date-pickers .datetime-select label {
+    margin: 0;
+    margin-right: 4%;
+}
+
+.slider-date-pickers .slider-start-to-end-date-label {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5em;
+    text-align: center;
+}
+
+.no-touch .slider-date-pickers .slider-start-to-end-date-label {
+    display: inline-block;
+    width: 5%;
+    margin-bottom: 0;
+}
+
+.datetime-select select,
+.date-picker-container select {
+    display: inline-block;
+    min-height: 1.875em;
+}
+
+.datetime-select .year-select {
+    width: 28%;
+    margin-right: 2%;
+}
+
+.datetime-select .month-select {
+    width: 47%;
+    margin: 0 -4px;
+}
+
+.datetime-select .day-select {
+    width: 18%;
+    margin-left: 2%;
+}
+
+.time-select {
+    width: 28%;
+    display: inline-block;
+    padding-left: 0.9em;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.time-select-label {
+    position: absolute;
+    top: 0.3em;
+    left: 0;
+}
+
+.native-date-picker {
+    display: inline-block;
+    width: 35%;
+    padding-right: 1em;
+    box-sizing: border-box;
+}
+
+.native-date-picker input {
+    min-width: 100%;
+    font-weight: initial;
+}
+
+.time-selectors {
+    display: inline-block;
+    float: right;
+    width: 65%;
+    padding-left: 1%;
+    box-sizing: border-box;
+}
+
+.slider-date-pickers .datetime-picker .time-select:first-child {
+    margin-left: 0;
+}
+
+.slider-date-pickers .datetime-picker .time-select {
+    width: 32%;
+    display: inline-block;
+    padding-left: 1.1em;
+    margin-right: -4px;
+    margin-left: 2%;
+}
+
+.slider-date-pickers .native-date-picker .time-select {
+    width: 31%;
+    margin-left: 2.5%;
+    padding-left: 0.8em;
+}
+
+.datetime-select .time-select select {
+    width: 100%;
+}
+
+.date-picker-container {
+    padding-right: 2.19em;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.date-picker-container .hasDatepicker {
+    height: 1.875em;
+    width: 100%;
+}
+
+.date-picker-container .ui-datepicker-trigger {    
+    height: 1.875em;
+    width: 1.875em;    
+    position: absolute;
+    right: 2px;
+    margin: 0;
+    background: url(../Images/Icons/calendar-24.png) no-repeat center center;
+    text-indent: -99999em;
+    overflow: hidden;
+}
+
+.slider-date-pickers .disable-date-picker {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+/*-----END: Slider Date Pickers-----*/
+
+/*-----START: Slider Actions List Menu-----*/
+
+.slider-actions {
+    margin: 0;
+    padding: 0;
+    background-color: #F8F8F8;
+}
+
+.slider-actions .list-menu-item {
+    width: 20%;
+    display: block;
+    float: left;
+    padding: 0;
+    border-bottom: none;
+}
+
+.slider-actions .list-menu-item:focus {
+    background-color: none;
+}
+
+.slider-actions-button {
+    width: 100%;
+    padding: 0.5em 0.25em;
+    border-left: 1px solid #EEEEEE;
+    text-align: center;
+}
+
+.slider-actions-button:hover {
+    background-color: #DEF2FF;
+}
+
+.slider-actions-button .action-label {
+    margin-top: 0.15em;
+    display: block;
+    line-height: initial;
+    font-size: 0.9em;
+}
+
+/*-----END: Slider Actions List Menu-----*/
+
+/*-----START: Time Slider Settings-----*/
+
+.timeslider-settings {
+    padding: 1em;
+}
+
+.timeslider-settings .form-label {
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.checkbox,
+.checkbox-label {
+    vertical-align: middle;
+}
+
+.time-settings-error-message {
+    color: #FF0000;
+}
+
+/*-----END: Time Slider Settings-----*/
+
+/*-----START: Date Picker-----*/
+/*Used !important throughout this section to override jquery styling*/
+.ui-datepicker {
+    width: 19em;
+    padding: 0.5em;
+}
+
+.ui-datepicker.ui-widget .ui-datepicker-header {
+    background: none;
+}
+
+.ui-datepicker-header .ui-datepicker-prev .ui-icon,
+.ui-datepicker-header .ui-datepicker-prev.ui-state-hover .ui-icon {
+    background: url(../Images/Icons/chevron-left-16.png)!important;
+}
+
+.ui-datepicker-header .ui-datepicker-next .ui-icon,
+.ui-datepicker-header .ui-datepicker-next.ui-state-hover .ui-icon {
+    background: url(../Images/Icons/chevron-right-16.png)!important;
+}
+
+.ui-datepicker.ui-widget .ui-datepicker-calendar .ui-state-default {
+    background: #F5F5F5;
+    color: #1A72C4;
+    height: 100%;
+    line-height: 2em;
+    text-align: center;
+}
+
+.ui-datepicker.ui-widget .ui-datepicker-calendar .ui-state-active {
+    background: #1A72C4;
+    border: 1px solid #CCCCCC;
+    color: #FFFFFF;
+}
+
+.ui-datepicker.ui-widget .ui-datepicker-calendar .ui-state-active.ui-state-hover {
+    background: #1A72C4!important;
+    border: 1px solid #CCCCCC!important;
+    color: #FFFFFF!important;
+    cursor: default;
+}
+
+.ui-datepicker-header .ui-datepicker-prev.ui-state-hover,
+.ui-datepicker-header .ui-datepicker-next.ui-state-hover,
+.ui-datepicker.ui-widget .ui-datepicker-calendar .ui-state-hover,
+.ui-datepicker.ui-widget .ui-datepicker-calendar .ui-state-default:focus {
+    border: 1px solid #1A72C4!important;
+    background: #E9F6FF!important;
+}
+
+.ui-datepicker .ui-timepicker-div dd {
+    padding: 0 0.5em;
+}
+
+.ui-datepicker .ui-timepicker-div dt {
+    padding: 1em .5em 0.75em 0.5em;
+}
+
+.ui-timepicker-div .ui-slider-horizontal {
+    height: 3px;
+}
+
+.ui-timepicker-div .ui-slider .ui-slider-handle {
+    height: 16px;
+    top: -7px;
+}
+
+.ui-datepicker.ui-widget .ui-datepicker-buttonpane {
+    background: none;
+}
+
+.ui-timepicker-div .info-message {
+    margin: 1.5em 0.2em 0;
+    font-size: 1em;
+}
+
+.ui-datepicker .ui-datepicker-buttonpane .ui-datepicker-current,
+.ui-datepicker .ui-datepicker-buttonpane .ui-datepicker-close {
+    padding: .5em;
+    outline: none;
+    background: #F5F5F5;
+    border: 1px solid #CCCCCC;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    color: #1A72C4;
+    box-shadow: 0;
+    margin: 0.5em 0;
+}
+
+.ui-datepicker .ui-datepicker-buttonpane .ui-datepicker-current.ui-state-hover,
+.ui-datepicker .ui-datepicker-buttonpane .ui-datepicker-close.ui-state-hover {
+    background-color: #1A72C4!important;
+    color: #FFFFFF!important;
+    text-shadow: none;
+}
+
+/*-----END: Date Picker-----*/
+
+/* End Script: Mapping/modules/TimeSlider/CSS/common.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/Toolbar/CSS/common.css ------------------------- */ 
@@ -7020,8 +11056,7 @@ span.project-selector-dropdown {
 .transient-toolbar .toolbar-item > span.icon {
     margin: 0.25em auto 0.5em auto;
 }
-.region .view.CompactToolbarView,
-.region .view.TabbedToolbarButtonView {
+.region .view.CompactToolbarView {
     margin: 0;
 }
 .CompactToolbarButtonView {
@@ -7029,30 +11064,24 @@ span.project-selector-dropdown {
     z-index: 500;
 }
 .toolbar-toggle-button {
-    width: 3.9em; 
-    height: 3.9em; /* height adjusted for negative margins */
-    margin-top: -1px;
-    background: #FFFFFF url(../Images/Icons/Toolbar/tools-32.png) center no-repeat;
+    width: 5em;
+    height: 5em;
+    padding-top: 2.5em;
+    background: #FFFFFF url(../Images/Icons/Toolbar/tools-32.png) center 0.5em no-repeat;
     border: 1px solid #D9D9D9;
-    border-top: 1px solid #ffffff;
-    border-right: 0;
-    border-bottom-left-radius: 0.25rem;
+    border-radius: 0.25rem;
     position: relative;
     z-index: 500;
     cursor: pointer;
-    float: right;
-}
-.no-touch .toolbar-toggle-button {
-    width: 3.15em;
-    height: 3.15em;
+    text-align: center;
 }
 .touch .toolbar-item.toggle-button.toggled-off:hover {
     cursor: default;
     border: 0;
-    background:transparent;
+    background: transparent;
 }
 .toolbar-toggle-button:hover {
-    border-top: 1px solid #FFFFFF;
+    background-color: #DEF2FF;
 }
 .transient-toolbar {
     border: 1px solid #ddd;
@@ -7124,7 +11153,45 @@ span.project-selector-dropdown {
     right: 50%;
     background: #eee;
 }
-
+.toolbar-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+}
+.toolbar-actions,
+.toolbar-actions li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.toolbar-actions li {
+    width: 3.5em;
+    float: left;
+    height: 100%;
+}
+.has-action-1 .tool-actions {
+    width: 3.5em;
+}
+.has-action-1 .toolbar-tab-control {
+    padding-right: 3.5em;
+}
+.has-action-2 .tool-actions {
+    width: 7em;
+}
+.has-action-2 .toolbar-tab-control {
+    padding-right: 7em;
+}
+.toolbar-action-button {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background-color: transparent;
+    border-radius: 0;
+    text-align: center;
+}
 .toolbar-close-button {
     background-image: url(../Images/Icons/panel-close.png);
     background-position: center center;
@@ -7147,7 +11214,7 @@ span.project-selector-dropdown {
     -webkit-border-bottom-right-radius: 0.25em;
     -webkit-border-bottom-left-radius: 0.25em;
     -moz-border-radius-bottomright: 0.25em;
-    -moz-border-radius-bottomleft: 0.25emx;
+    -moz-border-radius-bottomleft: 0.25em;
     border-bottom-right-radius: 0.25em;
     border-bottom-left-radius: 0.25em;
     max-width: 20em;
@@ -7605,8 +11672,12 @@ span.project-selector-dropdown {
 
 .validation-problems {
     list-style: none;
-    padding: 0;
-    margin: 1em 0 1.35em 0;
+    padding: 0 5%;
+    margin: 1em 0.35em 1.5em 0.5em;
+    border: solid 1px #D8000C;
+    background-color: #FFBABA;
+    border-radius: 0.25rem;
+    color: #660000;
 }
 .validation-problems li {
     margin: 1em auto;
@@ -7625,6 +11696,7 @@ span.project-selector-dropdown {
     width: 360px;
     max-height: 400px;
     padding: 1em;
+    box-sizing: border-box;
     margin-bottom: 0.5em;
     overflow: auto;
 }
@@ -7764,8 +11836,23 @@ span.project-selector-dropdown {
 
 .layer-details-dialog .publish-checkbox-container {
     margin: 1em auto;
+    margin-bottom: 2em;
 }
 
+.publish-checkbox-label {
+    margin-left: 0.25em;
+}
+
+.publish-checkbox,
+.publish-checkbox-label {
+    vertical-align: middle;
+}
+
+.publish-info {
+    font-style: italic;
+    text-align: center;
+    margin-top: 0.25em;
+}
 
 /*---Upload Data: Table Record Results Dialog---*/
 
@@ -7801,113 +11888,12 @@ span.project-selector-dropdown {
     padding: 1em;
 }
 
+.upload-data .image-container {
+    height: 16em;
+    max-width: 32em;
+}
+
 /* End Script: Mapping/modules/UploadData/common.css ------------------------- */ 
-
-
-/* Begin Script: Mapping/modules/UploadData/Widgets/SymbologySettings/common.css ------------------------- */ 
-/*--- Symbology Settings Widget ---*/
-
-.symbology-label {
-    display: block;
-}
-
-.symbology-settings .symbology-label::after {
-    content: ":";
-}
-
-.symbology-colors .symbology-label {
-    display: inline;
-    margin-right: 0.5em;
-    vertical-align: middle;
-}
-
-.symbology-settings input[type=color] {
-    width: 4em;
-    height: 1.6em;
-    padding: 0.1em 0.3em;
-    background-color: #EEE;
-    border: 1px solid #CCC;
-    vertical-align: middle;
-}
-.symbology-settings input[type="color"]:hover,
-.symbology-settings input[type="color"]:active {
-    border: 1px solid #AAA;
-}
-
-.symbology-settings .radio-container {
-    margin: 0;
-    padding: 0;
-    vertical-align: middle;
-}
-
-.symbology-settings .color-swatches {
-    vertical-align: middle;
-}
-
-.symbology-settings .color-swatch {
-    background-color: #EEE;
-    padding: 0.25em 0.5em;
-    margin: 0.1em;
-    border-radius: 5px;
-    text-align: center;
-    display: inline-block;
-    height: 1.3em;
-    width: 1.3em;
-}
-
-.touch .symbology-settings .color-swatch {
-    height: 2em;
-    width: 2em;
-}
-
-.symbology-fields .color-swatch input {
-    margin-bottom: 0.2em;
-}
-
-.symbology-sliders {
-    margin: 1em 0;
-}
-
-.symbology-slider {
-    margin: 0.34em 0;
-}
-
-.symbology-sliders .symbology-label {
-    margin-bottom: 0.3em;
-}
-
-.symbology-sliders .slider {
-    display: inline-block;
-    width: 88%;
-    height: 0.5em;
-}
-
-.symbology-sliders .ui-slider-horizontal .ui-slider-handle {
-    height: 1.5em;
-    top: -0.6em;
-}
-
-.symbology-sliders .ui-slider-horizontal .ui-slider-handle::after {
-    margin-top: 50%;
-}
-
-.symbology-slider-value {
-    float: right;
-}
-
-.symbology-drop-downs {
-    margin: 1em 0 1.75em 0;
-}
-
-.symbology-drop-down {
-    margin: 0.5em 0;
-}
-
-.symbology-drop-downs .symbology-label {
-    margin-bottom: 0.25em;
-}
-
-/* End Script: Mapping/modules/UploadData/Widgets/SymbologySettings/common.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/UploadData/Widgets/Uploader/common.css ------------------------- */ 
@@ -7920,6 +11906,7 @@ span.project-selector-dropdown {
 
 .uploader input {
     border: 1px solid #cccccc;
+    border-radius: 0.25rem;
     width: 100%;
     background: none;
 }
@@ -7943,10 +11930,11 @@ span.project-selector-dropdown {
     margin: 0.5em 0 0 0;
     padding: 0.5em 5%;
     background: #ffffff;
+    border-radius: 0.25rem;
 }
 
 .uploader .selected-file-list li.flagged {
-    outline: 1px solid #990000;
+    border: 1px solid #990000;
 }
 
 .uploader .selected-file-list li.flagged .selected-file-name::before,
@@ -8139,14 +12127,15 @@ span.project-selector-dropdown {
 
 
 /* Begin Script: Mapping/modules/Visualization/CSS/common.css ------------------------- */ 
-.visualization-selector,
-.visualization-options {
-    margin-bottom: 2em; 
-}
 .visualization .visualization-title {
     color: #959398;
     font-weight: normal;
     font-size: 1.25em;
+}
+
+.visualization-status .status-msg {
+    white-space: normal;
+    display: block;
 }
 
 /* End Script: Mapping/modules/Visualization/CSS/common.css ------------------------- */ 
@@ -8336,7 +12325,8 @@ span.project-selector-dropdown {
     display: none;
 }
 
-.list-menu-item .selected {
+.list-menu-item .selected,
+.list-menu-item .selected .list-menu-details:hover {
 	background-color: #D1D1D1;
 }
 
@@ -8406,800 +12396,6 @@ button.datetime-btn {
 }
 
 /* End Script: Mapping/modules/Workflow/CSS/common.css ------------------------- */ 
-
-
-/* Begin Script: Mapping/modules/Workflow/Forms/Items/CSS/common.css ------------------------- */ 
-
-/* FORM ITEMS -------------------------*/
-
-.form-container * {
-    box-sizing: border-box; /* Standardize the box model for form items */
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-}
-
-input,
-select,
-textarea,
-.form-label,
-.checkbox-group,
-.radio-group {
-    padding: .3em;
-}
-select {
-    padding: 0;
-    font-weight: 400;
-    color: #000000;
-}
-
-input[type='text'],
-input[type='date'],
-input[type='datetime'],
-input[type='password'],
-select,
-textarea {
-    max-width: 100%; /* Don't exceed the width of the container */
-    width: 100%;
-    outline: none;
-    border: 1px solid #AAAAAA;
-    border-radius: 2px;
-}
-input[type='date'] {
-    width: 60%;
-}
-input[type='checkbox'],
-input[type='radio'] {
-    margin: 0;
-    padding: 0;
-}
-
-fieldset {
-    margin: 0;
-    padding: .5em .75em .75em .75em;
-    border-radius: 0.25rem;
-}
-
-fieldset legend{
-
-    margin: 0;
-    padding: 0;
-    font-weight: 600;
-}
-
-select {
-    min-width: 100px;
-}
-
-textarea {
-    height: 5em;
-    resize: none;
-}
-
-.form-item {
-    padding: .5em 0.1em 0.5em 0;
-}
-
-.form-item:after {
-    clear: both;
-    display: block;
-    height: 0;
-    visibility: hidden;
-    content: "_";
-}
-
-.form-label,
-.form-control {
-    float: left;
-    position: relative;
-}
-
-.form-label {
-    overflow: hidden;
-    vertical-align: middle;
-    text-overflow: ellipsis;
-    word-wrap: break-word;
-}
-.label-left .form-label {
-    min-width: 30%;
-}
-.form-horizontal .label-left .form-label {
-    display: block;
-    padding: 0;
-    margin: 0;
-    width: auto;
-}
-.form-horizontal .form-label.right {
-    margin-right: 0.5em;
-}
-.form-horizontal .form-label.bound-invisible {
-    display: none;
-}
-.form-horizontal select,
-.form-horizontal input {
-    min-width: 4.6em;
-}
-.form-horizontal select {
-    padding: 0.25em;
-}
-.form-horizontal input[type=checkbox],
-.form-horizontal input[type=radio] {
-    min-width: 0;
-}
-.form-horizontal > .form > .form-item, 
-.form-horizontal > .form-item {
-    display: inline-block;
-    width: auto;
-    vertical-align: top;
-    margin-right: 0.25em;
-}
-.form-horizontal .checkbox .form-item {
-    vertical-align: middle;
-}
-.form-control {
-    min-width: 69.9%;
-    max-width: 100%;
-}
-/*.form-horizontal .form-control select,
-.form-horizontal .form-control input {
-    width: auto;
-}*/
-.form-horizontal .form-control { 
-    width: auto;
-}
-
-.autocomplete .form-control {
-    position: inherit;
-}
-
-.autocomplete-input {
-    display: inline;
-    position: relative;
-}
-
-.autocomplete-menu {
-    position: absolute;
-    margin-top: 2px;
-    z-index: 999;
-}
-
-.autocomplete-menu ul {
-    max-height: 200px;
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    overflow-y: scroll;
-    background: #FFFFFF;
-    border: 1px solid #999999;
-    border-radius: 0.25rem;
-}
-
-.autocomplete-menu li {
-    cursor: pointer;
-    white-space: inherit;
-}
-
-.autocomplete-menu.inactive {
-    display: none;
-}
-
-.combobox,
-.listbox {
-    max-width: 100%;
-}
-
-.combobox .loader {
-    left: 6px;
-}
-
-.listbox {
-    position: relative;
-    width: auto;
-}
-
-.listbox .loader {
-    left: 0;
-    width: 80px;
-}
-
-.checkbox-group label,
-.checkbox-group input,
-.radio-group label,
-.radio-group input {
-    width: auto;
-    cursor: pointer;
-}
-.radiobtn input,
-.checkbox input {
-    width: 1em;
-}
-.checkbox td,
-.radiobtn td {
-    padding: 0.3em;
-    width: 1em;
-}
-.checkbox .form-label,
-.radiobtn .form-label {
-    width: auto;
-    min-width: 0%;
-}
-
-.checkbox input,
-.checkbox span,
-.radiobtn input,
-.radiobtn span {
-    display: block;
-    vertical-align: middle;
-}
-
-
-
-.form-control .date-picker {
-    padding: 0;
-}
-
-.groupbox fieldset {
-    border: 1px solid #999999;
-}
-
-.hyperlink a {
-    word-wrap: break-word;
-    text-decoration: underline;
-}
-
-.form-btns {
-    margin-top: .75em;
-    text-align: right;
-}
-
-.form-btns button {
-    margin-left: 0.25em;
-}
-
-.form-btns input[type='Submit'] {
-    margin: 0;
-    padding: 0.25em .5em;
-    cursor: pointer;
-}
-.file-input,
-.file-input-clear {
-    display: block;
-    height: 2em;
-}
-.file-input {
-    padding-right: 32px;
-    position: relative;
-}
-.file-input-browser {
-    position: relative;
-    width: 100%;
-}
-.file-input input {}
-.file-input-clear {
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    top: 0;
-    right: 0;
-    border: none;
-    background: url("../Images/Icons/clear-24.png") no-repeat;
-    text-indent: -99999px;
-    cursor: pointer;
-    margin: 0.4em 0;
-}
-
-/* DATE - TIME PICKER VARIATIONS -------------------------*/
-
-.datetime-select {
-    /*white-space: nowrap;*/
-    text-align: left;
-}
-
-.date-picker select,
-.time-picker select {
-    display: inline-block;
-    width: auto;
-    margin: 0;
-}
-
-.datetime-select select {
-    min-width: 0;
-    width: auto;
-}
-
-.datepicker .form-control {
-    white-space: nowrap;
-}
-.datepicker .form-control > div {
-    width: 80%;
-}
-.datepicker .form-control div {
-    vertical-align: top;
-}
-input.hasDatepicker {
-    width: 82%;
-    float: left;
-}
-.datepicker .ui-datepicker-trigger {
-    border: 1px solid #cccccc;
-    border-radius: .25rem;
-    display: block;
-    float: left;
-    height: auto;
-    padding: 0.3em 0.5em;
-}
-.datetime-btn-container {
-    display: inline;
-}
-
-button.datetime-btn {
-    width: 2em;
-    height: 2em;
-}
-
-button.datetime-btn.nullify {
-    background: url("../Images/Icons/clear-24.png") center no-repeat;
-}
-
-button.datetime-btn.un-nullify {
-    background: url("../Images/Icons/add-24.png") center no-repeat;
-}
-
-.ui-datepicker {
-    z-index: 1100 !important;
-}
-
-
-/* FORM VARIATIONS -------------------------*/
-
-.ltr {
-    direction: ltr;
-}
-
-.rtl {
-    direction: rtl;
-}
-
-.rtl .form-label,
-.rtl .form-control {
-    float: right;
-}
-
-.rtl .form-label {
-    border-left: .25em solid transparent;
-    border-right: none;
-}
-
-.label-left .form-label {
-    text-align: left;
-    padding: 0 0.3em 0 0;
-}
-
-.label-right .form-label {
-    text-align: right;
-}
-
-.label-stacked .form-label {
-    text-align: left;
-    padding-left: 0;
-    padding-right: 0;
-}
-.label-stacked .form-label,
-.label-stacked .form-control {
-    width: 100%;
-    overflow: visible;
-    text-align: left;
-}
-.label-stacked .form-control-date-picker .hasDatepicker {
-    max-width: 100%;
-    width: 90%;
-}
-.form-control-date-picker input[type=date] {
-    margin-bottom: 0.5em;
-}
-.label-stacked .form-control .inline-block {
-    width: 87.5%;
-}
-.label-stacked .form-control .inline-block + .inline-block {
-    width: 1.5em;
-    float: right;
-}
-
-.label-top .form-label,
-.label-top .form-control {
-    display: block;
-    float: none;
-    padding-left: 0;
-    padding-right: 0;
-    width: auto;
-}
-
-.label-top .form-item {
-    padding: 0 0 .5em 0;
-}
-
-.ltr .form-buttons {
-    text-align: right;
-}
-
-.rtl .form-buttons {
-    text-align: left;
-}
-
-.checkbox .form-label.right,
-.radiobtn .form-label.right {
-    float: none;
-}
-.form-stacked .form-label {
-    padding-left: 0;
-    width: 100%;
-}
-.form-stacked .form-control {
-    width: 100%;
-}
-
-
-/* VALIDATION -------------------------*/
-
-.form-validation {
-    display: block;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    list-style-type: none;
-    margin: 0.5em 0;
-    padding: 0.25em;
-    border-radius: 0.25rem;
-    background-color: #FFBABA;
-    border: 1px solid #D8000C;
-    color: #660000;
-    font-weight: 600;
-    width: 100%;
-    text-align: center;
-}
-
-.form-item.invalid input[type='text'],
-.form-item.invalid select,
-.form-item.invalid textarea {
-    background-color: #FFFCCC;
-    border: 1px solid red !important;
-}
-
-.form-item.invalid input[type='text']:focus,
-.form-item.invalid select:focus,
-.form-item.invalid textarea:focus {
-    box-shadow: 1px 1px 2px #CCCCCC inset, 0 0 2px Red;
-    -webkit-box-shadow: 1px 1px 2px #CCCCCC inset, 0 0 2px Red;
-}
-
-.indicator {
-    font-weight: 600;
-}
-
-.form-item.invalid .indicator {
-    color: Red;
-}
-
-
-/* JQUERY DEFAULTS -------------------------*/
-
-
-/* Layout helpers
-----------------------------------*/
-.ui-helper-hidden { display: none; } /*.ui-helper-hidden-accessible { position: absolute !important; clip: rect(1px 1px 1px 1px); clip: rect(1px,1px,1px,1px); }*/
-.ui-helper-reset { margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none; }
-.ui-helper-clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
-.ui-helper-clearfix { display: inline-block; } /* required comment for clearfix to work in Opera \*/
-* html .ui-helper-clearfix { height:1%; }
-.ui-helper-clearfix { display:block; } /* end clearfix */
-.ui-helper-zfix { width: 100%; height: 100%; top: 0; left: 0; position: absolute; opacity: 0; filter:Alpha(Opacity=0); }
-
-
-/* Component containers
-----------------------------------*/
-.ui-widget { font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif; font-size: 1.1em; }
-.ui-widget .ui-widget { font-size: 1em; }
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif; font-size: 1em; }
-.ui-widget-content { border: 1px solid #dddddd; background: #eeeeee url(./Images/Datepicker/ui-bg_highlight-soft_100_eeeeee_1x100.png) 50% top repeat-x; color: #333333; }
-.ui-widget-content a { color: #333333; }
-.ui-widget-header { border: 1px solid #e78f08; background: #f6a828 url(./Images/Datepicker/ui-bg_gloss-wave_35_f6a828_500x100.png) 50% 50% repeat-x; color: #ffffff; font-weight: 600; }
-.ui-widget-header a { color: #ffffff; }
-
-/* Interaction states
-----------------------------------*/
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { border: 1px solid #cccccc; background: #f6f6f6 url(../Images/Datepicker/ui-bg_glass_100_f6f6f6_1x400.png) 50% 50% repeat-x; font-weight: 600; color: #1c94c4; }
-.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #1c94c4; text-decoration: none; }
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { border: 1px solid #fbcb09; background: #fdf5ce url(./Images/Datepicker/ui-bg_glass_100_fdf5ce_1x400.png) 50% 50% repeat-x; font-weight: 600; color: #c77405; }
-.ui-state-hover a, .ui-state-hover a:hover { color: #c77405; text-decoration: none; }
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { border: 1px solid #fbd850; background: #ffffff url(../Images/Datepicker/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x; font-weight: 600; color: #eb8f00; }
-.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #eb8f00; text-decoration: none; }
-.ui-widget :active { outline: none; }
-
-/* Interaction Cues
-----------------------------------*/
-.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {border: 1px solid #fed22f; background: #ffe45c url(../Images/Datepicker/ui-bg_highlight-soft_75_ffe45c_1x100.png) 50% top repeat-x; color: #363636; }
-.ui-state-highlight a, .ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a { color: #363636; }
-.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {border: 1px solid #cd0a0a; background: #b81900 url(../Images/Datepicker/ui-bg_diagonals-thick_18_b81900_40x40.png) 50% 50% repeat; color: #ffffff; }
-.ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a { color: #ffffff; }
-.ui-state-error-text, .ui-widget-content .ui-state-error-text, .ui-widget-header .ui-state-error-text { color: #ffffff; }
-.ui-priority-primary, .ui-widget-content .ui-priority-primary, .ui-widget-header .ui-priority-primary { font-weight: 600; }
-.ui-priority-secondary, .ui-widget-content .ui-priority-secondary,  .ui-widget-header .ui-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); font-weight: normal; }
-.ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled { opacity: .35; filter:Alpha(Opacity=35); background-image: none; }
-
-
-/* Icons
-----------------------------------*/
-.ui-icon { width: 16px; height: 16px; background-image: url(../Images/Datepicker/ui-icons_222222_256x240.png); }
-.ui-widget-content .ui-icon {background-image: url(../Images/Datepicker/ui-icons_222222_256x240.png); }
-.ui-widget-header .ui-icon {background-image: url(../Images/Datepicker/ui-icons_ffffff_256x240.png); }
-.ui-state-default .ui-icon { background-image: url(../Images/Datepicker/ui-icons_ef8c08_256x240.png); }
-.ui-state-hover .ui-icon, .ui-state-focus .ui-icon {background-image: url(../Images/Datepicker/ui-icons_ef8c08_256x240.png); }
-.ui-state-active .ui-icon {background-image: url(../Images/Datepicker/ui-icons_ef8c08_256x240.png); }
-.ui-state-highlight .ui-icon {background-image: url(../Images/Datepicker/ui-icons_228ef1_256x240.png); }
-.ui-state-error .ui-icon, .ui-state-error-text .ui-icon {background-image: url(../Images/Datepicker/ui-icons_ffd27a_256x240.png); }
-.ui-icon-circle-triangle-e { background-position: -48px -192px; }
-.ui-icon-circle-triangle-s { background-position: -64px -192px; }
-.ui-icon-circle-triangle-w { background-position: -80px -192px; }
-
-
-/* Datepicker 
-----------------------------------*/
-.ui-datepicker { width: 17em; padding: .2em .2em 0; display: none; }
-.ui-datepicker .ui-datepicker-header { position:relative; padding:.2em 0; }
-.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 1.8em; height: 1.8em; }
-.ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover { top: 1px; }
-.ui-datepicker .ui-datepicker-prev { left:2px; }
-.ui-datepicker .ui-datepicker-next { right:2px; }
-.ui-datepicker .ui-datepicker-prev-hover { left:1px; }
-.ui-datepicker .ui-datepicker-next-hover { right:1px; }
-.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span { display: block; position: absolute; left: 50%; margin-left: -8px; top: 50%; margin-top: -8px;  }
-.ui-datepicker .ui-datepicker-title { margin: 0 2.3em; line-height: 1.8em; text-align: center; }
-.ui-datepicker .ui-datepicker-title select { font-size:1em; margin:1px 0; }
-.ui-datepicker select.ui-datepicker-month-year {width: 100%;}
-.ui-datepicker select.ui-datepicker-month, 
-.ui-datepicker select.ui-datepicker-year { width: 49%;}
-.ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin:0 0 .4em; }
-.ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: 600; border: 0;  }
-.ui-datepicker td { border: 0; padding: 1px; }
-.ui-datepicker td span, .ui-datepicker td a { display: block; padding: .2em; text-align: right; text-decoration: none; }
-.ui-datepicker .ui-datepicker-buttonpane { background-image: none; margin: .7em 0 0 0; padding:0 .2em; border-left: 0; border-right: 0; border-bottom: 0; }
-.ui-datepicker .ui-datepicker-buttonpane button { float: right; margin: .5em .2em .4em; cursor: pointer; padding: .2em .6em .3em .6em; width:auto; overflow:visible; }
-.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current { float:left; }
-
-/* with multiple calendars */
-.ui-datepicker.ui-datepicker-multi { width:auto; }
-.ui-datepicker-multi .ui-datepicker-group { float:left; }
-.ui-datepicker-multi .ui-datepicker-group table { width:95%; margin:0 auto .4em; }
-.ui-datepicker-multi-2 .ui-datepicker-group { width:50%; }
-.ui-datepicker-multi-3 .ui-datepicker-group { width:33.3%; }
-.ui-datepicker-multi-4 .ui-datepicker-group { width:25%; }
-.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header { border-left-width:0; }
-.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header { border-left-width:0; }
-.ui-datepicker-multi .ui-datepicker-buttonpane { clear:left; }
-.ui-datepicker-row-break { clear:both; width:100%; font-size:0em; }
-
-/* RTL support */
-.ui-datepicker-rtl { direction: rtl; }
-.ui-datepicker-rtl .ui-datepicker-prev { right: 2px; left: auto; }
-.ui-datepicker-rtl .ui-datepicker-next { left: 2px; right: auto; }
-.ui-datepicker-rtl .ui-datepicker-prev:hover { right: 1px; left: auto; }
-.ui-datepicker-rtl .ui-datepicker-next:hover { left: 1px; right: auto; }
-.ui-datepicker-rtl .ui-datepicker-buttonpane { clear:right; }
-.ui-datepicker-rtl .ui-datepicker-buttonpane button { float: left; }
-.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current { float:right; }
-.ui-datepicker-rtl .ui-datepicker-group { float:right; }
-.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
-.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
-
-/* Slider 
-----------------------------------*/
-.ui-slider { position: relative; text-align: left; }
-.ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 1.2em; height: 1.2em; cursor: default; }
-.ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; }
-
-.ui-slider-horizontal { height: .8em; }
-.ui-slider-horizontal .ui-slider-handle { top: -.3em; margin-left: -.6em; }
-.ui-slider-horizontal .ui-slider-range { top: 0; height: 100%; }
-.ui-slider-horizontal .ui-slider-range-min { left: 0; }
-.ui-slider-horizontal .ui-slider-range-max { right: 0; }
-
-.ui-slider-vertical { width: .8em; height: 100px; }
-.ui-slider-vertical .ui-slider-handle { left: -.3em; margin-left: 0; margin-bottom: -.6em; }
-.ui-slider-vertical .ui-slider-range { left: 0; width: 100%; }
-.ui-slider-vertical .ui-slider-range-min { bottom: 0; }
-.ui-slider-vertical .ui-slider-range-max { top: 0; }
-
-.ui-slider-handle {
-    text-indent: -9999px;
-}
-
-/* JQUERY OVERRIDES
-----------------------------------*/
-
-.ui-widget {
-    font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
-    font-size: .95em;
-}
-
-.ui-widget-content {
-    background: #FFFFFF;
-}
-
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-    font-size: 1em;
-    font-weight: 600;
-}
-
-.ui-datepicker {
-    padding: .25em;
-    border: 1px solid #999999;
-}
-
-.ui-datepicker .ui-datepicker-header,
-.ui-datepicker-buttonpane.ui-widget-content {
-    background: #EEEEEE;
-    border: none;
-}
-
-.ui-datepicker .ui-datepicker-header {
-    padding-top: .25em;
-    padding-bottom: .25em;
-    color: #000000;
-    font-weight: 600;
-}
-
-.ui-datepicker .ui-datepicker-buttonpane {
-    overflow: hidden;
-    margin-top: .5em;
-}
-
-.ui-datepicker .ui-datepicker-prev,
-.ui-datepicker .ui-datepicker-next {
-    position:absolute;
-    top: 0;
-    width: 1.8em;
-    height: 100%;
-    overflow: hidden;
-    color: transparent;
-    cursor: pointer;
-    opacity: 0.5;
-    filter:alpha(opacity=50);
-}
-
-.ui-datepicker .ui-datepicker-prev,
-.ui-datepicker .ui-datepicker-prev-hover {
-    background: url("../Images/Icons/chevron-left-16.png") no-repeat scroll center center;
-    border: none;
-    left: 0;
-}
-
-.ui-datepicker .ui-datepicker-next,
-.ui-datepicker .ui-datepicker-next-hover {
-    background: url("../Images/Icons/chevron-right-16.png") no-repeat scroll center center;
-    border: none;
-    right: 0;
-}
-
-.ui-datepicker .ui-datepicker-next-hover,
-.ui-datepicker .ui-datepicker-prev-hover {
-    opacity: 1;
-}
-
-.ui-datepicker .ui-datepicker-prev span,
-.ui-datepicker .ui-datepicker-next span {
-    display: none;
- }
-
-.ui-datepicker .ui-datepicker-title select {
-    margin: 0;
-}
-
-.ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
-    width: auto;
-    min-width: 0;
-}
-
-.ui-datepicker-trigger {
-    margin-left: .15em;
-    padding: .15em
-}
-
-.ui-datepicker-buttonpane .ui-state-default {
-    background: #EEEEEE;
-    background: linear-gradient(top, #EEEEEE 0%,#CCCCCC 100%); 
-    background: -moz-linear-gradient(top, #EEEEEE 0%, #CCCCCC 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#EEEEEE), color-stop(100%,#CCCCCC));  
-    background: -webkit-linear-gradient(top, #EEEEEE 0%,#CCCCCC 100%); 
-    background: -o-linear-gradient(top, #EEEEEE 0%,#CCCCCC 100%);
-    background: -ms-linear-gradient(top, #EEEEEE 0%,#CCCCCC 100%);
-    border: 1px solid #AAAAAA;
-    border-radius: 0.25rem;
-    font-weight: bold;
-    color: #333333;
-    text-shadow: 1px 1px #FFFFFF;
-}
-
-.ui-timepicker-div {
-    margin-top: .75em;
-    font-size: .9em;
-}
-
-.ui-timepicker-div dd {
-    padding: .25em .5em;
-}
-
-.ui-timepicker-div dt {
-    padding: 0 .5em;
-}
-
-.ui_tpicker_time_label,
-.ui_tpicker_time {
-    font-weight: 600;
-}
-
-.ui-timepicker-div dd.ui_tpicker_time {
-    padding-top: 0;
-    padding-bottom: .5em;
-}
-
-.ui-slider.ui-widget-content {
-    background: #EEEEEE;
-    border: 1px solid #999999;
-}
-
-.ui-slider-horizontal .ui-slider-handle {
-    margin-left: -0.7em;
-    top: -0.3em;
-}
-
-.ui-datepicker-calendar .ui-state-highlight,
-.ui-datepicker-calendar .ui-widget-content .ui-state-highlight,
-.ui-datepicker-calendar .ui-widget-header .ui-state-highlight,
-.ui-timepicker-div .ui-state-highlight,
-.ui-timepicker-div .ui-widget-content .ui-state-highlight,
-.ui-timepicker-div .ui-widget-header .ui-state-highlight {
-    background: #999999;
-    border: 1px solid #666666;
-    color: #FFFFFF;
-}
-
-.ui-datepicker-calendar .ui-state-active,
-.ui-datepicker-calendar .ui-widget-content .ui-state-active,
-.ui-datepicker-calendar .ui-widget-header .ui-state-active,
-.ui-timepicker-div .ui-state-active,
-.ui-timepicker-div .ui-widget-content .ui-state-active,
-.ui-timepicker-div .ui-widget-header .ui-state-active {
-    background: #666666;
-    border: 1px solid #333333;
-    color: #FFFFFF;
-}
-
-.ui-datepicker-calendar .ui-state-hover,
-.ui-datepicker-calendar .ui-widget-content .ui-state-hover,
-.ui-datepicker-calendar .ui-widget-header .ui-state-hover,
-.ui-datepicker-calendar .ui-state-focus,
-.ui-datepicker-calendar .ui-widget-content .ui-state-focus,
-.ui-datepicker-calendar .ui-widget-header .ui-state-focus,
-.ui-timepicker-div .ui-state-hover,
-.ui-timepicker-div .ui-widget-content .ui-state-hover,
-.ui-timepicker-div .ui-widget-header .ui-state-hover,
-.ui-timepicker-div .ui-state-focus,
-.ui-timepicker-div .ui-widget-content .ui-state-focus,
-.ui-timepicker-div .ui-widget-header .ui-state-focus {
-    background: #999999;
-    border: 1px solid #666666;
-    color: #FFFFFF;
-}
-
-.ui-datepicker-buttonpane button.ui-datepicker-current,
-.ui-datepicker-buttonpane button.ui-datepicker-close {
-    opacity: 1;
-    filter: Alpha(Opacity=100);
-}
-
-.ui-datepicker-buttonpane button:hover {
-    background: #EEEEEE;
-}
-
-/* End Script: Mapping/modules/Workflow/Forms/Items/CSS/common.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/ZoomControl/CSS/common.css ------------------------- */ 

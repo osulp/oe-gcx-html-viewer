@@ -1,4 +1,8 @@
-﻿.splash-overlay, .splash-overlay * {
+body {
+    overflow: hidden;
+}
+
+.splash-overlay, .splash-overlay * {
     margin: 0;
     padding: 0;
 }
@@ -22,9 +26,9 @@
     background: white;
 }
 
-    .splash-plate.splash-invisible {
-        display: none;
-    }
+.splash-plate.splash-invisible {
+    display: none;
+}
 
 .splash-image {
     max-width: 100%;
@@ -41,9 +45,9 @@
     margin: 0 auto;
 }
 
-    .splash-paragraph sup {
-        font-size: 0.6em;
-    }
+.splash-paragraph sup {
+    font-size: 0.6em;
+}
 
 /** 
  * Splash centering rules.
@@ -56,13 +60,13 @@
     white-space: nowrap;
 }
 
-    .splash-overlay::before {
-        content: "";
-        display: inline-block;
-        height: 100%;
-        vertical-align: middle;
-        margin-right: -0.25em;
-    }
+.splash-overlay::before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -0.25em;
+}
 
 .splash-plate {
     display: inline-block;
