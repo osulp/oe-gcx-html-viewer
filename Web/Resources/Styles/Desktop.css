@@ -1,4 +1,4 @@
-
+﻿
 /* Begin Script: Mapping/modules/large.css ------------------------- */ 
 
 /* GLOBAL STYLING (LARGE )-------------------------*/
@@ -61,6 +61,10 @@ button::-moz-focus-inner { /* Remove button padding in FF */
 
 
 /* LIST MENU (LARGE) -------------------------*/
+
+.list-menu-item {
+    border-bottom: 1px solid #EEEEEE;
+}
 
 .list-menu.active {
     cursor: pointer;
@@ -322,11 +326,6 @@ a.list-menu-item {
 /* End Script: Mapping/modules/Bookmarks/CSS/large.css ------------------------- */ 
 
 
-/* Begin Script: Mapping/modules/Collaboration/CSS/large.css ------------------------- */ 
-
-/* End Script: Mapping/modules/Collaboration/CSS/large.css ------------------------- */ 
-
-
 /* Begin Script: Mapping/modules/FeatureDetails/CSS/large.css ------------------------- */ 
 
 /* FEATURE DETAIL PROVIDERS -------------------------*/
@@ -400,6 +399,13 @@ a.list-menu-item {
 .feature-details-header .feature-actions-widget .menu-hyperlinks .list-menu {
     margin-top: 0;
     border-top: none;
+}
+
+.columns {
+}
+
+.multi-region-view .tab-control li {
+    max-width: 200px;
 }
 .FeatureDetailsTopRightRegion-active .feature-details-top-right-region .results-table {
     max-width: 50%;
@@ -488,276 +494,6 @@ a.list-menu-item {
 
 
 /* End Script: Mapping/modules/IWantToMenu/CSS/large.css ------------------------- */ 
-
-
-/* Begin Script: Mapping/modules/LayerCatalog/CSS/large.css ------------------------- */ 
-.lc-filter,
-.lc-search,
-.lc-show-selected,
-.lc-entries ul li,
-.cancel-button,
-.bottom,
-.lc-actions,
-.lc-filter,
-.layer-catalog-items,
-.layer-catalog-items * {
-    -webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-.layer-catalog a {
-    color: #1B7DBF;
-    text-decoration: none;
-}
-.layer-catalog a:active {
-    color: #999999;
-}
-.layer-catalog a:focus {
-    text-decoration: underline;
-}
-.layer-catalog a.disabled:focus {
-    text-decoration: none;
-}
-.lc-status {
-    position: absolute;
-    width: 100%;
-    height: 24px;
-    text-align: center;
-    left: 0;
-}
-
-/* ------ START: Layer Catalog Search Filter ------ */
-.lc-filter {
-    position: relative;
-    clear: both;
-    width: 100%;
-    padding: 0.75em 9em 0.75em 0.75em;
-    background: #F8F8F8;
-    border-bottom: 1px solid #D9D9D9;
-}
-.lc-search {
-    position: relative;
-    width: 100%;
-    padding-right: 4.5em;
-    background: #FFFFFF;
-    border: 1px solid #CCCCCC;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-}
-.lcSearchDisable {
-    opacity: 0.5;
-}
-.lc-search input.search-field,
-.lc-search .search-button {
-    border: none;
-    background: transparent;
-    height: 2.5em;
-}
-.lc-search .search-button, 
-.lc-show-selected {
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-.lc-search .search-button {
-    background: #EEEEEE url("../../Resources/Images/Icons/search-16.png") center center no-repeat;
-    width: 2.5em;
-    border-left: 1px solid #CCCCCC;
-    -webkit-border-radius: 6px;
-    -webkit-border-top-left-radius: 0px;
-    -webkit-border-bottom-left-radius: 0px;
-    -moz-border-radius: 6px;
-    -moz-border-radius-topleft: 0px;
-    -moz-border-radius-bottomleft: 0px;
-    border-radius: 6px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-}
-.lc-show-selected {
-    width: 9em;
-    line-height: 2.5em;
-    padding: 0.75em;
-    text-align: center;
-}
-.lc-search .clear-button {
-    background: url("../../Resources/Images/Icons/delete-16.png") center center no-repeat;
-    width: 2em;
-    height :2.5em;
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 2.5em;
-}
-.selected-indicator {
-    font-size:0.8em;
-    color: #999999;
-    margin-left: 0.5em;
-}
-/* ------ END: Layer Catalog Search Filter ------ */
-
-/* ------ START: jQuery Autocomplete Overrides ------ */
-.ui-autocomplete .ui-state-focus {
-    border: 1px solid #D9D9D9;
-    background: #F8F8F8;
-    font-weight: normal;
-    color: #1B7DBF;
-}
-/* ------ START: jQuery Autocomplete Overrides ------ */
-
-.layer-catalog {
-    position: relative;
-    width: 30em;
-    height: 37.5em;
-}
-@media all and (min-width: 1000px) {
-    .layer-catalog {
-        width: 40em;
-    }
-}
-@media all and (min-width: 1200px) {
-    .layer-catalog {
-        width: 50em;
-    }
-}
-.lc-filter {
-    height: 4em;
-}
-.lc-status {
-    top: 40%;
-}
-.lc-search input.search-field {
-    max-width: 100%;
-    width: 100%;
-    font-size: 1em;
-}
-.lc-entries {
-    position: absolute;
-    top: 4em;
-    right: 0;
-    bottom: 4em;
-    left: 0;
-    overflow-y: auto;
-}
-.lc-tree {
-    padding: 0;
-    margin: 0;
-}
-.lc-actions {
-    position: absolute;
-    bottom: 0;
-    height: 4em;
-    width: 100%;
-    padding: 0.75em;
-    border-top: 1px solid #D9D9D9;
-    text-align: right;
-    background: #F8F8F8;
-}
-.lc-actions button {
-    width: 7em;
-    margin-left: 1em;
-    text-align: center;
-}
-.folder-item,
-.catalog-layer-item,
-.catalog-folder-select {
-    margin: 0;
-    padding: 0;
-    clear: both;
-    position: relative;
-}
-.catalog-folder-select {
-    margin-left: 0.825em;
-}
-.catalog-folder-select .layer-item-name {
-    font-style: italic;
-    color: #666666;
-}
-.layer-catalog-items {
-    margin: 0;
-    padding: 0;
-}
-.layer-catalog-items .layer-catalog-items {
-    margin-left: 1.75em;
-}
-.layer-catalog-items li {
-    list-style: none;
-    position: relative;
-}
-.catalog-item-button,
-.catalog-item-label {
-    display: inline-block;
-    min-height: 2em;
-}
-.catalog-item-button:hover,
-.catalog-item-label:hover {
-    cursor: pointer;
-}
-.catalog-item-label .layer-item {
-    display: inline-block;
-    padding: 0.25em 0;
-}
-.catalog-item-button,
-.catalog-item-label {
-    position: relative;
-    padding-left: 2em;
-}
-.folder-item .folder-item-name input[type=checkbox]{
-    margin-right:0.35em;
-}
-.catalog-layer-item input,
-.catalog-folder-select input {
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 0.5em;
-}
-.catalog-layer-item a {
-    padding-left: 2em;
-}
-.folder-open {
-    background: url("../../Resources/Images/Icons/tree-expander-open-light-16.png") center center no-repeat !important;
-}
-.catalog-item-control {
-    display: block;
-    width: 2em;
-    height: 2em;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-.expander-button {
-    display: block;
-    height: 100%;
-    width: 100%;
-    background: url("../../Resources/Images/Icons/tree-expander-closed-light-16.png") center center no-repeat;
-}
-.lc-details {
-    color: #777777;
-    font-size: 0.9em;
-    margin-left: 0.5em;
-    cursor: pointer;
-}
-.lc-details img {
-    max-height: 16px;
-}
-/* ------ START: jQuery Autocomplete Overrides ------ */
-.ui-autocomplete {
-    max-height: 30em;
-    overflow-y: auto;
-}
-.ui-autocomplete.ui-menu .ui-menu-item a {
-    padding: 1em 0.5em;
-}
-/* ------ START: jQuery Autocomplete Overrides ------ */
-
-.lc-layers-text {
-    padding: 1em 0em 0em 1.2em;
-    font-weight: bold;
-}
-
-/* End Script: Mapping/modules/LayerCatalog/CSS/large.css ------------------------- */ 
 
 
 /* Begin Script: Mapping/modules/LayerList/CSS/large.css ------------------------- */ 
@@ -904,6 +640,22 @@ body {
     width: 100%;
 }
 
+.global-search input {
+    width: 100%;
+    padding: 3px 30px 4px 9px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 0.25rem;
+    font-size: 1.6em;
+    color: #656169;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.global-search input:focus {
+    -webkit-user-modify: read-write-plaintext-only; /* Android 3.0+ fix */
+}
+
 .search-hints-region {
     position: absolute;
     width: 100%;
@@ -1023,7 +775,7 @@ body {
     margin-left: -1px;
     border-bottom: 1px solid #D9D9D9;
     border-right: 1px solid #D9D9D9;
-    border-left: 1px solid #F5F5F5;
+    border-left: 1px solid #F2F2F2;
     border-bottom-right-radius: 3px;
     -moz-border-bottom-right-radius: 3px;
     -webkit-border-bottom-right-radius: 3px;
@@ -1208,13 +960,6 @@ li .toolbar-item.toolbar-group {
 .flyout-menu .toolbar-item {
     max-width: initial;
     height: 4.4em !important;
-}
-.TabbedToolbarView .transient-toolbar + .transient-measurement {
-    margin-top: 0;
-    margin-left: 0;
-    position: absolute;
-    z-index: 601;
-    top: 0.5em;
 }
 
 /* ------ START: Small Toolbar Buttons ------ */
@@ -1456,6 +1201,30 @@ li .toolbar-item.toolbar-group {
 /* End Script: Mapping/modules/Toolbar/CSS/large.css ------------------------- */ 
 
 
+/* Begin Script: Mapping/modules/Workflow/Forms/Items/CSS/large.css ------------------------- */ 
+
+/* FORM ITEMS (LARGE) -------------------------*/
+
+select,
+button {
+	cursor: pointer;
+}
+
+.form-item .group-box {
+    max-width: 640px;
+}
+
+.form-button-container {
+    padding-top: .5em;
+}
+
+.auto-complete .list-menu li {
+    cursor: pointer;
+}
+
+/* End Script: Mapping/modules/Workflow/Forms/Items/CSS/large.css ------------------------- */ 
+
+
 /* Begin Script: Mapping/modules/ZoomControl/CSS/large.css ------------------------- */ 
 
 /* ZOOM BUTTONS (LARGE) -------------------------*/
@@ -1496,28 +1265,4 @@ li .toolbar-item.toolbar-group {
 }
 
 /* End Script: Mapping/infrastructure/results/CSS/large.css ------------------------- */ 
-
-
-/* Begin Script: Mapping/infrastructure/ui/components/Forms/CSS/large.css ------------------------- */ 
-
-/* FORM ITEMS (LARGE) -------------------------*/
-
-select,
-button {
-	cursor: pointer;
-}
-
-.form-item .group-box {
-    max-width: 640px;
-}
-
-.form-button-container {
-    padding-top: .5em;
-}
-
-.auto-complete .list-menu li {
-    cursor: pointer;
-}
-
-/* End Script: Mapping/infrastructure/ui/components/Forms/CSS/large.css ------------------------- */ 
 

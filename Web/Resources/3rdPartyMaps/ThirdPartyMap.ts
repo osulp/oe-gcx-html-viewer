@@ -238,7 +238,7 @@ module geocortex.essentialsHtmlViewer.integration {
             this.updateSync(!this.sync);
             this.bridge.publish("ToggleExternalComponentSyncById", this.id);
         }
-
+        
         /**
          * Called when the "dock" button is clicked/tapped.
          */
@@ -255,7 +255,7 @@ module geocortex.essentialsHtmlViewer.integration {
          */
         handleClickClose(): void {
             this.bridge.publish("RemoveExternalComponentById", this.id);
-
+            
             // TODO: Unsubscribe from all?
         }
 
@@ -276,7 +276,7 @@ module geocortex.essentialsHtmlViewer.integration {
                 button.elem.parentElement.style.display = "none";
             }
         }
-
+        
         /**
          * Update the sync value for the 3rd party map and updates the button if available.
          */

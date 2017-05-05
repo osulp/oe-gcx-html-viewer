@@ -1,4 +1,4 @@
-About
+﻿About
 =====
 The version of Moment that we are using is the one bundled with Esri's JavaScript API. We host local
 copies of Esir's locale files for use with GMAF. The moment-timezone-with-data.js file does NOT

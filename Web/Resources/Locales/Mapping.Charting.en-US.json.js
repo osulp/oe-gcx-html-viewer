@@ -1,4 +1,4 @@
-{
+﻿{
      "language-charting-no-items": "No charts to display",
      "language-charting-selector-text": "Select Charts",
      "language-charting-smart-panel-maximize-restore": "Maximize/Restore Panel",
