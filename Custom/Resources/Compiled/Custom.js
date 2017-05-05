@@ -125,6 +125,7 @@ var oe;
     (function (development_registry) {
         var DevelopmentRegistryModule = (function (_super) {
             __extends(DevelopmentRegistryModule, _super);
+            // devAttributes: any;
             function DevelopmentRegistryModule(app, lib) {
                 var _this = this;
                 _super.call(this, app, lib);
@@ -133,27 +134,8 @@ var oe;
                 // We'll need this to add our custom layer to the layer list.
                 this.app.eventRegistry.event("LayerListInitializedEvent").subscribe(this, function (sender) {
                     // look for tables
-                    // sender.mapInfo.serviceLayers[0].serviceLayer.url
                     _this.layerList = sender;
-                    //let devTypeTableURL = '';
-                    //let devSubTypeTableURL = '';
-                    _this.layerList.mapInfo.serviceLayers.forEach(function (sl) {
-                        if (sl.displayName === "Development Types") {
-                            _this.devTypeTableURL = sl.serviceLayer.url;
-                        }
-                        if (sl.displayName === "Development Subtypes") {
-                            _this.devSubTypeTableURL = sl.serviceLayer.url;
-                        }
-                    });
                     _this._getDevSubTypes();
-                    // add query parameters to base urls
-                    //let query_params = 'query?where=1%3D1&f=json&token=';
-                    //devTypeTableURL = devTypeTableURL.split('?token=')[0] + query_params + devTypeTableURL.split('?token=')[1];
-                    //devSubTypeTableURL = devSubTypeTableURL.split('?token=')[0] + query_params + devSubTypeTableURL.split('?token=')[1];
-                    //$.when($.ajax(devTypeTableURL), $.ajax(devSubTypeTableURL))
-                    //    .done((dtt, dstt) => {
-                    //        console.log('done getting results from tables', dtt, dstt);
-                    //    });
                 });
             }
             DevelopmentRegistryModule.prototype.initialize = function (config) {
@@ -171,14 +153,29 @@ var oe;
             };
             DevelopmentRegistryModule.prototype._getDevSubTypes = function () {
                 var _this = this;
+                var devTypeTableURL;
+                var devSubTypeTableURL;
+                this.layerList.mapInfo.serviceLayers.forEach(function (sl) {
+                    if (sl.displayName === "Development Types") {
+                        devTypeTableURL = sl.serviceLayer.url;
+                        _this.devRegTablesUrl = sl.gcxMapService.serviceUrl;
+                    }
+                    if (sl.displayName === "Development Subtypes") {
+                        devSubTypeTableURL = sl.serviceLayer.url;
+                    }
+                    if (sl.displayName === "All developments") {
+                        _this.devRegSrvcUrl = sl.gcxMapService.serviceUrl;
+                        _this.devRegToken = sl.gcxMapService.serviceToken;
+                    }
+                });
                 // add query parameters to base urls
                 var query_params = '/query?where=1%3D1&outFields=Development_Type_ID,Development_Type,Development_SubType&f=json&token=';
-                var devTypeTableURL_query = this.devTypeTableURL.split('?token=')[0]
+                var devTypeTableURL_query = devTypeTableURL.split('?token=')[0]
                     + query_params
-                    + this.devTypeTableURL.split('?token=')[1];
-                var devSubTypeTableURL_query = this.devSubTypeTableURL.split('?token=')[0]
+                    + devTypeTableURL.split('?token=')[1];
+                var devSubTypeTableURL_query = devSubTypeTableURL.split('?token=')[0]
                     + query_params
-                    + this.devSubTypeTableURL.split('?token=')[1];
+                    + devSubTypeTableURL.split('?token=')[1];
                 $.when($.ajax(devTypeTableURL_query), $.ajax(devSubTypeTableURL_query))
                     .done(function (dtt, dstt) {
                     var devTypes = [];
@@ -207,6 +204,20 @@ var oe;
                     });
                 });
             };
+            DevelopmentRegistryModule.prototype._handleDevTypeChange = function (args) {
+                if (args) {
+                    var all_fields = this.app.viewManager.getViewById("FeatureEditingContainerView").childRegions[0].views[1].viewModel.form.value["all_fields"]
+                        ? this.app.viewManager.getViewById("FeatureEditingContainerView").childRegions[0].views[1].viewModel.form.value["all_fields"]
+                        : this.app.viewManager.getViewById("FeatureEditingContainerView").childRegions[0].views[1].viewModel.form.value.fields.getItems();
+                    var filtered_attr = this._processAttributeFilter(all_fields);
+                    try {
+                        this.app.viewManager.getViewById("FeatureEditingContainerView").childRegions[0].views[1].viewModel.form.value.fields.set(filtered_attr);
+                    }
+                    catch (ex) {
+                        console.log(ex.message);
+                    }
+                }
+            };
             DevelopmentRegistryModule.prototype._processAttributeFilter = function (attributes) {
                 var _this = this;
                 var layerFilters = this._layerFilters;
@@ -214,14 +225,29 @@ var oe;
                     var devType = attributes.filter(function (f) { return f.name.value === 'dst_cat'; }).length > 0 ? attributes.filter(function (f) { return f.name.value === 'dst_cat'; })[0].value.value : '';
                     if (devType !== '') {
                         var filteredFields = attributes.filter(function (f) {
+                            if (f.name.value === 'dst_cat' && f.valueOptions) {
+                                //f.value.bindingEvent.publish();
+                                if (!f.value.bindingEvent.isPublishing) {
+                                    f.value.bindingEvent.subscribe(_this, _this._handleDevTypeChange);
+                                }
+                            }
                             if (f.name.value === 'subcat') {
                                 if (_this.devSubTypesTable && f.valueOptions) {
-                                    console.log('check', _this.devSubTypesTable[devType]);
-                                    var filteredCodedValues = f.domain.codedValues.filter(function (cd) {
-                                        return _this.devSubTypesTable[devType].subtypes.indexOf(cd.name) !== -1;
+                                    var filteredCodedValues = [];
+                                    f.domain.codedValues.forEach(function (cv) {
+                                        if (_this.devSubTypesTable[devType].subtypes.indexOf(cv.name) !== -1) {
+                                            filteredCodedValues.push(cv);
+                                        }
                                     });
+                                    //let filteredCodedValues = f.domain.codedValues.filter(cd => {
+                                    //    return this.devSubTypesTable[devType].subtypes.indexOf(cd.name) !== -1
+                                    //});
                                     f.valueOptions.value = filteredCodedValues;
-                                    f.domain.codedValues = filteredCodedValues;
+                                }
+                            }
+                            if (f.name.value === 'or_dev_reg_proj_id') {
+                                if (f.readOnly) {
+                                    f.readOnly.set(true);
                                 }
                             }
                             return layerFilters[devType] ? layerFilters[devType].indexOf(f.name.value) !== -1 : true;
@@ -244,13 +270,29 @@ var oe;
                         }
                     }
                 });
+                this.app.commandRegistry.command("runAddEditDevFeatures").register(this, function () {
+                    var workflowArgs = {};
+                    workflowArgs["workflowId"] = "add_edit_dev_features";
+                    workflowArgs["site_uri"] = this.app.site.originalUrl + '/map?f=json';
+                    workflowArgs["srvc_url"] = this.devRegSrvcUrl;
+                    workflowArgs["srvc_token"] = this.devRegToken;
+                    workflowArgs["srvc_tables_url"] = this.devRegTablesUrl;
+                    //workflowArgs["or_dev_reg_id"] = args.attributes["or_dev_reg_id"];
+                    this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
+                });
                 this.app.eventRegistry.event("ViewContainerActivatedEvent").subscribe(this, function (args) {
-                    if (args.id === "FeatureEditingContainerView") {
+                    if (args.id === "FeatureEditingContainerView" && !args.isActive) {
                         if (args.childRegions.length > 0) {
                             if (args.childRegions[0].views.length > 1) {
-                                var fields = args.childRegions[0].views[1].viewModel.form.value.fields.getItems();
-                                if (fields.length > 0) {
-                                    var filteredFields = this._processAttributeFilter(fields);
+                                var attr = args.childRegions[0].views[1].viewModel.form.value.fields.getItems();
+                                if (attr.length > 0) {
+                                    if (!args.childRegions[0].views[1].viewModel.form.value["all_fields"]) {
+                                        args.childRegions[0].views[1].viewModel.form.value["all_fields"] = [];
+                                        args.childRegions[0].views[1].viewModel.form.value.fields.value.forEach(function (f) {
+                                            args.childRegions[0].views[1].viewModel.form.value["all_fields"].push(f);
+                                        });
+                                    }
+                                    var filteredFields = this._processAttributeFilter(attr);
                                     if (filteredFields.length > 0) {
                                         args.childRegions[0].views[1].viewModel.form.value.fields.set(filteredFields);
                                     }
@@ -260,6 +302,7 @@ var oe;
                     }
                 });
                 this.app.eventRegistry.event("FeatureDetailsInvokedEvent").subscribe(this, function (args) {
+                    //let filteredAttributes = this._processAttributeFilter(this.devAttributes ? this.devAttributes : args.attributes.getItems());
                     var filteredAttributes = this._processAttributeFilter(args.attributes.getItems());
                     if (filteredAttributes) {
                         var filteredAttrNames = filteredAttributes.map(function (fa) { return fa.name.value; });
@@ -268,6 +311,38 @@ var oe;
                                 attr.visible.set(false);
                             }
                         });
+                    }
+                });
+                this.app.eventRegistry.event("GeometryEditInvokedEvent").subscribe(this, function (args, test) {
+                    var _this = this;
+                    this.app.commandRegistry.commands.Confirm.execute("Would you like to upload a shapefile(zipped) or use the map to modify the shape of this development?", "Upload Shapefile or use map?", function (result) {
+                        console.log('user selection', result);
+                        if (result) {
+                            var workflowArgs = {};
+                            workflowArgs["workflowId"] = "add_edit_dev_features";
+                            workflowArgs["srvc_url"] = _this.devRegSrvcUrl;
+                            workflowArgs["srvc_token"] = _this.devRegToken;
+                            workflowArgs["workflow_action"] = "Edit";
+                            workflowArgs["or_dev_reg_id"] = args.attributes["or_dev_reg_id"];
+                            _this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
+                            //call
+                            //this.openFileDialog(".zip", (file) => {
+                            //    console.log('file', file);
+                            //});
+                            $('.button:contains("Save Geometry")').click();
+                            $('.button:contains("Save")').click();
+                        }
+                        //else {
+                        //    args.draw();
+                        //}
+                    });
+                    $(".confirm .button:contains('OK')").html("Upload New Shape");
+                    $(".confirm .button:contains('Cancel')").html("Use Map");
+                    //var isUpload = false;
+                });
+                this.app.event("WorkflowCompletedEvent").subscribe(this, function (workflow, workflowOutputs) {
+                    if (workflow.id !== "edit_geometry") {
+                        return;
                     }
                 });
             };
@@ -739,6 +814,7 @@ var oe;
 /* End Script: C:/Users/rempelma/Documents/Visual Studio 2015/Projects/oe-gcx-html-viewer/custom_ts_out.js ------------------------- */ 
 
 geocortex.resourceManager.register("Custom","inv","Modules/CustomFormM49/CustomFormM49ModuleView.html","html","DQoNCjxkaXYgY2xhc3M9Im1vZHVsZSB3b3JrZmxvdy1mb3JtIiBkaXI9Imx0ciI+DQogICAgPGZvcm0gaWQ9ImN1c3RvbUZvcm0iIHRpdGxlPSJNZWFzdXJlIDQ5IEVzdGltYXRlZCBDb25zdHJhaW50cyI+DQogICAgICAgIDxkaXYgY2xhc3M9ImZvcm0tY29udGFpbmVyIj4NCiAgICAgICAgICAgIDxmaWVsZHNldD4NCiAgICAgICAgICAgICAgICA8bGVnZW5kPlNlbGVjdGVkIEFyZWEocyk8L2xlZ2VuZD4NCiAgICAgICAgICAgICAgICA8ZGl2Pg0KICAgICAgICAgICAgICAgICAgICA8c3Bhbj5DdXN0b20gRHJhd24gQXJlYTwvc3Bhbj4NCiAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3M9ImxpbmsiIGRhdGEtYmluZGluZz0ie0BldmVudC1vbmNsaWNrOnpvb21Ub30iPlpvb20gVG88L3NwYW4+DQogICAgICAgICAgICAgICAgPC9kaXY+DQogICAgICAgICAgICA8L2ZpZWxkc2V0Pg0KICAgICAgICAgICAgPGZpZWxkc2V0Pg0KICAgICAgICAgICAgICAgIDxsZWdlbmQ+RXN0aW1hdGVkIENvbnN0cmFpbnRzPC9sZWdlbmQ+DQogICAgICAgICAgICAgICAgPHRhYmxlIGlkPSJjb25zdHJhaW50cy10YWJsZSI+DQogICAgICAgICAgICAgICAgICAgIDx0aGVhZD4NCiAgICAgICAgICAgICAgICAgICAgICAgIDx0cj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGggYWxpZ249ImNlbnRlciI+Q29uc3RyYWludHM8L3RoPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0aCBhbGlnbj0iY2VudGVyIj5BcmVhKCUpPC90aD4NCiAgICAgICAgICAgICAgICAgICAgICAgIDwvdHI+DQogICAgICAgICAgICAgICAgICAgIDwvdGhlYWQ+DQogICAgICAgICAgICAgICAgICAgIDx0Ym9keT4NCiAgICAgICAgICAgICAgICAgICAgICAgIDx0ciBjbGFzcz0iYWx0Ij4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQgY2xhc3M9ImNvbnN0cmFpbnQtY2VsbCI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXY+SGlnaC12YWx1ZSBmYXJtbGFuZCBzb2lsIDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJjb25zdHJhaW50LWxheWVyLWNvbnRyb2xzIj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzPSJsaW5rIiBkYXRhLWJpbmRpbmc9IntAZXZlbnQtb25jbGljazp0b2dnbGVMYXllcn0iIGRhdGEtYXR0ci1sYXllcj0iSGlnaC12YWx1ZSBGYXJtIFNvaWxzIj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBUb2dnbGUgbGF5ZXINCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvc3Bhbj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzPSJsaW5rIiBkYXRhLWJpbmRpbmc9IntAZXZlbnQtb25jbGljazpzaG93SW5mb30iIGRhdGEtYXR0ci1jb25zdHJhaW50PSJIVkZMIj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBDb25zdHJhaW50IEluZm8NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvc3Bhbj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90ZD4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQ+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgaWQ9Imh2Zmxfc29pbCI+PC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90ZD4NCiAgICAgICAgICAgICAgICAgICAgICAgIDwvdHI+DQogICAgICAgICAgICAgICAgICAgICAgICA8dHI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2PkhpZ2gtdmFsdWUgZmFybWxhbmQgZGFpcnkgPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImNvbnN0cmFpbnQtbGF5ZXItY29udHJvbHMiPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3M9ImxpbmsiIGRhdGEtYmluZGluZz0ie0BldmVudC1vbmNsaWNrOnRvZ2dsZUxheWVyfSIgZGF0YS1hdHRyLWxheWVyPSJIaWdoLXZhbHVlIEZhcm0gRGFpcnkgU29pbCI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgVG9nZ2xlIGxheWVyDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3NwYW4+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzcz0ibGluayIgZGF0YS1iaW5kaW5nPSJ7QGV2ZW50LW9uY2xpY2s6c2hvd0luZm99IiBkYXRhLWF0dHItY29uc3RyYWludD0iSFZGRCI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQ29uc3RyYWludCBJbmZvDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3NwYW4+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvdGQ+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGlkPSJodmZsX2RhaXJ5Ij48L2Rpdj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3RkPg0KICAgICAgICAgICAgICAgICAgICAgICAgPC90cj4NCiAgICAgICAgICAgICAgICAgICAgICAgIDx0ciBjbGFzcz0iYWx0Ij4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQ+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXY+SGlnaC12YWx1ZSBmb3Jlc3RsYW5kPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImNvbnN0cmFpbnQtbGF5ZXItY29udHJvbHMiPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3M9ImxpbmsiIGRhdGEtYmluZGluZz0ie0BldmVudC1vbmNsaWNrOnRvZ2dsZUxheWVyfSIgZGF0YS1hdHRyLWxheWVyPSJIaWdoLXZhbHVlIEZvcmVzdCBsYW5kIj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBUb2dnbGUgbGF5ZXINCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvc3Bhbj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzPSJsaW5rIiBkYXRhLWJpbmRpbmc9IntAZXZlbnQtb25jbGljazpzaG93SW5mb30iIGRhdGEtYXR0ci1jb25zdHJhaW50PSJIVkZvcmVzdCI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQ29uc3RyYWludCBJbmZvDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3NwYW4+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvdGQ+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGlkPSJodmYiPjwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvdGQ+DQogICAgICAgICAgICAgICAgICAgICAgICA8L3RyPg0KICAgICAgICAgICAgICAgICAgICAgICAgPHRyPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZD4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGRpdj5MaWtlbHkgaGlnaC12YWx1ZSBmb3Jlc3RsYW5kPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImNvbnN0cmFpbnQtbGF5ZXItY29udHJvbHMiPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3M9ImxpbmsiIGRhdGEtYmluZGluZz0ie0BldmVudC1vbmNsaWNrOnRvZ2dsZUxheWVyfSIgZGF0YS1hdHRyLWxheWVyPSJMaWtlbHkgaGlnaC12YWx1ZSBmb3Jlc3RsYW5kIHdlc3Qgb2YgdGhlIENhc2NhZGVzIFBvc3NpYmxlIGFyZWFzIG9mIGhpZ2gtdmFsdWUgZm9yZXN0bGFuZCBlYXN0IG9mIHRoZSBDYXNjYWRlcyI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgVG9nZ2xlIGxheWVyDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3NwYW4+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzcz0ibGluayIgZGF0YS1iaW5kaW5nPSJ7QGV2ZW50LW9uY2xpY2s6c2hvd0luZm99IiBkYXRhLWF0dHItY29uc3RyYWludD0iTEhWRm9yZXN0Ij4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBDb25zdHJhaW50IEluZm8NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvc3Bhbj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90ZD4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQ+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgaWQ9Imh2Zl9saWtlbHkiPjwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvdGQ+DQogICAgICAgICAgICAgICAgICAgICAgICA8L3RyPg0KICAgICAgICAgICAgICAgICAgICA8L3Rib2R5Pg0KICAgICAgICAgICAgICAgIDwvdGFibGU+DQogICAgICAgICAgICA8L2ZpZWxkc2V0Pg0KICAgICAgICAgICAgPGZpZWxkc2V0Pg0KICAgICAgICAgICAgICAgIDxsZWdlbmQ+UERGIFJlcG9ydCBTZXR0aW5nczwvbGVnZW5kPg0KICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImZvcm0tY29udGFpbmVyIj4NCiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0iZm9ybSBsYWJlbC1sZWZ0IiBpZD0iY3VzdG9tRm9ybUJvZHkiPg0KICAgICAgICAgICAgICAgICAgICAgICAgPGxhYmVsIGZvcj0icmVwb3J0VGl0bGUiIGNsYXNzPSJmb3JtLWxhYmVsIG15TGFiZWwiPlRpdGxlPC9sYWJlbD4NCiAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImZvcm0tY29udHJvbCI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPGlucHV0IGlkPSJyZXBvcnRUaXRsZSIgdHlwZT0idGV4dCIgcGxhY2Vob2xkZXI9IlJlcG9ydCBUaXRsZSIgdmFsdWU9IlJlcG9ydCBUaXRsZSIgZGF0YS1iaW5kaW5nPSJ7QGV2ZW50LW9uY2xpY2s6Y2xlYXJUaXRsZX0iLz4NCiAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgPGxhYmVsIGZvcj0idXNlck5hbWUiIGlkPSJ1c2VyTmFtZWxibCIgY2xhc3M9ImZvcm0tbGFiZWwgbXlMYWJlbCI+SW5jbHVkZSBtYXA8L2xhYmVsPg0KICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0iZm9ybS1jb250cm9sIj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8aW5wdXQgaWQ9ImluY2x1ZGVNYXAiIHR5cGU9ImNoZWNrYm94IiBjaGVja2VkIC8+DQogICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj4NCg0KICAgICAgICAgICAgICAgICAgICA8L2Rpdj4NCiAgICAgICAgICAgICAgICA8L2Rpdj4NCiAgICAgICAgICAgIDwvZmllbGRzZXQ+DQoNCiAgICAgICAgICAgIDxkaXYgc3R5bGU9InRleHQtYWxpZ246cmlnaHQ7IHdpZHRoOjEwMCU7IGRpc3BsYXk6IGlubGluZS1ibG9jazsiIGNsYXNzPSJmb3JtLWJ0bnMiPg0KICAgICAgICAgICAgICAgIDxidXR0b24gaWQ9Im9rQnRuIiBjbGFzcz0iYnV0dG9uIiB0eXBlPSJidXR0b24iIGRhdGEtYmluZGluZz0ie0BldmVudC1vbmNsaWNrOnJ1bk5ld1JlcG9ydH0iPjw8IE5ldyBSZXBvcnQ8L2J1dHRvbj4NCiAgICAgICAgICAgICAgICA8YnV0dG9uIGlkPSJva0J0biIgY2xhc3M9ImJ1dHRvbiIgdHlwZT0iYnV0dG9uIiBkYXRhLWJpbmRpbmc9IntAZXZlbnQtb25jbGljazpnZXRQREZ9Ij5Db250aW51ZSA+PjwvYnV0dG9uPg0KICAgICAgICAgICAgICAgIDxidXR0b24gaWQ9ImNhbmNlbEJ0biIgY2xhc3M9ImJ1dHRvbiIgdHlwZT0iYnV0dG9uIiBkYXRhLWJpbmRpbmc9IntAZXZlbnQtb25jbGljazpjYW5jZWxGb3JtfSI+Q2xvc2U8L2J1dHRvbj4NCiAgICAgICAgICAgIDwvZGl2Pg0KICAgICAgICA8L2Rpdj4NCiAgICA8L2Zvcm0+DQogICAgPGRpdiBpZD0iYW5pbWF0aW9uIj48L2Rpdj4NCg0KPC9kaXY+DQo=");
+geocortex.resourceManager.register("Custom","inv","Modules/DevelopmentRegistry/EditGeometryView.html","html","PCFET0NUWVBFIGh0bWw+DQo8aHRtbD4NCjxoZWFkPg0KICAgIDx0aXRsZT48L3RpdGxlPg0KCTxtZXRhIGNoYXJzZXQ9InV0Zi04IiAvPg0KPC9oZWFkPg0KPGJvZHk+DQoNCjwvYm9keT4NCjwvaHRtbD4NCg==");
 geocortex.resourceManager.register("Custom","inv","Modules/Elevation/ElevationModuleView.html","html","PGRpdiBjbGFzcz0iZWxldmF0aW9uLW1vZHVsZS12aWV3Ij4NCglFTEVWQVRJT046IDxiPjxzcGFuIGlkPSJlbGV2YXRpb24iPjwvc3Bhbj48L2I+ICAgDQo8L2Rpdj4NCg==");
 geocortex.resourceManager.register("Custom","inv","Modules/CustomFormM49/CustomFormM49Module.css","css","DQoucmVnaW9uIC52aWV3LlRlbXBsYXRlTW9kdWxlVmlldy5hY3RpdmUgew0KICAgIG1hcmdpbjogMDsNCn0NCg0KLnRlbXBsYXRlLW1vZHVsZS12aWV3IHsNCiAgICBwb3NpdGlvbjogYWJzb2x1dGU7DQogICAgei1pbmRleDogMTAwOw0KICAgIHdpZHRoOiA1MDBweDsNCiAgICByaWdodDogMDsNCiAgICBiYWNrZ3JvdW5kOiB3aGl0ZTsNCiAgICBjb2xvcjogYmxhY2s7DQogICAgcGFkZGluZzogNnB4Ow0KICAgIGJvcmRlcjogMXB4IHNvbGlkICMzMzM7DQogICAgbWFyZ2luLXRvcDogNDZweDsNCiAgICBtYXJnaW4tcmlnaHQ6IDJweDsNCn0NCg0KICAgIC5tYWluRm9ybSBpbnB1dFt0eXBlPSJ0ZXh0Il0sIC5tYWluRm9ybSB0ZXh0YXJlYSwgLm1haW5Gb3JtIHNlbGVjdCB7DQogICAgICAgIC8qd2lkdGg6IDY1JTsqLw0KICAgICAgICBtYXJnaW4tYm90dG9tOiA1cHg7DQogICAgfQ0KDQogICAgLm1haW5Gb3JtIGlucHV0W3R5cGU9ImRhdGUiXSB7DQogICAgICAgIGRpc3BsYXk6IGJsb2NrOw0KICAgIH0NCg0KLnRleHRCb3ggew0KICAgIGJvcmRlci1yYWRpdXM6IDJweDsNCiAgICBib3JkZXI6IDFweCBzb2xpZCAjQUFBQUFBOw0KfQ0KDQouZXJyb3Igew0KICAgIC8qd2lkdGg6IDEwMCU7Ki8NCiAgICBwYWRkaW5nOiAwOw0KICAgIGRpc3BsYXk6IGlubGluZS1ibG9jazsNCiAgICAvKmZvbnQtc2l6ZTogODAlOyovDQogICAgY29sb3I6IHJlZDsNCiAgICAvKmJhY2tncm91bmQtY29sb3I6ICM5MDA7Ki8NCiAgICBib3JkZXItcmFkaXVzOiAwIDAgNXB4IDVweDsNCiAgICAtbW96LWJveC1zaXppbmc6IGJvcmRlci1ib3g7DQogICAgYm94LXNpemluZzogYm9yZGVyLWJveDsNCn0NCg0KLm15TGFiZWwgew0KICAgIGZvbnQtd2VpZ2h0OiBib2xkOw0KICAgIG1pbi13aWR0aDogMzAlICFpbXBvcnRhbnQ7DQogICAgZGlzcGxheTogaW5saW5lLWZsZXg7DQogICAgb3ZlcmZsb3c6IGhpZGRlbjsNCiAgICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlOw0KICAgIHRleHQtb3ZlcmZsb3c6IGVsbGlwc2lzOw0KICAgIHdvcmQtd3JhcDogYnJlYWstd29yZDsNCn0NCg0KI2N1c3RvbUZvcm0gZmllbGRzZXR7DQogICAgYm9yZGVyOnNvbGlkIDFweCAjYTdhN2E3Ow0KICAgIGJvcmRlci1yYWRpdXM6MC4yNXJlbTsNCiAgICBtYXJnaW46MmVtIGF1dG87DQp9DQoubGluayB7DQogICAgY29sb3I6IzFBNzJDNDsNCn0NCi5saW5rOmhvdmVyew0KICAgIGN1cnNvcjpwb2ludGVyOw0KICAgIHRleHQtZGVjb3JhdGlvbjp1bmRlcmxpbmU7DQp9DQoNCiNjb25zdHJhaW50cy10YWJsZSB0ciB0ZHsNCiAgICBwYWRkaW5nOi42ZW07DQp9DQoNCiNjb25zdHJhaW50cy10YWJsZSB0ci5hbHR7DQogICAgYmFja2dyb3VuZC1jb2xvcjpyZ2IoMjQwLDI0MCwyNDApOw0KfQ0KLmNvbnN0cmFpbnQtbGF5ZXItY29udHJvbHN7DQogICAgbWFyZ2luLWxlZnQ6MWVtOw0KICAgIGZvbnQtc2l6ZTouOWVtOw0KICAgIHBhZGRpbmctdG9wOjNweDsNCn0NCi5jb25zdHJhaW50LWxheWVyLWNvbnRyb2xzIHNwYW46Zmlyc3QtY2hpbGR7DQogICAgcGFkZGluZy1yaWdodDoxMHB4Ow0KfQ0KLmNvbnN0cmFpbnQtY2VsbHsNCiAgICBtaW4td2lkdGg6MjUwcHg7DQp9DQo=");
 geocortex.resourceManager.register("Custom","inv","Modules/Elevation/ElevationModule.css","css","DQovKi5yZWdpb24gLnZpZXcuVGVtcGxhdGVNb2R1bGVWaWV3LmFjdGl2ZSB7DQogICAgbWFyZ2luOiAwOw0KfSovDQoNCi5lbGV2YXRpb24tbW9kdWxlLXZpZXcNCnsNCiAgICBwb3NpdGlvbjogYWJzb2x1dGU7DQogICAgbGVmdDozMjVweDsNCiAgICB0b3A6MDsNCiAgICBmbG9hdDpyaWdodDsNCiAgICAvKnotaW5kZXg6IDEwMDsqLw0KICAgIGZvbnQtc2l6ZTouODVlbTsNCiAgICB3aWR0aDogMTc1cHg7ICAgDQogICAgaGVpZ2h0OjIwcHg7DQogICAgLypyaWdodDogMDsqLw0KICAgIGJhY2tncm91bmQ6IG5vbmU7DQogICAgY29sb3I6ICMzMzM7DQogICAgLypwYWRkaW5nOiA2cHg7Ki8NCiAgICBib3JkZXI6IG5vbmU7DQogICAgbWFyZ2luLXRvcDogMTBweDsgICAgDQp9DQoNCg==");
