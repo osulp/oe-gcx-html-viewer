@@ -60,7 +60,7 @@ table.banner-text tbody{
 }
 
 .wtm-button {
-    background-color: #c34500;
+    background-color: #c34500 !important;
     font-size:1.2em;
 }
 
@@ -134,6 +134,20 @@ height:400px;
 #oe_layer_desc_toggle_more:hover{
     text-decoration:underline;
     cursor:pointer;
+}
+
+.layer-item-expander .tree-expander.collapsed, .layer-item-expander .tree-expander.expanded {
+    padding:.55em !important;
+}
+
+.form-item{
+    padding-left:.5em !important;
+    padding-right:.5em !important;
+}
+
+fieldset legend{
+    padding:0 .5em;
+    margin-left: .5em;
 }
 
 /*#CustomMapTipPopup {

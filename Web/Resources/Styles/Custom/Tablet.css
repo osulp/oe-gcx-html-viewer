@@ -65,7 +65,7 @@ table.banner-text tbody{
 }
 
 .wtm-button {
-    background-color: #c34500;
+    background-color: #c34500 !important;
     font-size:1.2em;
 }
 

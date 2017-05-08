@@ -1,120 +1,124 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1"/>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <title>Oregon Explorer Map Viewer</title>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Oregon Explorer Map Viewer</title>
 
-        <link rel="shortcut icon" href="favicon.ico"/>
-        <link rel="apple-touch-icon" href="Resources/Images/Icons/iOS/apple-touch-icon.png"/>
-        <link rel="apple-touch-icon" sizes="72x72" href="Resources/Images/Icons/iOS/apple-touch-icon-72x72.png"/>
-        <link rel="apple-touch-icon" sizes="76x76" href="Resources/Images/Icons/iOS/apple-touch-icon-ipad.png"/>
-        <link rel="apple-touch-icon" sizes="114x114" href="Resources/Images/Icons/iOS/apple-touch-icon-114x114.png"/>
-        <link rel="apple-touch-icon" sizes="120x120" href="Resources/Images/Icons/iOS/apple-touch-icon-iphone-retina.png"/>
-        <link rel="apple-touch-icon" sizes="144x144" href="Resources/Images/Icons/iOS/apple-touch-icon-144x144.png"/>
-        <link rel="apple-touch-icon" sizes="152x152" href="Resources/Images/Icons/iOS/apple-touch-icon-ipad-retina.png"/>
+    <link rel="shortcut icon" href="favicon_oe.ico" />
+    <link rel="apple-touch-icon" href="Resources/Images/Icons/iOS/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="Resources/Images/Icons/iOS/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="Resources/Images/Icons/iOS/apple-touch-icon-ipad.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="Resources/Images/Icons/iOS/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="Resources/Images/Icons/iOS/apple-touch-icon-iphone-retina.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="Resources/Images/Icons/iOS/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="Resources/Images/Icons/iOS/apple-touch-icon-ipad-retina.png" />
 
-        <link rel="stylesheet" href="Resources/Styles/splash.css" />
-		<style>
-    #myProgress {
-      width: 100%;
-      background-color: #ddd;
-      margin-top=100px;
-      margin-bottom=100px;
-
-    }
-
-    #myBar {
-       width: 1%;
-       height: 100%;
-	   padding:10px;	   
-       background-color: #4273b7;
-       text-align: center;
-       line-height: 10px;
-       color: white;
-	   vertical-align:middle;
-     }
-     </style>
-
-    </head>
-    <body>
-        <!-- Splash Screen Markup -->
-        <div class="splash-overlay">
-            <div class="splash-plate">
-                <img class="splash-image" src="Resources/Images/Custom/splash-logo.png" alt="" />
-				<br/>
-				<div id="myProgress">
-					<div id="myBar">10%</div>
-					<div><span id="elem.innerHTML"></span></div>
-					<div id="total_download_time"></div>
-				</div>			
-<br>				
-                <p class="splash-paragraph">This application uses licensed Geocortex Essentials technology for the Esri<sup>&reg;</sup> ArcGIS platform. All rights reserved.</p>
-                <!--<img src="Resources/Images/loader-small.gif" alt="Loader" />-->
-            </div>
-        </div>
-
-        <!-- Standard GVH Embed with custom Defaults.json.js configuration -->
-        <script src="Resources/Compiled/loader.js"></script>
-        <script>
-
-            var viewerConfig = {
-                //"viewerConfigUri": "Libraries/Custom/Config/Defaults.json.js"
-                //"viewerConfigUri": "Resources/Config/Default/Tablet.json.js"
-                //"viewerConfigUri": "Resources/Config/Default/Desktop.json.js"
-            };
-
-            // To load external css or javascript files in your project add the URL for each resource to this array
-            var resources = [];
-
-            var loader = new geocortex.essentialsHtmlViewer.ViewerLoader();
-            loader.resourceSet.find("dependencies").append(resources);
-            loader.loadAndInitialize(
-				{
-                    onSiteInitialized: function (app, loader) {
-                        geocortex.config.io.timeout = 180 * 1000; // 180 seconds.
-                    }
-                }
-			);
-
-        </script>
-
-		<script>
-    function move() {
-     
-    var elem = document.getElementById("myBar");  
-   
-    var width = 1;
-   
-    var id = setInterval(frame,100);
-   
-    function frame() {
-        if (width >= 100) {
-          clearInterval(id);
-        } else {
-          width++;
-          elem.style.width = width + '%';   
-          elem.innerHTML = width * 1 + '%' ;   
+    <link rel="stylesheet" href="Resources/Styles/splash.css" />
+    <style>
+        #myProgress {
+            width: 100%;
+            background-color: #ddd;
+            margin-top =100px;
+            margin-bottom =100px;
         }
-    }
-       }
-      new move();
-     </script>
 
-        <script type="text/javascript">
+        #myBar {
+            width: 1%;
+            height: 100%;
+            padding: 10px;
+            background-color: #4273b7;
+            text-align: center;
+            line-height: 10px;
+            color: white;
+            vertical-align: middle;
+        }
+    </style>
 
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', 'UA-13183466-3']);
-            _gaq.push(['_trackPageview']);
+</head>
+<body>
+    <!-- Splash Screen Markup -->
+    <div class="splash-overlay">
+        <div class="splash-plate">
+            <img class="splash-image" src="Resources/Images/Custom/splash-logo.png" alt="" />
+            <br />
+            <div id="myProgress">
+                <div id="myBar">10%</div>
+                <div><span id="elem.innerHTML"></span></div>
+                <div id="total_download_time"></div>
+            </div>
+            <br>
+            <p class="splash-paragraph">This application uses licensed Geocortex Essentials technology for the Esri<sup>&reg;</sup> ArcGIS platform. All rights reserved.</p>
+            <!--<img src="Resources/Images/loader-small.gif" alt="Loader" />-->
+        </div>
+    </div>
 
-            (function () {
-                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-            })();
+    <!-- Standard GVH Embed with custom Defaults.json.js configuration -->
+    <script src="Resources/Compiled/loader.js"></script>
+    <script>
+        // Uncomment the below line to only use local copies of Esri API files. This is done automatically in the Geocortex Mobile App Framework.
+        //var geocortexUseLocalEsriApi = true;
+        var viewerConfig = {
+            "configurations": {
+                "default": "Resources/Config/Default/" + shellName + ".json.js"
+            },
+            "viewerConfigUri": null
+        };
+        new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize();
 
-        </script>
+        //var viewerConfig = {
+        //    //"viewerConfigUri": "Libraries/Custom/Config/Defaults.json.js"
+        //    //"viewerConfigUri": "Resources/Config/Default/Tablet.json.js"
+        //    //"viewerConfigUri": "Resources/Config/Default/Desktop.json.js"
+        //};
 
-    </body>
+        //// To load external css or javascript files in your project add the URL for each resource to this array
+        //var resources = [];
+
+        //var loader = new geocortex.essentialsHtmlViewer.ViewerLoader();
+        //loader.resourceSet.find("dependencies").append(resources);
+        //loader.loadAndInitialize(
+        //    {
+        //        onSiteInitialized: function (app, loader) {
+        //            geocortex.config.io.timeout = 180 * 1000; // 180 seconds.
+        //        }
+        //    }
+        //);
+
+    </script>
+
+    <script>
+        function move() {
+            var elem = document.getElementById("myBar");
+            var width = 1;
+            var id = setInterval(frame, 100);
+            function frame() {
+                if (width >= 100) {
+                    clearInterval(id);
+                } else {
+                    width++;
+                    elem.style.width = width + '%';
+                    elem.innerHTML = width * 1 + '%';
+                }
+            }
+        }
+        new move();
+    </script>
+
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-13183466-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+
+</body>
 </html>

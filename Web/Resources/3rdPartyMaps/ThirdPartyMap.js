@@ -8,8 +8,8 @@ var geocortex;
         (function (integration) {
             var ThirdPartyMap = (function () {
                 function ThirdPartyMap(id, initializeMap, getMapViewpointParams, handleViewerPositionUpdatedEvent, handleViewpointIndicatorUpdatedEvent, sync) {
-                    var _this = this;
                     if (sync === void 0) { sync = false; }
+                    var _this = this;
                     this.initializeMap = initializeMap;
                     this.getMapViewpointParams = getMapViewpointParams;
                     this.handleViewerPositionUpdatedEvent = handleViewerPositionUpdatedEvent;
@@ -278,4 +278,3 @@ var geocortex;
         })(integration = essentialsHtmlViewer.integration || (essentialsHtmlViewer.integration = {}));
     })(essentialsHtmlViewer = geocortex.essentialsHtmlViewer || (geocortex.essentialsHtmlViewer = {}));
 })(geocortex || (geocortex = {}));
-//# sourceMappingURL=ThirdPartyMap.js.map

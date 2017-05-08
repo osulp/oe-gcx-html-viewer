@@ -99,14 +99,17 @@ module oe.development_registry {
 
         _handleDevTypeChange(args) {
             if (args) {
-                let all_fields = this.app.viewManager.getViewById("FeatureEditingContainerView").childRegions[0].views[1].viewModel.form.value["all_fields"]
-                    ? this.app.viewManager.getViewById("FeatureEditingContainerView").childRegions[0].views[1].viewModel.form.value["all_fields"]
-                    : this.app.viewManager.getViewById("FeatureEditingContainerView").childRegions[0].views[1].viewModel.form.value.fields.getItems();
-                let filtered_attr = this._processAttributeFilter(all_fields);
-                try {
-                    this.app.viewManager.getViewById("FeatureEditingContainerView").childRegions[0].views[1].viewModel.form.value.fields.set(filtered_attr);
-                } catch (ex) {
-                    console.log(ex.message)
+                let editForm: any = this.app.viewManager.getViewById("FeatureEditingContainerView").childRegions[0].views.filter(v => v.id === 'EditorView');
+                if (editForm.length > 0) {
+                    let all_fields = editForm[0].viewModel.form.value["all_fields"]
+                        ? editForm[0].viewModel.form.value["all_fields"]
+                        : editForm[0].viewModel.form.value.fields.getItems();
+                    let filtered_attr = this._processAttributeFilter(all_fields);
+                    try {
+                        editForm[0].viewModel.form.value.fields.set(filtered_attr);
+                    } catch (ex) {
+                        console.log(ex.message)
+                    }
                 }
             }
         }
@@ -178,17 +181,20 @@ module oe.development_registry {
                 if (args.id === "FeatureEditingContainerView" && !args.isActive) {
                     if (args.childRegions.length > 0) {
                         if (args.childRegions[0].views.length > 1) {
-                            const attr = args.childRegions[0].views[1].viewModel.form.value.fields.getItems();
-                            if (attr.length > 0) {
-                                if (!args.childRegions[0].views[1].viewModel.form.value["all_fields"]) {
-                                    args.childRegions[0].views[1].viewModel.form.value["all_fields"] = [];
-                                    args.childRegions[0].views[1].viewModel.form.value.fields.value.forEach(f => {
-                                        args.childRegions[0].views[1].viewModel.form.value["all_fields"].push(f);
-                                    });
-                                }
-                                let filteredFields = this._processAttributeFilter(attr);
-                                if (filteredFields.length > 0) {
-                                    args.childRegions[0].views[1].viewModel.form.value.fields.set(filteredFields);
+                            let editView = args.childRegions[0].views.filter(v => v.id === "EditorView");
+                            if (editView.length > 0) {
+                                const attr = editView[0].viewModel.form.value.fields.getItems();
+                                if (attr.length > 0) {
+                                    if (!editView[0].viewModel.form.value["all_fields"]) {
+                                        editView[0].viewModel.form.value["all_fields"] = [];
+                                        editView[0].viewModel.form.value.fields.value.forEach(f => {
+                                            editView[0].viewModel.form.value["all_fields"].push(f);
+                                        });
+                                    }
+                                    let filteredFields = this._processAttributeFilter(attr);
+                                    if (filteredFields.length > 0) {
+                                        editView[0].viewModel.form.value.fields.set(filteredFields);
+                                    }
                                 }
                             }
                         }

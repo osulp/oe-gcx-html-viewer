@@ -22,9 +22,11 @@ using System.Web.Caching;
 /// Forwards requests to an ArcGIS Server REST resource. Uses information in
 /// the proxy.config file to determine properties of the server.
 /// </summary>
-public class proxy : IHttpHandler {
+public class proxy : IHttpHandler
+{
 
-    public void ProcessRequest (HttpContext context) {
+    public void ProcessRequest(HttpContext context)
+    {
 
         HttpResponse response = context.Response;
 
@@ -39,7 +41,7 @@ public class proxy : IHttpHandler {
         {
             token = context.Request.Form["token"];
         }
-        
+
         if (callbackName != null)
         {
             //context.Request.QueryString.Remove("callback");
@@ -74,7 +76,7 @@ public class proxy : IHttpHandler {
         // The Server config will tell us both the token, and whether we should send the users credentials to the remote server
         // The default server config might be returned if mustMatch is false
         serverConfig = getServerConfigFromConfigFile(uri);
-        
+
         // Get configured token, if applicable and no other token present, and append to the request
         if (token == null)
         {
@@ -94,11 +96,19 @@ public class proxy : IHttpHandler {
             }
         }
 
-
         System.Net.HttpWebRequest req = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri);
+        var authType = System.Threading.Thread.CurrentPrincipal.Identity.AuthenticationType;
         if (serverConfig.SendCredentials)
+        {
             req.Credentials = CredentialCache.DefaultCredentials;
-        
+        }
+
+        // If the user is authenticated and authenticated with NTLM, Kerberos, or Negotiate, then we can safely use their impersonated identity in the request.
+        // This will avoid the app pool identity being used for credentials.
+        else if (System.Threading.Thread.CurrentPrincipal.Identity.IsAuthenticated && (authType == "NTLM" || authType == "Kerberos" || authType == "Negotiate"))
+        {
+            req.Credentials = CredentialCache.DefaultCredentials;
+        }
         req.Method = context.Request.HttpMethod;
         req.ContentType = context.Request.ContentType;
 
@@ -106,7 +116,7 @@ public class proxy : IHttpHandler {
         {
             req.Referer = context.Request.UrlReferrer.ToString();
         }
-        
+
         // Set body of request for POST requests
         if (IsWmsUrl(uri))
         {
@@ -118,8 +128,9 @@ public class proxy : IHttpHandler {
             context.Request.InputStream.Read(bytes, 0, (int)context.Request.InputStream.Length);
             req.ContentLength = bytes.Length;
 
-            // Default to application/x-www-form-urlencoded if not uploading attachments.
-            if (context.Request.ContentType.IndexOf("multipart/form-data") < 0)
+            // Default to application/x-www-form-urlencoded if not uploading attachments and if content type is not XML based.
+            string[] exclusionList = { "multipart/form-data", "xml" };
+            if (Array.TrueForAll(exclusionList, s => context.Request.ContentType.IndexOf(s) < 0))
             {
                 req.ContentType = "application/x-www-form-urlencoded";
             }
@@ -147,7 +158,7 @@ public class proxy : IHttpHandler {
                     serverResponse = errResponse;
                 }
             }
-            
+
             if (serverResponse == null)
             {
                 response.StatusCode = 500;
@@ -157,9 +168,10 @@ public class proxy : IHttpHandler {
                 return;
             }
         }
-        
+
         // Set up the response to the client
-        if (serverResponse != null) {
+        if (serverResponse != null)
+        {
             response.ContentType = serverResponse.ContentType;
             using (Stream byteStream = serverResponse.GetResponseStream())
             {
@@ -170,7 +182,7 @@ public class proxy : IHttpHandler {
                     using (StreamReader sr = new StreamReader(byteStream))
                     {
                         string strResponse = String.Empty;
-                        
+
                         if (callbackName != null)
                         {
                             strResponse = String.Format("{0}({1});", callbackName, sr.ReadToEnd());
@@ -179,7 +191,7 @@ public class proxy : IHttpHandler {
                         {
                             strResponse = sr.ReadToEnd();
                         }
-                        
+
                         response.Write(strResponse);
                     }
                 }
@@ -211,15 +223,17 @@ public class proxy : IHttpHandler {
     private bool IsWmsUrl(string uri)
     {
         string lowerCaseUri = uri.ToLowerInvariant();
-        return lowerCaseUri.Contains("request=getcapabilities") || lowerCaseUri.Contains("request=getmap");        
+        return lowerCaseUri.Contains("request=getcapabilities") || lowerCaseUri.Contains("request=getmap");
     }
- 
-    public bool IsReusable {
-        get {
+
+    public bool IsReusable
+    {
+        get
+        {
             return false;
         }
     }
-    
+
     // Gets the server config for a server URL from a configuration file
     // TODO: ?modify so can generate a new short-lived token from username/password in the config file
     private ServerUrl getServerConfigFromConfigFile(string uri)
@@ -243,11 +257,11 @@ public class proxy : IHttpHandler {
         {
             if (e is ApplicationException)
                 throw e;
-            
+
             // just return the default server config at this point
             // -- may want to throw an exception, or add to a log file
         }
-        
+
         return ServerUrl.Default;
     }
 }
@@ -340,7 +354,7 @@ public class ProxyConfig
 
         return ServerUrl.Default;
     }
-    
+
     public string GetToken(string uri)
     {
         return GetServerConfig(uri).Token;
@@ -381,7 +395,7 @@ public class ServerUrl
         get { return sendCredentials; }
         set { sendCredentials = (value != null) ? value : false; }
     }
-    
+
     public static ServerUrl Default
     {
         get

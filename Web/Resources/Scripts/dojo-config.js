@@ -1,5 +1,75 @@
-﻿var dojoConfig = {
+var esriBase = "//js.arcgis.com/3.20/dojo/";
+if ("geocortexUseLocalEsriApi" in window && geocortexUseLocalEsriApi === true) {
+    esriBase = "Resources/Scripts/dojo/";
+}
+
+// GVH-14502
+// require() seems to fail sometimes on IE9 even though the resource is loaded in require.cache
+// We will now disable dojo AMD loading on IE9
+var ie9Div = document.createElement("div");
+ie9Div.innerHTML = "<!--[if IE 9]><i></i><![endif]-->";
+var isIE9 = ie9Div.getElementsByTagName("i").length === 1;
+
+var dojoConfig = {
+    async: isIE9 ? false : true,
+    isDebug: false,
+    baseUrl: "./",
     deps: [],
+    paths: {
+        "Mapping/modules": "Resources/Compiled",
+    },
+    map: {
+        "*": {
+            "Mapping/modules/CompactToolbar": "Mapping/modules/Toolbar",
+            "Mapping/modules/TabbedToolbar": "Mapping/modules/Toolbar"
+        }
+    },
+    packages: [
+        {
+            location: esriBase + "../dijit",
+            name: "dijit"
+        },
+        {
+            location: esriBase + "../dojox",
+            name: "dojox"
+        },
+        {
+            location: esriBase + "../put-selector",
+            main: "put",
+            name: "put-selector"
+        },
+        {
+            location: esriBase + "../xstyle",
+            name: "xstyle"
+        },
+        {
+            location: esriBase + "../dgrid",
+            main: "OnDemandGrid",
+            name: "dgrid"
+        },
+        {
+            location: esriBase + "../dgrid1",
+            main: "OnDemandGrid",
+            name: "dgrid1"
+        },
+        {
+            location: esriBase + "../dstore",
+            main: "Store",
+            name: "dstore"
+        },
+        {
+            location: esriBase + "../moment",
+            main: "moment",
+            name: "moment"
+        },
+        {
+            location: esriBase + "../esri",
+            name: "esri"
+        },
+        {
+            location: esriBase,
+            name: "dojo"
+        }],
     callback: function () {
         var originalRequire = require;
         var originalRequest;
@@ -37,3 +107,7 @@
         }
     }
 };
+
+// Clean up global scope
+ie9Div = undefined;
+isIE9 = undefined;
