@@ -1,0 +1,908 @@
+
+/* BEGIN: Utility Classes --------------- */
+
+.inactive,
+.bound-invisible {
+    display: none !important;
+}
+
+.clear:after {
+    display: block;
+    clear: both;
+    height: 0;
+    visibility: hidden;
+    content: " ";
+}
+.error-message {
+    color: #990000;
+}
+.error-message img {
+    vertical-align: middle;
+    padding-right: 0.5em;
+}
+/* END: Utility Classes --------------- */
+
+
+/* BEGIN: Layout --------------- */
+
+.mgmt-nav,
+.mgmt-app,
+.mgmt-app * {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.mgmt-nav,
+.mgmt-app {
+    float: left;
+    padding: 1em;
+}
+
+.mgmt-nav {
+    width: 30%;
+}
+
+.mgmt-app {
+    width: 70%;
+}
+
+.panel-scroll-container {
+    border: 1px solid #CCCCCC;
+    padding: 1em;
+}
+
+.preview {
+    margin: 0.5em 0;
+}
+
+/* END: Layout --------------- */
+
+
+/* BEGIN: Side Navigation --------------- */
+
+.mgmt-nav ul,
+.tab-control {
+    list-style-type: none;
+    padding: 0;
+}
+
+.mgmt-nav ul {
+   margin: 0;
+}
+
+.mgmt-nav li {
+    padding: 0.5em;
+    background: #EEEEEE;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+/* END: Side Navigation --------------- */
+
+
+/* BEGIN: Tab Control --------------- */
+
+.tab-control ul {
+    margin: 1em 0 -1px .5em;
+    padding: 0;
+}
+
+.tab-control li {
+    display: inline-block;
+    padding: 0.5em 1em;
+    border-radius: 4px 4px 0 0;
+    margin-right: .15em;
+    cursor: pointer;
+}
+
+.tab-active,
+.tab-inactive {
+    font-size: 1em;
+    border: 1px solid #CCCCCC;
+}
+
+.tab-active,
+.tab-inactive {
+    border-bottom: none;
+}
+
+.tab-active {
+    font-weight: bold;
+}
+
+/* END: Tab Control --------------- */
+
+
+/* BEGIN: Modal Window --------------- */
+
+.modal,
+.modal-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.modal {
+    z-index: 999;
+}
+
+.modal-overlay {
+    background: #000000 url(images/ui-bg_flat_100_000000_40x100.png) 50% 50% repeat-x;
+    opacity: 0.25;
+}
+
+.modal-container {
+    position: absolute;
+    z-index: 999;
+}
+
+.modal .view-container-view {
+    background-color: #FFFFFF;
+    border-style: solid;
+    border: 1px solid #777;
+    border-width: 1px;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    box-shadow: 10px 10px 5px #888888;
+}
+
+.modal .panel-header {
+    padding: .4em 1em;
+    position: relative;
+    background: #E7E7E7;
+    color: #444;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.modal .panel-header:after {
+    display: block;
+    clear: both;
+    height: 0;
+    visibility: hidden;
+    content: " ";
+}
+
+.panel-header h2,
+.panel-scroll-container {
+    padding: .5em 1em;
+}
+
+.modal .panel-header h2 {
+    margin: 0;
+    display: block;
+    font-size: 1.1em;
+    color: #000000;
+    padding: 0.5em 0em 0.25em 0em;
+}
+
+.modal .panel-scroll-container {
+    border: none;
+}
+.modal .panel-header-button {
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    opacity: 0.75;
+    background-position: center center;
+    background-repeat: no-repeat;
+    filter: none; /* IE9 */
+    float: right;
+    border: 0;
+    background: 0;
+    cursor: pointer;
+}
+.modal .panel-header-button.close-16 {
+    background: url(../../Resources/Images/Icons/panel-close.png) no-repeat center center;
+}
+
+/* END: Modal Window --------------- */
+
+
+/* BEGIN: Form & Form Items --------------- */
+
+.form {
+    display: inline-block;
+}
+
+.form * {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.form table {
+    border-collapse: collapse;
+}
+
+.form-item {
+    padding: 0.5em 0;
+}
+
+.desc {
+    margin: 0px;
+}
+
+.layout-table th,
+.layout-table td {
+    padding: 0.5em 0;
+}
+
+.layout-table .label-cell {
+    padding-right: .5em;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.layout-table .input-cell {
+}
+
+.label-cell label,
+.input-cell input,
+.input-cell select,
+.input-cell button {
+    vertical-align: middle;
+}
+
+.input-cell select {
+    width: 150px;
+}
+
+.label-cell label {
+    margin-right: .25em;
+}
+
+.info-cell label {
+    margin-left: 2.5em;
+    color: red;
+    font-style: italic;
+    display: block;
+}
+
+form .datagrid {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.datagrid th,
+.datagrid td {
+   border: 1px solid #CCCCCC;
+   padding: 0.5em; 
+}
+
+.datagrid th {
+    background: #EEEEEE;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.datagrid .action-cell {
+    width: 18px;
+    text-align: center;
+}
+
+.file-browse input[type="text"] {
+    width: 70%;
+}
+
+.form-btns {
+    text-align: right;
+}
+
+.form-btns button {
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.form-btns button,
+.form-btns input {
+    display: inline-block;
+}
+
+.form-btns button,
+.form-btns input[type="submit"]  {
+    margin: 0;
+    margin-left: .25em;
+    padding: .5em 1em;
+    background: #1A72C4;
+    border: 1px solid #1A72C4;
+    border-radius: 4px;
+    color: #FFFFFF;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.form-btns button:hover,
+.form-btns input[type="submit"]:hover {
+    background: #0098FF;
+	border: 1px solid #1A72C4;
+    color: #FFFFFF;
+}
+
+.form-btns button:active,
+.form-btns input[type="submit"]:active {
+    border: 1px solid #0078AE;
+    color: #0078AE;
+}
+
+/* END: Forms --------------- */
+
+
+/* BEGIN: Preview Control --------------- */
+
+.preview {
+    margin: 1em 0;
+}
+
+.preview ul,
+.device-preview ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.device-preview ul {
+    display: inline-block;
+}
+
+.preview span,
+.preview ul {
+    float: left;
+}
+
+.preview span,
+.preview li,
+.device-preview li {
+    display: inline-block;
+}
+
+.preview-span {
+    padding-right: 0.5em;
+}
+
+.preview li,
+.device-preview li {
+    padding: 0 0.5em;
+}
+
+.preview li {
+    border-right: 1px solid #CCCCCC;
+}
+
+.device-preview li {
+    border-right: 1px solid #FFFFFF;
+}
+
+.preview li:last-child,
+.device-preview li:last-child {
+    border-right: none;
+}
+
+/* END: Preview Control --------------- */
+
+
+/* BEGIN: Device Previews --------------- */
+
+.device-preview-nav {
+    padding: 0.5em 0;
+    overflow: hidden;
+}
+
+.device-preview-nav .close-btn {
+    float: right;
+    padding: 0 0.5em;
+}
+
+.device-preview a,
+.device-preview a:hover,
+.device-preview a:visited {
+    color: #FFFFFF;
+}
+
+.device-chrome {
+    position: relative;
+    border-radius: 20px;
+    padding: 40px 20px 0 20px;
+    box-shadow: 10px 10px 10px #666666;
+    -moz-box-shadow: 10px 10px 10px #666666;
+}
+
+.device-chrome {
+    background: #000000;
+    background: -moz-linear-gradient(-45deg,  #000000 0%, #666666 36%, #000000 73%, #000000 100%);
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#000000), color-stop(36%,#666666), color-stop(73%,#000000), color-stop(100%,#000000));
+    background: -webkit-linear-gradient(-45deg,  #000000 0%,#666666 36%,#000000 73%,#000000 100%);
+    background: -o-linear-gradient(-45deg,  #000000 0%,#666666 36%,#000000 73%,#000000 100%);
+    background: -ms-linear-gradient(-45deg,  #000000 0%,#666666 36%,#000000 73%,#000000 100%);
+    background: linear-gradient(135deg,  #000000 0%,#666666 36%,#000000 73%,#000000 100%);
+}
+
+.frame iframe {
+    background: #FFFFFF;
+    border: 1px inset #666666;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+}
+
+.details {
+    text-align: center;
+    padding: 20px 0 20px 0;
+}
+
+.details .btn {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px inset #666666;
+    border-radius: 10px;
+    background-color: #333333;
+}
+
+.handheld-preview iframe {
+    width: 320px;
+    height: 480px;
+}
+
+.tablet-preview iframe {
+    width: 800px;
+    height: 480px;
+}
+
+.tablet-preview .device-chrome {
+    padding: 40px 60px 40px 40px;
+}
+
+.tablet-preview .details {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 60px;
+    padding: 40px 0;
+}
+
+.tablet-preview .details .btn {
+    margin-top: 230px;
+}
+
+.desktop-preview iframe {
+    width: 800px;
+    height: 600px;
+}
+
+.desktop-preview .device-chrome {
+    border-radius: 10px;
+    padding: 20px 20px 0 20px;
+}
+
+.desktop-preview .details {
+    text-align: right;
+}
+
+.desktop-preview .details .btn {
+    width: 10px;
+    height: 10px;
+    background-color: #1E90FF;
+    border: 1px inset #1E90FF;
+    border-radius: 1px;
+}
+
+/* END: Device Previews --------------- */
+
+
+/* BEGIN: Module Customization --------------- */
+
+.offline .form {
+    width: 100%;
+}
+
+.bundle-generation-result {
+    padding: 1em;
+    background: #EEEEEE;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border: 1px solid #CCCCCC;
+    font-weight: bold;
+}
+
+.bundle-generation-result .failure {
+    background-color: Yellow;
+    border: 1px solid Red;
+}
+
+.offline .result-msg {
+    margin-bottom: 1em;
+    font-weight: bold;
+}
+
+.coalescePromptView {
+    width: 400px;
+}
+
+.loadToolbarPresetView {
+    width: 400px;
+}
+
+.loadToolbarPresetView .desc,
+.loadToolbarPresetView .form-btns {
+    padding: .5em 0;
+}
+
+.geolocate-file-browse {
+    width: 320px;
+}
+
+/* END: Module Customization --------------- */
+
+
+/* BEGIN: Menu Editor */
+.command-description 
+{
+    color: Gray;
+    font-style: italic;
+}
+/* END: Menu Editor */
+
+
+/* BEGIN: Forms --------------- */
+
+.button-icon .button-text {
+    display: block;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+/* END: Forms --------------- */
+
+/* BEGIN: JQuery Overrides */
+.ui-autocomplete.ui-menu .ui-menu-item {
+    width: auto;
+}
+
+/* GE-3449: Workaround for autocomplete to work*/
+ul.ui-autocomplete.ui-menu {
+  z-index: 1100;
+}
+
+/* END: JQuery Overrides */
+
+/* ------ START: Map Widgets ------ */
+.wkt-textarea {
+    width: 15em;
+    height: 4.5em;
+}
+/* END: Map Widgets --------------- */
+
+/* ------ START: Tree View with Draggable Sorting ------ */
+.branch-node li {
+    margin-right: -1px;
+    border: solid;
+    margin: 2px auto;
+    text-decoration: solid;
+}
+.tools-sortable .branch-node {
+    border-right: none;
+}
+.toolbar-item-actions {
+    position: relative;
+    float: right;
+}
+.toolbar-item-actions .icon {
+    display: block;
+    float: left;
+    margin-left: 5px;
+}
+.toolbar-item-name,
+.toolbar-tab-item-name,
+.category-display-name,
+.toolbar-tabs-text {
+    display: block;
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+@media all and (min-width: 1280px) {
+   .toolbar-item-name {
+     width: 220px;
+    }
+}
+
+@media all and (min-width: 1280px) {
+    .available-tools .toolbar-item-name {
+     width: 320px; /* Longer width because we don't need to leave room for action icons */
+    }
+}
+
+.available-tool-group {
+    margin-top: 2px;
+    padding-top: 5px;
+    float: left;
+    width: 100%;
+}
+
+.toolbar-tabs-text
+{
+    width: 300px;
+    font-weight: bold;
+}
+.toolbar-parent-node .toolbar-tab {
+    float: left;
+    clear: both;
+    width: 100%;
+    margin: 2px 0;
+    padding: 5px 0;
+}
+.toolbar-tab-sub-group {
+    float: left;
+    width: 100%;
+    margin: 2px 0;
+    padding: 5px 0;
+}
+
+@media all and (min-width: 1280px) {
+    .toolbar-tab-item-name {
+        width: 255px;
+    }
+}
+
+.category-display-name {
+    width: 220px;
+    padding: 0;
+}
+
+@media all and (min-width: 1280px) {
+    .category-display-name {
+         width: 350px;
+         padding: 0;
+    }
+}
+.toolbar-parent-node .toolbar-parent-node {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.tool-tree-container ul {
+    min-height: 10px;
+    width: 100%;
+    float: left;
+}
+.tool-tree-container ul ul {
+    margin-left: 10%;
+    width: 90%;
+}
+.tool-tree-container li {
+    clear: both;
+    float: left;
+    display: block;
+    width: 100%;
+    border: none;
+    padding: 5px 0px;
+    cursor: default;
+}
+.tool-tree-container li.ui-draggable-dragging {
+    width: 330px;
+}
+.tool-tree-container .groups-sortable, 
+.tool-tree-container .tools-sortable {
+    clear: both;
+}
+.tree-icon,
+.icon.default-icon {
+    margin-right: 0px;
+    width: 16px;
+    height: 16px;
+    float: left;
+}
+
+.tool-icon
+{
+    width: 16px; 
+    height: 16px; 
+    right: 5px;
+}
+
+.icon.default-icon {
+    background-image: url("./Images/Icons/IconPlaceholder24x24.png");
+}
+.tool-tree-container .icon.default-icon  {
+    border: 1px solid #DDDDDD;
+}
+.tool-tree-container .tree-icon.icon-toggle.open {
+    background-image: url("./Images/Icons/toggle_minus.png");
+}
+.tool-tree-container .tree-icon.icon-toggle.closed {
+    background-image: url("./Images/Icons/toggle_plus.png");
+}
+.icon-button-add {
+    background-image: url("./Images/Icons/button-add.png");
+}
+.icon-toggle-button-add {
+    background-image: url("./Images/Icons/button-add.png");
+}
+.icon-tool-add {
+    background-image: url("./Images/Icons/tool-add.png");
+}
+.icon-region-add {
+    background-image: url("./Images/Icons/region-add.png");
+}
+.tabs-sortable > li.toolbar-parent-node {
+    padding: 0;
+}
+.tool-drag-handle, .group-drag-handle, .tab-drag-handle {
+    padding: 7px;
+}
+.tools-sortable li {
+    clear: both;
+}
+.tools-sortable li:after {
+    content: " ";
+    display: block;
+    width: 0;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.tree-icon {
+    margin-right: 0px;
+    width: 16px;
+    height: 16px;
+    float: left;
+}
+
+.tool-tree-container {
+    width: 325px;
+    height: 350px;
+    overflow: auto;
+    border: 1px solid #CCCCCC;
+    padding: 5px;
+}
+
+@media all and (min-width: 1280px) {
+    .tool-tree-container {
+      width: 400px;
+      height: 450px;
+    }
+}
+
+.toolbar-node-parent {
+    padding-bottom: 5px;
+}
+.toolbar-node-selected {
+    background-color: #E6F4F7;
+    border: 1px solid #99B5F2 !important;
+}
+.tool-draggable,
+.tab-drag-handle,
+.group-drag-handle,
+.tool-drag-handle {
+    cursor: move;
+}
+#toolbarModified {
+    display: inline-block;
+    padding: 5px 50px;
+    margin-left: 15px;
+    background: #FFF6AD;
+    border: 1px solid #CBC067;
+    
+}
+ul li ul li .splitter-wrap {
+    height: auto;
+    padding: 7px 0;
+    width: 150px;
+}
+.splitter {
+    height: 1px;
+    background: #999999;
+    border-bottom: 1px solid #F0F0F0;
+}
+.tool-tree-container .icon-add {
+    position: relative;
+    overflow: visible;
+}
+.tool-tree-container ul ul .tool-menu {
+    display: block;
+    position: absolute;
+    width: 12em;
+    height: auto;
+    top: 1.5em;
+    right: 0;
+    padding: 0.25em;
+    text-indent: 0;
+    background: #F8F8F8;
+    border: 1px solid #CCCCCC;
+    -webkit-border-bottom-right-radius: 4px;
+    -webkit-border-bottom-left-radius: 4px;
+    -moz-border-radius-bottomright: 4px;
+    -moz-border-radius-bottomleft: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    -moz-box-shadow: 2px 2px 6px #666666;
+    -webkit-box-shadow: 2px 2px 6px #666666;
+    box-shadow: 2px 2px 6px #666666;
+    z-index: 999;
+}
+
+/* The below margin-bottoms and padding-bottoms allow for an empty drop area to exist for groups/multis without 
+   a tool.
+*/
+.toolbar-parent-node > .group {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+.branch-node > .toolbar-tab {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+.flyout-sortable .toolbar-tab-sub-group {
+    margin-bottom: 0px;
+}
+
+div.toolbar-contents > .blank-node + ul > .branch-node {
+    margin-top: 0px;
+    padding-top: 0px;
+}
+div.toolbar-contents > .blank-node + ul > .branch-node > .flyout {
+    margin-top: 0px;
+    padding-top: 0px;
+}
+.flyout-sortable .blank-node + ul > li {
+    margin-top: 0px;
+    padding-top: 0px;
+}
+
+.tool-tree-container ul ul .tool-menu li:hover {
+    background: #EEEEEE;
+}
+.tool-tree-container ul ul .tool-menu .button-text {
+    padding-left: 0.5em;
+    cursor: pointer;
+}
+.drop-placeholder
+        {
+            height: 1.5em; 
+            background: #FFF6AD;
+            border: 1px solid #CBC067; 
+            position: relative;
+        }
+
+.flyout-menu-active .flyout-menu-hide {
+    display: none;
+}
+
+.flyout-list {
+    display: none;
+    width: 100%;
+}
+
+/* Hide the '# of tools' option for compact toolbar in handheld, as it isn't configurable. */
+.ToolbarSectionView_Handheld .numberOfToolsToDisplay {
+    display: none;
+}
+
+/* ------ END: Tree View with Draggable Sorting ------ */
+
+/*-------- Shared ------------*/
+.command-parameter-text-area {
+    width: 18em;
+    height: 8em;
+}
+.command-parameter-input-status {
+    display: block;
+    color: red;
+    width: 18em;
+}
+.command-parameter-alert-img {
+    padding-left: 0.5em;
+}
+/*-------- END: Shared -------*/

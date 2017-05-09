@@ -1,0 +1,10 @@
+body
+{
+    font-family: arial,sans-serif;
+    background-color: white;
+}
+
+.NavigationView li.selected 
+{
+    font-weight: bold;
+}
