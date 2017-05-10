@@ -185,45 +185,7 @@
                 "moduleType" : "oe.raster_functions.RasterFunctionsModule",
                 "libraryId" : "Custom",
                 "configuration" : {}
-            },
-            {
-                "moduleName" : "DevelopmentRegistry",
-                "moduleType" : "oe.development_registry.DevelopmentRegistryModule",
-                "libraryId" : "Custom",
-                "configuration" : {
-                    "layerFilters": {
-                        "Mining (Non-Coal)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "cmdty", "subcat", "rcl_stat"],
-                        "Infrastructure (Tower)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "hgt", "guy_wr_ext", "guy_wr_nr", "anti_perch", "row_dim", "subcat", "rcl_stat"],
-                        "Infrastructure (Road)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "rd_wt", "subcat", "on_lse", "off_lse", "rcl_stat"],
-                        "Infrastructure (Recreation)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "rd_wt", "subcat", "rcl_stat"],
-                        "Infrastructure (Railroad)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "row_wt", "subcat", "rcl_stat"],
-                        "Infrastructure (Power Line)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "row_wt", "vltg", "hgt", "max_arm_wt", "guy_wr_ext", "guy_wr_nr", "anti_perch", "subcat", "rcl_stat"],
-                        "Infrastructure (Pipeline)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "pplne_cnts", "row_wt", "pplne_tp", "on_lse", "off_lse", "subcat", "rcl_stat"],
-                        "Infrastructure (Military)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
-                        "Infrastructure (Airports)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
-                        "Energy (Wind)": ["dst_cat", "dst_tp", "const_dt",  "or_dev_reg_proj_id","dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "hub_hgt", "rotor_hgt", "rotor_dia", "subcat", "rcl_stat"],
-                        "Energy (Tar Sands)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
-                        "Energy (Solar)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "cap_kw", "slrplnt_tp", "twr_hgt", "twr_nr", "subcat", "rcl_stat"],
-                        "Energy (Oil & Gas)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "wl_nr", "subcat", "rcl_stat"],
-                        "Energy (Oil Shale In-Situ)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
-                        "Energy (Oil Shale Ex-Situ)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
-                        "Energy (Nuclear)": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "reactor_tp", "subcat", "rcl_stat"],
-                        "Energy (Hydroelectric)": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
-                        "Energy (Geothermal)": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "cap_kw", "subcat", "rcl_stat"],
-                        "Energy (Coal Mine)": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "cap_kw", "subcat", "rcl_stat"],
-                        "Farm/Forest Resource": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
-                        "Natural Resource": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
-                        "Residential": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
-                        "Commercial": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
-                        "Utility/Solid Waste Disposal Facility": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
-                        "Park/Public/Quasi-Public": ["dst_cat", "dst_tp", "or_dev_reg_proj_id", "const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
-                        "Outdoor Gathering": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
-                        "Agriculture": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
-                        "Up-zoned Land": ["dst_cat", "dst_tp",  "or_dev_reg_proj_id","const_dt", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"],
-                        "Other": ["dst_cat", "dst_tp", "const_dt", "or_dev_reg_proj_id", "dst_nm", "clctn_dt", "land_user", "case_nr", "dst_stat", "adm_unit", "case_tp", "subcat", "rcl_stat"]
-                    }
-                }
-            },
+            },            
             {
                 "moduleName": "Menu",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.Menu.MenuModule",
@@ -6194,7 +6156,7 @@
                 "configuration": {
                     "css": [
                         "Resources/Styles/Desktop.css",
-                        "{ViewerConfigUri}../../Styles/Custom/Desktop.css"
+                        "{ViewerConfigUri}../../Styles/Custom/Desktop_OE.css"
                     ],
                     "homePanelVisible": true
                 },
@@ -6764,7 +6726,7 @@
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                 "configuration": {
-                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
+                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/cake_site",
                     "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                     "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg"
                 },

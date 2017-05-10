@@ -3,7 +3,7 @@
         "version": "2.8",
         "application": {
             "proxyUri": "proxy.ashx?",
-            "allowUnsafeContent": false,
+            "allowUnsafeContent": true,
             "offlineStorageSpaceMb": "50",
             "geometryServiceUrl": "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer",
             "mobileMode": true
@@ -5108,7 +5108,7 @@
                     "css": [
                         "Resources/Styles/Handheld.css",
                         "Resources/Styles/SmallShell.css",
-                        "{ViewerConfigUri}../../Styles/Custom/Handheld.css"
+                        "{ViewerConfigUri}../../Styles/Custom/Handheld_OE.css"
                     ],
                     "homePanelVisible": false
                 },

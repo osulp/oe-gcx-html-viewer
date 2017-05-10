@@ -103,11 +103,18 @@ module oe.elevation {
                             elevation = Math.round(parseFloat(elevation) * 3.28084).toString() + " ft";
                             $("#GoogleElevationValue").html(elevation);
                         }
+                        else if (result.status == "OVER_QUERY_LIMIT") {
+                            $("#GoogleElevationValue").html("Query Limit.  Wait a moment and try again.");
+                        }
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         var error = thrownError;
                         $("#GoogleElevationValue").html("Load failed");
                        //alert(error);
+                    },
+                    complete: function (xhr, status) {
+                        if (status != "success" && status != "error" )
+                            $("#GoogleElevationValue").html(status);
                     }
                 });
                 

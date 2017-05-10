@@ -1,12 +1,12 @@
 ﻿
-/* Begin Script: C:/Users/rempelma/Documents/Visual Studio 2015/Projects/oe-gcx-html-viewer/custom_ts_out.js ------------------------- */ 
-/// <reference path="../../../Libs/Framework.d.ts" />
-/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+/* Begin Script: C:/Users/schoepft.LIBRARY/Source/Repos/oe-gcx-html-viewer/custom_ts_out.js ------------------------- */ 
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
 var oe;
 (function (oe) {
     var customform49;
@@ -20,7 +20,7 @@ var oe;
                 //alert(this.app.getResource(this.libraryId, "hello-world-initialized"));
             };
             return CustomFormM49Module;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         customform49.CustomFormM49Module = CustomFormM49Module;
     })(customform49 = oe.customform49 || (oe.customform49 = {}));
 })(oe || (oe = {}));
@@ -80,7 +80,7 @@ var oe;
                 };
             }
             return CustomForm49ModuleView;
-        })(geocortex.framework.ui.ViewBase);
+        }(geocortex.framework.ui.ViewBase));
         customform49.CustomForm49ModuleView = CustomForm49ModuleView;
     })(customform49 = oe.customform49 || (oe.customform49 = {}));
 })(oe || (oe = {}));
@@ -111,7 +111,7 @@ var oe;
                 });
             };
             return CustomFormM49ModuleViewModel;
-        })(geocortex.framework.ui.ViewModelBase);
+        }(geocortex.framework.ui.ViewModelBase));
         customform49.CustomFormM49ModuleViewModel = CustomFormM49ModuleViewModel;
     })(customform49 = oe.customform49 || (oe.customform49 = {}));
 })(oe || (oe = {}));
@@ -225,8 +225,8 @@ var oe;
                 var _this = this;
                 var layerFilters = this._layerFilters;
                 if (attributes.length > 0) {
-                    var devType = attributes.filter(function (f) { return f.name.value === 'dst_cat'; }).length > 0 ? attributes.filter(function (f) { return f.name.value === 'dst_cat'; })[0].value.value : '';
-                    if (devType !== '') {
+                    var devType_1 = attributes.filter(function (f) { return f.name.value === 'dst_cat'; }).length > 0 ? attributes.filter(function (f) { return f.name.value === 'dst_cat'; })[0].value.value : '';
+                    if (devType_1 !== '') {
                         var filteredFields = attributes.filter(function (f) {
                             if (f.name.value === 'dst_cat' && f.valueOptions) {
                                 //f.value.bindingEvent.publish();
@@ -236,16 +236,16 @@ var oe;
                             }
                             if (f.name.value === 'subcat') {
                                 if (_this.devSubTypesTable && f.valueOptions) {
-                                    var filteredCodedValues = [];
+                                    var filteredCodedValues_1 = [];
                                     f.domain.codedValues.forEach(function (cv) {
-                                        if (_this.devSubTypesTable[devType].subtypes.indexOf(cv.name) !== -1) {
-                                            filteredCodedValues.push(cv);
+                                        if (_this.devSubTypesTable[devType_1].subtypes.indexOf(cv.name) !== -1) {
+                                            filteredCodedValues_1.push(cv);
                                         }
                                     });
                                     //let filteredCodedValues = f.domain.codedValues.filter(cd => {
                                     //    return this.devSubTypesTable[devType].subtypes.indexOf(cd.name) !== -1
                                     //});
-                                    f.valueOptions.value = filteredCodedValues;
+                                    f.valueOptions.value = filteredCodedValues_1;
                                 }
                             }
                             if (f.name.value === 'or_dev_reg_proj_id') {
@@ -253,7 +253,7 @@ var oe;
                                     f.readOnly.set(true);
                                 }
                             }
-                            return layerFilters[devType] ? layerFilters[devType].indexOf(f.name.value) !== -1 : true;
+                            return layerFilters[devType_1] ? layerFilters[devType_1].indexOf(f.name.value) !== -1 : true;
                         });
                         return filteredFields;
                     }
@@ -287,19 +287,19 @@ var oe;
                     if (args.id === "FeatureEditingContainerView" && !args.isActive) {
                         if (args.childRegions.length > 0) {
                             if (args.childRegions[0].views.length > 1) {
-                                var editView = args.childRegions[0].views.filter(function (v) { return v.id === "EditorView"; });
-                                if (editView.length > 0) {
-                                    var attr = editView[0].viewModel.form.value.fields.getItems();
+                                var editView_1 = args.childRegions[0].views.filter(function (v) { return v.id === "EditorView"; });
+                                if (editView_1.length > 0) {
+                                    var attr = editView_1[0].viewModel.form.value.fields.getItems();
                                     if (attr.length > 0) {
-                                        if (!editView[0].viewModel.form.value["all_fields"]) {
-                                            editView[0].viewModel.form.value["all_fields"] = [];
-                                            editView[0].viewModel.form.value.fields.value.forEach(function (f) {
-                                                editView[0].viewModel.form.value["all_fields"].push(f);
+                                        if (!editView_1[0].viewModel.form.value["all_fields"]) {
+                                            editView_1[0].viewModel.form.value["all_fields"] = [];
+                                            editView_1[0].viewModel.form.value.fields.value.forEach(function (f) {
+                                                editView_1[0].viewModel.form.value["all_fields"].push(f);
                                             });
                                         }
                                         var filteredFields = this._processAttributeFilter(attr);
                                         if (filteredFields.length > 0) {
-                                            editView[0].viewModel.form.value.fields.set(filteredFields);
+                                            editView_1[0].viewModel.form.value.fields.set(filteredFields);
                                         }
                                     }
                                 }
@@ -311,9 +311,9 @@ var oe;
                     //let filteredAttributes = this._processAttributeFilter(this.devAttributes ? this.devAttributes : args.attributes.getItems());
                     var filteredAttributes = this._processAttributeFilter(args.attributes.getItems());
                     if (filteredAttributes) {
-                        var filteredAttrNames = filteredAttributes.map(function (fa) { return fa.name.value; });
+                        var filteredAttrNames_1 = filteredAttributes.map(function (fa) { return fa.name.value; });
                         args.attributes.getItems().forEach(function (attr) {
-                            if (filteredAttrNames.indexOf(attr.name.value) === -1) {
+                            if (filteredAttrNames_1.indexOf(attr.name.value) === -1) {
                                 attr.visible.set(false);
                             }
                         });
@@ -353,7 +353,7 @@ var oe;
                 });
             };
             return DevelopmentRegistryModule;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         development_registry.DevelopmentRegistryModule = DevelopmentRegistryModule;
     })(development_registry = oe.development_registry || (oe.development_registry = {}));
 })(oe || (oe = {}));
@@ -374,18 +374,9 @@ var oe;
                 _super.call(this, app, lib);
             }
             ElevationModule.prototype.initialize = function (config) {
-                /*var site: geocortex.essentials.Site = (<any>this).app.site;
-                if (site && site.isInitialized) {
-                    this._onSiteInitialized(site);
-                }
-                else {
-                    this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, (args) => {
-                        this._onSiteInitialized(args);
-                    });
-                }*/
             };
             return ElevationModule;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         elevation.ElevationModule = ElevationModule;
     })(elevation = oe.elevation || (oe.elevation = {}));
 })(oe || (oe = {}));
@@ -401,7 +392,7 @@ var oe;
                 _super.call(this, app, lib);
             }
             return ElevationModuleView;
-        })(geocortex.framework.ui.ViewBase);
+        }(geocortex.framework.ui.ViewBase));
         elevation.ElevationModuleView = ElevationModuleView;
     })(elevation = oe.elevation || (oe.elevation = {}));
 })(oe || (oe = {}));
@@ -493,17 +484,24 @@ var oe;
                                 elevation = Math.round(parseFloat(elevation) * 3.28084).toString() + " ft";
                                 $("#GoogleElevationValue").html(elevation);
                             }
+                            else if (result.status == "OVER_QUERY_LIMIT") {
+                                $("#GoogleElevationValue").html("Query Limit.  Wait a moment and try again.");
+                            }
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             var error = thrownError;
                             $("#GoogleElevationValue").html("Load failed");
                             //alert(error);
+                        },
+                        complete: function (xhr, status) {
+                            if (status != "success" && status != "error")
+                                $("#GoogleElevationValue").html(status);
                         }
                     });
                 }
             };
             return ElevationModuleViewModel;
-        })(geocortex.framework.ui.ViewModelBase);
+        }(geocortex.framework.ui.ViewModelBase));
         elevation_1.ElevationModuleViewModel = ElevationModuleViewModel;
     })(elevation = oe.elevation || (oe.elevation = {}));
 })(oe || (oe = {}));
@@ -548,7 +546,7 @@ var oe;
                 { };*/
             };
             return HyperlinkBannerModule;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         hyperlink_banner.HyperlinkBannerModule = HyperlinkBannerModule;
     })(hyperlink_banner = oe.hyperlink_banner || (oe.hyperlink_banner = {}));
 })(oe || (oe = {}));
@@ -672,7 +670,7 @@ var oe;
                 });
             };
             return LayerActionsExtension;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         layer_actions_extension.LayerActionsExtension = LayerActionsExtension;
     })(layer_actions_extension = oe.layer_actions_extension || (oe.layer_actions_extension = {}));
 })(oe || (oe = {}));
@@ -688,7 +686,7 @@ var oe;
                 _super.call(this, app, lib);
             }
             return LayerActionsExtensionModuleView;
-        })(geocortex.framework.ui.ViewBase);
+        }(geocortex.framework.ui.ViewBase));
         layer_actions_extension.LayerActionsExtensionModuleView = LayerActionsExtensionModuleView;
     })(layer_actions_extension = oe.layer_actions_extension || (oe.layer_actions_extension = {}));
 })(oe || (oe = {}));
@@ -710,7 +708,7 @@ var oe;
                 //}
             };
             return LayerActionsExtensionModuleViewModel;
-        })(geocortex.framework.ui.ViewModelBase);
+        }(geocortex.framework.ui.ViewModelBase));
         layer_actions_extension.LayerActionsExtensionModuleViewModel = LayerActionsExtensionModuleViewModel;
     })(layer_actions_extension = oe.layer_actions_extension || (oe.layer_actions_extension = {}));
 })(oe || (oe = {}));
@@ -760,7 +758,7 @@ var oe;
                 });
             };
             return M49Module;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         M49.M49Module = M49Module;
     })(M49 = oe.M49 || (oe.M49 = {}));
 })(oe || (oe = {}));
@@ -812,12 +810,12 @@ var oe;
                 _this.app.commandRegistry.command("processRasterFunctions").execute();
             };
             return RasterFunctionsModule;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         raster_functions.RasterFunctionsModule = RasterFunctionsModule;
     })(raster_functions = oe.raster_functions || (oe.raster_functions = {}));
 })(oe || (oe = {}));
 
-/* End Script: C:/Users/rempelma/Documents/Visual Studio 2015/Projects/oe-gcx-html-viewer/custom_ts_out.js ------------------------- */ 
+/* End Script: C:/Users/schoepft.LIBRARY/Source/Repos/oe-gcx-html-viewer/custom_ts_out.js ------------------------- */ 
 
 geocortex.resourceManager.register("Custom","inv","Modules/CustomFormM49/CustomFormM49ModuleView.html","html","DQoNCjxkaXYgY2xhc3M9Im1vZHVsZSB3b3JrZmxvdy1mb3JtIiBkaXI9Imx0ciI+DQogICAgPGZvcm0gaWQ9ImN1c3RvbUZvcm0iIHRpdGxlPSJNZWFzdXJlIDQ5IEVzdGltYXRlZCBDb25zdHJhaW50cyI+DQogICAgICAgIDxkaXYgY2xhc3M9ImZvcm0tY29udGFpbmVyIj4NCiAgICAgICAgICAgIDxmaWVsZHNldD4NCiAgICAgICAgICAgICAgICA8bGVnZW5kPlNlbGVjdGVkIEFyZWEocyk8L2xlZ2VuZD4NCiAgICAgICAgICAgICAgICA8ZGl2Pg0KICAgICAgICAgICAgICAgICAgICA8c3Bhbj5DdXN0b20gRHJhd24gQXJlYTwvc3Bhbj4NCiAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3M9ImxpbmsiIGRhdGEtYmluZGluZz0ie0BldmVudC1vbmNsaWNrOnpvb21Ub30iPlpvb20gVG88L3NwYW4+DQogICAgICAgICAgICAgICAgPC9kaXY+DQogICAgICAgICAgICA8L2ZpZWxkc2V0Pg0KICAgICAgICAgICAgPGZpZWxkc2V0Pg0KICAgICAgICAgICAgICAgIDxsZWdlbmQ+RXN0aW1hdGVkIENvbnN0cmFpbnRzPC9sZWdlbmQ+DQogICAgICAgICAgICAgICAgPHRhYmxlIGlkPSJjb25zdHJhaW50cy10YWJsZSI+DQogICAgICAgICAgICAgICAgICAgIDx0aGVhZD4NCiAgICAgICAgICAgICAgICAgICAgICAgIDx0cj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGggYWxpZ249ImNlbnRlciI+Q29uc3RyYWludHM8L3RoPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0aCBhbGlnbj0iY2VudGVyIj5BcmVhKCUpPC90aD4NCiAgICAgICAgICAgICAgICAgICAgICAgIDwvdHI+DQogICAgICAgICAgICAgICAgICAgIDwvdGhlYWQ+DQogICAgICAgICAgICAgICAgICAgIDx0Ym9keT4NCiAgICAgICAgICAgICAgICAgICAgICAgIDx0ciBjbGFzcz0iYWx0Ij4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQgY2xhc3M9ImNvbnN0cmFpbnQtY2VsbCI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXY+SGlnaC12YWx1ZSBmYXJtbGFuZCBzb2lsIDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJjb25zdHJhaW50LWxheWVyLWNvbnRyb2xzIj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzPSJsaW5rIiBkYXRhLWJpbmRpbmc9IntAZXZlbnQtb25jbGljazp0b2dnbGVMYXllcn0iIGRhdGEtYXR0ci1sYXllcj0iSGlnaC12YWx1ZSBGYXJtIFNvaWxzIj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBUb2dnbGUgbGF5ZXINCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvc3Bhbj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzPSJsaW5rIiBkYXRhLWJpbmRpbmc9IntAZXZlbnQtb25jbGljazpzaG93SW5mb30iIGRhdGEtYXR0ci1jb25zdHJhaW50PSJIVkZMIj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBDb25zdHJhaW50IEluZm8NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvc3Bhbj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90ZD4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQ+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgaWQ9Imh2Zmxfc29pbCI+PC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90ZD4NCiAgICAgICAgICAgICAgICAgICAgICAgIDwvdHI+DQogICAgICAgICAgICAgICAgICAgICAgICA8dHI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2PkhpZ2gtdmFsdWUgZmFybWxhbmQgZGFpcnkgPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImNvbnN0cmFpbnQtbGF5ZXItY29udHJvbHMiPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3M9ImxpbmsiIGRhdGEtYmluZGluZz0ie0BldmVudC1vbmNsaWNrOnRvZ2dsZUxheWVyfSIgZGF0YS1hdHRyLWxheWVyPSJIaWdoLXZhbHVlIEZhcm0gRGFpcnkgU29pbCI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgVG9nZ2xlIGxheWVyDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3NwYW4+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzcz0ibGluayIgZGF0YS1iaW5kaW5nPSJ7QGV2ZW50LW9uY2xpY2s6c2hvd0luZm99IiBkYXRhLWF0dHItY29uc3RyYWludD0iSFZGRCI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQ29uc3RyYWludCBJbmZvDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3NwYW4+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvdGQ+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGlkPSJodmZsX2RhaXJ5Ij48L2Rpdj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3RkPg0KICAgICAgICAgICAgICAgICAgICAgICAgPC90cj4NCiAgICAgICAgICAgICAgICAgICAgICAgIDx0ciBjbGFzcz0iYWx0Ij4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQ+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXY+SGlnaC12YWx1ZSBmb3Jlc3RsYW5kPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImNvbnN0cmFpbnQtbGF5ZXItY29udHJvbHMiPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3M9ImxpbmsiIGRhdGEtYmluZGluZz0ie0BldmVudC1vbmNsaWNrOnRvZ2dsZUxheWVyfSIgZGF0YS1hdHRyLWxheWVyPSJIaWdoLXZhbHVlIEZvcmVzdCBsYW5kIj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBUb2dnbGUgbGF5ZXINCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvc3Bhbj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzPSJsaW5rIiBkYXRhLWJpbmRpbmc9IntAZXZlbnQtb25jbGljazpzaG93SW5mb30iIGRhdGEtYXR0ci1jb25zdHJhaW50PSJIVkZvcmVzdCI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQ29uc3RyYWludCBJbmZvDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3NwYW4+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvdGQ+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRkPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGlkPSJodmYiPjwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvdGQ+DQogICAgICAgICAgICAgICAgICAgICAgICA8L3RyPg0KICAgICAgICAgICAgICAgICAgICAgICAgPHRyPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZD4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGRpdj5MaWtlbHkgaGlnaC12YWx1ZSBmb3Jlc3RsYW5kPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImNvbnN0cmFpbnQtbGF5ZXItY29udHJvbHMiPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3M9ImxpbmsiIGRhdGEtYmluZGluZz0ie0BldmVudC1vbmNsaWNrOnRvZ2dsZUxheWVyfSIgZGF0YS1hdHRyLWxheWVyPSJMaWtlbHkgaGlnaC12YWx1ZSBmb3Jlc3RsYW5kIHdlc3Qgb2YgdGhlIENhc2NhZGVzIFBvc3NpYmxlIGFyZWFzIG9mIGhpZ2gtdmFsdWUgZm9yZXN0bGFuZCBlYXN0IG9mIHRoZSBDYXNjYWRlcyI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgVG9nZ2xlIGxheWVyDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3NwYW4+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzcz0ibGluayIgZGF0YS1iaW5kaW5nPSJ7QGV2ZW50LW9uY2xpY2s6c2hvd0luZm99IiBkYXRhLWF0dHItY29uc3RyYWludD0iTEhWRm9yZXN0Ij4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBDb25zdHJhaW50IEluZm8NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvc3Bhbj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90ZD4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQ+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgaWQ9Imh2Zl9saWtlbHkiPjwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvdGQ+DQogICAgICAgICAgICAgICAgICAgICAgICA8L3RyPg0KICAgICAgICAgICAgICAgICAgICA8L3Rib2R5Pg0KICAgICAgICAgICAgICAgIDwvdGFibGU+DQogICAgICAgICAgICA8L2ZpZWxkc2V0Pg0KICAgICAgICAgICAgPGZpZWxkc2V0Pg0KICAgICAgICAgICAgICAgIDxsZWdlbmQ+UERGIFJlcG9ydCBTZXR0aW5nczwvbGVnZW5kPg0KICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImZvcm0tY29udGFpbmVyIj4NCiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0iZm9ybSBsYWJlbC1sZWZ0IiBpZD0iY3VzdG9tRm9ybUJvZHkiPg0KICAgICAgICAgICAgICAgICAgICAgICAgPGxhYmVsIGZvcj0icmVwb3J0VGl0bGUiIGNsYXNzPSJmb3JtLWxhYmVsIG15TGFiZWwiPlRpdGxlPC9sYWJlbD4NCiAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImZvcm0tY29udHJvbCI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPGlucHV0IGlkPSJyZXBvcnRUaXRsZSIgdHlwZT0idGV4dCIgcGxhY2Vob2xkZXI9IlJlcG9ydCBUaXRsZSIgdmFsdWU9IlJlcG9ydCBUaXRsZSIgZGF0YS1iaW5kaW5nPSJ7QGV2ZW50LW9uY2xpY2s6Y2xlYXJUaXRsZX0iLz4NCiAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgPGxhYmVsIGZvcj0idXNlck5hbWUiIGlkPSJ1c2VyTmFtZWxibCIgY2xhc3M9ImZvcm0tbGFiZWwgbXlMYWJlbCI+SW5jbHVkZSBtYXA8L2xhYmVsPg0KICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0iZm9ybS1jb250cm9sIj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8aW5wdXQgaWQ9ImluY2x1ZGVNYXAiIHR5cGU9ImNoZWNrYm94IiBjaGVja2VkIC8+DQogICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj4NCg0KICAgICAgICAgICAgICAgICAgICA8L2Rpdj4NCiAgICAgICAgICAgICAgICA8L2Rpdj4NCiAgICAgICAgICAgIDwvZmllbGRzZXQ+DQoNCiAgICAgICAgICAgIDxkaXYgc3R5bGU9InRleHQtYWxpZ246cmlnaHQ7IHdpZHRoOjEwMCU7IGRpc3BsYXk6IGlubGluZS1ibG9jazsiIGNsYXNzPSJmb3JtLWJ0bnMiPg0KICAgICAgICAgICAgICAgIDxidXR0b24gaWQ9Im9rQnRuIiBjbGFzcz0iYnV0dG9uIiB0eXBlPSJidXR0b24iIGRhdGEtYmluZGluZz0ie0BldmVudC1vbmNsaWNrOnJ1bk5ld1JlcG9ydH0iPjw8IE5ldyBSZXBvcnQ8L2J1dHRvbj4NCiAgICAgICAgICAgICAgICA8YnV0dG9uIGlkPSJva0J0biIgY2xhc3M9ImJ1dHRvbiIgdHlwZT0iYnV0dG9uIiBkYXRhLWJpbmRpbmc9IntAZXZlbnQtb25jbGljazpnZXRQREZ9Ij5Db250aW51ZSA+PjwvYnV0dG9uPg0KICAgICAgICAgICAgICAgIDxidXR0b24gaWQ9ImNhbmNlbEJ0biIgY2xhc3M9ImJ1dHRvbiIgdHlwZT0iYnV0dG9uIiBkYXRhLWJpbmRpbmc9IntAZXZlbnQtb25jbGljazpjYW5jZWxGb3JtfSI+Q2xvc2U8L2J1dHRvbj4NCiAgICAgICAgICAgIDwvZGl2Pg0KICAgICAgICA8L2Rpdj4NCiAgICA8L2Zvcm0+DQogICAgPGRpdiBpZD0iYW5pbWF0aW9uIj48L2Rpdj4NCg0KPC9kaXY+DQo=");
 geocortex.resourceManager.register("Custom","inv","Modules/DevelopmentRegistry/EditGeometryView.html","html","PCFET0NUWVBFIGh0bWw+DQo8aHRtbD4NCjxoZWFkPg0KICAgIDx0aXRsZT48L3RpdGxlPg0KCTxtZXRhIGNoYXJzZXQ9InV0Zi04IiAvPg0KPC9oZWFkPg0KPGJvZHk+DQoNCjwvYm9keT4NCjwvaHRtbD4NCg==");

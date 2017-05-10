@@ -3,7 +3,7 @@
         "version": "2.8",
         "application": {
             "proxyUri": "proxy.ashx?",
-            "allowUnsafeContent": false,
+            "allowUnsafeContent": true,
             "offlineStorageSpaceMb": "50",
             "geometryServiceUrl": "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer"
         },
@@ -5654,7 +5654,7 @@
                 "configuration": {
                     "css": [
                         "Resources/Styles/Tablet.css",
-                        "{ViewerConfigUri}../../Styles/Custom/Tablet.css"
+                        "{ViewerConfigUri}../../Styles/Custom/Tablet_OE.css"
                     ],
                     "homePanelVisible": false
                 },
