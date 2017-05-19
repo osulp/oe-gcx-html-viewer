@@ -46,18 +46,21 @@ module oe.layer_actions_extension {
                 if (args.id === "LayerDataContainerView") {
                     // check to see if div id already added, else create a new one
                     if (args.childRegions[0].activeViews.length > 1) {
-                        this.layer_desc_full = args.childRegions[0].activeViews[1].viewModel.menuContext.value.description.split("Metadata:")[0];
-                        this.layer_desc_full = this.layer_desc_full.split('Abstract:').length > 1
-                            ? this.layer_desc_full.split('Abstract:')[1]
-                            : this.layer_desc_full;
-                        let showMore = this.layer_desc_full.length > 500;
-                        let layer_desc = showMore ? this.layer_desc_full.substring(0, 500) + '...<div id="oe_layer_desc_toggle_more">show more</div>' : this.layer_desc_full;
-                        if ($("#oe_layer_desc").length > 0) {
-                            $("#oe_layer_desc").html(layer_desc);
-                        } else {
-                            $(".LayerActionsView.active").prepend('<div id="oe_layer_desc">' + layer_desc + '</div>');
+                        let layerListView = args.childRegions[0].activeViews.filter((av: any) => av.id === "LayerActionsView");
+                        if (layerListView.length > 0) {
+                            this.layer_desc_full = layerListView[0].viewModel.menuContext.value.description.split("Metadata:")[0];
+                            this.layer_desc_full = this.layer_desc_full.split('Abstract:').length > 1
+                                ? this.layer_desc_full.split('Abstract:')[1]
+                                : this.layer_desc_full;
+                            let showMore = this.layer_desc_full.length > 500;
+                            let layer_desc = showMore ? this.layer_desc_full.substring(0, 500) + '...<div id="oe_layer_desc_toggle_more">show more</div>' : this.layer_desc_full;
+                            if ($("#oe_layer_desc").length > 0) {
+                                $("#oe_layer_desc").html(layer_desc);
+                            } else {
+                                $(".LayerActionsView.active").prepend('<div id="oe_layer_desc">' + layer_desc + '</div>');
+                            }
+                            this.registerOnclickLayerDesc();
                         }
-                        this.registerOnclickLayerDesc();
                     }
                 }
             });
