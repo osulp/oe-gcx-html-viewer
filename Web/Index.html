@@ -67,6 +67,14 @@
         };
         new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize();
 
+        //Production
+        //"default": "Resources/Config/Default/" + shellName + ".json.js"
+        //"default": "Resources/Config/Basic/" + shellName + ".json.js"
+        //"default": "Resources/Config/Advanced/" + shellName + ".json.js"
+
+        //Dev
+        //"default": "Resources/Config/DEV/" + shellName + ".json.js"
+
         //var viewerConfig = {
         //    //"viewerConfigUri": "Libraries/Custom/Config/Defaults.json.js"
         //    //"viewerConfigUri": "Resources/Config/Default/Tablet.json.js"
@@ -96,7 +104,7 @@
             function frame() {
                 if (width >= 100) {
                     clearInterval(id);
-                } else {
+                } else {        
                     width++;
                     elem.style.width = width + '%';
                     elem.innerHTML = width * 1 + '%';

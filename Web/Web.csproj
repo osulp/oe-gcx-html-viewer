@@ -78,6 +78,12 @@
     <Content Include="Resources\Compiled\Framework.UI.js" />
     <Content Include="Resources\Compiled\Mapping.Infrastructure.js" />
     <Content Include="Resources\Compiled\Mapping.js" />
+    <Content Include="Resources\Config\Advanced\Desktop.json.js" />
+    <Content Include="Resources\Config\Advanced\Handheld.json.js" />
+    <Content Include="Resources\Config\Advanced\Tablet.json.js" />
+    <Content Include="Resources\Config\Basic\Desktop.json.js" />
+    <Content Include="Resources\Config\Basic\Handheld.json.js" />
+    <Content Include="Resources\Config\Basic\Tablet.json.js" />
     <Content Include="Resources\Config\CacheManifestConfig.xml" />
     <Content Include="Resources\Config\Default\Handheld.json.js" />
     <Content Include="Resources\Config\Default\Tablet.json.js" />
@@ -383,8 +389,11 @@
     <Content Include="Resources\Scripts\native.js" />
     <Content Include="Resources\Styles\Animations.css" />
     <Content Include="Resources\Styles\common.css" />
+    <Content Include="Resources\Styles\Custom\Desktop_OE.css" />
     <Content Include="Resources\Styles\Custom\Desktop.css" />
+    <Content Include="Resources\Styles\Custom\Handheld_OE.css" />
     <Content Include="Resources\Styles\Custom\Handheld.css" />
+    <Content Include="Resources\Styles\Custom\Tablet_OE.css" />
     <Content Include="Resources\Styles\Custom\Tablet.css" />
     <Content Include="Resources\Styles\Desktop.css" />
     <Content Include="Resources\Styles\Handheld.css" />

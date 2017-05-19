@@ -1,10 +1,10 @@
-/// <reference path="../../../Libs/Framework.d.ts" />
-/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
 var oe;
 (function (oe) {
     var customform49;
@@ -18,7 +18,7 @@ var oe;
                 //alert(this.app.getResource(this.libraryId, "hello-world-initialized"));
             };
             return CustomFormM49Module;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         customform49.CustomFormM49Module = CustomFormM49Module;
     })(customform49 = oe.customform49 || (oe.customform49 = {}));
 })(oe || (oe = {}));
@@ -78,7 +78,7 @@ var oe;
                 };
             }
             return CustomForm49ModuleView;
-        })(geocortex.framework.ui.ViewBase);
+        }(geocortex.framework.ui.ViewBase));
         customform49.CustomForm49ModuleView = CustomForm49ModuleView;
     })(customform49 = oe.customform49 || (oe.customform49 = {}));
 })(oe || (oe = {}));
@@ -109,7 +109,7 @@ var oe;
                 });
             };
             return CustomFormM49ModuleViewModel;
-        })(geocortex.framework.ui.ViewModelBase);
+        }(geocortex.framework.ui.ViewModelBase));
         customform49.CustomFormM49ModuleViewModel = CustomFormM49ModuleViewModel;
     })(customform49 = oe.customform49 || (oe.customform49 = {}));
 })(oe || (oe = {}));
@@ -223,8 +223,8 @@ var oe;
                 var _this = this;
                 var layerFilters = this._layerFilters;
                 if (attributes.length > 0) {
-                    var devType = attributes.filter(function (f) { return f.name.value === 'dst_cat'; }).length > 0 ? attributes.filter(function (f) { return f.name.value === 'dst_cat'; })[0].value.value : '';
-                    if (devType !== '') {
+                    var devType_1 = attributes.filter(function (f) { return f.name.value === 'dst_cat'; }).length > 0 ? attributes.filter(function (f) { return f.name.value === 'dst_cat'; })[0].value.value : '';
+                    if (devType_1 !== '') {
                         var filteredFields = attributes.filter(function (f) {
                             if (f.name.value === 'dst_cat' && f.valueOptions) {
                                 //f.value.bindingEvent.publish();
@@ -234,16 +234,16 @@ var oe;
                             }
                             if (f.name.value === 'subcat') {
                                 if (_this.devSubTypesTable && f.valueOptions) {
-                                    var filteredCodedValues = [];
+                                    var filteredCodedValues_1 = [];
                                     f.domain.codedValues.forEach(function (cv) {
-                                        if (_this.devSubTypesTable[devType].subtypes.indexOf(cv.name) !== -1) {
-                                            filteredCodedValues.push(cv);
+                                        if (_this.devSubTypesTable[devType_1].subtypes.indexOf(cv.name) !== -1) {
+                                            filteredCodedValues_1.push(cv);
                                         }
                                     });
                                     //let filteredCodedValues = f.domain.codedValues.filter(cd => {
                                     //    return this.devSubTypesTable[devType].subtypes.indexOf(cd.name) !== -1
                                     //});
-                                    f.valueOptions.value = filteredCodedValues;
+                                    f.valueOptions.value = filteredCodedValues_1;
                                 }
                             }
                             if (f.name.value === 'or_dev_reg_proj_id') {
@@ -251,7 +251,7 @@ var oe;
                                     f.readOnly.set(true);
                                 }
                             }
-                            return layerFilters[devType] ? layerFilters[devType].indexOf(f.name.value) !== -1 : true;
+                            return layerFilters[devType_1] ? layerFilters[devType_1].indexOf(f.name.value) !== -1 : true;
                         });
                         return filteredFields;
                     }
@@ -285,19 +285,19 @@ var oe;
                     if (args.id === "FeatureEditingContainerView" && !args.isActive) {
                         if (args.childRegions.length > 0) {
                             if (args.childRegions[0].views.length > 1) {
-                                var editView = args.childRegions[0].views.filter(function (v) { return v.id === "EditorView"; });
-                                if (editView.length > 0) {
-                                    var attr = editView[0].viewModel.form.value.fields.getItems();
+                                var editView_1 = args.childRegions[0].views.filter(function (v) { return v.id === "EditorView"; });
+                                if (editView_1.length > 0) {
+                                    var attr = editView_1[0].viewModel.form.value.fields.getItems();
                                     if (attr.length > 0) {
-                                        if (!editView[0].viewModel.form.value["all_fields"]) {
-                                            editView[0].viewModel.form.value["all_fields"] = [];
-                                            editView[0].viewModel.form.value.fields.value.forEach(function (f) {
-                                                editView[0].viewModel.form.value["all_fields"].push(f);
+                                        if (!editView_1[0].viewModel.form.value["all_fields"]) {
+                                            editView_1[0].viewModel.form.value["all_fields"] = [];
+                                            editView_1[0].viewModel.form.value.fields.value.forEach(function (f) {
+                                                editView_1[0].viewModel.form.value["all_fields"].push(f);
                                             });
                                         }
                                         var filteredFields = this._processAttributeFilter(attr);
                                         if (filteredFields.length > 0) {
-                                            editView[0].viewModel.form.value.fields.set(filteredFields);
+                                            editView_1[0].viewModel.form.value.fields.set(filteredFields);
                                         }
                                     }
                                 }
@@ -309,9 +309,9 @@ var oe;
                     //let filteredAttributes = this._processAttributeFilter(this.devAttributes ? this.devAttributes : args.attributes.getItems());
                     var filteredAttributes = this._processAttributeFilter(args.attributes.getItems());
                     if (filteredAttributes) {
-                        var filteredAttrNames = filteredAttributes.map(function (fa) { return fa.name.value; });
+                        var filteredAttrNames_1 = filteredAttributes.map(function (fa) { return fa.name.value; });
                         args.attributes.getItems().forEach(function (attr) {
-                            if (filteredAttrNames.indexOf(attr.name.value) === -1) {
+                            if (filteredAttrNames_1.indexOf(attr.name.value) === -1) {
                                 attr.visible.set(false);
                             }
                         });
@@ -351,7 +351,7 @@ var oe;
                 });
             };
             return DevelopmentRegistryModule;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         development_registry.DevelopmentRegistryModule = DevelopmentRegistryModule;
     })(development_registry = oe.development_registry || (oe.development_registry = {}));
 })(oe || (oe = {}));
@@ -372,18 +372,9 @@ var oe;
                 _super.call(this, app, lib);
             }
             ElevationModule.prototype.initialize = function (config) {
-                /*var site: geocortex.essentials.Site = (<any>this).app.site;
-                if (site && site.isInitialized) {
-                    this._onSiteInitialized(site);
-                }
-                else {
-                    this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, (args) => {
-                        this._onSiteInitialized(args);
-                    });
-                }*/
             };
             return ElevationModule;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         elevation.ElevationModule = ElevationModule;
     })(elevation = oe.elevation || (oe.elevation = {}));
 })(oe || (oe = {}));
@@ -399,7 +390,7 @@ var oe;
                 _super.call(this, app, lib);
             }
             return ElevationModuleView;
-        })(geocortex.framework.ui.ViewBase);
+        }(geocortex.framework.ui.ViewBase));
         elevation.ElevationModuleView = ElevationModuleView;
     })(elevation = oe.elevation || (oe.elevation = {}));
 })(oe || (oe = {}));
@@ -491,17 +482,24 @@ var oe;
                                 elevation = Math.round(parseFloat(elevation) * 3.28084).toString() + " ft";
                                 $("#GoogleElevationValue").html(elevation);
                             }
+                            else if (result.status == "OVER_QUERY_LIMIT") {
+                                $("#GoogleElevationValue").html("Query Limit.  Wait a moment and try again.");
+                            }
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             var error = thrownError;
                             $("#GoogleElevationValue").html("Load failed");
                             //alert(error);
+                        },
+                        complete: function (xhr, status) {
+                            if (status != "success" && status != "error")
+                                $("#GoogleElevationValue").html(status);
                         }
                     });
                 }
             };
             return ElevationModuleViewModel;
-        })(geocortex.framework.ui.ViewModelBase);
+        }(geocortex.framework.ui.ViewModelBase));
         elevation_1.ElevationModuleViewModel = ElevationModuleViewModel;
     })(elevation = oe.elevation || (oe.elevation = {}));
 })(oe || (oe = {}));
@@ -546,7 +544,7 @@ var oe;
                 { };*/
             };
             return HyperlinkBannerModule;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         hyperlink_banner.HyperlinkBannerModule = HyperlinkBannerModule;
     })(hyperlink_banner = oe.hyperlink_banner || (oe.hyperlink_banner = {}));
 })(oe || (oe = {}));
@@ -670,7 +668,7 @@ var oe;
                 });
             };
             return LayerActionsExtension;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         layer_actions_extension.LayerActionsExtension = LayerActionsExtension;
     })(layer_actions_extension = oe.layer_actions_extension || (oe.layer_actions_extension = {}));
 })(oe || (oe = {}));
@@ -686,7 +684,7 @@ var oe;
                 _super.call(this, app, lib);
             }
             return LayerActionsExtensionModuleView;
-        })(geocortex.framework.ui.ViewBase);
+        }(geocortex.framework.ui.ViewBase));
         layer_actions_extension.LayerActionsExtensionModuleView = LayerActionsExtensionModuleView;
     })(layer_actions_extension = oe.layer_actions_extension || (oe.layer_actions_extension = {}));
 })(oe || (oe = {}));
@@ -708,7 +706,7 @@ var oe;
                 //}
             };
             return LayerActionsExtensionModuleViewModel;
-        })(geocortex.framework.ui.ViewModelBase);
+        }(geocortex.framework.ui.ViewModelBase));
         layer_actions_extension.LayerActionsExtensionModuleViewModel = LayerActionsExtensionModuleViewModel;
     })(layer_actions_extension = oe.layer_actions_extension || (oe.layer_actions_extension = {}));
 })(oe || (oe = {}));
@@ -758,7 +756,7 @@ var oe;
                 });
             };
             return M49Module;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         M49.M49Module = M49Module;
     })(M49 = oe.M49 || (oe.M49 = {}));
 })(oe || (oe = {}));
@@ -810,7 +808,7 @@ var oe;
                 _this.app.commandRegistry.command("processRasterFunctions").execute();
             };
             return RasterFunctionsModule;
-        })(geocortex.framework.application.ModuleBase);
+        }(geocortex.framework.application.ModuleBase));
         raster_functions.RasterFunctionsModule = RasterFunctionsModule;
     })(raster_functions = oe.raster_functions || (oe.raster_functions = {}));
 })(oe || (oe = {}));
