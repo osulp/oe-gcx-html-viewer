@@ -140,27 +140,15 @@ height:400px;
     padding:.55em !important;
 }
 
-.form-item{
-    padding-left:.5em !important;
-    padding-right:.5em !important;
+fieldset {
+    padding: .5em .75em .75em .75em;    
 }
 
 fieldset legend{
-    padding:0 .5em;
-    margin-left: .5em;
+    padding:0 .5em;    
 }
 
-/*#CustomMapTipPopup {
-  position:absolute;
-  left: 300px;
-  top: 100px;
-  z-index:200;
-  padding: 3px;
-  margin-left: 10px;
-  margin-top: 5px;
-  width: 200px;
-  border: 0px;
-  border-radius: 5px;
-  background-color:#777;
-  color: white;
-}*/
+/* Hides button next to social icon link.  The button was creating padding between links */
+.footer-container .list-menu .list-menu-details {
+    display:none;
+}

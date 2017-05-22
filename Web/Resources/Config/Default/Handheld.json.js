@@ -78,7 +78,17 @@
                         "uri": "Resources/Locales/Charting.en-US.json.js"
                     }
                 ]
-            }
+            },
+             {
+                 "id":"Custom",
+                 "uri":"Libraries/Custom/Compiled/Custom.js",
+                 "locales":[
+                     {
+                         "locale":"en-US",
+                         "uri":"Resources/Locales/Custom.en-US.json.js"
+                     }
+                 ]
+             }
         ],
         "modules": [
             {
@@ -106,6 +116,41 @@
                         "configuration": {}
                     }
                 ]
+            },
+            {
+                "moduleName": "LayerActionsExtension",
+                "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
+                "libraryId": "Custom",
+                "configuration": {}
+            },                            
+          {
+              "moduleName" : "Elevation",
+              "moduleType" : "oe.elevation.ElevationModule",
+              "libraryId" : "Custom",
+              "configuration" : {},
+              "views" : [{
+                  "id" : "ElevationModuleView",
+                  "viewModelId" : "ElevationModuleViewModel",
+                  "visible" : false,
+                  "markup" : "Modules/Elevation/ElevationModuleView.html",
+                  "type" : "oe.elevation.ElevationModuleView",
+                  "region" : "LeftFooterRegion",
+                  "configuration" : {}
+              }
+              ],
+              "viewModels" : [{
+                  "id" : "ElevationModuleViewModel",
+                  "type" : "oe.elevation.ElevationModuleViewModel",
+
+                  "configuration" : {}
+              }
+              ]
+          },
+            {
+                "moduleName" : "RasterFunctions",
+                "moduleType" : "oe.raster_functions.RasterFunctionsModule",
+                "libraryId" : "Custom",
+                "configuration" : {}
             },
             {
                 "moduleName": "Menu",
