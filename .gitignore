@@ -196,3 +196,9 @@ FakesAssemblies/
 *.opt
 /Web.config
 /Web/Resources/Config/DevTy
+/Web/Libraries/Custom/SiteCustomJS/Custom.js
+/Web/Libraries/Custom/SiteCustomJS/Custom-Wildfire.js
+/Web/Libraries/Custom/SiteCustomJS/Custom-M49.js
+/Web/Libraries/Custom/Compiled/Custom.js
+/Web/Libraries/Custom/Compiled/Custom.js
+/Web/Libraries/Custom/Compiled/Custom.js

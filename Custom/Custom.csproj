@@ -42,28 +42,20 @@
     </VisualStudio>
   </ProjectExtensions>
   <ItemGroup>
-    <Content Include="Modules\DevelopmentRegistry\EditGeometryView.html" />
-    <Content Include="Resources\Styles\Custom\OE.css" />
-    <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49Module.ts" />
-    <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49ModuleView.ts" />
-    <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49ModuleViewModel.ts" />
-    <TypeScriptCompile Include="Modules\Elevation\ElevationModule.ts" />
-    <TypeScriptCompile Include="Modules\Elevation\ElevationModuleView.ts" />
-    <TypeScriptCompile Include="Modules\Elevation\ElevationModuleViewModel.ts" />
-    <TypeScriptCompile Include="Modules\HyperlinkBanner\HyperlinkBannerModule.ts" />
-    <TypeScriptCompile Include="Modules\M49\M49Module.ts" />
-    <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModule.ts" />
-    <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModuleView.ts" />
-    <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModuleViewModel.ts" />
-    <TypeScriptCompile Include="Modules\DevelopmentRegistry\DevelopmentRegistryModule.ts" />
-    <TypeScriptCompile Include="Modules\RasterFunctions\RasterFunctionsModule.ts" />
-    <Content Include="Modules\CustomFormM49\Readme.txt" />
     <Content Include="Modules\CustomFormM49\CustomFormM49Module.css" />
     <Content Include="Modules\CustomFormM49\CustomFormM49ModuleView.html" />
+    <Content Include="Modules\CustomFormM49\Readme.txt" />
+    <Content Include="Modules\DevelopmentRegistry\EditGeometryView.html" />
     <Content Include="Modules\Elevation\ElevationModule.css" />
     <Content Include="Modules\Elevation\ElevationModuleView.html" />
+    <Content Include="Modules\Elevation\Language.json" />
     <Content Include="Modules\Elevation\Readme.txt" />
-    <None Include="Modules\Elevation\Language.json" />
+    <Content Include="Modules\LayerActionsExtension\readme.txt" />
+    <Content Include="Modules\M49\readme.txt" />
+    <Content Include="Modules\WildfireRiskPopup\ModuleJS.txt" />
+    <Content Include="Modules\WildfireRiskPopup\WildfireRiskPopupModule.css" />
+    <Content Include="Modules\WildfireRiskPopup\WildfireRiskPopupModuleView.html" />
+    <Content Include="Resources\Styles\Custom\OE.css" />
     <Content Include="ResourceManifest.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -72,6 +64,26 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DevModules\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49Module.ts" />
+    <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49ModuleView.ts" />
+    <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49ModuleViewModel.ts" />
+    <TypeScriptCompile Include="Modules\DevelopmentRegistry\DevelopmentRegistryModule.ts" />
+    <TypeScriptCompile Include="Modules\Elevation\ElevationModule.ts" />
+    <TypeScriptCompile Include="Modules\Elevation\ElevationModuleView.ts" />
+    <TypeScriptCompile Include="Modules\Elevation\ElevationModuleViewModel.ts" />
+    <TypeScriptCompile Include="Modules\HyperlinkBanner\HyperlinkBannerModule.ts" />
+    <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModule.ts" />
+    <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModuleView.ts" />
+    <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModuleViewModel.ts" />
+    <TypeScriptCompile Include="Modules\M49\M49Module.ts" />
+    <TypeScriptCompile Include="Modules\M49\M49ModuleView.ts" />
+    <TypeScriptCompile Include="Modules\M49\m49ModuleViewModel.ts" />
+    <TypeScriptCompile Include="Modules\RasterFunctions\RasterFunctionsModule.ts" />
+    <TypeScriptCompile Include="Modules\WildfireRiskPopup\WildfireRiskPopupModule.ts" />
+    <TypeScriptCompile Include="Modules\WildfireRiskPopup\WildfireRiskPopupModuleView.ts" />
+    <TypeScriptCompile Include="Modules\WildfireRiskPopup\WildfireRiskPopupModuleViewModel.ts" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES3</TypeScriptTarget>

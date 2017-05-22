@@ -55,8 +55,9 @@
 #customForm fieldset{
     border:solid 1px #a7a7a7;
     border-radius:0.25rem;
-    margin:2em auto;
+    margin:2em auto;    
 }
+
 .link {
     color:#1A72C4;
 }
@@ -81,5 +82,5 @@
     padding-right:10px;
 }
 .constraint-cell{
-    min-width:250px;
+    min-width:240px;
 }

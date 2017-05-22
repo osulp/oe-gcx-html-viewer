@@ -148,3 +148,11 @@ input[type='checkbox']{
     text-decoration:underline;
     cursor:pointer;
 }
+
+fieldset {
+    padding: .5em .75em .75em .75em;    
+}
+
+fieldset legend{
+    padding:0 .5em;    
+}

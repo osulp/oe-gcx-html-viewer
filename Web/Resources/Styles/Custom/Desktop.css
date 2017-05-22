@@ -149,18 +149,3 @@ fieldset legend{
     padding:0 .5em;
     margin-left: .5em;
 }
-
-/*#CustomMapTipPopup {
-  position:absolute;
-  left: 300px;
-  top: 100px;
-  z-index:200;
-  padding: 3px;
-  margin-left: 10px;
-  margin-top: 5px;
-  width: 200px;
-  border: 0px;
-  border-radius: 5px;
-  background-color:#777;
-  color: white;
-}*/
