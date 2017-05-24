@@ -50,6 +50,7 @@
     <Content Include="Modules\Elevation\ElevationModuleView.html" />
     <Content Include="Modules\Elevation\Language.json" />
     <Content Include="Modules\Elevation\Readme.txt" />
+    <Content Include="Modules\InitialExtent\readme.txt" />
     <Content Include="Modules\LayerActionsExtension\readme.txt" />
     <Content Include="Modules\M49\readme.txt" />
     <Content Include="Modules\WildfireRiskPopup\ModuleJS.txt" />
@@ -74,6 +75,7 @@
     <TypeScriptCompile Include="Modules\Elevation\ElevationModuleView.ts" />
     <TypeScriptCompile Include="Modules\Elevation\ElevationModuleViewModel.ts" />
     <TypeScriptCompile Include="Modules\HyperlinkBanner\HyperlinkBannerModule.ts" />
+    <TypeScriptCompile Include="Modules\InitialExtent\InitialExtentModule.ts" />
     <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModule.ts" />
     <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModuleView.ts" />
     <TypeScriptCompile Include="Modules\LayerActionsExtension\LayerActionsExtensionModuleViewModel.ts" />
