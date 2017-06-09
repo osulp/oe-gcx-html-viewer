@@ -39,8 +39,12 @@
                 "viewerConfigUri": null
             };
             new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize({
-                shell: "Tablet"
+                shell: "Tablet",
+                onSiteInitialized: function (app, loader) {
+                    geocortex.config.io.timeout = 180 * 1000; // 180 seconds
+                }
             });
+
         </script>
     </body>
 </html>

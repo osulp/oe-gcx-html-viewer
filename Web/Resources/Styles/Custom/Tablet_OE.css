@@ -156,3 +156,8 @@ fieldset {
 fieldset legend{
     padding:0 .5em;    
 }
+
+/* Hides button next to social icon link.  The button was creating padding between links */
+.footer-container .list-menu .list-menu-details {
+    display:none;
+}

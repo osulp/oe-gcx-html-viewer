@@ -65,7 +65,14 @@
             },
             "viewerConfigUri": null
         };
-        new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize();
+
+        //new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize();
+
+        new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize({
+            onSiteInitialized: function (app, loader) {
+                geocortex.config.io.timeout = 180 * 1000; // 180 seconds
+            }
+        });
 
         //Production
         //"default": "Resources/Config/Default/" + shellName + ".json.js"

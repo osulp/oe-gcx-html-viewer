@@ -123,6 +123,12 @@
                 "libraryId": "Custom",
                 "configuration": {}
             },                            
+             {
+                 "moduleName": "InitialExtent",
+                 "moduleType": "oe.initial_extent.InitialExtentModule",
+                 "libraryId": "Custom",
+                 "configuration": {}
+             },
           {
               "moduleName" : "Elevation",
               "moduleType" : "oe.elevation.ElevationModule",
@@ -270,6 +276,30 @@
                                     "description": "@language-menu-visualization-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/visualizations-24.png",
                                     "command": "ShowVisualizationView",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "View metadata",
+                                    "description": "View the layer's metadata",
+                                    "iconUri": "Resources/Images/Icons/details-24.png",
+                                    "command": "showMetadata",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "View Service Info",
+                                    "description": "View the layer web service information",
+                                    "iconUri": "Resources/Images/Icons/window-new-24.png",
+                                    "command": "showServiceInfo",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "Download layer",
+                                    "description": "Download the layer",
+                                    "iconUri": "Resources/Images/Icons/download-24.png",
+                                    "command": "showDownload",
+                                    "commandParameter": "{{context}}",
                                     "hideOnDisable": true
                                 },
                                 {
@@ -5486,7 +5516,7 @@
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                 "configuration": {
-                    "siteUri": "http://gedemo.geocortex.com/Geocortex/Essentials/Prod/REST/sites/World_Cities"
+                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root"
                 },
                 "views": [
                     {

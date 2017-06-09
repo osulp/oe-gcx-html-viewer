@@ -132,7 +132,33 @@ module oe.layer_actions_extension {
                     this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
                 }
             }, function (context) {
-                return (context === null ? false : (context.properties.hideDownload === undefined ? true : context.properties.hideDownload === "False" ? false : false));
+                
+                if (context === null)
+                    return false;
+
+                //hide
+                if (context.properties.hideDownload != undefined && context.properties.hideDownload === "False")
+                    return false;
+
+                //download links always show
+                var downloadLink = context.description.split("http");
+                downloadLink = downloadLink.length > 2 ? "http" + downloadLink[2] : "";
+                if (downloadLink !== "")
+                    return true;
+
+                //is this a type that can be exported?
+                if (context.type != geocortex.essentials.LayerType.FEATURE_LAYER)
+                    return false;
+
+                //is the map service there?
+                if (context.mapService == null || context.mapService=="")
+                    return false;
+                if (context.mapService.serviceUrl == null || context.mapService.serviceUrl=="")
+                    return false;
+                                
+                return true;
+
+                //return (context === null ? false : (context.properties.hideDownload === undefined ? true : context.properties.hideDownload === "False" ? false : false));
             });
 
         }

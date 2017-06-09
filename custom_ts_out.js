@@ -708,7 +708,26 @@ var oe;
                         this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
                     }
                 }, function (context) {
-                    return (context === null ? false : (context.properties.hideDownload === undefined ? true : context.properties.hideDownload === "False" ? false : false));
+                    if (context === null)
+                        return false;
+                    //hide
+                    if (context.properties.hideDownload != undefined && context.properties.hideDownload === "False")
+                        return false;
+                    //download links always show
+                    var downloadLink = context.description.split("http");
+                    downloadLink = downloadLink.length > 2 ? "http" + downloadLink[2] : "";
+                    if (downloadLink !== "")
+                        return true;
+                    //is this a type that can be exported?
+                    if (context.type != geocortex.essentials.LayerType.FEATURE_LAYER)
+                        return false;
+                    //is the map service there?
+                    if (context.mapService == null || context.mapService == "")
+                        return false;
+                    if (context.mapService.serviceUrl == null || context.mapService.serviceUrl == "")
+                        return false;
+                    return true;
+                    //return (context === null ? false : (context.properties.hideDownload === undefined ? true : context.properties.hideDownload === "False" ? false : false));
                 });
             };
             return LayerActionsExtension;
@@ -1002,7 +1021,8 @@ var oe;
             };
             WildfireRiskPopupModuleViewModel.prototype._onSiteInitialized = function (site) {
                 var gsvc = null;
-                var gsvcURL = "http://tools.oregonexplorer.info/arcgis/rest/services/Geometry/GeometryServer";
+                //var gsvcURL = "http://tools.oregonexplorer.info/arcgis/rest/services/Geometry/GeometryServer"            
+                var gsvcURL = "http://arcgis.oregonexplorer.info/arcgis/rest/services/Utilities/Geometry/GeometryServer";
                 var fireRiskURL = "http://lib-arcgis5.library.oregonstate.edu/arcgis/rest/services/_sandbox/FireRisk_ImageService/ImageServer/";
                 var fireIntensityURL = "http://lib-arcgis5.library.oregonstate.edu/arcgis/rest/services/_sandbox/FireIntensity_ImageService/ImageServer/";
                 var fireSiteURL = "http://lib-arcgis5.library.oregonstate.edu/arcgis/rest/services/hazards/WildfireRisk/MapServer/";
