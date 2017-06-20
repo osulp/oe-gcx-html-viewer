@@ -403,7 +403,6 @@
     <Content Include="proxy.config" />
     <Content Include="proxy.jsp" />
     <Content Include="proxy.php" />
-    <Content Include="Libraries\Custom\Compiled\Custom_ts_out.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -413,6 +412,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Libraries\Custom\Compiled\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
