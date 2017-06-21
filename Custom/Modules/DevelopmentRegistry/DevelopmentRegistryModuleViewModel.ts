@@ -66,6 +66,7 @@ module oe.dev_registry {
 
                 let reportFinalFS: esri.tasks.FeatureSet = myWorkflowContext.getValue("report_final");
                 let reportType = myWorkflowContext.getValue("report_type");
+                let isPublic = myWorkflowContext.getValue("public");
 
                 thisViewModel.isCached.set(myWorkflowContext.getValue("cached"));
                 thisViewModel.decade_cap_val.set("0%");
@@ -77,7 +78,7 @@ module oe.dev_registry {
                 //if cached and current, then means public view of cached results so midnight time
                 //else current time
                 thisViewModel.reportDate.set("Data current as of "
-                    + (thisViewModel.isCached.get() && reportType === "Current"
+                    + (thisViewModel.isCached.get() && reportType === "Current" && isPublic
                         ? new Date().toLocaleDateString() + " 12:00 AM"
                         : new Date().toLocaleString()));
 
