@@ -125,7 +125,9 @@
 			    "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
                 "libraryId": "Custom",
                 "configuration": {
-                    "showLayerDescription":false
+                    "showLayerDescription":false,
+                    "allowAllLayerTypes":true,
+                    "metadataHyperlinkOverride":true
                 }
             },
             {

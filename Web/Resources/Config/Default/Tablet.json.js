@@ -7349,122 +7349,94 @@
                             "type": "toolbarGroup",
                             "name": "Measure",
                             "layout": "Large",
-                            "items": [{
-                                "id": "MeasurementTools",
-                                "type": "flyout",
-                                "name": "@language-toolbar-group-measurement-tools",
-                                "layout": "Large",
-                                "items": [{
-                                    "id": "MeasureDistanceTool",
-                                    "type": "tool",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/measure-distance-24.png",
-                                    "command": "MeasureDistance",
-                                    "drawMode": "POLYLINE",
-                                    "name": "@language-measurement-measure-distance-tool-name",
-                                    "tooltip": "@language-measurement-measure-distance-tool-tooltip",
-                                    "hideOnDisable": false,
-                                    "isSticky": true,
-                                    "statusText": "@language-measurement-measure-distance-tool-status"
-                                }, {
-                                    "id": "MeasureAreaTool",
-                                    "type": "tool",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/measure-area-24.png",
-                                    "command": "MeasureArea",
-                                    "drawMode": "POLYGON",
-                                    "name": "@language-measurement-measure-area-tool-name",
-                                    "tooltip": "@language-measurement-measure-area-tool-tooltip",
-                                    "hideOnDisable": false,
-                                    "isSticky": true,
-                                    "statusText": "@language-measurement-measure-area-tool-status"
-                                }
-                                ]
-                            }, {
-                                "id": "AdvancedMeasurementTools",
-                                "type": "flyout",
-                                "name": "Advanced Measure",
-                                "layout": "Large",
-                                "items": [{
-                                    "id": "MeasureLineTool",
-                                    "type": "tool",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/measure-polyline-24.png",
-                                    "command": "MeasureDistance",
-                                    "drawMode": "POLYLINE",
-                                    "name": "@language-measurement-measure-line-tool-name",
-                                    "tooltip": "@language-measurement-measure-line-tool-tooltip",
-                                    "hideOnDisable": false,
-                                    "isSticky": true,
-                                    "statusText": "@language-measurement-measure-line-tool-status"
-                                }, {
-                                    "id": "MeasureFreehandLineTool",
-                                    "type": "tool",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/measure-freehand-24.png",
-                                    "command": "MeasureDistance",
-                                    "drawMode": "FREEHAND_POLYLINE",
-                                    "name": "@language-measurement-measure-freehand-line-tool-name",
-                                    "tooltip": "@language-measurement-measure-freehand-line-tool-tooltip",
-                                    "hideOnDisable": false,
-                                    "isSticky": true,
-                                    "statusText": "@language-measurement-measure-freehand-line-tool-status"
-                                }, {
-                                    "id": "MeasureFreehandPolygonTool",
-                                    "type": "tool",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/measure-polygon-freehand-24.png",
-                                    "command": "MeasureArea",
-                                    "drawMode": "FREEHAND_POLYGON",
-                                    "name": "@language-measurement-measure-freehand-polygon-tool-name",
-                                    "tooltip": "@language-measurement-measure-freehand-polygon-tool-tooltip",
-                                    "hideOnDisable": false,
-                                    "isSticky": true,
-                                    "statusText": "@language-measurement-measure-freehand-polygon-tool-status"
-                                }, {
-                                    "id": "MeasureEllipseTool",
-                                    "type": "tool",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/measure-ellipse-24.png",
-                                    "command": "MeasureArea",
-                                    "drawMode": "ELLIPSE",
-                                    "name": "@language-measurement-measure-ellipse-tool-name",
-                                    "tooltip": "@language-measurement-measure-ellipse-tool-tooltip",
-                                    "hideOnDisable": false,
-                                    "isSticky": true,
-                                    "statusText": "@language-measurement-measure-ellipse-tool-status"
-                                }, {
-                                    "id": "MeasureCircleTool",
-                                    "type": "tool",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/measure-circle-24.png",
-                                    "command": "MeasureArea",
-                                    "drawMode": "CIRCLE",
-                                    "name": "@language-measurement-measure-circle-tool-name",
-                                    "tooltip": "@language-measurement-measure-circle-tool-tooltip",
-                                    "hideOnDisable": false,
-                                    "isSticky": true,
-                                    "statusText": "@language-measurement-measure-circle-tool-status"
-                                }, {
-                                    "id": "MeasurePolygonTool",
-                                    "type": "tool",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/measure-polygon-24.png",
-                                    "command": "MeasureArea",
-                                    "drawMode": "POLYGON",
-                                    "name": "@language-measurement-measure-polygon-tool-name",
-                                    "tooltip": "@language-measurement-measure-polygon-tool-tooltip",
-                                    "hideOnDisable": false,
-                                    "isSticky": true,
-                                    "statusText": "@language-measurement-measure-polygon-tool-status"
-                                }, {
-                                    "id": "MeasureRectangleTool",
-                                    "type": "tool",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/measure-rectangle-24.png",
-                                    "command": "MeasureArea",
-                                    "drawMode": "RECTANGLE",
-                                    "name": "@language-measurement-measure-rectangle-tool-name",
-                                    "tooltip": "@language-measurement-measure-rectangle-tool-tooltip",
-                                    "hideOnDisable": false,
-                                    "isSticky": true,
-                                    "statusText": "@language-measurement-measure-rectangle-tool-status"
-                                }
-                                ]
-                            }
+                            "items": [
+                              {
+                                  "id": "MeasurementTools",
+                                  "type": "flyout",
+                                  "name": "@language-toolbar-group-measurement-tools",
+                                  "layout": "Large",
+                                  "items": [
+                                    {
+                                        "id": "MeasureDistanceTool",
+                                        "type": "tool",
+                                        "iconUri": "Resources/Images/Icons/Toolbar/measure-distance-24.png",
+                                        "command": "MeasureDistance",
+                                        "drawMode": "POLYLINE",
+                                        "name": "@language-measurement-measure-distance-tool-name",
+                                        "tooltip": "@language-measurement-measure-distance-tool-tooltip",
+                                        "hideOnDisable": false,
+                                        "isSticky": true,
+                                        "statusText": "@language-measurement-measure-distance-tool-status"
+                                    },
+                                    {
+                                        "id": "MeasureAreaTool",
+                                        "type": "tool",
+                                        "iconUri": "Resources/Images/Icons/Toolbar/measure-area-24.png",
+                                        "command": "MeasureArea",
+                                        "drawMode": "POLYGON",
+                                        "name": "@language-measurement-measure-area-tool-name",
+                                        "tooltip": "@language-measurement-measure-area-tool-tooltip",
+                                        "hideOnDisable": false,
+                                        "isSticky": true,
+                                        "statusText": "@language-measurement-measure-area-tool-status"
+                                    }
+                                  ]
+                              }
+                        
                             ]
+                        },
+                   {
+                       "id": "MeasurementToolControlRegion",
+                       "type": "region",
+                       "regionName": "MeasurementToolControlRegion"
+                   },
+                  {
+                      "id": "rlezqUoA",
+                      "type": "toolbarGroup",
+                      "name": "Edit Measurement",
+                      "layout": "Large",
+                      "items": [
+                        {
+                            "id": "DeleteMarkupTool",
+                            "type": "tool",
+                            "iconUri": "Resources/Images/Icons/Toolbar/erase-24.png",
+                            "command": "DeleteMarkup",
+                            "drawMode": "POINT",
+                            "name": "@language-toolbar-markup-delete",
+                            "tooltip": "@language-toolbar-markup-delete-tooltip",
+                            "hideOnDisable": false,
+                            "isSticky": true,
+                            "statusText": "@language-toolbar-markup-delete-desc"
+                        },
+                        {
+                            "id": "ClearMarkup",
+                            "type": "button",
+                            "iconUri": "Resources/Images/Icons/Toolbar/clear-24.png",
+                            "command": "ClearMarkup",
+                            "commandParameter": null,
+                            "hideOnDisable": false,
+                            "name": "@language-toolbar-markup-clear",
+                            "tooltip": "@language-toolbar-markup-clear-tooltip"
+                        },
+                        {
+                            "id": "EditMarkupTool",
+                            "type": "tool",
+                            "iconUri": "Resources/Images/Icons/Toolbar/draw-edit-24.png",
+                            "command": "EditMarkup",
+                            "drawMode": "POINT",
+                            "name": "@language-toolbar-markup-edit",
+                            "tooltip": "@language-toolbar-markup-edit-tooltip",
+                            "hideOnDisable": false,
+                            "isSticky": true,
+                            "statusText": "@language-toolbar-markup-edit-desc"
                         }
+                      ]
+                  },
+                {
+                    "id": "EditControlRegion",
+                    "type": "region",
+                    "regionName": "EditControlRegion"
+                }
                         ]
                     }
                     ]
@@ -7476,7 +7448,11 @@
                         "require": "Mapping/modules/Toolbar/TabbedToolbarViewModel",
                         "configuration": {
                             "toolbarGroupRefs": [
-                                "ToolsTab"
+                                "ToolsTab",
+                                "mUa7UpiS",
+                                "Wf0IiSCa",
+                                "g3nDhty4",
+                                "VsFdt8zF"
                             ],
                             "toolbarOpenByDefault": false
                         }
