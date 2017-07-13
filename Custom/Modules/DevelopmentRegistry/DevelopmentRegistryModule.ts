@@ -274,9 +274,10 @@ module oe.dev_registry {
             let thisModel = this;
 
             if (this.app.site.principal.isAuthenticated) {
-                this.app.commandRegistry.commands["SwitchToLayerView"].execute();
                 //set home panel content
                 this.app.viewManager.getViewById("HomePanelContainerView").viewModel.currentView.viewModel.content.set(decodeURIComponent(this._adminHomePanleContent));
+                this.app.commandRegistry.commands["ShowHomePanel"].execute();
+
 
                 //Add command to show the edit form for a newly added/edit requested feature in add_edit_dev_features workflow
                 this.app.commandRegistry.command("showFeatureEditForm").register(this, function () {
@@ -374,34 +375,40 @@ module oe.dev_registry {
                     }
 
                 });
+                //workaround to get the authenticated layer list to process svg formatting event
+                var thisScope = this;
+                window.setTimeout(() => {
+                    thisScope.app.commandRegistry.commands["SwitchToLayerView"].execute();
+                }, 50);
             }
 
             this.app.eventRegistry.event("ViewContainerActivatedEvent").subscribe(this, function (args) {
                 if (args.id === "LayerDataContainerView") {
                     var layerListView = args.childRegions[0].activeViews.filter(function (av) { return av.id === "LayerListView"; });
-                    layerListView[0].viewModel.layerListItems.value.forEach((group: any) => {
-                        var layers = group.children.value.forEach((layer) => {
-
-                            var uniqueCategories = [];
-                            var legendItems = layer.legendItems.getItems().filter((category) => {
-                                if (category.swatchElement.match("<svg ")) {
-                                    category.swatchElement = category.swatchElement
-                                        .replace('width="32"', 'width="24"')
-                                        .replace('height="32"', 'height="24"')
-                                        .replace('M-10-10L 10 0L 10 10L-10 10L-10-10Z', 'M 8-8L 8 0L 8 8L-8 8L-8-8Z')
-                                        .replace('d="M -10 -10 L 10 0 L 10 10 L -10 10 L -10 -10 Z" path="M -10,-10 L 10,0 L 10,10 L -10,10 L -10,-10 Z"', 'd="M 8 -8 L 8 0 L 8 8 L -8 8 L -8 -8 Z" path="M -8,-8 L 8,0 L 8,8 L -8,8 L -8,-8 Z"');
-                                }
-                                if (uniqueCategories.indexOf(category.label.value) === -1) {
-                                    uniqueCategories.push(category.label.value);
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+                    if (layerListView.length > 0) {
+                        layerListView[0].viewModel.layerListItems.value.forEach((group: any) => {
+                            var layers = group.children.value.forEach((layer) => {
+                                var uniqueCategories = [];
+                                var legendItems = layer.legendItems.getItems().filter((category) => {
+                                    if (category.swatchElement.match("<svg ")) {
+                                        category.swatchElement = category.swatchElement
+                                            .replace('width="32"', 'width="24"')
+                                            .replace('height="32"', 'height="24"')
+                                            .replace('M-10-10L 10 0L 10 10L-10 10L-10-10Z', 'M 8-8L 8 0L 8 8L-8 8L-8-8Z')
+                                            .replace('d="M -10 -10 L 10 0 L 10 10 L -10 10 L -10 -10 Z" path="M -10,-10 L 10,0 L 10,10 L -10,10 L -10,-10 Z"', 'd="M 8 -8 L 8 0 L 8 8 L -8 8 L -8 -8 Z" path="M -8,-8 L 8,0 L 8,8 L -8,8 L -8,-8 Z"');
+                                    }
+                                    if (uniqueCategories.indexOf(category.label.value) === -1) {
+                                        uniqueCategories.push(category.label.value);
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                });
+                                layer.legendItems.set(legendItems);
+                                $(".legend-swatch svg").css("paddingLeft", ".5em");
                             });
-                            layer.legendItems.set(legendItems);
-                            $(".legend-swatch svg").css("paddingLeft", ".5em");
                         });
-                    });
+                    }
                 }
             });
 

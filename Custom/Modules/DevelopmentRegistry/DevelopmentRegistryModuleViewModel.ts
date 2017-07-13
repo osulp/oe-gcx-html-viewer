@@ -83,7 +83,7 @@ module oe.dev_registry {
                         : new Date().toLocaleString()));
 
                 reportFinalFS.features.forEach((stat: any) => {
-                    let stat_area = stat.attributes.SUM_AREA_GEO || stat.attributes.SUM_AREA_G;
+                    let stat_area = stat.attributes.SUM_POLY_AREA || stat.attributes.SUM_POLY_A;
                     let stat_area_formatted = thisViewModel.addCommas(stat_area.toFixed(0));
                     let stat_percent = stat_area ? (stat_area / pac_area_dbl * 100).toFixed(2) + "%" : "N/A";
                     switch (stat.attributes.stat) {
