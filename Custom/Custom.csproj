@@ -42,10 +42,12 @@
     </VisualStudio>
   </ProjectExtensions>
   <ItemGroup>
+    <Content Include="Modules\DevelopmentRegistry\DevelopmentRegistry.css" />
+    <Content Include="Modules\DevelopmentRegistry\DevelopmentRegistryModuleView.html" />
+    <Content Include="Modules\DevelopmentRegistry\Readme.txt" />
     <Content Include="Modules\CustomFormM49\CustomFormM49Module.css" />
     <Content Include="Modules\CustomFormM49\CustomFormM49ModuleView.html" />
     <Content Include="Modules\CustomFormM49\Readme.txt" />
-    <Content Include="Modules\DevelopmentRegistry\EditGeometryView.html" />
     <Content Include="Modules\Elevation\ElevationModule.css" />
     <Content Include="Modules\Elevation\ElevationModuleView.html" />
     <Content Include="Modules\Elevation\Language.json" />
@@ -67,10 +69,12 @@
     <Folder Include="DevModules\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Modules\DevelopmentRegistry\DevelopmentRegistryModule.ts" />
+    <TypeScriptCompile Include="Modules\DevelopmentRegistry\DevelopmentRegistryModuleView.ts" />
+    <TypeScriptCompile Include="Modules\DevelopmentRegistry\DevelopmentRegistryModuleViewModel.ts" />
     <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49Module.ts" />
     <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49ModuleView.ts" />
     <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49ModuleViewModel.ts" />
-    <TypeScriptCompile Include="Modules\DevelopmentRegistry\DevelopmentRegistryModule.ts" />
     <TypeScriptCompile Include="Modules\Elevation\ElevationModule.ts" />
     <TypeScriptCompile Include="Modules\Elevation\ElevationModuleView.ts" />
     <TypeScriptCompile Include="Modules\Elevation\ElevationModuleViewModel.ts" />

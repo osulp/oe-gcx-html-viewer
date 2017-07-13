@@ -1,0 +1,136 @@
+﻿
+.region .view.TemplateModuleView.active {
+    margin: 0;
+}
+
+.template-module-view {
+    position: absolute;
+    z-index: 100;
+    width: 500px;
+    right: 0;
+    background: white;
+    color: black;
+    padding: 6px;
+    border: 1px solid #333;
+    margin-top: 46px;
+    margin-right: 2px;
+}
+
+    .mainForm input[type="text"], .mainForm textarea, .mainForm select {
+        /*width: 65%;*/
+        margin-bottom: 5px;
+    }
+
+    .mainForm input[type="date"] {
+        display: block;
+    }
+
+.textBox {
+    border-radius: 2px;
+    border: 1px solid #AAAAAA;
+}
+
+.error {
+    /*width: 100%;*/
+    padding: 0;
+    display: inline-block;
+    /*font-size: 80%;*/
+    color: red;
+    /*background-color: #900;*/
+    border-radius: 0 0 5px 5px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.myLabel {
+    font-weight: bold;
+    min-width: 30% !important;
+    display: inline-flex;
+    overflow: hidden;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+
+#customForm fieldset{
+    border:solid 1px #a7a7a7;
+    border-radius:0.25em;
+    margin:1.5em auto;
+}
+
+#customForm{
+    font-size:.9em;
+}
+
+#customForm table{
+    width:100%;
+}
+
+#customForm tr:nth-child(odd) {background: rgba(204, 204, 204, 0.50)}
+#customForm tr:nth-child(even) {background: #FFF}
+#customForm thead tr {background:#fff !important}
+
+
+#decade_tbl tr:nth-child(odd) {background: rgba(204, 204, 204, 0.50)}
+#decade_tbl tr:nth-child(even) {background: #FFF}
+#decade_tbl thead tr {background:#fff !important}
+
+#customForm table td {
+    padding:.3em 1.3em;
+}
+
+#customForm table tr:last-child{
+    font-weight:bold;
+}
+.cap_val{
+    /*float:right;*/
+    width:100%;
+    border:1px solid #a7a7a7;
+    border-radius:4px;
+    padding:.5em;
+}
+.cap_val h2{
+    text-align:center;
+    width:100%;
+}
+
+.notes{
+    /*float:right;*/
+    font-size:.8em;
+    margin-left:1em;
+    /*margin-top:1em;*/
+}
+
+
+#report-date{
+    width:100%;
+    text-align:left;
+    color:#333;
+    font-size:.9em;
+    font-style:italic;
+}
+
+.summary-wrapper{
+    border:1px solid #a7a7a7;
+    border-radius:4px;
+    padding:.5em;
+    margin:1.5em .5em auto;
+    font-size:1.1em;
+    background-color:rgba(204, 204, 204, 0.50);
+}
+
+.summary-wrapper h2{
+    margin-bottom:10px;
+}
+.details h3{
+    font-size:1.5em;
+}
+
+.details{
+    padding:1em;
+}
+
+#customForm h4{
+    margin:auto auto .5em .5em;
+    color:#333;
+}

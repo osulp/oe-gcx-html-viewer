@@ -1,0 +1,401 @@
+﻿<a href="#"></a>
+<div class="module workflow-form" dir="ltr">
+    <div id="report-date" data-binding="{@text:reportDate}"></div>
+    <form data-binding="{@visible: has_projected}" id="customForm" title="Estimated Development Impact Report">
+        <div class="form-container">
+            <div class="report_header">
+                <div class="pac_title">
+                    <!--<span>Report for:</span>-->
+                    <h2 data-binding="{@text: pac_title_projected}"></h2>
+                    <h4>(Includes permits in review)</h4>
+                </div>
+                <div class="pac_area_wrapper">
+                    <span>Total area of PAC: </span>
+                    <b data-binding="{@text: pac_area}"></b>
+                </div>
+                <div class="baseline_pac_wrapper">
+                    <span>Baseline developed area: <b data-binding="{@text:baseline_area}"></b>, <b data-binding="{@text:baseline_percent}"></b></span>
+                </div>
+            </div>
+            <div class="summary-wrapper">
+                <h3>Summary of PAC Development</h3>
+                <h4>(Includes Permits In-Review)</h4>
+                <div>
+                    <span><b>Total developed area: </b></span>
+                    <span data-binding="{@text: overall_projected_area_val}"></span>
+                    <span><b data-binding="{@text: overall_projected_cap_val}"></b></span>
+                </div>
+                <div class="notes">The total developed area is not allowed to exceed 3%.</div>
+                <div>
+                    <span><b>New developed area in decade: </b></span>
+                    <span data-binding="{@text: decade_projected_area_val}"></span>
+                    <span><b data-binding="{@text: decade_projected_cap_val}"></b></span>
+                </div>
+                <div class="notes">The total developed area is not allowed to exceed 1% per decade.</div>
+            </div>
+            <div class="details">
+                <div class="notes">
+                    <em>NOTE: Values include development that is in-review, approved, and as-built.</em>
+                </div>
+                <hr />
+                <h3>Total developed area</h3>
+                <h4>(including permits in review)</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th align="center">Development Type</th>
+                            <th align="center">Acres</th>
+                            <th align="center">Percent</th>
+                        </tr>
+                    </thead>
+                    <tbody data-binding="{@source: overall_projected_tbl}">
+                        <tr data-binding="{@template-for: overall_projected_tbl}">
+                            <td>
+                                <span data-binding="{@text:category}"></span>
+                            </td>
+                            <td>
+                                <span data-binding="{@text:area}"></span>
+                            </td>
+                            <td>
+                                <span data-binding="{@text:percent}"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <div class="cap_val">
+                    <span>Percent of total developed area <b>including permits in review</b> (limited to 3%)</span>
+                    <h2 data-binding="{@text:overall_projected_cap_val}"></h2>
+                </div>
+                <br />
+                <hr />
+                <h3>New developed area in decade</h3>
+                <h4>(including permits in review)</h4>
+                <table data-binding="{@visible: show_decade_tbl_projected}">
+                    <thead>
+                        <tr>
+                            <th align="center">Development Type</th>
+                            <th align="center">Acres</th>
+                            <th align="center">Percent</th>
+                        </tr>
+                    </thead>
+                    <tbody data-binding="{@source: decade_projected_tbl}">
+                        <tr data-binding="{@template-for: decade_projected_tbl}">
+                            <td>
+                                <span data-binding="{@text:category}"></span>
+                            </td>
+                            <td>
+                                <span data-binding="{@text:area}"></span>
+                            </td>
+                            <td>
+                                <span data-binding="{@text:percent}"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <div class="cap_val">
+                    <span>Percent of new developed area in decade, <b>including permits in review</b> (limited to 1%)</span>
+                    <h2 data-binding="{@text:decade_projected_cap_val}"></h2>
+                </div>
+                <div class="notes">
+                    <em>NOTE: Decadal time period is August 13, 2015 through August 12, 2025</em>
+                </div>
+
+                <!--<fieldset>
+                    <legend>Summary</legend>
+                    <div>
+                        <span>Percent of PAC developed this decade:</span>
+                        <b data-binding="{@text:decade_projected_cap_val}"></b>
+                    </div>
+                    <div>
+                        <span>3% maximum development threshold:</span>
+                        <b data-binding="{@text:overall_projected_cap_val}"></b>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Development Cap Status (1%/decade)</legend>
+                    <table data-binding="{@visible: show_decade_tbl_projected}">
+                        <thead>
+                            <tr>
+                                <th align="center">Source</th>
+                                <th align="center">Acres</th>
+                                <th align="center">% of Total</th>
+                            </tr>
+                        </thead>
+                        <tbody data-binding="{@source: decade_projected_tbl}">
+                            <tr data-binding="{@template-for: decade_projected_tbl}">
+                                <td>
+                                    <span data-binding="{@text:category}"></span>
+                                </td>
+                                <td>
+                                    <span data-binding="{@text:area}"></span>
+                                </td>
+                                <td>
+                                    <span data-binding="{@text:percent}"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <div class="cap_val">
+                        <span>Percent of PAC developed this decade:</span>
+                        <h2 data-binding="{@text:decade_projected_cap_val}"></h2>
+                    </div>
+                    <div class="notes">
+                        <em>NOTE: Decadal time period is August 13, 2015 through August 12, 2025</em>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>3% maximum development threshold</legend>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th align="center">Source</th>
+                                <th align="center">Acres</th>
+                                <th align="center">% of Total</th>
+                            </tr>
+                        </thead>
+                        <tbody data-binding="{@source: overall_projected_tbl}">
+                            <tr data-binding="{@template-for: overall_projected_tbl}">
+                                <td>
+                                    <span data-binding="{@text:category}"></span>
+                                </td>
+                                <td>
+                                    <span data-binding="{@text:area}"></span>
+                                </td>
+                                <td>
+                                    <span data-binding="{@text:percent}"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <div class="cap_val">
+                        <span>Percent of PAC developed overall:</span>
+                        <h2 data-binding="{@text:overall_projected_cap_val}"></h2>
+                    </div>
+                </fieldset>-->
+                <!--<fieldset>
+                    <legend>PDF Report Settings</legend>
+                    <div class="form-container">
+                        <div class="form label-left" id="customFormBody">
+                            <label for="reportTitle" class="form-label myLabel">Title</label>
+                            <div class="form-control">
+                                <input id="reportTitle" type="text" placeholder="Report Title" value="Report Title" data-binding="{@event-onclick:clearTitle}" />
+                            </div>
+                            <label for="userName" id="userNamelbl" class="form-label myLabel">Include map</label>
+                            <div class="form-control">
+                                <input id="includeMap" type="checkbox" checked />
+                            </div>
+
+                        </div>
+                    </div>
+                </fieldset>-->
+            </div>
+            <div style="text-align:right; width:100%; display:inline-block;" class="form-btns">
+                <!--<button id="okBtn" class="button" type="button" data-binding="{@event-onclick:runNewReport}"><< New Report</button>
+                <button id="okBtn" class="button" type="button" data-binding="{@event-onclick:getPDF}">Continue >></button>-->
+                <button id="cancelBtn" class="button" type="button" data-binding="{@event-onclick:cancelForm}">Close</button>
+            </div>
+        </div>
+    </form>
+    <form data-binding="{@visible: has_current}" id="customForm" title="PAC Development Report">
+        <div class="form-container">
+            <div class="report_header">
+                <div class="pac_title">
+                    <!--<span>Report for:</span>-->
+                    <h2 data-binding="{@text: pac_title}"></h2>
+                </div>
+                <div class="pac_area_wrapper">
+                    <span>Total area of PAC: </span>
+                    <b data-binding="{@text: pac_area}"></b>
+                </div>
+                <div class="baseline_pac_wrapper">
+                    <span>Baseline developed area: <b data-binding="{@text:baseline_area}"></b>, <b data-binding="{@text:baseline_percent}"></b></span>
+                </div>
+            </div>
+            <div class="summary-wrapper">
+                <h2>Summary of PAC Development</h2>
+                <div>
+                    <span><b>Total developed area: </b></span>
+                    <span data-binding="{@text: overall_area_val}"></span>
+                    <span><b data-binding="{@text: overall_cap_val}"></b></span>
+                </div>
+                <div class="notes">The total developed area is not allowed to exceed 3%.</div>
+                <div>
+                    <span><b>New developed area in decade: </b></span>
+                    <span data-binding="{@text: decade_area_val}"></span>
+                    <span><b data-binding="{@text: decade_cap_val}"></b></span>
+                </div>
+                <div class="notes">The total developed area is not allowed to exceed 1% per decade.</div>
+            </div>
+            <!--<fieldset>
+                <legend>Summary</legend>
+                <div>
+                    <span>1%/decade cap status:</span>
+                    <b data-binding="{@text:decade_cap_val}"></b>
+                </div>
+                <div>
+                    <span>3% overall cap status:</span>
+                    <b data-binding="{@text:overall_cap_val}"></b>
+                </div>
+                <div class="baseline_pac_wrapper">
+                    <span>Baseline developed area:</span>
+                    <span data-binding="{@text:baseline_area}"></span>
+                    <span data-binding="{@text:baseline_percent}"></span>
+                </div>
+            </fieldset>-->
+            <hr />
+            <div class="details">
+                <h3>Total developed area</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th align="center">Development Type</th>
+                            <th align="center">Acres</th>
+                            <th align="center">Percent</th>
+                        </tr>
+                    </thead>
+                    <tbody data-binding="{@source: overall_tbl}">
+                        <tr data-binding="{@template-for: overall_tbl}">
+                            <td>
+                                <span data-binding="{@text:category}"></span>
+                            </td>
+                            <td>
+                                <span data-binding="{@text:area}"></span>
+                            </td>
+                            <td>
+                                <span data-binding="{@text:percent}"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <div class="cap_val">
+                    <span>Percent of total developed area (limited to 3%)</span>
+                    <h2 data-binding="{@text:overall_cap_val}"></h2>
+                </div>
+                <br />
+                <hr />
+                <h3>New developed area in decade</h3>
+                <table data-binding="{@visible: show_decade_tbl_current}">
+                    <thead>
+                        <tr>
+                            <th align="center">Development Type</th>
+                            <th align="center">Acres</th>
+                            <th align="center">Percent</th>
+                        </tr>
+                    </thead>
+                    <tbody data-binding="{@source: decade_tbl}">
+                        <tr data-binding="{@template-for: decade_tbl}">
+                            <td>
+                                <span data-binding="{@text:category}"></span>
+                            </td>
+                            <td>
+                                <span data-binding="{@text:area}"></span>
+                            </td>
+                            <td>
+                                <span data-binding="{@text:percent}"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <div class="cap_val">
+                    <span>Percent of new developed area in decade (limited to 1%)</span>
+                    <h2 data-binding="{@text:decade_cap_val}"></h2>
+                </div>
+                <div class="notes">
+                    <em>NOTE: Decadal time period is August 13, 2015 through August 12, 2025</em>
+                </div>
+                <!--<fieldset>
+                    <legend>1% decadal development threshold</legend>
+                    <table data-binding="{@visible: show_decade_tbl_current}">
+                        <thead>
+                            <tr>
+                                <th align="center">Source</th>
+                                <th align="center">Acres</th>
+                                <th align="center">% of Total</th>
+                            </tr>
+                        </thead>
+                        <tbody data-binding="{@source: decade_tbl}">
+                            <tr data-binding="{@template-for: decade_tbl}">
+                                <td>
+                                    <span data-binding="{@text:category}"></span>
+                                </td>
+                                <td>
+                                    <span data-binding="{@text:area}"></span>
+                                </td>
+                                <td>
+                                    <span data-binding="{@text:percent}"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <div class="cap_val">
+                        <span>Percent of PAC developed this decade:</span>
+                        <h2 data-binding="{@text:decade_cap_val}"></h2>
+                    </div>
+                    <div class="notes">
+                        <em>NOTE: Decadal time period is August 13, 2015 through August 12, 2025</em>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>3% maximum development threshold</legend>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th align="center">Source</th>
+                                <th align="center">Acres</th>
+                                <th align="center">% of Total</th>
+                            </tr>
+                        </thead>
+                        <tbody data-binding="{@source: overall_tbl}">
+                            <tr data-binding="{@template-for: overall_tbl}">
+                                <td>
+                                    <span data-binding="{@text:category}"></span>
+                                </td>
+                                <td>
+                                    <span data-binding="{@text:area}"></span>
+                                </td>
+                                <td>
+                                    <span data-binding="{@text:percent}"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <div class="cap_val">
+                        <span>Percent of PAC developed overall:</span>
+                        <h2 data-binding="{@text:overall_cap_val}"></h2>
+                    </div>
+                </fieldset>-->
+                <!--<fieldset>
+                    <legend>PDF Report Settings</legend>
+                    <div class="form-container">
+                        <div class="form label-left" id="customFormBody">
+                            <label for="reportTitle" class="form-label myLabel">Title</label>
+                            <div class="form-control">
+                                <input id="reportTitle" type="text" placeholder="Report Title" value="Report Title" data-binding="{@event-onclick:clearTitle}" />
+                            </div>
+                            <label for="userName" id="userNamelbl" class="form-label myLabel">Include map</label>
+                            <div class="form-control">
+                                <input id="includeMap" type="checkbox" checked />
+                            </div>
+
+                        </div>
+                    </div>
+                </fieldset>-->
+            </div>
+            <div style="text-align:right; width:100%; display: inline-block;" class="form-btns">
+                <!--<button id="okBtn" class="button" type="button" data-binding="{@event-onclick:runNewReport}"><< New Report</button>
+                <button id="okBtn" class="button" type="button" data-binding="{@event-onclick:getPDF}">Continue >></button>-->
+                <button id="cancelBtn" class="button" type="button" data-binding="{@event-onclick:cancelForm}">Close</button>
+            </div>
+
+        </div>
+    </form>
+
+</div>
