@@ -19,7 +19,7 @@ module oe.wildfireRiskPopup {
             workflowArgs.workflowId = "Wildfire_Risk_Report";
 
             workflowArgs.risk_value = $("#WildfireRisk_value").text();
-            workflowArgs.risk_percent = $("#WildfireRisk_riskdatapercent").text();
+            workflowArgs.risk_percent = oe.wildfireRiskPopup.riskPercentOut;//$("#WildfireRisk_riskdatapercent").text();
             workflowArgs.wfpd = $("#WildfireRisk_forest_protection_district").text();
             workflowArgs.wspd = $("#WildfireRisk_structural_projection_district").text();
             workflowArgs.wrpa = $("#WildfireRisk_rangeland_protection_assoc").text();

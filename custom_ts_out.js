@@ -7,6 +7,638 @@ var __extends = (this && this.__extends) || function (d, b) {
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
 var oe;
 (function (oe) {
+    var dev_registry;
+    (function (dev_registry) {
+        var DevelopmentRegistryModule = (function (_super) {
+            __extends(DevelopmentRegistryModule, _super);
+            function DevelopmentRegistryModule(app, lib) {
+                var _this = this;
+                _super.call(this, app, lib);
+                this.devSubTypesTable = {};
+                // When the layer list initializes we can grab a reference to the layer list object and save it for later.
+                // We'll need this to add our custom layer to the layer list.
+                this.app.eventRegistry.event("LayerListInitializedEvent").subscribe(this, function (sender) {
+                    // look for tables
+                    _this.layerList = sender;
+                    if (_this.app.site.principal.isAuthenticated) {
+                        _this._getDevSubTypes();
+                    }
+                });
+            }
+            DevelopmentRegistryModule.prototype.initialize = function (config) {
+                var _this = this;
+                //alert(this.app.getResource(this.libraryId, "hello-world-initialized"));
+                this._layerFilters = config.layerFilters;
+                this._adminGroupID = config.adminGroupID;
+                this._lineBufferCategories = config.lineBufferCategories;
+                this._adminHomePanleContent = config.adminHomePanleContent;
+                var site = this.app.site;
+                if (site && site.isInitialized) {
+                    this._onSiteInitialized(site);
+                }
+                else {
+                    this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, function (args) {
+                        _this._onSiteInitialized(args);
+                    });
+                }
+            };
+            DevelopmentRegistryModule.prototype._getDevSubTypes = function () {
+                var _this = this;
+                var devTypeTableURL;
+                var devSubTypeTableURL;
+                this.layerList.mapInfo.serviceLayers.forEach(function (sl) {
+                    if (sl.displayName === "Development Types") {
+                        devTypeTableURL = sl.serviceLayer.url;
+                        _this.devRegTablesUrl = sl.gcxMapService.serviceUrl;
+                    }
+                    if (sl.displayName === "Development Subtypes") {
+                        devSubTypeTableURL = sl.serviceLayer.url;
+                    }
+                    if (sl.displayName === "All developments") {
+                        _this.devRegSrvcUrl = sl.gcxMapService.serviceUrl;
+                        _this.devRegToken = sl.gcxMapService.serviceToken;
+                        _this.devRegUnbuffLineSrvcUrl = sl.gcxMapService.serviceUrl.replace("/0", "/1");
+                        _this.devRegVersionSrvcUrl = sl.gcxMapService.serviceUrl.replace("/0", "/2");
+                    }
+                });
+                // add query parameters to base urls
+                var query_params = '/query?where=1%3D1&outFields=Development_Type_ID,Development_Type,Development_SubType&f=json&token=';
+                var devTypeTableURL_query = devTypeTableURL.split('?token=')[0]
+                    + query_params
+                    + devTypeTableURL.split('?token=')[1];
+                var devSubTypeTableURL_query = devSubTypeTableURL.split('?token=')[0]
+                    + query_params
+                    + devSubTypeTableURL.split('?token=')[1];
+                $.when($.ajax(devTypeTableURL_query), $.ajax(devSubTypeTableURL_query))
+                    .done(function (dtt, dstt) {
+                    var devTypes = [];
+                    var devSubTypes = [];
+                    if (dtt.length) {
+                        devTypes = JSON.parse(dtt[0]).features
+                            ? JSON.parse(dtt[0]).features
+                            : [];
+                    }
+                    if (dstt.length) {
+                        devSubTypes = JSON.parse(dstt[0]).features
+                            ? JSON.parse(dstt[0]).features
+                            : [];
+                    }
+                    devTypes.forEach(function (dt) {
+                        _this.devSubTypesTable[dt.attributes["Development_Type"]] = {
+                            id: dt.attributes["Development_Type_ID"],
+                            subtypes: devSubTypes
+                                .filter(function (dst) {
+                                return dst.attributes["Development_Type_ID"] === dt.attributes["Development_Type_ID"];
+                            })
+                                .map(function (dstm) {
+                                return dstm.attributes["Development_Subtype"];
+                            })
+                        };
+                    });
+                }).fail(function (err) {
+                    console.log('fail', err);
+                });
+            };
+            DevelopmentRegistryModule.prototype._handleDevTypeChange = function (args) {
+                if (args) {
+                    var editForm = this.app.viewManager.getViewById("FeatureEditingContainerView").childRegions[0].views.filter(function (v) { return v.id === 'EditorView'; });
+                    if (editForm.length > 0) {
+                        var all_fields = editForm[0].viewModel.form.value["all_fields"]
+                            ? editForm[0].viewModel.form.value["all_fields"]
+                            : editForm[0].viewModel.form.value.fields.getItems();
+                        var filtered_attr = this._processAttributeFilter(all_fields).sort();
+                        try {
+                            editForm[0].viewModel.form.value.fields.set(filtered_attr);
+                        }
+                        catch (ex) {
+                            console.log(ex.message);
+                        }
+                    }
+                }
+            };
+            DevelopmentRegistryModule.prototype._handleSubCatChange = function (args) {
+                if (args) {
+                    if (this._lineBufferCategories.indexOf(this._activeFeature.attributes.dst_cat) !== -1) {
+                        var workflowArgs = {};
+                        workflowArgs["development_sub_category"] = args;
+                        workflowArgs["development_voltage"] = this._activeFeature.attributes.vltg;
+                        this._runRebufferWorkflow(workflowArgs);
+                    }
+                }
+            };
+            DevelopmentRegistryModule.prototype._handleVoltageChange = function (args) {
+                if (args) {
+                    var workflowArgs = {};
+                    workflowArgs["development_sub_category"] = this._activeFeature.attributes.subcat;
+                    workflowArgs["development_voltage"] = args;
+                    this._runRebufferWorkflow(workflowArgs);
+                }
+            };
+            DevelopmentRegistryModule.prototype._runRebufferWorkflow = function (workflowArgs) {
+                //get token to unsubscribe from GeometryEditInvokedEvent since it causes the draw/upload request.
+                var subscription_token = this["eventSubscriptions"].filter(function (sub) { return sub.event.name === "GeometryEditInvokedEvent"; }).length > 0
+                    ? this["eventSubscriptions"].filter(function (sub) { return sub.event.name === "GeometryEditInvokedEvent"; })[0].token
+                    : '';
+                if (subscription_token !== '') {
+                    this.app.eventRegistry.event("GeometryEditInvokedEvent").unsubscribe(subscription_token);
+                }
+                workflowArgs["workflowId"] = "rebuffer_feature";
+                workflowArgs["development_category"] = this._activeFeature.attributes.dst_cat;
+                workflowArgs["or_dev_reg_id"] = this._activeFeature.attributes.or_dev_reg_id;
+                workflowArgs["dev_reg_srvc_url"] = this.devRegUnbuffLineSrvcUrl;
+                workflowArgs["dev_reg_srvc_token"] = this.devRegToken;
+                this.app.commandRegistry.commands["RunWorkflowWithArguments"].execute(workflowArgs);
+                this.app.eventRegistry.event("GeometryEditInvokedEvent").subscribe(this, this._handleGeometryEditInvokeEvent);
+            };
+            DevelopmentRegistryModule.prototype._subscribeToValueChange = function (f, handlerFunction) {
+                if (!f.value.bindingEvent.isPublishing) {
+                    var isSubscribed = false;
+                    for (var subscription in f.value.bindingEvent.subscriptions) {
+                        isSubscribed = f.value.bindingEvent.subscriptions[subscription].scope.id
+                            ? f.value.bindingEvent.subscriptions[subscription].scope.id === "module-Custom-DevelopmentRegistry"
+                                ? true
+                                : isSubscribed
+                            : isSubscribed;
+                    }
+                    if (!isSubscribed) {
+                        f.value.bindingEvent.subscribe(this, handlerFunction);
+                    }
+                }
+            };
+            DevelopmentRegistryModule.prototype._processAttributeFilter = function (attributes) {
+                var _this = this;
+                var layerFilters = this._layerFilters;
+                if (attributes.length > 0) {
+                    var devType_1 = attributes.filter(function (f) { return f.name.value === 'dst_cat'; }).length > 0 ? attributes.filter(function (f) { return f.name.value === 'dst_cat'; })[0].value.value : '';
+                    if (devType_1 !== '') {
+                        var filteredFields = attributes.filter(function (f) {
+                            if (f.name.value === 'dst_cat' && f.valueOptions) {
+                                //f.value.bindingEvent.publish();
+                                if (!f.value.bindingEvent.isPublishing) {
+                                    f.value.bindingEvent.subscribe(_this, _this._handleDevTypeChange);
+                                }
+                                function compare(a, b) {
+                                    if (a.name < b.name)
+                                        return -1;
+                                    if (a.name > b.name)
+                                        return 1;
+                                    return 0;
+                                }
+                                f.valueOptions.value.sort(compare);
+                            }
+                            if (f.name.value === 'subcat' && f.valueOptions) {
+                                if (_this.devSubTypesTable) {
+                                    var filteredCodedValues_1 = [];
+                                    f.domain.codedValues.forEach(function (cv) {
+                                        if (devType_1) {
+                                            if (_this.devSubTypesTable[devType_1].subtypes.indexOf(cv.name) !== -1) {
+                                                filteredCodedValues_1.push(cv);
+                                            }
+                                        }
+                                        else {
+                                            filteredCodedValues_1.push(cv);
+                                        }
+                                    });
+                                    f.valueOptions.value = filteredCodedValues_1;
+                                }
+                                _this._subscribeToValueChange(f, _this._handleSubCatChange);
+                            }
+                            if (f.name.value === 'or_dev_reg_proj_id') {
+                                if (f.readOnly) {
+                                    f.readOnly.set(true);
+                                }
+                            }
+                            if (f.name.value === 'vltg' && f.valueOptions) {
+                                f.displayName.set("Voltage *");
+                                f.required.set(true);
+                                _this._subscribeToValueChange(f, _this._handleVoltageChange);
+                            }
+                            //get default plus and devType specific attributes for display
+                            var _filteredAttr = layerFilters['Default'] ? layerFilters['Default'] : [];
+                            if (layerFilters[devType_1]) {
+                                _filteredAttr = _filteredAttr.concat(layerFilters[devType_1]);
+                            }
+                            return _filteredAttr.indexOf(f.name.value) !== -1;
+                            //return layerFilters[devType] ? layerFilters[devType].indexOf(f.name.value) !== -1 : true;
+                        });
+                        return filteredFields;
+                    }
+                }
+                else {
+                    return [];
+                }
+            };
+            DevelopmentRegistryModule.prototype._handleGeometryEditInvokeEvent = function (args) {
+                var thisScope = this;
+                //check if linear feature and if so send to workflow for digitize, else can digitize on map in context
+                var isLinear = this._lineBufferCategories.indexOf(args.attributes["dst_cat"]) !== -1;
+                this.app.commandRegistry.commands["Confirm"].execute("Would you like to upload a shapefile(zipped) or use the map to modify the shape of this development?", "Upload Shapefile or use map?", function (result) {
+                    if (result || isLinear) {
+                        var workflowArgs = {};
+                        workflowArgs["workflowId"] = "add_edit_dev_features";
+                        workflowArgs["srvc_url"] = thisScope.devRegSrvcUrl;
+                        workflowArgs["srvc_token"] = thisScope.devRegToken;
+                        workflowArgs["workflow_action"] = isLinear
+                            ? result
+                                ? "Upload"
+                                : "Digitize"
+                            : "Upload";
+                        workflowArgs["or_dev_reg_id"] = args.attributes["or_dev_reg_id"];
+                        thisScope.app.commandRegistry.commands["RunWorkflowWithArguments"].execute(workflowArgs);
+                        //$('.button:contains("Save Geometry")').click();
+                        thisScope.app.commandRegistry.commands["saveAndCloseFeatureEditing"].execute();
+                        //$('.button:contains("Save")').click();
+                        args.hide();
+                    }
+                });
+                $(".confirm .button:contains('OK')").html("Upload New Shape");
+                $(".confirm .button:contains('Cancel')").html("Use Map");
+                //var isUpload = false;
+            };
+            DevelopmentRegistryModule.prototype._onSiteInitialized = function (site) {
+                var _this = this;
+                var thisModel = this;
+                if (this.app.site.principal.isAuthenticated) {
+                    //set home panel content
+                    this.app.viewManager.getViewById("HomePanelContainerView").viewModel.currentView.viewModel.content.set(decodeURIComponent(this._adminHomePanleContent));
+                    this.app.commandRegistry.commands["ShowHomePanel"].execute();
+                    //Add command to show the edit form for a newly added/edit requested feature in add_edit_dev_features workflow
+                    this.app.commandRegistry.command("showFeatureEditForm").register(this, function () {
+                        var collection = this.app.featureSetManager.getCollectionById("add_feature");
+                        var feature = null;
+                        if (collection.featureSets.length() > 0) {
+                            if (collection.featureSets.getAt(0).features.length() > 0) {
+                                feature = collection.featureSets.getAt(0).features.getAt(0);
+                                this.app.commandRegistry.command("StartEditingFeature").execute(feature);
+                            }
+                        }
+                    });
+                    this.app.commandRegistry.command("runAddEditDevFeatures").register(this, function () {
+                        var workflowArgs = {};
+                        workflowArgs["workflowId"] = "add_edit_dev_features";
+                        workflowArgs["site_uri"] = this.app.site.originalUrl + '/map?f=json';
+                        workflowArgs["srvc_url"] = this.devRegSrvcUrl;
+                        workflowArgs["srvc_token"] = this.devRegToken;
+                        workflowArgs["srvc_tables_url"] = this.devRegTablesUrl;
+                        //workflowArgs["or_dev_reg_id"] = args.attributes["or_dev_reg_id"];
+                        this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
+                    });
+                    this.app.commandRegistry.command("saveAndCloseFeatureEditing").register(this, function () {
+                        $('.button:contains("Save")').click();
+                    });
+                    this.app.eventRegistry.event("ViewContainerActivatedEvent").subscribe(this, function (args) {
+                        var _this = this;
+                        if (args.id === "FeatureEditingContainerView") {
+                            if (args.childRegions.length > 0) {
+                                if (args.childRegions[0].views.length > 1) {
+                                    var editView_1 = args.childRegions[0].views.filter(function (v) { return v.id === "EditorView"; });
+                                    if (editView_1.length > 0) {
+                                        this._activeFeature = editView_1[0].viewModel.currentFeatureEsri;
+                                        var attr = editView_1[0].viewModel.form.value.fields.getItems();
+                                        if (attr.length > 0) {
+                                            if (!editView_1[0].viewModel.form.value["all_fields"]) {
+                                                editView_1[0].viewModel.form.value["all_fields"] = [];
+                                                editView_1[0].viewModel.form.value.fields.value.forEach(function (f) {
+                                                    editView_1[0].viewModel.form.value["all_fields"].push(f);
+                                                });
+                                            }
+                                            var filteredFields = this._processAttributeFilter(attr);
+                                            if (filteredFields.length > 0) {
+                                                editView_1[0].viewModel.form.value.fields.set(filteredFields);
+                                            }
+                                        }
+                                    }
+                                    //hide delete button if not in appropriate group
+                                    var isAdmin = this.app.site.principal.identities.length > 0
+                                        ? this.app.site.principal.identities[0].claims.filter(function (c) { return c.value === _this._adminGroupID; }).length > 0
+                                        : false;
+                                    if (!isAdmin) {
+                                        $('.button:contains("Delete")').hide();
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    this.app.eventRegistry.event("FeatureDetailsInvokedEvent").subscribe(this, function (args) {
+                        //let filteredAttributes = this._processAttributeFilter(this.devAttributes ? this.devAttributes : args.attributes.getItems());
+                        var filteredAttributes = this._processAttributeFilter(args.attributes.getItems());
+                        if (filteredAttributes) {
+                            var filteredAttrNames_1 = filteredAttributes.map(function (fa) { return fa.name.value; });
+                            args.attributes.getItems().forEach(function (attr) {
+                                if (filteredAttrNames_1.indexOf(attr.name.value) === -1) {
+                                    attr.visible.set(false);
+                                }
+                            });
+                        }
+                    });
+                    this.app.eventRegistry.event("GeometryEditInvokedEvent").subscribe(this, this._handleGeometryEditInvokeEvent);
+                    this.app.event("WorkflowCompletedEvent").subscribe(this, function (workflow, workflowOutputs) {
+                        if (workflow.id !== "edit_geometry") {
+                            return;
+                        }
+                    });
+                    this.app.eventRegistry.event("FeatureEditedEvent").subscribe(this, function (feature) {
+                        //check if any changes beside edit time
+                        var hasUpdate = JSON.stringify(feature.editedFeature.toJson()) !== JSON.stringify(feature.originalFeature.toJson());
+                        if (hasUpdate) {
+                            var workflowArgs = {};
+                            workflowArgs["workflowId"] = "add_feature_version";
+                            workflowArgs["featureGraphic"] = feature.editedFeature;
+                            workflowArgs["srvc_url"] = _this.devRegVersionSrvcUrl;
+                            workflowArgs["srvc_token"] = _this.devRegToken;
+                            _this.app.commandRegistry.commands["RunWorkflowWithArguments"].execute(workflowArgs);
+                        }
+                    });
+                    //workaround to get the authenticated layer list to process svg formatting event
+                    var thisScope = this;
+                    window.setTimeout(function () {
+                        thisScope.app.commandRegistry.commands["SwitchToLayerView"].execute();
+                    }, 50);
+                }
+                this.app.eventRegistry.event("ViewContainerActivatedEvent").subscribe(this, function (args) {
+                    if (args.id === "LayerDataContainerView") {
+                        var layerListView = args.childRegions[0].activeViews.filter(function (av) { return av.id === "LayerListView"; });
+                        if (layerListView.length > 0) {
+                            layerListView[0].viewModel.layerListItems.value.forEach(function (group) {
+                                var layers = group.children.value.forEach(function (layer) {
+                                    var uniqueCategories = [];
+                                    var legendItems = layer.legendItems.getItems().filter(function (category) {
+                                        if (category.swatchElement.match("<svg ")) {
+                                            category.swatchElement = category.swatchElement
+                                                .replace('width="32"', 'width="24"')
+                                                .replace('height="32"', 'height="24"')
+                                                .replace('M-10-10L 10 0L 10 10L-10 10L-10-10Z', 'M 8-8L 8 0L 8 8L-8 8L-8-8Z')
+                                                .replace('d="M -10 -10 L 10 0 L 10 10 L -10 10 L -10 -10 Z" path="M -10,-10 L 10,0 L 10,10 L -10,10 L -10,-10 Z"', 'd="M 8 -8 L 8 0 L 8 8 L -8 8 L -8 -8 Z" path="M -8,-8 L 8,0 L 8,8 L -8,8 L -8,-8 Z"');
+                                        }
+                                        if (uniqueCategories.indexOf(category.label.value) === -1) {
+                                            uniqueCategories.push(category.label.value);
+                                            return true;
+                                        }
+                                        else {
+                                            return false;
+                                        }
+                                    });
+                                    layer.legendItems.set(legendItems);
+                                    $(".legend-swatch svg").css("paddingLeft", ".5em");
+                                });
+                            });
+                        }
+                    }
+                });
+            };
+            return DevelopmentRegistryModule;
+        }(geocortex.framework.application.ModuleBase));
+        dev_registry.DevelopmentRegistryModule = DevelopmentRegistryModule;
+    })(dev_registry = oe.dev_registry || (oe.dev_registry = {}));
+})(oe || (oe = {}));
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+var myWorkflowContext;
+var myApp;
+var myLibID;
+var oe;
+(function (oe) {
+    var dev_registry;
+    (function (dev_registry) {
+        var DevelopmentRegistryModuleView = (function (_super) {
+            __extends(DevelopmentRegistryModuleView, _super);
+            function DevelopmentRegistryModuleView(app, lib) {
+                _super.call(this, app, lib);
+                this.toggleLayer = function (event, element, context) {
+                    var workflowArgs = {};
+                    workflowArgs.workflowId = "toggleLayer";
+                    workflowArgs.MapServiceID = myWorkflowContext.getValue("mapServiceID");
+                    workflowArgs.LayerName = element.getAttribute("data-attr-layer");
+                    this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
+                };
+                this.showInfo = function (event, element, context) {
+                    var workflowArgs = {};
+                    workflowArgs.workflowId = "constraintPopUps";
+                    workflowArgs.constraint = element.getAttribute("data-attr-constraint");
+                    this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
+                };
+                this.zoomTo = function (event, element, context) {
+                    var featureExtent = myWorkflowContext.getValue('uda_extent');
+                    myApp.commandRegistry.commands.ZoomToExtent.execute(featureExtent);
+                };
+                this.clearTitle = function (event, element, context) {
+                    element.value = "";
+                };
+                this.runNewReport = function (event, element, context) {
+                    myWorkflowContext.setValue("finalFormBtn", 'New');
+                    myWorkflowContext.completeActivity();
+                    this.app.commandRegistry.command("DeactivateView").execute("CustomForm49ModuleView");
+                    return true;
+                };
+                this.getPDF = function (event, element, context) {
+                    myWorkflowContext.setValue("finalFormBtn", 'PDF');
+                    myWorkflowContext.setValue("reportTitle", document.getElementById("reportTitle")["value"]);
+                    var includedMap = document.getElementById("includeMap")["checked"];
+                    myWorkflowContext.setValue("includeMap", includedMap);
+                    myWorkflowContext.completeActivity();
+                    this.app.commandRegistry.command("DeactivateView").execute("CustomForm49ModuleView");
+                    return true;
+                };
+                this.cancelForm = function (event, element, context) {
+                    myWorkflowContext.setValue("finalFormBtn", 'Close');
+                    myWorkflowContext.completeActivity();
+                    this.app.commandRegistry.command("DeactivateView").execute("DevelopmentRegistryModuleView");
+                    //$(".panel-header-button.right.close-16.bound-visible").show();
+                    return true;
+                };
+            }
+            return DevelopmentRegistryModuleView;
+        }(geocortex.framework.ui.ViewBase));
+        dev_registry.DevelopmentRegistryModuleView = DevelopmentRegistryModuleView;
+    })(dev_registry = oe.dev_registry || (oe.dev_registry = {}));
+})(oe || (oe = {}));
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+/// <reference path="../../../Libs/arcgis-js-api.d.ts" />
+var oe;
+(function (oe) {
+    var dev_registry;
+    (function (dev_registry) {
+        var DevelopmentRegistryModuleViewModel = (function (_super) {
+            __extends(DevelopmentRegistryModuleViewModel, _super);
+            function DevelopmentRegistryModuleViewModel(app, lib) {
+                _super.call(this, app, lib);
+                this.pac_title = new Observable("");
+                this.pac_title_projected = new Observable("");
+                this.pac_area = new Observable("");
+                this.baseline_area = new Observable("");
+                this.baseline_percent = new Observable("");
+                this.dev_area = new Observable("");
+                this.decade_tbl = new ObservableCollection([]);
+                this.overall_tbl = new ObservableCollection([]);
+                this.decade_projected_tbl = new ObservableCollection([]);
+                this.overall_projected_tbl = new ObservableCollection([]);
+                this.decade_cap_val = new Observable("");
+                this.overall_cap_val = new Observable("");
+                this.decade_projected_cap_val = new Observable("");
+                this.overall_projected_cap_val = new Observable("");
+                this.decade_area_val = new Observable("");
+                this.overall_area_val = new Observable("");
+                this.decade_projected_area_val = new Observable("");
+                this.overall_projected_area_val = new Observable("");
+                this.has_current = new Observable(false);
+                this.has_projected = new Observable(false);
+                this.has_all = new Observable(false);
+                this.show_decade_tbl_current = new Observable(false);
+                this.show_decade_tbl_projected = new Observable(false);
+                this.isCached = new Observable(false);
+                this.exceedsCurrentDecade = new Observable(false);
+                this.exceedsCurrentMax = new Observable(false);
+                this.exceedsProjectedDecade = new Observable(false);
+                this.exceedsProjectedMax = new Observable(false);
+                this.reportDate = new Observable("");
+            }
+            DevelopmentRegistryModuleViewModel.prototype.initialize = function (config) {
+                myApp = this.app;
+                myLibID = this.libraryId;
+                var thisViewModel = this;
+                this.app.registerActivityIdHandler("displaycustomform_devReg", function CustomEventHandler(workflowContext, contextFunctions) {
+                    var cat_area_rows = [];
+                    var dev_area_row = [];
+                    var baseline_row = [];
+                    var decade_area_row = [];
+                    var proj_all_area_row = [];
+                    var proj_decade_area_row = [];
+                    var proj_cat_area_rows = [];
+                    myWorkflowContext = $.extend({}, workflowContext);
+                    myApp.commandRegistry.command("ActivateView").execute("DevelopmentRegistryModuleView");
+                    var pac_area_dbl = myWorkflowContext.getValue("pac_area");
+                    thisViewModel.pac_area.set(thisViewModel.addCommas(pac_area_dbl.toFixed(0)) + " acres");
+                    var reportFinalFS = myWorkflowContext.getValue("report_final");
+                    var reportType = myWorkflowContext.getValue("report_type");
+                    var isPublic = myWorkflowContext.getValue("public");
+                    thisViewModel.isCached.set(myWorkflowContext.getValue("cached"));
+                    thisViewModel.decade_cap_val.set("0%");
+                    thisViewModel.overall_cap_val.set("0%");
+                    thisViewModel.decade_projected_cap_val.set("0%");
+                    thisViewModel.overall_projected_cap_val.set("0%");
+                    thisViewModel.has_current.set(false);
+                    thisViewModel.has_projected.set(false);
+                    //if cached and current, then means public view of cached results so midnight time
+                    //else current time
+                    thisViewModel.reportDate.set("Data current as of "
+                        + (thisViewModel.isCached.get() && reportType === "Current" && isPublic
+                            ? new Date().toLocaleDateString() + " 12:00 AM"
+                            : new Date().toLocaleString()));
+                    reportFinalFS.features.forEach(function (stat) {
+                        var stat_area = stat.attributes.SUM_POLY_AREA || stat.attributes.SUM_POLY_A;
+                        var stat_area_formatted = thisViewModel.addCommas(stat_area.toFixed(0));
+                        var stat_percent = stat_area ? (stat_area / pac_area_dbl * 100).toFixed(2) + "%" : "N/A";
+                        switch (stat.attributes.stat) {
+                            case 'all':
+                                thisViewModel.has_current.set(true);
+                                dev_area_row.push({
+                                    category: 'Total',
+                                    area: stat_area_formatted,
+                                    percent: stat_percent
+                                });
+                                thisViewModel.overall_cap_val.set(stat_percent);
+                                thisViewModel.overall_area_val.set(stat_area_formatted + ' acres');
+                                break;
+                            case 'decade':
+                                decade_area_row.push({
+                                    category: 'Total',
+                                    area: stat_area_formatted,
+                                    percent: stat_percent
+                                });
+                                thisViewModel.decade_cap_val.set(stat_percent);
+                                thisViewModel.decade_area_val.set(stat_area_formatted + ' acres');
+                                break;
+                            case 'categories':
+                                if (["", " ", "NULL", "null"].indexOf(stat.attributes.category_merged || stat.attributes.category_m) === -1) {
+                                    cat_area_rows.push({
+                                        category: stat.attributes.category_merged || stat.attributes.category_m,
+                                        area: stat_area_formatted,
+                                        percent: stat_percent
+                                    });
+                                }
+                                break;
+                            case 'projected_all':
+                                thisViewModel.has_projected.set(true);
+                                proj_all_area_row.push({
+                                    category: 'Total',
+                                    area: stat_area_formatted,
+                                    percent: stat_percent
+                                });
+                                thisViewModel.overall_projected_cap_val.set(stat_percent);
+                                thisViewModel.overall_projected_area_val.set(stat_area_formatted + ' acres');
+                                break;
+                            case 'projected_decade':
+                                proj_decade_area_row.push({
+                                    category: 'Total',
+                                    area: stat_area_formatted,
+                                    percent: stat_percent
+                                });
+                                thisViewModel.decade_projected_cap_val.set(stat_percent);
+                                thisViewModel.decade_projected_area_val.set(stat_area_formatted + ' acres');
+                                break;
+                            case 'projected_categories':
+                                if (["", " ", "NULL", "null"].indexOf(stat.attributes.category_merged || stat.attributes.category_m) === -1) {
+                                    proj_cat_area_rows.push({
+                                        category: stat.attributes.category_merged || stat.attributes.category_m,
+                                        area: stat_area_formatted,
+                                        percent: stat_percent
+                                    });
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    });
+                    thisViewModel.has_all.set(thisViewModel.has_current.get() && thisViewModel.has_projected.get());
+                    myApp.viewManager.getViewById("DevelopmentRegistryModuleView").title.set(thisViewModel.has_projected.get() ? "Estimated Development Impact Report" : "PAC Development Impact Report");
+                    baseline_row.push({
+                        category: 'Baseline developments',
+                        area: thisViewModel.addCommas(myWorkflowContext.getValue("baseline_area").toFixed(0)),
+                        percent: (myWorkflowContext.getValue("baseline_area") / pac_area_dbl * 100).toFixed(2) + "%"
+                    });
+                    thisViewModel.pac_title.set(myWorkflowContext.getValue("selected_pac") + " PAC");
+                    thisViewModel.pac_title_projected.set(myWorkflowContext.getValue("selected_pac") + " PAC");
+                    thisViewModel.baseline_area.set(baseline_row[0].area + " acres");
+                    thisViewModel.baseline_percent.set(baseline_row[0].percent);
+                    var cap_one_percent_tbl = cat_area_rows.concat(decade_area_row);
+                    thisViewModel.decade_tbl.set(cap_one_percent_tbl);
+                    thisViewModel.show_decade_tbl_current.set(cap_one_percent_tbl.length > 0 ? true : false);
+                    var overall_cap_tbl = baseline_row.concat(cat_area_rows, dev_area_row);
+                    thisViewModel.overall_tbl.set(overall_cap_tbl);
+                    var cap_one_percent_projected_tbl = proj_cat_area_rows.concat(proj_decade_area_row);
+                    thisViewModel.decade_projected_tbl.set(cap_one_percent_projected_tbl);
+                    thisViewModel.show_decade_tbl_projected.set(cap_one_percent_projected_tbl.length > 0 ? true : false);
+                    var overall_cap_projected_tbl = baseline_row.concat(proj_cat_area_rows, proj_all_area_row);
+                    thisViewModel.overall_projected_tbl.set(overall_cap_projected_tbl);
+                });
+            };
+            DevelopmentRegistryModuleViewModel.prototype.setExceedanceMsgs = function () {
+                this.exceedsCurrentDecade.set(Number(this.decade_cap_val.get()) > 1);
+                this.exceedsCurrentMax.set(Number(this.overall_cap_val.get()) > 3);
+                this.exceedsProjectedDecade.set(Number(this.decade_projected_cap_val.get()) > 1);
+                this.exceedsProjectedMax.set(Number(this.overall_projected_cap_val.get()) > 3);
+            };
+            DevelopmentRegistryModuleViewModel.prototype.addCommas = function (nStr) {
+                nStr += '';
+                var x = nStr.split('.');
+                var x1 = x[0];
+                var x2 = x.length > 1 ? '.' + x[1] : '';
+                var rgx = /(\d+)(\d{3})/;
+                while (rgx.test(x1)) {
+                    x1 = x1.replace(rgx, '$1' + ',' + '$2');
+                }
+                return x1 + x2;
+            };
+            return DevelopmentRegistryModuleViewModel;
+        }(geocortex.framework.ui.ViewModelBase));
+        dev_registry.DevelopmentRegistryModuleViewModel = DevelopmentRegistryModuleViewModel;
+    })(dev_registry = oe.dev_registry || (oe.dev_registry = {}));
+})(oe || (oe = {}));
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
+var oe;
+(function (oe) {
     var customform49;
     (function (customform49) {
         var CustomFormM49Module = (function (_super) {
@@ -112,248 +744,6 @@ var oe;
         }(geocortex.framework.ui.ViewModelBase));
         customform49.CustomFormM49ModuleViewModel = CustomFormM49ModuleViewModel;
     })(customform49 = oe.customform49 || (oe.customform49 = {}));
-})(oe || (oe = {}));
-/// <reference path="../../../Libs/Framework.d.ts" />
-/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
-/// <reference path="../../../Libs/arcgis-js-api.d.ts" />
-// module to fire off the StartEditingFeature command since it requires use of the HtmlViewer context not available in workflow.
-var oe;
-(function (oe) {
-    var development_registry;
-    (function (development_registry) {
-        var DevelopmentRegistryModule = (function (_super) {
-            __extends(DevelopmentRegistryModule, _super);
-            // devAttributes: any;
-            function DevelopmentRegistryModule(app, lib) {
-                var _this = this;
-                _super.call(this, app, lib);
-                this.devSubTypesTable = {};
-                // When the layer list initializes we can grab a reference to the layer list object and save it for later.
-                // We'll need this to add our custom layer to the layer list.
-                this.app.eventRegistry.event("LayerListInitializedEvent").subscribe(this, function (sender) {
-                    // look for tables
-                    _this.layerList = sender;
-                    _this._getDevSubTypes();
-                });
-            }
-            DevelopmentRegistryModule.prototype.initialize = function (config) {
-                var _this = this;
-                this._layerFilters = config.layerFilters;
-                var site = this.app.site;
-                if (site && site.isInitialized) {
-                    this._onSiteInitialized(site);
-                }
-                else {
-                    this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, function (args) {
-                        _this._onSiteInitialized(args);
-                    });
-                }
-            };
-            DevelopmentRegistryModule.prototype._getDevSubTypes = function () {
-                var _this = this;
-                var devTypeTableURL;
-                var devSubTypeTableURL;
-                this.layerList.mapInfo.serviceLayers.forEach(function (sl) {
-                    if (sl.displayName === "Development Types") {
-                        devTypeTableURL = sl.serviceLayer.url;
-                        _this.devRegTablesUrl = sl.gcxMapService.serviceUrl;
-                    }
-                    if (sl.displayName === "Development Subtypes") {
-                        devSubTypeTableURL = sl.serviceLayer.url;
-                    }
-                    if (sl.displayName === "All developments") {
-                        _this.devRegSrvcUrl = sl.gcxMapService.serviceUrl;
-                        _this.devRegToken = sl.gcxMapService.serviceToken;
-                    }
-                });
-                // add query parameters to base urls
-                var query_params = '/query?where=1%3D1&outFields=Development_Type_ID,Development_Type,Development_SubType&f=json&token=';
-                var devTypeTableURL_query = devTypeTableURL.split('?token=')[0]
-                    + query_params
-                    + devTypeTableURL.split('?token=')[1];
-                var devSubTypeTableURL_query = devSubTypeTableURL.split('?token=')[0]
-                    + query_params
-                    + devSubTypeTableURL.split('?token=')[1];
-                $.when($.ajax(devTypeTableURL_query), $.ajax(devSubTypeTableURL_query))
-                    .done(function (dtt, dstt) {
-                    var devTypes = [];
-                    var devSubTypes = [];
-                    if (dtt.length) {
-                        devTypes = JSON.parse(dtt[0]).features
-                            ? JSON.parse(dtt[0]).features
-                            : [];
-                    }
-                    if (dstt.length) {
-                        devSubTypes = JSON.parse(dstt[0]).features
-                            ? JSON.parse(dstt[0]).features
-                            : [];
-                    }
-                    devTypes.forEach(function (dt) {
-                        _this.devSubTypesTable[dt.attributes["Development_Type"]] = {
-                            id: dt.attributes["Development_Type_ID"],
-                            subtypes: devSubTypes
-                                .filter(function (dst) {
-                                return dst.attributes["Development_Type_ID"] === dt.attributes["Development_Type_ID"];
-                            })
-                                .map(function (dstm) {
-                                return dstm.attributes["Development_Subtype"];
-                            })
-                        };
-                    });
-                });
-            };
-            DevelopmentRegistryModule.prototype._handleDevTypeChange = function (args) {
-                if (args) {
-                    var editForm = this.app.viewManager.getViewById("FeatureEditingContainerView").childRegions[0].views.filter(function (v) { return v.id === 'EditorView'; });
-                    if (editForm.length > 0) {
-                        var all_fields = editForm[0].viewModel.form.value["all_fields"]
-                            ? editForm[0].viewModel.form.value["all_fields"]
-                            : editForm[0].viewModel.form.value.fields.getItems();
-                        var filtered_attr = this._processAttributeFilter(all_fields);
-                        try {
-                            editForm[0].viewModel.form.value.fields.set(filtered_attr);
-                        }
-                        catch (ex) {
-                            console.log(ex.message);
-                        }
-                    }
-                }
-            };
-            DevelopmentRegistryModule.prototype._processAttributeFilter = function (attributes) {
-                var _this = this;
-                var layerFilters = this._layerFilters;
-                if (attributes.length > 0) {
-                    var devType_1 = attributes.filter(function (f) { return f.name.value === 'dst_cat'; }).length > 0 ? attributes.filter(function (f) { return f.name.value === 'dst_cat'; })[0].value.value : '';
-                    if (devType_1 !== '') {
-                        var filteredFields = attributes.filter(function (f) {
-                            if (f.name.value === 'dst_cat' && f.valueOptions) {
-                                //f.value.bindingEvent.publish();
-                                if (!f.value.bindingEvent.isPublishing) {
-                                    f.value.bindingEvent.subscribe(_this, _this._handleDevTypeChange);
-                                }
-                            }
-                            if (f.name.value === 'subcat') {
-                                if (_this.devSubTypesTable && f.valueOptions) {
-                                    var filteredCodedValues_1 = [];
-                                    f.domain.codedValues.forEach(function (cv) {
-                                        if (_this.devSubTypesTable[devType_1].subtypes.indexOf(cv.name) !== -1) {
-                                            filteredCodedValues_1.push(cv);
-                                        }
-                                    });
-                                    //let filteredCodedValues = f.domain.codedValues.filter(cd => {
-                                    //    return this.devSubTypesTable[devType].subtypes.indexOf(cd.name) !== -1
-                                    //});
-                                    f.valueOptions.value = filteredCodedValues_1;
-                                }
-                            }
-                            if (f.name.value === 'or_dev_reg_proj_id') {
-                                if (f.readOnly) {
-                                    f.readOnly.set(true);
-                                }
-                            }
-                            return layerFilters[devType_1] ? layerFilters[devType_1].indexOf(f.name.value) !== -1 : true;
-                        });
-                        return filteredFields;
-                    }
-                }
-                else {
-                    return [];
-                }
-            };
-            DevelopmentRegistryModule.prototype._onSiteInitialized = function (site) {
-                this.app.commandRegistry.command("showFeatureEditForm").register(this, function () {
-                    var collection = this.app.featureSetManager.getCollectionById("add_feature");
-                    var feature = null;
-                    if (collection.featureSets.length() > 0) {
-                        if (collection.featureSets.getAt(0).features.length() > 0) {
-                            feature = collection.featureSets.getAt(0).features.getAt(0);
-                            this.app.commandRegistry.command("StartEditingFeature").execute(feature);
-                        }
-                    }
-                });
-                this.app.commandRegistry.command("runAddEditDevFeatures").register(this, function () {
-                    var workflowArgs = {};
-                    workflowArgs["workflowId"] = "add_edit_dev_features";
-                    workflowArgs["site_uri"] = this.app.site.originalUrl + '/map?f=json';
-                    workflowArgs["srvc_url"] = this.devRegSrvcUrl;
-                    workflowArgs["srvc_token"] = this.devRegToken;
-                    workflowArgs["srvc_tables_url"] = this.devRegTablesUrl;
-                    //workflowArgs["or_dev_reg_id"] = args.attributes["or_dev_reg_id"];
-                    this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
-                });
-                this.app.eventRegistry.event("ViewContainerActivatedEvent").subscribe(this, function (args) {
-                    if (args.id === "FeatureEditingContainerView" && !args.isActive) {
-                        if (args.childRegions.length > 0) {
-                            if (args.childRegions[0].views.length > 1) {
-                                var editView_1 = args.childRegions[0].views.filter(function (v) { return v.id === "EditorView"; });
-                                if (editView_1.length > 0) {
-                                    var attr = editView_1[0].viewModel.form.value.fields.getItems();
-                                    if (attr.length > 0) {
-                                        if (!editView_1[0].viewModel.form.value["all_fields"]) {
-                                            editView_1[0].viewModel.form.value["all_fields"] = [];
-                                            editView_1[0].viewModel.form.value.fields.value.forEach(function (f) {
-                                                editView_1[0].viewModel.form.value["all_fields"].push(f);
-                                            });
-                                        }
-                                        var filteredFields = this._processAttributeFilter(attr);
-                                        if (filteredFields.length > 0) {
-                                            editView_1[0].viewModel.form.value.fields.set(filteredFields);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-                this.app.eventRegistry.event("FeatureDetailsInvokedEvent").subscribe(this, function (args) {
-                    //let filteredAttributes = this._processAttributeFilter(this.devAttributes ? this.devAttributes : args.attributes.getItems());
-                    var filteredAttributes = this._processAttributeFilter(args.attributes.getItems());
-                    if (filteredAttributes) {
-                        var filteredAttrNames_1 = filteredAttributes.map(function (fa) { return fa.name.value; });
-                        args.attributes.getItems().forEach(function (attr) {
-                            if (filteredAttrNames_1.indexOf(attr.name.value) === -1) {
-                                attr.visible.set(false);
-                            }
-                        });
-                    }
-                });
-                this.app.eventRegistry.event("GeometryEditInvokedEvent").subscribe(this, function (args, test) {
-                    var _this = this;
-                    this.app.commandRegistry.commands.Confirm.execute("Would you like to upload a shapefile(zipped) or use the map to modify the shape of this development?", "Upload Shapefile or use map?", function (result) {
-                        console.log('user selection', result);
-                        if (result) {
-                            var workflowArgs = {};
-                            workflowArgs["workflowId"] = "add_edit_dev_features";
-                            workflowArgs["srvc_url"] = _this.devRegSrvcUrl;
-                            workflowArgs["srvc_token"] = _this.devRegToken;
-                            workflowArgs["workflow_action"] = "Edit";
-                            workflowArgs["or_dev_reg_id"] = args.attributes["or_dev_reg_id"];
-                            _this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
-                            //call
-                            //this.openFileDialog(".zip", (file) => {
-                            //    console.log('file', file);
-                            //});
-                            $('.button:contains("Save Geometry")').click();
-                            $('.button:contains("Save")').click();
-                        }
-                        //else {
-                        //    args.draw();
-                        //}
-                    });
-                    $(".confirm .button:contains('OK')").html("Upload New Shape");
-                    $(".confirm .button:contains('Cancel')").html("Use Map");
-                    //var isUpload = false;
-                });
-                this.app.event("WorkflowCompletedEvent").subscribe(this, function (workflow, workflowOutputs) {
-                    if (workflow.id !== "edit_geometry") {
-                        return;
-                    }
-                });
-            };
-            return DevelopmentRegistryModule;
-        }(geocortex.framework.application.ModuleBase));
-        development_registry.DevelopmentRegistryModule = DevelopmentRegistryModule;
-    })(development_registry = oe.development_registry || (oe.development_registry = {}));
 })(oe || (oe = {}));
 /// <reference path="../../../Libs/Framework.d.ts" />
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
@@ -1069,7 +1459,7 @@ var oe;
                     var workflowArgs = {};
                     workflowArgs.workflowId = "Wildfire_Risk_Report";
                     workflowArgs.risk_value = $("#WildfireRisk_value").text();
-                    workflowArgs.risk_percent = $("#WildfireRisk_riskdatapercent").text();
+                    workflowArgs.risk_percent = oe.wildfireRiskPopup.riskPercentOut; //$("#WildfireRisk_riskdatapercent").text();
                     workflowArgs.wfpd = $("#WildfireRisk_forest_protection_district").text();
                     workflowArgs.wspd = $("#WildfireRisk_structural_projection_district").text();
                     workflowArgs.wrpa = $("#WildfireRisk_rangeland_protection_assoc").text();
@@ -1150,6 +1540,8 @@ var oe;
                 $(".WildfireRiskPopupModuleView").appendTo(".map-navigation-region");
                 //add a command button
                 this.app.commandRegistry.command("toggle_firerisk_mode").register(this, toggleFireRiskMode);
+                //run popup by coordinates
+                this.app.commandRegistry.command("OpenFireriskPopup").register(this, openFireriskPopup);
                 //grab the geocortex map event
                 this.app.eventRegistry.event("MapClickedEvent").subscribe(null, handleMouseClick);
                 //check for current mode
@@ -1208,11 +1600,11 @@ var oe;
                     var workingSplit = workingString.split(".");
                     return workingSplit[0] + "." + workingSplit[1].substring(0, 3) + " " + dirSuffix;
                 }
-                function handleMouseClick(pointIn, appIn) {
+                function processMapPoint(mapPointIn) {
                     if (!wildfireRiskPopup.fireRiskPopupEnabled)
                         return;
                     //store the point
-                    workingPointGeometry = pointIn.mapPoint;
+                    workingPointGeometry = mapPointIn;
                     //convert to a lat long version                
                     var latLongPoint = esri.geometry.webMercatorToGeographic(workingPointGeometry);
                     var latOut = formateLatLong(latLongPoint.y, true);
@@ -1266,6 +1658,20 @@ var oe;
                     workingFeatureCollection.featureCollection.layers.push(layerJSON);
                     //start the risk calcuation 
                     createBuffer();
+                }
+                function openFireriskPopup(geometryIn, appIn) {
+                    if (!wildfireRiskPopup.fireRiskPopupEnabled)
+                        return;
+                    var jsonIn = jQuery.parseJSON(geometryIn);
+                    var newPoint = new esri.geometry.Point(jsonIn.x, jsonIn.y, new esri.SpatialReference({ wkid: jsonIn.spatialReference.wkid }));
+                    processMapPoint(newPoint);
+                }
+                function handleMouseClick(pointIn, appIn) {
+                    if (!wildfireRiskPopup.fireRiskPopupEnabled)
+                        return;
+                    //store the point
+                    //workingPointGeometry = pointIn.mapPoint;
+                    processMapPoint(pointIn.mapPoint);
                 }
                 function CreateLayerJSON(layerName, esriGeometryType, graphicsIn) {
                     var layerDef = {
@@ -1507,8 +1913,9 @@ var oe;
                     var maxPixels = bufferArea / pixelArea;
                     var dataPercent = Math.round((countTotal / maxPixels) * 100);
                     //$("#WildfireRisk_riskdatapercent").text(dataPercent + "%");
+                    wildfireRiskPopup.riskPercentOut = dataPercent;
                     //show warning if data percent is low
-                    if (dataPercent < 50) {
+                    if (dataPercent < 25) {
                         //$("#WildfireRisk_warning").text("Warning! Incomplete data coverage in your area.");
                         $("#WildfireRisk_warning").css("display", "block");
                     }

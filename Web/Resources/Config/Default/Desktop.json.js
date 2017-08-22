@@ -158,7 +158,7 @@
                   "configuration" : {}
               }
               ]
-          },
+          },          
             {
                 "moduleName" : "RasterFunctions",
                 "moduleType" : "oe.raster_functions.RasterFunctionsModule",
@@ -7317,7 +7317,7 @@
                       "hideOnDisable": false,
                       "name": "@language-toolbar-home-sub",
                       "tooltip": "@language-toolbar-home-tooltip"
-                  },
+                  },                  
                   {
                       "id" : "8wef38jd",
                       "type" : "toolbarGroup",
