@@ -64,7 +64,8 @@
     <Content Include="Handheld.html" />
     <Content Include="Index.html" />
     <Content Include="Index.2.8.html" />
-    <Content Include="Libraries\Custom\Config\Defaults.json.js" />
+    <Content Include="Libraries\Custom\Compiled\Custom.js" />
+    <None Include="Libraries\Custom\Config\Defaults.json.js.bak" />
     <Content Include="Libraries\Custom\Styles\Custom\Desktop.css" />
     <Content Include="offline.aspx" />
     <Content Include="offline.js" />
@@ -77,11 +78,13 @@
     <Content Include="Resources\Compiled\Mapping.Infrastructure.js" />
     <Content Include="Resources\Compiled\Mapping.js" />
     <Content Include="Resources\Config\CacheManifestConfig.xml" />
-    <Content Include="Resources\Config\Default\dev_configs\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\Desktop.json.dev.reg.js" />
     <Content Include="Resources\Config\Default\Handheld.json.js" />
+    <Content Include="Resources\Config\Default\Handheld.json.oe.js" />
     <Content Include="Resources\Config\Default\Tablet.json.js" />
     <Content Include="Resources\Config\Default\_archive\Desktop.json.js" />
-    <Content Include="Resources\Config\Default\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\Desktop.json.oe.js" />
     <Content Include="Resources\Config\Default\_archive\Handheld.json.js" />
     <Content Include="Resources\Config\Default\_archive\Tablet.json.js" />
     <Content Include="Resources\Config\OfflineManifestParameters.xml" />
@@ -414,9 +417,7 @@
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Libraries\Custom\Compiled\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
