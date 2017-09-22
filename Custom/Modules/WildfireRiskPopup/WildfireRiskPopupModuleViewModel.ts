@@ -823,25 +823,28 @@ module oe.wildfireRiskPopup {
             function requestRemainingData() {
                 
                 //Wildfire Forest Projection District
-                sendQueryRequest(oreallSiteURL, "42", "odf_fpd", $("#WildfireRisk_forest_protection_district"), resultRemainingData, errorRemainingData);
+                sendQueryRequest(fireSiteURL, "65", "odf_fpd", $("#WildfireRisk_forest_protection_district"), resultRemainingData, errorRemainingData);
                 
                 //Structural Fire Protection District
-                sendQueryRequest(oreallSiteURL, "44", "agency", $("#WildfireRisk_structural_projection_district"), resultRemainingData, errorRemainingData);
+                sendQueryRequest(fireSiteURL, "67", "agency", $("#WildfireRisk_structural_projection_district"), resultRemainingData, errorRemainingData);
 
                 //Rangeland Protection Associations
-                sendQueryRequest(oreallSiteURL, "43", "rpa_name", $("#WildfireRisk_rangeland_protection_assoc"), resultRemainingData, errorRemainingData);
+                sendQueryRequest(fireSiteURL, "66", "rpa_name", $("#WildfireRisk_rangeland_protection_assoc"), resultRemainingData, errorRemainingData);
 
                 //city or town
                 sendQueryRequest(fireSiteURL, "59", "name", $("#WildfireRisk_city"), resultRemainingData, errorRemainingData);
 
                 //urban growth boundary
-                sendQueryRequest(oreallSiteURL, "18", "name", $("#WildfireRisk_urban_growth_boundary"), UGB_result, UGB_error);
+                sendQueryRequest(fireSiteURL, "69", "name", $("#WildfireRisk_urban_growth_boundary"), UGB_result, UGB_error);
 
                 //CWPP - Community Wildfire Protection Plans OR Wildland Urban Interface
-                sendQueryRequest(oreallHazardsURL, "54", "cwpp", $("#WildfireRisk_cwpp_area"), resultRemainingData, errorRemainingData);
+                sendQueryRequest(fireSiteURL, "72", "cwpp", $("#WildfireRisk_cwpp_area"), resultRemainingData, errorRemainingData);
+
+                //Firewise community
+                sendQueryRequest(fireSiteURL, "71", "name", $("#WildfireRisk_firewise_community"), resultRemainingData, errorRemainingData);
 
                 //Senate Bill 360 (SB360)  Classified Forestland-Urban Interface feature
-                sendQueryRequest(oreallHazardsURL, "52", "rating", $("#WildfireRisk_senatebill_360"), SB360_result, SB360_error);                                                
+                sendQueryRequest(fireSiteURL, "80", "rating", $("#WildfireRisk_senatebill_360"), SB360_result, SB360_error);                                                
             }
 
             function UGB_result(features, attributeName, divElement) {

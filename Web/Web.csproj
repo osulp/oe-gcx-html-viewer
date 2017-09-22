@@ -382,10 +382,12 @@
     <Content Include="Resources\Scripts\native.js" />
     <Content Include="Resources\Styles\Animations.css" />
     <Content Include="Resources\Styles\common.css" />
+    <Content Include="Resources\Styles\Custom\Common.css" />
     <Content Include="Resources\Styles\Custom\Desktop_OE.css" />
     <Content Include="Resources\Styles\Custom\Desktop.css" />
     <Content Include="Resources\Styles\Custom\Handheld_OE.css" />
     <Content Include="Resources\Styles\Custom\Handheld.css" />
+    <Content Include="Resources\Styles\Custom\sites.css" />
     <Content Include="Resources\Styles\Custom\Tablet_OE.css" />
     <Content Include="Resources\Styles\Custom\Tablet.css" />
     <Content Include="Resources\Styles\Desktop.css" />

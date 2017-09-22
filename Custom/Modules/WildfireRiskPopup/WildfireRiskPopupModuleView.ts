@@ -28,6 +28,8 @@ module oe.wildfireRiskPopup {
             workflowArgs.cwpp = $("#WildfireRisk_cwpp_area").text();
             workflowArgs.sb360 = $("#WildfireRisk_senatebill_360").text();
 
+            workflowArgs.firewiseComm = $("#WildfireRisk_firewise_community").text();
+
             workflowArgs.flame_min = $("#WildfireRisk_flame_min").text();
             workflowArgs.flame_max = $("#WildfireRisk_flame_max").text();
             workflowArgs.flame_ave = $("#WildfireRisk_flame_ave").text();

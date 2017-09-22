@@ -93,6 +93,7 @@ define(["geocortex/infrastructure/AreaOfInterestMask",
 "geocortex/infrastructure/highlightedLabel/HighlightedLabelUtils",
 "geocortex/infrastructure/identify/IdentifyProviderBase",
 "geocortex/infrastructure/identify/GraphicsLayerIdentifyProvider",
+"geocortex/infrastructure/identify/WorkflowIdentifyTaskIdentifyProvider",
 "geocortex/infrastructure/identify/MapIdentifyTaskIdentifyProvider",
 "geocortex/infrastructure/identify/RasterIdentifyTaskIdentifyProvider",
 "geocortex/infrastructure/layerCatalog/LayerCatalogFilterProviderBase",
@@ -214,6 +215,7 @@ define(["geocortex/infrastructure/AreaOfInterestMask",
 "geocortex/infrastructure/ui/components/Forms/RadioButtonFormItemView",
 "geocortex/infrastructure/ui/components/Forms/TextEntryFormItemView",
 "geocortex/infrastructure/ui/components/Forms/TimePickerFormItemView",
+"geocortex/infrastructure/ui/components/Forms/FormItemViewBase",
 "geocortex/infrastructure/ui/components/MultiPane/MultiPaneView",
 "geocortex/infrastructure/ui/components/MultiPane/MultiPaneViewModel",
 "geocortex/infrastructure/ui/components/MultiPane/PaneView",
@@ -254,7 +256,9 @@ define(["geocortex/infrastructure/AreaOfInterestMask",
 "geocortex/infrastructure/results/FeatureSetResultsView",
 "geocortex/infrastructure/results/FeatureSetResultsViewModel",
 "geocortex/infrastructure/results/ResultsUtils",
-"geocortex/infrastructure/BrowserUtils"],
+"geocortex/infrastructure/BrowserUtils",
+"geocortex/infrastructure/symbology/SymbolEditorView",
+"geocortex/infrastructure/symbology/SymbolEditorViewModel"],
 function(AreaOfInterestMask_ts_0,
 ArrayUtils_ts_1,
 AttachmentInfo_ts_2,
@@ -349,6 +353,7 @@ HighlightedLabelGraphic_ts_90,
 HighlightedLabelUtils_ts_91,
 IdentifyProviderBase_ts_92,
 GraphicsLayerIdentifyProvider,
+WorkflowIdentifyTaskIdentifyProvider,
 MapIdentifyTaskIdentifyProvider,
 RasterIdentifyTaskIdentifyProvider,
 LayerCatalogFilterProviderBase_ts_93,
@@ -470,6 +475,7 @@ MarkdownFormItemView,
 RadioButtonFormItemView,
 TextEntryFormItemView,
 TimePickerFormItemView,
+FormItemViewBase,
 MultiPaneView_ts_202,
 MultiPaneViewModel_ts_203,
 PaneView_ts_204,
@@ -510,7 +516,9 @@ FeatureSetCollectionResultsLabelViewModel_ts_237,
 FeatureSetResultsView_ts_238,
 FeatureSetResultsViewModel_ts_239,
 ResultsUtils_ts_240,
-BrowserUtils_ts_241){
+BrowserUtils_ts_241,
+SymbolEditorView_ts_242,
+SymbolEditorViewModel_ts_243) {
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.AreaOfInterestMask", AreaOfInterestMask_ts_0.AreaOfInterestMask);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ArrayUtils", ArrayUtils_ts_1.ArrayUtils);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.AttachmentInfo", AttachmentInfo_ts_2.AttachmentInfo);
@@ -762,6 +770,7 @@ BrowserUtils_ts_241){
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.highlightedLabel.HighlightedLabelUtils.generateSvgCirclePath", HighlightedLabelUtils_ts_91.generateSvgCirclePath);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.identify.IdentifyProviderBase", IdentifyProviderBase_ts_92.IdentifyProviderBase);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.identify.GraphicsLayerIdentifyProvider", GraphicsLayerIdentifyProvider.GraphicsLayerIdentifyProvider);
+    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.identify.WorkflowIdentifyTaskIdentifyProvider", WorkflowIdentifyTaskIdentifyProvider.WorkflowIdentifyTaskIdentifyProvider);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.identify.MapIdentifyTaskIdentifyProvider", MapIdentifyTaskIdentifyProvider.MapIdentifyTaskIdentifyProvider);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.identify.RasterIdentifyTaskIdentifyProvider", RasterIdentifyTaskIdentifyProvider.RasterIdentifyTaskIdentifyProvider);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.layerCatalog.LayerCatalogFilterProviderBase", LayerCatalogFilterProviderBase_ts_93.LayerCatalogFilterProviderBase);
@@ -1029,6 +1038,7 @@ BrowserUtils_ts_241){
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Forms.RadioButtonFormItemView", RadioButtonFormItemView.RadioButtonFormItemView);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Forms.TextEntryFormItemView", TextEntryFormItemView.TextEntryFormItemView);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Forms.TimePickerFormItemView", TimePickerFormItemView.TimePickerFormItemView);
+    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Forms.FormItemViewBase", FormItemViewBase.FormItemViewBase);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.MultiPane.MultiPaneView", MultiPaneView_ts_202.MultiPaneView);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.MultiPane.MultiPaneViewModel", MultiPaneViewModel_ts_203.MultiPaneViewModel);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.MultiPane.PaneView", PaneView_ts_204.PaneView);
@@ -1075,6 +1085,11 @@ BrowserUtils_ts_241){
 	shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.results.FeatureSetResultsViewModel", FeatureSetResultsViewModel_ts_239.FeatureSetResultsViewModel);
 	shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.results.ResultsUtils", ResultsUtils_ts_240);
 	shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.BrowserUtils", BrowserUtils_ts_241);
+	shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.symbology.SymbolEditorView", SymbolEditorView_ts_242.SymbolEditorView);
+	shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.symbology.SymbolEditorViewModel", SymbolEditorViewModel_ts_243.SymbolEditorViewModel);
 });
 
 
+if (!geocortex) geocortex = { }; 
+if (!geocortex.essentialsHtmlViewer) geocortex.essentialsHtmlViewer = { }; 
+geocortex.essentialsHtmlViewer.version = "2.9.1.011"; 

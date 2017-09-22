@@ -1,0 +1,658 @@
+﻿<!DOCTYPE html>
+<!--
+    This page tests the advanced functionality of the 3rd party maps API.
+
+    To test using a workflow through the API, you will need a workflow with id 'testflow' which accepts a string argument 'id'.
+    
+    Make sure you add the following to the `externalComponents` array of the `ExternalComponentViewModel` config:
+    ```
+    {
+        "id": "sandbox-viewer",
+        "displayName": "Test",
+        "uri": "Resources/3rdPartyMaps/Sandbox.html",
+        "viewpointIndicatorUri": "Resources/Images/Icons/location-direction-red-32.png"
+    }
+    ```
+
+    You can center the Geocortex map over Victoria, BC, Canada by running the following in a browser developer console:
+    ```
+    geocortex.framework.applications[0].map.setExtent(new esri.geometry.Extent(-164014801.40784258, -32879609.16685793, 136547823.73391765,
+                45235364.76321413, new esri.SpatialReference({wkid:102100})));
+    geocortex.framework.applications[0].map.setZoom(15);
+    ```
+
+    Have fun!
+-->
+
+<html>
+
+<head>
+    <title>3rd Party Map Test</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link href="3rdParty.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://js.arcgis.com/3.19/esri/css/esri.css">
+
+    <style>
+        html {
+            box-sizing: border-box;
+            font-size: 12px;
+        }
+
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+
+        html,
+        body {
+            overflow: auto;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        .content-container {
+            width: 50%
+        }
+
+
+        .map {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 25%;
+            border: 1px solid gray;
+        }
+
+
+        #map1 {
+            left: 50%;
+        }
+
+
+        #map2 {
+            left: 75%;
+        }
+
+
+        .intro {
+            padding: 0.5em;
+        }
+
+
+        .tests-container {
+            display: flex;
+        }
+
+
+        .test-subject {
+            padding: 0.5em;
+        }
+
+
+        .code {
+            margin: 0.5em;
+            padding: 0.5em;
+            font-family: monospace;
+            background-color: #efefef;
+            border: 1px solid lightgray;
+        }
+    </style>
+
+    <script src="../Scripts/Bridge.js"></script>
+    <script src="ThirdPartyMap.js"></script>
+    <script src="https://js.arcgis.com/3.20/"></script>
+
+    <script type="text/javascript">
+        var map1;
+        var map2;
+
+        require(["esri/map", "dojo/domReady!"], function (Map) {
+            map1 = new Map("map1", {
+                center: [-123.36979, 48.42554],
+                zoom: 15,
+                basemap: "topo"
+            });
+            map2 = new Map("map2", {
+                center: [-123.36979, 48.42554],
+                zoom: 15,
+                basemap: "topo"
+            });
+        });
+
+        var thirdPartyMap = new geocortex.essentialsHtmlViewer.integration.ThirdPartyMap(
+            "sandbox-viewer",
+            initialize.bind(this),
+            getMapViewpointParams.bind(this),
+            handleViewerPositionUpdatedEvent.bind(this),
+            handleViewpointIndicatorUpdatedEvent.bind(this),
+            false,
+            false,
+            handleCustomIndicatorUpdate.bind(this));
+
+        /**
+         * Called when we're ready to initialize the map
+         */
+        function initialize() {
+        }
+
+        /**
+         * Gets the current position of the Panorama.
+         */
+        function getMapViewpointParams() {
+            //    return { center: Object, heading: -98.80610361979993, pitch: -4.074194685919844 };
+            return null;
+        }
+
+        /**
+         * Updates the panorama to match the map viewer bounds.
+         */
+        function handleViewerPositionUpdatedEvent(arg) {
+            console.log("handleViewerPositionUpdatedEvent", arg);
+        }
+
+        /**
+         * Viewpoint indicator position has moved due to the user dragging it with mouse/touch in GVH
+         */
+        function handleViewpointIndicatorUpdatedEvent(arg) {
+            console.log("handleViewpointIndicatorUpdatedEvent", arg);
+        }
+
+        var graphic1Geometry = {
+            type: "point",
+            x: -123.37698,
+            y: 48.42365,
+            spatialReference: {
+                wkid: 4326
+            }
+        };
+
+        var graphic1Symbol = {
+            url: "Resources/Images/Icons/geolocate.png",
+            type: "esriPMS",
+            width: 32,
+            height: 32,
+            angle: 45
+        };
+
+        function handleAddGraphic1A() {
+            graphic1Geometry = {
+                type: "point",
+                x: -123.37698,
+                y: 48.42365,
+                spatialReference: {
+                    wkid: 4326
+                }
+            };
+
+            graphic1Symbol.angle = 45;
+
+            var payload = {
+                id: "Graphic",
+                geometry: graphic1Geometry,
+                symbol: graphic1Symbol
+            }
+
+            thirdPartyMap.bridge.publish("UpdateComponentGraphic", payload);
+        }
+
+        function handleAddGraphic1B() {
+            graphic1Geometry = {
+                type: "point",
+                x: -123.38282,
+                y: 48.42189,
+                spatialReference: {
+                    wkid: 4326
+                }
+            };
+
+            graphic1Symbol.angle = 0;
+
+            var payload = {
+                id: "Graphic",
+                geometry: graphic1Geometry,
+                symbol: graphic1Symbol
+            }
+
+            thirdPartyMap.bridge.publish("UpdateComponentGraphic", payload);
+        }
+
+        function handleChangeGraphic1Image() {
+            var origUrl = "Resources/Images/Icons/geolocate.png";
+
+            if (graphic1Symbol.url === origUrl) {
+                graphic1Symbol.url = "Resources/Images/Icons/draw-extent-24.png"
+            }
+            else {
+                graphic1Symbol.url = origUrl;
+            }
+
+            var payload = {
+                id: "Graphic",
+                geometry: graphic1Geometry,
+                symbol: graphic1Symbol
+            }
+
+            thirdPartyMap.bridge.publish("UpdateComponentGraphic", payload);
+        }
+
+        var graphic2Geometry = {
+            type: "point",
+            x: -123.36924,
+            y: 48.42579,
+            spatialReference: {
+                wkid: 4326
+            }
+        };
+
+        var graphic2Symbol = {
+            url: "Resources/Images/Icons/draw-polygon-24.png",
+            type: "esriPMS",
+            width: 32,
+            height: 32,
+            angle: 45
+        };
+
+        function handleAddGraphic2A() {
+            graphic2Geometry = {
+                type: "point",
+                x: -123.36924,
+                y: 48.42579,
+                spatialReference: {
+                    wkid: 4326
+                }
+            };
+
+            graphic2Symbol.angle = 0;
+
+            var payload = {
+                id: "Graphic2",
+                geometry: graphic2Geometry,
+                symbol: graphic2Symbol
+            }
+
+            thirdPartyMap.bridge.publish("UpdateComponentGraphic", payload);
+        }
+
+        function handleAddGraphic2B() {
+            graphic2Geometry = {
+                type: "point",
+                x: -123.35858,
+                y: 48.42292,
+                spatialReference: {
+                    wkid: 4326
+                }
+            };
+
+            graphic2Symbol.angle = 45;
+
+            var payload = {
+                id: "Graphic2",
+                geometry: graphic2Geometry,
+                symbol: graphic2Symbol
+            }
+
+            thirdPartyMap.bridge.publish("UpdateComponentGraphic", payload);
+        }
+
+        function handleChangeGraphic2Image() {
+            var origUrl = "Resources/Images/Icons/draw-polygon-24.png";
+
+            if (graphic2Symbol.url === origUrl) {
+                graphic2Symbol.url = "Resources/Images/Icons/draw-polyline-24.png"
+            }
+            else {
+                graphic2Symbol.url = origUrl;
+            }
+
+            var payload = {
+                id: "Graphic2",
+                geometry: graphic2Geometry,
+                symbol: graphic2Symbol
+            }
+
+            thirdPartyMap.bridge.publish("UpdateComponentGraphic", payload);
+        }
+
+        function handleRemoveGraphic(id) {
+            thirdPartyMap.bridge.publish("RemoveComponentGraphic", id);
+        }
+
+        function handleRemoveAllGraphics() {
+            thirdPartyMap.bridge.publish("ClearComponentGraphics");
+        }
+
+        function handleMapExtentChangeCheckbox(element) {
+            if (element.checked) {
+                mapExtentToken = thirdPartyMap.bridge.on("MapExtentChangeEvent", function (args) {
+                    map1.setExtent(new esri.geometry.Extent(args));
+                });
+            }
+            else {
+                thirdPartyMap.bridge.off("MapExtentChangeEvent", mapExtentToken);
+                mapExtentToken = null;
+            }
+        }
+
+        function handleMapPanCheckbox(element) {
+            if (element.checked) {
+                mapPanToken = thirdPartyMap.bridge.on("MapPanEvent", function (args) {
+                    map1.setExtent(new esri.geometry.Extent(args));
+                });
+            }
+            else {
+                thirdPartyMap.bridge.off("MapPanEvent", mapPanToken);
+                mapPanToken = null;
+            }
+        }
+
+        function handleMapClickCheckbox(element) {
+            if (element.checked) {
+                mapClickToken = thirdPartyMap.bridge.on("MapClickedPointEvent", function (args) {
+                    var point = new esri.geometry.Point(args);
+
+                    var symbol = new esri.symbol.SimpleMarkerSymbol();
+                    var graphic = new esri.Graphic(point, symbol);
+                    map1.graphics.add(graphic);
+                });
+            }
+            else {
+                thirdPartyMap.bridge.off("MapClickedPointEvent", mapClickToken);
+                mapClickToken = null;
+            }
+        }
+
+        function handleMapClickOnceCheckbox(element) {
+            if (element.checked) {
+                mapClickOnceToken = thirdPartyMap.bridge.once("MapClickedPointEvent", function (args) {
+					var point = new esri.geometry.Point(args);
+
+                    var symbol = new esri.symbol.SimpleMarkerSymbol();
+                    var graphic = new esri.Graphic(point, symbol);
+                    map1.graphics.add(graphic);
+                    
+                    element.checked = false;
+                    mapClickOnceToken = null;
+                });
+            }
+            else {
+                thirdPartyMap.bridge.off("MapClickedPointEvent", mapClickOnceToken);
+                mapClickOnceToken = null;
+            }
+        }
+
+        var mouseCursorGraphic;
+
+        function handleMapMouseMoveCheckbox(element) {
+            if (element.checked) {
+                mapMouseMoveToken = thirdPartyMap.bridge.on("MapMouseMovePointEvent", function (args) {
+                    var point = new esri.geometry.Point(args);
+
+                    if (!mouseCursorGraphic) {
+                        var symbol = new esri.symbol.SimpleMarkerSymbol(esri.symbol.SimpleMarkerSymbol.STYLE_CROSS, 10,
+                            new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                                new esri.Color([255, 0, 0]), 1),
+                            new esri.Color([0, 255, 0, 0.25]));
+
+                        mouseCursorGraphic = new esri.Graphic(point, symbol);
+                        map1.graphics.add(mouseCursorGraphic);
+                    }
+                    else {
+                        mouseCursorGraphic.setGeometry(point);
+                    }
+                });
+            }
+            else {
+                thirdPartyMap.bridge.off("MapMouseMovePointEvent", mapMouseMoveToken);
+                mapMouseMoveToken = null;
+
+                map1.graphics.remove(mouseCursorGraphic);
+                mouseCursorGraphic = null;
+            }
+        }
+
+        function handleCustomIndicatorUpdate(args) {
+            var map;
+            if (args.id === "Indicator1") {
+                map = map1;
+            }
+            else if (args.id === "Indicator2") {
+                map = map2;
+            }
+
+            if (map) {
+                map.centerAt(esri.geometry.fromJson(args.geometry));
+            }
+        }
+
+        var indicator1Symbol = {
+            url: "Resources/Images/Icons/location-direction-red-32.png",
+            type: "esriPMS",
+            width: 32,
+            height: 32,
+            angle: -45
+        };
+
+        function handleAddIndicator1() {
+            var geometry = {
+                type: "point",
+                x: -123.36979,
+                y: 48.42554,
+                spatialReference: {
+                    wkid: 4326
+                }
+            };
+
+            thirdPartyMap.bridge.publish("UpdateComponentIndicator", {
+                id: "Indicator1",
+                geometry: geometry,
+                symbol: indicator1Symbol
+            });
+        }
+
+        function handleRotateIndicator1() {
+            var geometry = {
+                type: "point",
+                x: -123.36979,
+                y: 48.42554,
+                spatialReference: {
+                    wkid: 4326
+                }
+            };
+
+            if (indicator1Symbol.angle === -45) {
+                indicator1Symbol.angle = -225;
+            }
+            else {
+                indicator1Symbol.angle = -45;
+            }
+
+            thirdPartyMap.bridge.publish("UpdateComponentIndicator", {
+                id: "Indicator1",
+                geometry: geometry,
+                symbol: indicator1Symbol
+            });
+        }
+
+        var indicator2Symbol = {
+            url: "Resources/Images/Icons/location-direction-blue-32.png",
+            type: "esriPMS",
+            width: 32,
+            height: 32,
+            angle: -45
+        };
+
+        function handleAddIndicator2() {
+            var geometry = {
+                type: "point",
+                x: -123.36535,
+                y: 48.42459,
+                spatialReference: {
+                    wkid: 4326
+                }
+            };
+
+            thirdPartyMap.bridge.publish("UpdateComponentIndicator", {
+                id: "Indicator2",
+                geometry: geometry,
+                symbol: indicator2Symbol
+            });
+        }
+
+        function handleRotateIndicator2() {
+            var geometry = {
+                type: "point",
+                x: -123.36535,
+                y: 48.42459,
+                spatialReference: {
+                    wkid: 4326
+                }
+            };
+
+            if (indicator2Symbol.angle === -45) {
+                indicator2Symbol.angle = -225;
+            }
+            else {
+                indicator2Symbol.angle = -45;
+            }
+
+            thirdPartyMap.bridge.publish("UpdateComponentIndicator", {
+                id: "Indicator2",
+                geometry: geometry,
+                symbol: indicator2Symbol
+            });
+        }
+
+        function handleRemoveIndicator(id) {
+            thirdPartyMap.bridge.publish("RemoveComponentIndicator", id);
+        }
+
+        function handleRemoveAllIndicators() {
+            thirdPartyMap.bridge.publish("ClearComponentIndicators");
+        }
+
+        function handleRunWorkflow() {
+            thirdPartyMap.bridge.publish("RunWorkflowWithArguments", { workflowId: "testflow", id: "The answer is 42" });
+        }
+    </script>
+</head>
+
+<body>
+    <ul class="integration-panel-actions">
+        <li class="panel-action-button">
+            <button class="viewpoint-indicator viewpoint-indicator-google" title="Viewpoint Indicator"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="centerButton" class="center-map" title="Center this map to the viewer"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="syncButton" class="sync-toggle-off" title="Synchronize Maps"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="dockButton" class="window-popout" title="Open in new window"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="closeButton" class="window-close" title="Close this map view"></button>
+        </li>
+    </ul>
+    <div class="content-container">
+        <div class="intro">
+            <div>This page tests the advanced functionality of the 3rd party maps API.</div>
+            <div>You can center the Geocortex map over Victoria, BC, Canada by running the following in a browser developer console:</div>
+            <div class="code">geocortex.framework.applications[0].map.setExtent(new esri.geometry.Extent(-164014801.40784258, -32879609.16685793,
+                136547823.73391765, 45235364.76321413, new esri.SpatialReference({wkid:102100}))); <br>geocortex.framework.applications[0].map.setZoom(15);
+            </div>
+        </div>
+        <div></div>
+        <div class="tests-container">
+            <div class="test-subject">
+                <h3>Graphics</h3>
+                <div>
+                    Graphic 1
+                    <button onclick="handleAddGraphic1A()">Laurel Point</button>
+                    <button onclick="handleAddGraphic1B()">Fisherman's Wharf</button>
+                    <button onclick="handleChangeGraphic1Image()">Change graphic</button>
+                    <button onclick="handleRemoveGraphic('Graphic')">Remove</button>
+                </div>
+                <br>
+                <div>
+                    Graphic 2
+                    <button onclick="handleAddGraphic2A()">Bastion Sq</button>
+                    <button onclick="handleAddGraphic2B()">Pioneer Sq</button>
+                    <button onclick="handleChangeGraphic2Image()">Change graphic</button>
+                    <button onclick="handleRemoveGraphic('Graphic2')">Remove</button>
+                </div>
+                <br>
+                <button onclick="handleRemoveAllGraphics()">Remove all</button>
+            </div>
+            <div class="test-subject">
+                <h3>Events</h3>
+                <b>Persistent</b>
+                <div>
+                    <label>
+                        <input type="checkbox" onchange="handleMapExtentChangeCheckbox(this)" />
+                        Map Extent Change
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" onchange="handleMapPanCheckbox(this)" />
+                        Map Pan
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" onchange="handleMapClickCheckbox(this)" />
+                        Map Click
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" onchange="handleMapMouseMoveCheckbox(this)" />
+                        Map Mouse Move
+                    </label>
+                </div>
+                <b>Once</b>
+                <div>
+                    <label>
+                        <input type="checkbox" onchange="handleMapClickOnceCheckbox(this)" />
+                        Map Click Once
+                    </label>
+                </div>
+            </div>
+            <div class="test-subject">
+                <h3>Indicators</h3>
+                <div>You need the 'Viewpoint Indicator' event enabled to track indicator movement</div>
+                <br>
+                <div>
+                    Indicator 1
+                    <button onclick="handleAddIndicator1()">Add</button>
+                    <button onclick="handleRotateIndicator1()">Rotate 180</button>
+                    <button onclick="handleRemoveIndicator('Indicator1')">Remove</button>
+                </div>
+                <br>
+                <div>
+                    Indicator 2
+                    <button onclick="handleAddIndicator2()">Add</button>
+                    <button onclick="handleRotateIndicator2()">Rotate 180</button>
+                    <button onclick="handleRemoveIndicator('Indicator2')">Remove</button>
+                </div>
+                <br>
+                <button onclick="handleRemoveAllIndicators()">Remove all</button>
+            </div>
+            <div class="test-subject">
+                <h3>Workflows</h3>
+                <button onclick="handleRunWorkflow()">Run</button>
+                <div>Requires workflow with id 'testflow' which accepts string arg 'id'</div>
+            </div>
+        </div>
+    </div>
+    <div id="map1" class="map"></div>
+    <div id="map2" class="map"></div>
+</body>
+
+</html>

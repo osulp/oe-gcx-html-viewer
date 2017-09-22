@@ -1,4 +1,4 @@
-var esriBase = "//js.arcgis.com/3.20/dojo/";
+﻿var esriBase = "//js.arcgis.com/3.21/dojo/";
 if ("geocortexUseLocalEsriApi" in window && geocortexUseLocalEsriApi === true) {
     esriBase = "Resources/Scripts/dojo/";
 }
@@ -14,6 +14,7 @@ var dojoConfig = {
     async: isIE9 ? false : true,
     isDebug: false,
     baseUrl: "./",
+    tlmSiblingOfDojo: false,
     deps: [],
     paths: {
         "Mapping/modules": "Resources/Compiled",
@@ -69,6 +70,11 @@ var dojoConfig = {
         {
             location: esriBase,
             name: "dojo"
+        },
+        {
+            location: "Resources/Scripts",
+            name: "pica",
+            main: "pica"
         }],
     callback: function () {
         var originalRequire = require;

@@ -1467,6 +1467,7 @@ var oe;
                     workflowArgs.ugb = $("#WildfireRisk_urban_growth_boundary").text();
                     workflowArgs.cwpp = $("#WildfireRisk_cwpp_area").text();
                     workflowArgs.sb360 = $("#WildfireRisk_senatebill_360").text();
+                    workflowArgs.firewiseComm = $("#WildfireRisk_firewise_community").text();
                     workflowArgs.flame_min = $("#WildfireRisk_flame_min").text();
                     workflowArgs.flame_max = $("#WildfireRisk_flame_max").text();
                     workflowArgs.flame_ave = $("#WildfireRisk_flame_ave").text();
@@ -2102,19 +2103,21 @@ var oe;
                 }
                 function requestRemainingData() {
                     //Wildfire Forest Projection District
-                    sendQueryRequest(oreallSiteURL, "42", "odf_fpd", $("#WildfireRisk_forest_protection_district"), resultRemainingData, errorRemainingData);
+                    sendQueryRequest(fireSiteURL, "65", "odf_fpd", $("#WildfireRisk_forest_protection_district"), resultRemainingData, errorRemainingData);
                     //Structural Fire Protection District
-                    sendQueryRequest(oreallSiteURL, "44", "agency", $("#WildfireRisk_structural_projection_district"), resultRemainingData, errorRemainingData);
+                    sendQueryRequest(fireSiteURL, "67", "agency", $("#WildfireRisk_structural_projection_district"), resultRemainingData, errorRemainingData);
                     //Rangeland Protection Associations
-                    sendQueryRequest(oreallSiteURL, "43", "rpa_name", $("#WildfireRisk_rangeland_protection_assoc"), resultRemainingData, errorRemainingData);
+                    sendQueryRequest(fireSiteURL, "66", "rpa_name", $("#WildfireRisk_rangeland_protection_assoc"), resultRemainingData, errorRemainingData);
                     //city or town
                     sendQueryRequest(fireSiteURL, "59", "name", $("#WildfireRisk_city"), resultRemainingData, errorRemainingData);
                     //urban growth boundary
-                    sendQueryRequest(oreallSiteURL, "18", "name", $("#WildfireRisk_urban_growth_boundary"), UGB_result, UGB_error);
+                    sendQueryRequest(fireSiteURL, "69", "name", $("#WildfireRisk_urban_growth_boundary"), UGB_result, UGB_error);
                     //CWPP - Community Wildfire Protection Plans OR Wildland Urban Interface
-                    sendQueryRequest(oreallHazardsURL, "54", "cwpp", $("#WildfireRisk_cwpp_area"), resultRemainingData, errorRemainingData);
+                    sendQueryRequest(fireSiteURL, "72", "cwpp", $("#WildfireRisk_cwpp_area"), resultRemainingData, errorRemainingData);
+                    //Firewise community
+                    sendQueryRequest(fireSiteURL, "71", "name", $("#WildfireRisk_firewise_community"), resultRemainingData, errorRemainingData);
                     //Senate Bill 360 (SB360)  Classified Forestland-Urban Interface feature
-                    sendQueryRequest(oreallHazardsURL, "52", "rating", $("#WildfireRisk_senatebill_360"), SB360_result, SB360_error);
+                    sendQueryRequest(fireSiteURL, "80", "rating", $("#WildfireRisk_senatebill_360"), SB360_result, SB360_error);
                 }
                 function UGB_result(features, attributeName, divElement) {
                     if (features.length < 1) {

@@ -33,6 +33,15 @@ module geocortex.essentialsHtmlViewer.integration {
          *     { x: longitude, y: latitude }
          */
         handleViewpointIndicatorUpdatedEvent: (arg: esri.geometry.Point) => void;
+
+        /**
+         * Update your map provider with the given custom viewpoint indicator position.
+         * This method receives an esri Geometry.
+         */
+        handleCustomViewpointIndicatorUpdatedEvent?: (arg: {
+            id: string;
+            geometry: esri.geometry.Geometry;
+        }) => void;
     }
 
     export interface ActionButton {
@@ -66,17 +75,24 @@ module geocortex.essentialsHtmlViewer.integration {
         actionButtons: ActionButton[];
 
         private _isInitialized: boolean;
+        private _shouldAddViewpointIndicator: boolean;
 
         constructor(id: string,
             public initializeMap: () => void,
             public getMapViewpointParams: () => mapping.infrastructure.integration.ComponentViewpointMessage,
             public handleViewerPositionUpdatedEvent: (arg: mapping.infrastructure.integration.MapViewpointMessage) => void,
             public handleViewpointIndicatorUpdatedEvent: (arg: esri.geometry.Point) => void,
-            sync: boolean = false) {
+            sync: boolean = false,
+            addViewpointIndicator = true,
+            public handleCustomViewpointIndicatorUpdatedEvent?: (arg: {
+                id: string;
+                geometry: esri.geometry.Geometry;
+            }) => void) {
 
             this.bridge = new integration.RemotePostMessageComponent();
             this.id = id;
             this.sync = sync;
+            this._shouldAddViewpointIndicator = addViewpointIndicator;
 
             this.actionButtons = [
                 { id: "centerButton", clickHandler: () => { this.handleClickCenter(); }, show: true, elem: null },
@@ -181,9 +197,14 @@ module geocortex.essentialsHtmlViewer.integration {
                 this.handleViewpointIndicatorUpdatedEvent(arg);
             });
 
-            this.bridge.connect(this.id);
-        }
+            this.bridge.on("ComponentCustomViewpointIndicatorUpdatedEvent", args => {
+                if (this.handleCustomViewpointIndicatorUpdatedEvent) {
+                    this.handleCustomViewpointIndicatorUpdatedEvent(args);
+                }
+            });
 
+            this.bridge.connect({ id: this.id, addViewpointIndicator: this._shouldAddViewpointIndicator });
+        }
 
         /**
          * Disconnects the bridge when the window unloads

@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.20/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.21/esri/copyright.txt for details.
 //>>built
 require({cache:{"esri/layers/StreamTrackManager":function(){define("dojo/_base/declare dojo/_base/lang dojo/_base/array dojo/has ../kernel ../graphic ../geometry/Polyline ./TrackManager".split(" "),function(l,w,e,v,r,y,z,A){l=l([A],{declaredClass:"esri.layers._StreamTrackManager",constructor:function(e){this.inherited(arguments)},initialize:function(e){this.inherited(arguments)},addFeatures:function(k,m){function n(f,h){var e,a,c,b;p[f]||(p[f]=[]);e=p[f];0<q&&(h.length>q&&h.splice(0,h.length-q),c=
 h.length+e.length,c>q&&(a=e.splice(0,c-q)));c=h.length;for(b=0;b<c;b+=1)e.push(h[b]);return{deletes:a,adds:h}}var p,f,x,q,g={},h={},t;if(m)return this.inherited(arguments),g;p=this.trackMap;f=this.layer;x=f._trackIdField;q=f.maximumTrackPoints||0;e.forEach(k,function(f){var e=f.attributes[x];f.visible&&(h[e]||(h[e]=[]),h[e].push(f))});for(t in h)h.hasOwnProperty(t)&&(f=n(t,h[t]),g[t]=f);return g},removeFeatures:function(k){var m=[],n=this.layer.objectIdField,p=this.layer._trackIdField;k&&(e.forEach(k,
