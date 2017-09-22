@@ -54,8 +54,10 @@ module oe.dev_registry {
                 let dev_area_row = [];
                 let baseline_row = [];
                 let decade_area_row = [];
+                let decade_cat_area_row = [];
                 let proj_all_area_row = [];
                 let proj_decade_area_row = [];
+                let proj_decade_cat_area_row = [];
                 let proj_cat_area_rows = [];
 
                 myWorkflowContext = $.extend({}, workflowContext);
@@ -107,12 +109,29 @@ module oe.dev_registry {
                             thisViewModel.decade_area_val.set(stat_area_formatted + ' acres');
                             break;
                         case 'categories':
+                        case 'decade_categories':
+                        case 'projected_categories':
+                        case 'projected_decade_categories':
                             if (["", " ", "NULL", "null"].indexOf(stat.attributes.category_merged || stat.attributes.category_m) === -1) {
-                                cat_area_rows.push({
+                                let stat_obj = {
                                     category: stat.attributes.category_merged || stat.attributes.category_m,
                                     area: stat_area_formatted,
                                     percent: stat_percent
-                                });
+                                };
+                                switch (stat.attributes.stat) {
+                                    case 'categories':
+                                        cat_area_rows.push(stat_obj);
+                                        break;
+                                    case 'decade_categories':
+                                        decade_cat_area_row.push(stat_obj);
+                                        break;
+                                    case 'projected_categories':
+                                        proj_cat_area_rows.push(stat_obj);
+                                        break;
+                                    case 'projected_decade_categories':
+                                        proj_decade_cat_area_row.push(stat_obj);
+                                        break;
+                                }
                             }
                             break;
                         case 'projected_all':
@@ -134,15 +153,15 @@ module oe.dev_registry {
                             thisViewModel.decade_projected_cap_val.set(stat_percent);
                             thisViewModel.decade_projected_area_val.set(stat_area_formatted + ' acres');
                             break;
-                        case 'projected_categories':
-                            if (["", " ", "NULL", "null"].indexOf(stat.attributes.category_merged || stat.attributes.category_m) === -1) {
-                                proj_cat_area_rows.push({
-                                    category: stat.attributes.category_merged || stat.attributes.category_m,
-                                    area: stat_area_formatted,
-                                    percent: stat_percent
-                                });
-                            }
-                            break;
+                        //case 'projected_categories':
+                        //    if (["", " ", "NULL", "null"].indexOf(stat.attributes.category_merged || stat.attributes.category_m) === -1) {
+                        //        proj_cat_area_rows.push({
+                        //            category: stat.attributes.category_merged || stat.attributes.category_m,
+                        //            area: stat_area_formatted,
+                        //            percent: stat_percent
+                        //        });
+                        //    }
+                        //    break;
                         default:
                             break;
 
@@ -164,18 +183,22 @@ module oe.dev_registry {
                 thisViewModel.baseline_area.set(baseline_row[0].area + " acres");
                 thisViewModel.baseline_percent.set(baseline_row[0].percent);
 
-                let cap_one_percent_tbl = cat_area_rows.concat(decade_area_row);
+                //let cap_one_percent_tbl = cat_area_rows.concat(decade_area_row);
+                let cap_one_percent_tbl = decade_cat_area_row.concat(decade_area_row);
                 thisViewModel.decade_tbl.set(cap_one_percent_tbl);
                 thisViewModel.show_decade_tbl_current.set(cap_one_percent_tbl.length > 0 ? true : false);
 
-                let overall_cap_tbl = baseline_row.concat(cat_area_rows, dev_area_row);
+                //let overall_cap_tbl = baseline_row.concat(cat_area_rows, dev_area_row);
+                let overall_cap_tbl = cat_area_rows.concat(dev_area_row);
                 thisViewModel.overall_tbl.set(overall_cap_tbl);
 
-                let cap_one_percent_projected_tbl = proj_cat_area_rows.concat(proj_decade_area_row);
+                //let cap_one_percent_projected_tbl = proj_cat_area_rows.concat                    (proj_decade_area_row);
+                let cap_one_percent_projected_tbl = proj_decade_cat_area_row.concat(proj_decade_area_row);
                 thisViewModel.decade_projected_tbl.set(cap_one_percent_projected_tbl);
                 thisViewModel.show_decade_tbl_projected.set(cap_one_percent_projected_tbl.length > 0 ? true : false);
 
-                let overall_cap_projected_tbl = baseline_row.concat(proj_cat_area_rows, proj_all_area_row);
+                //let overall_cap_projected_tbl = baseline_row.concat(proj_cat_area_rows, proj_all_area_row);
+                let overall_cap_projected_tbl = proj_cat_area_rows.concat(proj_all_area_row);
                 thisViewModel.overall_projected_tbl.set(overall_cap_projected_tbl);
 
 
