@@ -41,14 +41,10 @@ var geocortex;
                         messageName: integration.protocol.RemoteDisconnect,
                         payload: payload
                     };
-                    if (!this._isReady) {
-                        this._queueMessage(msg);
-                        return;
-                    }
-                    this._transport.send(msg);
+                    this._sendMessage(msg);
                 };
                 MessageBroker.prototype.on = function (messageName, impl, options) {
-                    options = options || {};
+                    if (options === void 0) { options = {}; }
                     var token = Math.random().toString(36).slice(2);
                     var handlers = this._messageHandlers[messageName] || (this._messageHandlers[messageName] = []);
                     handlers.push({
@@ -64,13 +60,47 @@ var geocortex;
                             commandOrEventName: messageName,
                             payload: null
                         };
-                        if (!this._isReady) {
-                            this._queueMessage(msg);
-                            return;
-                        }
-                        this._transport.send(msg);
+                        this._sendMessage(msg);
                     }
                     return token;
+                };
+                MessageBroker.prototype.off = function (messageName, token) {
+                    if (!messageName) {
+                        console.error("Must specify event or command name");
+                        return;
+                    }
+                    if (!token) {
+                        console.error("Must specify event or command subscription token");
+                        return;
+                    }
+                    var handler = this._messageHandlers[messageName];
+                    if (!handler) {
+                        return;
+                    }
+                    var subIndex = -1;
+                    for (var i = 0; i < handler.length; i++) {
+                        var sub = handler[i];
+                        if (sub.subscriptionToken === token) {
+                            subIndex = i;
+                            break;
+                        }
+                    }
+                    if (subIndex === -1) {
+                        console.error("Couldn't find event or command subscription by token");
+                        return;
+                    }
+                    var subscription = handler[subIndex];
+                    handler.splice(subIndex, 1);
+                    if (handler.length === 0) {
+                        delete this._messageSubscriptions[messageName];
+                        var msg = {
+                            componentId: this._componentId,
+                            messageName: integration.protocol.RemoteUnsubscribe,
+                            commandOrEventName: messageName,
+                            payload: null
+                        };
+                        this._sendMessage(msg);
+                    }
                 };
                 MessageBroker.prototype.publish = function (commandOrEventName, payload) {
                     var msg = {
@@ -79,14 +109,24 @@ var geocortex;
                         commandOrEventName: commandOrEventName,
                         payload: payload
                     };
-                    if (!this._isReady) {
-                        this._queueMessage(msg);
-                        return;
-                    }
-                    this._transport.send(msg);
+                    this._sendMessage(msg);
                 };
                 MessageBroker.prototype.once = function (messageName, impl) {
-                    return this.on(messageName, impl, { once: true });
+                    var _this = this;
+                    var token;
+                    var callback = function (args) {
+                        _this.off(messageName, token);
+                        impl(args);
+                    };
+                    token = this.on(messageName, callback, { once: true });
+                    return token;
+                };
+                MessageBroker.prototype._sendMessage = function (message) {
+                    if (!this._isReady) {
+                        this._queueMessage(message);
+                        return;
+                    }
+                    this._transport.send(message);
                 };
                 MessageBroker.prototype._queueMessage = function (message) {
                     this._queuedMessages.push(message);
@@ -129,7 +169,6 @@ var geocortex;
                     var commandOrEventArg = message.payload;
                     handlers = this._messageHandlers[commandOrEventName];
                     if (!handlers || !handlers.length) {
-                        console.log("Message received from viewer, but no handlers registered.");
                         return null;
                     }
                     handlers.slice(0).forEach(function (handler, index) {
@@ -151,11 +190,7 @@ var geocortex;
                             messageName: integration.protocol.RemoteUnsubscribe,
                             commandOrEventName: commandOrEventName
                         };
-                        if (!this._isReady) {
-                            this._queueMessage(msg);
-                            return;
-                        }
-                        this._transport.send(msg);
+                        this._sendMessage(msg);
                     }
                 };
                 return MessageBroker;
@@ -172,8 +207,8 @@ var geocortex;
         (function (integration) {
             var PostMessageTransport = (function () {
                 function PostMessageTransport(input, output, name) {
-                    var _this = this;
                     if (name === void 0) { name = "PostMessageBridge"; }
+                    var _this = this;
                     this.onMessage = function (payload) { };
                     this._originsAllowed = {};
                     this._targetOrigin = "*";
@@ -217,31 +252,31 @@ var geocortex;
                     if (!this._output) {
                         throw new Error("Tried to send a message over a transport with no output.");
                     }
-                    var messageStr = "";
+                    if (message.payload && typeof message.payload.toJson === "function") {
+                        try {
+                            message.payload = message.payload.toJson();
+                        }
+                        catch (error) {
+                            console.warn("Error invoking payload's toJson() method", error);
+                        }
+                    }
                     try {
-                        JSON.stringify(message.payload);
+                        this._output.postMessage(JSON.stringify(message), this._targetOrigin);
+                        return {
+                            token: "",
+                            promise: null
+                        };
                     }
                     catch (error) {
-                        var messageName = message.commandOrEventName || message.messageName;
-                        console.log("Error serializing message payload to JSON. Message: " + messageName + " Error: " + error);
-                        message.payload = {};
-                    }
-                    try {
-                        messageStr = JSON.stringify(message);
-                    }
-                    catch (error) {
-                        console.log("Message not sent - could not serialize to JSON: " + error);
+                        console.error("Message not sent - could not serialize to JSON", error);
                         return null;
                     }
-                    this._output.postMessage(messageStr, this._targetOrigin);
-                    return {
-                        token: "",
-                        promise: null
-                    };
                 };
                 PostMessageTransport.prototype._handleMessage = function (message) {
+                    if (!message || !message.data || typeof message.data !== "string") {
+                        return;
+                    }
                     if (!this._originsAllowed[message.origin]) {
-                        console.log("Message from non-whitelisted origin '" + message.origin + "' received and ignored.");
                         return;
                     }
                     try {
@@ -291,7 +326,7 @@ var geocortex;
             var RemotePostMessageComponent = (function (_super) {
                 __extends(RemotePostMessageComponent, _super);
                 function RemotePostMessageComponent() {
-                    _super.call(this, new integration.PostMessageTransport(window, window.opener || window.parent, name));
+                    return _super.call(this, new integration.PostMessageTransport(window, window.opener || window.parent, name)) || this;
                 }
                 return RemotePostMessageComponent;
             }(integration.MessageBroker));

@@ -1,4 +1,4 @@
-require(["esri/map"]);
+﻿require(["esri/map"]);
 require(["esri/tasks/ProjectParameters"]);
 require(["esri/tasks/IdentifyParameters"]);
 require(["esri/tasks/IdentifyTask"]);

@@ -1,6 +1,6 @@
 {
     "configuration": {
-        "version": "2.8",
+        "version": "2.9",
         "application": {
             "proxyUri": "proxy.ashx?",
             "allowUnsafeContent": true,
@@ -78,6 +78,10 @@
                     }
                 ]
             },
+			{
+                "id": "https://apps.geocortex.com/workflow/latest/dist/hosts/gvh/loader.js!",
+                "async": true
+            },
              {
                  "id":"Custom",
                  "uri":"Libraries/Custom/Compiled/Custom.js",
@@ -123,6 +127,14 @@
                  "moduleType": "oe.initial_extent.InitialExtentModule",
                  "libraryId": "Custom",
                  "configuration": {}
+             },
+             {
+                 "moduleName": "HyperlinkBanner",
+                 "moduleType": "oe.hyperlink_banner.HyperlinkBannerModule",
+                 "libraryId": "Custom",
+                 "configuration": {
+                     "linkUri": "http://oregonexplorer.info"
+                 }
              },
           {
               "moduleName" : "Elevation",
@@ -596,6 +608,13 @@
                                     "text": "@language-collaboration-edit-event-message",
                                     "description": "@language-collaboration-edit-event-message-desc",
                                     "command": "ShowEditCollaborationGraphicMessageView",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-collaboration-open-event-image",
+                                    "description": "@language-collaboration-open-event-image-desc",
+                                    "command": "OpenEventFeatureImage",
                                     "commandParameter": "{{context}}",
                                     "hideOnDisable": true
                                 }
@@ -1509,13 +1528,13 @@
                         "id": "BannerViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.banner.BannerViewModel",
                         "configuration": {
-                            "applicationTitle": "",
-                            "applicationSubtitle": "",
-                            "titleColor": "#1A72C4",
+                            "applicationTitle": "Map Viewer",
+                            "applicationSubtitle": "Search, identify, analyze and share!",
+                            "titleColor": "#615042",
                             "subtitleColor": "#959398",
                             "backgroundColor": "#FFFFFF",
                             "backgroundImage": "Resources/Images/Banners/default-banner-bg.png",
-                            "leftImage": "Resources/Images/Banners/default-banner.png",
+                            "leftImage": "Resources/Images/Custom/oe-default-banner-logo-only.png",
                             "leftImageDescription": "@language-banner-title",
                             "rightImage": "",
                             "rightImageDescription": "",
@@ -1981,6 +2000,15 @@
                                     "isSticky": true,
                                     "iconUri": "Resources/Images/Icons/Toolbar/draw-polygon-freehand-24.png",
                                     "statusText": "@language-collaboration-draw-freehand-polygon"
+                                },
+                                {
+                                    "name": "CollaborationTextDraw",
+                                    "command": "CollaborationDrawText",
+                                    "displayName": "@language-toolbar-markup-text",
+                                    "drawMode": "POINT",
+                                    "isSticky": true,
+                                    "iconUri": "Resources/Images/Icons/Toolbar/draw-text-24.png",
+                                    "statusText": "@language-collaboration-draw-text"
                                 }
                             ],
                             "eventTypes": [
@@ -5729,6 +5757,8 @@
                 "configuration": {
                     "css": [
                         "Resources/Styles/Tablet.css",
+                        "Resources/Styles/Custom/sites.css",
+                        "{ViewerConfigUri}../../Styles/Custom/common.css",
                         "{ViewerConfigUri}../../Styles/Custom/Tablet_OE.css"
                     ],
                     "homePanelVisible": false
@@ -6291,6 +6321,77 @@
                                 "LayerDrawingOrderView": 2
                             }
                         }
+                    }
+                ]
+            },
+            {
+                "moduleName": "SkipLinks",
+                "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.SkipLinks.SkipLinksModule",
+                "configuration": {
+                    "menus": [
+                        {
+                            "id": "SkipLinksActions",
+                            "defaultIconUri": "Resources/Images/Icons/check-24.png",
+                            "items": [
+                                {
+                                    "iconUri": "Resources/Images/Icons/Toolbar/layers-24.png",
+                                    "text": "@language-skip-links-side-panel",
+                                    "description": "@language-skip-links-side-panel-desc",
+                                    "command": "OpenAndFocusDataFrame",
+                                    "commandParameter": null,
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "iconUri": "Resources/Images/Icons/Toolbar/search-24.png",
+                                    "text": "@language-skip-links-search",
+                                    "description": "@language-skip-links-search-desc",
+                                    "command": "FocusSearch",
+                                    "commandParameter": null,
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-skip-links-i-want-to-menu",
+                                    "description": "@language-skip-links-i-want-to-desc",
+                                    "command": "OpenAndFocusIWantToMenu",
+                                    "commandParameter": null,
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "iconUri": "Resources/Images/Icons/Toolbar/tools-24.png",
+                                    "text": "@language-skip-links-toolbar",
+                                    "description": "@language-skip-links-toolbar-desc",
+                                    "command": "OpenAndFocusToolbar",
+                                    "commandParameter": null,
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "iconUri": "Resources/Images/Icons/Toolbar/map-24.png",
+                                    "text": "@language-skip-links-map",
+                                    "description": "@language-skip-links-map-desc",
+                                    "command": "FocusMap",
+                                    "commandParameter": null,
+                                    "hideOnDisable": true
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "views": [
+                    {
+                        "id": "SkipLinksView",
+                        "viewModelId": "SkipLinksViewModel",
+                        "visible": true,
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.SkipLinks.SkipLinksView",
+                        "markup": "Mapping/modules/SkipLinks/SkipLinksView.html",
+                        "region": "TopShellRegion",
+                        "configuration": {}
+                    }
+                ],
+                "viewModels": [
+                    {
+                        "id": "SkipLinksViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.SkipLinks.SkipLinksViewModel",
+                        "configuration": {}
                     }
                 ]
             },
@@ -7958,6 +8059,10 @@
                 ]
             },
             {
+                "moduleName": "WorkflowHost",
+                "libraryId": "https://apps.geocortex.com/workflow/latest/dist/hosts/gvh/loader.js!"
+            },
+            {
                 "moduleName": "ZoomControl",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.zoomcontrol.ZoomControlModule",
                 "configuration": {},
@@ -8275,6 +8380,14 @@
                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.toolbar.transients.TransientView",
                 "markup": "Mapping/modules/Toolbar/Templates/TransientItems.html",
                 "viewModelId": "TabbedToolbarTransientViewModel"
+            },
+            {
+                "id": "SymbolEditor",
+                "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.symbology.SymbolEditorView",
+                "viewModelType": "geocortex.essentialsHtmlViewer.mapping.infrastructure.symbology.SymbolEditorViewModel",
+                "markup": "Mapping/infrastructure/symbology/SymbolEditorView.html",
+                "libraryId": "Mapping.Infrastructure",
+                "configuration": {}
             }
         ]
     }

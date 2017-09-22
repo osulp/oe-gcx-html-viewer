@@ -1,6 +1,6 @@
 {
     "configuration": {
-        "version": "2.8",
+        "version": "2.9",
         "application": {
             "proxyUri": "proxy.ashx?",
             "allowUnsafeContent": true,
@@ -78,6 +78,10 @@
                         "uri": "Resources/Locales/Charting.en-US.json.js"
                     }
                 ]
+            },
+			{
+                "id": "https://apps.geocortex.com/workflow/latest/dist/hosts/gvh/loader.js!",
+                "async": true
             },
              {
                  "id":"Custom",
@@ -584,6 +588,13 @@
                                     "text": "@language-collaboration-edit-event-message",
                                     "description": "@language-collaboration-edit-event-message-desc",
                                     "command": "ShowEditCollaborationGraphicMessageView",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-collaboration-open-event-image",
+                                    "description": "@language-collaboration-open-event-image-desc",
+                                    "command": "OpenEventFeatureImage",
                                     "commandParameter": "{{context}}",
                                     "hideOnDisable": true
                                 }
@@ -1692,6 +1703,15 @@
                                     "isSticky": true,
                                     "iconUri": "Resources/Images/Icons/Toolbar/draw-polygon-freehand-24.png",
                                     "statusText": "@language-collaboration-draw-freehand-polygon"
+                                },
+                                {
+                                    "name": "CollaborationTextDraw",
+                                    "command": "CollaborationDrawText",
+                                    "displayName": "@language-toolbar-markup-text",
+                                    "drawMode": "POINT",
+                                    "isSticky": true,
+                                    "iconUri": "Resources/Images/Icons/Toolbar/draw-text-24.png",
+                                    "statusText": "@language-collaboration-draw-text"
                                 }
                             ],
                             "eventTypes": [
@@ -5183,6 +5203,8 @@
                     "css": [
                         "Resources/Styles/Handheld.css",
                         "Resources/Styles/SmallShell.css",
+                        "Resources/Styles/Custom/sites.css",
+                        "{ViewerConfigUri}../../Styles/Custom/common.css",
                         "{ViewerConfigUri}../../Styles/Custom/Handheld_OE.css"
                     ],
                     "homePanelVisible": false
@@ -6346,6 +6368,10 @@
                 ]
             },
             {
+                "moduleName": "WorkflowHost",
+                "libraryId": "https://apps.geocortex.com/workflow/latest/dist/hosts/gvh/loader.js!"
+            },
+            {
                 "moduleName": "ZoomControl",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.zoomcontrol.ZoomControlModule",
                 "configuration": {},
@@ -6670,6 +6696,14 @@
                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.toolbar.transients.TransientView",
                 "markup": "Mapping/modules/Toolbar/Templates/TransientItems.html",
                 "viewModelId": "TabbedToolbarTransientViewModel"
+            },
+            {
+                "id": "SymbolEditor",
+                "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.symbology.SymbolEditorView",
+                "viewModelType": "geocortex.essentialsHtmlViewer.mapping.infrastructure.symbology.SymbolEditorViewModel",
+                "markup": "Mapping/infrastructure/symbology/SymbolEditorView.html",
+                "libraryId": "Mapping.Infrastructure",
+                "configuration": {}
             }
         ]
     }

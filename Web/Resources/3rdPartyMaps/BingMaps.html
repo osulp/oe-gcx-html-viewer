@@ -1,46 +1,26 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
+
 <head>
     <title>Bing Maps</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <link href="3rdParty.css" rel="stylesheet" type="text/css" />
+    <style>
+        /* Bing's dashboard is on the right side and covers up the GVH linked maps controls */
+        .integration-panel-actions {
+            left: 0;
+            right: auto;
+        }
+    </style>
 
-    <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
     <script src="../Scripts/Bridge.js"></script>
     <script src="ThirdPartyMap.js"></script>
-
     <script type="text/javascript">
-
-        var bingApiKey = "";
-
         var map;
         var currentZoom = 10;
         var isReady = false;
-
-        var thirdPartyMap = new geocortex.essentialsHtmlViewer.integration.ThirdPartyMap("bingMaps",
-            initializeMap,
-            getMapViewpointParams,
-            handleViewerPositionUpdatedEvent,
-            handleViewpointIndicatorUpdatedEvent);
-
-        /**
-         * Initializes the Bing map.
-         */
-        function initializeMap() {
-            var location = new Microsoft.Maps.Location(0, 0);
-            var mapOptions = {
-                credentials: bingApiKey,
-                center: location,
-                mapTypeId: Microsoft.Maps.MapTypeId.birdseye,
-                zoom: currentZoom,
-                enableSearchLogo: false,
-                showDashboard: true
-            };
-
-            map = new Microsoft.Maps.Map(document.getElementById("map-container"), mapOptions);
-        }
 
         /**
          * Gets the current position of the Bing map.
@@ -72,18 +52,49 @@
             }
 
             currentZoom = thirdPartyMap.scaleToZoomLevel(arg.scale);
-            map.setView({ zoom: currentZoom, center: new Microsoft.Maps.Location(arg.position.y, arg.position.x) });
+            map.setView({
+                center: new Microsoft.Maps.Location(arg.position.y, arg.position.x),
+                zoom: currentZoom
+            });
         }
 
         /**
          * Updates the Bing map to match the viewpoint indicator position.
          */
         function handleViewpointIndicatorUpdatedEvent(arg) {
-            map.setView({ center: new Microsoft.Maps.Location(arg.y, arg.x), animate: false });
+            map.setView({
+                animate: false,
+                center: new Microsoft.Maps.Location(arg.y, arg.x)
+            });
         }
 
+        var thirdPartyMap = new geocortex.essentialsHtmlViewer.integration.ThirdPartyMap("bingMaps",
+            initializeMap,
+            getMapViewpointParams,
+            handleViewerPositionUpdatedEvent,
+            handleViewpointIndicatorUpdatedEvent);
+
+        /**
+         * Initializes the Bing map.
+         */
+        function initializeMap() {
+            var bingApiKey = "";
+
+            var location = new Microsoft.Maps.Location(0, 0);
+            var mapOptions = {
+                credentials: bingApiKey,
+                center: location,
+                mapTypeId: Microsoft.Maps.MapTypeId.birdseye,
+                zoom: currentZoom
+            };
+
+            map = new Microsoft.Maps.Map(document.getElementById("map-container"), mapOptions);
+        }
     </script>
+
+    <script type="text/javascript" src="//www.bing.com/api/maps/mapcontrol?callback=initializeMap" async defer></script>
 </head>
+
 <body>
     <ul class="integration-panel-actions">
         <li class="panel-action-button">
@@ -104,4 +115,5 @@
     </ul>
     <div id="map-container" class="map-container"></div>
 </body>
+
 </html>

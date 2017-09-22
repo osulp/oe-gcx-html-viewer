@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.20/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.21/esri/copyright.txt for details.
 //>>built
 define("esri/layers/rasterFormats/Jpg",[],function(){return function(){function H(){}function N(b,e){for(var n=0,k=[],a,w,x=16;0<x&&!b[x-1];)x--;k.push({children:[],index:0});var c=k[0],l;for(a=0;a<x;a++){for(w=0;w<b[a];w++){c=k.pop();for(c.children[c.index]=e[n];0<c.index;)c=k.pop();c.index++;for(k.push(c);k.length<=a;)k.push(l={children:[],index:0}),c.children[c.index]=l.children,c=l;n++}a+1<x&&(k.push(l={children:[],index:0}),c.children[c.index]=l.children,c=l)}return k[0].children}function O(b,
 e,n,k,a,w,x,c,l){function h(){if(0<A)return A--,B>>A&1;B=b[e++];if(255===B){var a=b[e++];if(a)throw"unexpected marker: "+(B<<8|a).toString(16);}A=7;return B>>>7}function t(a){for(;;){a=a[h()];if("number"===typeof a)return a;if("object"!==typeof a)throw"invalid huffman sequence";}}function y(a){for(var b=0;0<a;)b=b<<1|h(),a--;return b}function f(a){if(1===a)return 1===h()?1:-1;var b=y(a);return b>=1<<a-1?b:b+(-1<<a)+1}function d(a,b){var c=t(a.huffmanTableDC),c=0===c?0:f(c);a.blockData[b]=a.pred+=

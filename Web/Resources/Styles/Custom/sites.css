@@ -1,0 +1,6 @@
+﻿/* Put custom desktop styling in this file. Put custom images in the Custom subfolder of the Images directory. */
+
+.form-desc
+{
+	word-break: normal;
+}

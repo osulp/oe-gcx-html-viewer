@@ -7,6 +7,7 @@ module oe.wildfireRiskPopup {
     export var reportImageExtent;
     export var pointLatLong;
     export var geometryElementsJsonString;
+    export var riskPercentOut;
 
     //popup toggle and default state
     export var fireRiskPopupEnabled = <boolean>true;
@@ -75,6 +76,9 @@ module oe.wildfireRiskPopup {
             
             //add a command button
             this.app.commandRegistry.command("toggle_firerisk_mode").register(this, toggleFireRiskMode);
+
+            //run popup by coordinates
+            this.app.commandRegistry.command("OpenFireriskPopup").register(this, openFireriskPopup);
                                     
             //grab the geocortex map event
             this.app.eventRegistry.event("MapClickedEvent").subscribe(null, handleMouseClick);
@@ -160,25 +164,25 @@ module oe.wildfireRiskPopup {
                 return workingSplit[0] + "." + workingSplit[1].substring(0, 3) + " " + dirSuffix;
             }
 
-            function handleMouseClick(pointIn, appIn) {
+            function processMapPoint(mapPointIn) {
 
                 if (!fireRiskPopupEnabled)
                     return;
-                
-                //store the point
-                workingPointGeometry = pointIn.mapPoint;
 
-                //convert to a lat long version                
-                var latLongPoint = <esri.geometry.Point>esri.geometry.webMercatorToGeographic(workingPointGeometry);                
-                var latOut = formateLatLong(latLongPoint.y,true);
-                var lonOut = formateLatLong(latLongPoint.x,false);
+                //store the point
+                workingPointGeometry = mapPointIn;
                 
+                //convert to a lat long version                
+                var latLongPoint = <esri.geometry.Point>esri.geometry.webMercatorToGeographic(workingPointGeometry);
+                var latOut = formateLatLong(latLongPoint.y, true);
+                var lonOut = formateLatLong(latLongPoint.x, false);
+
                 pointLatLong = latOut + "," + lonOut;
 
                 //create a feature set that includes just this point
                 //This will be passed to the workflow to be used with a geoprocess tool
                 var pointGraphic = new esri.Graphic(workingPointGeometry);
-                                                                
+
                 //load the html view
                 workingApp.commandRegistry.command("ActivateView").execute("WildfireRiskPopupModuleView");
 
@@ -201,7 +205,7 @@ module oe.wildfireRiskPopup {
                 //link div
                 linkDiv = $(".WildfireRisk_link");
                 linkDiv.css("display", "none");
-                                                              
+
                 //content div
                 contentDiv = $("#WildfireRisk_content");
                 contentDiv.css("display", "none");
@@ -219,7 +223,7 @@ module oe.wildfireRiskPopup {
                 requestRemainingData();
 
                 //getNearOffice();
-                                
+
                 //create the feature collection
                 workingFeatureCollection = {
                     "id": "Drawings",
@@ -230,7 +234,7 @@ module oe.wildfireRiskPopup {
                         "layers": []
                     }
                 }
-                                
+
                 var pointGraphic = new esri.Graphic(workingPointGeometry,
                     geocortex.essentialsHtmlViewer.mapping.infrastructure.SymbolUtils.defaultMarkerSymbol());
 
@@ -239,12 +243,34 @@ module oe.wildfireRiskPopup {
 
 
                 var layerJSON = CreateLayerJSON("userPoint", "esriGeometryPoint", [pointGraphic]);
-                
+
                 //add layer JSON
                 workingFeatureCollection.featureCollection.layers.push(layerJSON);
-                
+
                 //start the risk calcuation 
                 createBuffer();
+            }
+
+            function openFireriskPopup(geometryIn, appIn) {
+
+                if (!fireRiskPopupEnabled)
+                    return;
+
+                var jsonIn = jQuery.parseJSON(geometryIn);                
+                var newPoint = new esri.geometry.Point(jsonIn.x, jsonIn.y, new esri.SpatialReference({ wkid: jsonIn.spatialReference.wkid }));
+
+                processMapPoint(newPoint);
+            }
+
+            function handleMouseClick(pointIn, appIn) {
+
+                if (!fireRiskPopupEnabled)
+                    return;
+                
+                //store the point
+                //workingPointGeometry = pointIn.mapPoint;
+
+                processMapPoint(pointIn.mapPoint);
             }
             
             function CreateLayerJSON(layerName,esriGeometryType,graphicsIn) {
@@ -560,9 +586,10 @@ module oe.wildfireRiskPopup {
                 var dataPercent = Math.round((countTotal / maxPixels) * 100);
 
                 //$("#WildfireRisk_riskdatapercent").text(dataPercent + "%");
+                riskPercentOut = dataPercent;
 
                 //show warning if data percent is low
-                if (dataPercent < 50) {
+                if (dataPercent < 25) {
                     //$("#WildfireRisk_warning").text("Warning! Incomplete data coverage in your area.");
                     $("#WildfireRisk_warning").css("display", "block");
                 }
@@ -796,25 +823,28 @@ module oe.wildfireRiskPopup {
             function requestRemainingData() {
                 
                 //Wildfire Forest Projection District
-                sendQueryRequest(oreallSiteURL, "42", "odf_fpd", $("#WildfireRisk_forest_protection_district"), resultRemainingData, errorRemainingData);
+                sendQueryRequest(fireSiteURL, "65", "odf_fpd", $("#WildfireRisk_forest_protection_district"), resultRemainingData, errorRemainingData);
                 
                 //Structural Fire Protection District
-                sendQueryRequest(oreallSiteURL, "44", "agency", $("#WildfireRisk_structural_projection_district"), resultRemainingData, errorRemainingData);
+                sendQueryRequest(fireSiteURL, "67", "agency", $("#WildfireRisk_structural_projection_district"), resultRemainingData, errorRemainingData);
 
                 //Rangeland Protection Associations
-                sendQueryRequest(oreallSiteURL, "43", "rpa_name", $("#WildfireRisk_rangeland_protection_assoc"), resultRemainingData, errorRemainingData);
+                sendQueryRequest(fireSiteURL, "66", "rpa_name", $("#WildfireRisk_rangeland_protection_assoc"), resultRemainingData, errorRemainingData);
 
                 //city or town
                 sendQueryRequest(fireSiteURL, "59", "name", $("#WildfireRisk_city"), resultRemainingData, errorRemainingData);
 
                 //urban growth boundary
-                sendQueryRequest(oreallSiteURL, "18", "name", $("#WildfireRisk_urban_growth_boundary"), UGB_result, UGB_error);
+                sendQueryRequest(fireSiteURL, "69", "name", $("#WildfireRisk_urban_growth_boundary"), UGB_result, UGB_error);
 
                 //CWPP - Community Wildfire Protection Plans OR Wildland Urban Interface
-                sendQueryRequest(oreallHazardsURL, "54", "cwpp", $("#WildfireRisk_cwpp_area"), resultRemainingData, errorRemainingData);
+                sendQueryRequest(fireSiteURL, "72", "cwpp", $("#WildfireRisk_cwpp_area"), resultRemainingData, errorRemainingData);
+
+                //Firewise community
+                sendQueryRequest(fireSiteURL, "71", "name", $("#WildfireRisk_firewise_community"), resultRemainingData, errorRemainingData);
 
                 //Senate Bill 360 (SB360)  Classified Forestland-Urban Interface feature
-                sendQueryRequest(oreallHazardsURL, "52", "rating", $("#WildfireRisk_senatebill_360"), SB360_result, SB360_error);                                                
+                sendQueryRequest(fireSiteURL, "80", "rating", $("#WildfireRisk_senatebill_360"), SB360_result, SB360_error);                                                
             }
 
             function UGB_result(features, attributeName, divElement) {

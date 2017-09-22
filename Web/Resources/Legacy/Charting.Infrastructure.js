@@ -1,4 +1,4 @@
-/*
+﻿/*
 	
 	Copyright (c) 2016, Latitude Geographics Group Ltd.
 	All rights reserved.

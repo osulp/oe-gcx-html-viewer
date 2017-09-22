@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.20/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.21/esri/copyright.txt for details.
 //>>built
 define("esri/layers/WFSLayer","dojo/_base/declare dojo/_base/kernel dojo/_base/lang dojo/_base/array dojo/_base/connect dojo/has dojo/on ../request ../kernel ../graphic ../renderers/jsonUtils ../symbols/jsonUtils ../Color ../symbols/SimpleMarkerSymbol ../symbols/SimpleLineSymbol ../symbols/SimpleFillSymbol ../SpatialReference ../geometry/webMercatorUtils ../geometry/Extent ../geometry/Point ../geometry/Multipoint ../geometry/Polyline ../geometry/Polygon ./LabelClass ./GraphicsLayer".split(" "),function(u,
 O,n,q,F,G,P,v,H,r,Q,w,t,y,p,A,x,z,I,E,J,K,L,M,N){u=u([N],{declaredClass:"esri.layers.WFSLayer",constructor:function(a){this.geometryType=this.describeFeatureTypeUrl=this.getFeatureUrl=this.layerNamespace="";this.fields=[];this.spatialReferences=[];this.fullExtent=null;this.visible=!0;this.renderer=null;this.id="WFSLayer";this._url="";this._version="1.1.0";this._layerName="";this._nsLayerNames={};this._layerDefinedGeometryType="esriGeometryComplex";this._wkid=3857;this._mode="snapshot";this._maxFeatures=

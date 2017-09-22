@@ -19,7 +19,7 @@ module oe.wildfireRiskPopup {
             workflowArgs.workflowId = "Wildfire_Risk_Report";
 
             workflowArgs.risk_value = $("#WildfireRisk_value").text();
-            workflowArgs.risk_percent = $("#WildfireRisk_riskdatapercent").text();
+            workflowArgs.risk_percent = oe.wildfireRiskPopup.riskPercentOut;//$("#WildfireRisk_riskdatapercent").text();
             workflowArgs.wfpd = $("#WildfireRisk_forest_protection_district").text();
             workflowArgs.wspd = $("#WildfireRisk_structural_projection_district").text();
             workflowArgs.wrpa = $("#WildfireRisk_rangeland_protection_assoc").text();
@@ -27,6 +27,8 @@ module oe.wildfireRiskPopup {
             workflowArgs.ugb = $("#WildfireRisk_urban_growth_boundary").text();
             workflowArgs.cwpp = $("#WildfireRisk_cwpp_area").text();
             workflowArgs.sb360 = $("#WildfireRisk_senatebill_360").text();
+
+            workflowArgs.firewiseComm = $("#WildfireRisk_firewise_community").text();
 
             workflowArgs.flame_min = $("#WildfireRisk_flame_min").text();
             workflowArgs.flame_max = $("#WildfireRisk_flame_max").text();
