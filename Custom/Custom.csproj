@@ -43,6 +43,7 @@
   </ProjectExtensions>
   <ItemGroup>
     <Content Include="Modules\DevelopmentRegistry\DevelopmentRegistry.css" />
+    <Content Include="Modules\DevelopmentRegistry\DevelopmentRegistryModuleProjectReportView.html" />
     <Content Include="Modules\DevelopmentRegistry\DevelopmentRegistryModuleView.html" />
     <Content Include="Modules\DevelopmentRegistry\Readme.txt" />
     <Content Include="Modules\CustomFormM49\CustomFormM49Module.css" />
@@ -70,7 +71,9 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Modules\DevelopmentRegistry\DevelopmentRegistryModule.ts" />
+    <TypeScriptCompile Include="Modules\DevelopmentRegistry\DevelopmentRegistryModuleProjectReportView.ts" />
     <TypeScriptCompile Include="Modules\DevelopmentRegistry\DevelopmentRegistryModuleView.ts" />
+    <TypeScriptCompile Include="Modules\DevelopmentRegistry\DevelopmentRegistryModuleProjectReportViewModel.ts" />
     <TypeScriptCompile Include="Modules\DevelopmentRegistry\DevelopmentRegistryModuleViewModel.ts" />
     <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49Module.ts" />
     <TypeScriptCompile Include="Modules\CustomFormM49\CustomFormM49ModuleView.ts" />

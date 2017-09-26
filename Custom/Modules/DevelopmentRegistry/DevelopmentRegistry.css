@@ -101,6 +101,32 @@
     /*margin-top:1em;*/
 }
 
+.project-impact-wrapper {
+    padding: .5em;
+    min-height:65px;
+    text-align:center;
+}
+
+.project-impact-wrapper div {
+    width:45%;
+    border:1px solid #a7a7a7;
+    border-radius:4px;
+    padding:.5em;
+    margin:.5em;
+    float:left;
+    background-color:white;
+}
+
+.pac_sum_desc {
+    font-size:.9em;
+    color:#333;
+    font-style:italic;
+}
+
+   .clear{
+       clear:both;
+       float:none;
+   }
 
 #report-date{
     width:100%;
