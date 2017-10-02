@@ -9,6 +9,7 @@ module oe.layer_actions_extension {
         showLayerDescription: boolean;
         allowAllLayerTypes: boolean;
         metadataHyperlinkOverride: boolean;
+        expandLayerTreeOnVisible: boolean;
 
         metadataHyperlinkURI: string = "";
         downloadLinkURI: string = "";
@@ -24,6 +25,7 @@ module oe.layer_actions_extension {
             this.showLayerDescription = config.showLayerDescription !== undefined ? config.showLayerDescription : false;
             this.allowAllLayerTypes = config.allowAllLayerTypes !== undefined ? config.allowAllLayerTypes : false;
             this.metadataHyperlinkOverride = config.metadataHyperlinkOverride !== undefined ? config.metadataHyperlinkOverride : false;
+            this.expandLayerTreeOnVisible = config.expandLayerTreeOnVisible !== undefined ? config.expandLayerTreeOnVisible : false;
                                                 
             var site: geocortex.essentials.Site = (<any>this).app.site;
 
@@ -49,7 +51,19 @@ module oe.layer_actions_extension {
             });
         }
 
+        handleFolderClickEvent(context: geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList.LayerListFolderItem) {            
+            if (context.isVisible.get() == true)
+                context.isExpanded.set(true);
+        }
+
         _onSiteInitialized(site: geocortex.essentials.Site) {
+
+            //add listener if layer trees will expand when enabled
+            if (this.expandLayerTreeOnVisible) {
+                this.app.eventRegistry.event("FolderClickedEvent").subscribe(this, (args) => {
+                    this.handleFolderClickEvent(args);
+                });
+            }
 
             //metadata override
             if (this.metadataHyperlinkOverride) {

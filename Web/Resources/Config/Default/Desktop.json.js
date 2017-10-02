@@ -131,7 +131,8 @@
                 "configuration": {
                     "showLayerDescription":false,
                     "allowAllLayerTypes":true,
-                    "metadataHyperlinkOverride":true
+                    "metadataHyperlinkOverride":true,
+                    "expandLayerTreeOnVisible":true
                 }
             },
             {

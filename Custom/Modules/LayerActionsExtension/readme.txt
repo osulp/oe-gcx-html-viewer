@@ -10,7 +10,8 @@ metadataHyperlinkOverride requires a layer hyperlink named "Metadata" to overrid
 	"configuration": {
         "showLayerDescription":false,
 		"allowAllLayerTypes:":false,
-		"metadataHyperlinkOverride": true 
+		"metadataHyperlinkOverride": true,
+		"expandLayerTreeOnVisible": true
 	}
 }
 
