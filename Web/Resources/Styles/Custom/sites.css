@@ -4,3 +4,140 @@
 {
 	word-break: normal;
 }
+
+/* Make sure this files in is Resources/Styles/Custom folder for the main viewer.  This does not go in a specific site viewer folder */
+
+.banner{
+    border-bottom:1px solid #a0abb1 !important;
+}
+
+.banner-images {
+    position:relative !important;
+    float:left;
+    width:auto;
+
+    /*height:98% !important;*/
+    height:60px !important;
+}
+
+.banner-images img{
+    position:relative !important;
+}
+
+.banner-right-img{
+    max-height:50px;
+    margin-bottom:.4em !important;
+}
+
+.banner-left-img:hover
+{
+    cursor:pointer;
+}
+
+.banner-text{
+    position:relative !important;
+    left:0px;/*375px;*/
+    float:left;
+    margin-left:10px;
+    height:50px;
+}
+
+table.banner-text tbody{
+    vertical-align:top;
+}
+
+.banner-text h1
+{
+    font-size:1.8em;
+    font-weight:normal;
+    margin-top:.2em;
+}
+
+.banner-text h2{
+    font-weight:normal;
+}
+
+.wtm-button {
+    background-color: #c34500 !important;
+    font-size:1.2em;
+}
+
+.layer-contents .display-name
+{
+    width:95% !important;
+}
+
+.panel-footer {
+    overflow:hidden !important;
+}
+
+select [multiple]
+{
+height:400px;
+}
+
+.BasemapSwitcherButtonView .flyout-menu-active-tool img {
+    max-height:30px;
+}
+.splash-paragraph {
+    width: 311px;
+    font-size: 10px;
+}
+
+.ScalebarView {
+    left:15px;
+}
+.scalebar-standout.scale-bar-container {
+    background-color:rgba(255,255,255,.5);
+    border:none;
+}
+
+.medium-shell-left{
+    z-index:auto;
+}
+.coords-select{
+    border:1px solid #DDDDDD;
+}
+
+#dijit_Menu_0 tr{
+    height:35px;
+}
+#dijit_Menu_0 tr:hover{
+    background-color:rgba(128, 128, 128, 0.43);
+    cursor:pointer;
+}
+.dijitReset .dijitMenuItemIconCell
+{
+    padding-left:5px;
+}
+.legend-item-label{
+    width:80%;
+}
+
+#oe_layer_desc{
+    padding:20px;
+    font-size:.9em;
+    color:rgba(128, 128, 128, 0.83);
+}
+#oe_layer_desc_toggle_more{
+    float:right;
+    color:#c34500;
+}
+
+#oe_layer_desc_toggle_more:hover{
+    text-decoration:underline;
+    cursor:pointer;
+}
+
+fieldset {
+    padding: .5em .75em .75em .75em;    
+}
+
+fieldset legend{
+    padding:0 .5em;    
+}
+
+/* Hides button next to social icon link.  The button was creating padding between links */
+.footer-container .list-menu .list-menu-details {
+    display:none;
+}

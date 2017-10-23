@@ -1092,4 +1092,4 @@ SymbolEditorViewModel_ts_243) {
 
 if (!geocortex) geocortex = { }; 
 if (!geocortex.essentialsHtmlViewer) geocortex.essentialsHtmlViewer = { }; 
-geocortex.essentialsHtmlViewer.version = "2.9.1.011"; 
+geocortex.essentialsHtmlViewer.version = "2.9.2.001"; 

@@ -1,5 +1,6 @@
 ﻿/* Put custom desktop styling in this file. Put custom images in the Custom subfolder of the Images directory. */
-.banner {
+
+/*.banner {
     border-bottom: 1px solid #a0abb1 !important;
 }
 
@@ -24,11 +25,9 @@
 {
     font-size:1.8em;
     font-weight:normal;
-    /*margin-top:.2em;*/
 }
 .banner-text h1.no-subtitle
 {
-    /*margin-top:.6em;*/
 }
 
 .banner-text h2{
@@ -94,5 +93,5 @@ height:400px;
 }
 .legend-item-label{
     width:80%;
-}
+}*/
 

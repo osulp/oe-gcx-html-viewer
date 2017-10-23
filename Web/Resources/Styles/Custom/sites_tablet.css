@@ -1,0 +1,39 @@
+﻿/* Make sure this files in is Resources/Styles/Custom folder for the main viewer.  This does not go in a specific site viewer folder */
+
+.SearchView, .active.SearchView
+{
+    width:15em;
+}
+
+.collapsed.tree-expander{
+    background:url(../../Images/Icons/tree-expander-closed-light-16.png) 0.0em center no-repeat !important;
+    background-size:20px 20px !important;
+}
+.expanded.tree-expander{
+    background-image:url(../../Images/Icons/tree-expander-open-light-16.png) !important;
+    background-size:20px 20px !important;
+}
+
+.layer-item-expander .tree-expander.collapsed, .layer-item-expander .tree-expander.expanded {
+    padding:.25em !important;
+}
+
+ul.toolbar-tab-control li {
+    display: block;
+    list-style-type: none;
+    float: left;
+    width: auto;
+    position: relative;
+    overflow: hidden;
+    padding: 0.15em;
+}
+
+.layer-item-ctrl input[type='checkbox']
+{
+    margin-top:.25em;
+}
+
+input[type='checkbox']{
+    width:18px;
+    height:18px;
+}

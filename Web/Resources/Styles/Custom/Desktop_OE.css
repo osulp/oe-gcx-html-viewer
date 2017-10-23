@@ -1,5 +1,17 @@
 ﻿/* Put custom desktop styling in this file. Put custom images in the Custom subfolder of the Images directory. */
 
+/*.collapsed.tree-expander{
+    background:url(../../Images/Icons/tree-expander-closed-light-16.png) 0.3em center no-repeat !important;    
+}
+.expanded.tree-expander{
+    background-image:url(../../Images/Icons/tree-expander-open-light-16.png) !important;
+}
+
+.layer-item-expander .tree-expander.collapsed, .layer-item-expander .tree-expander.expanded {
+    padding:.72em !important;
+}*/
+
+/*
 .banner{
     border-bottom:1px solid #a0abb1 !important;
 }
@@ -15,8 +27,7 @@
     position:relative !important;
     float:left;
     width:auto;
-
-    /*height:98% !important;*/
+        
     height:60px !important;
 }
 
@@ -36,7 +47,7 @@
 
 .banner-text{
     position:relative !important;
-    left:0px;/*375px;*/
+    left:0px;
     float:left;
     margin-left:10px;
     height:50px;
@@ -54,7 +65,7 @@ table.banner-text tbody{
 }
 .banner-text h1.no-subtitle
 {
-    /*margin-top:.6em;*/
+    
 }
 
 .banner-text h2{
@@ -145,7 +156,6 @@ fieldset legend{
     padding:0 .5em;    
 }
 
-/* Hides button next to social icon link.  The button was creating padding between links */
 .footer-container .list-menu .list-menu-details {
     display:none;
-}
+}*/

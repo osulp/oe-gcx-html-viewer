@@ -244,6 +244,30 @@
                             "defaultIconUri": "Resources/Images/Icons/arrow-right-alt-24.png",
                             "items": [
                                 {
+                                    "text": "View metadata",
+                                    "description": "View the layer's metadata",
+                                    "iconUri": "Resources/Images/Icons/details-24.png",
+                                    "command": "showMetadata",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "Download layer",
+                                    "description": "Download the layer",
+                                    "iconUri": "Resources/Images/Icons/download-24.png",
+                                    "command": "showDownload",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "View Service Info",
+                                    "description": "View the layer web service information",
+                                    "iconUri": "Resources/Images/Icons/window-new-24.png",
+                                    "command": "showServiceInfo",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
                                     "text": "@language-menu-add-a-feature",
                                     "description": "@language-menu-add-a-feature-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/feature-create-24.png",
@@ -270,31 +294,7 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/visualizations-24.png",
                                     "command": "ShowVisualizationView",
                                     "hideOnDisable": true
-                                },
-                                 {
-                                     "text": "View metadata",
-                                     "description": "View the layer's metadata",
-                                     "iconUri": "Resources/Images/Icons/details-24.png",
-                                     "command": "showMetadata",
-                                     "commandParameter": "{{context}}",
-                                     "hideOnDisable": true
-                                 },
-                                {
-                                    "text": "View Service Info",
-                                    "description": "View the layer web service information",
-                                    "iconUri": "Resources/Images/Icons/window-new-24.png",
-                                    "command": "showServiceInfo",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": true
-                                },
-                                {
-                                    "text": "Download layer",
-                                    "description": "Download the layer",
-                                    "iconUri": "Resources/Images/Icons/download-24.png",
-                                    "command": "showDownload",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": true
-                                },
+                                },                                                                 
                                 {
                                     "text": "@language-layer-addition-edit-layer-properties",
                                     "description": "@language-layer-addition-edit-layer-properties-desc",
@@ -6180,6 +6180,7 @@
                     "css": [
                         "Resources/Styles/Desktop.css",
                         "Resources/Styles/Custom/sites.css",
+                        "Resources/Styles/Custom/sites_desktop.css",
                         "{ViewerConfigUri}../../Styles/Custom/common.css",
                         "{ViewerConfigUri}../../Styles/Custom/Desktop_OE.css"
                     ],

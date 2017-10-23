@@ -120,7 +120,12 @@
                 "moduleName": "LayerActionsExtension",
                 "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
                 "libraryId": "Custom",
-                "configuration": {}
+                "configuration": {
+                    "showLayerDescription":false,
+                    "allowAllLayerTypes":true,
+                    "metadataHyperlinkOverride":true,
+                    "expandLayerTreeOnVisible":true
+                }
             },
              {
                  "moduleName": "InitialExtent",
@@ -238,6 +243,30 @@
                             "description": "@language-layer-actions-desc",
                             "defaultIconUri": "Resources/Images/Icons/arrow-right-alt-24.png",
                             "items": [
+                                 {
+                                     "text": "View metadata",
+                                     "description": "View the layer's metadata",
+                                     "iconUri": "Resources/Images/Icons/details-24.png",
+                                     "command": "showMetadata",
+                                     "commandParameter": "{{context}}",
+                                     "hideOnDisable": true
+                                 },
+                                 {
+                                     "text": "Download layer",
+                                     "description": "Download the layer",
+                                     "iconUri": "Resources/Images/Icons/download-24.png",
+                                     "command": "showDownload",
+                                     "commandParameter": "{{context}}",
+                                     "hideOnDisable": true
+                                 },
+                                {
+                                    "text": "View Service Info",
+                                    "description": "View the layer web service information",
+                                    "iconUri": "Resources/Images/Icons/window-new-24.png",
+                                    "command": "showServiceInfo",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },                                
                                 {
                                     "text": "@language-menu-add-a-feature",
                                     "description": "@language-menu-add-a-feature-desc",
@@ -265,31 +294,7 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/visualizations-24.png",
                                     "command": "ShowVisualizationView",
                                     "hideOnDisable": true
-                                },
-                                {
-                                    "text": "View metadata",
-                                    "description": "View the layer's metadata",
-                                    "iconUri": "Resources/Images/Icons/details-24.png",
-                                    "command": "showMetadata",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": true
-                                },
-                                {
-                                    "text": "View Service Info",
-                                    "description": "View the layer web service information",
-                                    "iconUri": "Resources/Images/Icons/window-new-24.png",
-                                    "command": "showServiceInfo",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": true
-                                },
-                                {
-                                    "text": "Download layer",
-                                    "description": "Download the layer",
-                                    "iconUri": "Resources/Images/Icons/download-24.png",
-                                    "command": "showDownload",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": true
-                                },
+                                },                               
                                 {
                                     "text": "@language-layer-addition-edit-layer-properties",
                                     "description": "@language-layer-addition-edit-layer-properties-desc",
@@ -5755,9 +5760,10 @@
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.shells.ShellModule",
                 "require": "Mapping/modules/Shells/ShellModule",
                 "configuration": {
-                    "css": [
+                    "css": [      
                         "Resources/Styles/Tablet.css",
                         "Resources/Styles/Custom/sites.css",
+                        "Resources/Styles/Custom/sites_tablet.css",
                         "{ViewerConfigUri}../../Styles/Custom/common.css",
                         "{ViewerConfigUri}../../Styles/Custom/Tablet_OE.css"
                     ],
