@@ -1,8 +1,8 @@
-/// <reference path="Framework.d.ts" />
-/// <reference path="Mapping.Infrastructure.d.ts" />
-/// <reference path="jquery.d.ts" />
-/// <reference path="jquery.cleditor.d.ts" />
-/// <reference path="arcgis-js-api.d.ts" />
+/// <reference path="../_Definitions/Framework.d.ts" />
+/// <reference path="../_Definitions/Mapping.Infrastructure.d.ts" />
+/// <reference path="../_Definitions/jquery.d.ts" />
+/// <reference path="../_Definitions/jquery.cleditor.d.ts" />
+/// <reference path="../_Definitions/arcgis-js-api.d.ts" />
 declare module geocortex.essentialsHtmlViewer.management.infrastructure.CLEditorUtils {
     /**
      * Fixes the observable vinding to properly track the state of the editor.
@@ -299,6 +299,10 @@ declare module geocortex.essentialsHtmlViewer.management.infrastructure {
          */
         getModules(): geocortex.framework.config.ModuleJson[];
         /**
+         * Gets the array of libraries.
+         */
+        getLibraries(): geocortex.framework.config.LibraryJson[];
+        /**
          * Gets an entire module declaration from a module type.
          */
         findModuleByType(moduleType: string): geocortex.framework.config.ModuleJson;
@@ -318,6 +322,18 @@ declare module geocortex.essentialsHtmlViewer.management.infrastructure {
          * the module in order for that module to be returned.
          */
         findModules(properties: any): geocortex.framework.config.ModuleJson[];
+        /**
+         * Finds a library based on a set of matching properties.
+         * @param properties {Object} An object of properties that need to match
+         * the library in order for that module to be returned.
+         */
+        findLibrary(properties: any): geocortex.framework.config.LibraryJson;
+        /**
+         * Finds a set of libraries based on a set of matching properties.
+         * @param properties {Object} An object of properties that need to match
+         * the library in order for that module to be returned.
+         */
+        findLibraries(properties: any): geocortex.framework.config.LibraryJson[];
         /**
          * Finds a view with the matching type, with the matching module type.
          * @param moduleType {String} The type of the module.

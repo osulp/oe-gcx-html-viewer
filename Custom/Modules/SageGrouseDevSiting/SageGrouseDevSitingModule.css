@@ -1,0 +1,43 @@
+﻿fieldset{
+    border:solid 1px #a7a7a7;
+    border-radius:4px;
+    margin:5px 0;
+}
+
+legend{
+    font-size:1.2em;
+    padding:10px;
+}
+
+#btn-row{
+    display:table;
+    width:100%;
+}
+.btn-cell{
+    display:table-cell;
+    text-align:center;
+}
+.btn-cell div{
+    width: 80%;
+    padding:10px;
+    color:white;
+    background-color:rgba(26, 114, 196, 1);
+    border-radius:4px;
+    margin:10px;
+    text-align:center;
+}
+
+.btn-cell div:hover{
+    cursor:pointer;
+    background-color:rgb(11, 50, 87);
+    text-decoration:underline;
+}
+
+#chart-wrapper{
+    width:100%;
+    text-align:center;
+}
+
+.data-label{
+    font-weight:bold;
+}

@@ -814,8 +814,6 @@ declare module geocortex {
     }
     /** @private */
     function _getExtensions(extensions: ExtensionParam[]): geocortex.essentials.Extension[];
-    /** @private */
-    function _extensionsToJson(extensions: geocortex.essentials.Extension[]): ExtensionParam[];
     /** @docs-hide-from-nav */
     interface PropertyParam {
         name: string;
@@ -823,8 +821,6 @@ declare module geocortex {
     }
     /** @private */
     function _getProperties(properties: PropertyParam[]): any;
-    /** @private */
-    function _propertiesToJson(properties: any): PropertyParam[];
 }
 declare module geocortex.essentials {
     /**
@@ -935,6 +931,8 @@ declare module geocortex.essentials {
          * @param scope The URI scope for which the token applies.
          */
         static setDefaultToken(token: string, scope: string): void;
+        static appendTokenToUrl(url: string, token: string): string;
+        static urlHasToken(url: string): boolean;
         /**
          * The Geocortex Essentials token for all requests satisfying the default scopes.
          * @deprecated 2.5.1 Use `getTokenForScope` instead. This will ensure that tokens will not be brokered for non-Essentials URIs (unless explicitly instructed to do so).
@@ -1050,7 +1048,7 @@ declare module geocortex.essentials {
          * @private
          */
         send(): any;
-        private _appendParameter(url, paramName, paramValue);
+        private static _appendParameter(url, paramName, paramValue);
     }
 }
 /**
@@ -1265,15 +1263,6 @@ declare module geocortex.essentials {
         isServiceLayerLoaded: boolean;
         /** Indicates whether or not a mapService was created by a user at runtime **/
         isUserCreated: boolean;
-        /**
-         * The type of user created layer. One of:
-         *  - LayerAddition - the layer was added by browsing/searching for services and layers in a dialog
-         *  - LayerCatalog - the layer was added from a catalog
-         *  - Upload - the layer was added by uploading a file
-         *
-         * Only applies to layers created at runtime.
-         */
-        userLayerType: string;
         /** The collection of {@link Layer} objects. */
         layers: Layer[];
         /** The collection of table objects. */
@@ -1529,9 +1518,9 @@ declare module geocortex.essentials {
          */
         createFromDefinition(serviceDefinition: any): void;
         /**
-         * Exports the state of the map service as a JSON object. This can be used to recreate the
-         * layer again via createFromDefinition().
-         */
+        * Exports the state of the map service as a JSON object. This can be used to recreate the
+        * layer again via createFromDefinition().
+        */
         toJson(): Object;
         /** @private */
         _configureObject(obj: any, deepInitialize?: boolean): void;
@@ -1654,7 +1643,6 @@ declare module geocortex.essentials {
          * Gets the default geometry service security token. Returns null if none found.
          */
         protected _getDefaultGeometryServiceToken(): string;
-        private _corsRequest(url, withCredentials?, doNotRetry?);
     }
 }
 declare module geocortex.essentials {
@@ -3163,8 +3151,6 @@ declare module geocortex.essentials {
         /** @private - Specifies if service tokens are currently stale because an update failed. This can happen while offline.
         When connectivity is restored, a call to updateServiceTokensIfStale() can be made to try again. */
         private _serviceTokensStale;
-        /** This array stores dojo.Deferred for updating tokens of base site and catalog sites. */
-        private _allDeferredDojosForUpdatingTokens;
         /**
          * Initializes a new instance of the {@link Site} class.
          * @param url URL to a Geocortex Essentials {@link Site} endpoint.
@@ -3360,15 +3346,11 @@ declare module geocortex.essentials {
          */
         private _getUpdatedServiceTokens();
         /** @private */
-        private _updateServiceTokensBySendingRestRequest(siteId, dojoVar);
+        private _processServiceTokensHandler(results);
         /** @private */
-        private _isTokenUpdateRequired(siteId);
+        private _processServiceTokensErrorHandler(error);
         /** @private */
-        private _processServiceTokensHandler(siteId, dojoVar, results);
-        /** @private */
-        private _processServiceTokensErrorHandler(dojoVar, error);
-        /** @private */
-        private _updateServiceTokens(map, tokens, siteId);
+        private _updateServiceTokens(map, tokens);
         /** @private */
         private _updateServiceTokensFromPrincipal(map);
         /** @private */
@@ -3391,8 +3373,6 @@ declare module geocortex.essentials {
         private _hookGetCredential();
         /** @private */
         private _initSiteHandler(results);
-        /** @private */
-        private _updateServiceTokensOfAllSites();
         /** @private */
         private _initSiteErrorHandler(error);
         /** @private */
@@ -3811,17 +3791,8 @@ declare module geocortex.essentials {
         isDynamic: boolean;
         /** Whether or not the layer will be expanded by default when shown in a layer list.  Only applies to group layers. */
         isExpanded: boolean;
-        /** Indicates whether or not a layer was created by a user at runtime **/
+        /** If the layer was added from the catalog. **/
         isUserCreated: boolean;
-        /**
-         * The type of user created layer. One of:
-         *  - LayerAddition - the layer was added by browsing/searching for services and layers in a dialog
-         *  - LayerCatalog - the layer was added from a catalog
-         *  - Upload - the layer was added by uploading a file
-         *
-         * Only applies to layers created at runtime.
-         */
-        userLayerType: string;
         /** The catalog id */
         catalogId: string;
         /** An array of hyperlinks associated with this layer. */
@@ -4538,9 +4509,9 @@ declare module geocortex.essentials {
     }
 }
 /**
- * Environment Type for Bing services.
- * @private
- */
+* Environment Type for Bing services.
+* @private
+*/
 declare module geocortex.essentials.exportMap.BingEnvironment {
     /** Represents the production environment. */
     var PRODUCTION: string;
@@ -5063,7 +5034,6 @@ declare module geocortex.essentials {
 declare module geocortex.essentials.serviceDiscovery {
     /** @private */
     interface ResultItem extends geocortex.essentials.rest.serviceDiscovery.ResultItem {
-        isWhitelisted?: boolean;
     }
     interface ResultPageInfo {
         page: number;
@@ -5093,7 +5063,6 @@ declare module geocortex.essentials.serviceDiscovery {
         resultsPerPage?: number;
         totalResults?: number;
         useNextPageInfo?: boolean;
-        whitelistOnly?: boolean;
     }
 }
 declare module geocortex.essentials.serviceDiscovery {
@@ -5147,8 +5116,8 @@ declare module geocortex.essentials.serviceDiscovery {
           * @param result The ajax response.
           */
         protected _processError(result: any): any;
-        protected _processItem(coreItem: geocortex.essentials.rest.serviceDiscovery.ResultItem): ResultItem;
-        protected _createMapService(item: ResultItem, serviceDefinition: geocortex.essentials.rest.serviceDiscovery.results.RealizeMapServiceResult): framework.Thenable<MapService>;
+        protected _processItem(item: geocortex.essentials.rest.serviceDiscovery.ResultItem): ResultItem;
+        protected _processMapService(result: geocortex.essentials.rest.serviceDiscovery.results.RealizeMapServiceResult, item: ResultItem): MapService;
         /**
          * Verify that Service Discovery is supported, throwing an exception if it isn't.
          */
@@ -5191,9 +5160,9 @@ declare module geocortex.essentials.exportMap {
     }
 }
 /**
- * @private
- * String constants that represent constants used by Esri's Web Map builder.
- */
+* @private
+* String constants that represent constants used by Esri's Web Map builder.
+*/
 declare module geocortex.essentials.exportMap.ExportMapTypes {
     var WEBTILED: string;
     var BINGAERIAL: string;
@@ -5505,20 +5474,6 @@ declare module geocortex.essentials.utilities {
         static settle<T>(promisePromises: Thenable<Thenable<T>[]>): Thenable<SettleInspection<T>[]>;
         /** @private */
         private static _settleImpl<T>(promises);
-    }
-}
-declare module geocortex.essentials.utilities {
-    /**
-     * Static utility methods for discovering and creating map services.
-     */
-    class ServiceDiscoveryUtilities {
-        /**
-         * Build and initialize a Geocortex map service based on the provided service URL.
-         * @param essentialsMap The Geocortex map that the map service belongs to.
-         * @param serviceDefinition A map service definition object containing the properties for the new map service.
-         * @returns The promise of a Geocortex map service.
-         */
-        static buildMapService(essentialsMap: essentials.Map, serviceDefinition: any): framework.Thenable<essentials.MapService>;
     }
 }
 declare module geocortex.essentials.utilities {
@@ -7341,14 +7296,6 @@ declare module geocortex.essentials.FailureAction {
     var IGNORE: string;
     var WARN: string;
     var ERROR: string;
-}
-/**
- * Constants for the userLayerType property of layers and service layers.
- */
-declare module geocortex.essentials.UserLayerType {
-    const LAYER_ADDITION: string;
-    const LAYER_CATALOG: string;
-    const UPLOAD: string;
 }
 declare module geocortex.essentials {
     /**

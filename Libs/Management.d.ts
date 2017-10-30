@@ -1,13 +1,14 @@
-/// <reference path="Framework.d.ts" />
-/// <reference path="Management.Infrastructure.d.ts" />
-/// <reference path="jquery.d.ts" />
-/// <reference path="jquery.cleditor.d.ts" />
-/// <reference path="framework.ui.d.ts" />
-/// <reference path="jquery.colorpicker.d.ts" />
-/// <reference path="essentials.d.ts" />
-/// <reference path="jqueryui.d.ts" />
-/// <reference path="dojo.d.ts" />
-/// <reference path="arcgis-js-api.d.ts" />
+/// <reference path="../_Definitions/Framework.d.ts" />
+/// <reference path="../_Definitions/Management.Infrastructure.d.ts" />
+/// <reference path="../_Definitions/jquery.d.ts" />
+/// <reference path="../_Definitions/jquery.cleditor.d.ts" />
+/// <reference path="../_Definitions/Documents.Rest.d.ts" />
+/// <reference path="../_Definitions/framework.ui.d.ts" />
+/// <reference path="../_Definitions/jquery.colorpicker.d.ts" />
+/// <reference path="../_Definitions/essentials.d.ts" />
+/// <reference path="../_Definitions/jqueryui.d.ts" />
+/// <reference path="../_Definitions/dojo.d.ts" />
+/// <reference path="../_Definitions/arcgis-js-api.d.ts" />
 declare module geocortex.essentialsHtmlViewer.management.modules.Accessibility {
     class AccessibilityModule extends geocortex.framework.application.ModuleBase {
     }
@@ -22,6 +23,7 @@ declare module geocortex.essentialsHtmlViewer.management.modules.Accessibility {
         handleApply(): void;
         applyConfigs(managedConfigs: infrastructure.ManagedConfiguration[]): void;
         applyViewModel(viewModel: AccessibilityViewModel): void;
+        findSkipLinksMenuConfig(module: any): any;
         findAccessibilityIconViewModel(managedConfig: infrastructure.ManagedConfiguration): any;
         findAccessibilityModule(managedConfig: infrastructure.ManagedConfiguration): any;
     }
@@ -49,7 +51,73 @@ declare module geocortex.essentialsHtmlViewer.management.modules.Accessibility {
         includeProviders: Observable<boolean>;
         titleWidget: shared.LanguageResourceViewModel;
         keyboardFocusIndicatorColor: shared.ColorPickerWidgetModel;
+        menu: any;
+        skipLinksInConfig: Observable<boolean>;
         constructor(app: geocortex.framework.application.Application, libraryId?: string);
+        initialize(config: any): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.collaboration {
+    class CollaborationModule extends geocortex.framework.application.ModuleBase {
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.collaboration {
+    /**
+     * DEBUGGING INFO:
+     * When running locally there is no 'site' which Collaboration uses as an 'ApplicationId'.
+     * An applicationId can be specific in the CollaborationViewModel configuration.
+     * The applicationId is generally the same ID of the site which the viewer is using.
+     *
+     * The path using in _perform will be invalid as this path is derived from a the manager url.
+     * The expected path is <server>/Geocortex/Essentials/<instance>/RestManager/documents/perform
+     * Be sure to sign into the instance as a manager as a cookie is used to perform the request.
+     * If using normally, all the cases above are handled by loading site id/application id and also with the manager signin.
+     */
+    class CollaborationView extends geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView {
+        submitElement: HTMLElement;
+        modeSelector: HTMLSelectElement;
+        chosenSelector: HTMLSelectElement;
+        viewModel: CollaborationViewModel;
+        app: infrastructure.ManagementApplication;
+        private _updateChosen;
+        attach(viewModel: any): void;
+        applyConfigs(managedConfigs: infrastructure.ManagedConfiguration[]): void;
+        handleApply(): any;
+        applyViewModel(viewModel: CollaborationViewModel): void;
+        private _handleChosenChange(evt, params);
+        private _loadRoomSelector(config);
+        private _getRooms();
+        private _searchDocStore(query);
+        getCollaborationViewModelConfig(managedConfig: infrastructure.ManagedConfiguration): CollaborationViewModelConfiguration;
+        getAfterActionViewModelConfig(managedConfig: infrastructure.ManagedConfiguration): AfterActionViewModelConfiguration;
+        setInitialModeValue(value: string): void;
+        private _getDocStoreUrl();
+    }
+    class Room {
+        id: string;
+        displayName: string;
+        active: boolean;
+        added: boolean;
+    }
+    interface CollaborationViewModelConfiguration {
+        enabled: boolean;
+        initialRooms: string[];
+        applicationId: string;
+    }
+    interface AfterActionViewModelConfiguration {
+        enabled: boolean;
+        initialRooms: string[];
+        applicationId: string;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.collaboration {
+    class CollaborationViewModel extends geocortex.framework.ui.ViewModelBase {
+        applicationId: string;
+        rooms: ObservableCollection<Room>;
+        selectedRooms: ObservableCollection<Room>;
+        mode: Observable<string>;
+        roomListActive: Observable<boolean>;
+        infoMessage: Observable<string>;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.ContextMenus {
@@ -215,10 +283,31 @@ declare module geocortex.essentialsHtmlViewer.management.modules.shared {
 declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
     class HighlightsViewModel extends geocortex.framework.ui.ViewModelBase {
         fillColor: shared.ColorPickerWidgetModel;
+        outerBorderColor: shared.ColorPickerWidgetModel;
         borderColor: shared.ColorPickerWidgetModel;
+        focusedFillColor: shared.ColorPickerWidgetModel;
+        focusedBorderColor: shared.ColorPickerWidgetModel;
+        focusedOuterBorderColor: shared.ColorPickerWidgetModel;
         borderWidth: Observable<number>;
-        textErrorMessage: Observable<string>;
+        outerBorderWidth: Observable<number>;
+        highlightLineOpacity: Observable<number>;
+        errorMessageBottomBorderWidth: Observable<string>;
+        errorMessageTopBorderWidth: Observable<string>;
+        errorMessageHighlightLineOpacity: Observable<string>;
         validate(): boolean;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
+    class HighlightModesViewModel extends geocortex.framework.ui.ViewModelBase {
+        customOption: {
+            "display": string;
+            "config": string;
+        };
+        defaultHighlightBehavior: Observable<any>;
+        defaultHighlightBehaviorFieldOptions: ObservableCollection<{
+            "display": string;
+            "config": string;
+        }>;
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
@@ -317,6 +406,7 @@ declare module geocortex.essentialsHtmlViewer.management.modules.Map {
         useDms: Observable<boolean>;
         fractionalDigits: Observable<number>;
         customCoordinateSystems: ObservableCollection<CoordinateSystem>;
+        isEnabled: Observable<boolean>;
         defaultGcsWkid: Observable<number>;
         errorMessage: Observable<string>;
         displayNameError: Observable<string>;
@@ -338,6 +428,7 @@ declare module geocortex.essentialsHtmlViewer.management.modules.Map {
         saveEditedCoordinateSystem(dialog: JQuery, arrayPosition: number): boolean;
         setCoordinateDisplayObservables(): void;
         private _updateDefaultCoordinateDisplayTypes();
+        private _updateIsEnabled(systems);
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.Map {
@@ -369,6 +460,7 @@ declare module geocortex.essentialsHtmlViewer.management.modules.Map {
         openEditModal(event: Event, element: HTMLElement, context: any): void;
         wkidChanged(evt: any, el: any, context: any): void;
         wktChanged(evt: any, el: any, context: any): void;
+        coordSysSelectionChanged(evt: any, el: any, context: any): void;
         removeCoordinateSystem(): void;
         validate(): void;
     }
@@ -1282,6 +1374,15 @@ declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
     }
 }
 declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
+    class HighlightMode {
+        value: string;
+        constructor(value: string);
+        toString(): string;
+        static custom: HighlightMode;
+        static none: HighlightMode;
+        static all: HighlightMode;
+        static def: HighlightMode;
+    }
     class LookAndFeelView extends geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView {
         app: geocortex.essentialsHtmlViewer.management.infrastructure.ManagementApplication;
         viewModel: LookAndFeelViewModel;
@@ -1302,7 +1403,7 @@ declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
         findBannerViewModel(managedConfig: infrastructure.ManagedConfiguration): framework.config.ViewModelJson;
         findBannerView(managedConfig: infrastructure.ManagedConfiguration): framework.config.ViewJson;
         findDataframeViewModel(managedConfig: infrastructure.ManagedConfiguration): framework.config.ViewModelJson;
-        findResultslistView(managedConfig: infrastructure.ManagedConfiguration): framework.config.ViewJson;
+        findFeatureSetResultsView(managedConfig: infrastructure.ManagedConfiguration): framework.config.ViewJson;
         findMapTipsModule(managedConfig: infrastructure.ManagedConfiguration): framework.config.ModuleJson;
         findHighlightModule(managedConfig: infrastructure.ManagedConfiguration): framework.config.ModuleJson;
         findFeatureDescriptionProvider(managedConfig: infrastructure.ManagedConfiguration): any;
@@ -1327,6 +1428,7 @@ declare module geocortex.essentialsHtmlViewer.management.modules.lookandfeel {
         maptips: Observable<MapTipsViewModel>;
         featureDetails: Observable<FeatureDetailsViewModel>;
         highlights: Observable<HighlightsViewModel>;
+        highlightModes: Observable<HighlightModesViewModel>;
         constructor(app: geocortex.framework.application.Application, libraryId?: string);
         validate(): boolean;
     }
@@ -1835,5 +1937,26 @@ declare module geocortex.essentialsHtmlViewer.management.modules.toolBehavior {
         bufferToolBehaviorViewModel: Observable<BufferViewModel>;
         constructor(app: geocortex.framework.application.Application, libraryId: string);
         validate(): boolean;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.workflowFive {
+    class WorkflowFiveModule extends geocortex.framework.application.ModuleBase {
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.workflowFive {
+    class WorkflowFiveView extends geocortex.essentialsHtmlViewer.management.infrastructure.ShellSectionView {
+        workflowHostLibraryId: string;
+        workflowHostModuleName: string;
+        constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, libraryId: string);
+        attach(viewModel?: any): void;
+        handleApply(): void;
+        applyConfigs(managedConfigs: infrastructure.ManagedConfiguration[]): void;
+        applyViewModel(viewModel: WorkflowFiveViewModel): void;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.management.modules.workflowFive {
+    class WorkflowFiveViewModel extends geocortex.framework.ui.ViewModelBase {
+        workflowFiveEnabled: Observable<boolean>;
+        constructor(app: geocortex.framework.application.Application, libraryId?: string);
     }
 }
