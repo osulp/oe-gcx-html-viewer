@@ -4,17 +4,17 @@
 var myApp;
 
 module oe.wildfireRiskPopup {
-
+    
     export class WildfireRiskPopupModuleView extends geocortex.framework.ui.ViewBase {
 
         app: geocortex.essentialsHtmlViewer.ViewerApplication;
-
+        
         constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, lib: string) {
             super(app, lib);
         }
 
-        openWildfireRiskWorkflow = function (event, element, context) {
-                        
+        buildWildfireRiskWorkflowRequest = function (isQuickReport: boolean = false) {
+
             let workflowArgs: any = {};
             workflowArgs.workflowId = "Wildfire_Risk_Report";
 
@@ -38,9 +38,22 @@ module oe.wildfireRiskPopup {
             workflowArgs.reportImageFeatureCollectionJSON = oe.wildfireRiskPopup.reportImageFeatureCollectionJSON;
 
             workflowArgs.reportImageExtent = oe.wildfireRiskPopup.reportImageExtent;
-            workflowArgs.pointLatLong = pointLatLong;            
-                                                            
+            workflowArgs.pointLatLong = pointLatLong;
+
+            workflowArgs.quickReportIn = (isQuickReport) ? true : null;
+
             this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
+
+        }
+                                
+        openWildfireRiskQuickRepoort = function (event, element, context) {
+
+            this.buildWildfireRiskWorkflowRequest(true);
+        };
+
+        openWildfireRiskWorkflow = function (event, element, context, isQuickReport) {
+
+            this.buildWildfireRiskWorkflowRequest();            
         };
                 
     }

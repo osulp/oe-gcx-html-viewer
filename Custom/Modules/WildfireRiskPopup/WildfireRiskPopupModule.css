@@ -8,6 +8,23 @@
     max-height:100%;
 }*/
 
+.WildfireRiskPopupModuleViewButton {
+    padding: .5em;
+    outline: none;
+    background: #F5F5F5;
+    border: 1px solid #CCCCCC;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    color: #1A72C4;
+    box-shadow: 0;
+    cursor:pointer;
+}
+
+.WildfireRiskPopupModuleViewButton:hover {
+    background-color: #1A72C4;
+    color: #ffffff;
+}
+
 .WildfireRiskPopupModuleView 
 {
     height:100%;

@@ -1939,7 +1939,8 @@ var oe;
             __extends(WildfireRiskPopupModuleView, _super);
             function WildfireRiskPopupModuleView(app, lib) {
                 _super.call(this, app, lib);
-                this.openWildfireRiskWorkflow = function (event, element, context) {
+                this.buildWildfireRiskWorkflowRequest = function (isQuickReport) {
+                    if (isQuickReport === void 0) { isQuickReport = false; }
                     var workflowArgs = {};
                     workflowArgs.workflowId = "Wildfire_Risk_Report";
                     workflowArgs.risk_value = $("#WildfireRisk_value").text();
@@ -1959,7 +1960,14 @@ var oe;
                     workflowArgs.reportImageFeatureCollectionJSON = oe.wildfireRiskPopup.reportImageFeatureCollectionJSON;
                     workflowArgs.reportImageExtent = oe.wildfireRiskPopup.reportImageExtent;
                     workflowArgs.pointLatLong = wildfireRiskPopup.pointLatLong;
+                    workflowArgs.quickReportIn = (isQuickReport) ? true : null;
                     this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
+                };
+                this.openWildfireRiskQuickRepoort = function (event, element, context) {
+                    this.buildWildfireRiskWorkflowRequest(true);
+                };
+                this.openWildfireRiskWorkflow = function (event, element, context, isQuickReport) {
+                    this.buildWildfireRiskWorkflowRequest();
                 };
             }
             return WildfireRiskPopupModuleView;
@@ -2047,15 +2055,7 @@ var oe;
                     workingApp.commandRegistry.command("DisableAllLayersForIdentify").execute();
                     //enable fire risk
                     workingApp.command("DisableMapTips").execute();
-                    //$(".WildfireRiskPopupHeaderText").text("Fire Risk Mode Active");    
                     wildfireRiskPopup.fireRiskPopupEnabled = true;
-                    //workingApp.command("RunWorkflowWithArguments").execute({ "workflowId": "myworkflow", "param1":"value1" });
-                    //load the html view
-                    //workingApp.commandRegistry.command("ActivateView").execute("WildfireRiskPopupModuleView");
-                    //create an event for the close button
-                    //$(".WildfireRiskPopupCloseButton").click(closeWildfireRiskPopup);
-                    //$(".WildfireRiskPopupContent").css("display", "none");
-                    //$(".WildfireRiskPopupGuide").css("display", "block");
                 }
                 function disableFireRiskMode() {
                     //clear markup
@@ -2110,7 +2110,6 @@ var oe;
                     loadingDiv.css("display", "block");
                     //swap blocks
                     $(".WildfireRiskPopupContent").css("display", "block");
-                    //$(".WildfireRiskPopupGuide").css("display", "none");
                     //link div
                     linkDiv = $(".WildfireRisk_link");
                     linkDiv.css("display", "none");
@@ -2125,7 +2124,6 @@ var oe;
                     $(".WildfireRiskPopupHeaderText").text("Your Location");
                     //get all the other data
                     requestRemainingData();
-                    //getNearOffice();
                     //create the feature collection
                     workingFeatureCollection = {
                         "id": "Drawings",
@@ -2239,45 +2237,6 @@ var oe;
                         console.log("Error: ", "Add buffer error");
                         return;
                     }
-                    /*var esriLine = esri.symbol.SimpleLineSymbol;
-                    var esriFill = esri.symbol.SimpleFillSymbol;
-                    var esriColor = esri.Color;
-                                                   
-                    var symbolOuter = new esri.symbol.SimpleFillSymbol(
-                        esri.symbol.SimpleFillSymbol.STYLE_NULL,
-                        new esriLine(esriLine.STYLE_SOLID, new esriColor([236, 181, 9, 1]), 2),
-                        null
-                    );
-                    
-                    var symbolInner = new esri.symbol.SimpleFillSymbol(
-                        esri.symbol.SimpleFillSymbol.STYLE_NULL,
-                        new esriLine(esriLine.STYLE_SOLID, new esriColor([222, 86, 27, 1]), 2),
-                        null
-                    );
-                                    
-                    var symbolCurrent;
-                    var newGraphic = <esri.Graphic> null;
-                    var newGraphics = [];
-                    //var jsonGraphicsString = "";
-                    var i = 0;
-                    for (i = 0; i < geometries.length; i++) {
-    
-                        if (i == 0)
-                            symbolCurrent = symbolInner;
-                        else
-                            symbolCurrent = symbolOuter;
-    
-                        newGraphics.push(new esri.Graphic(geometries[i], symbolCurrent));
-    
-                        newGraphic = new esri.Graphic(geometries[i], symbolCurrent);
-    
-                        geometryElementsJsonString += "," + JSON.stringify(newGraphic.toJson());
-                    }
-    
-                    var layerJSON = CreateLayerJSON("imageMapBuffer", "esriGeometryPolygon", newGraphics);
-                    
-                    //add layer JSON
-                    workingFeatureCollection.featureCollection.layers.push(layerJSON);*/
                     //create string
                     wildfireRiskPopup.reportImageFeatureCollectionJSON = JSON.stringify(workingFeatureCollection);
                     //set the report image extent to the geometry
@@ -2487,59 +2446,6 @@ var oe;
                         else
                             $("#WildfireRisk_flame_max").text("No Data");
                     }
-                    //process histogram data
-                    /*if (data.histograms.length > 0) {
-    
-                        counts = data.histograms[0].counts;
-                        
-                        var i = 0;
-                        for (i = 0; i < counts.length; i++) {
-    
-                            //iVal = i * data.histograms[0].max / data.histograms[0].size;
-    
-                            countTotal += counts[i];
-                            //valueTotal += counts[i] * iVal;
-                            valueTotal += counts[i] * i;
-    
-                            //set flameLow
-                            if (counts[i] > 0 && iVal < flameLow) {
-                                flameLow = iVal;
-    
-                                //if (flameLow > 11)
-                                  //  flameLow = 11;
-                            }
-    
-                            //set flameHigh
-                            if (counts[i] > 0 && iVal > flameHigh) {
-                                flameHigh = iVal;
-                            }
-                        }
-    
-                        //flameAverage = Math.round((valueTotal / countTotal) * 10) / 10;
-                        flameAverage = Math.round(valueTotal / countTotal);
-    
-                        if (flameAverage < 1)
-                            flameAverage = 0;
-                        else if (flameAverage == 1)
-                            flameAverage = 0;
-                        else if (flameAverage == 2)
-                            flameAverage = 2;
-                        else if (flameAverage == 3)
-                            flameAverage = 4;
-                        else if (flameAverage == 4)
-                            flameAverage = 9.5;
-                        else if (flameAverage > 4)
-                            flameAverage = 11;
-                    }
-    
-                    if (flameLow == 300)
-                        flameLow = 0;
-    
-                    flameLow = Math.round(flameLow * 10) / 10;
-                    flameHigh = Math.round(flameHigh * 10) / 10;*/
-                    //$("#WildfireRisk_flame_ave").text(flameAverage);                
-                    //$("#WildfireRisk_flame_min").text(flameLow);                
-                    //$("#WildfireRisk_flame_max").text(flameHigh);                
                     AddRequestComplete();
                 }
                 function intensity_fail(error) {
@@ -2633,7 +2539,6 @@ var oe;
                     workingApp.command("ClearMarkupQuiet").execute();
                     //deactivate view
                     workingApp.commandRegistry.command("DeactivateView").execute("WildfireRiskPopupModuleView");
-                    //disableFireRiskMode();
                 }
             };
             return WildfireRiskPopupModuleViewModel;

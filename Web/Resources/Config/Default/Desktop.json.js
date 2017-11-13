@@ -3,6 +3,11 @@
         "version": "2.9",
         "application": {
             "proxyUri": "proxy.ashx?",
+            "contentPolicy": {
+                "disableSecurityPrompt": true,
+                "disablePromptOnImages": true,
+                "trustExactUrl": false
+            },
             "allowUnsafeContent": true,
             "offlineStorageSpaceMb": "50",
             "geometryServiceUrl": "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer"
