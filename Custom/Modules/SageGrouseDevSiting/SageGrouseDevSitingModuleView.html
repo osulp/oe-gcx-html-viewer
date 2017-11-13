@@ -1,0 +1,76 @@
+﻿<a href="#"></a>
+<div class="module workflow-form" dir="ltr">
+    <h2>Estimated Mitigation Report</h2>
+    <h4>Summary</h4>
+    <hr />
+    <div>
+        <span class="data-label">Project Name:</span>
+        <span class="data" data-binding="{@text:projectName}"></span>
+    </div>
+    <div>
+        <span class="data-label">Development Type:</span>
+        <span class="data" data-binding="{@text:devType}"></span>
+    </div>
+    <div id="btn-row">
+        <div class="btn-cell">
+            <div data-binding="{@event-onclick:getPDF}">Full PDF Report</div>
+        </div>
+       <div class="btn-cell">
+           <div data-binding="{@event-onclick:downloadShapefiles}">Download Shapefiles</div>
+       </div>
+    </div>
+    <hr>
+    <fieldset>
+        <legend>
+            Compensatory Mitigation
+        </legend>
+        <div id="chart-wrapper">
+            <img width="225" data-binding="{src: chartURL}">
+            <div>Compensatory Mitigation Estimate: <span data-binding="{@text:compensatoryMitigation}"></span></div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Area</legend>
+        <div>
+            <span class="data-label">Direct Project Area:</span>
+            <span class="data" data-binding="{@text:directArea}"></span>
+        </div>
+        <div>
+            <span class="data-label">Buffered Area:</span>
+            <span class="data" data-binding="{@text:indirectArea}"></span>
+        </div>
+        <div>
+            <span class="data-label">Buffered to </span>
+            <span class="data" data-binding="{@text:bufferDist}"></span>
+        </div>
+        <div>
+            <span class="data-label">Non-Habitat in buffered area:</span>
+            <span class="data" data-binding="{@text:nonHabArea}"></span>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Habitat</legend>
+        <div>
+            <span class="data-label">Habitat Designations: </span>
+            <span class="data" data-binding="{@text:habDesig}"></span>
+        </div>
+        <div>
+            <span class="data-label">Within 3.1 miles of a Lek? </span>
+            <span class="data" data-binding="{@text:isLek}"></span>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Land management/ownership</legend>
+        <div data-binding="{@text:landManagement}"></div>
+    </fieldset>
+    <fieldset>
+        <legend>Contact Information</legend>
+        <div data-binding="{innerHTML:countyContacts}"></div>
+        <div data-binding="{innerHTML:blmContacts}"></div>
+    </fieldset>
+    <div style="text-align:right; width:100%; display: inline-block;" class="form-btns">
+        <!--<button id="okBtn" class="button" type="button" data-binding="{@event-onclick:runNewReport}"><< New Report</button>
+        <button id="okBtn" class="button" type="button" data-binding="{@event-onclick:getPDF}">Continue >></button>-->
+        <button id="cancelBtn" class="button" type="button" data-binding="{@event-onclick:cancelForm}">Close</button>
+    </div>
+</div>

@@ -1188,7 +1188,6 @@ declare module geocortex.framework.utils {
         protected execute(scope: ThrottledOperation): void;
     }
 }
-declare var require: any;
 declare module geocortex.framework.ui {
     /**
      * Represents a single binding expression.
@@ -2037,6 +2036,7 @@ declare module geocortex.framework.config {
         uri: string;
         omitStyles?: boolean;
         locales: LibraryConfigLocale[];
+        async?: boolean;
     }
     interface ModuleJson {
         moduleName: string;
@@ -2212,16 +2212,6 @@ declare module geocortex.framework.storage {
     }
 }
 declare module geocortex.framework.storage {
-    /**
-     * String constants that represent the various types of {@link DOMError} and {@link DOMException}.
-     */
-    class ErrorType {
-        static QUOTA_EXCEEDED_ERR: string;
-        static NOT_FOUND_ERR: string;
-        static SECURITY_ERR: string;
-        static INVALID_MODIFICATION_ERR: string;
-        static INVALID_STATE_ERR: string;
-    }
     class FileStorageProvider extends storage.StorageProviderBase {
         /** Filesystem object we are (hopefully) granted. */
         private _filesystem;
@@ -2312,7 +2302,7 @@ declare module geocortex.framework.storage {
          */
         private _readValue(key, successCallback, errorCallback, shared?);
         /**
-         * If passed a DOMError or DOMException, this method will format a message for it and return a regular Error object.
+         * If passed a FileError, this method will format a message for it and return a regular Error object.
          * This is to avoid "leaking" File API implementation details through the StorageProviderBase interface.
          * @param {Error} e
          */

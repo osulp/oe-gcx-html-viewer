@@ -2,7 +2,7 @@
 /// <reference path="arcgis-js-api.d.ts" />
 /// <reference path="dojo.d.ts" />
 /// <reference path="modernizr.d.ts" />
-/// <reference path="bluebird.d.ts" />
+/// <reference path="bluebird-global.d.ts" />
 /// <reference path="essentials.d.ts" />
 /// <reference path="moment.d.ts" />
 /// <reference path="globalize.d.ts" />
@@ -661,7 +661,7 @@ declare module geocortex.framework.commands {
          * @gcx-command-category Highlighting
          */
         (commandName: "CreateHighlightLayer"): TypedCommand<{
-            (layerName: string, fillColor?: any, borderColor?: any): void;
+            (layerName: string, fillColor?: any, borderColor?: any, sharedGraphicsLayer?: boolean): void;
         }>;
         /**
          * Activates the markup style picker view based on the type name of geometry provided.
@@ -2054,15 +2054,15 @@ declare module geocortex.framework.commands {
             (): void;
         }>;
         /**
-         * Removes specific layer catalog item like layer or map service(will not work for map service which has multiple layers like dynamicmapService).
+         * Removes specific catalog layers.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @param arg item to be removed
-         * @name RemoveLayerCatalogItem
+         * @param args A string array of CatalogIds to be removed.
+         * @name RemoveLayerCatalogIds
          * @introduced 2.7
          * @gcx-command-category Layer Catalog
          */
-        (commandName: "RemoveLayerCatalogItem"): TypedCommand<{
-            (arg: any): void;
+        (commandName: "RemoveLayerCatalogIds"): TypedCommand<{
+            (args: string[]): void;
         }>;
         /**
          * Calls a geometry service to project geometries between different coordinate systems.
@@ -2468,33 +2468,6 @@ declare module geocortex.framework.commands {
             (args: geocortex.essentialsHtmlViewer.mapping.infrastructure.commandArgs.VisualizationArgs | string): void;
         }>;
         /**
-         * Removes any custom symbolization from a layer and returns it to the default state.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name RemoveVisualization
-         * @param args An object containing a gcxLayer parameter, which is either a {@link essentials.Layer} or a string giving the layer id.
-         * @introduced 2.7
-         * @gcx-command-category Visualization
-         */
-        (commandName: "RemoveSymbolization"): TypedCommand<{
-            (args: {
-                gcxLayer: essentials.Layer | string;
-            }): void;
-        }>;
-        /**
-         * Applies the supplied renderer to the supplied layer. Layer must be a feature layer or a dynamic mapservice layer that supports resymbolization.
-         * @docs-gcx-command geocortex.essentialsHtmlViewer
-         * @name RemoveVisualization
-         * @param args An object containing a gcxLayer parameter, which is either a {@link essentials.Layer} or a string giving the layer id and a renderer parameter, which is either an esri.renderer.Renderer object or the JSON string representation of one.
-         * @introduced 2.7
-         * @gcx-command-category Visualization
-         */
-        (commandName: "ResymbolizeLayer"): TypedCommand<{
-            (args: {
-                gcxLayer: essentials.Layer | string;
-                renderer: esri.renderer.Renderer | string;
-            }): void;
-        }>;
-        /**
          * Assigns a new name to a saved selection.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name RenameSelection
@@ -2725,33 +2698,36 @@ declare module geocortex.framework.commands {
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name SetHighlightBorderColor
          * @param color A 6 or 8 digit hex string representation of the color in RGB or ARGB form, respectively.
+         * @param layer The name of the highlight layer to set (default if left out)
          * @introduced 1.2
          * @gcx-command-category Highlighting
          */
         (commandName: "SetHighlightBorderColor"): TypedCommand<{
-            (color: string): void;
+            (color: string, layer?: string): void;
         }>;
         /**
          * Sets the current highlight border width to use, if the feature does not specify one.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name SetHighlightBorderWidth
          * @param width A number representing the width in pixels.
+         * @param layer The name of the highlight layer to set (default if left out)
          * @introduced 2.7
          * @gcx-command-category Highlighting
          */
         (commandName: "SetHighlightBorderWidth"): framework.commands.TypedCommand<{
-            (width: number): void;
+            (width: number, layer?: string): void;
         }>;
         /**
          * Sets the current highlight fill color to use, if the feature does not specify one.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name SetHighlightFillColor
          * @param color A 6 or 8 digit hex string representation of the color in RGB or ARGB form, respectively.
+         * @param layer The name of the highlight layer to set (default if left out)
          * @introduced 1.2
          * @gcx-command-category Highlighting
          */
         (commandName: "SetHighlightFillColor"): TypedCommand<{
-            (color: string): void;
+            (color: string, layer?: string): void;
         }>;
         /**
          * Sets the measurement units for the measurements performed by the measurement module.  Also updates existing measurements already on the map.
@@ -4217,7 +4193,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.accessibili
         isZoomSlider?: boolean;
     }
 }
-declare var require: any;
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
     interface TransformationResult {
         geometry: esri.geometry.Geometry;
@@ -7418,7 +7393,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.accessibili
         protected _raiseEditVertexMoved(eventArgs: eventArgs.EditVertexMovedEventArgs): void;
     }
 }
-declare var require: any;
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.accessibility {
     /**
      * The Edit toolbar is a helper class that provides functionality to move graphics or
@@ -7889,7 +7863,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.accessibili
         protected _disableVertexEditing(): void;
     }
 }
-declare var require: any;
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.accessibility {
     /**
      * Toolbar that supports functionality to create new geometries by drawing them: points (POINT or MULTI_POINT),
@@ -8127,7 +8100,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.accessibili
         /** Starts digitizing polygons, polylines or multi-points via the keyboard. Returns a promise that is fulfilled once the user completes the drawing. */
         protected _drawPolyGeometry(start: esri.geometry.Point, geometryType: string): Promise<esri.geometry.Geometry>;
         /** Handles keyboard input for plotting polygons, polylines and multipoints. */
-        protected _drawPolyGeometry_handleKeyDown(resolve: (result: esri.geometry.Geometry | Promise.Thenable<esri.geometry.Geometry>) => void, reject: (error: any) => void): dojo.RemovableHandle;
+        protected _drawPolyGeometry_handleKeyDown(resolve: (result: esri.geometry.Geometry | Promise<esri.geometry.Geometry>) => void, reject: (error: any) => void): dojo.RemovableHandle;
         /** Plots a shape on the map. It will produce either a default shape (e.g. circle) or a shape digitized via the keyboard (e.g. polygon) */
         protected _plotShape(location: esri.geometry.Point, geometryType: string): Promise<esri.geometry.Geometry>;
         protected _editShape(geometry: esri.geometry.Geometry): void;
@@ -10240,10 +10213,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
         clearHighlights(graphicsLayer: esri.layers.GraphicsLayer): void;
         clearHighlights(layerName?: string): void;
         /**
-         * Called when LayerVisualizationChangedEvent fires. Will reapply highlight symbology using the renderer currently active on the layer.
-         */
-        refreshHighlights(): void;
-        /**
          * Gets the current fill color.
          * Returns the 6 or 8 digit hex color in RGB or ARGB form.
          */
@@ -10705,6 +10674,30 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.menus {
         protected _validateMenuModel(menuModel: MenuModel): boolean;
     }
 }
+
+declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.clickableGraphics {
+    class ClickableGraphicsRegistry {
+      constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication);
+      register(graphicsLayer: esri.layers.GraphicsLayer, options?: ClickableOptions): void;
+      unregister(graphicsLayer: esri.layers.GraphicsLayer): void;
+      getLayerInfo(graphicsLayer: esri.layers.GraphicsLayer): ClickableLayerInfo;
+      getLayerInfos(): ClickableLayerInfo[];
+      clear(): void;
+      isLayerRegistered(graphicsLayer: esri.layers.GraphicsLayer): boolean;
+    }
+
+    interface ClickableLayerInfo {
+        graphicsLayerId: string;
+        autoEditable: boolean;
+        displayName: string;
+    }
+
+    interface ClickableOptions {
+        displayName: string;
+        autoEditable: boolean;
+    }
+}
+
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.tools {
     class ToolBase implements ToolConfig {
         /**
@@ -11625,14 +11618,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
          * A filter that determines which properties to save and restore for user-added map services.
          */
         protected _gcxMapServiceDefinitionFilter: Object;
-        /**
-         * Maps a result type to a cache of excluded Geocortex/Esri API objects for that type.
-         * Excluded objects are not converted to their project equivalents.
-         */
-        private _exclusionCache;
-        exclude(object: any, destType: string): void;
-        clearExclusionCache(): void;
-        clearCache(): void;
         fromGcxMapService(mapService: essentials.MapService): project.ServiceLayer;
         fromGcxLayer(layer: essentials.Layer): project.Layer;
         fromGcxFeatureSetCollection(fsc: infrastructure.FeatureSetCollection): project.FeatureSetCollection;
@@ -13532,7 +13517,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerSelect
         clearAllButtonText: Observable<string>;
         selectAllButtonTitle: Observable<string>;
         clearAllButtonTitle: Observable<string>;
-        private _layerSelectorInitialized;
         constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, libraryId?: string);
         initialize(config: any): void;
         /**
@@ -13589,7 +13573,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerSelect
         protected _handleMapServicesAdded(ms: essentials.MapService): void;
         protected _handleMapServiceRemoved(ms: essentials.MapService): void;
         protected _handleMapServiceLayersChanged(args: eventArgs.MapServiceLayersChangedEventArgs): void;
-        protected _waitUntilLayerSelectorInitialized(): Promise<void>;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.nativeIntegration {
@@ -13624,6 +13607,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
      */
     class ProjectFilter {
         app: ViewerApplication;
+        private _baseMapLayer;
         private _coordinateSystem;
         private _drawingInfo;
         private _feature;
@@ -13631,15 +13615,17 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
         private _featureSet;
         private _featureSetCollection;
         private _graphic;
+        private _layer;
         private _layerDefinition;
+        private _operationalLayer;
+        private _serviceLayer;
         protected _webMapFilter: webMap.WebMapFilter;
         private _numberValidator;
         private _urlValidator;
-        private _serviceDiscoveryUrlValidator;
         private _xssHtmlValidator;
         constructor(app: ViewerApplication);
         baseMap: any;
-        baseMapLayer: (baseLayer: BaseMapLayer) => any;
+        baseMapLayer: any;
         bookmark: any;
         color: any;
         coordinateSystem: any;
@@ -13660,11 +13646,11 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
         polyline: any;
         polygon: any;
         extent: any;
-        layer: (lyr: Layer) => any;
+        layer: any;
         layerDefinition: any;
-        operationalLayer: (opLayer: OperationalLayer) => any;
+        operationalLayer: any;
         renderer: any;
-        serviceLayer: (svcLayer: ServiceLayer) => any;
+        serviceLayer: any;
         simpleRenderer: any;
         uniqueValueRenderer: any;
         classBreaksRenderer: any;
@@ -13684,14 +13670,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
          */
         object: any;
         protected _serviceLayerCommon: any;
-        /**
-         * Gets an appropriate url validator instance based on the supplied layer or service.
-         */
-        protected _getUrlValidator(layerOrService: Layer | ServiceLayer): validation.Validator<string>;
-        private _getUserLayerType(layerOrService);
-        private _isFeatureCollection(serviceLayer);
-        private _isKmlLayer(serviceLayer);
-        private _isLayerCatalogService(serviceLayer);
     }
 }
 /**
@@ -14040,7 +14018,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bun
         unhackedRequesthandler: (request: EsriRequest, options: EsriRequestOptions) => dojo.Deferred;
         name: string;
         constructor(app: ViewerApplication, unhackedRequesthandler: (request: EsriRequest, options: EsriRequestOptions) => dojo.Deferred);
-        handle(request: bundle.RequestContext, rule: bundle.RoutingRule, matches: RegExpExecArray, cancellationToken: CancellationToken): boolean;
+        handle(request: bundle.RequestContext, rule: bundle.RoutingRule, matches: RegExpExecArray): boolean;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle.offlineHandlers {
@@ -14049,7 +14027,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bun
      */
     class FailHandler implements OfflineHandler {
         name: string;
-        handle(request: RequestContext, rule: RoutingRule, matches: RegExpExecArray, cancellationToken: CancellationToken): boolean;
+        handle(request: RequestContext, rule: RoutingRule, matches: RegExpExecArray): boolean;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bundle.offlineHandlers {
@@ -14072,7 +14050,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bun
          * @param matches Regexp capturing groups from the rule pattern.
          * @return Whether the rule successfully handled the request.
          */
-        handle(request: RequestContext, rule: RoutingRule, matches: RegExpExecArray, cancellationToken: CancellationToken): boolean;
+        handle(request: RequestContext, rule: RoutingRule, matches: RegExpExecArray): boolean;
     }
     /**
      * A useful util function.  Sets the load and error callbacks onto the deferred
@@ -14090,7 +14068,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bun
         unhackedRequesthandler: (request: EsriRequest, options: EsriRequestOptions) => dojo.Deferred;
         constructor(app: ViewerApplication, unhackedRequesthandler: (request: EsriRequest, options: EsriRequestOptions) => dojo.Deferred);
         name: string;
-        handle(request: bundle.RequestContext, rule: bundle.RoutingRule, matches: RegExpExecArray, cancellationToken: CancellationToken): boolean;
+        handle(request: bundle.RequestContext, rule: bundle.RoutingRule, matches: RegExpExecArray): boolean;
         /**
          * Rewrites a request's URL.
          */
@@ -14124,7 +14102,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bun
          * @param matches Regex capturing groups.
          * @return Whether the request was successfully handled.
          */
-        handle(request: RequestContext, rule: RoutingRule, matches: RegExpExecArray, cancellationToken: CancellationToken): boolean;
+        handle(request: RequestContext, rule: RoutingRule, matches: RegExpExecArray): boolean;
         /**
          * Serve all future requests with resources from the given bundle.
          * @param bundle The bundle to serve from.
@@ -14175,7 +14153,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.offline.bun
          * @param unhackedRequesthandler Unhacked esri.request.
          */
         constructor(app: ViewerApplication, siteJsonGetter: (key: string) => Promise<any>, unhackedRequesthandler: (request: EsriRequest, options: EsriRequestOptions) => dojo.Deferred);
-        handle(request: RequestContext, rule: RoutingRule, matches: RegExpExecArray, cancellationToken: CancellationToken): boolean;
+        handle(request: RequestContext, rule: RoutingRule, matches: RegExpExecArray): boolean;
         private _hasToken(request);
         private _getOnlineSitePrincipal(request);
         /**
@@ -15032,17 +15010,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
         isDynamic?: boolean;
         /** The id of the currently enabled layer style, if any. */
         layerStyleId?: string;
-        /** Whether or not the layer was created by a user at runtime **/
-        isUserCreated?: boolean;
-        /**
-         * The type of user created layer, if any. One of:
-         *  - LayerAddition - the layer was added by browsing/searching for services and layers in a dialog
-         *  - LayerCatalog - the layer was added from a catalog
-         *  - Upload - the layer was added by uploading a file
-         *
-         * Only applies to layers created at runtime.
-         */
-        userLayerType?: string;
         /** The geocortex layer definition as returned from essentials.Layer.toJson(). Used for user-added layers. */
         gcxLayerDefinition?: any;
     }
@@ -15106,8 +15073,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
         current: Project;
         /** Whether project state is currently being applied. */
         isLoading: boolean;
-        /** Reference to the service discovery API */
-        private _serviceDiscovery;
         constructor(app: ViewerApplication);
         /**
          * Creates a new, empty project.
@@ -15179,18 +15144,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
          * @return A promise containing the project being validated.
          */
         validateProjectOwnership(project: Project): Promise<Project>;
-        protected _initializeDiscoveryProvider(): Promise<void>;
-        /**
-         * Validates whether or not the given map service is in the service discovery URL whitelist.
-         */
-        protected _validateAgainstServiceDiscovery(mapService: essentials.MapService): Promise<{
-            mapService: essentials.MapService;
-            trusted: boolean;
-        }>;
-        /**
-         * Provides an opportunity to exclude certain objects from being stored in projects.
-         */
-        protected _excludeUnsafeState(): Promise<void>;
         /**
          * Gets the current state of the application.
          */
@@ -15234,18 +15187,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.project {
     interface ServiceLayer extends webMap.ServiceLayer {
         layers: project.Layer[];
-        /** Whether or not the service was created by a user at runtime **/
-        isUserCreated?: boolean;
-        /**
-         * The type of user created layer, if any. One of:
-         *  - LayerAddition - the layer was added by browsing/searching for services and layers in a dialog
-         *  - LayerCatalog - the layer was added from a catalog
-         *  - Upload - the layer was added by uploading a file
-         *
-         * Only applies to layers created at runtime.
-         */
-        userLayerType?: string;
-        /** The geocortex map service definition as returned from essentials.MapService.toJson(). Used for user-added map services. */
         gcxMapServiceDefinition?: any;
     }
 }
@@ -16900,18 +16841,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.componen
          * If true, and if the slider is in range mode, locks the first slider handle at the slider min val. Defaults to false.
          */
         lockMinSliderHandleAtMinVal?: boolean;
-        /**
-         * A language string to be applied to the aria-label of the slider min handle if in range mode. This is for WCAG compliance. If not defined, the currently selected time will be set as the label.
-         */
-        sliderMinHandleAriaLabel?: string;
-        /**
-        * A language string to be applied to the aria-label of the slider max handle if in range mode. This is for WCAG compliance. If not defined, the currently selected time will be set as the label.
-        */
-        sliderMaxHandleAriaLabel?: string;
-        /**
-        * A language string to be applied to the aria-label of the slider handle if it is not in range mode. This is for WCAG compliance. If not defined, the currently selected time will be set as the label.
-        */
-        sliderSingleHandleAriaLabel?: string;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Slider {
@@ -16965,11 +16894,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.componen
         protected _maxHandleBindingToken: string;
         protected _isEnabledBindingToken: string;
         protected _isAdded: boolean;
-        protected _minHnadleLocked: boolean;
-        protected _maxHandleLocked: boolean;
-        protected _minHandleTag: string;
-        protected _maxHandleTag: string;
-        protected _currPosForComputedDirection: number[];
         /** @inherited */
         attach(viewModel: SliderViewModelBase<T>): void;
         added(widgetViewHost?: framework.ui.ViewBase): void;
@@ -16983,16 +16907,11 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.componen
             value: number;
             values?: number[];
         }): boolean;
-        protected _dateModeRawValueSlide(event: JQueryEventObject, ui: {
+        protected _handleSliderRawValueSlide(event: Event, ui: {
             handle: HTMLElement;
             value: number;
             values?: number[];
         }): boolean;
-        protected _handleSliderRawValueSlide(event: JQueryEventObject, ui: {
-            handle: HTMLElement;
-            value: number;
-            values?: number[];
-        }, directionRight?: boolean): boolean;
         protected _getSliderHandleIndex(ui: {
             handle: HTMLElement;
             value: number;
@@ -17011,7 +16930,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.componen
          * @param rawValue The raw value to set.
          */
         protected _setSliderRawValue(handleIndex: number, rawValue: number): void;
-        protected _updateSliderHandleAttributes(handleIndex: number): void;
         private _updateLabelPosition(handleIndex);
         /**
          * Updates the label for the given handle. This will be invoked automatically when the currently selected item is updated in the view model.
@@ -17021,7 +16939,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.componen
         protected _processInitRoutine(): void;
         protected _initializeIfEnabled(val: boolean): void;
         protected _cleanUp(clearIsEnabledBinding?: boolean): void;
-        protected _wireInKeyboardSupport(): void;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Slider {
@@ -17129,18 +17046,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.componen
          * The time interval unit for this slider if it has been invoked in date mode.
          */
         dateModeTimeIntervalUnit: essentials.TimeUnits;
-        /**
-         * A language string to be applied to the aria-label of the slider min handle if in range mode. This is for WCAG compliance. If not defined, the currently selected time will be set as the label.
-         */
-        sliderMinHandleAriaLabel: string;
-        /**
-        * A language string to be applied to the aria-label of the slider max handle if in range mode. This is for WCAG compliance. If not defined, the currently selected time will be set as the label.
-        */
-        sliderMaxHandleAriaLabel: string;
-        /**
-        * A language string to be applied to the aria-label of the slider handle if it is not in range mode. This is for WCAG compliance. If not defined, the currently selected time will be set as the label.
-        */
-        sliderSingleHandleAriaLabel: string;
         /**
          * The underlying collection of observable items, if any, that this slider is bound to.
          * WARNING: Do not modify this collection in any manner whatsoever since it is a reference to an external observableCollection we're binding to.
@@ -18415,7 +18320,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.gis {
         refresh(refreshTimeoutMs?: number, disableClientCaching?: boolean): void;
         /**
          * Returns whether or not this service supports layer visibility.
-        */
+         */
         supportsLayerVisibility(): boolean;
         private _loadedDeferred;
         loaded(): dojo.Deferred;
@@ -18600,7 +18505,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
         removeServiceLayer(servicelayer: geocortex.essentials.MapService): boolean;
         removeServiceLayer(serviceLayer: esri.layers.Layer): boolean;
         removeServiceLayer(servicelayer: gis.ServiceLayerInfo): boolean;
-        private _isItemSafeToBeRemoved(listItem, sl);
         /**
          * Updates the layer list with the adds and removes for the given service. It will not add duplicate items.
          * @param mapService The {@link essentials.MapService} or {@link: infrastructure.gis.ServiceLayerInfo} that contains the updates.
@@ -18664,7 +18568,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
         /**
          * @private Performs any processing that may be needed for items
          */
-        private _processItem(item, jsonRestItem);
+        private _processItem(item, jsonRestItem?);
         /**
          * @private Edge case: If a tiled map service has nested sublayers, then intermediary layers will be converted into folders. These folders should have "canNotAssignVisibility"
          * set to true because all their children will be layers for which we cannot assign visibility and which in effect, cannot be controlled by the parent.
@@ -18963,16 +18867,12 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
         */
         populateMapServicesInParentFolders(): void;
         /**
-         * Returns true if a given layer list item is either not a folder but in the active theme, or if it is a folder, has at least one non-folder item in it's sub tree
-         * which is in the active theme and can be displayed in the layer list OR is hidden but participates in the layer list.
-         * @param item Optional parameter. If specified, will perform computation on the given item, otherwise will defau8lt to this layer list item.
-         */
-        displayInLayerList(item?: LayerListItem): boolean;
-        /**
          * Applies the previously deferred visibility (if any) to this item after the complete layer list model is set up and ready
          */
         _applyDeferredInitialVisibility(): void;
         _setupOpacityBindings(): void;
+        /** @private */
+        private _notFolderOrContainsAtLeastOneChildLayer(item);
         /** @protected */
         protected _handleLayerThemeChangingEvent(args: {
             currTheme: geocortex.essentials.LayerTheme;
@@ -18983,7 +18883,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.layerList {
             currTheme: geocortex.essentials.LayerTheme;
             prevTheme: geocortex.essentials.LayerTheme;
         }): void;
-        protected _updateDisplayItem(): void;
+        private _updateDisplayItem();
         private _onActiveThemeChanged(value);
         private _processLegendVisibility();
         /**
@@ -19885,42 +19785,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.validation 
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.validation {
     /**
-     * A validator that determines whether the input is a URL that is defined by the Essentials site
-     * (i.e. the URL either matches the site endpoint or one of its services).
-     */
-    class SiteUrlValidator implements Validator<string> {
-        app: ViewerApplication;
-        private _allowedUrls;
-        constructor(app: ViewerApplication);
-        executeClearTrustedUrls(): void;
-        validate(value: string, context?: any): Promise<ValidationResult<string>>;
-        tryValidateSynchronously(value: string): boolean;
-        protected _isMatch(allowedUrl: Location, testUrl: Location): boolean;
-        protected _initializeAllowedUrls(): Promise<void>;
-        protected _allowUrl(url: string): void;
-        protected _extractUrls(text: string): string[];
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.validation {
-    /**
-     * A validator that determines whether the input is a URL that is allowed by the Service Discovery whitelist as defined by the administrator.
-     * It extends {@link SiteUrlValidator} so site URL validation rules apply as well
-     * (i.e. the URL either matches a service connection, the site endpoint or one of its services).
-     */
-    class ServiceDiscoveryUrlValidator extends SiteUrlValidator implements Validator<string> {
-        app: ViewerApplication;
-        /** Reference to the service discovery API */
-        protected _serviceDiscovery: essentials.serviceDiscovery.ServiceDiscoveryProvider;
-        constructor(app: ViewerApplication, discoveryProvider?: essentials.serviceDiscovery.ServiceDiscoveryProvider);
-        getDiscoveryProvider(): essentials.serviceDiscovery.ServiceDiscoveryProvider;
-        setDiscoveryProvider(provider: essentials.serviceDiscovery.ServiceDiscoveryProvider): void;
-        validate(value: string, context?: any): Promise<ValidationResult<string>>;
-        protected _validate(value: string, context?: any): Promise<ValidationResult<string>>;
-        protected _initializeDiscoveryProvider(): Promise<void>;
-    }
-}
-declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.validation {
-    /**
      * Validator which sanitizes HTML content to eliminate XSS (cross-site scripting) security risks.
      * This validator has some special functionality surrounding the handling of URIs as they are sanitized:
      *  - When the HTML is sanitized, we place all URIs into an array, replacing them in the HTML with replacement tokens.
@@ -20006,6 +19870,24 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.validation 
     interface XssHtmlValidatorConstructorOptions {
         /** Content policy that is specific to this validator, overriding the content policy given as context to validate(). */
         contentPolicy?: ContentPolicy;
+    }
+}
+declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.validation {
+    /**
+     * A validator that determines whether the input is a URL that is defined by the Essentials site
+     * (i.e. the URL either matches the site endpoint or one of its services).
+     */
+    class SiteUrlValidator implements Validator<string> {
+        app: ViewerApplication;
+        private _allowedUrls;
+        constructor(app: ViewerApplication);
+        executeClearTrustedUrls(): void;
+        validate(value: string, context?: any): Promise<ValidationResult<string>>;
+        tryValidateSynchronously(value: string): boolean;
+        protected _isMatch(allowedUrl: Location, testUrl: Location): boolean;
+        protected _initializeAllowedUrls(): Promise<void>;
+        protected _allowUrl(url: string): void;
+        protected _extractUrls(text: string): string[];
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.validation {
@@ -20241,20 +20123,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.visualizati
         markerStyleIdLookup: {
             [id: string]: string;
         };
-        /**
-         * Temporary cache of ArcGIS Server query responses created by symbolization. Indexed by a hash of url + field + extent. Cleared when changing layers.
-         *
-         * Some configurations of layer extent, map extent and renderer type will cause multiple query requests with the same parameters to occur.
-         * This is bad for two reasons:
-         *
-         * 1:  Requests to ArcGIS Server are often sent with no-cache headers, so the identical requests cannot be counted on to 304.
-         *     But it's ok if they do, as they are separated only by milliseconds in practice.
-         *
-         * 2:  When the requests *do* 304, a strange bug is exposed in *Chrome only* where the esri (dojo) request will timeout
-         *     and not recieve results even though it is an immediate 304. This causes the code to hang for a full minute *before* dropping into the error handler.
-         *     Hopefully this will be fixed in the future, as I can't figure out at all why this should occur, or which part of the stack is at fault here.
-         */
-        queryResults: esri.tasks.FeatureSet[];
         /** Track when we are in the process of symbolizing, so that the event change handler doesn't initiate multiple symbolization passes */
         symbolizing: boolean;
         /**
@@ -20328,13 +20196,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.visualizati
          * @param field
          */
         getFieldInfo(field: essentials.Field): Promise<gis.FieldInfo>;
-        /**
-         * Looking for coded domains *just* on the ESRI field...
-         * fieldInfo.isCodedValueDomain() returns false positives, as it creates fake 'domains' when there is a subtype defined.
-         * @param fieldInfo
-         */
-        hasCodedDomain(fieldInfo: gis.FieldInfo): boolean;
-        stringToHash(input: string): number;
     }
 }
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.DataClassification {
@@ -20476,17 +20337,17 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.visualizati
          */
         toHex(): string;
         /**
-         * Darkens the color by an amount and returns a new SymbolColor
+         * Darkens the color by an amount and returns a hex string
          * @param amount ranges from 0..1
          */
         darken(amount: number): SymbolColor;
         /**
-         * Lightens the color by an amount and returns a new SymbolColor
+         * Lightens the color by an amount and returns a hex string
          * @param amount ranges from 0..1
          */
         lighten(amount: number): SymbolColor;
         /**
-         * Blend this color with another by an amount and return a new SymbolColor
+         * Blend this color with another by an amount and return a new color
          * Uses linear interpolation in the RGB colorspace.
          * @param amount ranges from 0..1
          * @param color another instance of SymbolColor
@@ -21690,7 +21551,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
          * result. A filter can take on one of the following values:
          *   1. A boolean value. If true, then the value will be retained, otherwise it will be discarded.
          *   2. An object. Each property defined on the filter is itself a filter that is applied to the equivalent
-         * property on the original object. Any properties that are not defined in the filter are automatically
+         * property on the orginal object. Any properties that are not defined in the filter are automatically
          * excluded from the original object.
          *   3. An instance of {@link validation.Validator}. The value will be checked against
          * the validator's `validate()` method, and will be kept only if the validation is successful.

@@ -1,4 +1,4 @@
-/// <reference path="../_Definitions/bluebird.d.ts" />
+/// <reference path="bluebird-global.d.ts" />
 declare module geocortex.essentialsHtmlViewer.integration {
     class MessageBroker<T extends MessageTransport<any, any>> {
         onReady: (message: protocol.HandshakeResponse) => void;
@@ -71,7 +71,7 @@ declare module geocortex.essentialsHtmlViewer.integration {
         detach(): void;
         allowOrigin(origin: string): void;
         setTargetOrigin(origin: string): void;
-        send<T extends protocol.Message<any>>(message: T): MessageReceipt<protocol.Message<any>>;
+        send<T extends protocol.Message<any>>(message: T): MessageReceipt<T>;
         protected _sendMessage(message: protocol.Message<any>): MessageReceipt<protocol.Message<any>>;
         protected _handleMessage(message: MessageEvent): void;
     }
@@ -90,7 +90,11 @@ declare module geocortex.essentialsHtmlViewer.integration.protocol {
         flags?: number;
         payload?: T;
     }
-    interface HandshakeRequest extends Message<string> {
+    interface HandshakeRequest extends Message<HandshakeRequestArgs> {
+    }
+    interface HandshakeRequestArgs {
+        id: string;
+        addViewpointIndicator?: boolean;
     }
     interface HandshakeResponse extends Message<string> {
     }

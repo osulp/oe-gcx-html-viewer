@@ -1,6 +1,6 @@
 /// <reference path="Framework.d.ts" />
 /// <reference path="Charting.Infrastructure.d.ts" />
-/// <reference path="kendo.dataviz.d.ts" />
+/// <reference path="kendo.all.d.ts" />
 /// <reference path="Framework.UI.d.ts" />
 /// <reference path="JQuery.d.ts" />
 /// <reference path="dojo.d.ts" />
@@ -298,8 +298,8 @@ declare module geocortex.charting {
     }
 }
 /**
- * Houses models and services involved with producing HTML5 charts based on spatial and non-spatial data.
- */
+* Houses models and services involved with producing HTML5 charts based on spatial and non-spatial data.
+*/
 declare module geocortex.charting {
 }
 /**
