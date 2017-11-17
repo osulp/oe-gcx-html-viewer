@@ -23,6 +23,8 @@ module oe.SageGrouseDevSiting {
         landManagement: Observable<string> = new Observable<string>("");
         countyContacts: Observable<string> = new Observable<string>("");
         blmContacts: Observable<string> = new Observable<string>("");
+        avoidance: Observable<string> = new Observable<string>("");
+        minimization: Observable<string> = new Observable<string>("");
 
         constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, lib: string) {
             super(app, lib);
@@ -51,6 +53,8 @@ module oe.SageGrouseDevSiting {
                 thisViewModel.landManagement.set(myWorkflowContext.getValue("landManagement"));
                 thisViewModel.countyContacts.set(myWorkflowContext.getValue("countyContacts"));
                 thisViewModel.blmContacts.set(myWorkflowContext.getValue("blmContacts"));
+                thisViewModel.avoidance.set(myWorkflowContext.getValue("avoidance") === 'True' ? 'may' : 'will not' );
+                thisViewModel.minimization.set(myWorkflowContext.getValue("minimizations"));
             });
         }
 
