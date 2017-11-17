@@ -2010,7 +2010,7 @@ var oe;
                     thisViewModel.bufferDist.set(myWorkflowContext.getValue("bufferDist") + " km");
                     thisViewModel.nonHabArea.set(myWorkflowContext.getValue("nonHabArea") + " Acres");
                     thisViewModel.habDesig.set(myWorkflowContext.getValue("habDesig"));
-                    thisViewModel.isLek.set(myWorkflowContext.getValue("isLek"));
+                    thisViewModel.isLek.set(myWorkflowContext.getValue("isLek") === 'True' ? 'Yes' : 'No');
                     thisViewModel.landManagement.set(myWorkflowContext.getValue("landManagement"));
                     thisViewModel.countyContacts.set(myWorkflowContext.getValue("countyContacts"));
                     thisViewModel.blmContacts.set(myWorkflowContext.getValue("blmContacts"));
