@@ -1990,6 +1990,8 @@ var oe;
                 this.landManagement = new Observable("");
                 this.countyContacts = new Observable("");
                 this.blmContacts = new Observable("");
+                this.avoidance = new Observable("");
+                this.minimization = new Observable("");
             }
             SageGrouseDevSitingModuleViewModel.prototype.initialize = function (config) {
                 myApp = this.app;
@@ -2008,10 +2010,12 @@ var oe;
                     thisViewModel.bufferDist.set(myWorkflowContext.getValue("bufferDist") + " km");
                     thisViewModel.nonHabArea.set(myWorkflowContext.getValue("nonHabArea") + " Acres");
                     thisViewModel.habDesig.set(myWorkflowContext.getValue("habDesig"));
-                    thisViewModel.isLek.set(myWorkflowContext.getValue("isLek"));
+                    thisViewModel.isLek.set(myWorkflowContext.getValue("isLek") === 'True' ? 'Yes' : 'No');
                     thisViewModel.landManagement.set(myWorkflowContext.getValue("landManagement"));
                     thisViewModel.countyContacts.set(myWorkflowContext.getValue("countyContacts"));
                     thisViewModel.blmContacts.set(myWorkflowContext.getValue("blmContacts"));
+                    thisViewModel.avoidance.set(myWorkflowContext.getValue("avoidance") === 'True' ? 'may' : 'will not');
+                    thisViewModel.minimization.set(myWorkflowContext.getValue("minimizations"));
                 });
             };
             return SageGrouseDevSitingModuleViewModel;

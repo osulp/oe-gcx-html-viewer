@@ -11,9 +11,10 @@
         <span class="data-label">Development Type:</span>
         <span class="data" data-binding="{@text:devType}"></span>
     </div>
+    <span>This is a summary report. Click the button below for a full report</span><br />
     <div id="btn-row">
         <div class="btn-cell">
-            <div data-binding="{@event-onclick:getPDF}">Full PDF Report</div>
+            <div data-binding="{@event-onclick:getPDF}">Full Report</div>
         </div>
        <div class="btn-cell">
            <div data-binding="{@event-onclick:downloadShapefiles}">Download Shapefiles</div>
@@ -22,11 +23,27 @@
     <hr>
     <fieldset>
         <legend>
-            Compensatory Mitigation
+            Mitigation Hierarchy
         </legend>
+        <div>
+            <span class="data-label">Avoidance:</span><span> Avoidance </span>
+            <span class="data-label" data-binding="{@text:avoidance}"></span>
+            <span> apply in your identified area.</span>
+        </div>
+        <div>
+            <span class="data-label">Minimization:</span>
+            <span> Minimization measures for </span>
+            <span data-binding="{@text:devType}"></span>
+            <span> may include:</span>
+            <span class="data" data-binding="{@text:minimization}"></span>
+        </div>
+        <div>
+            <span class="data-label">Compensatory Mitigation</span>
+            <span data-binding="{@text:compensatoryMitigation}"></span>
+        </div>
         <div id="chart-wrapper">
             <img width="225" data-binding="{src: chartURL}">
-            <div>Compensatory Mitigation Estimate: <span data-binding="{@text:compensatoryMitigation}"></span></div>
+
         </div>
     </fieldset>
     <fieldset>
