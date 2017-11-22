@@ -1,0 +1,32 @@
+{
+  "name": "gvh-bundle",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "author": "Latitude Geographics",
+  "dependencies": {
+    "@types/react": "^16.0.25",
+    "glob": "^7.1.2",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-typescript": "^3.1.7",
+    "merge2": "^1.0.3",
+    "mkdirp": "^0.5.1",
+    "uglify-js": "^3.0.17",
+    "yargs": "^8.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.0.0",
+    "typescript": "2.4.2"
+  },
+  "peerDependencies": {
+    "typescript": "2.x"
+  },
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "gulp --silent"
+  },
+  "bin": {
+    "gvh-bundle": "./bin.js"
+  }
+}

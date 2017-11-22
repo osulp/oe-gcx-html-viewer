@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{A3AF2584-7BEA-4EAD-8C3D-311D8A064735}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -10,53 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Custom", "Custom\Custom.csproj", "{32E36075-BC8D-4D98-8158-E8EA4251AA7C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{592AF0D7-AED4-4F3F-BCA5-F6982EFC9DE2}"
-	ProjectSection(SolutionItems) = preProject
-		Libs\arcgis-js-api.d.ts = Libs\arcgis-js-api.d.ts
-		Libs\Awab.d.ts = Libs\Awab.d.ts
-		Libs\BaseMap.Rest.d.ts = Libs\BaseMap.Rest.d.ts
-		Libs\bluebird.d.ts = Libs\bluebird.d.ts
-		Libs\bridge.d.ts = Libs\bridge.d.ts
-		Libs\Chart.Rest.d.ts = Libs\Chart.Rest.d.ts
-		Libs\Charting.d.ts = Libs\Charting.d.ts
-		Libs\Charting.Infrastructure.d.ts = Libs\Charting.Infrastructure.d.ts
-		Libs\dojo.d.ts = Libs\dojo.d.ts
-		Libs\Essentials.d.ts = Libs\Essentials.d.ts
-		Libs\FileSystem.d.ts = Libs\FileSystem.d.ts
-		Libs\FileWriter.d.ts = Libs\FileWriter.d.ts
-		Libs\Framework.d.ts = Libs\Framework.d.ts
-		Libs\Framework.UI.d.ts = Libs\Framework.UI.d.ts
-		Libs\hammerjs.d.ts = Libs\hammerjs.d.ts
-		Libs\Insight.EventRelay.d.ts = Libs\Insight.EventRelay.d.ts
-		Libs\jquery.cleditor.d.ts = Libs\jquery.cleditor.d.ts
-		Libs\jquery.colorpicker.d.ts = Libs\jquery.colorpicker.d.ts
-		Libs\JQuery.d.ts = Libs\JQuery.d.ts
-		Libs\jqueryui.d.ts = Libs\jqueryui.d.ts
-		Libs\jsapi_v310.js.d.ts = Libs\jsapi_v310.js.d.ts
-		Libs\jsapi_v311.js.d.ts = Libs\jsapi_v311.js.d.ts
-		Libs\jsapi_v34.js.d.ts = Libs\jsapi_v34.js.d.ts
-		Libs\jsapi_v35.js.d.ts = Libs\jsapi_v35.js.d.ts
-		Libs\jsapi_v36.js.d.ts = Libs\jsapi_v36.js.d.ts
-		Libs\jsapi_v37.js.d.ts = Libs\jsapi_v37.js.d.ts
-		Libs\jsapi_v38.js.d.ts = Libs\jsapi_v38.js.d.ts
-		Libs\jsapi_v39.js.d.ts = Libs\jsapi_v39.js.d.ts
-		Libs\jszip.d.ts = Libs\jszip.d.ts
-		Libs\kendo.dataviz.d.ts = Libs\kendo.dataviz.d.ts
-		Libs\LayerList.Rest.d.ts = Libs\LayerList.Rest.d.ts
-		Libs\LayerTheme.Rest.d.ts = Libs\LayerTheme.Rest.d.ts
-		Libs\Loader.d.ts = Libs\Loader.d.ts
-		Libs\Management.d.ts = Libs\Management.d.ts
-		Libs\Management.Infrastructure.d.ts = Libs\Management.Infrastructure.d.ts
-		Libs\Mapping.Charting.d.ts = Libs\Mapping.Charting.d.ts
-		Libs\Mapping.Infrastructure.d.ts = Libs\Mapping.Infrastructure.d.ts
-		Libs\MediaStream.d.ts = Libs\MediaStream.d.ts
-		Libs\modernizr.d.ts = Libs\modernizr.d.ts
-		Libs\Phonegap.d.ts = Libs\Phonegap.d.ts
-		Libs\README.txt = Libs\README.txt
-		Libs\remarkable.d.ts = Libs\remarkable.d.ts
-		Libs\WebkitWindow.d.ts = Libs\WebkitWindow.d.ts
-		Libs\XSockets.d.ts = Libs\XSockets.d.ts
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMD_Modules", "AMD_Modules\AMD_Modules.csproj", "{F1A10E10-48FF-47E3-8E58-E66700C01CC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,6 +26,10 @@ Global
 		{32E36075-BC8D-4D98-8158-E8EA4251AA7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32E36075-BC8D-4D98-8158-E8EA4251AA7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32E36075-BC8D-4D98-8158-E8EA4251AA7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1A10E10-48FF-47E3-8E58-E66700C01CC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1A10E10-48FF-47E3-8E58-E66700C01CC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1A10E10-48FF-47E3-8E58-E66700C01CC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1A10E10-48FF-47E3-8E58-E66700C01CC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

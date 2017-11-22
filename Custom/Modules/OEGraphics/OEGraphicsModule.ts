@@ -1,9 +1,9 @@
 ﻿/// <reference path="../../../Libs/Framework.d.ts" />
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
 
-module oe.initial_extent {
+module oe.OEGraphics {
     
-    export class InitialExtentModule extends geocortex.framework.application.ModuleBase {
+    export class OEGraphicsModule extends geocortex.framework.application.ModuleBase {
         
         app: geocortex.essentialsHtmlViewer.ViewerApplication;
 
@@ -31,11 +31,29 @@ module oe.initial_extent {
         }
 
         _onMapLoaded(site: geocortex.essentials.Site) {           
-            this.app.command("ZoomToInitialExtent").execute();            
+            //this.app.command("ZoomToInitialExtent").execute();
+            //grab the geocortex map event
+            //this.app.eventRegistry.event("MapClickedEvent").subscribe(null, this._handleMouseClick);
         }
 
         _onSiteInitialized(site: geocortex.essentials.Site) {            
-            this.app.command("ZoomToInitialExtent").execute();
+            //this.app.command("ZoomToInitialExtent").execute();
         }
+
+        _handleMouseClick(pointIn, appIn) {
+
+            //store the point
+            //var workingPointGeometry = <esri.geometry.Geometry>null;
+            //workingPointGeometry = pointIn;
+
+            //convert to a lat long version                
+            //var latLongPoint = <esri.geometry.Point>esri.geometry.webMercatorToGeographic(workingPointGeometry);
+            //var latOut = formateLatLong(latLongPoint.y, true);
+            //var lonOut = formateLatLong(latLongPoint.x, false);
+
+            //appIn.command("AddMarkupGeometry").execute(workingPointGeometry);
+
+        }
+
     }
 }

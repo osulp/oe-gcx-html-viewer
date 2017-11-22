@@ -96,6 +96,17 @@
                         "uri":"Resources/Locales/Custom.en-US.json.js"
                     }
                 ]
+            },
+            {
+                "id": "OE_AMD",
+                "async": true,
+                "location": "Libraries/Custom/AMD",
+                "locales": [
+                    {
+                        "locale": "inv",
+                        "uri": "Libraries/Custom/AMD/OE_AMD-Language.json"
+                    }
+                ]
             }
         ],
         "modules": [
@@ -120,15 +131,15 @@
                         "configuration": {}
                     }
                 ]
-            },                        
-			{
-                "moduleName": "HyperlinkBanner",
-                "moduleType": "oe.hyperlink_banner.HyperlinkBannerModule",
-			    "libraryId": "Custom",
+            },            
+            {
+                "moduleName": "OE_HyperlinkBanner",
+                "libraryId": "OE_AMD",
+                "require": "geocortex/oe_amd/OE_HyperlinkBanner/OE_HyperlinkBannerModule",
                 "configuration": {
                     "linkUri": "http://oregonexplorer.info"
-                  }
-             },
+                }
+            },
             {
 			    "moduleName": "LayerActionsExtension",
 			    "moduleType": "oe.layer_actions_extension.LayerActionsExtension",

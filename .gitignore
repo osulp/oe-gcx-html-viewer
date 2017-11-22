@@ -10,6 +10,9 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+#User defined folders
+Libs/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -203,3 +206,7 @@ FakesAssemblies/
 /Web/Libraries/Custom/Compiled/Custom.js
 /Web/Libraries/Custom/Compiled/Custom.js
 /custom_ts_out.js
+/AMD_Modules/_Definitions
+/AMD_Modules/notused.js.map
+/AMD_Modules/notused.js
+/AMD_Modules/build_modules.bat

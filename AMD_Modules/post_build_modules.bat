@@ -1,0 +1,1 @@
+npm run build -- --libraryId "OE_AMD" --namespace "geocortex/oe_amd" --outDir "../Web/Libraries/Custom/AMD"

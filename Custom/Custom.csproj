@@ -42,6 +42,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <ItemGroup>
+    <Content Include="Modules\HyperlinkBanner\readme.txt" />
     <Content Include="Modules\SageGrouseDevSiting\SageGrouseDevSitingModule.css" />
     <Content Include="Modules\SageGrouseDevSiting\SageGrouseDevSitingModuleView.html" />
     <Content Include="Modules\SageGrouseDevSiting\Readme.txt" />
@@ -69,9 +70,7 @@
     <Content Include="Resources\Config\Defaults.json.js" />
     <Content Include="Resources\Styles\Custom\Desktop.css" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DevModules\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <TypeScriptCompile Include="Modules\SageGrouseDevSiting\SageGrouseDevSitingModule.ts" />
     <TypeScriptCompile Include="Modules\SageGrouseDevSiting\SageGrouseDevSitingModuleView.ts" />
@@ -106,6 +105,14 @@
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
     <TypeScriptOutFile>..\custom_ts_out.js</TypeScriptOutFile>
     <TypeScriptGeneratesDeclarations>false</TypeScriptGeneratesDeclarations>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptOutDir />
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptTarget>ES3</TypeScriptTarget>
