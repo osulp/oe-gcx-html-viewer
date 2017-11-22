@@ -11,22 +11,45 @@
         <span class="data-label">Development Type:</span>
         <span class="data" data-binding="{@text:devType}"></span>
     </div>
+    <hr>
+    <span>This is a summary report. Click the button below for a full report</span><br />
     <div id="btn-row">
         <div class="btn-cell">
-            <div data-binding="{@event-onclick:getPDF}">Full PDF Report</div>
+            <div data-binding="{@event-onclick:getPDF}">View Full Report</div>
         </div>
-       <div class="btn-cell">
-           <div data-binding="{@event-onclick:downloadShapefiles}">Download Shapefiles</div>
-       </div>
+        <div class="btn-cell-download">
+            <div data-binding="{@event-onclick:downloadShapefiles}"><img width="16px" src="Resources/Images/Icons/download-24.png" /> Shapefiles</div>
+        </div>
     </div>
-    <hr>
+
+    <hr />
     <fieldset>
         <legend>
-            Compensatory Mitigation
+            Mitigation Hierarchy
         </legend>
+        <div>
+            <span class="data-label">Avoidance:</span><span> Avoidance </span>
+            <span class="data-label" data-binding="{@text:avoidance}"></span>
+            <span> apply in your identified area.</span>
+        </div>
+        <div>
+            <span class="data-label">Minimization:</span>
+            <span> Minimization measures for </span>
+            <span data-binding="{@text:devType}"></span>
+            <span> may include:</span>
+            <ul data-binding="{@source: minimization_list}">
+                <li data-binding="{@template-for: minimization_list}">
+                        <span data-binding="{@text:minimization}"></span>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <span class="data-label">Compensatory Mitigation</span>
+            <span data-binding="{@text:compensatoryMitigation}"></span>
+        </div>
         <div id="chart-wrapper">
             <img width="225" data-binding="{src: chartURL}">
-            <div>Compensatory Mitigation Estimate: <span data-binding="{@text:compensatoryMitigation}"></span></div>
+
         </div>
     </fieldset>
     <fieldset>
@@ -50,6 +73,12 @@
     </fieldset>
     <fieldset>
         <legend>Habitat</legend>
+        <div>
+            <span class="data-label">Significant Habitat: </span>
+            <span>The project footprint </span>
+            <span class="data-label" data-binding="{@text:significant}"></span>
+            <span> within known significant sage-grouse habitat.</span>
+        </div>
         <div>
             <span class="data-label">Habitat Designations: </span>
             <span class="data" data-binding="{@text:habDesig}"></span>

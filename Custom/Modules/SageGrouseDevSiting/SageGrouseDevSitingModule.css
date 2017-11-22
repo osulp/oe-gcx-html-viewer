@@ -17,7 +17,7 @@ legend{
     display:table-cell;
     text-align:center;
 }
-.btn-cell div{
+.btn-cell div:first-child{
     width: 80%;
     padding:10px;
     color:white;
@@ -33,6 +33,10 @@ legend{
     text-decoration:underline;
 }
 
+.btn-cell-download:hover{
+    cursor:pointer;
+    text-decoration:underline;
+}
 #chart-wrapper{
     width:100%;
     text-align:center;
