@@ -131,7 +131,7 @@
                         "configuration": {}
                     }
                 ]
-            },            
+            },
             {
                 "moduleName": "OE_HyperlinkBanner",
                 "libraryId": "OE_AMD",
@@ -6839,7 +6839,7 @@
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                 "configuration": {
-                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
+                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/SFAM",
                     "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                     "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                     "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/cake_site"
