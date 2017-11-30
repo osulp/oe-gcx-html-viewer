@@ -94,7 +94,7 @@
     <Content Include="Resources\Config\Default\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\Desktop.json.dev.siting.js" />
     <Content Include="Resources\Config\Default\dev_configs\Desktop.json.dev.reg.js" />
-    <Content Include="Resources\Config\Default\dev_configs\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\Desktop.json.sfam.js" />
     <Content Include="Resources\Config\Default\Handheld.json.js" />
     <Content Include="Resources\Config\Default\Handheld.json.oe.js" />
     <Content Include="Resources\Config\Default\Tablet.json.js" />

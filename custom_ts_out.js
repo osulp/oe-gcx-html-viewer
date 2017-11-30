@@ -1,10 +1,10 @@
+/// <reference path="../../../Libs/Framework.d.ts" />
+/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-/// <reference path="../../../Libs/Framework.d.ts" />
-/// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
 var oe;
 (function (oe) {
     var SageGrouseDevSiting;
@@ -40,7 +40,7 @@ var oe;
                 });
             };
             return SageGrouseDevSitingModule;
-        }(geocortex.framework.application.ModuleBase));
+        })(geocortex.framework.application.ModuleBase);
         SageGrouseDevSiting.SageGrouseDevSitingModule = SageGrouseDevSitingModule;
     })(SageGrouseDevSiting = oe.SageGrouseDevSiting || (oe.SageGrouseDevSiting = {}));
 })(oe || (oe = {}));
@@ -101,7 +101,7 @@ var oe;
                 };
             }
             return SageGrouseDevSitingModuleView;
-        }(geocortex.framework.ui.ViewBase));
+        })(geocortex.framework.ui.ViewBase);
         SageGrouseDevSiting.SageGrouseDevSitingModuleView = SageGrouseDevSitingModuleView;
     })(SageGrouseDevSiting = oe.SageGrouseDevSiting || (oe.SageGrouseDevSiting = {}));
 })(oe || (oe = {}));
@@ -168,7 +168,7 @@ var oe;
                 });
             };
             return SageGrouseDevSitingModuleViewModel;
-        }(geocortex.framework.ui.ViewModelBase));
+        })(geocortex.framework.ui.ViewModelBase);
         SageGrouseDevSiting.SageGrouseDevSitingModuleViewModel = SageGrouseDevSitingModuleViewModel;
     })(SageGrouseDevSiting = oe.SageGrouseDevSiting || (oe.SageGrouseDevSiting = {}));
 })(oe || (oe = {}));
@@ -356,8 +356,8 @@ var oe;
                 var _this = this;
                 var layerFilters = this._layerFilters;
                 if (attributes.length > 0) {
-                    var devType_1 = attributes.filter(function (f) { return f.name.value === 'dst_cat'; }).length > 0 ? attributes.filter(function (f) { return f.name.value === 'dst_cat'; })[0].value.value : '';
-                    if (devType_1 !== '') {
+                    var devType = attributes.filter(function (f) { return f.name.value === 'dst_cat'; }).length > 0 ? attributes.filter(function (f) { return f.name.value === 'dst_cat'; })[0].value.value : '';
+                    if (devType !== '') {
                         var filteredFields = attributes.filter(function (f) {
                             if (f.name.value === 'dst_cat' && f.valueOptions) {
                                 //f.value.bindingEvent.publish();
@@ -375,18 +375,18 @@ var oe;
                             }
                             if (f.name.value === 'subcat' && f.valueOptions) {
                                 if (_this.devSubTypesTable) {
-                                    var filteredCodedValues_1 = [];
+                                    var filteredCodedValues = [];
                                     f.domain.codedValues.forEach(function (cv) {
-                                        if (devType_1) {
-                                            if (_this.devSubTypesTable[devType_1].subtypes.indexOf(cv.name) !== -1) {
-                                                filteredCodedValues_1.push(cv);
+                                        if (devType) {
+                                            if (_this.devSubTypesTable[devType].subtypes.indexOf(cv.name) !== -1) {
+                                                filteredCodedValues.push(cv);
                                             }
                                         }
                                         else {
-                                            filteredCodedValues_1.push(cv);
+                                            filteredCodedValues.push(cv);
                                         }
                                     });
-                                    f.valueOptions.value = filteredCodedValues_1;
+                                    f.valueOptions.value = filteredCodedValues;
                                 }
                                 _this._subscribeToValueChange(f, _this._handleSubCatChange);
                             }
@@ -403,8 +403,8 @@ var oe;
                             }
                             //get default plus and devType specific attributes for display
                             var _filteredAttr = layerFilters['Default'] ? layerFilters['Default'] : [];
-                            if (layerFilters[devType_1]) {
-                                _filteredAttr = _filteredAttr.concat(layerFilters[devType_1]);
+                            if (layerFilters[devType]) {
+                                _filteredAttr = _filteredAttr.concat(layerFilters[devType]);
                             }
                             return _filteredAttr.indexOf(f.name.value) !== -1;
                             //return layerFilters[devType] ? layerFilters[devType].indexOf(f.name.value) !== -1 : true;
@@ -674,9 +674,9 @@ var oe;
                             //let filteredAttributes = this._processAttributeFilter(this.devAttributes ? this.devAttributes : args.attributes.getItems());
                             var filteredAttributes = this._processAttributeFilter(args.attributes.getItems());
                             if (filteredAttributes) {
-                                var filteredAttrNames_1 = filteredAttributes.map(function (fa) { return fa.name.value; });
+                                var filteredAttrNames = filteredAttributes.map(function (fa) { return fa.name.value; });
                                 args.attributes.getItems().forEach(function (attr) {
-                                    if (filteredAttrNames_1.indexOf(attr.name.value) === -1) {
+                                    if (filteredAttrNames.indexOf(attr.name.value) === -1) {
                                         attr.visible.set(false);
                                     }
                                 });
@@ -762,7 +762,7 @@ var oe;
                 });
             };
             return DevelopmentRegistryModule;
-        }(geocortex.framework.application.ModuleBase));
+        })(geocortex.framework.application.ModuleBase);
         dev_registry.DevelopmentRegistryModule = DevelopmentRegistryModule;
     })(dev_registry = oe.dev_registry || (oe.dev_registry = {}));
 })(oe || (oe = {}));
@@ -823,7 +823,7 @@ var oe;
                 };
             }
             return DevelopmentRegistryModuleProjectReportView;
-        }(geocortex.framework.ui.ViewBase));
+        })(geocortex.framework.ui.ViewBase);
         dev_registry.DevelopmentRegistryModuleProjectReportView = DevelopmentRegistryModuleProjectReportView;
     })(dev_registry = oe.dev_registry || (oe.dev_registry = {}));
 })(oe || (oe = {}));
@@ -884,7 +884,7 @@ var oe;
                 };
             }
             return DevelopmentRegistryModuleView;
-        }(geocortex.framework.ui.ViewBase));
+        })(geocortex.framework.ui.ViewBase);
         dev_registry.DevelopmentRegistryModuleView = DevelopmentRegistryModuleView;
     })(dev_registry = oe.dev_registry || (oe.dev_registry = {}));
 })(oe || (oe = {}));
@@ -950,7 +950,7 @@ var oe;
                             : myWorkflowContext.getValue("pac_name").replace(/\','/g, ",");
                         thisViewModel.pac_name_list.set(_pac_name_list.toString());
                         //let pacs = _pac_name_list.split(',');
-                        var pac_proj_array_1 = [];
+                        var pac_proj_array = [];
                         _pac_name_list.forEach(function (pac) {
                             var proj_pac_obj = {};
                             proj_pac_obj['pac_name'] = pac + " PAC";
@@ -1018,9 +1018,9 @@ var oe;
                                 proj_pac_obj['input_area_pac_percent'] = stat_percent;
                                 proj_pac_obj['input_area_pac_area'] = stat_area_formatted + ' acres';
                             }
-                            pac_proj_array_1.push(proj_pac_obj);
+                            pac_proj_array.push(proj_pac_obj);
                         });
-                        thisViewModel.proj_pac_report_data.set(pac_proj_array_1);
+                        thisViewModel.proj_pac_report_data.set(pac_proj_array);
                     }
                     else {
                         thisViewModel.pac_intersect.set(false);
@@ -1067,7 +1067,7 @@ var oe;
                 return x1 + x2;
             };
             return DevelopmentRegistryModuleProjectReportViewModel;
-        }(geocortex.framework.ui.ViewModelBase));
+        })(geocortex.framework.ui.ViewModelBase);
         dev_registry.DevelopmentRegistryModuleProjectReportViewModel = DevelopmentRegistryModuleProjectReportViewModel;
     })(dev_registry = oe.dev_registry || (oe.dev_registry = {}));
 })(oe || (oe = {}));
@@ -1273,7 +1273,7 @@ var oe;
                 return x1 + x2;
             };
             return DevelopmentRegistryModuleViewModel;
-        }(geocortex.framework.ui.ViewModelBase));
+        })(geocortex.framework.ui.ViewModelBase);
         dev_registry.DevelopmentRegistryModuleViewModel = DevelopmentRegistryModuleViewModel;
     })(dev_registry = oe.dev_registry || (oe.dev_registry = {}));
 })(oe || (oe = {}));
@@ -1292,7 +1292,7 @@ var oe;
                 //alert(this.app.getResource(this.libraryId, "hello-world-initialized"));
             };
             return CustomFormM49Module;
-        }(geocortex.framework.application.ModuleBase));
+        })(geocortex.framework.application.ModuleBase);
         customform49.CustomFormM49Module = CustomFormM49Module;
     })(customform49 = oe.customform49 || (oe.customform49 = {}));
 })(oe || (oe = {}));
@@ -1352,7 +1352,7 @@ var oe;
                 };
             }
             return CustomForm49ModuleView;
-        }(geocortex.framework.ui.ViewBase));
+        })(geocortex.framework.ui.ViewBase);
         customform49.CustomForm49ModuleView = CustomForm49ModuleView;
     })(customform49 = oe.customform49 || (oe.customform49 = {}));
 })(oe || (oe = {}));
@@ -1383,7 +1383,7 @@ var oe;
                 });
             };
             return CustomFormM49ModuleViewModel;
-        }(geocortex.framework.ui.ViewModelBase));
+        })(geocortex.framework.ui.ViewModelBase);
         customform49.CustomFormM49ModuleViewModel = CustomFormM49ModuleViewModel;
     })(customform49 = oe.customform49 || (oe.customform49 = {}));
 })(oe || (oe = {}));
@@ -1406,7 +1406,7 @@ var oe;
             ElevationModule.prototype.initialize = function (config) {
             };
             return ElevationModule;
-        }(geocortex.framework.application.ModuleBase));
+        })(geocortex.framework.application.ModuleBase);
         elevation.ElevationModule = ElevationModule;
     })(elevation = oe.elevation || (oe.elevation = {}));
 })(oe || (oe = {}));
@@ -1422,7 +1422,7 @@ var oe;
                 _super.call(this, app, lib);
             }
             return ElevationModuleView;
-        }(geocortex.framework.ui.ViewBase));
+        })(geocortex.framework.ui.ViewBase);
         elevation.ElevationModuleView = ElevationModuleView;
     })(elevation = oe.elevation || (oe.elevation = {}));
 })(oe || (oe = {}));
@@ -1531,7 +1531,7 @@ var oe;
                 }
             };
             return ElevationModuleViewModel;
-        }(geocortex.framework.ui.ViewModelBase));
+        })(geocortex.framework.ui.ViewModelBase);
         elevation_1.ElevationModuleViewModel = ElevationModuleViewModel;
     })(elevation = oe.elevation || (oe.elevation = {}));
 })(oe || (oe = {}));
@@ -1576,7 +1576,7 @@ var oe;
                 { };*/
             };
             return HyperlinkBannerModule;
-        }(geocortex.framework.application.ModuleBase));
+        })(geocortex.framework.application.ModuleBase);
         hyperlink_banner.HyperlinkBannerModule = HyperlinkBannerModule;
     })(hyperlink_banner = oe.hyperlink_banner || (oe.hyperlink_banner = {}));
 })(oe || (oe = {}));
@@ -1613,7 +1613,7 @@ var oe;
                 this.app.command("ZoomToInitialExtent").execute();
             };
             return InitialExtentModule;
-        }(geocortex.framework.application.ModuleBase));
+        })(geocortex.framework.application.ModuleBase);
         initial_extent.InitialExtentModule = InitialExtentModule;
     })(initial_extent = oe.initial_extent || (oe.initial_extent = {}));
 })(oe || (oe = {}));
@@ -1872,7 +1872,7 @@ var oe;
                 });
             };
             return LayerActionsExtension;
-        }(geocortex.framework.application.ModuleBase));
+        })(geocortex.framework.application.ModuleBase);
         layer_actions_extension.LayerActionsExtension = LayerActionsExtension;
     })(layer_actions_extension = oe.layer_actions_extension || (oe.layer_actions_extension = {}));
 })(oe || (oe = {}));
@@ -1888,7 +1888,7 @@ var oe;
                 _super.call(this, app, lib);
             }
             return LayerActionsExtensionModuleView;
-        }(geocortex.framework.ui.ViewBase));
+        })(geocortex.framework.ui.ViewBase);
         layer_actions_extension.LayerActionsExtensionModuleView = LayerActionsExtensionModuleView;
     })(layer_actions_extension = oe.layer_actions_extension || (oe.layer_actions_extension = {}));
 })(oe || (oe = {}));
@@ -1910,7 +1910,7 @@ var oe;
                 //}
             };
             return LayerActionsExtensionModuleViewModel;
-        }(geocortex.framework.ui.ViewModelBase));
+        })(geocortex.framework.ui.ViewModelBase);
         layer_actions_extension.LayerActionsExtensionModuleViewModel = LayerActionsExtensionModuleViewModel;
     })(layer_actions_extension = oe.layer_actions_extension || (oe.layer_actions_extension = {}));
 })(oe || (oe = {}));
@@ -1960,7 +1960,7 @@ var oe;
                 });
             };
             return M49Module;
-        }(geocortex.framework.application.ModuleBase));
+        })(geocortex.framework.application.ModuleBase);
         M49.M49Module = M49Module;
     })(M49 = oe.M49 || (oe.M49 = {}));
 })(oe || (oe = {}));
@@ -1976,7 +1976,7 @@ var oe;
                 _super.call(this, app, lib);
             }
             return M49ModuleView;
-        }(geocortex.framework.ui.ViewBase));
+        })(geocortex.framework.ui.ViewBase);
         M9.M49ModuleView = M49ModuleView;
     })(M9 = oe.M9 || (oe.M9 = {}));
 })(oe || (oe = {}));
@@ -1998,7 +1998,7 @@ var oe;
                 //}
             };
             return M49ModuleViewModel;
-        }(geocortex.framework.ui.ViewModelBase));
+        })(geocortex.framework.ui.ViewModelBase);
         M49.M49ModuleViewModel = M49ModuleViewModel;
     })(M49 = oe.M49 || (oe.M49 = {}));
 })(oe || (oe = {}));
@@ -2050,7 +2050,7 @@ var oe;
                 _this.app.commandRegistry.command("processRasterFunctions").execute();
             };
             return RasterFunctionsModule;
-        }(geocortex.framework.application.ModuleBase));
+        })(geocortex.framework.application.ModuleBase);
         raster_functions.RasterFunctionsModule = RasterFunctionsModule;
     })(raster_functions = oe.raster_functions || (oe.raster_functions = {}));
 })(oe || (oe = {}));
@@ -2093,7 +2093,7 @@ var oe;
                 //this.app.command("DisableMapTips").execute();
             };
             return WildfireRiskPopupModule;
-        }(geocortex.framework.application.ModuleBase));
+        })(geocortex.framework.application.ModuleBase);
         wildfireRiskPopup.WildfireRiskPopupModule = WildfireRiskPopupModule;
     })(wildfireRiskPopup = oe.wildfireRiskPopup || (oe.wildfireRiskPopup = {}));
 })(oe || (oe = {}));
@@ -2140,7 +2140,7 @@ var oe;
                 };
             }
             return WildfireRiskPopupModuleView;
-        }(geocortex.framework.ui.ViewBase));
+        })(geocortex.framework.ui.ViewBase);
         wildfireRiskPopup.WildfireRiskPopupModuleView = WildfireRiskPopupModuleView;
     })(wildfireRiskPopup = oe.wildfireRiskPopup || (oe.wildfireRiskPopup = {}));
 })(oe || (oe = {}));
@@ -2711,7 +2711,7 @@ var oe;
                 }
             };
             return WildfireRiskPopupModuleViewModel;
-        }(geocortex.framework.ui.ViewModelBase));
+        })(geocortex.framework.ui.ViewModelBase);
         wildfireRiskPopup.WildfireRiskPopupModuleViewModel = WildfireRiskPopupModuleViewModel;
     })(wildfireRiskPopup = oe.wildfireRiskPopup || (oe.wildfireRiskPopup = {}));
 })(oe || (oe = {}));

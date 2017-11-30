@@ -9,12 +9,13 @@ import { getGraphicsLayer } from "geocortex/infrastructure/GraphicUtils";
 import { Geometry } from "geocortex/infrastructure/webMap/Geometry";
 
 export class OE_GraphicsModule extends ModuleBase {
-        
+
     app: ViewerApplication;
     hideMapTipOnEdit: boolean;
     workflowIDRunOnEdit: string;
     openMarkupStyleOnEdit: boolean;
     editingCount: number;
+    isEditing: boolean;
 
     lastPoint: Geometry;
 
@@ -25,13 +26,12 @@ export class OE_GraphicsModule extends ModuleBase {
     initialize(config: any): void {
 
         this.editingCount = 0;
+        this.hideMapTipOnEdit = config.hideMapTipOnEdit || false;
+        this.workflowIDRunOnEdit = config.workflowIDRunOnEdit || null;
+        this.openMarkupStyleOnEdit = config.openMarkupStyleOnEdit || false;
 
-        this.hideMapTipOnEdit = config.hideMapTipOnEdit !== undefined ? config.hideMapTipOnEdit : false;
-        this.workflowIDRunOnEdit = config.workflowIDRunOnEdit !== undefined ? config.workflowIDRunOnEdit : null;
-        this.openMarkupStyleOnEdit = config.openMarkupStyleOnEdit !== undefined ? config.openMarkupStyleOnEdit : false;
-                
         var site = (<any>this).app.site;
-        
+
         if (site && site.isInitialized) {
             this._onSiteInitialized(site);
         }
@@ -40,11 +40,11 @@ export class OE_GraphicsModule extends ModuleBase {
                 this._onSiteInitialized(args);
             });
         }
-        
+
     }
 
-    _onSiteInitialized(site) {                        
-                
+    _onSiteInitialized(site) {
+
         this.app.eventRegistry.event("MarkupEditingStartedEvent").subscribe(this, (args) => {
             this._markupEditingStarted(args);
         });
@@ -56,19 +56,34 @@ export class OE_GraphicsModule extends ModuleBase {
         //grab the geocortex map event
         this.app.eventRegistry.event("MapClickedEvent").subscribe(this, (args) => {
             this._handleMapClickEvent(args);
-        });                
+        });
+    }
+
+    _handleGeometryEditInvokeEvent(args) {
+        //close map tip
+        this.app.commandRegistry.commands["HideMapTips"].execute();
     }
 
     _handleMapClickEvent(pointIn) {
         console.log("OE: >> Click Event << ");
+        if (!pointIn.graphic) {
+            this.app.commandRegistry.commands['StopEditingMarkup'].execute(true);
+        } else if (pointIn.graphic.getSourceLayer().id === 'Drawings') {
+            this.app.commandRegistry.commands['EditMarkup'].execute(pointIn.graphic.geometry);
+        }
 
+        //if (pointIn.graphic || this.isEditing) {
+        //    if (pointIn.graphic.getSourceLayer().id !== 'Drawings') {
+
+        //    }
+        //}
         this.lastPoint = pointIn.mapPoint;
 
         /*let graphics: esri.Graphic[] = getMarkupFromGeometry(pointIn.mapPoint, getGraphicsLayer("Drawings", false, this.app), this.app);
 
         if (graphics.length > 0) {
             //this.app.commandRegistry.command("SuspendMapTips").execute();
-            this.app.commandRegistry.command("EditMarkup").execute(graphics[0].geometry);            
+            this.app.commandRegistry.command("EditMarkup").execute(graphics[0].geometry);
             //this.app.commandRegistry.command("StopAndAutoEditClickableFeature").execute(graphics[0].geometry);
         }
 
@@ -84,9 +99,9 @@ export class OE_GraphicsModule extends ModuleBase {
     }*/
 
     _markupEditingStarted(selectedGraphic: esri.Graphic) {
-
-        if (this.hideMapTipOnEdit)
-            this.app.commandRegistry.command("HideAllMapTips").execute();
+        this.isEditing = true;
+        this.app.commandRegistry.commands["HideMapTips"].execute();
+        $("#map_graphics_layer").css("display", "none");
 
         /*console.log("OE: >> Start Edit << ");
         this.app.commandRegistry.command("SuspendMapTips").execute();
@@ -95,7 +110,7 @@ export class OE_GraphicsModule extends ModuleBase {
             this.app.commandRegistry.command("HideAllMapTips").execute();
 
         this.editingCount++;*/
-                                
+
         //if (this.workflowIDRunOnEdit)
           //  this.app.commandRegistry.command("RunWorkflowById").execute(this.workflowIDRunOnEdit);
 

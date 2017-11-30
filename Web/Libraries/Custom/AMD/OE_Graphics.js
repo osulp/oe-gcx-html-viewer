@@ -26,9 +26,10 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
         OE_GraphicsModule.prototype.initialize = function (config) {
             var _this = this;
             this.editingCount = 0;
-            this.hideMapTipOnEdit = config.hideMapTipOnEdit !== undefined ? config.hideMapTipOnEdit : false;
-            this.workflowIDRunOnEdit = config.workflowIDRunOnEdit !== undefined ? config.workflowIDRunOnEdit : null;
-            this.openMarkupStyleOnEdit = config.openMarkupStyleOnEdit !== undefined ? config.openMarkupStyleOnEdit : false;
+            this.isEditing = false;
+            this.hideMapTipOnEdit = config.hideMapTipOnEdit || false;
+            this.workflowIDRunOnEdit = config.workflowIDRunOnEdit || null;
+            this.openMarkupStyleOnEdit = config.openMarkupStyleOnEdit || false;
             var site = this.app.site;
             if (site && site.isInitialized) {
                 this._onSiteInitialized(site);
@@ -52,8 +53,22 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
                 _this._handleMapClickEvent(args);
             });
         };
+        OE_GraphicsModule.prototype._handleGeometryEditInvokeEvent = function (args) {
+            //close map tip
+            this.app.commandRegistry.commands["HideMapTips"].execute();
+        };
         OE_GraphicsModule.prototype._handleMapClickEvent = function (pointIn) {
             console.log("OE: >> Click Event << ");
+            if (!pointIn.graphic) {
+                this.app.commandRegistry.commands['StopEditingMarkup'].execute(true);
+            }
+            else if (pointIn.graphic.getSourceLayer().id === 'Drawings') {
+                this.app.commandRegistry.commands['EditMarkup'].execute(pointIn.graphic.geometry);
+            }
+            //if (pointIn.graphic || this.isEditing) {
+            //    if (pointIn.graphic.getSourceLayer().id !== 'Drawings') {
+            //    }
+            //}
             this.lastPoint = pointIn.mapPoint;
             /*let graphics: esri.Graphic[] = getMarkupFromGeometry(pointIn.mapPoint, getGraphicsLayer("Drawings", false, this.app), this.app);
     
@@ -73,6 +88,9 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
             this.app.commandRegistry.command("StopEditingClickableFeature").execute();
         }*/
         OE_GraphicsModule.prototype._markupEditingStarted = function (selectedGraphic) {
+            this.isEditing = true;
+            this.app.commandRegistry.commands["HideMapTips"].execute();
+            $("#map_graphics_layer").css("display", "none");
             if (this.hideMapTipOnEdit)
                 this.app.commandRegistry.command("HideAllMapTips").execute();
             /*console.log("OE: >> Start Edit << ");
