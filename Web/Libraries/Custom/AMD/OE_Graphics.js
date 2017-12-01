@@ -117,7 +117,7 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
 
     }
 });
-require(["geocortex/framework/resourceManager"], function (imports) {imports.resourceManager.register("OE_AMD", "inv", "geocortex/oe_amd/OE_Graphics/CSS/OE_GraphicsModule.css", "css", "DQojbWFwX2dyYXBoaWNzX2xheWVyIHBhdGg6bnRoLWNoaWxkKG4rMikNCnsgICAgDQogICAgc3Ryb2tlOiB3aGl0ZSAhaW1wb3J0YW50Ow0KICAgIHN0cm9rZS13aWR0aDogMiAhaW1wb3J0YW50Ow0KfQ0KDQojbWFwX2dyYXBoaWNzX2xheWVyIHBhdGg6bnRoLWNoaWxkKG4rMykNCnsNCiAgICBkaXNwbGF5Om5vbmUgIWltcG9ydGFudDsNCn0NCg0KI21hcF9ncmFwaGljc19sYXllciBjaXJjbGUNCnsNCiAgICBkaXNwbGF5Om5vbmUgIWltcG9ydGFudDsNCn0=");
+require(["geocortex/framework/resourceManager"], function (imports) {imports.resourceManager.register("OE_AMD", "inv", "geocortex/oe_amd/OE_Graphics/CSS/OE_GraphicsModule.css", "css", "DQojbWFwX2dyYXBoaWNzX2xheWVyIHBhdGg6bnRoLWNoaWxkKDIpDQp7ICAgIA0KICAgIHN0cm9rZTogd2hpdGUgIWltcG9ydGFudDsNCiAgICBzdHJva2Utd2lkdGg6IDIgIWltcG9ydGFudDsNCn0NCg0KI21hcF9ncmFwaGljc19sYXllciBwYXRoOm50aC1jaGlsZChuKzMpDQp7DQogICAgZGlzcGxheTpub25lICFpbXBvcnRhbnQ7DQp9DQoNCiNtYXBfZ3JhcGhpY3NfbGF5ZXIgY2lyY2xlDQp7DQogICAgZGlzcGxheTpub25lICFpbXBvcnRhbnQ7DQp9");
 
 });
 

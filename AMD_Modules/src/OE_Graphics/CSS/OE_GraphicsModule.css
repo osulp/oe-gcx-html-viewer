@@ -1,5 +1,5 @@
 ﻿
-#map_graphics_layer path:nth-child(n+2)
+#map_graphics_layer path:nth-child(2)
 {    
     stroke: white !important;
     stroke-width: 2 !important;
