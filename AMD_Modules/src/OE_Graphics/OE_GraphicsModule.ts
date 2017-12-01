@@ -101,7 +101,7 @@ export class OE_GraphicsModule extends ModuleBase {
     _markupEditingStarted(selectedGraphic: esri.Graphic) {
         this.isEditing = true;
         this.app.commandRegistry.commands["HideMapTips"].execute();
-        $("#map_graphics_layer").css("display", "none");
+        //$("#map_graphics_layer").css("display", "none");
 
         /*console.log("OE: >> Start Edit << ");
         this.app.commandRegistry.command("SuspendMapTips").execute();

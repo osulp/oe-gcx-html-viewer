@@ -30,6 +30,7 @@
     <None Include="src\OtherTemplate\OtherTemplateView.html" />
     <Content Include="bin.js" />
     <Content Include="gulpfile.js" />
+    <Content Include="src\OE_Graphics\CSS\OE_GraphicsModule.css" />
     <Content Include="src\OE_Graphics\readme.txt" />
     <Content Include="src\Template\CSS\TemplateModule.css" />
     <None Include="src\Template\Language.json" />

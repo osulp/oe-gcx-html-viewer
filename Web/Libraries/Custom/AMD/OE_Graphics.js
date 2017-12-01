@@ -26,7 +26,6 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
         OE_GraphicsModule.prototype.initialize = function (config) {
             var _this = this;
             this.editingCount = 0;
-            this.isEditing = false;
             this.hideMapTipOnEdit = config.hideMapTipOnEdit || false;
             this.workflowIDRunOnEdit = config.workflowIDRunOnEdit || null;
             this.openMarkupStyleOnEdit = config.openMarkupStyleOnEdit || false;
@@ -90,9 +89,7 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
         OE_GraphicsModule.prototype._markupEditingStarted = function (selectedGraphic) {
             this.isEditing = true;
             this.app.commandRegistry.commands["HideMapTips"].execute();
-            $("#map_graphics_layer").css("display", "none");
-            if (this.hideMapTipOnEdit)
-                this.app.commandRegistry.command("HideAllMapTips").execute();
+            //$("#map_graphics_layer").css("display", "none");
             /*console.log("OE: >> Start Edit << ");
             this.app.commandRegistry.command("SuspendMapTips").execute();
     
@@ -120,6 +117,8 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
 
     }
 });
+require(["geocortex/framework/resourceManager"], function (imports) {imports.resourceManager.register("OE_AMD", "inv", "geocortex/oe_amd/OE_Graphics/CSS/OE_GraphicsModule.css", "css", "DQojbWFwX2dyYXBoaWNzX2xheWVyIHBhdGg6bnRoLWNoaWxkKG4rMikNCnsgICAgDQogICAgc3Ryb2tlOiB3aGl0ZSAhaW1wb3J0YW50Ow0KICAgIHN0cm9rZS13aWR0aDogMiAhaW1wb3J0YW50Ow0KfQ0KDQojbWFwX2dyYXBoaWNzX2xheWVyIHBhdGg6bnRoLWNoaWxkKG4rMykNCnsNCiAgICBkaXNwbGF5Om5vbmUgIWltcG9ydGFudDsNCn0NCg0KI21hcF9ncmFwaGljc19sYXllciBjaXJjbGUNCnsNCiAgICBkaXNwbGF5Om5vbmUgIWltcG9ydGFudDsNCn0=");
 
+});
 
 })();

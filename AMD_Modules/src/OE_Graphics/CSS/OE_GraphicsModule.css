@@ -1,0 +1,16 @@
+﻿
+#map_graphics_layer path:nth-child(n+2)
+{    
+    stroke: white !important;
+    stroke-width: 2 !important;
+}
+
+#map_graphics_layer path:nth-child(n+3)
+{
+    display:none !important;
+}
+
+#map_graphics_layer circle
+{
+    display:none !important;
+}
