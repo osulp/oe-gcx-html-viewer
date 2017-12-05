@@ -26,6 +26,7 @@ module oe.SageGrouseDevSiting {
         avoidance: Observable<string> = new Observable<string>("");
         //minimization: Observable<string> = new Observable<string>("");
         significant: Observable<string> = new Observable<string>("");
+        significantMsg: Observable<string> = new Observable<string>("");
         minimization_list: ObservableCollection<string> = new ObservableCollection([]);
 
         constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, lib: string) {
@@ -58,12 +59,13 @@ module oe.SageGrouseDevSiting {
                 thisViewModel.avoidance.set(myWorkflowContext.getValue("avoidance") === 'True' ? 'may' : 'will not' );
                 //thisViewModel.minimization.set(myWorkflowContext.getValue("minimizations"));
                 let minimizations = [];
-                myWorkflowContext.getValue("minimizations").split(',').forEach((min) => {
+                myWorkflowContext.getValue("minimizations").split(';').forEach((min) => {
                     let minimization = { minimization: min };
                     minimizations.push(minimization);
                 });
                 thisViewModel.minimization_list.set(minimizations);
                 thisViewModel.significant.set(myWorkflowContext.getValue("significant") === 'True' ? 'is' : 'is not');
+                thisViewModel.significantMsg.set(myWorkflowContext.getValue("significantMsg"));
             });
         }
 
