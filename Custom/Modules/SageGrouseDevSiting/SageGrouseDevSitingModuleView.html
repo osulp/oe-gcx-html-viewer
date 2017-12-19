@@ -12,7 +12,7 @@
         <span class="data" data-binding="{@text:devType}"></span>
     </div>
     <hr>
-    <span>This is a summary report. Click the button below for a full report</span><br />
+    <span>This is a summary report. <b>Click the button below for a full report</b></span><br />
     <div id="btn-row">
         <div class="btn-cell">
             <div data-binding="{@event-onclick:getPDF}">View Full Report</div>
@@ -23,6 +23,47 @@
     </div>
 
     <hr />
+    <fieldset>
+        <legend>Project Area</legend>
+        <div>
+            <span class="data-label">Direct Footprint Area:</span>
+            <span class="data" data-binding="{@text:directArea}"></span>
+        </div>
+        <div>
+            <span class="data-label">Indirect Impact Area:</span>
+            <span class="data" data-binding="{@text:indirectArea}"></span>
+        </div>
+        <div>
+            <span class="data-label">Buffer distance: </span>
+            <span class="data" data-binding="{@text:bufferDist}"></span>
+        </div>
+        <div>
+            <span class="data-label">Estimated Non-Habitat in Indirect Impact Area:</span>
+            <span class="data" data-binding="{@text:nonHabArea}"></span>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Habitat</legend>
+        <div>
+            <span class="data-label">Significant Habitat: </span>
+            <span>The direct and indirect impact areas </span>
+            <span class="data-label" data-binding="{@text:significant}"></span>
+            <span> within known significant sage-grouse habitat.</span>
+            <span data-binding="{@text:significantMsg}"></span>
+        </div>
+        <div>
+            <span class="data-label">Habitat Designations: </span>
+            <span class="data" data-binding="{@text:habDesig}"></span>
+        </div>
+        <div>
+            <span class="data-label">Within 3.1 miles of a Lek? </span>
+            <span class="data" data-binding="{@text:isLek}"></span>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Land management/ownership</legend>
+        <div data-binding="{@text:landManagement}"></div>
+    </fieldset>
     <fieldset>
         <legend>
             Mitigation Hierarchy
@@ -39,58 +80,19 @@
             <span> may include:</span>
             <ul data-binding="{@source: minimization_list}">
                 <li data-binding="{@template-for: minimization_list}">
-                        <span data-binding="{@text:minimization}"></span>
+                    <span data-binding="{@text:minimization}"></span>
                 </li>
             </ul>
         </div>
         <div>
             <span class="data-label">Compensatory Mitigation</span>
             <span data-binding="{@text:compensatoryMitigation}"></span>
+            <span> out of 100</span>
         </div>
         <div id="chart-wrapper">
             <img width="225" data-binding="{src: chartURL}">
 
         </div>
-    </fieldset>
-    <fieldset>
-        <legend>Area</legend>
-        <div>
-            <span class="data-label">Direct Project Area:</span>
-            <span class="data" data-binding="{@text:directArea}"></span>
-        </div>
-        <div>
-            <span class="data-label">Buffered Area:</span>
-            <span class="data" data-binding="{@text:indirectArea}"></span>
-        </div>
-        <div>
-            <span class="data-label">Buffered to </span>
-            <span class="data" data-binding="{@text:bufferDist}"></span>
-        </div>
-        <div>
-            <span class="data-label">Non-Habitat in buffered area:</span>
-            <span class="data" data-binding="{@text:nonHabArea}"></span>
-        </div>
-    </fieldset>
-    <fieldset>
-        <legend>Habitat</legend>
-        <div>
-            <span class="data-label">Significant Habitat: </span>
-            <span>The project footprint </span>
-            <span class="data-label" data-binding="{@text:significant}"></span>
-            <span> within known significant sage-grouse habitat.</span>
-        </div>
-        <div>
-            <span class="data-label">Habitat Designations: </span>
-            <span class="data" data-binding="{@text:habDesig}"></span>
-        </div>
-        <div>
-            <span class="data-label">Within 3.1 miles of a Lek? </span>
-            <span class="data" data-binding="{@text:isLek}"></span>
-        </div>
-    </fieldset>
-    <fieldset>
-        <legend>Land management/ownership</legend>
-        <div data-binding="{@text:landManagement}"></div>
     </fieldset>
     <fieldset>
         <legend>Contact Information</legend>

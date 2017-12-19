@@ -133,6 +133,7 @@ var oe;
                 this.avoidance = new Observable("");
                 //minimization: Observable<string> = new Observable<string>("");
                 this.significant = new Observable("");
+                this.significantMsg = new Observable("");
                 this.minimization_list = new ObservableCollection([]);
             }
             SageGrouseDevSitingModuleViewModel.prototype.initialize = function (config) {
@@ -159,12 +160,13 @@ var oe;
                     thisViewModel.avoidance.set(myWorkflowContext.getValue("avoidance") === 'True' ? 'may' : 'will not');
                     //thisViewModel.minimization.set(myWorkflowContext.getValue("minimizations"));
                     var minimizations = [];
-                    myWorkflowContext.getValue("minimizations").split(',').forEach(function (min) {
+                    myWorkflowContext.getValue("minimizations").split(';').forEach(function (min) {
                         var minimization = { minimization: min };
                         minimizations.push(minimization);
                     });
                     thisViewModel.minimization_list.set(minimizations);
                     thisViewModel.significant.set(myWorkflowContext.getValue("significant") === 'True' ? 'is' : 'is not');
+                    thisViewModel.significantMsg.set(myWorkflowContext.getValue("significantMsg"));
                 });
             };
             return SageGrouseDevSitingModuleViewModel;
