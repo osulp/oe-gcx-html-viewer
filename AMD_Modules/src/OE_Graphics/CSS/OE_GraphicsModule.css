@@ -1,5 +1,5 @@
 ﻿
-#map_graphics_layer path:nth-child(2)
+/*#map_graphics_layer path:nth-child(2)
 {    
     stroke: white !important;
     stroke-width: 2 !important;
@@ -10,7 +10,34 @@
     display:none !important;
 }
 
+#map_graphics_layer path:nth-child(2)
+{    
+     display:block !important;
+}
+
 #map_graphics_layer circle
+{
+    display:none !important;
+}*/
+
+/*.OESvgMarkup path:nth-child(2)
+{    
+    display:block !important;
+    stroke: white !important;
+    stroke-width: 2 !important;
+}
+
+.OESvgMarkup path:nth-child(n+3)
+{
+    display:none !important;
+}*/
+
+/*.OESvgMarkup path:nth-child(2)
+{
+    display:block !important;
+}*/
+
+.OESvgMarkup circle, .OESvgMarkup path
 {
     display:none !important;
 }

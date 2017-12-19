@@ -1,4 +1,13 @@
-﻿{
+﻿
+hideMapTipOnEdit setups a custom OE graphic that prevents the maptips from showing when it is selected
+To set a graphic as an OE graphic a command must be called before the graphic it added to the map.
+This is done in a workflow by calling the custom command "OETagNextMarkup".
+
+These two options do not need hideMapTipOnEdit enabled
+openMarkupStyleOnEdit will open style editor when a graphic is selected
+workflowIDRunOnEdit will run a custom workflow when the graphic is selected
+
+{
     "moduleName": "OE_Graphics",
     "libraryId": "OE_AMD",
     "require": "geocortex/oe_amd/OE_Graphics/OE_GraphicsModule",

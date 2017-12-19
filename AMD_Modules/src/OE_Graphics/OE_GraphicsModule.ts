@@ -11,13 +11,11 @@ import { Geometry } from "geocortex/infrastructure/webMap/Geometry";
 export class OE_GraphicsModule extends ModuleBase {
 
     app: ViewerApplication;
-    hideMapTipOnEdit: boolean;
+    hideMapTipOnEdit: boolean; //also adds the OE property to graphics
     workflowIDRunOnEdit: string;
-    openMarkupStyleOnEdit: boolean;
-    editingCount: number;
-    isEditing: boolean;
-
-    lastPoint: Geometry;
+    openMarkupStyleOnEdit: boolean;    
+    tagNextMarkup: boolean; //used to add an OE property to a graphic
+    lastGraphicWasOE: boolean; //need to know if the last graphic was OE
 
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
@@ -25,10 +23,12 @@ export class OE_GraphicsModule extends ModuleBase {
 
     initialize(config: any): void {
 
-        this.editingCount = 0;
+        this.tagNextMarkup = false;        
         this.hideMapTipOnEdit = config.hideMapTipOnEdit || false;
         this.workflowIDRunOnEdit = config.workflowIDRunOnEdit || null;
         this.openMarkupStyleOnEdit = config.openMarkupStyleOnEdit || false;
+
+        this.lastGraphicWasOE = false;
 
         var site = (<any>this).app.site;
 
@@ -40,90 +40,130 @@ export class OE_GraphicsModule extends ModuleBase {
                 this._onSiteInitialized(args);
             });
         }
-
     }
 
     _onSiteInitialized(site) {
 
-        this.app.eventRegistry.event("MarkupEditingStartedEvent").subscribe(this, (args) => {
-            this._markupEditingStarted(args);
-        });
+        //any enabled property requires this command 
+        if (this.hideMapTipOnEdit || this.openMarkupStyleOnEdit || this.workflowIDRunOnEdit !=null) {
+            this.app.eventRegistry.event("MarkupEditingStartedEvent").subscribe(this, (args) => {
+                this._markupEditingStarted(args);
+            });
+        }
 
-        this.app.eventRegistry.event("MarkupEditingStoppedEvent").subscribe(this, (args) => {
-            this._markupEditingStopped(args);
-        });
+        //commands required for hiding map tips and marking a graphic as OE
+        if (this.hideMapTipOnEdit) {
 
-        //grab the geocortex map event
-        this.app.eventRegistry.event("MapClickedEvent").subscribe(this, (args) => {
-            this._handleMapClickEvent(args);
-        });
+             //register tagging command
+            this.app.commandRegistry.command("OETagNextMarkup").register(this, this._oeTagNextMarkup);
+
+            this.app.eventRegistry.event("MarkupAddedEvent").subscribe(this, (args) => {
+                this._markupAddedEvent(args);
+            });
+
+            this.app.eventRegistry.event("MarkupEditingStoppedEvent").subscribe(this, (args) => {
+                this._markupEditingStopped(args);
+            });
+
+            //grab the geocortex map event        
+            this.app.eventRegistry.event("MapClickedEvent").subscribe(this, (args) => {
+                this._handleMapClickEvent(args);
+            });
+        }
     }
 
-    _handleGeometryEditInvokeEvent(args) {
-        //close map tip
-        this.app.commandRegistry.commands["HideMapTips"].execute();
+    _oeTagNextMarkup() {
+        this.tagNextMarkup = true;
     }
 
+    _markupAddedEvent(graphic: esri.Graphic) {
+        
+        if (this.tagNextMarkup == true) {
+            //graphic.setAttributes({ "oe_markup": "oe", "name": "Custom Name", "title": "Custom Title" });
+            graphic["oe_markup"] = true;
+        }
+
+        this.tagNextMarkup = false;
+    }
+        
     _handleMapClickEvent(pointIn) {
-        console.log("OE: >> Click Event << ");
-        if (!pointIn.graphic) {
-            this.app.commandRegistry.commands['StopEditingMarkup'].execute(true);
-        } else if (pointIn.graphic.getSourceLayer().id === 'Drawings') {
-            this.app.commandRegistry.commands['EditMarkup'].execute(pointIn.graphic.geometry);
-        }
 
-        //if (pointIn.graphic || this.isEditing) {
-        //    if (pointIn.graphic.getSourceLayer().id !== 'Drawings') {
+        if (this.hideMapTipOnEdit) {
+            if (!pointIn.graphic) {
+                //no graphic select, clear markup
+                this.app.commandRegistry.commands['StopEditingMarkup'].execute(true);                
+                this.app.commandRegistry.commands["ResumeMapTips"].execute();
+                this.lastGraphicWasOE = false;
+            } else if (pointIn.graphic.getSourceLayer().id === 'Drawings') {
 
-        //    }
-        //}
-        this.lastPoint = pointIn.mapPoint;
+                if (pointIn.graphic["oe_markup"] != undefined && pointIn.graphic["oe_markup"] == true) {
+                    //oe graphic, edit and mark that OE was the last graphic edited
+                    this.app.commandRegistry.commands['EditMarkup'].execute(pointIn.graphic.geometry);
+                    this.lastGraphicWasOE = true;
+                }
+                else {
 
-        /*let graphics: esri.Graphic[] = getMarkupFromGeometry(pointIn.mapPoint, getGraphicsLayer("Drawings", false, this.app), this.app);
-
-        if (graphics.length > 0) {
-            //this.app.commandRegistry.command("SuspendMapTips").execute();
-            this.app.commandRegistry.command("EditMarkup").execute(graphics[0].geometry);
-            //this.app.commandRegistry.command("StopAndAutoEditClickableFeature").execute(graphics[0].geometry);
-        }
-
-        if (this.editingCount>0) {
-            //this.app.commandRegistry.command("StopEditingClickableFeature").execute();
-            this.app.commandRegistry.command("StopEditingMarkup").execute();
-            this.editingCount = 0;
-        }*/
+                    if (this.lastGraphicWasOE)
+                    {
+                        //if the last graphic was OE clear the markup.
+                        //This prevents the controls showing up on the OE graphic if the user selects a standard graphic
+                        this.app.commandRegistry.commands['StopEditingMarkup'].execute(true);
+                        this.app.commandRegistry.commands["ResumeMapTips"].execute();
+                        this.lastGraphicWasOE = false;
+                    }
+                    else
+                    {
+                        //standard graphic, remove classname
+                        document.getElementById("map_graphics_layer").className["baseVal"] = "";
+                        this.app.commandRegistry.commands["ResumeMapTips"].execute();
+                        this.app.commandRegistry.commands['InvokeMapTip'].execute();
+                    }                    
+                }
+            }
+        }   
     }
 
-    /*_markupStopAllEditing() {
-        this.app.commandRegistry.command("StopEditingClickableFeature").execute();
+    /*_checkChildCount(selectedGraphic) {
+
+        //redraw the square selection outline around the graphic
+
+        var svgElement = document.getElementById("map_graphics_layer");
+        var elements = svgElement.getElementsByTagName("path");
+
+        let str: String = elements[0].getAttribute("d");
+        let pathParts: String[] = str.split(" ");
+        pathParts.splice(pathParts.length - 2, 1);
+        elements[0].setAttribute("d", pathParts.join(" "));
+    
     }*/
 
     _markupEditingStarted(selectedGraphic: esri.Graphic) {
-        this.isEditing = true;
-        this.app.commandRegistry.commands["HideMapTips"].execute();
-        //$("#map_graphics_layer").css("display", "none");
 
-        /*console.log("OE: >> Start Edit << ");
-        this.app.commandRegistry.command("SuspendMapTips").execute();
+        if (this.hideMapTipOnEdit && selectedGraphic["oe_markup"] == true)
+        {            
+            this.app.commandRegistry.commands["HideMapTips"].execute();
+            document.getElementById("map_graphics_layer").className["baseVal"] = "OESvgMarkup";
+            selectedGraphic.symbol.setColor(new esri.Color([102, 255, 255, .5]));
+            selectedGraphic.draw();     
+        }
 
-        if (this.hideMapTipOnEdit)
-            this.app.commandRegistry.command("HideAllMapTips").execute();
-
-        this.editingCount++;*/
-
-        //if (this.workflowIDRunOnEdit)
-          //  this.app.commandRegistry.command("RunWorkflowById").execute(this.workflowIDRunOnEdit);
-
-        //if (this.openMarkupStyleOnEdit)
-          //  this.app.commandRegistry.command("CreateMarkupStyleView").execute();
+        if (this.openMarkupStyleOnEdit)
+        {
+            this.app.commandRegistry.commands["CreateMarkupStyleView"].execute();            
+        }
+        else if (this.workflowIDRunOnEdit != null)
+        {
+            this.app.commandRegistry.commands["RunWorkflowById"].execute(this.workflowIDRunOnEdit);
+        }        
     }
-
+        
     _markupEditingStopped(selectedGraphic: esri.Graphic) {
-
-        /*console.log("OE: >> Stop Edit << ");
-        this.editingCount--;
-
-        this.app.commandRegistry.command("ResumeMapTips").execute();                */
+  
+        //change color
+        if (selectedGraphic["oe_markup"] != undefined && selectedGraphic["oe_markup"] == true) {
+            selectedGraphic.symbol.setColor(new esri.Color([76, 160, 216, .5]));
+            selectedGraphic.draw();            
+        }        
     }
 
 }
