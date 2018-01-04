@@ -29,7 +29,9 @@ module oe.hyperlink_banner {
                         
             //wrap banner image with a link anchor
             $(".banner-left-img").wrap('<a href="'+linkUri+'" target="_blank"></a>');
-
+            if ($(".banner-subtitle").html() === '') {
+                $(".banner-text h1").css("margin-top", "0.59em");
+            }
             /*$('.banner').click(function (e) {
                 if (e.pageX < 350) {
                     window.open(linkUri, '_blank');                    

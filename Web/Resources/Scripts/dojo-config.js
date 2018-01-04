@@ -68,7 +68,7 @@ var dojoConfig = {
             name: "esri"
         },
         {
-            location: esriBase,
+            location: esriBase + "../dojo",
             name: "dojo"
         },
         {

@@ -6,7 +6,7 @@ import { ModuleBase } from "geocortex/framework/application/ModuleBase";
 import { ViewerApplication } from "geocortex/infrastructure/Viewer";
 
 export class OE_HyperlinkBannerModule extends ModuleBase {
-        
+
     app: ViewerApplication;
 
     constructor(app: ViewerApplication, lib: string) {
@@ -17,7 +17,7 @@ export class OE_HyperlinkBannerModule extends ModuleBase {
 
         var linkUri = config.linkUri !== undefined ? config.linkUri : "http://oregonexplorer.info";
         var site = (<any>this).app.site;
-        
+
         if (site && site.isInitialized) {
             this._onSiteInitialized(site, linkUri);
         }
@@ -29,9 +29,12 @@ export class OE_HyperlinkBannerModule extends ModuleBase {
 
     }
 
-    _onSiteInitialized(site, linkUri: string) {                        
+    _onSiteInitialized(site, linkUri: string) {
         //wrap banner image with a link anchor
         $(".banner-left-img").wrap('<a href="' + linkUri + '" target="_blank"></a>');
+        if ($(".banner-subtitle").html() === '') {
+            $(".banner-text h1").css("margin-top", "0.59em");
+        }
     }
 
 }
