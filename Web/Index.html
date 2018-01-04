@@ -62,30 +62,18 @@
         //var geocortexUseLocalEsriApi = true;
         var viewerConfig = {
             "configurations": {
-                "default": "Resources/Config/Default/dev_configs/" + shellName + ".json.dev.siting.js"
+                "default": "Resources/Config/Default/" + shellName + ".json.js"
             },
             "viewerConfigUri": null
         };
 
-        new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize({
-            onSiteInitialized: function (app, loader) {
+        new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize({            
+            onSiteInitialized: function (app, loader) {                
                 geocortex.config.io.timeout = 180 * 1000; // 180 seconds
             }
         });
-
-        //Production
+                
         //"default": "Resources/Config/Default/" + shellName + ".json.js"
-        //"default": "Resources/Config/Basic/" + shellName + ".json.js"
-        //"default": "Resources/Config/Advanced/" + shellName + ".json.js"
-
-        //Dev
-        //"default": "Resources/Config/DEV/" + shellName + ".json.js"
-
-        //var viewerConfig = {
-        //    //"viewerConfigUri": "Libraries/Custom/Config/Defaults.json.js"
-        //    //"viewerConfigUri": "Resources/Config/Default/Tablet.json.js"
-        //    //"viewerConfigUri": "Resources/Config/Default/Desktop.json.js"
-        //};
 
         //// To load external css or javascript files in your project add the URL for each resource to this array
         //var resources = [];
