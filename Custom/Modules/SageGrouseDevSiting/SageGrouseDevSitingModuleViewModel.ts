@@ -64,7 +64,7 @@ module oe.SageGrouseDevSiting {
                     minimizations.push(minimization);
                 });
                 thisViewModel.minimization_list.set(minimizations);
-                thisViewModel.significant.set(myWorkflowContext.getValue("significant") === 'True' ? 'is' : 'is not');
+                thisViewModel.significant.set(myWorkflowContext.getValue("significant") === 'True' ? 'are' : 'are not');
                 thisViewModel.significantMsg.set(myWorkflowContext.getValue("significantMsg"));
             });
         }
