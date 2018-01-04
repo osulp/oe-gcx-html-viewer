@@ -2,10 +2,11 @@
 /// <reference path="../../../Libs/Mapping.Infrastructure.d.ts" />
 
 module oe.elevation {
-    var demURL = "http://sampleserver5.arcgisonline.com/arcgis/rest/services/Elevation/WorldElevations/MapServer";
-    var googleURL = "http://maps.googleapis.com/maps/api/elevation/json?locations=";
-    var identify = new esri.tasks.IdentifyTask(demURL);
-    var identifyParams = new esri.tasks.IdentifyParameters();
+    //var demURL = "http://sampleserver5.arcgisonline.com/arcgis/rest/services/Elevation/WorldElevations/MapServer";
+    //var googleURL = "http://maps.googleapis.com/maps/api/elevation/json?locations=";
+    var usgsURL = "https://nationalmap.gov/epqs/pqs.php?";//x=47&y=-123&units=Feet&output=json"
+    //var identify = new esri.tasks.IdentifyTask(demURL);
+    //var identifyParams = new esri.tasks.IdentifyParameters();
     var elevCounter = 0;
     var elevCounterMax;
     var shellName;
@@ -74,9 +75,7 @@ module oe.elevation {
                     return;
                 }
                 
-                //The coordinates manager hold a prevCoord which is acutally the current context menu point.
-                //var defaultX = appIn.coordinatesManager._prevCoord.x;
-                //var defaultY = appIn.coordinatesManager._prevCoord.y;
+                //The coordinates manager hold a prevCoord which is acutally the current context menu point.                
                 var defaultX = pointIn.x;
                 var defaultY = pointIn.y;
 
@@ -85,41 +84,25 @@ module oe.elevation {
                 var geographicPoint = esri.geometry.webMercatorToGeographic(xyPoint);
                 var mapPoint = new esri.geometry.Point(geographicPoint);
 
-                //toss the point at google
-                var url = googleURL + mapPoint.y + "," + mapPoint.x;                
-                var siteUrl = window.location.href.split("?")[0];
-                siteUrl = siteUrl.replace(siteUrl.split("/")[siteUrl.split("/").length - 1], "");                
-                var proxyUrl = siteUrl + "Proxy.ashx?" + url;                
-                var contentType = "application/x-www-form-urlencoded; charset=utf-8";
-                $.ajax({
-                    type: "GET",
-                    contentType: "application/json; charset=utf-8",
-                    url: proxyUrl,
-                    dataType: "json",
-                    async: false,
-                    success: function (result) {
-                        if (result.results.length > 0) {
-                            var elevation = result.results[0].elevation;
-                            elevation = Math.round(parseFloat(elevation) * 3.28084).toString() + " ft";
+                //toss point at usgs
+                var url = usgsURL + "x=" + mapPoint.x + "&y=" + mapPoint.y + "&units=feet&output=json";
+                                                
+                $.get(url, "", null, "json")
+                    .done(function (result) {
+
+                        var elevation = result.USGS_Elevation_Point_Query_Service.Elevation_Query.Elevation;
+                        if (elevation > -10000) {
+                            elevation = Math.round(parseFloat(elevation)).toString() + " ft";
                             $("#GoogleElevationValue").html(elevation);
                         }
-                        else if (result.status == "OVER_QUERY_LIMIT") {
-                            $("#GoogleElevationValue").html("Query Limit.  Wait a moment and try again.");
+                        else {
+                            $("#GoogleElevationValue").html("No data");
                         }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        var error = thrownError;
+                    })
+                    .fail(function (xhr, ajaxOptions, thrownError) {
                         $("#GoogleElevationValue").html("Load failed");
-                       //alert(error);
-                    },
-                    complete: function (xhr, status) {
-                        if (status != "success" && status != "error" )
-                            $("#GoogleElevationValue").html(status);
-                    }
-                });
-                
-
-            }                       
+                    });
+            }            
         }        
     }
 }
