@@ -103,7 +103,10 @@ var geocortex;
                         _this.bridge.getTransport().allowOrigin(origin);
                     });
                     this.bridge.on("ExternalComponentInitializedEvent", function (arg) {
-                        if (arg.hasPreviousState) {
+                        if (arg) {
+                            _this.setSavedState(arg.savedState);
+                        }
+                        if (arg && arg.hasPreviousState) {
                             _this.updateSync(arg.sync);
                             if (arg.viewpoint) {
                                 _this.handleViewerPositionUpdatedEvent(arg.viewpoint);
@@ -131,11 +134,17 @@ var geocortex;
                     });
                     this.bridge.connect({ id: this.id, addViewpointIndicator: this._shouldAddViewpointIndicator });
                 };
+                ThirdPartyMap.prototype.getSavedState = function () {
+                    return null;
+                };
+                ThirdPartyMap.prototype.setSavedState = function (savedState) {
+                };
                 ThirdPartyMap.prototype.disconnect = function () {
                     var currentState = {
                         id: this.id,
                         sync: this.sync,
-                        viewpoint: this.getMapViewpointParams()
+                        viewpoint: this.getMapViewpointParams(),
+                        savedState: this.getSavedState()
                     };
                     this.bridge.disconnect(currentState);
                 };

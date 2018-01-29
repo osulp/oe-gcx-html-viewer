@@ -171,10 +171,14 @@ module geocortex.essentialsHtmlViewer.integration {
             });
 
             this.bridge.on("ExternalComponentInitializedEvent", (arg: mapping.infrastructure.integration.ComponentInitializationMessage) => {
-                if (arg.hasPreviousState) {
+                if (arg) {
+                    this.setSavedState(arg.savedState);
+                }
+
+                if (arg && arg.hasPreviousState) {
                     this.updateSync(arg.sync);
 
-                    // We only recieve viewpoint if the 3rd party map was previously unsynced
+                    // We only receive viewpoint if the 3rd party map was previously unsynced
                     if (arg.viewpoint) {
                         this.handleViewerPositionUpdatedEvent(arg.viewpoint);
                     }
@@ -207,13 +211,32 @@ module geocortex.essentialsHtmlViewer.integration {
         }
 
         /**
+         * Get the saved state to store with the integration module.
+         * This state will be sent back to the thirdPartyMap when reloaded (like going from the frame to the open window and vice versa).
+         * This should be overwritten in the 3rd party map application.
+         */
+        getSavedState(): any {
+            // This is where you would return any state that you want to keep. This state needs to be JSON serializable.
+            return null;
+        }
+
+        /**
+         * Set the saved state. This is called when the component is initialized.
+         * This should be overwritten in the 3rd party map application.
+         */
+        setSavedState(savedState: any): void {
+            // This is where you would take the save state and apply it to your 3rd party map.
+        }
+
+        /**
          * Disconnects the bridge when the window unloads
          */
         disconnect(): void {
             var currentState = {
                 id: this.id,
                 sync: this.sync,
-                viewpoint: this.getMapViewpointParams()
+                viewpoint: this.getMapViewpointParams(),
+                savedState: this.getSavedState()
             };
 
             this.bridge.disconnect(currentState);

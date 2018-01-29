@@ -1,6 +1,6 @@
 {
     "configuration": {
-        "version": "2.8",
+        "version": "2.10",
         "application": {
             "proxyUri": "proxy.ashx?",
             "allowUnsafeContent": true,
@@ -79,6 +79,10 @@
                     }
                 ]
             },
+			{
+                "id": "https://apps.geocortex.com/workflow/latest/dist/hosts/gvh/loader.js!",
+                "async": true
+            },
              {
                  "id":"Custom",
                  "uri":"Libraries/Custom/Compiled/Custom.js",
@@ -121,7 +125,12 @@
                 "moduleName": "LayerActionsExtension",
                 "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
                 "libraryId": "Custom",
-                "configuration": {}
+                "configuration": {
+                    "showLayerDescription":false,
+                    "allowAllLayerTypes":true,
+                    "metadataHyperlinkOverride":true,
+                    "expandLayerTreeOnVisible":true
+                }
             },                            
              {
                  "moduleName": "InitialExtent",
@@ -251,6 +260,30 @@
                             "defaultIconUri": "Resources/Images/Icons/arrow-right-alt-24.png",
                             "items": [
                                 {
+                                    "text": "View metadata",
+                                    "description": "View the layer's metadata",
+                                    "iconUri": "Resources/Images/Icons/details-24.png",
+                                    "command": "showMetadata",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "Download layer",
+                                    "description": "Download the layer",
+                                    "iconUri": "Resources/Images/Icons/download-24.png",
+                                    "command": "showDownload",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "View Service Info",
+                                    "description": "View the layer web service information",
+                                    "iconUri": "Resources/Images/Icons/window-new-24.png",
+                                    "command": "showServiceInfo",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },                                
+                                {
                                     "text": "@language-menu-add-a-feature",
                                     "description": "@language-menu-add-a-feature-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/feature-create-24.png",
@@ -277,31 +310,7 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/visualizations-24.png",
                                     "command": "ShowVisualizationView",
                                     "hideOnDisable": true
-                                },
-                                {
-                                    "text": "View metadata",
-                                    "description": "View the layer's metadata",
-                                    "iconUri": "Resources/Images/Icons/details-24.png",
-                                    "command": "showMetadata",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": true
-                                },
-                                {
-                                    "text": "View Service Info",
-                                    "description": "View the layer web service information",
-                                    "iconUri": "Resources/Images/Icons/window-new-24.png",
-                                    "command": "showServiceInfo",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": true
-                                },
-                                {
-                                    "text": "Download layer",
-                                    "description": "Download the layer",
-                                    "iconUri": "Resources/Images/Icons/download-24.png",
-                                    "command": "showDownload",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": true
-                                },
+                                },                                
                                 {
                                     "text": "@language-layer-addition-edit-layer-properties",
                                     "description": "@language-layer-addition-edit-layer-properties-desc",
@@ -400,6 +409,14 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/feature-edit-24.png",
                                     "command": "StartEditingAttributesAndGeometryFeature",
                                     "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-feature-editing-cut-text",
+                                    "description": "@language-feature-editing-cut-desc",
+                                    "iconUri": "Resources/Images/Icons/polygon-cut-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "CutFeatureInteractive",
+                                    "commandParameter": "{{context}}"
                                 },
                                 {
                                     "text": "@language-native-attach-file",
@@ -584,6 +601,13 @@
                                     "text": "@language-collaboration-edit-event-message",
                                     "description": "@language-collaboration-edit-event-message-desc",
                                     "command": "ShowEditCollaborationGraphicMessageView",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-collaboration-open-event-image",
+                                    "description": "@language-collaboration-open-event-image-desc",
+                                    "command": "OpenEventFeatureImage",
                                     "commandParameter": "{{context}}",
                                     "hideOnDisable": true
                                 }
@@ -884,6 +908,14 @@
                                     "commandParameter": "{{context}}"
                                 },
                                 {
+                                    "text": "@language-feature-editing-union-text",
+                                    "description": "@language-feature-editing-union-desc",
+                                    "iconUri": "Resources/Images/Icons/polygon-add-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "UnionFeaturesInteractive",
+                                    "commandParameter": "{{context}}"
+                                },
+                                {
                                     "text": "@language-menu-identify-buffered-feature-set-collection",
                                     "description": "@language-menu-identify-buffered-feature-set-collection-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/buffer-shape-24.png",
@@ -984,6 +1016,14 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/zoom-extent-24.png",
                                     "hideOnDisable": true,
                                     "command": "ZoomToFeatures",
+                                    "commandParameter": "{{context}}"
+                                },
+                                {
+                                    "text": "@language-feature-editing-union-text",
+                                    "description": "@language-feature-editing-union-desc",
+                                    "iconUri": "Resources/Images/Icons/polygon-add-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "UnionFeaturesInteractive",
                                     "commandParameter": "{{context}}"
                                 },
                                 {
@@ -1101,6 +1141,14 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/feature-edit-24.png",
                                     "command": "StartEditingAttributesAndGeometryFeature",
                                     "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-feature-editing-cut-text",
+                                    "description": "@language-feature-editing-cut-desc",
+                                    "iconUri": "Resources/Images/Icons/polygon-cut-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "CutFeatureInteractive",
+                                    "commandParameter": "{{context}}"
                                 },
                                 {
                                     "text": "@language-native-attach-file",
@@ -1692,6 +1740,15 @@
                                     "isSticky": true,
                                     "iconUri": "Resources/Images/Icons/Toolbar/draw-polygon-freehand-24.png",
                                     "statusText": "@language-collaboration-draw-freehand-polygon"
+                                },
+                                {
+                                    "name": "CollaborationTextDraw",
+                                    "command": "CollaborationDrawText",
+                                    "displayName": "@language-toolbar-markup-text",
+                                    "drawMode": "POINT",
+                                    "isSticky": true,
+                                    "iconUri": "Resources/Images/Icons/Toolbar/draw-text-24.png",
+                                    "statusText": "@language-collaboration-draw-text"
                                 }
                             ],
                             "eventTypes": [
@@ -1760,7 +1817,7 @@
                                     "markup": "Mapping/modules/Collaboration/Events/CardEvent/CardEventView.html",
                                     "libraryId": "Mapping",
                                     "configuration": {
-                                        "canDelete": true,
+                                        "canEdit": true,
                                         "icons": {
                                             "active": "Resources/Images/Icons/edit-markup-inactive-24.png",
                                             "deleted": "Resources/Images/Icons/close-24.png"
@@ -1781,7 +1838,7 @@
                                     "markup": "Mapping/modules/Collaboration/Events/CardEvent/CardEventView.html",
                                     "libraryId": "Mapping",
                                     "configuration": {
-                                        "canDelete": true
+                                        "canEdit": true
                                     }
                                 },
                                 {
@@ -2075,6 +2132,13 @@
                         {
                             "name": "EditorRemoveFeatureSelectedBehavior",
                             "commands": []
+                        },
+                        {
+                            "name": "CutFeatureToolActivatedBehavior",
+                            "event": "CutFeatureToolActivatedEvent",
+                            "commands": [
+                                "CloseDataFrame"
+                            ]
                         }
                     ]
                 },
@@ -2809,7 +2873,7 @@
                         "id": "InfoViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.Info.InfoViewModel",
                         "configuration": {
-                            "content": "%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%5BApplication%20information%20and%20actions%20here%5D%3C%2Fp%3E%3Cbr%3E%3Cp%3E%3Ci%3EUse%20this%20region%20to%20welcome%20users%2C%20make%20objectives%20of%20the%20application%20clear%2C%20and%20provide%20efficient%20access%20to%20important%20functions%20and%20workflows.%3C%2Fi%3E%3C%2Fp%3E",
+                            "content": "%3Cdiv%20style%3D%22font-family%3ASegoe%20UI%20Light%2C%20Segoe%20UI%2C%20Arial%3B%20padding%3A20px%22%3E%20%3Cp%20style%3D%22color%3A%20%23000000%3B%20%20font-size%3A%2018px%3B%22%3E%0D%0A%20%20%20%20%20%20%20%20Welcome%20to%20the%20Oregon%20Explorer%0D%0A%20%20%20%20%20%20%20%20%3Cbr%3E%20Map%20Viewer%21%0D%0A%20%20%20%20%3C%2Fp%3E%0D%0A%20%20%20%20%3Cbr%3E%0D%0A%0D%0A%20%20%20%20%3Cp%3EWith%20hundreds%20of%20map%20layers%20available%20to%20draw%20from%2C%20you%20can%20use%20the%20Oregon%20Explorer%20Map%20Viewer%20to%20make%20your%20own%20custom%20map%20and%20share%20it%20with%20others.%20%3C%2Fp%3E%0D%0A%20%20%20%20%3Cbr%3E%0D%0A%0D%0A%20%20%20%20%3Cp%3EClick%20button%20below%20to%20directly%20access%20the%20map%20layers%20or%20click%20on%20the%20%E2%80%9Clayers%E2%80%9D%20icon%20in%20the%20bottom%20left%20hand%20corner%20of%20this%20window.%20%20The%20home%20button%20gets%20you%20back%20to%20this%20introduction.%3C%2Fp%3E%0D%0A%20%20%20%20%3Cbr%3E%0D%0A%20%20%20%20%3Cp%20style%3D%22text-align%3Acenter%22%3E%3Ca%20href%3D%22command%3ASwitchToLayerView%22%3E%3Cimg%20src%3D%22Resources%2FImages%2FCustom%2FGotoLayers.png%22%3E%3C%2Fa%3E%3C%2Fp%3E%0D%0A%20%20%20%20%0D%0A%20%20%20%20%3Cbr%3E%0D%0A%20%20%20%20%3Cp%3E%0D%0A%20%20%20%20%20%20%20%20We%20hope%20you%20enjoy%20using%20the%20tool.%26nbsp%3B%20Send%20questions%20or%20feedback%20to%3A%20%3Ca%20href%3D%22mailto%3Avirtualoregon.support%40oregonstate.edu%22%3E%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20virtualoregon.support%40oregonstate.edu%0D%0A%20%20%20%20%20%20%20%20%3C%2Fa%3E%0D%0A%20%20%20%20%3C%2Fp%3E%0D%0A%20%20%20%20%3Cbr%3E%3Cbr%3E%0D%0A%20%20%20%20%3Cp%20style%3D%22text-align%3Acenter%22%3E%0D%0A%20%20%20%20%20%20%20%20%3Ca%20href%3D%22http%3A%2F%2Foregonexplorer.info%22%20target%3D%22_blank%22%3E%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cimg%20style%3D%22width%3A%20294px%3B%22%20src%3D%22Resources%2FImages%2FCustom%2Fsplash-logo.png%22%3E%0D%0A%20%20%20%20%20%20%20%20%3C%2Fa%3E%0D%0A%20%20%20%20%3C%2Fp%3E%20%20%20%20%0D%0A%3C%2Fdiv%3E",
                             "included": true,
                             "title": "@language-common-welcome"
                         }
@@ -5160,6 +5224,9 @@
                             "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerThemes.LayerThemeSharingLinkProvider"
                         },
                         {
+                            "type": "geocortex.essentialsHtmlViewer.mapping.modules.basemap.BasemapSharingLinkProvider"
+                        },
+                        {
                             "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerList.LayersSharingLinkProvider"
                         },
                         {
@@ -5183,6 +5250,9 @@
                     "css": [
                         "Resources/Styles/Handheld.css",
                         "Resources/Styles/SmallShell.css",
+                        "Resources/Styles/Custom/sites.css",
+                        "Resources/Styles/Custom/sites_handheld.css",
+                        "{ViewerConfigUri}../../Styles/Custom/common.css",
                         "{ViewerConfigUri}../../Styles/Custom/Handheld_OE.css"
                     ],
                     "homePanelVisible": false
@@ -6346,6 +6416,10 @@
                 ]
             },
             {
+                "moduleName": "WorkflowHost",
+                "libraryId": "https://apps.geocortex.com/workflow/latest/dist/hosts/gvh/loader.js!"
+            },
+            {
                 "moduleName": "ZoomControl",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.zoomcontrol.ZoomControlModule",
                 "configuration": {},
@@ -6582,13 +6656,16 @@
                         "Cartographic",
                         "Damage",
                         "Disasters",
+                        "Emergency Management",
                         "General Infrastructure",
+                        "Local Government",
                         "National Park Service",
                         "Numbers",
                         "Outdoor Recreation",
                         "People Places",
                         "Points Of Interest",
                         "Safety Health",
+                        "State Government",
                         "Transportation"
                     ],
                     "imageSize": {
@@ -6670,6 +6747,14 @@
                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.toolbar.transients.TransientView",
                 "markup": "Mapping/modules/Toolbar/Templates/TransientItems.html",
                 "viewModelId": "TabbedToolbarTransientViewModel"
+            },
+            {
+                "id": "SymbolEditor",
+                "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.symbology.SymbolEditorView",
+                "viewModelType": "geocortex.essentialsHtmlViewer.mapping.infrastructure.symbology.SymbolEditorViewModel",
+                "markup": "Mapping/infrastructure/symbology/SymbolEditorView.html",
+                "libraryId": "Mapping.Infrastructure",
+                "configuration": {}
             }
         ]
     }

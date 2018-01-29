@@ -3,6 +3,11 @@
         "version": "2.9",
         "application": {
             "proxyUri": "proxy.ashx?",
+            "contentPolicy": {
+                "disableSecurityPrompt": true,
+                "disablePromptOnImages": true,
+                "trustExactUrl": false
+            },
             "allowUnsafeContent": true,
             "offlineStorageSpaceMb": "50",
             "geometryServiceUrl": "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer"
@@ -91,6 +96,17 @@
                         "uri":"Resources/Locales/Custom.en-US.json.js"
                     }
                 ]
+            },
+            {
+                "id": "OE_AMD",
+                "async": true,
+                "location": "Libraries/Custom/AMD",
+                "locales": [
+                    {
+                        "locale": "inv",
+                        "uri": "Libraries/Custom/AMD/OE_AMD-Language.json"
+                    }
+                ]
             }
         ],
         "modules": [
@@ -115,15 +131,25 @@
                         "configuration": {}
                     }
                 ]
-            },            
-			{
-                "moduleName": "HyperlinkBanner",
-                "moduleType": "oe.hyperlink_banner.HyperlinkBannerModule",
-			    "libraryId": "Custom",
+            },
+            {
+                "moduleName": "OE_Graphics",
+                "libraryId": "OE_AMD",
+                "require": "geocortex/oe_amd/OE_Graphics/OE_GraphicsModule",
+                "configuration": {
+                    "hideMapTipOnEdit": true,
+                    "workflowIDRunOnEdit": "",
+                    "openMarkupStyleOnEdit": false
+                }
+            },
+            {
+                "moduleName": "OE_HyperlinkBanner",
+                "libraryId": "OE_AMD",
+                "require": "geocortex/oe_amd/OE_HyperlinkBanner/OE_HyperlinkBannerModule",
                 "configuration": {
                     "linkUri": "http://oregonexplorer.info"
-                  }
-             },
+                }
+            },
             {
 			    "moduleName": "LayerActionsExtension",
 			    "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
@@ -131,7 +157,8 @@
                 "configuration": {
                     "showLayerDescription":false,
                     "allowAllLayerTypes":true,
-                    "metadataHyperlinkOverride":true
+                    "metadataHyperlinkOverride":true,
+                    "expandLayerTreeOnVisible":true
                 }
             },
             {
@@ -139,7 +166,7 @@
                 "moduleType": "oe.initial_extent.InitialExtentModule",
                 "libraryId": "Custom",
                 "configuration": {}
-            },
+            },             
           {
               "moduleName" : "Elevation",
               "moduleType" : "oe.elevation.ElevationModule",
@@ -243,6 +270,30 @@
                             "defaultIconUri": "Resources/Images/Icons/arrow-right-alt-24.png",
                             "items": [
                                 {
+                                    "text": "View metadata",
+                                    "description": "View the layer's metadata",
+                                    "iconUri": "Resources/Images/Icons/details-24.png",
+                                    "command": "showMetadata",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "Download layer",
+                                    "description": "Download the layer",
+                                    "iconUri": "Resources/Images/Icons/download-24.png",
+                                    "command": "showDownload",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "View Service Info",
+                                    "description": "View the layer web service information",
+                                    "iconUri": "Resources/Images/Icons/window-new-24.png",
+                                    "command": "showServiceInfo",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
                                     "text": "@language-menu-add-a-feature",
                                     "description": "@language-menu-add-a-feature-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/feature-create-24.png",
@@ -269,31 +320,7 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/visualizations-24.png",
                                     "command": "ShowVisualizationView",
                                     "hideOnDisable": true
-                                },
-                                 {
-                                     "text": "View metadata",
-                                     "description": "View the layer's metadata",
-                                     "iconUri": "Resources/Images/Icons/details-24.png",
-                                     "command": "showMetadata",
-                                     "commandParameter": "{{context}}",
-                                     "hideOnDisable": true
-                                 },
-                                {
-                                    "text": "View Service Info",
-                                    "description": "View the layer web service information",
-                                    "iconUri": "Resources/Images/Icons/window-new-24.png",
-                                    "command": "showServiceInfo",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": true
-                                },
-                                {
-                                    "text": "Download layer",
-                                    "description": "Download the layer",
-                                    "iconUri": "Resources/Images/Icons/download-24.png",
-                                    "command": "showDownload",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": true
-                                },
+                                },                                                                 
                                 {
                                     "text": "@language-layer-addition-edit-layer-properties",
                                     "description": "@language-layer-addition-edit-layer-properties-desc",
@@ -2999,7 +3026,6 @@
                     "behaviors": [
                         {
                             "name": "FeatureDetailsOpenedBehavior",
-                            "event": "FeatureDetailsInvokedEvent",
                             "commands": [
                                 "ZoomToFeature",
                                 "FocusFeature"
@@ -6179,6 +6205,9 @@
                 "configuration": {
                     "css": [
                         "Resources/Styles/Desktop.css",
+                        "Resources/Styles/Custom/sites.css",
+                        "Resources/Styles/Custom/sites_desktop.css",
+                        "{ViewerConfigUri}../../Styles/Custom/common.css",
                         "{ViewerConfigUri}../../Styles/Custom/Desktop_OE.css"
                     ],
                     "homePanelVisible": true
@@ -6820,7 +6849,7 @@
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                 "configuration": {
-                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
+                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam",
                     "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                     "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                     "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/cake_site"

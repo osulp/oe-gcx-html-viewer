@@ -39,6 +39,9 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
         OE_HyperlinkBannerModule.prototype._onSiteInitialized = function (site, linkUri) {
             //wrap banner image with a link anchor
             $(".banner-left-img").wrap('<a href="' + linkUri + '" target="_blank"></a>');
+            if ($(".banner-subtitle").html() === '') {
+                $(".banner-text h1").css("margin-top", "0.59em");
+            }
         };
         return OE_HyperlinkBannerModule;
     }(ModuleBase_1.ModuleBase));

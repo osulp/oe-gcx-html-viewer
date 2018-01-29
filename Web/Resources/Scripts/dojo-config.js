@@ -75,6 +75,36 @@ var dojoConfig = {
             location: "Resources/Scripts",
             name: "pica",
             main: "pica"
+        },
+        {
+            location: "Resources/Scripts",
+            name: "react",
+            main: "react.min"
+        },
+        {
+            location: "Resources/Scripts",
+            name: "React",
+            main: "react.min"
+        },
+        {
+            location: "Resources/Scripts",
+            name: "ReactDOM",
+            main: "react-dom.min"
+        },
+        {
+            location: "Resources/Scripts",
+            name: "react-dom",
+            main: "react-dom.min"
+        },
+        {
+            location: "Resources/Scripts",
+            name: "fixed-data-table",
+            main: "fixed-data-table.min"
+        },
+        {
+            location: "Resources/Scripts",
+            name: "react-virtualized",
+            main: "react-virtualized.min"
         }],
     callback: function () {
         var originalRequire = require;

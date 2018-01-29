@@ -32,6 +32,8 @@
     <Content Include="gulpfile.js" />
     <Content Include="src\OE_Graphics\CSS\OE_GraphicsModule.css" />
     <Content Include="src\OE_Graphics\readme.txt" />
+    <Content Include="src\OE_Search\OE_Search.html" />
+    <Content Include="src\OE_Search\readme.txt" />
     <Content Include="src\Template\CSS\TemplateModule.css" />
     <None Include="src\Template\Language.json" />
     <None Include="src\Template\TemplateView.html" />
@@ -39,12 +41,17 @@
   <ItemGroup>
     <TypeScriptCompile Include="src\OE_Graphics\OE_GraphicsModule.ts" />
     <TypeScriptCompile Include="src\OE_HyperlinkBanner\OE_HyperlinkBannerModule.ts" />
+    <TypeScriptCompile Include="src\OE_Search\OE_SearchModule.ts" />
+    <TypeScriptCompile Include="src\OE_Search\OE_SearchProvider.ts" />
     <TypeScriptCompile Include="src\OtherTemplate\OtherTemplateModule.ts" />
     <TypeScriptCompile Include="src\OtherTemplate\OtherTemplateView.ts" />
     <TypeScriptCompile Include="src\Template\OtherTemplateViewModel.ts" />
     <None Include="src\Template\TemplateModule.ts" />
     <None Include="src\Template\TemplateView.ts" />
     <None Include="src\Template\TemplateViewModel.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\OE_Search\CSS\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>

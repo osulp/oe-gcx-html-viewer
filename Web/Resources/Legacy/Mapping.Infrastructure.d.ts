@@ -2,7 +2,7 @@
 /// <reference path="arcgis-js-api.d.ts" />
 /// <reference path="dojo.d.ts" />
 /// <reference path="modernizr.d.ts" />
-/// <reference path="bluebird.d.ts" />
+/// <reference path="bluebird-global.d.ts" />
 /// <reference path="essentials.d.ts" />
 /// <reference path="moment.d.ts" />
 /// <reference path="globalize.d.ts" />
@@ -661,7 +661,7 @@ declare module geocortex.framework.commands {
          * @gcx-command-category Highlighting
          */
         (commandName: "CreateHighlightLayer"): TypedCommand<{
-            (layerName: string, fillColor?: any, borderColor?: any): void;
+            (layerName: string, fillColor?: any, borderColor?: any, sharedGraphicsLayer?: boolean): void;
         }>;
         /**
          * Activates the markup style picker view based on the type name of geometry provided.
@@ -2698,33 +2698,36 @@ declare module geocortex.framework.commands {
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name SetHighlightBorderColor
          * @param color A 6 or 8 digit hex string representation of the color in RGB or ARGB form, respectively.
+         * @param layer The name of the highlight layer to set (default if left out)
          * @introduced 1.2
          * @gcx-command-category Highlighting
          */
         (commandName: "SetHighlightBorderColor"): TypedCommand<{
-            (color: string): void;
+            (color: string, layer?: string): void;
         }>;
         /**
          * Sets the current highlight border width to use, if the feature does not specify one.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name SetHighlightBorderWidth
          * @param width A number representing the width in pixels.
+         * @param layer The name of the highlight layer to set (default if left out)
          * @introduced 2.7
          * @gcx-command-category Highlighting
          */
         (commandName: "SetHighlightBorderWidth"): framework.commands.TypedCommand<{
-            (width: number): void;
+            (width: number, layer?: string): void;
         }>;
         /**
          * Sets the current highlight fill color to use, if the feature does not specify one.
          * @docs-gcx-command geocortex.essentialsHtmlViewer
          * @name SetHighlightFillColor
          * @param color A 6 or 8 digit hex string representation of the color in RGB or ARGB form, respectively.
+         * @param layer The name of the highlight layer to set (default if left out)
          * @introduced 1.2
          * @gcx-command-category Highlighting
          */
         (commandName: "SetHighlightFillColor"): TypedCommand<{
-            (color: string): void;
+            (color: string, layer?: string): void;
         }>;
         /**
          * Sets the measurement units for the measurements performed by the measurement module.  Also updates existing measurements already on the map.
@@ -4190,7 +4193,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.accessibili
         isZoomSlider?: boolean;
     }
 }
-declare var require: any;
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure {
     interface TransformationResult {
         geometry: esri.geometry.Geometry;
@@ -7391,7 +7393,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.accessibili
         protected _raiseEditVertexMoved(eventArgs: eventArgs.EditVertexMovedEventArgs): void;
     }
 }
-declare var require: any;
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.accessibility {
     /**
      * The Edit toolbar is a helper class that provides functionality to move graphics or
@@ -7862,7 +7863,6 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.accessibili
         protected _disableVertexEditing(): void;
     }
 }
-declare var require: any;
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.accessibility {
     /**
      * Toolbar that supports functionality to create new geometries by drawing them: points (POINT or MULTI_POINT),
@@ -8100,7 +8100,7 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.accessibili
         /** Starts digitizing polygons, polylines or multi-points via the keyboard. Returns a promise that is fulfilled once the user completes the drawing. */
         protected _drawPolyGeometry(start: esri.geometry.Point, geometryType: string): Promise<esri.geometry.Geometry>;
         /** Handles keyboard input for plotting polygons, polylines and multipoints. */
-        protected _drawPolyGeometry_handleKeyDown(resolve: (result: esri.geometry.Geometry | Promise.Thenable<esri.geometry.Geometry>) => void, reject: (error: any) => void): dojo.RemovableHandle;
+        protected _drawPolyGeometry_handleKeyDown(resolve: (result: esri.geometry.Geometry | Promise<esri.geometry.Geometry>) => void, reject: (error: any) => void): dojo.RemovableHandle;
         /** Plots a shape on the map. It will produce either a default shape (e.g. circle) or a shape digitized via the keyboard (e.g. polygon) */
         protected _plotShape(location: esri.geometry.Point, geometryType: string): Promise<esri.geometry.Geometry>;
         protected _editShape(geometry: esri.geometry.Geometry): void;
@@ -10674,6 +10674,30 @@ declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.menus {
         protected _validateMenuModel(menuModel: MenuModel): boolean;
     }
 }
+
+declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.clickableGraphics {
+    class ClickableGraphicsRegistry {
+      constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication);
+      register(graphicsLayer: esri.layers.GraphicsLayer, options?: ClickableOptions): void;
+      unregister(graphicsLayer: esri.layers.GraphicsLayer): void;
+      getLayerInfo(graphicsLayer: esri.layers.GraphicsLayer): ClickableLayerInfo;
+      getLayerInfos(): ClickableLayerInfo[];
+      clear(): void;
+      isLayerRegistered(graphicsLayer: esri.layers.GraphicsLayer): boolean;
+    }
+
+    interface ClickableLayerInfo {
+        graphicsLayerId: string;
+        autoEditable: boolean;
+        displayName: string;
+    }
+
+    interface ClickableOptions {
+        displayName: string;
+        autoEditable: boolean;
+    }
+}
+
 declare module geocortex.essentialsHtmlViewer.mapping.infrastructure.tools {
     class ToolBase implements ToolConfig {
         /**

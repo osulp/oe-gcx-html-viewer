@@ -73,7 +73,8 @@
         function initializeMap() {
             ipa.ready = function () {
                 ipa.setPreferences({
-                    enableSynchronization: true
+                    enableSynchronization: true,
+                    imageDownload: true
                 });
 
                 ipa.addListener("error", function (error) {

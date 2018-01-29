@@ -1,6 +1,6 @@
 {
     "configuration": {
-        "version": "2.9",
+        "version": "2.10",
         "application": {
             "proxyUri": "proxy.ashx?",
             "allowUnsafeContent": true,
@@ -409,6 +409,14 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/feature-edit-24.png",
                                     "command": "StartEditingAttributesAndGeometryFeature",
                                     "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-feature-editing-cut-text",
+                                    "description": "@language-feature-editing-cut-desc",
+                                    "iconUri": "Resources/Images/Icons/polygon-cut-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "CutFeatureInteractive",
+                                    "commandParameter": "{{context}}"
                                 },
                                 {
                                     "text": "@language-native-attach-file",
@@ -900,6 +908,14 @@
                                     "commandParameter": "{{context}}"
                                 },
                                 {
+                                    "text": "@language-feature-editing-union-text",
+                                    "description": "@language-feature-editing-union-desc",
+                                    "iconUri": "Resources/Images/Icons/polygon-add-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "UnionFeaturesInteractive",
+                                    "commandParameter": "{{context}}"
+                                },
+                                {
                                     "text": "@language-menu-identify-buffered-feature-set-collection",
                                     "description": "@language-menu-identify-buffered-feature-set-collection-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/buffer-shape-24.png",
@@ -1000,6 +1016,14 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/zoom-extent-24.png",
                                     "hideOnDisable": true,
                                     "command": "ZoomToFeatures",
+                                    "commandParameter": "{{context}}"
+                                },
+                                {
+                                    "text": "@language-feature-editing-union-text",
+                                    "description": "@language-feature-editing-union-desc",
+                                    "iconUri": "Resources/Images/Icons/polygon-add-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "UnionFeaturesInteractive",
                                     "commandParameter": "{{context}}"
                                 },
                                 {
@@ -1117,6 +1141,14 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/feature-edit-24.png",
                                     "command": "StartEditingAttributesAndGeometryFeature",
                                     "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-feature-editing-cut-text",
+                                    "description": "@language-feature-editing-cut-desc",
+                                    "iconUri": "Resources/Images/Icons/polygon-cut-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "CutFeatureInteractive",
+                                    "commandParameter": "{{context}}"
                                 },
                                 {
                                     "text": "@language-native-attach-file",
@@ -1785,7 +1817,7 @@
                                     "markup": "Mapping/modules/Collaboration/Events/CardEvent/CardEventView.html",
                                     "libraryId": "Mapping",
                                     "configuration": {
-                                        "canDelete": true,
+                                        "canEdit": true,
                                         "icons": {
                                             "active": "Resources/Images/Icons/edit-markup-inactive-24.png",
                                             "deleted": "Resources/Images/Icons/close-24.png"
@@ -1806,7 +1838,7 @@
                                     "markup": "Mapping/modules/Collaboration/Events/CardEvent/CardEventView.html",
                                     "libraryId": "Mapping",
                                     "configuration": {
-                                        "canDelete": true
+                                        "canEdit": true
                                     }
                                 },
                                 {
@@ -2100,6 +2132,13 @@
                         {
                             "name": "EditorRemoveFeatureSelectedBehavior",
                             "commands": []
+                        },
+                        {
+                            "name": "CutFeatureToolActivatedBehavior",
+                            "event": "CutFeatureToolActivatedEvent",
+                            "commands": [
+                                "CloseDataFrame"
+                            ]
                         }
                     ]
                 },
@@ -2149,9 +2188,9 @@
                         "id": "MultiFeatureSelectorView",
                         "viewModelId": "MultiFeatureSelectorViewModel",
                         "iconUri": "Resources/Images/Icons/Toolbar/edit-24.png",
-                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.editing.MultiFeatureSelectorView",
-                        "require": "Mapping/modules/Editing/MultiFeatureSelector/MultiFeatureSelectorView",
-                        "markup": "Mapping/modules/Workflow/DisplayResultPickerView.html",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.FeatureSelector.FeatureSelectorView",
+                        "require": "geocortex/infrastructure/ui/components/FeatureSelector/FeatureSelectorView",
+                        "markup": "Mapping/infrastructure/ui/components/FeatureSelector/FeatureSelectorView.html",
                         "region": "MiscViewContainerRegion",
                         "visible": false,
                         "title": "@language-feature-editing-multi-feature-selector",
@@ -5185,6 +5224,9 @@
                             "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerThemes.LayerThemeSharingLinkProvider"
                         },
                         {
+                            "type": "geocortex.essentialsHtmlViewer.mapping.modules.basemap.BasemapSharingLinkProvider"
+                        },
+                        {
                             "type": "geocortex.essentialsHtmlViewer.mapping.modules.layerList.LayersSharingLinkProvider"
                         },
                         {
@@ -6614,13 +6656,16 @@
                         "Cartographic",
                         "Damage",
                         "Disasters",
+                        "Emergency Management",
                         "General Infrastructure",
+                        "Local Government",
                         "National Park Service",
                         "Numbers",
                         "Outdoor Recreation",
                         "People Places",
                         "Points Of Interest",
                         "Safety Health",
+                        "State Government",
                         "Transportation"
                     ],
                     "imageSize": {

@@ -17,3 +17,20 @@ workflowIDRunOnEdit will run a custom workflow when the graphic is selected
         "openMarkupStyleOnEdit": false
     }
 },
+
+
+
+
+Required library
+
+ {
+    "id": "OE_AMD",
+    "async": true,
+    "location": "Libraries/Custom/AMD",
+    "locales": [
+        {
+            "locale": "inv",
+            "uri": "Libraries/Custom/AMD/OE_AMD-Language.json"
+        }
+    ]
+}

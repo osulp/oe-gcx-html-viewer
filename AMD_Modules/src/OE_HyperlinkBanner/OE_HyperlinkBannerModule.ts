@@ -10,7 +10,7 @@ export class OE_HyperlinkBannerModule extends ModuleBase {
     app: ViewerApplication;
 
     constructor(app: ViewerApplication, lib: string) {
-        super(app, lib);
+        super(app, lib);        
     }
 
     initialize(config: any): void {
@@ -24,7 +24,7 @@ export class OE_HyperlinkBannerModule extends ModuleBase {
         else {
             this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, (args) => {
                 this._onSiteInitialized(args,linkUri);
-            });
+            });            
         }
 
     }
@@ -34,7 +34,8 @@ export class OE_HyperlinkBannerModule extends ModuleBase {
         $(".banner-left-img").wrap('<a href="' + linkUri + '" target="_blank"></a>');
         if ($(".banner-subtitle").html() === '') {
             $(".banner-text h1").css("margin-top", "0.59em");
-        }
-    }
+        }               
+        
+    }    
 
 }

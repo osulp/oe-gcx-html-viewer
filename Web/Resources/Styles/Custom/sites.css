@@ -138,6 +138,18 @@ fieldset legend{
 }
 
 /* Hides button next to social icon link.  The button was creating padding between links */
-.footer-container .list-menu .list-menu-details {
+/*footer-container .list-menu .list-menu-details {
     display:none;
+}*/
+
+/* The default width is 100% but this renders as 41px wide which adds too much space */
+.SocialFooterMenuView .has-icon .list-menu-details
+{
+    width: 30px;
+}
+
+/*.IWantToMenuButtonView .wtm-active .wtm-button, .IWantToMenuButtonView .wtm-active .wtm-button:hover*/
+.IWantToMenuButtonView .wtm-heading .wtm-button
+{
+    color:#ffffff;
 }

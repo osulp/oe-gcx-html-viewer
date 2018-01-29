@@ -136,7 +136,6 @@ define(["geocortex/infrastructure/AreaOfInterestMask",
 "geocortex/infrastructure/project/ProjectFilter",
 "geocortex/infrastructure/project/ProjectManager",
 "geocortex/infrastructure/results/FlatResultsViewModel",
-"geocortex/infrastructure/results/ResultsAttributeHeaderViewModel",
 "geocortex/infrastructure/results/ResultsFeatureActionsView",
 "geocortex/infrastructure/results/ResultsListView",
 "geocortex/infrastructure/results/ResultsModule",
@@ -227,8 +226,6 @@ define(["geocortex/infrastructure/AreaOfInterestMask",
 "geocortex/infrastructure/ui/components/Slider/SliderViewBase",
 "geocortex/infrastructure/ui/components/Slider/SliderViewModelBase",
 "geocortex/infrastructure/ui/components/Table/SortState",
-"geocortex/infrastructure/ui/components/Table/TableColumnHeaderViewModel",
-"geocortex/infrastructure/ui/components/Table/TableColumnHeaderViewModelInterface",
 "geocortex/infrastructure/ui/components/Table/TableColumnViewModelInterface",
 "geocortex/infrastructure/ui/components/Table/TableView",
 "geocortex/infrastructure/ui/components/Table/TableViewModel",
@@ -258,7 +255,12 @@ define(["geocortex/infrastructure/AreaOfInterestMask",
 "geocortex/infrastructure/results/ResultsUtils",
 "geocortex/infrastructure/BrowserUtils",
 "geocortex/infrastructure/symbology/SymbolEditorView",
-"geocortex/infrastructure/symbology/SymbolEditorViewModel"],
+"geocortex/infrastructure/symbology/SymbolEditorViewModel",
+"geocortex/infrastructure/ui/components/Table/RowContextMenuView",
+"geocortex/infrastructure/SerializationUtils",
+"geocortex/infrastructure/ui/components/FeatureSelector/FeatureSelectorView",
+"geocortex/infrastructure/ui/components/FeatureSelector/FeatureSelectorViewModel",
+"geocortex/infrastructure/ui/components/FeatureSelector/Templates/FeatureSelectorResultTemplateView"],
 function(AreaOfInterestMask_ts_0,
 ArrayUtils_ts_1,
 AttachmentInfo_ts_2,
@@ -396,7 +398,6 @@ ProjectConverter_ts_129,
 ProjectFilter_ts_130,
 ProjectManager_ts_131,
 FlatResultsViewModel_ts_132,
-ResultsAttributeHeaderViewModel_ts_133,
 ResultsFeatureActionsView_ts_134,
 ResultsListView_ts_135,
 ResultsModule_ts_136,
@@ -487,8 +488,6 @@ SmartPanelViewModel_ts_209,
 SliderViewBase_ts_210,
 SliderViewModelBase_ts_211,
 SortState_ts_212,
-TableColumnHeaderViewModel_ts_213,
-TableColumnHeaderViewModelInterface_ts_214,
 TableColumnViewModelInterface_ts_215,
 TableView_ts_216,
 TableViewModel_ts_217,
@@ -518,7 +517,12 @@ FeatureSetResultsViewModel_ts_239,
 ResultsUtils_ts_240,
 BrowserUtils_ts_241,
 SymbolEditorView_ts_242,
-SymbolEditorViewModel_ts_243) {
+SymbolEditorViewModel_ts_243,
+RowContextMenuView_ts_244,
+SerializationUtils_ts_245,
+FeatureSelectorView_ts_246,
+FeatureSelectorViewModel_ts_247,
+FeatureSelectorResultTemplateView_ts_248) {
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.AreaOfInterestMask", AreaOfInterestMask_ts_0.AreaOfInterestMask);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ArrayUtils", ArrayUtils_ts_1.ArrayUtils);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.AttachmentInfo", AttachmentInfo_ts_2.AttachmentInfo);
@@ -825,10 +829,6 @@ SymbolEditorViewModel_ts_243) {
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.project.VIEWER_QUERY_STRING_KEY", ProjectManager_ts_131.VIEWER_QUERY_STRING_KEY);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.project.ProjectManager", ProjectManager_ts_131.ProjectManager);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.results.FlatResultsViewModel", FlatResultsViewModel_ts_132.FlatResultsViewModel);
-    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.results.ResultsAttributeHeaderViewModel", ResultsAttributeHeaderViewModel_ts_133.ResultsAttributeHeaderViewModel);
-    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.results.manualCollator", ResultsAttributeHeaderViewModel_ts_133.manualCollator);
-    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.results.collator", ResultsAttributeHeaderViewModel_ts_133.collator);
-    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.results.SharedState", ResultsAttributeHeaderViewModel_ts_133.SharedState);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.results.ResultsFeatureActionsView", ResultsFeatureActionsView_ts_134.ResultsFeatureActionsView);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.results.ResultsListView", ResultsListView_ts_135.ResultsListView);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.results.ResultsModule", ResultsModule_ts_136.ResultsModule);
@@ -1050,11 +1050,6 @@ SymbolEditorViewModel_ts_243) {
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Slider.SliderViewBase", SliderViewBase_ts_210.SliderViewBase);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Slider.SliderViewModelBase", SliderViewModelBase_ts_211.SliderViewModelBase);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Table.SortState", SortState_ts_212.SortState);
-    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Table.TableColumnHeaderViewModel", TableColumnHeaderViewModel_ts_213.TableColumnHeaderViewModel);
-    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Table.manualCollator", TableColumnHeaderViewModel_ts_213.manualCollator);
-    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Table.collator", TableColumnHeaderViewModel_ts_213.collator);
-    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Table.SharedState", TableColumnHeaderViewModel_ts_213.SharedState);
-    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Table.TableColumnHeaderViewModelInterface", TableColumnHeaderViewModelInterface_ts_214.TableColumnHeaderViewModelInterface);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Table.TableColumnViewModelInterface", TableColumnViewModelInterface_ts_215.TableColumnViewModelInterface);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Table.TableView", TableView_ts_216.TableView);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Table.TableViewModel", TableViewModel_ts_217.TableViewModel);
@@ -1086,10 +1081,15 @@ SymbolEditorViewModel_ts_243) {
 	shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.results.ResultsUtils", ResultsUtils_ts_240);
 	shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.BrowserUtils", BrowserUtils_ts_241);
 	shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.symbology.SymbolEditorView", SymbolEditorView_ts_242.SymbolEditorView);
-	shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.symbology.SymbolEditorViewModel", SymbolEditorViewModel_ts_243.SymbolEditorViewModel);
+    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.symbology.SymbolEditorViewModel", SymbolEditorViewModel_ts_243.SymbolEditorViewModel);
+    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Table.RowContextMenuView", RowContextMenuView_ts_244.RowContextMenuView);
+    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.SerializationUtils", SerializationUtils_ts_245);
+    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.FeatureSelector.FeatureSelectorView", FeatureSelectorView_ts_246.FeatureSelectorView);
+    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.FeatureSelector.FeatureSelectorViewModel", FeatureSelectorViewModel_ts_247.FeatureSelectorViewModel);
+    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.FeatureSelector.Templates.FeatureSelectorResultTemplateView", FeatureSelectorResultTemplateView_ts_248.FeatureSelectorResultTemplateView);
 });
 
 
 if (!geocortex) geocortex = { }; 
 if (!geocortex.essentialsHtmlViewer) geocortex.essentialsHtmlViewer = { }; 
-geocortex.essentialsHtmlViewer.version = "2.9.2.001"; 
+geocortex.essentialsHtmlViewer.version = "2.10.1.492"; 
