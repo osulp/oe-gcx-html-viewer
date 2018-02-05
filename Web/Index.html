@@ -62,11 +62,11 @@
         //var geocortexUseLocalEsriApi = true;
         var viewerConfig = {
             "configurations": {
-                "default": "Resources/Config/Default/" + shellName + ".json.js"
+                "default": "Resources/Config/Default/" + shellName + ".json.js"                
             },
             "viewerConfigUri": null
         };
-
+       
         new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize({            
             onSiteInitialized: function (app, loader) {                
                 geocortex.config.io.timeout = 180 * 1000; // 180 seconds

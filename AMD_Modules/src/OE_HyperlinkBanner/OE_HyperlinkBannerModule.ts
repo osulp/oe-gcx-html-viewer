@@ -34,8 +34,7 @@ export class OE_HyperlinkBannerModule extends ModuleBase {
         $(".banner-left-img").wrap('<a href="' + linkUri + '" target="_blank"></a>');
         if ($(".banner-subtitle").html() === '') {
             $(".banner-text h1").css("margin-top", "0.59em");
-        }               
-        
+        }
     }    
 
 }

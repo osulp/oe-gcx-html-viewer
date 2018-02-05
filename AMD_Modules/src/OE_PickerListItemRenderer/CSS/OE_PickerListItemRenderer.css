@@ -1,0 +1,35 @@
+﻿.display-result-picker-list .gcx-list-menu .selected
+{
+    background-color: white;
+}
+
+.display-result-picker-list .gcx-list-button:hover
+{
+    background-color: white;
+}
+
+.display-result-picker-list .gcx-list-button
+{
+    cursor: default;
+}
+
+.display-result-picker-list .gcx-list-button .gcx-list-label
+{
+    padding-left:1em;
+}
+
+.display-result-picker-list .gcx-list-item .gcx-list-desc
+{
+    display:block !important;
+    padding-left:2em;
+}
+
+.display-result-picker-list .feature-description div
+{
+    padding:0 !important;
+}
+
+.display-result-picker-list .feature-description image
+{
+    margin-top:0 !important;    
+}

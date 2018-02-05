@@ -32,6 +32,8 @@
     <Content Include="gulpfile.js" />
     <Content Include="src\OE_Graphics\CSS\OE_GraphicsModule.css" />
     <Content Include="src\OE_Graphics\readme.txt" />
+    <Content Include="src\OE_PickerListItemRenderer\CSS\OE_PickerListItemRenderer.css" />
+    <Content Include="src\OE_PickerListItemRenderer\readme.txt" />
     <Content Include="src\OE_Search\OE_Search.html" />
     <Content Include="src\OE_Search\readme.txt" />
     <Content Include="src\Template\CSS\TemplateModule.css" />
@@ -41,6 +43,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="src\OE_Graphics\OE_GraphicsModule.ts" />
     <TypeScriptCompile Include="src\OE_HyperlinkBanner\OE_HyperlinkBannerModule.ts" />
+    <TypeScriptCompile Include="src\OE_PickerListItemRenderer\OE_PickerListItemRendererModule.ts" />
     <TypeScriptCompile Include="src\OE_Search\OE_SearchModule.ts" />
     <TypeScriptCompile Include="src\OE_Search\OE_SearchProvider.ts" />
     <TypeScriptCompile Include="src\OtherTemplate\OtherTemplateModule.ts" />

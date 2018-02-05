@@ -73,16 +73,30 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Viewer.dll" />
     <Content Include="favicon_oe.ico" />
     <Content Include="Handheld.html" />
     <Content Include="Index.html" />
     <Content Include="Index.2.8.html" />
+    <Content Include="Libraries\Custom\AMD\OE_Graphics.js" />
+    <Content Include="Libraries\Custom\AMD\OE_HyperlinkBanner.js" />
+    <Content Include="Libraries\Custom\AMD\OE_PickerListItemRenderer.js" />
+    <Content Include="Libraries\Custom\AMD\OE_Search.js" />
+    <Content Include="Libraries\Custom\AMD\OtherTemplate.js" />
+    <Content Include="Libraries\Custom\AMD\Template.js" />
     <Content Include="Libraries\Custom\Compiled\Custom.js" />
+    <Content Include="Libraries\Custom\AMD\OE_AMD-Language.json" />
+    <Content Include="gmaf\ViewerPackage.ashx" />
     <None Include="Libraries\Custom\Config\Defaults.json.js.bak" />
     <Content Include="Libraries\Custom\Styles\Custom\Desktop.css" />
     <Content Include="offline.aspx" />
     <Content Include="offline.js" />
     <Content Include="online.js" />
+    <Content Include="Resources\3rdPartyMaps\3rdParty.css" />
+    <Content Include="Resources\3rdPartyMaps\BingMaps.html" />
+    <Content Include="Resources\3rdPartyMaps\Pictometry.aspx" />
+    <Content Include="Resources\3rdPartyMaps\Sandbox.html" />
+    <Content Include="Resources\3rdPartyMaps\ThirdPartyMap.js" />
     <Content Include="Resources\Compiled\Accessibility.js" />
     <Content Include="Resources\Compiled\Alert.js" />
     <Content Include="Resources\Compiled\Authentication.js" />
@@ -481,6 +495,15 @@
     <Content Include="Resources\Images\Pushpins\map-marker-yellow-32.png" />
     <Content Include="Resources\Images\SearchSchools.png" />
     <Content Include="Resources\Images\splash-logo.png" />
+    <Content Include="Resources\Legacy\Charting.Infrastructure.js" />
+    <Content Include="Resources\Legacy\Charting.js" />
+    <Content Include="Resources\Legacy\Essentials.js" />
+    <Content Include="Resources\Legacy\Framework.js" />
+    <Content Include="Resources\Legacy\Framework.UI.js" />
+    <Content Include="Resources\Legacy\loader.js" />
+    <Content Include="Resources\Legacy\Mapping.Charting.js" />
+    <Content Include="Resources\Legacy\Mapping.Infrastructure.js" />
+    <Content Include="Resources\Legacy\Mapping.js" />
     <Content Include="Resources\Locales\Custom.en-US.json.js" />
     <Content Include="Resources\Locales\Framework.UI.en-US.json.js" />
     <Content Include="Resources\Locales\Mapping.en-US.json.js" />
@@ -520,6 +543,7 @@
     <Content Include="proxy.config" />
     <Content Include="proxy.jsp" />
     <Content Include="proxy.php" />
+    <Content Include="Resources\3rdPartyMaps\ThirdPartyMap.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -531,7 +555,22 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Libraries\Custom\AMD\" />
+    <Folder Include="Resources\Config\Default\dev_configs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Resources\3rdPartyMaps\ThirdPartyMap.d.ts" />
+    <TypeScriptCompile Include="Resources\3rdPartyMaps\ThirdPartyMap.ts" />
+    <TypeScriptCompile Include="Resources\Legacy\bridge.d.ts" />
+    <TypeScriptCompile Include="Resources\Legacy\Charting.d.ts" />
+    <TypeScriptCompile Include="Resources\Legacy\Charting.Infrastructure.d.ts" />
+    <TypeScriptCompile Include="Resources\Legacy\Essentials.d.ts" />
+    <TypeScriptCompile Include="Resources\Legacy\Framework.d.ts" />
+    <TypeScriptCompile Include="Resources\Legacy\Framework.UI.d.ts" />
+    <TypeScriptCompile Include="Resources\Legacy\Loader.d.ts" />
+    <TypeScriptCompile Include="Resources\Legacy\Management.d.ts" />
+    <TypeScriptCompile Include="Resources\Legacy\Management.Infrastructure.d.ts" />
+    <TypeScriptCompile Include="Resources\Legacy\Mapping.Charting.d.ts" />
+    <TypeScriptCompile Include="Resources\Legacy\Mapping.Infrastructure.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
