@@ -26,6 +26,7 @@
     <Content Include="package.json" />
     <Content Include="post_build_modules.bat" />
     <Content Include="README.md" />
+    <Content Include="src\OE_Wildfire\Language.json" />
     <None Include="src\OtherTemplate\Language.json" />
     <None Include="src\OtherTemplate\OtherTemplateView.html" />
     <Content Include="bin.js" />
@@ -36,6 +37,9 @@
     <Content Include="src\OE_PickerListItemRenderer\readme.txt" />
     <Content Include="src\OE_Search\OE_Search.html" />
     <Content Include="src\OE_Search\readme.txt" />
+    <Content Include="src\OE_Wildfire\CSS\OE_WildfireModule.css" />
+    <Content Include="src\OE_Wildfire\ModuleJS.txt" />
+    <Content Include="src\OE_Wildfire\OE_WildfireView.html" />
     <Content Include="src\Template\CSS\TemplateModule.css" />
     <None Include="src\Template\Language.json" />
     <None Include="src\Template\TemplateView.html" />
@@ -46,6 +50,9 @@
     <TypeScriptCompile Include="src\OE_PickerListItemRenderer\OE_PickerListItemRendererModule.ts" />
     <TypeScriptCompile Include="src\OE_Search\OE_SearchModule.ts" />
     <TypeScriptCompile Include="src\OE_Search\OE_SearchProvider.ts" />
+    <TypeScriptCompile Include="src\OE_Wildfire\OE_WildfireModule.ts" />
+    <TypeScriptCompile Include="src\OE_Wildfire\OE_WildfireView.ts" />
+    <TypeScriptCompile Include="src\OE_Wildfire\OE_WildfireViewModel.ts" />
     <TypeScriptCompile Include="src\OtherTemplate\OtherTemplateModule.ts" />
     <TypeScriptCompile Include="src\OtherTemplate\OtherTemplateView.ts" />
     <TypeScriptCompile Include="src\Template\OtherTemplateViewModel.ts" />

@@ -1,0 +1,25 @@
+﻿{
+    "moduleName": "OE_Wildfire",
+    "libraryId": "OE_AMD",
+    "require": "geocortex/oe_amd/OE_Wildfire/OE_WildfireModule",
+    "configuration": {},
+    "views": [
+    {
+        "id": "OE_WildfireView",
+        "require": "geocortex/oe_amd/OE_Wildfire/OE_WildfireView",
+        "markup": "geocortex/oe_amd/OE_Wildfire/OE_WildfireView.html",        
+        "viewModelId": "OE_WildfireViewModel",
+        "title": "Wildfire Risk Popup",        
+        "visible": false,        
+        "region": "NavigationMapRegion",
+        "configuration": {}
+    }
+    ],
+    "viewModels": [
+        {
+            "id": "OE_WildfireViewModel",      
+            "require": "geocortex/oe_amd/OE_Wildfire/OE_WildfireViewModel",      
+            "configuration": {}
+        }
+    ]
+}

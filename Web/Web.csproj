@@ -82,6 +82,7 @@
     <Content Include="Libraries\Custom\AMD\OE_HyperlinkBanner.js" />
     <Content Include="Libraries\Custom\AMD\OE_PickerListItemRenderer.js" />
     <Content Include="Libraries\Custom\AMD\OE_Search.js" />
+    <Content Include="Libraries\Custom\AMD\OE_Wildfire.js" />
     <Content Include="Libraries\Custom\AMD\OtherTemplate.js" />
     <Content Include="Libraries\Custom\AMD\Template.js" />
     <Content Include="Libraries\Custom\Compiled\Custom.js" />
@@ -495,15 +496,6 @@
     <Content Include="Resources\Images\Pushpins\map-marker-yellow-32.png" />
     <Content Include="Resources\Images\SearchSchools.png" />
     <Content Include="Resources\Images\splash-logo.png" />
-    <Content Include="Resources\Legacy\Charting.Infrastructure.js" />
-    <Content Include="Resources\Legacy\Charting.js" />
-    <Content Include="Resources\Legacy\Essentials.js" />
-    <Content Include="Resources\Legacy\Framework.js" />
-    <Content Include="Resources\Legacy\Framework.UI.js" />
-    <Content Include="Resources\Legacy\loader.js" />
-    <Content Include="Resources\Legacy\Mapping.Charting.js" />
-    <Content Include="Resources\Legacy\Mapping.Infrastructure.js" />
-    <Content Include="Resources\Legacy\Mapping.js" />
     <Content Include="Resources\Locales\Custom.en-US.json.js" />
     <Content Include="Resources\Locales\Framework.UI.en-US.json.js" />
     <Content Include="Resources\Locales\Mapping.en-US.json.js" />
@@ -556,21 +548,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Config\Default\dev_configs\" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Resources\3rdPartyMaps\ThirdPartyMap.d.ts" />
-    <TypeScriptCompile Include="Resources\3rdPartyMaps\ThirdPartyMap.ts" />
-    <TypeScriptCompile Include="Resources\Legacy\bridge.d.ts" />
-    <TypeScriptCompile Include="Resources\Legacy\Charting.d.ts" />
-    <TypeScriptCompile Include="Resources\Legacy\Charting.Infrastructure.d.ts" />
-    <TypeScriptCompile Include="Resources\Legacy\Essentials.d.ts" />
-    <TypeScriptCompile Include="Resources\Legacy\Framework.d.ts" />
-    <TypeScriptCompile Include="Resources\Legacy\Framework.UI.d.ts" />
-    <TypeScriptCompile Include="Resources\Legacy\Loader.d.ts" />
-    <TypeScriptCompile Include="Resources\Legacy\Management.d.ts" />
-    <TypeScriptCompile Include="Resources\Legacy\Management.Infrastructure.d.ts" />
-    <TypeScriptCompile Include="Resources\Legacy\Mapping.Charting.d.ts" />
-    <TypeScriptCompile Include="Resources\Legacy\Mapping.Infrastructure.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
