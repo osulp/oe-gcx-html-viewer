@@ -3780,6 +3780,12 @@
                                     "description": "@language-menu-home-panel-desc",
                                     "command": "ShowHomePanel"
                                 },
+                                 {
+                                     "iconUri": "Resources/Images/Icons/Custom/clipboard_24px.png",
+                                     "text": "Create a Homeowner’s Report",
+                                     "command": "RunWorkflowById",
+                                     "commandParameter": "Address_Search"
+                                 },
                                 {
                                     "iconUri": "Resources/Images/Icons/Toolbar/identify-24.png",
                                     "text": "@language-menu-identify",
@@ -6878,7 +6884,7 @@
                     "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                     "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                     "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
-                    "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/cake_site"
+                    "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/wildfire_risk_PNRA_public"
                 },
                 "views": [
                     {

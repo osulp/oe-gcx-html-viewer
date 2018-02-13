@@ -20,6 +20,7 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
     Object.defineProperty(exports, "__esModule", { value: true });
     var OE_PickerListItemRendererModule = (function (_super) {
         __extends(OE_PickerListItemRendererModule, _super);
+        //thisModule: Observable<OE_PickerListItemRendererModule> = new Observable(null);
         function OE_PickerListItemRendererModule(app, lib) {
             return _super.call(this, app, lib) || this;
         }
@@ -28,6 +29,7 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
             this.targetClass = config.targetClass !== undefined ? config.targetClass : "";
             this.moveClass = config.moveClass !== undefined ? config.moveClass : "";
             var site = this.app.site;
+            //this.thisModule = this;
             if (site && site.isInitialized) {
                 this._onSiteInitialized(site);
             }
@@ -39,16 +41,17 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
         };
         OE_PickerListItemRendererModule.prototype._onSiteInitialized = function (site) {
             var _this = this;
+            //let thisModel = this;
             this.app.eventRegistry.event("ViewActivatedEvent").subscribe(this, function (args) {
-                _this._oe_renderItems(args);
+                _this._oe_renderItems(args, _this.targetClass, _this.moveClass);
             });
         };
-        OE_PickerListItemRendererModule.prototype._oe_renderItems = function (args) {
+        OE_PickerListItemRendererModule.prototype._oe_renderItems = function (args, targetClassString, moveClassString) {
             if (args.markupResource !== "Mapping/infrastructure/ui/components/FeatureSelector/FeatureSelectorView.html")
                 return;
-            $(this.targetClass).each(function () {
+            $(targetClassString).each(function () {
                 var pElement = $(this).parent();
-                var mElement = $(this).find(this.moveClass);
+                var mElement = $(this).find(moveClassString);
                 pElement.append(mElement);
             });
         };

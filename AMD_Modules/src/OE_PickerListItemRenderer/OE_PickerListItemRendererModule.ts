@@ -11,8 +11,10 @@ export class OE_PickerListItemRendererModule extends ModuleBase {
     targetClass: string;
     moveClass: string;
 
+    //thisModule: Observable<OE_PickerListItemRendererModule> = new Observable(null);
+
     constructor(app: ViewerApplication, lib: string) {
-        super(app, lib);        
+        super(app, lib);
     }
 
     initialize(config: any): void {
@@ -21,6 +23,8 @@ export class OE_PickerListItemRendererModule extends ModuleBase {
         this.moveClass = config.moveClass !== undefined ? config.moveClass : "";
         var site = (<any>this).app.site;
 
+        //this.thisModule = this;
+                                        
         if (site && site.isInitialized) {
             this._onSiteInitialized(site);
         }
@@ -31,21 +35,21 @@ export class OE_PickerListItemRendererModule extends ModuleBase {
         }
     }
     
-    _onSiteInitialized(site) {
-
+    _onSiteInitialized(site) {        
+        //let thisModel = this;
         this.app.eventRegistry.event("ViewActivatedEvent").subscribe(this, (args) => {
-            this._oe_renderItems(args);
+            this._oe_renderItems(args, this.targetClass, this.moveClass);
         });
     }
 
-    _oe_renderItems(args)
+    _oe_renderItems(args, targetClassString, moveClassString)
     {
         if (args.markupResource !== "Mapping/infrastructure/ui/components/FeatureSelector/FeatureSelectorView.html")
             return;
 
-        $(this.targetClass).each(function () {
+        $(targetClassString).each(function () {
             var pElement = $(this).parent();
-            var mElement = $(this).find(this.moveClass);
+            var mElement = $(this).find(moveClassString);
             pElement.append(mElement);            
         });
     }
