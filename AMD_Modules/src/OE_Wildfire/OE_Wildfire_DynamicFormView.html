@@ -1,0 +1,51 @@
+﻿<a href="#"></a>
+<div class="module workflow-form wildfire_dynamicform" dir="ltr">    
+    <div data-binding="{innerHTML:mainContent}"></div>    
+    <div data-binding="{innerHTML:homeOwnerReportContent}"></div>
+    <div class="btn-row">
+        <div class="btn-cell">
+            <div data-binding="{@event-onclick:homeReport}">Homeowner's Report</div>
+        </div>
+    </div>    
+    <h3>Your Location</h3>
+    <div class="your_location">
+                
+        <div>Watershed  (5<sup>th</sup> level)</div>
+        <div class="btn-row">
+            <div class="btn-cell">
+                <div data-binding="{@event-onclick:watershedReport}"><span data-binding="{@text:aoiWatershedName}"></span></div>
+            </div>
+        </div>
+
+        <div>County</div>
+        <div class="btn-row">
+            <div class="btn-cell">
+                <div data-binding="{@event-onclick:countyReport}"><span data-binding="{@text:aoiCountyName}"></span></div>
+            </div>
+        </div>
+
+        <div>ODF Forest Protection District</div>
+        <div class="data-content" data-binding="{@text:aoiOFPD}"></div>
+        <div>Structural Fire Protection District</div>
+        <div class="data-content" data-binding="{@text:aoiSFPDName}"></div>
+
+        <div>City or Town</div>
+        <div class="data-content" data-binding="{@text:aoiCityTown}"></div>
+
+        <div>Urban Growth Boundary</div>
+        <div class="data-content" data-binding="{@text:aoiUGB}"></div>
+
+        <div>Community Wildfire Protection Plan Area</div>
+        <div class="data-content" data-binding="{@text:aoiCWPPA}"></div>
+
+        <div>Firewise Community</div>
+        <div class="data-content" data-binding="{@text:aoiFirewiseCom}"></div>
+
+        <div>Oregon Defensible Space Law</div>
+        <div class="data-content" data-binding="{@text:aoiSB360}"></div>
+   
+    </div>
+    <div style="text-align:right; width:100%; display: inline-block;" class="form-btns">
+        <button id="cancelBtn" class="button" type="button" data-binding="{@event-onclick:cancelForm}">Close</button>
+    </div>
+</div>

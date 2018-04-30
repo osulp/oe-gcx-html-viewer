@@ -1,7 +1,7 @@
 ﻿  <!--<div id="WildfireRiskPopup" class="module view map-tip-view" style="position:absolute; top:40px; z-index:200;"> -->
 <div id="WildfireRiskPopup">
     <div class="WildfireRiskPopupHeader">
-        <div class="WildfireRiskPopupHeaderText">Your Location</div>
+        <div class="WildfireRiskPopupHeaderText">Input detected</div>
         <button class="panel-header-button WildfireRiskPopupCloseButton close-16" title="Close Fire Risk"></button>
     </div>
     <!--<div class="WildfireRiskPopupGuide">
@@ -43,13 +43,12 @@
             <div>
                 <h1>Senate Bill 360 area</h1><p id="WildfireRisk_senatebill_360">No data</p>
             </div>
-            <div style="display:none;" id="WildfireRisk_flame_min">No Data</div>
-            <div style="display:none;" id="WildfireRisk_flame_max">No Data</div>
-            <div style="display:none;" id="WildfireRisk_flame_ave">No Data</div>
+            <div style="display:none;" id="WildfireRisk_flame_min">0</div>
+            <div style="display:none;" id="WildfireRisk_flame_max">0</div>
+            <div style="display:none;" id="WildfireRisk_flame_ave">0</div>
         </div>
         <div class="WildfireRisk_link">
-            <button class="WildfireRiskPopupModuleViewButton" data-binding="{@event-onclick:openWildfireRiskQuickRepoort}">Get Report</button>&nbsp;&nbsp;
-            <span class="link" data-binding="{@event-onclick:openWildfireRiskWorkflow}">Click here for more information</span>
+            <button class="WildfireRiskPopupModuleViewButton" data-binding="{@event-onclick:openWildfireRiskWorkflow}">Click here for more information</button>
         </div>
     </div>
 </div>

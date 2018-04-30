@@ -13,12 +13,29 @@
         "visible": false,        
         "region": "NavigationMapRegion",
         "configuration": {}
+    },
+	{
+        "id": "OE_Wildfire_FormView",
+        "require": "geocortex/oe_amd/OE_Wildfire/OE_Wildfire_DynamicFormView",
+        "markup": "geocortex/oe_amd/OE_Wildfire/OE_Wildfire_DynamicFormView.html",        
+        "viewModelId": "OE_Wildfire_DynamicFormViewModel",
+        "title": "Wildfire Report",        
+        "visible": false,        
+        "region": "DataRegion",
+        "configuration": {}
     }
     ],
     "viewModels": [
         {
             "id": "OE_WildfireViewModel",      
             "require": "geocortex/oe_amd/OE_Wildfire/OE_WildfireViewModel",      
+            "configuration": {
+                "mapClickEnabled":true
+            }
+        },
+		{
+            "id": "OE_Wildfire_DynamicFormViewModel",      
+            "require": "geocortex/oe_amd/OE_Wildfire/OE_Wildfire_DynamicFormViewModel",      
             "configuration": {}
         }
     ]

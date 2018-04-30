@@ -172,3 +172,74 @@
     border: 2px solid white; /* should match background, can't be transparent */
     background-color: rgba(0, 0, 0, .5);
 }
+
+
+
+.wildfire_dynamicform fieldset{
+    border:solid 1px #a7a7a7;
+    border-radius:4px;
+    margin:5px 0;
+}
+
+.wildfire_dynamicform p.orangeText span{
+    color:orange;
+    font-weight:bold;
+}
+
+.wildfire_dynamicform h2{
+    color:#999999;
+}
+
+.wildfire_dynamicform .your_location {
+    padding:12px 0px 0px 4px;
+}
+
+.wildfire_dynamicform .data-content {
+    padding-left:8px;
+    color:#666666;
+}
+
+.wildfire_dynamicform .btn-row{
+    display:table;
+    width:100%;
+}
+
+.wildfire_dynamicform .btn-cell{
+    display:table-cell;
+    text-align:center;
+}
+
+.wildfire_dynamicform .btn-cell div:first-child{
+    width: 80%;
+    padding:8px;
+    color:#1a72c4;
+    background-color:rgba(245, 245, 245, 1);
+    border-radius:4px;
+    margin:10px;
+    text-align:center;
+    border: 1px solid #CCCCCC;
+    font-weight:bold;
+}
+
+.wildfire_dynamicform .btn-cell div:hover{
+    cursor:pointer;
+    color: #ffffff;
+    background-color:#1a72c4;
+    text-decoration:underline;
+}
+
+.wildfire_dynamicform .btn-cell-download:hover{
+    cursor:pointer;
+    text-decoration:underline;
+}
+
+.wildfire_dynamicform .data-label{
+    font-weight:bold;
+}
+
+.wildfire_dynamicform .contentBreakImage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding:10px 0px;
+}
