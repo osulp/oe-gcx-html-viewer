@@ -3,17 +3,27 @@
 
 module oe.layer_actions_extension {
 
-    export class LayerActionsExtension extends geocortex.framework.application.ModuleBase {
+    class DownloadOverrideWorkflow {
+        workflowID: string;
+        argNames: string[];
+        argValues: string[];
+    }
 
+    export class LayerActionsExtension extends geocortex.framework.application.ModuleBase {
+               
         app: geocortex.essentialsHtmlViewer.ViewerApplication;
         showLayerDescription: boolean;
         allowAllLayerTypes: boolean;
         metadataHyperlinkOverride: boolean;
+        downloadHyperlinkOverride: boolean;
         expandLayerTreeOnVisible: boolean;
 
         metadataHyperlinkURI: string = "";
         downloadLinkURI: string = "";
-        
+
+        downloadWorkflowEnabled: boolean; // by default this is true, workflow is an opt out
+        downloadWorkflowOverride: DownloadOverrideWorkflow; //override default workflow ID - This is an object with a workflow id, argument names, and argument values
+                
         constructor(app: geocortex.essentialsHtmlViewer.ViewerApplication, lib: string) {
             super(app, lib);
         }
@@ -25,7 +35,11 @@ module oe.layer_actions_extension {
             this.showLayerDescription = config.showLayerDescription !== undefined ? config.showLayerDescription : false;
             this.allowAllLayerTypes = config.allowAllLayerTypes !== undefined ? config.allowAllLayerTypes : false;
             this.metadataHyperlinkOverride = config.metadataHyperlinkOverride !== undefined ? config.metadataHyperlinkOverride : false;
+            this.downloadHyperlinkOverride = config.downloadHyperlinkOverride !== undefined ? config.downloadHyperlinkOverride : false;
             this.expandLayerTreeOnVisible = config.expandLayerTreeOnVisible !== undefined ? config.expandLayerTreeOnVisible : false;
+
+            this.downloadWorkflowEnabled = config.downloadWorkflowEnabled !== undefined ? config.downloadWorkflowEnabled : true;
+            this.downloadWorkflowOverride = config.downloadWorkflowOverride !== undefined ? config.downloadWorkflowOverride : "";
                                                 
             var site: geocortex.essentials.Site = (<any>this).app.site;
 
@@ -64,9 +78,9 @@ module oe.layer_actions_extension {
                     this.handleFolderClickEvent(args);
                 });
             }
-
+                        
             //metadata override
-            if (this.metadataHyperlinkOverride) {
+            if (this.metadataHyperlinkOverride || this.downloadHyperlinkOverride) {
 
                 this.app.command("ShowLayerActions").preExecute.subscribe(this, function (args) {
 
@@ -81,11 +95,11 @@ module oe.layer_actions_extension {
                     for (var i = 0; i < args.layerHyperlinks.length; i++) {                        
 
                         //check for metadata override
-                        if (args.layerHyperlinks[i].text.toLowerCase().indexOf("metadata") > -1) {
+                        if (this.metadataHyperlinkOverride && args.layerHyperlinks[i].text.toLowerCase().indexOf("metadata") > -1) {
                             //$(aLink).css("display", "none");
                             this.metadataHyperlinkURI = args.layerHyperlinks[i].uri;
                         }
-                        else if (args.layerHyperlinks[i].text.toLowerCase().indexOf("download") > -1) {
+                        else if (this.downloadHyperlinkOverride && args.layerHyperlinks[i].text.toLowerCase().indexOf("download") > -1) {
                             //$(aLink).css("display", "none");
                             this.downloadLinkURI = args.layerHyperlinks[i].uri;
                         }
@@ -105,10 +119,10 @@ module oe.layer_actions_extension {
                         aLink = layerHyperLinksArray[i];
 
                         //check for metadata override
-                        if (aLink.innerText.toLowerCase().indexOf("metadata") > -1) {
+                        if (this.metadataHyperlinkOverride && aLink.innerText.toLowerCase().indexOf("metadata") > -1) {
                             $(aLink).css("display", "none");
                         }
-                        else if (aLink.innerText.toLowerCase().indexOf("download") > -1) {
+                        else if (this.downloadHyperlinkOverride && aLink.innerText.toLowerCase().indexOf("download") > -1) {
                             $(aLink).css("display", "none");
                         }
                     }
@@ -220,8 +234,8 @@ module oe.layer_actions_extension {
             });
             this.app.commandRegistry.command("showDownload").register(this, function (layer) {
 
-                //override metadata link
-                if (this.metadataHyperlinkOverride && this.downloadLinkURI != "") {                    
+                //override download link
+                if (this.downloadHyperlinkOverride && this.downloadLinkURI != "") {                    
                     window.open(this.downloadLinkURI, "_blank");
                     return;
                 }
@@ -236,6 +250,10 @@ module oe.layer_actions_extension {
                 }
                 else {
 
+                    //exit if workflows are disabled.  This is enabled by default.
+                    if (!this.downloadWorkflowEnabled)
+                        return;
+
                     //check for workflow array
                     if (this.app.site.workflows == undefined) {
                         console.error("showDownload: Workflow is missing from site.");
@@ -246,8 +264,16 @@ module oe.layer_actions_extension {
                     //check for workflow by id
                     var i = 0;
                     var workflowFound = null;
+                    var workflowTargetID = "EXTRACT_LAYER";
+
+                    //custom workflow
+                    if (this.downloadWorkflowOverride != "")
+                    {
+                        workflowTargetID = this.downloadWorkflowOverride.workflowID;
+                    }
+
                     for (i = 0; i < this.app.site.workflows.length; i++) {
-                        if ( this.app.site.workflows[i].id.toUpperCase().indexOf("EXTRACT_LAYER") > -1) {
+                        if (this.app.site.workflows[i].id.toUpperCase().indexOf(workflowTargetID.toUpperCase()) > -1) {
                             workflowFound = this.app.site.workflows[i].id;
                             break;
                         }
@@ -263,21 +289,32 @@ module oe.layer_actions_extension {
                     var workflowArgs = {};                    
 
                     //console.log("Starting Extract Workflow...");
-
                     workflowArgs["workflowId"] = workflowFound; //"Extract_Layer"; //This is the ID of the workflow.
                     workflowArgs["SiteUri"] = GESiteUri;
                     workflowArgs["Layers"] = layer.displayName;
+                    workflowArgs["arcgisLayerName"] = layer.name;
                     workflowArgs["LayerUrl"] = layer.getLayerUrl();
                     workflowArgs["LayerToken"] = layer.mapService.serviceToken;
                     //workflowArgs["LayerUser"] = layer.properties.user !== undefined ? layer.properties.user : "";
                     //workflowArgs["LayerPwd"] = layer.properties.pwd !== undefined ? layer.properties.pwd : "";
                     //workflowArgs["LayerTokenUrl"] = layer.getLayerUrl().toUpperCase().split("/REST/")[0] + "/tokens";
 
+                    //custom workflow arguments
+                    if (this.downloadWorkflowOverride != "")
+                    {
+                        if (this.downloadWorkflowOverride.argNames !== undefined && this.downloadWorkflowOverride.argValues !== undefined) {
+                            for (var i = 0; i < this.downloadWorkflowOverride.argNames.length; i++) {
+                                if (i < this.downloadWorkflowOverride.argValues.length)
+                                    workflowArgs[this.downloadWorkflowOverride.argNames[i]] = this.downloadWorkflowOverride.argValues[i];
+                            }
+                        }
+                    }                   
+                    
                     this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
                 }
             }, function (context) {
 
-                if (this.metadataHyperlinkOverride && this.downloadLinkURI != "") {
+                if (this.downloadHyperlinkOverride && this.downloadLinkURI != "") {
                     return true;
                 }
 
@@ -287,6 +324,11 @@ module oe.layer_actions_extension {
                 //hide
                 if (context.properties.hideDownload != undefined && context.properties.hideDownload === "False")
                     return false;
+
+                //hide if download link override and workflow is disabled
+                if (this.downloadHyperlinkOverride && this.downloadLinkURI == "" && !this.downloadWorkflowEnabled) {
+                    return false;
+                }
 
                 //download links always show
                 var downloadLink = context.description.split("http");

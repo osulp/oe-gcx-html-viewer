@@ -11,7 +11,12 @@ metadataHyperlinkOverride requires a layer hyperlink named "Metadata" to overrid
         "showLayerDescription":false,
 		"allowAllLayerTypes:":false,
 		"metadataHyperlinkOverride": true,
-		"expandLayerTreeOnVisible": true
+		"expandLayerTreeOnVisible": true,
+		"downloadWorkflowOverride": {
+					"workflowID":"Area_of_Interest",
+					"argNames":["test1","test2","test3"],
+					"argValues":["val1","val2","val3"]
+				}
 	}
 }
 

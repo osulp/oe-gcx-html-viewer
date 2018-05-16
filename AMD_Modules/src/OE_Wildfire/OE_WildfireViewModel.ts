@@ -17,8 +17,8 @@ export class OE_WildfireViewModel extends ViewModelBase {
 
     mapPointIn: Observable<esri.geometry.Point> = new Observable();
 
-    mapClickEnabled: boolean = true;
-    
+    //mapClickEnabled: boolean = true;
+        
     myWorkflowContext: any;
                 
     constructor(app: ViewerApplication, lib: string) {
@@ -29,7 +29,7 @@ export class OE_WildfireViewModel extends ViewModelBase {
 
         var site: Site = (<any>this).app.site;
 
-        this.mapClickEnabled = config.mapClickEnabled || false;
+        fireRiskPopupEnabled = config.mapClickEnabled || false;
 
         var thisViewModel = this;
 
@@ -59,22 +59,23 @@ export class OE_WildfireViewModel extends ViewModelBase {
         $(".WildfireRiskPopupModuleView").appendTo(".map-navigation-region");
 
         //add a command button
-        //this.app.commandRegistry.command("toggle_firerisk_mode").register(this, toggleFireRiskMode);
+        this.app.commandRegistry.command("EnableFireriskPopup").register(this, enableFireriskPopup);
+        this.app.commandRegistry.command("DisableFireriskPopup").register(this, disableFireriskPopup);
 
         //run popup by coordinates
         this.app.commandRegistry.command("OpenFireriskPopup").register(this, openFireriskPopup);
 
         //grab the geocortex map event
-        if (this.mapClickEnabled)
-            this.app.eventRegistry.event("MapClickedEvent").subscribe(null, handleMouseClick);
+        //if (this.mapClickEnabled)
+        this.app.eventRegistry.event("MapClickedEvent").subscribe(null, handleMouseClick);
                         
         function loadWorkflow(pointIn) {
 
-            if (!fireRiskPopupEnabled)
-                return;
+            //if (!fireRiskPopupEnabled)
+            //    return;
 
             //loading div
-            var loadingDiv = $("#WildfireRisk_loading");
+            /*var loadingDiv = $("#WildfireRisk_loading");
             loadingDiv.css("display", "block");
 
             //swap blocks
@@ -88,10 +89,10 @@ export class OE_WildfireViewModel extends ViewModelBase {
             var contentDiv = $("#WildfireRisk_content");
             contentDiv.css("display", "none");
 
-            loadingDiv.text("Launching summary...");
+            loadingDiv.text("Launching summary...");*/
 
             //load the html view
-            workingApp.commandRegistry.command("ActivateView").execute("OE_WildfireView");
+            //workingApp.commandRegistry.command("ActivateView").execute("OE_WildfireView");
 
             //workingPointGeometry = pointIn.mapPoint;
 
@@ -100,7 +101,16 @@ export class OE_WildfireViewModel extends ViewModelBase {
             view.buildWildfireRiskWorkflowRequest(false, thisViewModel);
 
             //remove view after delay                    
-            setTimeout(CloseView, 1800);
+            //setTimeout(CloseView, 1800);
+        }
+
+        function enableFireriskPopup()
+        {
+            fireRiskPopupEnabled = true;
+        }
+
+        function disableFireriskPopup() {
+            fireRiskPopupEnabled = false;
         }
 
         function openFireriskPopup(geometryIn, appIn) {
@@ -117,6 +127,9 @@ export class OE_WildfireViewModel extends ViewModelBase {
         }
 
         function handleMouseClick(pointIn, appIn) {
+
+            if (!fireRiskPopupEnabled)
+                return;
 
             loadWorkflow(pointIn.mapPoint);            
         }
