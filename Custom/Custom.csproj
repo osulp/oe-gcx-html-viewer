@@ -60,9 +60,6 @@
     <Content Include="Modules\InitialExtent\readme.txt" />
     <Content Include="Modules\LayerActionsExtension\readme.txt" />
     <Content Include="Modules\M49\readme.txt" />
-    <Content Include="Modules\WildfireRiskPopup\ModuleJS.txt" />
-    <Content Include="Modules\WildfireRiskPopup\WildfireRiskPopupModule.css" />
-    <Content Include="Modules\WildfireRiskPopup\WildfireRiskPopupModuleView.html" />
     <Content Include="Resources\Styles\Custom\OE.css" />
     <Content Include="ResourceManifest.xml">
       <SubType>Designer</SubType>
@@ -95,9 +92,6 @@
     <TypeScriptCompile Include="Modules\M49\M49ModuleView.ts" />
     <TypeScriptCompile Include="Modules\M49\m49ModuleViewModel.ts" />
     <TypeScriptCompile Include="Modules\RasterFunctions\RasterFunctionsModule.ts" />
-    <TypeScriptCompile Include="Modules\WildfireRiskPopup\WildfireRiskPopupModule.ts" />
-    <TypeScriptCompile Include="Modules\WildfireRiskPopup\WildfireRiskPopupModuleView.ts" />
-    <TypeScriptCompile Include="Modules\WildfireRiskPopup\WildfireRiskPopupModuleViewModel.ts" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES3</TypeScriptTarget>

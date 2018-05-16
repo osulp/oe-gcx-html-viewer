@@ -119,6 +119,37 @@ define(["require", "exports", "geocortex/framework/ui/ViewModelBase", "geocortex
             }
         };
         OE_WildfireViewModel.prototype._onSiteInitialized = function (site, thisViewModel) {
+            ///////////////////////
+            // Remove drawings from identify results
+            ///////////////////////
+            this.app.eventRegistry.event("ViewActivatedEvent").subscribe(this, function (args) {
+                var _this = this;
+                //Check if activated view is the ResultsListView
+                if (args.id === "ResultsListView") {
+                    //Check if already subscribed to avoid adding duplicate subscriptions
+                    var isSubscribed = false;
+                    for (var subscription in args.viewModel.featureSetCollection.value.featureSets.bindingEvent.subscriptions) {
+                        isSubscribed = args.viewModel.featureSetCollection.value.featureSets.bindingEvent.subscriptions[subscription].scope.id
+                            ? args.viewModel.featureSetCollection.value.featureSets.bindingEvent.subscriptions[subscription].scope.id === "OE_Wildfire_DynamicFormViewModel"
+                                ? true
+                                : isSubscribed
+                            : isSubscribed;
+                    }
+                    if (!isSubscribed) {
+                        //Add new subscription to featureSetCollections featureSets.  They are observed by the app to generate the result list dynamically.
+                        args.viewModel.featureSetCollection.value.featureSets.bindingEvent.subscribe(this, function (args) {
+                            var idxToRemove = null;
+                            //Iterate through the featuresets to check if they are drawings and if so grab the array index for deletion.
+                            _this.app.viewManager.getViewById("ResultsListView").viewModel.featureSetCollection.value.featureSets.value.forEach(function (fs, idx) {
+                                idxToRemove = fs.id === "Drawings" ? idx : idxToRemove;
+                            });
+                            if (idxToRemove !== null) {
+                                _this.app.viewManager.getViewById("ResultsListView").viewModel.featureSetCollection.value.featureSets.value.splice(idxToRemove);
+                            }
+                        });
+                    }
+                }
+            });
             var workingApp = geocortex["framework"].applications[0];
             /*
                 This module is added to the NavigationMapRegion region.
@@ -277,6 +308,9 @@ define(["require", "exports", "geocortex/framework/ui/ViewBase"], function (requ
 
 },
 "geocortex/oe_amd/OE_Wildfire/OE_Wildfire_DynamicFormViewModel": function () {
+/// <reference path="./../../_Definitions/Essentials.AMD.d.ts" />
+/// <reference path="./../../_Definitions/Framework.AMD.d.ts" />
+/// <reference path="./../../_Definitions/Framework.UI.AMD.d.ts" />
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||

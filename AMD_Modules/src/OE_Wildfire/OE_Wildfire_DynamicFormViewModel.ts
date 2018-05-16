@@ -74,36 +74,7 @@ export class OE_Wildfire_DynamicFormViewModel extends ViewModelBase {
     }
 
     _onSiteInitialized(site: Site, thisViewModel) {
-        ///////////////////////
-        // Remove drawings from identify results
-        ///////////////////////
-        this.app.eventRegistry.event("ViewActivatedEvent").subscribe(this, function (args) {
-            //Check if activated view is the ResultsListView
-            if (args.id === "ResultsListView") {
-                //Check if already subscribed to avoid adding duplicate subscriptions
-                let isSubscribed = false;
-                for (var subscription in args.viewModel.featureSetCollection.value.featureSets.bindingEvent.subscriptions) {
-                    isSubscribed = args.viewModel.featureSetCollection.value.featureSets.bindingEvent.subscriptions[subscription].scope.id
-                        ? args.viewModel.featureSetCollection.value.featureSets.bindingEvent.subscriptions[subscription].scope.id === "OE_Wildfire_DynamicFormViewModel"
-                            ? true
-                            : isSubscribed
-                        : isSubscribed;
-                }
-                if (!isSubscribed) {
-                    //Add new subscription to featureSetCollections featureSets.  They are observed by the app to generate the result list dynamically.
-                    args.viewModel.featureSetCollection.value.featureSets.bindingEvent.subscribe(this, (args: any) => {
-                        let idxToRemove = null;
-                        //Iterate through the featuresets to check if they are drawings and if so grab the array index for deletion.
-                        this.app.viewManager.getViewById("ResultsListView").viewModel.featureSetCollection.value.featureSets.value.forEach((fs: any, idx: number) => {
-                            idxToRemove = fs.id === "Drawings" ? idx : idxToRemove;
-                        });
-                        if (idxToRemove !== null) {
-                            this.app.viewManager.getViewById("ResultsListView").viewModel.featureSetCollection.value.featureSets.value.splice(idxToRemove);
-                        }
-                    });
-                }
-            }
-        });
+       
         //dynamic external workflow form
         this.app.registerActivityIdHandler("displayWildfirePointResults", function CustomEventHandler(workflowContext, contextFunctions) {
 
