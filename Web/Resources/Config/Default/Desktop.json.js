@@ -137,49 +137,7 @@
                 "libraryId": "OE_AMD",
                 "require": "geocortex/oe_amd/OE_Utility/OE_UtilityModule",
                 "configuration": {}
-            },
-            {
-                "moduleName": "OE_Wildfire",
-                "libraryId": "OE_AMD",
-                "require": "geocortex/oe_amd/OE_Wildfire/OE_WildfireModule",
-                "configuration": {},
-                "views": [
-                {
-                    "id": "OE_WildfireView",
-                    "require": "geocortex/oe_amd/OE_Wildfire/OE_WildfireView",
-                    "markup": "geocortex/oe_amd/OE_Wildfire/OE_WildfireView.html",        
-                    "viewModelId": "OE_WildfireViewModel",
-                    "title": "Wildfire Risk Popup",        
-                    "visible": false,        
-                    "region": "NavigationMapRegion",
-                    "configuration": {}
-                },
-                {
-                    "id": "OE_Wildfire_DynamicFormView",
-                    "require": "geocortex/oe_amd/OE_Wildfire/OE_Wildfire_DynamicFormView",
-                    "markup": "geocortex/oe_amd/OE_Wildfire/OE_Wildfire_DynamicFormView.html",        
-                    "viewModelId": "OE_Wildfire_DynamicFormViewModel",
-                    "title": "Wildfire Risk Report",        
-                    "visible": false,        
-                    "region": "DataRegion",                    
-                    "configuration": {}
-                }
-                ],
-                "viewModels": [
-                    {
-                        "id": "OE_WildfireViewModel",      
-                        "require": "geocortex/oe_amd/OE_Wildfire/OE_WildfireViewModel",      
-                        "configuration": {
-                            "mapClickEnabled":true
-                        }
-                    },
-                    {
-                        "id": "OE_Wildfire_DynamicFormViewModel",      
-                        "require": "geocortex/oe_amd/OE_Wildfire/OE_Wildfire_DynamicFormViewModel",      
-                        "configuration": {}
-                    }
-                ]
-            },
+            },            
             {
                 "moduleName": "OE_Graphics",
                 "libraryId": "OE_AMD",
@@ -6931,10 +6889,10 @@
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                 "configuration": {
-                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/wildfire_risk_PNRA_public",
+                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                     "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                     "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
-                    "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/wildfire_risk_PNRA_public"
+                    "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined"
                 },
                 "views": [
                     {

@@ -548,6 +548,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Config\Default\dev_configs\" />
+    <Folder Include="Resources\Config\DevTy\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
