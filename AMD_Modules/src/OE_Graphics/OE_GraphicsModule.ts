@@ -105,7 +105,7 @@ export class OE_GraphicsModule extends ModuleBase {
     _oeTagNextMarkup(featuresIn: string) {
         this.tagNextMarkup = true;
 
-        if (featuresIn != undefined)
+        if (featuresIn != undefined && featuresIn != "")
             this.customFeaturesIn = JSON.parse(featuresIn);
         else
             this.customFeaturesIn = "";

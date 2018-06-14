@@ -86,7 +86,7 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
         }*/
         OE_GraphicsModule.prototype._oeTagNextMarkup = function (featuresIn) {
             this.tagNextMarkup = true;
-            if (featuresIn != undefined)
+            if (featuresIn != undefined && featuresIn != "")
                 this.customFeaturesIn = JSON.parse(featuresIn);
             else
                 this.customFeaturesIn = "";
