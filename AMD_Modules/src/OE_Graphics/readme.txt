@@ -6,6 +6,7 @@ This is done in a workflow by calling the custom command "OETagNextMarkup".
 These two options do not need hideMapTipOnEdit enabled
 openMarkupStyleOnEdit will open style editor when a graphic is selected
 workflowIDRunOnEdit will run a custom workflow when the graphic is selected
+enableCustomFeatures will check for passed in key/value object.  Object pairs: color:RGBString, name:AttributeName, nameval:AttributeValue 
 
 {
     "moduleName": "OE_Graphics",
@@ -14,14 +15,14 @@ workflowIDRunOnEdit will run a custom workflow when the graphic is selected
     "configuration": {
         "hideMapTipOnEdit": true,
         "workflowIDRunOnEdit": "",
-        "openMarkupStyleOnEdit": false
+        "openMarkupStyleOnEdit": false,
+		enableCustomFeatures: false;
     }
 },
 
-
-
-
+-------------------------------------
 Required library
+-------------------------------------
 
  {
     "id": "OE_AMD",
@@ -34,3 +35,13 @@ Required library
         }
     ]
 }
+
+
+-------------------------------------
+Workflow Example
+-------------------------------------
+
+RunExternalCommand
+
+"OETagNextMarkup"
+"{""color"":""rgb(255,0,0)"",""name"":""Title"",""nameval"":""Value""}"

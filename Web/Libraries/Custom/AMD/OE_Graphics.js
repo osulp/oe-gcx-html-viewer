@@ -57,9 +57,9 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
                 //this.app.commandRegistry.command("OENextMarkupColor").register(this, this._oeSetNextMarkUpColor);            
                 //ViewInitializedEvent
                 //ViewActivatedEvent
-                this.app.eventRegistry.event("ViewInitializedEvent").subscribe(this, function (args) {
-                    _this._OEMapTipView(args);
-                });
+                /*this.app.eventRegistry.event("ViewInitializedEvent").subscribe(this, (args) => {
+                    this._OEMapTipView(args);
+                });               */
                 this.app.eventRegistry.event("MarkupAddedEvent").subscribe(this, function (args) {
                     _this._markupAddedEvent(args);
                 });
@@ -72,15 +72,18 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
                 });
             }
         };
-        OE_GraphicsModule.prototype._OEMapTipView = function (args) {
+        /*_OEMapTipView(args) {
+    
             //if (args.markupResource !== "Mapping/infrastructure/ui/components/FeatureSelector/FeatureSelectorView.html")
-            //  return;
+              //  return;
+    
             if (args.id != "MapTipView")
                 return;
+    
             //$(".map-tip-title").text("test name test");
             if (this.customFeaturesIn != null && this.customFeaturesIn.name != "")
                 setTimeout(function () { $(".map-tip-title").text(this.customFeaturesIn.name); }, 200);
-        };
+        }*/
         OE_GraphicsModule.prototype._oeTagNextMarkup = function (featuresIn) {
             this.tagNextMarkup = true;
             if (featuresIn != undefined)

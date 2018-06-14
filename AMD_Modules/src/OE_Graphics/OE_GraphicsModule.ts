@@ -70,9 +70,9 @@ export class OE_GraphicsModule extends ModuleBase {
 
             //ViewInitializedEvent
             //ViewActivatedEvent
-            this.app.eventRegistry.event("ViewInitializedEvent").subscribe(this, (args) => {
+            /*this.app.eventRegistry.event("ViewInitializedEvent").subscribe(this, (args) => {
                 this._OEMapTipView(args);
-            });               
+            });               */
            
             this.app.eventRegistry.event("MarkupAddedEvent").subscribe(this, (args) => {
                 this._markupAddedEvent(args);
@@ -89,7 +89,7 @@ export class OE_GraphicsModule extends ModuleBase {
         }
     }
 
-    _OEMapTipView(args) {
+    /*_OEMapTipView(args) {
 
         //if (args.markupResource !== "Mapping/infrastructure/ui/components/FeatureSelector/FeatureSelectorView.html")
           //  return;
@@ -100,7 +100,7 @@ export class OE_GraphicsModule extends ModuleBase {
         //$(".map-tip-title").text("test name test");
         if (this.customFeaturesIn != null && this.customFeaturesIn.name != "")
             setTimeout(function () { $(".map-tip-title").text(this.customFeaturesIn.name); }, 200);
-    }
+    }*/
     
     _oeTagNextMarkup(featuresIn: string) {
         this.tagNextMarkup = true;
