@@ -115,7 +115,7 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
     
                         this.app.commandRegistry.commands["ChangeMarkupStyle"].execute();*/
                         graphic.symbol.setColor(esri.Color.fromString(this.customFeaturesIn.color));
-                        graphic.symbol.color.a = .30;
+                        //graphic.symbol.color.a = .30;
                         graphic.symbol["outline"].setColor(esri.Color.fromString(this.customFeaturesIn.color));
                         graphic.symbol["outline"].color.a = 1;
                         this.app.markupLayer["value"].refresh();

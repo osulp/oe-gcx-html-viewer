@@ -44,4 +44,4 @@ Workflow Example
 RunExternalCommand
 
 "OETagNextMarkup"
-"{""color"":""rgb(255,0,0)"",""name"":""Title"",""nameval"":""Value""}"
+"{""color"":""rgb(255,0,0,.2)"",""name"":""Title"",""nameval"":""Value""}"

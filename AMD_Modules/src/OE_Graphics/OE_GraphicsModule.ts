@@ -139,10 +139,9 @@ export class OE_GraphicsModule extends ModuleBase {
                     fillSymbol.color.a = .30;
                     fillSymbol.setOutline(outlineSymbol);
 
-                    this.app.commandRegistry.commands["ChangeMarkupStyle"].execute();*/
-
+                    this.app.commandRegistry.commands["ChangeMarkupStyle"].execute();*/                    
                     graphic.symbol.setColor(esri.Color.fromString(this.customFeaturesIn.color));
-                    graphic.symbol.color.a = .30;
+                    //graphic.symbol.color.a = .30;
 
                     graphic.symbol["outline"].setColor(esri.Color.fromString(this.customFeaturesIn.color));
                     graphic.symbol["outline"].color.a = 1;
