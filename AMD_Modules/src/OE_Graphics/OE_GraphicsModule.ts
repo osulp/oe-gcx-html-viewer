@@ -6,6 +6,9 @@ import { ModuleBase } from "geocortex/framework/application/ModuleBase";
 import { ViewerApplication } from "geocortex/infrastructure/Viewer";
 import { getMarkupFromGeometry } from "geocortex/infrastructure/GraphicUtils";
 import { getGraphicsLayer } from "geocortex/infrastructure/GraphicUtils";
+import { getInternalGraphicsLayer } from "geocortex/infrastructure/GraphicsLayerUtils";
+import { MARKUP_LAYER_ID } from "geocortex/infrastructure/GraphicsLayerIds";
+import { COORDINATES_LAYER_ID } from "geocortex/infrastructure/GraphicsLayerIds";
 import { Geometry } from "geocortex/infrastructure/webMap/Geometry";
 
 export class OE_GraphicsModule extends ModuleBase {
@@ -66,6 +69,10 @@ export class OE_GraphicsModule extends ModuleBase {
                         
              //register tagging command
             this.app.commandRegistry.command("OETagNextMarkup").register(this, this._oeTagNextMarkup);
+
+            //custom clear commmand
+            this.app.commandRegistry.command("OEClearTaggedMarkup").register(this, this._oeClearOEMarkup);
+
             //this.app.commandRegistry.command("OENextMarkupColor").register(this, this._oeSetNextMarkUpColor);            
 
             //ViewInitializedEvent
@@ -101,6 +108,44 @@ export class OE_GraphicsModule extends ModuleBase {
         if (this.customFeaturesIn != null && this.customFeaturesIn.name != "")
             setTimeout(function () { $(".map-tip-title").text(this.customFeaturesIn.name); }, 200);
     }*/
+
+    _oeIsOEMarkup(graphic: esri.Graphic)
+    {
+        if (typeof graphic == "undefined" || graphic == null)
+            return false;
+
+        if (Object.prototype.hasOwnProperty.call(graphic, "oe_markup") && graphic["oe_markup"] == true)
+            return true;
+        
+        return false;
+    }
+
+    _oeClearOEMarkup()
+    {                
+        var t = getInternalGraphicsLayer(MARKUP_LAYER_ID, this.app);        
+        if (!t)
+            return;        
+
+        var i = t.graphics.length;
+        while (i--)
+        {
+            //only remove oe markup graphics
+            if (this._oeIsOEMarkup(t.graphics[i])) {
+
+                this.app.event("MarkupDeletedEvent").publish(t.graphics[i]);
+                t.remove(t.graphics[i]);
+            }
+        }
+
+        //this._deactivateActiveToolIfNoMarkupExists(),
+        this.app.command("ClearMarkup").raiseCanExecuteChanged(),
+        this.app.command("EditMarkup").raiseCanExecuteChanged(),
+        this.app.command("DeleteMarkup").raiseCanExecuteChanged(),
+        this.app.command("ExportMarkupLayer").raiseCanExecuteChanged(),
+        this.app.event("MarkupClearedEvent").publish()
+        
+        //this.app.command("LogOptimizerEvent").execute("ClearMarkupTool", "ClearAllMarkup")
+    }
     
     _oeTagNextMarkup(featuresIn: string) {
         this.tagNextMarkup = true;
@@ -146,7 +191,8 @@ export class OE_GraphicsModule extends ModuleBase {
                     graphic.symbol["outline"].setColor(esri.Color.fromString(this.customFeaturesIn.color));
                     graphic.symbol["outline"].color.a = 1;
 
-                    this.app.markupLayer["value"].refresh();
+                    if (this.app.markupLayer["value"] != undefined && this.app.markupLayer["value"] != "")
+                        this.app.markupLayer["value"].refresh();
                 }
 
                 this.customFeaturesIn = "";
@@ -168,10 +214,9 @@ export class OE_GraphicsModule extends ModuleBase {
                 this.lastGraphicWasOE = false;
 
             } else if (pointIn.graphic.getSourceLayer().id === 'Drawings') {
-
-                if (pointIn.graphic["oe_markup"] != undefined && pointIn.graphic["oe_markup"] == true) {
-
-                    
+                                
+                if (this._oeIsOEMarkup(pointIn.graphic) )
+                {   
                      //oe graphic, edit and mark that OE was the last graphic edited
                     //this.app.commandRegistry.commands['EditMarkup'].execute(pointIn.graphic.geometry);
                     this.lastGraphicWasOE = true;                                        
@@ -225,8 +270,8 @@ export class OE_GraphicsModule extends ModuleBase {
 
     _markupEditingStarted(selectedGraphic: esri.Graphic) {
                 
-        //if (this.hideMapTipOnEdit && selectedGraphic["oe_markup"] == true)
-        if (selectedGraphic["oe_markup"] == true)
+        //if (this.hideMapTipOnEdit && selectedGraphic["oe_markup"] == true)        
+        if ( this._oeIsOEMarkup(selectedGraphic) )
         {   
             if (this.hideMapTipOnEdit)         
                 this.app.commandRegistry.commands["HideMapTips"].execute();
@@ -255,8 +300,8 @@ export class OE_GraphicsModule extends ModuleBase {
         
     _markupEditingStopped(selectedGraphic: esri.Graphic) {
   
-        //change color
-        if (selectedGraphic["oe_markup"] != undefined && selectedGraphic["oe_markup"] == true) {            
+        //change color        
+        if ( this._oeIsOEMarkup(selectedGraphic) ) { 
             selectedGraphic.symbol.setColor(this.lastColor);
             //selectedGraphic.symbol.setColor(new esri.Color([76, 160, 216, .5]));
 
