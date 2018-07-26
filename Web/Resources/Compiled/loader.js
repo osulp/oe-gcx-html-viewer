@@ -193,7 +193,7 @@ var geocortex;
             };
             Splash.prototype.close = function (animationDuration) {
                 var _this = this;
-                if (animationDuration === void 0) { animationDuration = 1000; }
+                if (animationDuration === void 0) { animationDuration = 500; }
                 performance && performance.mark && performance.mark("splash_close");
                 if (this.splashOverlay && !this.splashOverlay.hasAttribute("data-closing")) {
                     if (this.useTransitions) {
@@ -388,7 +388,7 @@ var geocortex;
                     var query = new geocortex.framework.application.loading.CaselessMap(options.query || this.loadQueryParams(options));
                     new window["FastClick"](document.body);
                     var hostElement = options.hostElement || document.body;
-                    var debug = query.has("debug") ? query.getAsBoolean("debug") : options.debug || false;
+                    var debug = query.has("debug") ? query.get("debug") || "gvh" : options.debug || false;
                     var offline = query.has("offline") ? query.getAsBoolean("offline") : options.offline || false;
                     var configBase = options.configBase;
                     var configBaseDefined = !!configBase;
@@ -418,17 +418,17 @@ var geocortex;
                     region.setAttribute("class", "shell splash-blurred");
                     region.setAttribute("data-region-name", "ApplicationRegion");
                     region.setAttribute("data-region-adapter", "geocortex.framework.ui.MultiDivRegionAdapter");
+                    region.setAttribute("role", "complementary");
+                    region.setAttribute("aria-label", "shell")
                     hostElement.appendChild(region);
-                    var viewer = new geocortex.essentialsHtmlViewer.ViewerApplication(viewerConfigUri, hostElement, viewerId);
+                    var viewer = new geocortex.essentialsHtmlViewer.ViewerApplication(viewerConfigUri, hostElement, viewerId, null, debug);
                     viewer.shellName = shell;
                     viewer.viewerConfigPath = viewerConfigPath;
                     viewer.debugMode = debug;
                     viewer.urlParameters = query;
                     viewer.isOffline.set(offline);
-                    viewer.event("LibraryDownloadedEvent").subscribe(window, function (libraryId) {
-                        if (libraryId === "Mapping") {
-                            essentialsHtmlViewer.Splash.getDefaultSplash().close();
-                        }
+                    viewer.event("ApplicationReadyEvent").once(window, function () {
+                        essentialsHtmlViewer.Splash.getDefaultSplash().close();
                     });
                     viewer.event("SiteInitializedEvent").subscribe(window, function () {
                         if (options.onSiteInitialized) {
@@ -453,9 +453,12 @@ var geocortex;
                             n = n + "";
                             return (n.length >= width) ? n : new Array(width - n.length + 1).join(z) + n;
                         }
+                        if (args["visible"] === false) {
+                            return;
+                        }
                         var date = args["timestamp"];
                         var timestampStr = "{0}:{1}:{2}.{3}".format(padDigits(date.getHours(), 2), padDigits(date.getMinutes(), 2), padDigits(date.getSeconds(), 2), padDigits(date.getMilliseconds(), 3));
-                        var logMessage = "[{0}]: {1}: {2}".format(args["level"], timestampStr, args["message"]);
+                        var logMessage = "[{0}]: {1}: {2}".format(args["level"], timestampStr, args["display"] || args["message"]);
                         if (console.info) {
                             console.info(logMessage);
                         }

@@ -98,7 +98,7 @@ var dojoConfig = {
         },
         {
             location: "Resources/Scripts",
-            name: "fixed-data-table",
+            name: "fixed-data-table-2",
             main: "fixed-data-table.min"
         },
         {

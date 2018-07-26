@@ -15,7 +15,7 @@
     <system.web>
       <httpRuntime requestValidationMode="2.0" enableVersionHeader="false" />
     </system.web>
-  </location>  
+  </location>
   <!--
     For a description of web.config changes see http://go.microsoft.com/fwlink/?LinkId=235367.
 

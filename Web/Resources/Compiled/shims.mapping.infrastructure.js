@@ -256,11 +256,13 @@ define(["geocortex/infrastructure/AreaOfInterestMask",
 "geocortex/infrastructure/BrowserUtils",
 "geocortex/infrastructure/symbology/SymbolEditorView",
 "geocortex/infrastructure/symbology/SymbolEditorViewModel",
-"geocortex/infrastructure/ui/components/Table/RowContextMenuView",
+"geocortex/infrastructure/ui/components/Table/Cells/RowContextMenuView",
 "geocortex/infrastructure/SerializationUtils",
 "geocortex/infrastructure/ui/components/FeatureSelector/FeatureSelectorView",
 "geocortex/infrastructure/ui/components/FeatureSelector/FeatureSelectorViewModel",
-"geocortex/infrastructure/ui/components/FeatureSelector/Templates/FeatureSelectorResultTemplateView"],
+"geocortex/infrastructure/ui/components/FeatureSelector/Templates/FeatureSelectorResultTemplateView",
+"geocortex/infrastructure/validation/ValidationFunctionFactory",
+"geocortex/infrastructure/ui/components/Table/Editing/Fields/DateFieldWidgetView"],
 function(AreaOfInterestMask_ts_0,
 ArrayUtils_ts_1,
 AttachmentInfo_ts_2,
@@ -522,7 +524,9 @@ RowContextMenuView_ts_244,
 SerializationUtils_ts_245,
 FeatureSelectorView_ts_246,
 FeatureSelectorViewModel_ts_247,
-FeatureSelectorResultTemplateView_ts_248) {
+FeatureSelectorResultTemplateView_ts_248,
+ValidationFunctionFactory_ts_249,
+DateFieldWidgetView_ts_250) {
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.AreaOfInterestMask", AreaOfInterestMask_ts_0.AreaOfInterestMask);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ArrayUtils", ArrayUtils_ts_1.ArrayUtils);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.AttachmentInfo", AttachmentInfo_ts_2.AttachmentInfo);
@@ -1087,9 +1091,11 @@ FeatureSelectorResultTemplateView_ts_248) {
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.FeatureSelector.FeatureSelectorView", FeatureSelectorView_ts_246.FeatureSelectorView);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.FeatureSelector.FeatureSelectorViewModel", FeatureSelectorViewModel_ts_247.FeatureSelectorViewModel);
     shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.FeatureSelector.Templates.FeatureSelectorResultTemplateView", FeatureSelectorResultTemplateView_ts_248.FeatureSelectorResultTemplateView);
+    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.validation.ValidationFunctionFactory", ValidationFunctionFactory_ts_249.ValidationFunctionFactory);
+    shim("geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Table.Fields.DateFieldWidgetView", DateFieldWidgetView_ts_250.DateFieldWidgetView);
 });
 
 
 if (!geocortex) geocortex = { }; 
 if (!geocortex.essentialsHtmlViewer) geocortex.essentialsHtmlViewer = { }; 
-geocortex.essentialsHtmlViewer.version = "2.10.1.492"; 
+geocortex.essentialsHtmlViewer.version = "2.11.0.1464"; 
