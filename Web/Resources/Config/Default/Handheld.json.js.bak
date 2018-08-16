@@ -1,11 +1,12 @@
 {
     "configuration": {
-        "version": "2.10",
+        "version": "2.11",
         "application": {
             "proxyUri": "proxy.ashx?",
             "allowUnsafeContent": true,
             "offlineStorageSpaceMb": "50",
             "geometryServiceUrl": "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer",
+            "deferredModuleLoading": true,
             "mobileMode": true
         },
         "defaultLibraryId": "Mapping",
@@ -94,33 +95,7 @@
                  ]
              }
         ],
-        "modules": [
-            {
-                "moduleName": "Log",
-                "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.log.LogModule",
-                "views": [
-                    {
-                        "id": "LogView",
-                        "viewModelId": "LogViewModel",
-                        "visible": false,
-                        "isManaged": false,
-                        "title": "@language-common-view-log",
-                        "iconUri": "Resources/Images/Icons/log.png",
-                        "description": "@language-log-app-log",
-                        "markup": "Mapping/modules/Log/LogView.html",
-                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.log.LogView",
-                        "region": "ApplicationRegion",
-                        "configuration": {}
-                    }
-                ],
-                "viewModels": [
-                    {
-                        "id": "LogViewModel",
-                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.log.LogViewModel",
-                        "configuration": {}
-                    }
-                ]
-            },
+        "modules": [            
             {
                 "moduleName": "LayerActionsExtension",
                 "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
@@ -310,7 +285,7 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/visualizations-24.png",
                                     "command": "ShowVisualizationView",
                                     "hideOnDisable": true
-                                },                                
+                                },
                                 {
                                     "text": "@language-layer-addition-edit-layer-properties",
                                     "description": "@language-layer-addition-edit-layer-properties-desc",
@@ -467,6 +442,9 @@
                                             "command": "AddFeatureToResults",
                                             "commandParameter": "{{context}}",
                                             "abortBatchOnFailure": true
+                                        },
+                                        {
+                                            "command": "ShowResults"
                                         }
                                     ]
                                 },
@@ -536,6 +514,9 @@
                                             "command": "RemoveFeatureFromResults",
                                             "commandParameter": "{{context}}",
                                             "abortBatchOnFailure": true
+                                        }, 
+                                        {
+                                            "command": "RestoreAllMapTips"
                                         }
                                     ]
                                 },
@@ -549,9 +530,15 @@
                                             "command": "HideFeatureDetails"
                                         },
                                         {
+                                            "command": "HideAllMapTips"
+                                        },
+                                        {
                                             "command": "AddFeatureToResults",
                                             "commandParameter": "{{context}}",
                                             "abortBatchOnFailure": true
+                                        },
+                                        {
+                                            "command": "ShowResults"
                                         }
                                     ]
                                 },
@@ -898,7 +885,7 @@
                             "id": "FeatureSetCollectionResultsFeatureSetActions",
                             "description": "@language-menu-filter-actions-desc",
                             "defaultIconUri": "Resources/Images/Icons/check-24.png",
-                            "items": [
+                            "items": [  
                                 {
                                     "text": "@language-menu-zoom-to-all",
                                     "description": "@language-menu-zoom-to-all-desc",
@@ -1225,6 +1212,238 @@
                 }
             },
             {
+                "moduleName": "Map",
+                "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.map.MapModule",
+                "configuration": {
+                    "panDuration": 0,
+                    "panRate": 50,
+                    "zoomDuration": 500,
+                    "zoomRate": 50,
+                    "longClickMilliseconds": 500,
+                    "maxExtentLogSize": 50,
+                    "showLoadingStatus": true,
+                    "loadingMessageTiming": [
+                        1000,
+                        3000,
+                        3000
+                    ],
+                    "defaultPointFeatureZoomScales": [],
+                    "behaviors": [
+                        {
+                            "name": "MapOnClickBehavior",
+                            "commands": [
+                                "InvokeMapTip"
+                            ]
+                        },
+                        {
+                            "name": "MapOnContextMenuBehavior",
+                            "commands": [
+                                "ActivateMapContextMenu"
+                            ]
+                        },
+                        {
+                            "name": "MapOnLongClickBehavior",
+                            "commands": [
+                                "ActivateMapContextMenu"
+                            ]
+                        },
+                        {
+                            "name": "MapOnFeatureClickBehavior",
+                            "commands": [
+                                "ShowMapTip"
+                            ]
+                        },
+                        {
+                            "name": "MapTimeExtentChangedBehavior",
+                            "event": "MapTimeExtentChangedEvent",
+                            "commands": []
+                        }
+                    ],
+                    "menus": [
+                        {
+                            "id": "MapContextMenu",
+                            "defaultIconUri": "Resources/Images/Icons/Toolbar/edit-24.png",
+                            "items": [
+                                {
+                                    "iconUri": "Resources/Images/Icons/Toolbar/identify-24.png",
+                                    "text": "@language-menu-identify",
+                                    "command": "Identify",
+                                    "commandParameter": "{{context}}"
+                                },
+                                {
+                                    "iconUri": "Resources/Images/Icons/Toolbar/draw-point-24.png",
+                                    "text": "@language-menu-draw-point",
+                                    "command": "AddMarkup",
+                                    "commandParameter": "{{context}}"
+                                },
+                                {
+                                    "iconUri": "Resources/Images/Icons/Toolbar/coordinates-add-24.png",
+                                    "text": "@language-menu-plot-coordinate",
+                                    "command": "PlotCoordinates",
+                                    "commandParameter": "{{context}}"
+                                },
+                                {
+                                    "iconUri": "Resources/Images/Icons/Toolbar/draw-text-24.png",
+                                    "text": "@language-menu-add-text",
+                                    "command": "AddTextMarkup",
+                                    "commandParameter": "{{context}}"
+                                },
+                                {
+                                    "iconUri": "Resources/Images/Icons/center-map-24.png",
+                                    "text": "@language-menu-center-map",
+                                    "command": "PanToPoint",
+                                    "commandParameter": "{{context}}"
+                                }
+                            ]
+                        }
+                    ],
+                    "tools": [
+                        {
+                            "name": "CenterMapTool",
+                            "command": "PanToPoint",
+                            "drawMode": "POINT",
+                            "isSticky": true,
+                            "statusText": "@language-mbl-map-center"
+                        },
+                        {
+                            "name": "ZoomInTool",
+                            "command": "ZoomToExtent",
+                            "drawMode": "EXTENT",
+                            "isSticky": true,
+                            "statusText": "@language-map-zoom-in"
+                        },
+                        {
+                            "name": "ZoomOutTool",
+                            "command": "ZoomOutToExtent",
+                            "drawMode": "EXTENT",
+                            "isSticky": true,
+                            "statusText": "@language-map-zoom-out"
+                        }
+                    ]
+                },
+                "views": [
+                    {
+                        "id": "MapView",
+                        "viewModelId": "MapViewModel",
+                        "visible": true,
+                        "isManaged": false,
+                        "title": "@language-map-title",
+                        "iconUri": "Resources/Images/Icons/Toolbar/map-24.png",
+                        "description": "@language-map-surface",
+                        "markup": "Mapping/modules/Map/MapView.html",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.map.MapView",
+                        "region": "ScreenRegion",
+                        "configuration": {
+                            "wrapAround180": false,
+                            "disableMapKeyboardNavigation": false,
+                            "extentBroadcastFrequency": 20,
+                            "fitTiledMapsToExtent": false,
+                            "showAttribution": true
+                        }
+                    },
+                    {
+                        "id": "MapContextMenuView",
+                        "viewModelId": "MapContextMenuViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.map.MapContextMenuView",
+                        "require": "Mapping/modules/Map/MapContextMenu/MapContextMenuView",
+                        "markup": "Mapping/modules/Map/MapContextMenu/MapContextMenuView.html",
+                        "region": "MiscViewContainerRegion",
+                        "title": "@language-map-context-menu-title",
+                        "visible": false,
+                        "configuration": {}
+                    },
+                    {
+                        "id": "ContextMenuReverseGeocodeView",
+                        "viewModelId": "ContextMenuReverseGeocodeViewModel",
+                        "visible": true,
+                        "markup": "Mapping/modules/Map/MapContextMenu/Views/ReverseGeocode/ReverseGeocodeView.html",
+                        "type": "geocortex.framework.ui.ViewBase",
+                        "require": "geocortex/framework/ui/ViewBase",
+                        "region": "MapContextMenuContentRegion",
+                        "configuration": {}
+                    },
+                    {
+                        "id": "ContextMenuCoordinatesView",
+                        "viewModelId": "ContextMenuCoordinatesViewModel",
+                        "visible": true,
+                        "markup": "Mapping/modules/Map/MapContextMenu/Views/Coordinates/CoordinatesView.html",
+                        "type": "geocortex.framework.ui.ViewBase",
+                        "require": "geocortex/framework/ui/ViewBase",
+                        "region": "MapContextMenuContentRegion",
+                        "configuration": {}
+                    },
+                    {
+                        "id": "ContextMenuMapMenuView",
+                        "viewModelId": "ContextMenuMapMenuViewModel",
+                        "visible": true,
+                        "markup": "Mapping/modules/Map/MapContextMenu/Views/Menu/MapMenuView.html",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.map.MapMenuView",
+                        "require": "Mapping/modules/Map/MapContextMenu/Views/Menu/MapMenuView",
+                        "region": "MapContextMenuContentRegion",
+                        "configuration": {
+                            "menuId": "MapContextMenu"
+                        }
+                    }
+                ],
+                "viewModels": [
+                    {
+                        "id": "MapViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.map.MapViewModel",
+                        "configuration": {
+                            "stepZoomFactor": 0.5,
+                            "panStep": 0.333
+                        }
+                    },
+                    {
+                        "id": "MapContextMenuViewModel",
+                        "type": "geocortex.framework.ui.ViewModelBase",
+                        "require": "geocortex/framework/ui/ViewModelBase",
+                        "configuration": {}
+                    },
+                    {
+                        "id": "ContextMenuReverseGeocodeViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.map.ReverseGeocodeViewModel",
+                        "require": "Mapping/modules/Map/MapContextMenu/Views/ReverseGeocode/ReverseGeocodeViewModel",
+                        "configuration": {
+                            "showReverseGeocoder": true
+                        }
+                    },
+                    {
+                        "id": "ContextMenuCoordinatesViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.map.CoordinatesViewModel",
+                        "require": "Mapping/modules/Map/MapContextMenu/Views/Coordinates/CoordinatesViewModel",
+                        "configuration": {
+                            "showCoordinates": true
+                        }
+                    },
+                    {
+                        "id": "ContextMenuMapMenuViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.map.MapMenuViewModel",
+                        "require": "Mapping/modules/Map/MapContextMenu/Views/Menu/MapMenuViewModel",
+                        "configuration": {
+                            "showMenu": true
+                        }
+                    },
+                    {
+                        "id": "MapCoordinatesModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.coordinates.CoordinatesModel",
+                        "require": "geocortex/infrastructure/coordinates/CoordinatesModel",
+                        "configuration": {
+                            "defaultCoordinateDisplayTypes": [
+                                "dd",
+                                "ddm",
+                                "dms",
+                                "xy"
+                            ],
+                            "customCoordinateSystems": [],
+                            "fractionalDigits": 5,
+                            "defaultGcsWkid": "4326",
+                            "disableMouseLocationMonitoring": true
+                        }
+                    }
+                ]
+            },
+            {
                 "moduleName": "Accessibility",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.accessibility.AccessibilityModule",
                 "configuration": {
@@ -1282,6 +1501,7 @@
             {
                 "moduleName": "Alert",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.alert.AlertModule",
+                "deferLoading": true,
                 "configuration": {
                     "alertRegion": "ModalWindowRegion",
                     "overrideNativeAlert": true
@@ -1297,6 +1517,7 @@
             {
                 "moduleName": "BarcodeScanner",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.barcodescanner.BarcodeScannerModule",
+                "deferLoading": true,
                 "configuration": {
                     "htmlScannerView": "BarcodeScannerView"
                 },
@@ -1358,6 +1579,7 @@
             {
                 "moduleName": "Bookmarks",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.bookmarks.BookmarksModule",
+                "deferLoading": true,
                 "configuration": {},
                 "views": [
                     {
@@ -1392,6 +1614,7 @@
             {
                 "moduleName": "Buffer",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.buffer.BufferModule",
+                "deferLoading": true,
                 "configuration": {
                     "bufferProjectionWkid": "",
                     "behaviors": [
@@ -1567,6 +1790,7 @@
             {
                 "moduleName": "Collaboration",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.collaboration.CollaborationModule",
+                "deferLoading": true,
                 "configuration": {},
                 "views": [
                     {
@@ -1660,6 +1884,7 @@
                                 {
                                     "name": "SetCollaborationImageLocation",
                                     "displayName": "@language-toolbar-markup-point",
+                                    "tooltip": "@language-toolbar-markup-point-tooltip",
                                     "command": "SetCollaborationImageLocation",
                                     "drawMode": "POINT",
                                     "isSticky": false,
@@ -1672,6 +1897,7 @@
                                     "name": "CollaborationPointDraw",
                                     "command": "CollaborationDraw",
                                     "displayName": "@language-toolbar-markup-point",
+                                    "tooltip": "@language-toolbar-markup-point-tooltip",
                                     "drawMode": "POINT",
                                     "isSticky": true,
                                     "iconUri": "Resources/Images/Icons/Toolbar/draw-point-24.png",
@@ -1681,6 +1907,7 @@
                                     "name": "CollaborationLineDraw",
                                     "command": "CollaborationDraw",
                                     "displayName": "@language-toolbar-markup-polyline",
+                                    "tooltip": "@language-toolbar-markup-polyline-tooltip",
                                     "drawMode": "POLYLINE",
                                     "isSticky": true,
                                     "iconUri": "Resources/Images/Icons/Toolbar/draw-polyline-24.png",
@@ -1689,6 +1916,7 @@
                                 {
                                     "name": "CollaborationFreehandDraw",
                                     "displayName": "@language-toolbar-markup-freehand",
+                                    "tooltip": "@language-toolbar-markup-freehand-tooltip",
                                     "command": "CollaborationDraw",
                                     "drawMode": "FREEHAND_POLYLINE",
                                     "isSticky": true,
@@ -1700,6 +1928,7 @@
                                     "name": "CollaborationCircleDraw",
                                     "command": "CollaborationDraw",
                                     "displayName": "@language-toolbar-markup-circle",
+                                    "tooltip": "@language-toolbar-markup-circle-tooltip",
                                     "drawMode": "CIRCLE",
                                     "isSticky": true,
                                     "iconUri": "Resources/Images/Icons/Toolbar/draw-circle-24.png",
@@ -1709,6 +1938,7 @@
                                     "name": "CollaborationEllipseDraw",
                                     "command": "CollaborationDraw",
                                     "displayName": "@language-toolbar-markup-ellipse",
+                                    "tooltip": "@language-toolbar-markup-ellipse-tooltip",
                                     "drawMode": "ELLIPSE",
                                     "isSticky": true,
                                     "iconUri": "Resources/Images/Icons/Toolbar/draw-ellipse-24.png",
@@ -1718,6 +1948,7 @@
                                     "name": "CollaborationRectangleDraw",
                                     "command": "CollaborationDraw",
                                     "displayName": "@language-toolbar-markup-rectangle",
+                                    "tooltip": "@language-toolbar-markup-rectangle-tooltip",
                                     "drawMode": "RECTANGLE",
                                     "isSticky": true,
                                     "iconUri": "Resources/Images/Icons/Toolbar/draw-rectangle-24.png",
@@ -1727,6 +1958,7 @@
                                     "name": "CollaborationPolygonDraw",
                                     "command": "CollaborationDraw",
                                     "displayName": "@language-toolbar-markup-polygon",
+                                    "tooltip": "@language-toolbar-markup-polygon-tooltip",
                                     "drawMode": "POLYGON",
                                     "isSticky": true,
                                     "iconUri": "Resources/Images/Icons/Toolbar/draw-polygon-24.png",
@@ -1736,6 +1968,7 @@
                                     "name": "CollaborationFreehandPolygonDraw",
                                     "command": "CollaborationDraw",
                                     "displayName": "@language-toolbar-markup-freehand-polygon",
+                                    "tooltip": "@language-toolbar-markup-freehand-polygon-tooltip",
                                     "drawMode": "FREEHAND_POLYGON",
                                     "isSticky": true,
                                     "iconUri": "Resources/Images/Icons/Toolbar/draw-polygon-freehand-24.png",
@@ -1745,6 +1978,7 @@
                                     "name": "CollaborationTextDraw",
                                     "command": "CollaborationDrawText",
                                     "displayName": "@language-toolbar-markup-text",
+                                    "tooltip": "@language-toolbar-markup-text-tooltip",
                                     "drawMode": "POINT",
                                     "isSticky": true,
                                     "iconUri": "Resources/Images/Icons/Toolbar/draw-text-24.png",
@@ -1872,8 +2106,8 @@
                 "moduleName": "CompactToolbar",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.toolbar.CompactToolbarModule",
                 "require": "Mapping/modules/Toolbar/CompactToolbarModule",
+                "isEnabled": true,
                 "configuration": {
-                    "isEnabled": true,
                     "transientElements": [
                         {
                             "stateName": "MeasureState",
@@ -2071,6 +2305,12 @@
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.toolbar.transients.TransientViewModel",
                         "require": "Mapping/modules/Toolbar/Transients/TransientViewModel",
                         "configuration": {}
+                    },
+                    {
+                        "id": "NavButtonViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.shells.components.NavButtonViewModel",
+                        "require": "Mapping/modules/Shells/Components/Navigation/NavButtonViewModel",
+                        "configuration": {}
                     }
                 ],
                 "views": [
@@ -2113,6 +2353,7 @@
             {
                 "moduleName": "Confirm",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.confirm.ConfirmModule",
+                "deferLoading": true,
                 "configuration": {
                     "confirmRegion": "ModalWindowRegion",
                     "overrideNativeConfirm": true
@@ -2121,6 +2362,7 @@
             {
                 "moduleName": "Editing",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.editing.EditingModule",
+                "deferLoading": true,
                 "configuration": {
                     "behaviors": [
                         {
@@ -2188,9 +2430,9 @@
                         "id": "MultiFeatureSelectorView",
                         "viewModelId": "MultiFeatureSelectorViewModel",
                         "iconUri": "Resources/Images/Icons/Toolbar/edit-24.png",
-                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.editing.MultiFeatureSelectorView",
-                        "require": "Mapping/modules/Editing/MultiFeatureSelector/MultiFeatureSelectorView",
-                        "markup": "Mapping/modules/Workflow/DisplayResultPickerView.html",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.FeatureSelector.FeatureSelectorView",
+                        "require": "geocortex/infrastructure/ui/components/FeatureSelector/FeatureSelectorView",
+                        "markup": "Mapping/infrastructure/ui/components/FeatureSelector/FeatureSelectorView.html",
                         "region": "MiscViewContainerRegion",
                         "visible": false,
                         "title": "@language-feature-editing-multi-feature-selector",
@@ -2322,6 +2564,7 @@
             {
                 "moduleName": "ExportMap",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.exportMap.ExportMapModule",
+                "deferLoading": true,
                 "configuration": {},
                 "views": [
                     {
@@ -2347,6 +2590,7 @@
             {
                 "moduleName": "ExportWebMap",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.exportWebMap.ExportWebMapModule",
+                "deferLoading": true,
                 "configuration": {},
                 "views": [
                     {
@@ -2371,6 +2615,7 @@
             {
                 "moduleName": "FeatureDetails",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.FeatureDetails.FeatureDetailsModule",
+                "deferLoading": true,
                 "configuration": {
                     "defaultViewMode": "compact",
                     "viewModes": {
@@ -2523,6 +2768,7 @@
             {
                 "moduleName": "ContextMenu",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.ContextMenu.ContextMenuModule",
+                "deferLoading": true,
                 "configuration": {},
                 "views": [
                     {
@@ -2549,6 +2795,7 @@
             {
                 "moduleName": "Geolocate",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.geolocate.GeolocateModule",
+                "deferLoading": true,
                 "configuration": {},
                 "views": [
                     {
@@ -2883,8 +3130,8 @@
             {
                 "moduleName": "InsightIntegration",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.insightIntegration.InsightIntegrationModule",
+                "isEnabled": false,
                 "configuration": {
-                    "enabled": false,
                     "dataRelayUri": "http://localhost/Geocortex/Analytics/ClientRelay",
                     "dataRelayIntervalInSeconds": 30
                 }
@@ -3001,6 +3248,7 @@
             {
                 "moduleName": "LabelOptions",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.labelOptions.LabelOptionsModule",
+                "deferLoading": true,
                 "configuration": {},
                 "views": [
                     {
@@ -3055,6 +3303,7 @@
             {
                 "moduleName": "LayerAddition",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.layerAddition.LayerAddition",
+                "deferLoading": true,
                 "configuration": {},
                 "views": [
                     {
@@ -3136,6 +3385,7 @@
             {
                 "moduleName": "LayerCatalog",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.layerCatalog.LayerCatalogModule",
+                "deferLoading": true,
                 "configuration": {
                     "layerCatalogProviders": [
                         {
@@ -3311,6 +3561,7 @@
             {
                 "moduleName": "LayerSelector",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.layerSelector.LayerSelectorModule",
+                "deferLoading": true,
                 "configuration": {}
             },
             {
@@ -3341,6 +3592,7 @@
             {
                 "moduleName": "Legend",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.legend.LegendModule",
+                "deferLoading": true,
                 "configuration": {},
                 "views": [
                     {
@@ -3364,240 +3616,35 @@
                 ]
             },
             {
-                "moduleName": "Map",
-                "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.map.MapModule",
-                "configuration": {
-                    "panDuration": 0,
-                    "panRate": 50,
-                    "zoomDuration": 500,
-                    "zoomRate": 50,
-                    "longClickMilliseconds": 500,
-                    "maxExtentLogSize": 50,
-                    "showLoadingStatus": true,
-                    "loadingMessageTiming": [
-                        1000,
-                        3000,
-                        3000
-                    ],
-                    "defaultPointFeatureZoomScales": [],
-                    "behaviors": [
-                        {
-                            "name": "MapOnClickBehavior",
-                            "commands": [
-                                "InvokeMapTip"
-                            ]
-                        },
-                        {
-                            "name": "MapOnContextMenuBehavior",
-                            "commands": [
-                                "ActivateMapContextMenu"
-                            ]
-                        },
-                        {
-                            "name": "MapOnLongClickBehavior",
-                            "commands": [
-                                "ActivateMapContextMenu"
-                            ]
-                        },
-                        {
-                            "name": "MapOnFeatureClickBehavior",
-                            "commands": [
-                                "ShowMapTip"
-                            ]
-                        },
-                        {
-                            "name": "MapTimeExtentChangedBehavior",
-                            "event": "MapTimeExtentChangedEvent",
-                            "commands": []
-                        }
-                    ],
-                    "menus": [
-                        {
-                            "id": "MapContextMenu",
-                            "defaultIconUri": "Resources/Images/Icons/Toolbar/edit-24.png",
-                            "items": [
-                                {
-                                    "iconUri": "Resources/Images/Icons/Toolbar/identify-24.png",
-                                    "text": "@language-menu-identify",
-                                    "command": "Identify",
-                                    "commandParameter": "{{context}}"
-                                },
-                                {
-                                    "iconUri": "Resources/Images/Icons/Toolbar/draw-point-24.png",
-                                    "text": "@language-menu-draw-point",
-                                    "command": "AddMarkup",
-                                    "commandParameter": "{{context}}"
-                                },
-                                {
-                                    "iconUri": "Resources/Images/Icons/Toolbar/coordinates-add-24.png",
-                                    "text": "@language-menu-plot-coordinate",
-                                    "command": "PlotCoordinates",
-                                    "commandParameter": "{{context}}"
-                                },
-                                {
-                                    "iconUri": "Resources/Images/Icons/Toolbar/draw-text-24.png",
-                                    "text": "@language-menu-add-text",
-                                    "command": "AddTextMarkup",
-                                    "commandParameter": "{{context}}"
-                                },
-                                {
-                                    "iconUri": "Resources/Images/Icons/center-map-24.png",
-                                    "text": "@language-menu-center-map",
-                                    "command": "PanToPoint",
-                                    "commandParameter": "{{context}}"
-                                }
-                            ]
-                        }
-                    ],
-                    "tools": [
-                        {
-                            "name": "CenterMapTool",
-                            "command": "PanToPoint",
-                            "drawMode": "POINT",
-                            "isSticky": true,
-                            "statusText": "@language-mbl-map-center"
-                        },
-                        {
-                            "name": "ZoomInTool",
-                            "command": "ZoomToExtent",
-                            "drawMode": "EXTENT",
-                            "isSticky": true,
-                            "statusText": "@language-map-zoom-in"
-                        },
-                        {
-                            "name": "ZoomOutTool",
-                            "command": "ZoomOutToExtent",
-                            "drawMode": "EXTENT",
-                            "isSticky": true,
-                            "statusText": "@language-map-zoom-out"
-                        }
-                    ]
-                },
+                "moduleName": "Log",
+                "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.log.LogModule",
                 "views": [
                     {
-                        "id": "MapView",
-                        "viewModelId": "MapViewModel",
-                        "visible": true,
-                        "isManaged": false,
-                        "title": "@language-map-title",
-                        "iconUri": "Resources/Images/Icons/Toolbar/map-24.png",
-                        "description": "@language-map-surface",
-                        "markup": "Mapping/modules/Map/MapView.html",
-                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.map.MapView",
-                        "region": "ScreenRegion",
-                        "configuration": {
-                            "wrapAround180": false,
-                            "disableMapKeyboardNavigation": false,
-                            "extentBroadcastFrequency": 20,
-                            "fitTiledMapsToExtent": false,
-                            "showAttribution": true
-                        }
-                    },
-                    {
-                        "id": "MapContextMenuView",
-                        "viewModelId": "MapContextMenuViewModel",
-                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.map.MapContextMenuView",
-                        "require": "Mapping/modules/Map/MapContextMenu/MapContextMenuView",
-                        "markup": "Mapping/modules/Map/MapContextMenu/MapContextMenuView.html",
-                        "region": "MiscViewContainerRegion",
-                        "title": "@language-map-context-menu-title",
+                        "id": "LogView",
+                        "viewModelId": "LogViewModel",
                         "visible": false,
+                        "isManaged": false,
+                        "title": "@language-common-view-log",
+                        "iconUri": "Resources/Images/Icons/log.png",
+                        "description": "@language-log-app-log",
+                        "markup": "Mapping/modules/Log/LogView.html",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.log.LogView",
+                        "region": "ApplicationRegion",
                         "configuration": {}
-                    },
-                    {
-                        "id": "ContextMenuReverseGeocodeView",
-                        "viewModelId": "ContextMenuReverseGeocodeViewModel",
-                        "visible": true,
-                        "markup": "Mapping/modules/Map/MapContextMenu/Views/ReverseGeocode/ReverseGeocodeView.html",
-                        "type": "geocortex.framework.ui.ViewBase",
-                        "require": "geocortex/framework/ui/ViewBase",
-                        "region": "MapContextMenuContentRegion",
-                        "configuration": {}
-                    },
-                    {
-                        "id": "ContextMenuCoordinatesView",
-                        "viewModelId": "ContextMenuCoordinatesViewModel",
-                        "visible": true,
-                        "markup": "Mapping/modules/Map/MapContextMenu/Views/Coordinates/CoordinatesView.html",
-                        "type": "geocortex.framework.ui.ViewBase",
-                        "require": "geocortex/framework/ui/ViewBase",
-                        "region": "MapContextMenuContentRegion",
-                        "configuration": {}
-                    },
-                    {
-                        "id": "ContextMenuMapMenuView",
-                        "viewModelId": "ContextMenuMapMenuViewModel",
-                        "visible": true,
-                        "markup": "Mapping/modules/Map/MapContextMenu/Views/Menu/MapMenuView.html",
-                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.map.MapMenuView",
-                        "require": "Mapping/modules/Map/MapContextMenu/Views/Menu/MapMenuView",
-                        "region": "MapContextMenuContentRegion",
-                        "configuration": {
-                            "menuId": "MapContextMenu"
-                        }
                     }
                 ],
                 "viewModels": [
                     {
-                        "id": "MapViewModel",
-                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.map.MapViewModel",
-                        "configuration": {
-                            "stepZoomFactor": 0.5,
-                            "panStep": 0.333
-                        }
-                    },
-                    {
-                        "id": "MapContextMenuViewModel",
-                        "type": "geocortex.framework.ui.ViewModelBase",
-                        "require": "geocortex/framework/ui/ViewModelBase",
+                        "id": "LogViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.log.LogViewModel",
                         "configuration": {}
-                    },
-                    {
-                        "id": "ContextMenuReverseGeocodeViewModel",
-                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.map.ReverseGeocodeViewModel",
-                        "require": "Mapping/modules/Map/MapContextMenu/Views/ReverseGeocode/ReverseGeocodeViewModel",
-                        "configuration": {
-                            "showReverseGeocoder": true
-                        }
-                    },
-                    {
-                        "id": "ContextMenuCoordinatesViewModel",
-                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.map.CoordinatesViewModel",
-                        "require": "Mapping/modules/Map/MapContextMenu/Views/Coordinates/CoordinatesViewModel",
-                        "configuration": {
-                            "showCoordinates": true
-                        }
-                    },
-                    {
-                        "id": "ContextMenuMapMenuViewModel",
-                        "type": "geocortex.essentialsHtmlViewer.mapping.modules.map.MapMenuViewModel",
-                        "require": "Mapping/modules/Map/MapContextMenu/Views/Menu/MapMenuViewModel",
-                        "configuration": {
-                            "showMenu": true
-                        }
-                    },
-                    {
-                        "id": "MapCoordinatesModel",
-                        "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.coordinates.CoordinatesModel",
-                        "require": "geocortex/infrastructure/coordinates/CoordinatesModel",
-                        "configuration": {
-                            "defaultCoordinateDisplayTypes": [
-                                "dd",
-                                "ddm",
-                                "dms",
-                                "xy"
-                            ],
-                            "customCoordinateSystems": [],
-                            "fractionalDigits": 5,
-                            "defaultGcsWkid": "4326",
-                            "disableMouseLocationMonitoring": true
-                        }
                     }
                 ]
-            },
+            },            
             {
                 "moduleName": "MapTips",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.maptips.MapTipsModule",
+                "deferLoading": true,
                 "configuration": {
                     "allowMultiple": false,
                     "showNoResultMapTips": false,
@@ -3678,6 +3725,7 @@
             {
                 "moduleName": "Markers",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.markers.MarkersModule",
+                "deferLoading": true,
                 "configuration": {
                     "markers": []
                 }
@@ -3685,6 +3733,7 @@
             {
                 "moduleName": "Markup",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.markup.MarkupModule",
+                "deferLoading": true,
                 "viewModels": [
                     {
                         "id": "MarkupViewModel",
@@ -3885,6 +3934,7 @@
                 "moduleName": "Native",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.nativeIntegration.NativeIntegrationModule",
                 "require": "Mapping/modules/Native/NativeModule",
+                "deferLoading": true,
                 "configuration": {},
                 "views": [
                     {
@@ -3959,6 +4009,7 @@
             {
                 "moduleName": "Notifications",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.notifications.NotificationsModule",
+                "deferLoading": true,
                 "configuration": {
                     "region": "TopMapRegion"
                 },
@@ -3968,6 +4019,7 @@
             {
                 "moduleName": "Offline",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.offline.OfflineModule",
+                "deferLoading": true,
                 "configuration": {},
                 "views": [],
                 "viewModels": []
@@ -3975,6 +4027,7 @@
             {
                 "moduleName": "OfflineMaps",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.offlineMaps.OfflineMapsModule",
+                "deferLoading": true,
                 "configuration": {
                     "aoiMask": {
                         "enabled": false,
@@ -4339,8 +4392,8 @@
             {
                 "moduleName": "OptimizerIntegration",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.optimizerIntegration.OptimizerIntegrationModule",
+                "isEnabled": false,
                 "configuration": {
-                    "enabled": false,
                     "userName": "DefaultUser",
                     "dataRelayUri": "http://localhost/Geocortex/Optimizer/Rest/DataRelay/LogData.ashx?f=json"
                 }
@@ -4457,6 +4510,7 @@
             {
                 "moduleName": "Printing",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.printing.PrintingModule",
+                "deferLoading": true,
                 "configuration": {},
                 "views": [
                     {
@@ -4482,6 +4536,7 @@
             {
                 "moduleName": "Project",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.project.ProjectModule",
+                "deferLoading": true,
                 "configuration": {},
                 "views": [
                     {
@@ -4577,6 +4632,7 @@
             {
                 "moduleName": "Prompt",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.prompt.PromptModule",
+                "deferLoading": true,
                 "configuration": {
                     "promptRegion": "ModalWindowRegion"
                 }
@@ -4584,6 +4640,7 @@
             {
                 "moduleName": "QueryBuilder",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.queryBuilder.QueryBuilderModule",
+                "deferLoading": true,
                 "configuration": {
                     "queryStatusRegion": "ResultsStatusRegion",
                     "filterStatusRegion": "ResultsStatusRegion"
@@ -4779,6 +4836,7 @@
             {
                 "moduleName": "Reporting",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.reporting.ReportingModule",
+                "deferLoading": true,
                 "configuration": {},
                 "views": [
                     {
@@ -5057,6 +5115,7 @@
             {
                 "moduleName": "Selection",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.selection.SelectionModule",
+                "deferLoading": true,
                 "configuration": {
                     "resultsListStatusRegion": "ResultsStatusRegion",
                     "menus": [
@@ -5158,6 +5217,7 @@
             {
                 "moduleName": "Share",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.share.ShareModule",
+                "deferLoading": true,
                 "configuration": {
                     "shareOptions": [
                         {
@@ -5618,6 +5678,7 @@
             {
                 "moduleName": "Status",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.status.StatusModule",
+                "deferLoading": true,
                 "configuration": {
                     "busyIcon": "Resources/Images/loader-small.gif"
                 },
@@ -5638,8 +5699,8 @@
                 "moduleName": "TabbedToolbar",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.toolbar.TabbedToolbarModule",
                 "require": "Mapping/modules/Toolbar/TabbedToolbarModule",
+                "isEnabled": false,
                 "configuration": {
-                    "isEnabled": false,
                     "transientElements": [
                         {
                             "stateName": "MeasureState",
@@ -6046,6 +6107,7 @@
             {
                 "moduleName": "UploadData",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.uploadData.UploadDataModule",
+                "deferLoading": true,
                 "configuration": {
                     "checkJobStatusPeriod": 4000,
                     "warnOnFeatureCount": 10000,
@@ -6278,6 +6340,7 @@
             {
                 "moduleName": "Visualization",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.visualization.VisualizationModule",
+                "deferLoading": true,
                 "configuration": {},
                 "views": [
                     {
@@ -6327,6 +6390,7 @@
             {
                 "moduleName": "Workflow",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.workflow.WorkflowModule",
+                "deferLoading": true,
                 "configuration": {
                     "showTitleInFormBody": false,
                     "defaultContainerRegionName": "ModalWindowRegion",
@@ -6417,7 +6481,8 @@
             },
             {
                 "moduleName": "WorkflowHost",
-                "libraryId": "https://apps.geocortex.com/workflow/latest/dist/hosts/gvh/loader.js!"
+                "libraryId": "https://apps.geocortex.com/workflow/latest/dist/hosts/gvh/loader.js!",
+                "deferLoading": true
             },
             {
                 "moduleName": "ZoomControl",
@@ -6657,6 +6722,7 @@
                         "Damage",
                         "Disasters",
                         "Emergency Management",
+                        "Firefly",
                         "General Infrastructure",
                         "Local Government",
                         "National Park Service",
