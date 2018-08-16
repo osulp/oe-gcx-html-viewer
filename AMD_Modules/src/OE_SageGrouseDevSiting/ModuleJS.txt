@@ -1,0 +1,45 @@
+﻿{
+          "moduleName": "OE_SageGrouseDevSiting",
+          "require": "geocortex/oe_amd/OE_SageGrouseDevSiting/OE_SageGrouseDevSitingModule",
+          "libraryId": "OE_AMD",
+          "configuration": {},
+          "views": [
+            {
+                "id": "OE_SageGrouseDevSitingSummaryView",
+                "require": "geocortex/oe_amd/OE_SageGrouseDevSiting/OE_SageGrouseDevSitingSummaryView",
+                "markup": "geocortex/oe_amd/OE_SageGrouseDevSiting/OE_SageGrouseDevSitingSummaryView.html",
+                "title": "Sage-Grouse Development Siting Summary",
+                "viewModelId": "OE_SageGrouseDevSitingViewModel",
+                "visible": false,
+                "region": "ModalWindowRegion",
+                "configuration": {}
+            },
+			{
+                "id": "OE_SageGrouseDevSitingCompareView",
+                "require": "geocortex/oe_amd/OE_SageGrouseDevSiting/OE_SageGrouseDevSitingCompareView",
+                "markup": "geocortex/oe_amd/OE_SageGrouseDevSiting/OE_SageGrouseDevSitingCompareView.html",
+                "title": "Sage-Grouse Development Siting Comparison",
+                "viewModelId": "OE_SageGrouseDevSitingViewModel",
+                "visible": false,
+                "region": "ModalWindowRegion",
+                "configuration": {}
+            },
+            {
+                "id": "OE_SageGrouseDevSitingDashboardView",
+                "require": "geocortex/oe_amd/OE_SageGrouseDevSiting/OE_SageGrouseDevSitingDashboardView",
+                "markup": "geocortex/oe_amd/OE_SageGrouseDevSiting/OE_SageGrouseDevSitingDashboardView.html",
+                "title": "Sage-Grouse Development Siting",
+                "viewModelId": "OE_SageGrouseDevSitingViewModel",
+                "visible": false,
+                "region": "DataRegion",
+                "configuration": {}
+            }
+          ],
+          "viewModels": [
+            {
+                "id": "OE_SageGrouseDevSitingViewModel",
+                "require": "geocortex/oe_amd/OE_SageGrouseDevSiting/OE_SageGrouseDevSitingViewModel",
+                "configuration": {}
+            }
+          ]
+      },

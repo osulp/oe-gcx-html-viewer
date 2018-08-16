@@ -1,0 +1,108 @@
+﻿<a href="#"></a>
+<div class="report_area" dir="ltr">
+    <div data-binding="{@hidden:canCompare}">
+        In order to compare, please select two existing reports.
+    </div>
+    <div data-binding="{@visible:canCompare}">
+        <div class="print" data-binding="{@event-onclick:print}"><img src="Resources/Images/Icons/print-24.png" /></div>
+         <div id="printarea" class="report_area compare" data-binding="{@source: selected_reports}{@value: selected_reports}">
+            <div class="siting_compare_col" data-binding="{@template-for: selected_reports}{value: @context}">
+
+                <hr />
+                <div>
+                    <span class="data-label">Project Name:</span>
+                    <span class="data" data-binding="{@text:name}"></span>
+                </div>
+                <div>
+                    <span class="data-label">Development Type:</span>
+                    <span class="data" data-binding="{@text:dev_type}"></span>
+                </div>
+                <hr>
+                <!--<span>This is a summary report. <b>Click the button below for a full report</b></span><br />
+                <div id="btn-row">
+                    <div class="btn btn-cell">
+                        <div data-binding="{@event-onclick:getPDF}">View Full Report</div>
+                    </div>
+                    <div class="btn btn-cell-download">
+                        <div data-binding="{@event-onclick:downloadShapefiles}"><img width="16" src="Resources/Images/Icons/download-24.png" /> Shapefiles</div>
+                    </div>
+                </div>
+
+                <hr />-->
+                <fieldset>
+                    <legend>Project Area</legend>
+                    <div>
+                        <span class="data-label">Direct Footprint Area:</span>
+                        <span class="data" data-binding="{@text:proj_area}"></span>
+                    </div>
+                    <div>
+                        <span class="data-label">Indirect Impact Area:</span>
+                        <span class="data" data-binding="{@text:indirect_area}"></span>
+                    </div>
+                    <div>
+                        <span class="data-label">Buffer distance: </span>
+                        <span class="data" data-binding="{@text:buffer_dist}"></span>
+                    </div>
+                    <div>
+                        <span class="data-label">Estimated Non-Habitat in Indirect Impact Area:</span>
+                        <span class="data" data-binding="{@text:non_hab_area}"></span>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Habitat</legend>
+                    <div>
+                        <span class="data-label">Significant Habitat: </span>
+                        <span>The direct and indirect impact areas </span>
+                        <span class="data-label" data-binding="{@text:significant}"></span>
+                        <span> within known significant sage-grouse habitat.</span>
+                        <span data-binding="{@text:significant_msg}"></span>
+                    </div>
+                    <div>
+                        <span class="data-label">Habitat Designations: </span>
+                        <span class="data" data-binding="{@text:hab_desig}"></span>
+                    </div>
+                    <div>
+                        <span class="data-label">Within 3.1 miles of a Lek? </span>
+                        <span class="data" data-binding="{@text:is_lek}"></span>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Land management/ownership</legend>
+                    <div data-binding="{@text:land_mngt}"></div>
+                </fieldset>
+                <fieldset>
+                    <legend>
+                        Mitigation Hierarchy
+                    </legend>
+                    <div>
+                        <span class="data-label">Avoidance:</span><span> Avoidance </span>
+                        <span class="data-label" data-binding="{@text:avoidance}"></span>
+                        <span> apply in your identified area.</span>
+                    </div>
+                    <!--<div>
+                        <span class="data-label">Minimization:</span>
+                        <span> Minimization measures for </span>
+                        <span data-binding="{@text:dev_type}"></span>
+                        <span> may include:</span>
+                        <ul data-binding="{@source: minimizations}">
+                            <li data-binding="{@template-for: minimizations}">
+                                <span data-binding="{@text:minimization}"></span>
+                            </li>
+                        </ul>
+                    </div>-->
+                    <div>
+                        <span class="data-label">Compensatory Mitigation</span>
+                        <span data-binding="{@text:compensatory_mitigation}"></span>
+                        <span> out of 100</span>
+                    </div>
+                    <div id="chart-wrapper">
+                        <img width="225" data-binding="{src: chart_url}">
+
+                    </div>
+                </fieldset>
+            </div>
+             <div class="oe_clear"></div>
+        </div>
+    </div>
+</div>
+

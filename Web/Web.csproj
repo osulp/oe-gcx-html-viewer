@@ -16,7 +16,7 @@
     <AssemblyName>Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44300</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -81,6 +81,7 @@
     <Content Include="Libraries\Custom\AMD\OE_Graphics.js" />
     <Content Include="Libraries\Custom\AMD\OE_HyperlinkBanner.js" />
     <Content Include="Libraries\Custom\AMD\OE_PickerListItemRenderer.js" />
+    <Content Include="Libraries\Custom\AMD\OE_SageGrouseDevSiting.js" />
     <Content Include="Libraries\Custom\AMD\OE_Search.js" />
     <Content Include="Libraries\Custom\AMD\OE_Wildfire.js" />
     <Content Include="Libraries\Custom\AMD\OtherTemplate.js" />
@@ -203,6 +204,10 @@
     <Content Include="Resources\Compiled\ZoomControl.js" />
     <Content Include="Resources\Config\CacheManifestConfig.xml" />
     <Content Include="Resources\Config\Default\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\Desktop.json.dev.siting.js" />
+    <Content Include="Resources\Config\Default\dev_configs\sage_dev_siting\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\sage_dev_siting\Handheld.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\sage_dev_siting\Tablet.json.js" />
     <Content Include="Resources\Config\Default\Handheld.json.js" />
     <Content Include="Resources\Config\Default\Handheld.json.oe.js" />
     <Content Include="Resources\Config\Default\Tablet.json.js" />
@@ -532,7 +537,9 @@
   <ItemGroup>
     <Content Include="manifest.ashx" />
     <Content Include="proxy.ashx" />
-    <Content Include="proxy.config" />
+    <Content Include="proxy.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="proxy.jsp" />
     <Content Include="proxy.php" />
     <Content Include="Resources\3rdPartyMaps\ThirdPartyMap.js.map" />
@@ -547,7 +554,6 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\Config\Default\dev_configs\" />
     <Folder Include="Resources\Config\DevTy\" />
   </ItemGroup>
   <PropertyGroup>
@@ -566,7 +572,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:53285/</IISUrl>
+          <IISUrl>https://localhost:44300/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
