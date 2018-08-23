@@ -1436,19 +1436,15 @@ var oe;
 (function (oe) {
     var elevation;
     (function (elevation_1) {
-        //var demURL = "http://sampleserver5.arcgisonline.com/arcgis/rest/services/Elevation/WorldElevations/MapServer";
-        //var googleURL = "http://maps.googleapis.com/maps/api/elevation/json?locations=";
         var usgsURL = "https://nationalmap.gov/epqs/pqs.php?"; //x=47&y=-123&units=Feet&output=json"
-        //var identify = new esri.tasks.IdentifyTask(demURL);
-        //var identifyParams = new esri.tasks.IdentifyParameters();
         var elevCounter = 0;
         var elevCounterMax;
         var shellName;
         var ElevationModuleViewModel = (function (_super) {
             __extends(ElevationModuleViewModel, _super);
-            //elevation: Observable<string> = new Observable<string>();
             function ElevationModuleViewModel(app, lib) {
                 _super.call(this, app, lib);
+                this.pointIn = new Observable();
             }
             ElevationModuleViewModel.prototype.initialize = function (config) {
                 var _this = this;
@@ -1465,25 +1461,28 @@ var oe;
             ElevationModuleViewModel.prototype._onSiteInitialized = function (site) {
                 elevCounterMax = 10;
                 shellName = this.app.shellName;
-                buildElevationHTML();
-                //this.app.eventRegistry.event("ContextMenuActivated").subscribe(null, handleMouseClick);              
+                //buildElevationHTML();
+                this.app.eventRegistry.event("ContextMenuActivated").subscribe(null, contextMenuActiviated);
                 this.app.eventRegistry.event("MapContextMenuPointUpdatedEvent").subscribe(null, handleMouseClick);
                 function buildElevationHTML() {
                     //make sure the menu exists
-                    var menuCoords = $(".map-menu-coordinates");
-                    if (menuCoords == undefined || menuCoords == null)
+                    if (!$(".map-menu-coordinates").length)
                         return;
-                    //add a div to the end of the coordinates element in the menu to hold our elevation data
-                    menuCoords.append('<div><b>Elevation: </b><span id="GoogleElevationValue">Loading...</span></div>');
+                    //create div if needed
+                    if (!$(".oeCustomElevationDiv").length)
+                        $(".map-menu-coordinates").append('<div class="oeCustomElevationDiv"><b>Elevation: </b><span id="GoogleElevationValue">Loading...</span></div>');
+                }
+                function contextMenuActiviated() {
+                    buildElevationHTML();
+                    buildElevationRequest(this.pointIn);
                 }
                 function handleMouseClick(pointIn, appIn) {
-                    //make sure our html element exists
-                    var menuCoords = $("#GoogleElevationValue");
-                    if (menuCoords == undefined && menuCoords == null)
-                        return;
+                    this.pointIn = pointIn;
+                }
+                function buildElevationRequest(pointIn) {
                     $("#GoogleElevationValue").html("Loading...");
                     //Grab the current application
-                    appIn = geocortex.framework.applications[0];
+                    var appIn = geocortex.framework.applications[0];
                     if (appIn == undefined || appIn == null) {
                         $("#GoogleElevationValue").html("App not found");
                         return;

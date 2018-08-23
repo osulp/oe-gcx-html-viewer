@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="Resources/Styles/splash.css" />
     <style>
         #myProgress {
-            width: 100%;
+            width: 95%;
             background-color: #ddd;
             margin-top =100px;
             margin-bottom =100px;
@@ -57,14 +57,13 @@
 
     <!-- Standard GVH Embed with custom Defaults.json.js configuration -->
     <script src="Resources/Compiled/loader.js"></script>
-    <script src="Libraries/Custom/AMD/toKML.js"></script>
     <script>
         // Uncomment the below line to only use local copies of Esri API files. This is done automatically in the Geocortex Mobile App Framework.
         //var geocortexUseLocalEsriApi = true;
         var viewerConfig = {
             "configurations": {
-                //"default": "Resources/Config/Default/" + shellName + ".json.js"
-                "default": "Resources/Config/Default/dev_configs/sage_dev_siting/Desktop.json.js"
+                "oe_default": "Resources/Config/Default/" + shellName + ".json.js",
+                "default": "Resources/Config/Default/dev_configs/sage_dev_cons_pln/Desktop.json.js"
             },
             "viewerConfigUri": null
         };

@@ -26,6 +26,9 @@
     <Content Include="package.json" />
     <Content Include="post_build_modules.bat" />
     <Content Include="README.md" />
+    <Content Include="src\OE_SageGrouseConsPln\ModuleJS.txt" />
+    <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnModule.css" />
+    <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnView.html" />
     <Content Include="src\OE_SageGrouseDevSiting\ModuleJS.txt" />
     <Content Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingDashboardView.html" />
     <Content Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingCompareSummaryView.html" />
@@ -34,6 +37,7 @@
     <Content Include="src\OE_Utility\readme.txt" />
     <Content Include="src\OE_Wildfire\Language.json" />
     <Content Include="src\OE_SageGrouseDevSiting\Language.json" />
+    <Content Include="src\OE_SageGrouseConsPln\Language.json" />
     <None Include="src\OtherTemplate\Language.json" />
     <None Include="src\OtherTemplate\OtherTemplateView.html" />
     <Content Include="bin.js" />
@@ -56,6 +60,9 @@
     <TypeScriptCompile Include="src\OE_Graphics\OE_GraphicsModule.ts" />
     <TypeScriptCompile Include="src\OE_HyperlinkBanner\OE_HyperlinkBannerModule.ts" />
     <TypeScriptCompile Include="src\OE_PickerListItemRenderer\OE_PickerListItemRendererModule.ts" />
+    <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnModule.ts" />
+    <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnViewModel.ts" />
+    <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnView.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingModule.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingDashboardView.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingCompareSummaryView.ts" />

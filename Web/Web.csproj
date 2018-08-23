@@ -81,6 +81,7 @@
     <Content Include="Libraries\Custom\AMD\OE_Graphics.js" />
     <Content Include="Libraries\Custom\AMD\OE_HyperlinkBanner.js" />
     <Content Include="Libraries\Custom\AMD\OE_PickerListItemRenderer.js" />
+    <Content Include="Libraries\Custom\AMD\OE_SageGrouseConsPln.js" />
     <Content Include="Libraries\Custom\AMD\OE_SageGrouseDevSiting.js" />
     <Content Include="Libraries\Custom\AMD\OE_Search.js" />
     <Content Include="Libraries\Custom\AMD\OE_Wildfire.js" />
@@ -205,9 +206,13 @@
     <Content Include="Resources\Config\CacheManifestConfig.xml" />
     <Content Include="Resources\Config\Default\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\Desktop.json.dev.siting.js" />
+    <Content Include="Resources\Config\Default\dev_configs\sage_dev_siting\Desktop.json.2.10.js" />
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_siting\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_siting\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_siting\Tablet.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\sage_dev_cons_pln\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\sage_dev_cons_pln\Handheld.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\sage_dev_cons_pln\Tablet.json.js" />
     <Content Include="Resources\Config\Default\Handheld.json.js" />
     <Content Include="Resources\Config\Default\Handheld.json.oe.js" />
     <Content Include="Resources\Config\Default\Tablet.json.js" />
@@ -573,6 +578,8 @@
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>https://localhost:44300/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>https://localhost:44300/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

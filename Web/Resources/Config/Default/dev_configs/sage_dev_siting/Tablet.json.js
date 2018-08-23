@@ -6426,7 +6426,8 @@
         "moduleName": "Site",
         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
         "configuration": {
-          "siteUri": "{ViewerConfigUri}../../../../../.."
+            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/_sage_grouse_dev_siting_dev",
+          "default_siteUri": "{ViewerConfigUri}../../../../../.."
         },
         "views": [
           {
@@ -6761,7 +6762,7 @@
               "id": "mUa7UpiS",
               "type": "toolbarGroup",
               "name": "Find",
-              "isDefault": true,
+              "isDefault": false,
               "items": [
                 {
                   "id": "HomeButton",
@@ -7456,7 +7457,7 @@
               "id": "VsFdt8zF",
               "type": "toolbarGroup",
               "name": "Analysis",
-              "isDefault": false,
+              "isDefault": true,
               "items": [
                 {
                   "id": "4lseind59a",
