@@ -11,7 +11,7 @@
             "allowUnsafeContent": true,
 			"deferredModuleLoading": true,
             "offlineStorageSpaceMb": "50",
-            "geometryServiceUrl": "http://lib-gis3.library.oregonstate.edu/arcgis/rest/services/Utilities/Geometry/GeometryServer"
+            "geometryServiceUrl": "https://lib-gis3.library.oregonstate.edu/arcgis/rest/services/Utilities/Geometry/GeometryServer"
         },
         "defaultLibraryId": "Mapping",
         "libraries": [
