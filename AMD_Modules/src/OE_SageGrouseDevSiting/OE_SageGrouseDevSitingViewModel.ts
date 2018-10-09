@@ -19,13 +19,15 @@ export class OE_SageGrouseDevSitingViewModel extends ViewModelBase {
     projectName: Observable<string> = new Observable<string>("");
     devType: Observable<string> = new Observable<string>("");
     compensatoryMitigation: Observable<string> = new Observable<string>("");
+    compensatoryMitigationDirect: Observable<string> = new Observable<string>("");
     reportURL: Observable<string> = new Observable<string>("");
     chartURL: Observable<string> = new Observable<string>("");
     chartSimpleURL: Observable<string> = new Observable<string>("");
     directArea: Observable<string> = new Observable<string>("");
     indirectArea: Observable<string> = new Observable<string>("");
     bufferDist: Observable<string> = new Observable<string>("");
-    nonHabArea: Observable<string> = new Observable<string>("");
+    indirectHabArea: Observable<string> = new Observable<string>("");
+    directHabArea: Observable<string> = new Observable<string>("");
     habDesig: Observable<string> = new Observable<string>("");
     isLek: Observable<string> = new Observable<string>("");
     landManagement: Observable<string> = new Observable<string>("");
@@ -36,6 +38,18 @@ export class OE_SageGrouseDevSitingViewModel extends ViewModelBase {
     significant: Observable<string> = new Observable<string>("");
     significantMsg: Observable<string> = new Observable<string>("");
     minimization_list: ObservableCollection<string> = new ObservableCollection([]);
+    rulesTriggersMsg: Observable<string> = new Observable<string>("");
+    devRuleType: Observable<string> = new Observable<string>("");
+    devRuleTypeState: Observable<string> = new Observable<string>("");
+    devRuleTypeCounty: Observable<string> = new Observable<string>("");
+    devRuleNoDirectHabButState: Observable<boolean> = new Observable<boolean>(false);
+    hasRulesTriggersMsg: Observable<boolean> = new Observable<boolean>(false);
+    hasDevRuleType: Observable<boolean> = new Observable<boolean>(false);
+    hasNoHabDirect: Observable<boolean> = new Observable<boolean>(false);
+    hasAllHabDirect: Observable<boolean> = new Observable<boolean>(false);
+    hasAllHabIndirect: Observable<boolean> = new Observable<boolean>(false);
+    showHabAreaDirect: Observable<boolean> = new Observable<boolean>(false);
+    showNoDirectHabArea: Observable<boolean> = new Observable<boolean>(false);
     //projectAreaFS: Observable<esri.tasks.FeatureSet> = new Observable<esri.tasks.FeatureSet>();
 
     //inputs for dashboard
@@ -277,6 +291,7 @@ export class OE_SageGrouseDevSitingViewModel extends ViewModelBase {
             "date_gener": "fish"
         }
     };
+    
 
     setReportValues(workflowContext, thisViewModel, addReport?: boolean) {
         try {
@@ -300,13 +315,20 @@ export class OE_SageGrouseDevSitingViewModel extends ViewModelBase {
                     name: addReport ? this.myWorkflowContext.getValue("projectName") : workflowContext.name,
                     dev_type: addReport ? this.myWorkflowContext.getValue("devType") : workflowContext.dev_type,
                     compensatory_mitigation: addReport ? this.myWorkflowContext.getValue("compensatoryMitigation") : workflowContext.compensatory_mitigation,
+                    compensatory_mitigation_direct: addReport ? this.myWorkflowContext.getValue("compensatoryMitigationDirect") : workflowContext.compensatory_mitigation_direct,
                     report_url: addReport ? this.myWorkflowContext.getValue("reportURL") : workflowContext.report_url,
                     chart_url: addReport ? this.myWorkflowContext.getValue("chartURL") : workflowContext.chart_url,
                     chart_simple_url: addReport ? this.myWorkflowContext.getValue("chartSimpleURL") : workflowContext.chart_simple_url,
                     proj_area: addReport ? this.myWorkflowContext.getValue("directArea") : workflowContext.proj_area,
                     indirect_area: addReport ? this.myWorkflowContext.getValue("indirectArea") + " Acres" : workflowContext.indirect_area,
                     buffer_dist: addReport ? this.myWorkflowContext.getValue("bufferDist") + " km" : workflowContext.buffer_dist,
-                    non_hab_area: addReport ? this.myWorkflowContext.getValue("nonHabArea") + " Acres" : workflowContext.non_hab_area,
+                    indirect_hab_area: addReport ? this.myWorkflowContext.getValue("indirectHabArea") + ' Acres' : workflowContext.indirect_hab_area,
+                    direct_hab_area: addReport
+                        ? this.myWorkflowContext.getValue("directHabArea")
+                        + (this.myWorkflowContext.getValue("directArea").indexOf("Mile(s)") !== -1
+                            ? " Mile(s)"
+                            : " Acres")
+                        : workflowContext.direct_hab_area,
                     hab_desig: addReport ? this.myWorkflowContext.getValue("habDesig") : workflowContext.hab_desig,
                     is_lek: addReport ? (this.myWorkflowContext.getValue("isLek") === 'True' ? 'Yes' : 'No') : workflowContext.is_lek,
                     land_mngt: addReport ? this.myWorkflowContext.getValue("landManagement") : workflowContext.land_mngt,
@@ -317,8 +339,29 @@ export class OE_SageGrouseDevSitingViewModel extends ViewModelBase {
                     significant: addReport ? this.myWorkflowContext.getValue("significant") ? 'are' : 'are not' : workflowContext.significant,
                     significant_msg: addReport ? this.myWorkflowContext.getValue("significantMsg") : workflowContext.significant_msg,
                     project_area_fs: addReport ? this.myWorkflowContext.getValue("projAreaFS") : workflowContext.project_area_fs,
-                    buffered_area_fs: addReport ? this.myWorkflowContext.getValue("bufferedFS") : workflowContext.buffered_area_fs
-                    //data: addReport ? thisViewModel.myWorkflowContext : workflowContext
+                    buffered_area_fs: addReport ? this.myWorkflowContext.getValue("bufferedFS") : workflowContext.buffered_area_fs,
+                    dev_rule_type: addReport ? this.myWorkflowContext.getValue("devRuleType") : workflowContext.dev_rule_type,
+                    dev_rule_type_state: addReport
+                        ? this.myWorkflowContext.getValue("devRuleType")
+                            ? this.myWorkflowContext.getValue("devRuleType").indexOf('State') !== -1
+                            : false
+                        : workflowContext.dev_rule_type_state,
+                    dev_rule_type_county: addReport
+                        ? this.myWorkflowContext.getValue("devRuleType")
+                            ? this.myWorkflowContext.getValue("devRuleType").indexOf('County') !== -1
+                            : false
+                        : workflowContext.dev_rule_type_county,
+                    dev_rule_no_direct_hab_but_state: addReport
+                        ? this.myWorkflowContext.getValue("devRuleType")
+                            ? this.myWorkflowContext.getValue("devRuleType").indexOf('State') !== -1 && this.myWorkflowContext.getValue("directHabArea").split(" Acres")[0] === "0"
+                            : false
+                        : workflowContext.dev_rule_no_direct_hab_but_state,
+                    rules_triggers_msg: addReport ? this.myWorkflowContext.getValue("ruleTriggersMsg") : workflowContext.rules_triggers_msg,
+                    has_dev_rule_type: addReport ? this.myWorkflowContext.getValue("devRuleType") !== null : workflowContext.has_dev_rule_type,
+                    has_rules_triggers_msg: addReport ? this.myWorkflowContext.getValue("ruleTriggersMsg") !== '' : workflowContext.has_rules_triggers_msg,
+                    has_no_hab_direct: addReport ? this.myWorkflowContext.getValue("directHabArea").split(" Acres")[0] === "0" : workflowContext.has_no_hab_direct,
+                    has_all_hab_direct: addReport ? this.myWorkflowContext.getValue("directArea").split(" Acres")[0] === this.myWorkflowContext.getValue("directHabArea").split(" Acres")[0] : workflowContext.has_all_hab_direct,
+                    has_all_hab_indirect: addReport ? this.myWorkflowContext.getValue("indirectArea").split(" Acres")[0] === this.myWorkflowContext.getValue("indirectHabArea").split(" Acres")[0] : workflowContext.has_all_hab_indirect
                 };
 
                 if (addReport) {
@@ -329,13 +372,15 @@ export class OE_SageGrouseDevSitingViewModel extends ViewModelBase {
                 this.myModel.projectName.set(reportMetaInfo.name);
                 this.myModel.devType.set(reportMetaInfo.dev_type);
                 this.myModel.compensatoryMitigation.set(reportMetaInfo.compensatory_mitigation);
+                this.myModel.compensatoryMitigationDirect.set(reportMetaInfo.compensatory_mitigation_direct);
                 this.myModel.reportURL.set(reportMetaInfo.report_url);
                 this.myModel.chartURL.set(reportMetaInfo.chart_url);
                 this.myModel.chartSimpleURL.set(reportMetaInfo.chart_simple_url);
                 this.myModel.directArea.set(reportMetaInfo.proj_area);
                 this.myModel.indirectArea.set(reportMetaInfo.indirect_area);
                 this.myModel.bufferDist.set(reportMetaInfo.buffer_dist);
-                this.myModel.nonHabArea.set(reportMetaInfo.non_hab_area);
+                this.myModel.indirectHabArea.set(reportMetaInfo.indirect_hab_area);
+                this.myModel.directHabArea.set(reportMetaInfo.direct_hab_area);
                 this.myModel.habDesig.set(reportMetaInfo.hab_desig);
                 this.myModel.isLek.set(reportMetaInfo.is_lek);
                 this.myModel.landManagement.set(reportMetaInfo.land_mngt);
@@ -345,6 +390,18 @@ export class OE_SageGrouseDevSitingViewModel extends ViewModelBase {
                 this.myModel.minimization_list.set(reportMetaInfo.minimizations);
                 this.myModel.significant.set(reportMetaInfo.significant);
                 this.myModel.significantMsg.set(reportMetaInfo.significant_msg);
+                this.myModel.devRuleTypeState.set(reportMetaInfo.dev_rule_type_state);
+                this.myModel.devRuleTypeCounty.set(reportMetaInfo.dev_rule_type_county);
+                this.myModel.devRuleNoDirectHabButState.set(reportMetaInfo.dev_rule_no_direct_hab_but_state);
+                this.myModel.devRuleType.set(reportMetaInfo.dev_rule_type);
+                this.myModel.rulesTriggersMsg.set(reportMetaInfo.rules_triggers_msg);
+                this.myModel.hasDevRuleType.set(reportMetaInfo.has_dev_rule_type);
+                this.myModel.hasRulesTriggersMsg.set(reportMetaInfo.has_rules_triggers_msg);
+                this.myModel.hasNoHabDirect.set(reportMetaInfo.has_no_hab_direct);
+                this.myModel.hasAllHabDirect.set(reportMetaInfo.has_all_hab_direct);
+                this.myModel.hasAllHabIndirect.set(reportMetaInfo.has_all_hab_indirect);
+                this.myModel.showHabAreaDirect.set(!reportMetaInfo.has_all_hab_direct && !reportMetaInfo.has_no_hab_direct)
+                this.myModel.showNoDirectHabArea.set(reportMetaInfo.has_no_hab_direct && !reportMetaInfo.dev_rule_no_direct_hab_but_state)
             }
         }
         catch (ex) {

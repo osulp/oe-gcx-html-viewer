@@ -2,7 +2,7 @@
 <div class="dashboard-view module workflow-form" dir="ltr">
     <h3>Add new development siting project </h3>
     <div style="text-align:right; width:100%; display: inline-block;" class="form-btns">
-        <button id="cancelBtn" class="button" type="button" data-binding="{@event-onclick:addNewProject}">Add new development report >></button>
+        <button id="cancelBtn" class="button" type="button" data-binding="{@event-onclick:addNewProject}">Add New Development Site >></button>
     </div>
     <hr />
     <h3>View project reports</h3>
@@ -78,21 +78,25 @@
                     <div class="oe_clear"></div>
                     <div class="project-highlights" data-binding="{@visible:expanded}">
                         <div>
+                            <span class="data-label">Project Name:</span>
+                            <span class="data" data-binding="{@text:name}"></span>
+                        </div>
+                        <div>
                             <span class="data-label">Development Type:</span>
                             <span class="data" data-binding="{@text:dev_type}"></span>
                         </div>
                         <div>
-                            <span class="data-label">Direct Footprint Area:</span>
+                            <span class="data-label">Direct Footprint:</span>
                             <span class="data" data-binding="{@text:proj_area}"></span>
                         </div>
+                        <!--<div>
+        <span class="data-label">Indirect Impact Area:</span>
+        <span class="data" data-binding="{@text:indirect_area}"></span>
+    </div>-->
                         <div>
-                            <span class="data-label">Indirect Impact Area:</span>
-                            <span class="data" data-binding="{@text:indirect_area}"></span>
-                        </div>
-                        <div>
-                            <span class="data-label">Compensatory Mitigation</span>
-                            <br />
-                            <img width="50" class="img_chart" data-binding="{src: chart_simple_url}">
+                            <span class="data-label">Compensatory Mitigation: </span>
+                            <!--<br />-->
+                            <!--<img width="50" class="img_chart" data-binding="{src: chart_simple_url}">-->
                             <span data-binding="{@text:compensatory_mitigation}"></span>
                             <span> out of 100</span>
                         </div>

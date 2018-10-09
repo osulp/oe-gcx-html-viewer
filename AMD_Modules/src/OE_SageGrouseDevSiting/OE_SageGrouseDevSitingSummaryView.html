@@ -27,45 +27,105 @@
     <hr />
     <fieldset>
         <legend>Project Area</legend>
-        <div>
-            <span class="data-label">Direct Footprint Area:</span>
-            <span class="data" data-binding="{@text:directArea}"></span>
+
+        <div class="sub-section-header">Direct Footprint</div>
+        <div class="sub-section-wrapper">
+            <div>
+                <span class="data">Total Direct Footprint:</span>
+                <span class="data" data-binding="{@text:directArea}"></span>
+                <!--<span class="hab-area all-hab-area" data-binding="{@visible:hasAllHabDirect}">(All of the direct project area is in Sage-Grouse habitat)</span>
+            <span class="hab-area" data-binding="{@visible:showHabAreaDirect}{@text:directHabArea}"></span>-->
+            </div>
+            <div>
+                <span class="data">Direct Footprint in Sage-Grouse Habitat:</span>
+                <span class="data" data-binding="{@text:directHabArea}"></span>
+            </div>
+            <div>
+                <span class="data">Direct Footprint in Close Proximity to a Lek: </span>
+                <span class="data" data-binding="{@text:isLek}"></span>
+            </div>
+            <!--<div class="trigger-msg-wrapper" data-binding="{@visible:showNoDirectHabArea}">
+            <span class="hab-area no-hab-area"><b>Project footprint is outside of mapped sage-grouse habitat and your project is unlikely to require mitigation for sage-grouse unless a state-level permit is necessary.</b> Please contact your County planning department and ODFW for more information.</span>
+        </div>-->
+            <!--<div>
+            <span class="data-label">Direct Footprint within Sage-Grouse Habitat:</span>
+            <span class="data" data-binding="{@text:directHabArea}"></span>
+        </div>-->
         </div>
-        <div>
-            <span class="data-label">Indirect Impact Area:</span>
-            <span class="data" data-binding="{@text:indirectArea}"></span>
-        </div>
-        <div>
+
+        <div class="sub-section-header">Indirect Impact Area</div>
+        <div class="sub-section-wrapper">
+            <div>
+                <span class="data">Total Indirect Impact Area:</span>
+                <span class="data" data-binding="{@text:indirectArea}"></span>
+            </div>
+            <div>
+                <span class="data">Indirect Impact in Sage-Grouse Habitat:</span>
+                <span class="data" data-binding="{@text:indirectHabArea}"></span>
+                <!--<span class="hab-area all-hab-area" data-binding="{@visible:hasAllHabIndirect}">(All of the indirect project area is in Sage-Grouse habitat)</span>
+            <span class="hab-area" data-binding="{@visible:!hasAllHabIndirect}{@text:indirectHabArea}"></span>-->
+            </div>
+            <div>
+                <span class="data">Habitat Designation(s): </span>
+                <span class="data" data-binding="{@text:habDesig}"></span>
+            </div>
+            <!--<div class="trigger-msg-wrapper" data-binding="{@visible:devRuleNoDirectHabButState}">
+            <span class="hab-area all-hab-area">Project footprint is outside of mapped sage-grouse habitat but mitigation will likely be required as part of state-level permitting. Please contact your County planning department, ODFW, and ODOE or DOGAMI for more information.</span>
+        </div>-->
+            <!--<div>
             <span class="data-label">Buffer distance: </span>
             <span class="data" data-binding="{@text:bufferDist}"></span>
         </div>
         <div>
             <span class="data-label">Estimated Non-Habitat in Indirect Impact Area:</span>
             <span class="data" data-binding="{@text:nonHabArea}"></span>
+        </div>-->
+        </div>
+        <div>
+            <span class="data-label">Land Management/Ownership:</span>
+            <span class="data" data-binding="{@text:landManagement}"></span>
+        </div>
+        <div data-binding="{@visible:hasDevRuleType}">
+            <span class="data-label">Permitting Entity:</span>
+            <span class="data" data-binding="{@text:devRuleType}"></span>
         </div>
     </fieldset>
-    <fieldset>
-        <legend>Habitat</legend>
-        <div>
+    <!--<fieldset>
+        <legend>Permitting Process</legend>
+        <div data-binding="{@visible:hasDevRuleType}">
+            <span class="data-label">Your Development Triggered:</span>
+            <span class="data" data-binding="{@text:devRuleType}"></span>
+            <div data-binding="{@visible:hasRulesTriggersMsg}" class="trigger-msg-wrapper">
+                <span class="dev-rule" data-binding="{@text:rulesTriggersMsg}"></span>
+            </div>
+        </div>
+        <div class="placement-msg">
+            <b>TIP:  </b>Project impacts that occur outside significant sage-grouse habitat are assumed to have a low effect on sage-grouse habitat.  Mitigation will not be required for project impacts that occur outside significant sage-grouse habitat. It is best to site as much of your proposed development project outside significant sage-grouse habitat to reduce habitat degradation and reduce the amount of required mitigation for development impacts to sage-grouse habitat.
+        </div>
+    </fieldset>-->
+    <!--<fieldset>
+        <legend>Habitat</legend>-->
+        <!--<div>
             <span class="data-label">Significant Habitat: </span>
             <span>The direct and indirect impact areas </span>
             <span class="data-label" data-binding="{@text:significant}"></span>
             <span> within known significant sage-grouse habitat.</span>
             <span data-binding="{@text:significantMsg}"></span>
-        </div>
-        <div>
-            <span class="data-label">Habitat Designations: </span>
+        </div>-->
+        <!--<div>
+            <span class="data-label">Habitat Designation(s) for Indirect Impact Area: </span>
             <span class="data" data-binding="{@text:habDesig}"></span>
-        </div>
-        <div>
+        </div>-->
+        <!--<div>
             <span class="data-label">Within 3.1 miles of a Lek? </span>
             <span class="data" data-binding="{@text:isLek}"></span>
-        </div>
-    </fieldset>
-    <fieldset>
+        </div>-->
+        
+    <!--</fieldset>-->
+    <!--<fieldset>
         <legend>Land management/ownership</legend>
         <div data-binding="{@text:landManagement}"></div>
-    </fieldset>
+    </fieldset>-->
     <fieldset>
         <legend>
             Mitigation Hierarchy
@@ -77,6 +137,10 @@
         </div>
         <div>
             <span class="data-label">Minimization:</span>
+            <span class="data">See full report for list of potential minimization measures.</span>
+        </div>
+        <!--<div>
+            <span class="data-label">Minimization:</span>
             <span> Minimization measures for </span>
             <span data-binding="{@text:devType}"></span>
             <span> may include:</span>
@@ -85,12 +149,17 @@
                     <span data-binding="{@text:minimization}"></span>
                 </li>
             </ul>
-        </div>
+        </div>-->
         <div>
-            <span class="data-label">Compensatory Mitigation</span>
+            <span class="data-label">Compensatory Mitigation: </span>
             <span data-binding="{@text:compensatoryMitigation}"></span>
             <span> out of 100</span>
         </div>
+        <!--<div>
+            <span class="data-label">Compensatory Mitigation for Direct Footprint</span>
+            <span data-binding="{@text:compensatoryMitigationDirect}"></span>
+            <span> out of 100</span>
+        </div>-->
         <div id="chart-wrapper">
             <img width="225" data-binding="{src: chartURL}">
 
@@ -101,6 +170,12 @@
         <div data-binding="{innerHTML:countyContacts}"></div>
         <div data-binding="{innerHTML:blmContacts}"></div>
     </fieldset>
+    <!--<fieldset>
+        <legend>Disclaimer</legend>
+        <div class="disclaimer">
+            The State of Oregon, Oregon State University, Oregon State University Libraries, or any of the data providers cannot accept any responsibility for, or claims attributable to, errors, omissions, misuse, misinterpretation, or positional accuracy in the digital data or underlying information. In no event shall these institutions be liable for direct, indirect, spatial, incidental or consequential loss or damage of any nature caused to any person, party or entity as a result of use of the information set forth herein. Note, the output from this tool is not suitable for legal, engineering, or final project impact assessment and is not a substitute for coordinating with the county and state on project development and acquisition of permits, or Oregon Department of Fish & Wildlife on avoidance, minimization, and mitigation of development impacts to sage-grouse habitat. For questions about sage-grouse mitigation requirements in Oregon contact the Oregon Department of Fish & Wildlife Sage-Grouse Mitigation Coordinator at 503-947-6074.
+        </div>
+    </fieldset>-->
     <div style="text-align:right; width:100%; display: inline-block;" class="form-btns">
         <button id="cancelBtn" class="button" type="button" data-binding="{@event-onclick:cancelForm}">Close</button>
     </div>

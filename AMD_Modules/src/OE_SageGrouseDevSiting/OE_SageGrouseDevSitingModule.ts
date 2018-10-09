@@ -26,6 +26,13 @@ export class OE_SageGrouseDevSitingModule extends ModuleBase {
     }
 
     _onSiteInitialized(site) {
+        //add selector to highlight the toolbar button
+        var myEles = document.getElementsByTagName('p');        
+        for (var i = 0; i < myEles.length; i++) {
+            if (myEles[i].innerHTML == 'Get Siting Information') {
+                myEles[i].setAttribute('class', "promoted-btn");
+            }
+        }
         this.app.eventRegistry.event("GraphicDrawActivatedEvent").subscribe(this, (sender) => {
             console.log('graphic drawing event!', sender);
             let lineSymbol = sender.sender.lineSymbol;

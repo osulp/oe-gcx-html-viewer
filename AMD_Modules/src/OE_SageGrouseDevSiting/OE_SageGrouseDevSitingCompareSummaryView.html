@@ -5,9 +5,8 @@
     </div>
     <div data-binding="{@visible:canCompare}">
         <div class="print" data-binding="{@event-onclick:print}"><img src="Resources/Images/Icons/print-24.png" /></div>
-         <div id="printarea" class="report_area compare" data-binding="{@source: selected_reports}{@value: selected_reports}">
+        <div id="printarea" class="report_area compare" data-binding="{@source: selected_reports}{@value: selected_reports}">
             <div class="siting_compare_col" data-binding="{@template-for: selected_reports}{value: @context}">
-
                 <hr />
                 <div>
                     <span class="data-label">Project Name:</span>
@@ -18,57 +17,46 @@
                     <span class="data" data-binding="{@text:dev_type}"></span>
                 </div>
                 <hr>
-                <!--<span>This is a summary report. <b>Click the button below for a full report</b></span><br />
-                <div id="btn-row">
-                    <div class="btn btn-cell">
-                        <div data-binding="{@event-onclick:getPDF}">View Full Report</div>
-                    </div>
-                    <div class="btn btn-cell-download">
-                        <div data-binding="{@event-onclick:downloadShapefiles}"><img width="16" src="Resources/Images/Icons/download-24.png" /> Shapefiles</div>
-                    </div>
-                </div>
-
-                <hr />-->
                 <fieldset>
                     <legend>Project Area</legend>
-                    <div>
-                        <span class="data-label">Direct Footprint Area:</span>
-                        <span class="data" data-binding="{@text:proj_area}"></span>
+                    <div class="sub-section-header">Direct Footprint</div>
+                    <div class="sub-section-wrapper">
+                        <div>
+                            <span class="data">Total Direct Footprint:</span>
+                            <span class="data" data-binding="{@text:proj_area}"></span>
+                        </div>
+                        <div>
+                            <span class="data">Direct Footprint in Sage-Grouse Habitat:</span>
+                            <span class="data" data-binding="{@text:direct_hab_area}"></span>
+                        </div>
+                        <div>
+                            <span class="data">Direct Footprint in Close Proximity to a Lek: </span>
+                            <span class="data" data-binding="{@text:is_lek}"></span>
+                        </div>
+                    </div>
+                    <div class="sub-section-header">Indirect Impact Area</div>
+                    <div class="sub-section-wrapper">
+                        <div>
+                            <span class="data">Total Indirect Impact Area:</span>
+                            <span class="data" data-binding="{@text:indirect_area}"></span>
+                        </div>
+                        <div>
+                            <span class="data">Indirect Impact in Sage-Grouse Habitat:</span>
+                            <span class="data" data-binding="{@text:indirect_hab_area}"></span>
+                        </div>
+                        <div>
+                            <span class="data">Habitat Designation(s): </span>
+                            <span class="data" data-binding="{@text:hab_desig}"></span>
+                        </div>
                     </div>
                     <div>
-                        <span class="data-label">Indirect Impact Area:</span>
-                        <span class="data" data-binding="{@text:indirect_area}"></span>
+                        <span class="data-label">Land Management/Ownership:</span>
+                        <span class="data" data-binding="{@text:land_mngt}"></span>
                     </div>
-                    <div>
-                        <span class="data-label">Buffer distance: </span>
-                        <span class="data" data-binding="{@text:buffer_dist}"></span>
+                    <div data-binding="{@visible:has_dev_rule_type}">
+                        <span class="data-label">Permitting Entity:</span>
+                        <span class="data" data-binding="{@text:dev_rule_type}"></span>
                     </div>
-                    <div>
-                        <span class="data-label">Estimated Non-Habitat in Indirect Impact Area:</span>
-                        <span class="data" data-binding="{@text:non_hab_area}"></span>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend>Habitat</legend>
-                    <div>
-                        <span class="data-label">Significant Habitat: </span>
-                        <span>The direct and indirect impact areas </span>
-                        <span class="data-label" data-binding="{@text:significant}"></span>
-                        <span> within known significant sage-grouse habitat.</span>
-                        <span data-binding="{@text:significant_msg}"></span>
-                    </div>
-                    <div>
-                        <span class="data-label">Habitat Designations: </span>
-                        <span class="data" data-binding="{@text:hab_desig}"></span>
-                    </div>
-                    <div>
-                        <span class="data-label">Within 3.1 miles of a Lek? </span>
-                        <span class="data" data-binding="{@text:is_lek}"></span>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend>Land management/ownership</legend>
-                    <div data-binding="{@text:land_mngt}"></div>
                 </fieldset>
                 <fieldset>
                     <legend>
@@ -79,17 +67,21 @@
                         <span class="data-label" data-binding="{@text:avoidance}"></span>
                         <span> apply in your identified area.</span>
                     </div>
-                    <!--<div>
+                    <div>
                         <span class="data-label">Minimization:</span>
-                        <span> Minimization measures for </span>
-                        <span data-binding="{@text:dev_type}"></span>
-                        <span> may include:</span>
-                        <ul data-binding="{@source: minimizations}">
-                            <li data-binding="{@template-for: minimizations}">
-                                <span data-binding="{@text:minimization}"></span>
-                            </li>
-                        </ul>
-                    </div>-->
+                        <span class="data">See full report for list of potential minimization measures.</span>
+                    </div>
+                    <!--<div>
+            <span class="data-label">Minimization:</span>
+            <span> Minimization measures for </span>
+            <span data-binding="{@text:dev_type}"></span>
+            <span> may include:</span>
+            <ul data-binding="{@source: minimizations}">
+                <li data-binding="{@template-for: minimizations}">
+                    <span data-binding="{@text:minimization}"></span>
+                </li>
+            </ul>
+        </div>-->
                     <div>
                         <span class="data-label">Compensatory Mitigation</span>
                         <span data-binding="{@text:compensatory_mitigation}"></span>
@@ -100,8 +92,13 @@
 
                     </div>
                 </fieldset>
+                <fieldset>
+                    <legend>Contact Information</legend>
+                    <div data-binding="{innerHTML:cnty_contacts}"></div>
+                    <div data-binding="{innerHTML:blm_contacts}"></div>
+                </fieldset>
             </div>
-             <div class="oe_clear"></div>
+            <div class="oe_clear"></div>
         </div>
     </div>
 </div>

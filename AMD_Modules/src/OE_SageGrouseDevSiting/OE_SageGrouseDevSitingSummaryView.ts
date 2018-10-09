@@ -31,7 +31,7 @@ export class OE_SageGrouseDevSitingSummaryView extends ViewBase {
     };    
 
     getPDF = function (event, element, context) {
-        let reportUrl = context.report_url;
+        let reportUrl = context.reportURL.value;
         window.open(reportUrl, "_blank");
     };
     
