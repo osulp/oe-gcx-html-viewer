@@ -328,3 +328,9 @@ legend{
 .sub-section-header{
     font-weight:bolder;    
 }
+
+.dev-type-details{
+    margin-left: 120px;
+    font-size:.9em;
+    color:#302f2f;
+}

@@ -26,8 +26,20 @@
                             <span class="data" data-binding="{@text:proj_area}"></span>
                         </div>
                         <div>
-                            <span class="data">Direct Footprint in Sage-Grouse Habitat:</span>
+                            <span class="data">Direct Footprint in Significant Sage-Grouse Habitat:</span>
                             <span class="data" data-binding="{@text:direct_hab_area}"></span>
+                        </div>
+                        <div class="trigger-msg-wrapper" data-binding="{@visible:has_all_hab_direct}">
+                            <span class="hab-area all-hab-area">(All of the direct project footprint is in significant sage-grouse habitat)</span>
+                        </div>
+                        <div class="trigger-msg-wrapper" data-binding="{@visible:show_no_direct_hab_area}">
+                            <span class="hab-area no-hab-area">Project footprint is outside of mapped significant sage-grouse habitat and your project is <b>unlikely to require mitigation</b> for sage-grouse unless a state-level permit is necessary.</span>
+                        </div>
+                        <div class="trigger-msg-wrapper" data-binding="{@visible:has_part_hab_hab_direct}">
+                            <span class="hab-area no-hab-area">Part, but not all, of the direct project footprint is in significant sage-grouse habitat.</span>
+                        </div>
+                        <div class="trigger-msg-wrapper" data-binding="{@visible:dev_rule_no_direct_hab_but_state}">
+                            <span class="hab-area no-hab-area">Project footprint is outside of mapped significant sage-grouse habitat, and mitigation will only be assessed for indirect impacts within sage-grouse habitat.</span>
                         </div>
                         <div>
                             <span class="data">Direct Footprint in Close Proximity to a Lek: </span>
@@ -41,7 +53,7 @@
                             <span class="data" data-binding="{@text:indirect_area}"></span>
                         </div>
                         <div>
-                            <span class="data">Indirect Impact in Sage-Grouse Habitat:</span>
+                            <span class="data">Estimated Indirect Impact in Sage-Grouse Habitat:</span>
                             <span class="data" data-binding="{@text:indirect_hab_area}"></span>
                         </div>
                         <div>
@@ -49,9 +61,11 @@
                             <span class="data" data-binding="{@text:hab_desig}"></span>
                         </div>
                     </div>
-                    <div>
-                        <span class="data-label">Land Management/Ownership:</span>
-                        <span class="data" data-binding="{@text:land_mngt}"></span>
+                    <div class="sub-section-header">Land Management/Ownership</div>
+                    <div class="sub-section-wrapper">
+                        <div>
+                            <span class="data" data-binding="{@text:land_mngt}"></span>
+                        </div>
                     </div>
                     <div data-binding="{@visible:has_dev_rule_type}">
                         <span class="data-label">Permitting Entity:</span>
@@ -72,16 +86,16 @@
                         <span class="data">See full report for list of potential minimization measures.</span>
                     </div>
                     <!--<div>
-            <span class="data-label">Minimization:</span>
-            <span> Minimization measures for </span>
-            <span data-binding="{@text:dev_type}"></span>
-            <span> may include:</span>
-            <ul data-binding="{@source: minimizations}">
-                <li data-binding="{@template-for: minimizations}">
-                    <span data-binding="{@text:minimization}"></span>
-                </li>
-            </ul>
-        </div>-->
+                        <span class="data-label">Minimization:</span>
+                        <span> Minimization measures for </span>
+                        <span data-binding="{@text:dev_type}"></span>
+                        <span> may include:</span>
+                        <ul data-binding="{@source: minimizations}">
+                            <li data-binding="{@template-for: minimizations}">
+                                <span data-binding="{@text:minimization}"></span>
+                            </li>
+                        </ul>
+                    </div>-->
                     <div>
                         <span class="data-label">Compensatory Mitigation</span>
                         <span data-binding="{@text:compensatory_mitigation}"></span>
@@ -94,6 +108,8 @@
                 </fieldset>
                 <fieldset>
                     <legend>Contact Information</legend>
+                    <div data-binding="{@visible:is_odoe}{innerHTML:odoe_contact}"></div>
+                    <div data-binding="{@visible:is_dogami}{innerHTML:dogami_contact}"></div>
                     <div data-binding="{innerHTML:cnty_contacts}"></div>
                     <div data-binding="{innerHTML:blm_contacts}"></div>
                 </fieldset>

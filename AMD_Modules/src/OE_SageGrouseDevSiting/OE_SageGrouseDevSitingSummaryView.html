@@ -10,6 +10,12 @@
     <div>
         <span class="data-label">Development Type:</span>
         <span class="data" data-binding="{@text:devType}"></span>
+        
+    </div>
+    <div class="dev-type-details" data-binding="{@visible:showDevTypeDetails}">
+        <!--<span>(</span>-->
+        <span class="data" data-binding="{@text:devTypeDetails}"></span>
+        <!--<span>)</span>-->
     </div>
     <hr>
     <span>This is a summary report. <b>Click the button below for a full report</b></span><br />
@@ -33,24 +39,32 @@
             <div>
                 <span class="data">Total Direct Footprint:</span>
                 <span class="data" data-binding="{@text:directArea}"></span>
-                <!--<span class="hab-area all-hab-area" data-binding="{@visible:hasAllHabDirect}">(All of the direct project area is in Sage-Grouse habitat)</span>
-            <span class="hab-area" data-binding="{@visible:showHabAreaDirect}{@text:directHabArea}"></span>-->
             </div>
             <div>
-                <span class="data">Direct Footprint in Sage-Grouse Habitat:</span>
+                <span class="data">Direct Footprint in Significant Sage-Grouse Habitat:</span>
                 <span class="data" data-binding="{@text:directHabArea}"></span>
+                <div class="trigger-msg-wrapper" data-binding="{@visible:hasAllHabDirect}">
+                    <span class="hab-area all-hab-area">(All of the direct project footprint is in significant sage-grouse habitat)</span>
+                </div>
+                <div class="trigger-msg-wrapper" data-binding="{@visible:showNoDirectHabArea}">
+                    <span class="hab-area no-hab-area">Project footprint is outside of mapped significant sage-grouse habitat and your project is <b>unlikely to require mitigation</b> for sage-grouse unless a state-level permit is necessary.</span>
+                </div>
+                <div class="trigger-msg-wrapper" data-binding="{@visible:showPartHabMsg}">
+                    <span class="hab-area no-hab-area">Part, but not all, of the direct project footprint is in significant sage-grouse habitat.</span>
+                </div>
+                <div class="trigger-msg-wrapper" data-binding="{@visible:devRuleNoDirectHabButState}">
+                    <span class="hab-area no-hab-area">Project footprint is outside of mapped significant sage-grouse habitat, and mitigation will only be assessed for indirect impacts within sage-grouse habitat.</span>
+                </div>
             </div>
             <div>
                 <span class="data">Direct Footprint in Close Proximity to a Lek: </span>
                 <span class="data" data-binding="{@text:isLek}"></span>
             </div>
-            <!--<div class="trigger-msg-wrapper" data-binding="{@visible:showNoDirectHabArea}">
-            <span class="hab-area no-hab-area"><b>Project footprint is outside of mapped sage-grouse habitat and your project is unlikely to require mitigation for sage-grouse unless a state-level permit is necessary.</b> Please contact your County planning department and ODFW for more information.</span>
-        </div>-->
+
             <!--<div>
-            <span class="data-label">Direct Footprint within Sage-Grouse Habitat:</span>
-            <span class="data" data-binding="{@text:directHabArea}"></span>
-        </div>-->
+                <span class="data-label">Direct Footprint within Sage-Grouse Habitat:</span>
+                <span class="data" data-binding="{@text:directHabArea}"></span>
+            </div>-->
         </div>
 
         <div class="sub-section-header">Indirect Impact Area</div>
@@ -60,30 +74,30 @@
                 <span class="data" data-binding="{@text:indirectArea}"></span>
             </div>
             <div>
-                <span class="data">Indirect Impact in Sage-Grouse Habitat:</span>
+                <span class="data">Estimated Indirect Impact in Sage-Grouse Habitat:</span>
                 <span class="data" data-binding="{@text:indirectHabArea}"></span>
                 <!--<span class="hab-area all-hab-area" data-binding="{@visible:hasAllHabIndirect}">(All of the indirect project area is in Sage-Grouse habitat)</span>
-            <span class="hab-area" data-binding="{@visible:!hasAllHabIndirect}{@text:indirectHabArea}"></span>-->
+                <span class="hab-area" data-binding="{@visible:!hasAllHabIndirect}{@text:indirectHabArea}"></span>-->
             </div>
             <div>
                 <span class="data">Habitat Designation(s): </span>
                 <span class="data" data-binding="{@text:habDesig}"></span>
             </div>
-            <!--<div class="trigger-msg-wrapper" data-binding="{@visible:devRuleNoDirectHabButState}">
-            <span class="hab-area all-hab-area">Project footprint is outside of mapped sage-grouse habitat but mitigation will likely be required as part of state-level permitting. Please contact your County planning department, ODFW, and ODOE or DOGAMI for more information.</span>
-        </div>-->
+
             <!--<div>
-            <span class="data-label">Buffer distance: </span>
-            <span class="data" data-binding="{@text:bufferDist}"></span>
+                <span class="data-label">Buffer distance: </span>
+                <span class="data" data-binding="{@text:bufferDist}"></span>
+            </div>
+            <div>
+                <span class="data-label">Estimated Non-Habitat in Indirect Impact Area:</span>
+                <span class="data" data-binding="{@text:nonHabArea}"></span>
+            </div>-->
         </div>
-        <div>
-            <span class="data-label">Estimated Non-Habitat in Indirect Impact Area:</span>
-            <span class="data" data-binding="{@text:nonHabArea}"></span>
-        </div>-->
-        </div>
-        <div>
-            <span class="data-label">Land Management/Ownership:</span>
-            <span class="data" data-binding="{@text:landManagement}"></span>
+        <div class="sub-section-header">Land Management/Ownership</div>
+        <div class="sub-section-wrapper">
+            <div>
+                <span class="data" data-binding="{@text:landManagement}"></span>
+            </div>
         </div>
         <div data-binding="{@visible:hasDevRuleType}">
             <span class="data-label">Permitting Entity:</span>
@@ -105,22 +119,21 @@
     </fieldset>-->
     <!--<fieldset>
         <legend>Habitat</legend>-->
-        <!--<div>
-            <span class="data-label">Significant Habitat: </span>
-            <span>The direct and indirect impact areas </span>
-            <span class="data-label" data-binding="{@text:significant}"></span>
-            <span> within known significant sage-grouse habitat.</span>
-            <span data-binding="{@text:significantMsg}"></span>
-        </div>-->
-        <!--<div>
-            <span class="data-label">Habitat Designation(s) for Indirect Impact Area: </span>
-            <span class="data" data-binding="{@text:habDesig}"></span>
-        </div>-->
-        <!--<div>
-            <span class="data-label">Within 3.1 miles of a Lek? </span>
-            <span class="data" data-binding="{@text:isLek}"></span>
-        </div>-->
-        
+    <!--<div>
+        <span class="data-label">Significant Habitat: </span>
+        <span>The direct and indirect impact areas </span>
+        <span class="data-label" data-binding="{@text:significant}"></span>
+        <span> within known significant sage-grouse habitat.</span>
+        <span data-binding="{@text:significantMsg}"></span>
+    </div>-->
+    <!--<div>
+        <span class="data-label">Habitat Designation(s) for Indirect Impact Area: </span>
+        <span class="data" data-binding="{@text:habDesig}"></span>
+    </div>-->
+    <!--<div>
+        <span class="data-label">Within 3.1 miles of a Lek? </span>
+        <span class="data" data-binding="{@text:isLek}"></span>
+    </div>-->
     <!--</fieldset>-->
     <!--<fieldset>
         <legend>Land management/ownership</legend>
@@ -162,11 +175,12 @@
         </div>-->
         <div id="chart-wrapper">
             <img width="225" data-binding="{src: chartURL}">
-
         </div>
     </fieldset>
     <fieldset>
         <legend>Contact Information</legend>
+        <div data-binding="{@visible:isODOE}{innerHTML:odoeContact}"></div>
+        <div data-binding="{@visible:isDOGAMI}{innerHTML:dogamiContact}"></div>
         <div data-binding="{innerHTML:countyContacts}"></div>
         <div data-binding="{innerHTML:blmContacts}"></div>
     </fieldset>
