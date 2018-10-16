@@ -17,7 +17,8 @@
     <AssemblyName>Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>44300</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -209,6 +210,7 @@
     <Content Include="Resources\Compiled\ZoomControl.js" />
     <Content Include="Resources\Config\CacheManifestConfig.xml" />
     <Content Include="Resources\Config\Default\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\Desktop.json.dev.siting.js" />
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_siting\Desktop.json.2.10.js" />
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_siting\Desktop.json.js" />
@@ -217,6 +219,7 @@
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_cons_pln\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_cons_pln\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_cons_pln\Tablet.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\sfam\Desktop.json.js" />
     <Content Include="Resources\Config\Default\Handheld.json.js" />
     <Content Include="Resources\Config\Default\Handheld.json.oe.js" />
     <Content Include="Resources\Config\Default\Tablet.json.js" />
@@ -580,11 +583,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>54104</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44300/</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>https://localhost:44300/</IISAppRootUrl>
+          <IISUrl>http://localhost:44320</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
