@@ -122,7 +122,8 @@ export class OE_SageGrouseDevSitingViewModel extends ViewModelBase {
                 oeSageGrouseDevSitingReports.forEach((report: any) => {
                     report.selected = new Observable<boolean>(report.name === selectedReport);
                     report.selected.bind(this, () => {
-                        thisViewModel.selected_reports.set(thisViewModel.report_list.getItems().filter((rl: any) => rl.selected.get()));
+                        thisViewModel.selected_reports.set(thisViewModel.report_list.getItems()
+                            .filter((rl: any) => rl.selected.get()));
                         thisViewModel.canCompare.set(thisViewModel.selected_reports.getLength() === 2);
                     });
                     report.expanded = new Observable<boolean>(true);
@@ -263,12 +264,38 @@ export class OE_SageGrouseDevSitingViewModel extends ViewModelBase {
         let gpParams = {
             "Input_Features": projectFeatures
         }
+        //check if chrome
+        const a = window.document.createElement('a');
+
+        if (window["chrome"]) {
+            var kmlWindow = window.open('', '_blank');
+            kmlWindow.document.body.innerHTML = "<div style='width:50%;height:50%;margin:auto'>Generating your KMZ file to download.  Check your pop-up blocker if you do not see the download.</div>";
+        } else {            
+            a.href = "";
+            a.download = context.name;
+            a.target = '_blank';
+            document.body.appendChild(a);
+        }
+        
+        
 
         gp.submitJob(gpParams, (results, messages) => {
             console.log('results!', results, messages);
             if (results.jobStatus === 'esriJobSucceeded') {
-                let kmlUrl = gpUrl + '/jobs/' + results.jobId + '/inputs/Input_Features?f=kmz';
-                window.open(kmlUrl, '_blank');
+                let url = gpUrl + '/jobs/' + results.jobId + '/inputs/Input_Features?f=kmz';
+                if (window["chrome"]) {
+                    kmlWindow.location.href = url;
+                    window.setTimeout(() => kmlWindow.close(), 500);
+                } else {
+                    a.href = url;
+                    a.download = context.name;
+                    a.target = '_blank';
+                    document.body.appendChild(a);
+                    // IE: "Access is denied"; 
+                    // see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
+                    a.click();
+                    document.body.removeChild(a);
+                }
             }
         }, (status) => {
             console.log('status', status);

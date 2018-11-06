@@ -16,7 +16,20 @@
                     <span class="data-label">Development Type:</span>
                     <span class="data" data-binding="{@text:dev_type}"></span>
                 </div>
+                <div class="dev-type-details" data-binding="{@visible:show_dev_type_details}">
+                    <!--<span>(</span>-->
+                    <span class="data" data-binding="{@text:dev_type_details}"></span>
+                    <!--<span>)</span>-->
+                </div>
                 <hr>
+                <span class="print-remove">This is a summary report. <b>Click the button below for a full report</b></span><br />
+                <div class="print-remove" id="btn-row-compare">
+                    <div class="cell" data-binding="{@event-onclick:getPDF}">Full Report</div>                                                                        <div class="cell" data-binding="{@event-onclick:downloadShapefiles}" title="Download project areas as a zipped shapefile.">
+                        Shapefile
+                    </div>
+                    <div class="cell" data-binding="{@event-onclick:downloadKml}" title="Download project areas as a KMZ file.">                                              KML/KMZ                                                     </div>
+                </div>
+                <hr />
                 <fieldset>
                     <legend>Project Area</legend>
                     <div class="sub-section-header">Direct Footprint</div>
@@ -30,12 +43,12 @@
                             <span class="data" data-binding="{@text:direct_hab_area}"></span>
                         </div>
                         <div class="trigger-msg-wrapper" data-binding="{@visible:has_all_hab_direct}">
-                            <span class="hab-area all-hab-area">(All of the direct project footprint is in significant sage-grouse habitat)</span>
+                            <span class="hab-area all-hab-area">All of the direct project footprint is in significant sage-grouse habitat.</span>
                         </div>
                         <div class="trigger-msg-wrapper" data-binding="{@visible:show_no_direct_hab_area}">
                             <span class="hab-area no-hab-area">Project footprint is outside of mapped significant sage-grouse habitat and your project is <b>unlikely to require mitigation</b> for sage-grouse unless a state-level permit is necessary.</span>
                         </div>
-                        <div class="trigger-msg-wrapper" data-binding="{@visible:has_part_hab_hab_direct}">
+                        <div class="trigger-msg-wrapper" data-binding="{@visible:has_part_hab_direct}">
                             <span class="hab-area no-hab-area">Part, but not all, of the direct project footprint is in significant sage-grouse habitat.</span>
                         </div>
                         <div class="trigger-msg-wrapper" data-binding="{@visible:dev_rule_no_direct_hab_but_state}">

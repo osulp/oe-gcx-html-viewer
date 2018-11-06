@@ -62,6 +62,7 @@ export class OE_SageGrouseDevSitingDashboardView extends ViewBase {
     compareProjectReports = function (event, element, context) {
         console.log('compare reports', event, element, context);
         //this.viewModel.compareReports(context, this.viewModel);
+        context.selected_reports.value.reverse();
         this.app.commandRegistry.command("ActivateView").execute("OE_SageGrouseDevSitingCompareSummaryView");
     };
 
