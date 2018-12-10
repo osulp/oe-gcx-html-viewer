@@ -196,7 +196,16 @@
                         "title": "Sage-Grouse Conservation Planning",
                         "viewModelId": "OE_SageGrouseConsPlnViewModel",
                         "visible": false,
-                        "region": "DataRegion",
+                        "region": "RightPanelRegion",
+                        "configuration": {}
+                    }, {
+                        "id": "OE_SageGrouseConsPlnFilterInfoView",
+                        "require": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnFilterInfoView",
+                        "markup": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnFilterInfoView.html",
+                        "title": "Query Filter Description",
+                        "viewModelId": "OE_SageGrouseConsPlnViewModel",
+                        "visible": false,
+                        "region": "ModalWindowRegion",
                         "configuration": {}
                     }
                 ],

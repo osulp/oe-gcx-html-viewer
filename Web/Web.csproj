@@ -85,10 +85,12 @@
     <Content Include="Index.2.8.html" />
     <Content Include="Libraries\Custom\AMD\OE_Graphics.js" />
     <Content Include="Libraries\Custom\AMD\OE_HyperlinkBanner.js" />
+    <Content Include="Libraries\Custom\AMD\OE_LayerActions.js" />
     <Content Include="Libraries\Custom\AMD\OE_PickerListItemRenderer.js" />
     <Content Include="Libraries\Custom\AMD\OE_SageGrouseConsPln.js" />
     <Content Include="Libraries\Custom\AMD\OE_SageGrouseDevSiting.js" />
     <Content Include="Libraries\Custom\AMD\OE_Search.js" />
+    <Content Include="Libraries\Custom\AMD\OE_Utility.js" />
     <Content Include="Libraries\Custom\AMD\OE_Wildfire.js" />
     <Content Include="Libraries\Custom\AMD\OtherTemplate.js" />
     <Content Include="Libraries\Custom\AMD\Template.js" />
@@ -519,6 +521,7 @@
     <Content Include="Resources\Scripts\esri-sup.js" />
     <Content Include="Resources\Scripts\fastclick.js" />
     <Content Include="Resources\Scripts\jquery-ui-timepicker-addon.min.js" />
+    <Content Include="Resources\Scripts\jquery-ui.checkboxradio.min.js" />
     <Content Include="Resources\Scripts\jquery.ui.custom.js" />
     <Content Include="Resources\Scripts\jquery.ui.touch-punch.js" />
     <Content Include="Resources\Scripts\modernizr.js" />

@@ -136,18 +136,22 @@
                 }
             },
             {
-			    "moduleName": "LayerActionsExtension",
-			    "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
-                "libraryId": "Custom",
+                "moduleName": "OE_LayerActions",
+                "libraryId": "OE_AMD",
+                "require": "geocortex/oe_amd/OE_LayerActions/OE_LayerActionsModule",
                 "configuration": {
-                    "showLayerDescription":false,
-                    "allowAllLayerTypes":true,
-                    "metadataHyperlinkOverride":true,
-                    "expandLayerTreeOnVisible":true,
-                    "downloadHyperlinkOverride":true,
-                    "downloadWorkflowEnabled":true
+                    "showLayerDescription": true,
+                    "showLayerDescViewHide": false,
+                    "allowAllLayerTypes:": true,
+                    "metadataHyperlinkOverride": true,
+                    "expandLayerTreeOnVisible": true,
+                    "downloadWorkflowOverride": {
+                        "workflowID": "Area_of_Interest",
+                        "argNames": ["test1", "test2", "test3"],
+                        "argValues": ["val1", "val2", "val3"]
+                    }
                 }
-            },
+            },            
             {
                 "moduleName": "InitialExtent",
                 "moduleType": "oe.initial_extent.InitialExtentModule",

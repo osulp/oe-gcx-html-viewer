@@ -1,11 +1,79 @@
 ﻿<a href="#"></a>
-<div class="report_area" dir="ltr">
-    <p>
-        <label for="amount">Range values:</label>
-        <input type="text" id="amount" readonly style="border:0;color:#f6931f;font-weight:bold" data-binding="{@var:amount}">
-    </p>
-
-    <div class="slider" data-binding="{@var: jquiSlider}">
+<div id="report_area" dir="ltr">
+    <div id="filter-summary-control">
+        <div class="query-control-bar">
+            <div id="reset-filters" data-binding="{@event-onclick:resetFilters}">Reset Filters</div>
+            <div id="show-filters" data-binding="{@hidden: show_filter_summary}{@event-onclick:toggleFilters}">Show Active Filters</div>
+            <div id="show-filters" data-binding="{@visible: show_filter_summary}{@event-onclick:toggleFilters}">Hide Active Filters</div>
+        </div>
+        <div id="filter-summary" data-binding="{@visible: show_filter_summary}">
+            <div data-binding="{@visible: has_filters}">
+                <b>Active filters:</b>
+                <ul data-binding="{@source: filter_collection}">
+                    <li data-binding="{@template-for: filter_collection}">
+                        <div class="active-filter-details">
+                            <div data-binding="{@text: layer}{@event-onclick:setSearch}" title="Click to see in filter list."></div>
+                            <div class="filter-def" data-binding="{@text: filterDef}"></div>
+                        </div>
+                        <div class="active-filter-details remove" title="Clear filter.">
+                            <div data-binding="{@event-onclick:removeFilter}"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div data-binding="{@hidden: has_filters}">
+                No filters currently in use.
+            </div>
+        </div>
+        <div id="quick-find-wrapper">
+            <div>Quick Find:</div>
+            <div>
+                <input type="text" data-binding="{@value: filterText}" />
+            </div>
+            <div id="quick-find-clear" data-binding="{@event-onclick:clearSearch}">Clear</div>
+        </div>
+        <div 
+        <div data-binding="{@event-onclick:collapseFolders}">Collapse All</div>
+        <div data-binding="{@event-onclick:expandFolders}">Expand All</div>
+    </div>
+    <div id="query-filter-wrapper">        
+        <div class="table-cell body-content-outer-wrapper">
+            <div class="body-content-inner-wrapper">
+                <div class="body-content">                    
+                    <ul class="ul-query-folders" data-binding="{@source: dashboard_meta_filter}">
+                        <li data-binding="{@template-for: dashboard_meta_filter}">
+                            <div data-binding="{@event-onclick:onFolderClick}" class="folder-header-wrapper">
+                                <div class="tree-expander expanded" title="Collapse or expand" data-binding="{@visible:visible}">&nbsp;</div>
+                                <div class="tree-expander collapsed" data-binding="{@hidden:visible}">&nbsp;</div>
+                                <div class="folder-title" data-binding="{@text:folder}"></div>
+                            </div>
+                            <div data-binding="{@visible: visible}">
+                                <ul class="ul-query-layers" data-binding="{@source: filteredLayers}">
+                                    <li data-binding="{@template-for: filteredLayers}">
+                                        <div data-binding="{@event-onclick:onGetInfo}">
+                                            <div class="data-label query-layer" data-binding="{@text:DATALAYER}"></div>
+                                            <div class="get-info-btn-wrapper">
+                                                <button class="get-info-btn" title="Click to see description of this layer."></button>
+                                            </div>
+                                        </div>
+                                        <div data-binding="{@source: @context}{@template-selector:UITYPE}">
+                                            <div data-binding="{@template-select:Checkbox
+}{@template: geocortex/oe_amd/OE_SageGrouseConsPln/Templates/checkbox.html}"></div>
+                                            <div data-binding="{@template-select:RadioButton
+}{@template: geocortex/oe_amd/OE_SageGrouseConsPln/Templates/radiobutton.html}"></div>
+                                            <div data-binding="{@template-select:Slider
+}{@template: geocortex/oe_amd/OE_SageGrouseConsPln/Templates/slider.html}"></div>
+                                            <div data-binding="{@template-select:RangeSlider
+}{@template: geocortex/oe_amd/OE_SageGrouseConsPln/Templates/rangeslider.html}"></div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
