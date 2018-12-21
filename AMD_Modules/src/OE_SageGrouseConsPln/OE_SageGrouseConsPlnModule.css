@@ -64,14 +64,14 @@
     margin: 0 10px;
 }
 
-#filter-summary {
-    margin: 0 0 0 10px;
+#filter-summary, #geo-filter {
+    margin: 0 10px;
     border-bottom: solid 2px #555555;
     border-top: none;
     padding: 5px 10px 0;
-    background-color: #f0f0f0;
+    /*background-color: #f0f0f0;*/
     border-radius: 0 0 4px 4px;
-    width: 90%;
+    /*width: 90%;*/
 }
 
 #filter-summary ul{
@@ -79,7 +79,7 @@
 }
 
 .query-control-bar {
-    width: 90%;
+    /*width: 90%;*/
     padding: 10px;
     margin: 10px 10px 0 10px;
     background-color: #f0f0f0;
@@ -147,7 +147,7 @@
 
 #filter-summary ul li{
     list-style:none;
-    border-top:1px solid #808080;
+    border-bottom:1px solid #808080;
 }
 
 .table-cell {
@@ -173,8 +173,8 @@
 }
 
 #quick-find-wrapper{
-    padding:10px;
-    margin:0 0 10px 10px;
+    padding:5px 10px;
+    margin:0 10px;
     border-bottom:solid 1px #808080;
 }
 
@@ -183,7 +183,8 @@
 }
 
 #quick-find-wrapper input{
-    /*width: 60%;*/
+    min-width: 200px;
+    width:100%;
 }
 
 #quick-find-clear{
@@ -197,25 +198,131 @@
 
 .active-filter-details{
     display:inline-block;
-    width:90%;
+    width:85%;
 }
 
-    .active-filter-details:first-child:hover{
+    .active-filter-details:nth-child(2):hover{
         text-decoration:underline;
         cursor:pointer;
     }
 
-    .active-filter-details.remove {
-        text-align: center;
+    .active-filter-details.remove, .active-filter-details.toggle-active-filter {
+        vertical-align:top;
         width: 5%;
     }
+
+        .active-filter-details.toggle-active-filter input{
+            margin:4px 0;
+        }
+
         .active-filter-details.remove div {
             background-image: url(Resources/Images/Icons/delete-16.png);
-            width:16px;
-            height:16px;
+            width: 16px;
+            height: 16px;
             margin: 5px;
         }
 
 .active-filter-details.remove:hover{
     cursor:pointer;
 }
+
+.toggle-folders-wrapper{
+    border-bottom:1px solid #808080;
+    padding:2px;
+    margin: 0 10px;
+    font-size:.9em;
+}
+
+.toggle-folders-wrapper div {
+    display: inline-block;
+    border-left: solid 1px #808080;
+    width: 30%;
+    text-align: center;
+}
+
+    .toggle-folders-wrapper div:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    .toggle-folders-wrapper div:first-child {
+        border-left: none;
+        color:#808080;
+    }
+        .toggle-folders-wrapper div:first-child:hover {
+            text-decoration: none;
+            cursor: default;
+        }
+
+.active-filter-header-wrapper, .dashboard-headers {
+    padding: 5px;
+    margin: 10px 10px 0 10px;
+    background-color: #f0f0f0;
+    border-radius: 4px 4px 0 0;
+}
+.active-filter-header-wrapper:hover{
+    cursor:pointer;
+    /*text-decoration:underline;*/
+}
+.active-filter-header-wrapper div{
+    display:inline-block;
+}
+
+.show-filters{
+    width:24px;
+    height:16px;
+    background-image:url(Resources/Images/Icons/arrow-down-small-24.png);
+    background-repeat:no-repeat;
+}
+
+.hide-filters {
+    width: 24px;
+    height: 16px;
+    background-image: url(Resources/Images/Icons/arrow-up-small-24.png);
+    background-repeat: no-repeat;
+}
+
+.reset-filters-wrapper{
+    margin:7px 0;
+}
+    .reset-filters-wrapper div, .upload-btn {
+        width: 29%;
+        display: inline-block;
+        text-align: center;
+        padding: 3px;
+        border: solid 1px #a7a7a7;
+        border-radius: 4px;
+        color: #1A72C4;
+        background-color: #F5F5F5;
+    }   
+
+.reset-filters-wrapper div:hover, .upload-btn:hover{
+    text-decoration:underline;
+    cursor:pointer;
+}
+
+.no-filters{
+    padding:5px;
+    color:#808080;
+}
+
+#toggle-hex-layer{
+    margin: 2px 5px;
+}
+
+#draw-tools-wrapper div {
+    display: inline-block;
+    margin: 2px 15px;
+    width: 24px;
+    height: 24px;
+    font-size:.8em;
+}
+
+#geo-filter legend{
+    font-size:.9em;
+}
+
+#geo-filter fieldset p{
+    font-size:.9em;
+}
+
+

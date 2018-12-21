@@ -10,7 +10,7 @@ import { ViewerApplication } from "geocortex/infrastructure/Viewer";
 declare var require;
 var myWorkflowContext;
 
-export class OE_SageGrouseConsPlnFilterInfoView extends ViewBase {
+export class OE_SageGrouseConsPlnHelpTutorialView extends ViewBase {
     
     app: ViewerApplication;
 

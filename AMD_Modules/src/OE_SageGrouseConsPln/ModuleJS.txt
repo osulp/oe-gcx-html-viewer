@@ -22,6 +22,16 @@
                         "visible": false,
                         "region": "ModalWindowRegion",
                         "configuration": {}
+                    }, 
+					{
+                        "id": "OE_SageGrouseConsPlnHelpTutorialView",
+                        "require": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnHelpTutorialView",
+                        "markup": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnHelpTutorialView.html",
+                        "title": "Conservation Planning Query Tool Overview",
+                        "viewModelId": "OE_SageGrouseConsPlnViewModel",
+                        "visible": false,
+                        "region": "ModalWindowRegion",
+                        "configuration": {}
                     }
                 ],
                 "viewModels": [

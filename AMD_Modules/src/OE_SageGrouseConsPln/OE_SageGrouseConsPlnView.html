@@ -1,29 +1,90 @@
 ﻿<a href="#"></a>
 <div id="report_area" dir="ltr">
     <div id="filter-summary-control">
-        <div class="query-control-bar">
-            <div id="reset-filters" data-binding="{@event-onclick:resetFilters}">Reset Filters</div>
-            <div id="show-filters" data-binding="{@hidden: show_filter_summary}{@event-onclick:toggleFilters}">Show Active Filters</div>
-            <div id="show-filters" data-binding="{@visible: show_filter_summary}{@event-onclick:toggleFilters}">Hide Active Filters</div>
+        <!--<div>Find sage-grouse conservation planning areas by filtering for desired location qualities that have been spatially attributed by hexagons.
         </div>
-        <div id="filter-summary" data-binding="{@visible: show_filter_summary}">
-            <div data-binding="{@visible: has_filters}">
-                <b>Active filters:</b>
-                <ul data-binding="{@source: filter_collection}">
-                    <li data-binding="{@template-for: filter_collection}">
-                        <div class="active-filter-details">
-                            <div data-binding="{@text: layer}{@event-onclick:setSearch}" title="Click to see in filter list."></div>
-                            <div class="filter-def" data-binding="{@text: filterDef}"></div>
-                        </div>
-                        <div class="active-filter-details remove" title="Clear filter.">
-                            <div data-binding="{@event-onclick:removeFilter}"></div>
-                        </div>
-                    </li>
-                </ul>
+        <div>Help</div>-->
+        <div>
+            <div class="active-filter-header-wrapper dashboard-headers">
+                <div>
+                    <input id="toggle-hex-layer" type="checkbox" data-binding="{@value: show_hex_layer}" /><label for="toggle-hex-layer"><b>SHOW SELECTED AREAS</b></label>
+                </div>
             </div>
-            <div data-binding="{@hidden: has_filters}">
-                No filters currently in use.
+            <div class="active-filter-header-wrapper dashboard-headers" data-binding="{@event-onclick: toggleFilters}">
+                <div><b>ACTIVE FILTERS</b></div>
+                <div data-binding="{class: show_filter_class}"></div>
             </div>
+            <div id="filter-summary" data-binding="{@visible: show_filter_summary}">
+                <div data-binding="{@visible: has_filters}">
+                    <ul data-binding="{@source: filter_collection}">
+                        <li data-binding="{@template-for: filter_collection}">
+                            <div class="active-filter-details toggle-active-filter">
+                                <input type="checkbox" data-binding="{@value: enabled}{@event-onclick:toggleFilter}" />
+                            </div>
+                            <div class="active-filter-details" data-binding="{@source: @context}{@template-selector:type}">
+                                <div data-binding="{@template-select:attribute}">
+                                    <div data-binding="{@text: layer}{@event-onclick:setSearch}" title="Click to see in filter list."></div>
+                                    <div class="filter-def" data-binding="{@text: filterDef}"></div>
+                                </div>
+                                <div data-binding="{@template-select:geographic}{@event-onclick:zoomToGeoFilter}">
+                                    <div data-binding="{@text: layer}" title="Zoom to extent of geographic filter."></div>
+                                    <div class="filter-def">Zoom to extent</div>
+                                </div>
+                            </div>
+                            <div class="active-filter-details remove" title="Clear filter.">
+                                <div data-binding="{@event-onclick:removeFilter}"></div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="reset-filters-wrapper">
+                        <div>Report</div>
+                        <div>Download</div>
+                        <div data-binding="{@event-onclick:resetFilters}">Clear Filters</div>
+                    </div>
+                </div>
+                <div class="no-filters" data-binding="{@hidden: has_filters}">
+                    <em>No filters currently in use.</em>
+                </div>
+            </div>
+        </div>
+        <div class="active-filter-header-wrapper dashboard-headers" data-binding="{@event-onclick: toggleGeographicFilter}">
+            <div><b>GEOGRAPHIC FILTER</b></div>
+            <div data-binding="{class: show_geo_filter_class}"></div>
+        </div>
+        <div id="geo-filter" data-binding="{@visible: show_geo_filter}">
+            <div>
+                <span>Add a geographic filter:</span>
+                <fieldset>
+                    <legend>Draw</legend>
+                    <div id="draw-tools-wrapper" data-binding="{@visible: show-draw-geo}">
+                        <div data-binding="{@event-onclick: drawAOIFilter}" class="freehand_polygon">
+                            <button class="toolbar-item tool" title="Draw a rectangle on the map">
+                                <img src="Resources/Images/Icons/Toolbar/draw-polygon-freehand-24.png" width="16" class="bound-visible" alt="Tool">                <p>Freehand</p>
+                            </button>
+                        </div>
+                        <div data-binding="{@event-onclick: drawAOIFilter}" class="polygon">
+                            <button class="toolbar-item tool" title="Draw a rectangle on the map">
+                                <img src="Resources/Images/Icons/Toolbar/draw-polygon-24.png" width="16" class="bound-visible" alt="Tool">                <p>Polygon</p>
+                            </button>
+                        </div>
+                        <div data-binding="{@event-onclick: drawAOIFilter}" class="rectangle">
+                            <button class="toolbar-item tool" title="Draw a rectangle on the map">
+                                <img src="Resources/Images/Icons/Toolbar/draw-rectangle-24.png" width="16" class="bound-visible" alt="Tool">                <p>Rectangle</p>
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Upload</legend>
+                    <p>
+                        Choose files to upload from your computer, and they will become temporarily available on the map. Supported file types include: .csv, .xlsx, .kml, .shp, .gpx, or a .zip containing a FileGDB or shapefiles.
+                    </p>
+                    <div class="upload-btn" data-binding="{@event-onclick: uploadAOIFilter}">Upload</div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="dashboard-headers">
+            <div><b>DATA FILTERS</b></div>
         </div>
         <div id="quick-find-wrapper">
             <div>Quick Find:</div>
@@ -32,14 +93,16 @@
             </div>
             <div id="quick-find-clear" data-binding="{@event-onclick:clearSearch}">Clear</div>
         </div>
-        <div 
-        <div data-binding="{@event-onclick:collapseFolders}">Collapse All</div>
-        <div data-binding="{@event-onclick:expandFolders}">Expand All</div>
+        <div class="toggle-folders-wrapper">
+            <div data-binding="{@text: filter_number}"></div>
+            <div data-binding="{@event-onclick:collapseFolders}">Collapse All</div>
+            <div data-binding="{@event-onclick:expandFolders}">Expand All</div>
+        </div>
     </div>
-    <div id="query-filter-wrapper">        
+    <div id="query-filter-wrapper">
         <div class="table-cell body-content-outer-wrapper">
             <div class="body-content-inner-wrapper">
-                <div class="body-content">                    
+                <div class="body-content">
                     <ul class="ul-query-folders" data-binding="{@source: dashboard_meta_filter}">
                         <li data-binding="{@template-for: dashboard_meta_filter}">
                             <div data-binding="{@event-onclick:onFolderClick}" class="folder-header-wrapper">

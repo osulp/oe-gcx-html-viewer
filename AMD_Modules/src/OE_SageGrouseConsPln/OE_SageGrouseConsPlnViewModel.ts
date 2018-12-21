@@ -16,25 +16,6 @@ export interface Folder {
     layers: ObservableCollection<any>;
 }
 
-//export interface Layer {
-//    source: string;
-//    DATAVALUES: [];
-//    summarization: string;
-//    MIN: string;
-//    MAX: string;
-//    INCREMENT: string;
-//    FIELD: string;
-//    UITYPE: string;
-//    directionality: string;
-//    desc: string;
-//    notes: string;
-//    uiID: string;
-//    uiValID: string;
-//    //uiID: ObservableCollection<string>;
-//    //uiELem: HTMLElement;
-//    //uiValue: HTMLElement;    
-//}
-
 export class SageGrouseConsPlnViewModel extends ViewModelBase {
     app: ViewerApplication;
     filterView: OE_SageGrouseConsPlnView;
@@ -44,37 +25,59 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
     //dashboard_meta_filter: ObservableCollection<Folder>;    
     folders: ObservableCollection<string>;   
     show_filter_summary: Observable<boolean>;
+    show_geo_filter: Observable<boolean>;
+    show_filter_class: Observable<string>;
+    show_geo_filter_class: Observable<string>;
     filter_collection: ObservableCollection<any>;
     has_filters: Observable<boolean>;
     get_info_layer: ObservableCollection<any>;
     firstSizing: boolean = true;
     filterText = new Observable<string>("");
     dashboard_meta_filter: FilterableCollection<any>;
+    filter_number: Observable<string>;
+    show_hex_layer: Observable<boolean>;
 
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);        
         this.myModel = this;
         this.dashboard_meta = new ObservableCollection<Folder>();
-        this.dashboard_meta_filter = new FilterableCollection<Folder>(this.dashboard_meta, this._FilterFilters.bind(this,this));
+        this.dashboard_meta_filter = new FilterableCollection<Folder>(this.dashboard_meta, this._FilterFilters.bind(this, this));
+        this.filter_number = new Observable<string>("0");
         this.folders = new ObservableCollection([]);
-        this.show_filter_summary = new Observable(false);
+        this.show_filter_summary = new Observable(true);
+        this.show_filter_class = new Observable("hide-filters");
+        this.show_geo_filter_class = new Observable("show-filters");
+        this.show_geo_filter = new Observable(false);
         this.filter_collection = new ObservableCollection([]);
         this.has_filters = new Observable(false);
         this.get_info_layer = new ObservableCollection([]);
         this.filterText = new Observable<string>("");
         this.filterView = new OE_SageGrouseConsPlnView(app, lib);
+        this.show_hex_layer = new Observable(true);
         //this.dashboard_meta_filter.bind(this, (changedArgs: any) => {
         //    console.log('what changed?', changedArgs);
         //});
         // Listen for changes to the filter text to update the filtered collection.
         this.filterText.bind(this, () => {
             this.dashboard_meta_filter.refresh();
+            let layer_cnt = 0;
             this.dashboard_meta.getItems().forEach(folder => {
                 folder["filteredLayers"].refresh();
+                layer_cnt += folder["filteredLayers"].getLength();
+                folder["filteredLayers"].refresh();
             });
+            this.filter_number.set(layer_cnt.toString() + ' filter(s)');
             this.app.viewManager.getViewById("OE_SageGrouseConsPlnView")["setDefaultFilters"]();
         });
-
+        this.dashboard_meta.bind(this, (args) => {
+            if (this.dashboard_meta.getLength() > 0) {
+                let layer_cnt = 0;
+                this.dashboard_meta.getItems().forEach((folder) => {
+                    layer_cnt += folder["filteredLayers"].getLength();
+                });
+                this.filter_number.set(layer_cnt.toString() + ' filter(s)');
+            }
+        });
     }
 
 
@@ -96,12 +99,38 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
             this.app.eventRegistry.event("PanelResizeEndEvent").subscribe(this, (args) => {
                 let thisScope = this;
                 window.setTimeout(thisScope._resizeFilterList, 500);                
-            });           
+            });       
+            this.app.eventRegistry.event("DataFrameClosedEvent").subscribe(this, (args) => {
+                let thisScope = this;
+                window.setTimeout(thisScope._resizeFilterList, 500);
+            }); 
+            
+            this.app.eventRegistry.event("ViewContainerViewClosedEvent").subscribe(this, (args) => {
+                console.log('view container closing', args);
+                if (args.viewId === "OE_SageGrouseConsPlnView") {
+                    //turn off hex layer display
+                    this._hexLayerDisplay(false);
+                }
+            });
+            this.app.eventRegistry.event("ViewDeactivatedEvent").subscribe(this, (args) => {
+                console.log('ViewDeactivatedEvent', args);
+            });
         }
     }
 
+    _hexLayerDisplay(show?:boolean) {
+        var mService = this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === 'HexSageCon').length > 0 ? this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === 'HexSageCon')[0] : null;
+        let layer = mService.findLayerByName('HEX_SageCon');
+        layer.setVisibility(show);
+        mService.setVisibility(show);
+        mService.refresh();
+    }
+
     _onSiteInitialized(site: Site, thisViewModel) {
-        this.app.registerActivityIdHandler("showConsPlnFilters", function CustomEventHandler(workflowContext, contextFunctions) {            
+        this.app.registerActivityIdHandler("showConsPlnFilters", function CustomEventHandler(workflowContext, contextFunctions) {    
+            //Show over viewe first // add check based on cookie preference to show again or not.
+
+            //thisViewModel.app.commandRegistry.command("ActivateView").execute("OE_SageGrouseConsPlnHelpTutorialView"); 
             //create the query list stucture
             //pull unique folders
             var thisScope = this;
@@ -154,7 +183,8 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
                             }
                         });
                         datavalues.set(layer_filter_opts);
-                        recAttr.DATAVALUES = datavalues;                        
+                        recAttr.DATAVALUES = datavalues;   
+                        recAttr.enabled = new Observable<Boolean>(true);
                         _lyrs.push(recAttr);
                     }
                 });
@@ -165,9 +195,9 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
             })            
             //Set observable collection to bind to html
             thisViewModel.dashboard_meta.set(_queryMeta);     
-            //thisViewModel.dashboard_meta_filter.set(_queryMeta);
-            thisViewModel.app.commandRegistry.command("ActivateView").execute("OE_SageGrouseConsPlnView");      
-            thisViewModel._resizeFilterList();
+            thisViewModel.app.commandRegistry.command("ActivateView").execute("OE_SageGrouseConsPlnView");   
+            //thisViewModel.app.commandRegistry.command("ActivateView").execute("OE_SageGrouseConsPlnActiveFiltersView"); 
+            thisViewModel._resizeFilterList();            
         });
     }
 
@@ -194,7 +224,7 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
         if ($(".OE_SageGrouseConsPlnView").length > 0 ? $(".OE_SageGrouseConsPlnView")[0].classList.contains('active') : false ) {
             let reportAreaHeight = $(".OE_SageGrouseConsPlnView").parent().height();
             let summaryAreaHeight = $("#filter-summary-control").height();
-            summaryAreaHeight += this.firstSizing ? 59 : 29;
+            summaryAreaHeight += this.firstSizing ? 49 : 10;
             $(".body-content-inner-wrapper").height(reportAreaHeight - summaryAreaHeight + "px");
             //set width
             let reportAreaWidth = $(".OE_SageGrouseConsPlnView").parent().width() - 25;
