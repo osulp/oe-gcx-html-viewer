@@ -32,6 +32,16 @@
                         "visible": false,
                         "region": "ModalWindowRegion",
                         "configuration": {}
+                    },
+					{
+                        "id": "OE_SageGrouseConsDownloadView",
+                        "require": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsDownloadView",
+                        "markup": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsDownloadView.html",
+                        "title": "Download Selected Hexagon Areas",
+                        "viewModelId": "OE_SageGrouseConsPlnViewModel",
+                        "visible": false,
+                        "region": "ModalWindowRegion",
+                        "configuration": {}
                     }
                 ],
                 "viewModels": [

@@ -10,14 +10,16 @@ import { ImageProperties } from "geocortex/infrastructure/commandArgs/ImagePrope
 import { DisplayNotificationArgs,NotificationActionButton } from "geocortex/infrastructure/commandArgs/DisplayNotificationArgs";
 import { contains } from "geocortex/framework/utils/ArrayUtils";
 import { Observable } from "geocortex/framework/observables";
+import { AddStatusArgs } from "geocortex/infrastructure/commandArgs/AddStatusArgs";
+import { getGraphicsLayer } from "geocortex/infrastructure/GraphicUtils";
+import { ExportGraphicsLayerArgs } from "geocortex/infrastructure/commandArgs/ExportGraphicsLayerArgs";
+import { request } from "geocortex/geocortex";
+//import { Tour } from "./OE_tour";
 
-declare var require;
-var myWorkflowContext;
-var drawToolBar;
-var esriMap;
+declare var $: any;
+//var hopscotch: any;
 
-export class OE_SageGrouseConsPlnView extends ViewBase {
-
+export class OE_SageGrouseConsPlnView extends ViewBase {    
     jquiSlider = HTMLElement;
     amount = HTMLElement;
     root: HTMLElement;
@@ -27,15 +29,147 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
     hex_layer_url: string;
     geo_filter: any;
     displayNotification: DisplayNotificationArgs;
-    aoiGeometry: any;
-    gpDissolveURL: string = 'https://lib-gis3.library.oregonstate.edu/arcgis/rest/services/geoprocessing/dissolve/GPServer/dissolve'
+    //aoiGeometry: any;
+    gpDissolveURL: string = 'https://lib-gis3.library.oregonstate.edu/arcgis/rest/services/geoprocessing/dissolve/GPServer/dissolve';
+    gpExtractHexURL: string = 'https://lib-arcgis5.library.oregonstate.edu/arcgis/rest/services/geoprocessing/extractFilteredHex/GPServer/extractFilteredHex';
+    uploadGeoFilterLayerName = '';    
+    hopscotch;
 
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
         this.geo_filter = {
             enabled: false,
-            ids: []
+            ids: [],
+            type: '',
+            layer: null
         }        
+    }
+
+    showTour(_evt,_el,context:any) {
+        this.hopscotch = window["hopscotch"] ? window["hopscotch"] : null;
+        if (this.hopscotch) {
+            // Set the context of the scope for the function callbacks to relate to the right context.  Checks against filterView of viewModel which gets passed on click events.
+            var thisScope = context.filterView ? this : context;
+            var demoFilterID = "#12SageGrouseProbabilityofWinterHabitatUseNonhabitat";
+            // Define the tour!
+            var tour = {
+                id: "cons-pln-tour",
+                steps: [
+                    {
+                        title: "Conservation Planning Tool Tour",
+                        content: "The Conservation Planning Tool lets you quickly identify areas based on your conservation priorities and landscape attributes.  Click on through this tour to learn how to use this tool.",
+                        target: ".panel-title-contents.bound-visible-inline",
+                        yOffset: -20,
+                        placement: "right"
+                    },
+                    {
+                        title: "Choose a filter type",
+                        content: "Select to filter by Data or Geographic Filter",
+                        target: "filter-toggle",
+                        placement: "right",
+                        yOffset: -20,
+                        showCTAButton: true,
+                        ctaLabel: "Show me",
+                        onCTA: () => {
+                            thisScope.toggleTabFilters();
+                        }
+                    },
+                    {
+                        title: "Find a filter",
+                        content: "You can scroll through the data filters or quick search by name.",
+                        target: "quick-find-wrapper",
+                        placement: "right",
+                        yOffset: -20,
+                        onShow: () => {
+                            thisScope.toggleTabFilters(null,null,thisScope,'Data');
+                        },
+                        showCTAButton: true,
+                        ctaLabel: "Show me",
+                        onCTA: () => {
+                            thisScope.viewModel.filterText.set('wi');
+                        }
+                    },
+                    {
+                        title: "Adjust filter settings",
+                        content: "You can change the applied filter by deselecting/selecting categories or modifying the range sliders",
+                        target: ".ul-query-folders",
+                        placement: "right",
+                        onShow: () => {
+                            thisScope.toggleTabFilters(null,null,null,'Data');
+                            thisScope.viewModel.filterText.set('wi');
+                        },
+                        showCTAButton: true,
+                        ctaLabel: "Show me",
+                        onCTA: () => {
+                            thisScope.viewModel.filterText.set('wi');
+                            $(demoFilterID).click();
+                        }
+                    },
+                    {
+                        title: "Active filters",
+                        content: "Active filters are displayed here.  And display the currently applied criteria for each filter. <br>  You can enable/disable an applied filter without deleting it by clicking the checkbox.  To remove the filter, use the x button.  <br> <b>TIP:</b> You can click on the filter name to quickly display the filter in the Data Filters tab to further modify the filter.",
+                        target: "#filter-summary",
+                        placement: "right",
+                        onShow: () => {
+                            thisScope.toggleTabFilters(null,null,null,'Data');
+                            thisScope.viewModel.filterText.set('wi');
+                            if ($(demoFilterID)[0].checked) {
+                                $(demoFilterID).click();
+                            }                            
+                        }                        
+                    },
+                    {
+                        title: "Active filter controls",
+                        content: "When active filters are enabled, you can choose to get a PDF report of your selection, download the selected hexagons, or clear all filters.",
+                        target: ".reset-filters-wrapper",
+                        yOffset: -20,
+                        placement: "right",
+                        onShow: () => {
+                            thisScope.toggleTabFilters(null,null,null,'Data');
+                            thisScope.viewModel.filterText.set('wi');
+                            if ($(demoFilterID)[0].checked) {
+                                $(demoFilterID).click();
+                            }  
+                        }
+                    },
+                    {
+                        title: "Show/Hide selected hexagons",
+                        content: "To toggle the display of the selected hexagon layer, use this checkbox.",
+                        target: ".active-filter-header-wrapper.dashboard-headers",
+                        placement: "right",
+                        yOffset: -20,
+                        showCTAButton: true,
+                        ctaLabel: "Show me",
+                        onCTA: () => {                           
+                            $("#toggle-hex-layer").click();
+                        }
+                    },
+
+                ],
+                showCloseButton: true,
+                showPrevButton: true,
+                i18n: {
+                    stepNums: ['', '1', '2', '3', '4', '5', '6', '7']
+                },
+                onEnd: () => {
+                    //$("#clear-filters").click();
+                    thisScope.resetFilters();
+                    thisScope.clearSearch();
+                    //thisScope.setDefaultFilters(true);
+                },
+                onClose: () => {
+                    //$("#clear-filters").click();
+                    thisScope.resetFilters();
+                    thisScope.clearSearch();
+                    //thisScope.setDefaultFilters(true);
+                }
+           
+            };
+
+            // Start the tour!
+            this.hopscotch.startTour(tour);
+
+        }
     }
 
     activated() {
@@ -47,16 +181,32 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                 this.app.commandRegistry.command("RecenterMapOnNextMapResize").execute();
                 this.app.commandRegistry.command("MapResize").execute();
             }           
-            this.setDefaultFilters(true);    
-            this.viewModel.show_hex_layer.bind(this, () => {
-                this.viewModel._hexLayerDisplay(this.viewModel.show_hex_layer.get());
-            });
+            this.setDefaultFilters(true);  
+            this.viewModel.show_hex_layer.bind(this, () => {                
+                this.viewModel._toggleLayerDisplay('HexSageCon','HEX_SageCon',this.viewModel.show_hex_layer.get());
+            });            
             if (this.drawToolBar == null) {
                 this.esriMap = this.app.site.essentialsMap.getMap();
                 this.drawToolBar = new esri.toolbars.Draw(this.esriMap);
 
                 this.drawToolBar.on("draw-end", (evt) => {
-                    this.aoiGeometry = evt.geometry;
+                    let geoType = '';
+                    switch (evt.target._geometryType) {
+                        case 'rectangle':
+                            geoType = 'Rectangle';
+                            break;
+                        case 'polygon':
+                            geoType = 'Polygon';
+                            break;
+                        case 'freehandpolygon':
+                            default:
+                            geoType = 'Freehand';
+                            break;
+                    }
+                    this.viewModel.aoiGeometry = evt.geometry;
+                    this.geo_filter.type = geoType;
+                    this.geo_filter.layer = null;
+                    this.uploadGeoFilterLayerName = '';
                     this.drawToolBar.deactivate();
                     this.esriMap.showZoomSlider();
                     this.app.commandRegistry.command("AddTemporaryMarkupGeometry").execute(evt.geometry);
@@ -73,6 +223,7 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                         this.geo_filter.ids = results;
                         this.updateQuery();
                         this.app.commandRegistry.command("ClearTemporaryMarkup").execute();
+                        this.zoomToGeoFilter();
                     });
                 }
                 );
@@ -80,54 +231,69 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
 
             //subscribe to the UploadDataCompletedEvent in case files get uploaded.
             this.app.eventRegistry.event("UploadDataCompletedEvent").subscribe(this, (uploadInfo) => {
-                console.log('upload stuff!', uploadInfo);
+                ////set uploadGeoFilterLayer to upload name and turn off display    
+                this.app.commandRegistry.command("ClearTemporaryMarkup").execute();
+                this.uploadGeoFilterLayerName = uploadInfo.layerDetailsResults.details.layerName;
+                this.viewModel._toggleLayerDisplay(this.uploadGeoFilterLayerName, this.uploadGeoFilterLayerName, false);
+                this.app.commandRegistry.command("AddStatus").execute(new AddStatusArgs('Updating geographic filter to use uploaded data...', null, null, null, null, true));
                 if (uploadInfo.mainResponse.featureCollection.layers.length > 0) {
-                    if (uploadInfo.mainResponse.featureCollection.layers[0].featureSet.features.length > 1) {
-                        //need to dissolve into one feature geometry                        
-                        let uploadFS = new esri.tasks.FeatureSet();
-                        //uploadFS.spatialReference = new esri.SpatialReference(102100);
-                        uploadInfo.mainResponse.featureCollection.layers[0].featureSet.features.forEach(feature => {
-                            var graphic = new esri.Graphic({
-                                geometry: feature.geometry,
-                                attributes: feature.attributes
-                            });
-                            uploadFS.features.push(graphic);
+                    //need to dissolve into one feature geometry                        
+                    let uploadFS = new esri.tasks.FeatureSet();
+                    uploadInfo.mainResponse.featureCollection.layers[0].featureSet.features.forEach(feature => {
+                        var graphic = new esri.Graphic({
+                            geometry: feature.geometry,
+                            attributes: feature.attributes
                         });
-                        let gpInputFS = { 'InputFeatures': uploadFS };
-                        let gptask = new esri.tasks.Geoprocessor(this.gpDissolveURL);
-                        gptask.submitJob(gpInputFS, (result) => {
-                            console.log('gp Dissolve result!', result);
-                            gptask.getResultData(result.jobId, "dissolved_features", (df) => {
-                                this.aoiGeometry = df.value.features[0].geometry;
-                                //query to get ids to include in layer def                    
-                                let QueryTask = new esri.tasks.QueryTask(this.hex_layer_url);
-                                let Query = new esri.tasks.Query();
-                                Query.geometry = this.aoiGeometry;
-                                Query.returnGeometry = false;
-                                Query.spatialRelationship = esri.tasks.Query.SPATIAL_REL_INTERSECTS;
-                                //Query["returnIdsOnly"] = true;                    
-                                QueryTask.executeForIds(Query, (results) => {
-                                    this.geo_filter.enabled = true;
-                                    this.geo_filter.ids = results;
-                                    this.updateQuery();
-                                    this.app.commandRegistry.command("ClearTemporaryMarkup").execute();
-                                });
-
-
-                                console.log('dissolved features!', df);
-                            }, (err) => {
-                                console.log('error getting gp result data', err);
-                            })
-                        }, (status) => {
-                            console.log('status', status);
-                        },
-                            (error) => {
-                                console.log('gp error', error);
-                            });
-                    }
+                        uploadFS.features.push(graphic);
+                    });
+                    let gpInputFS = { 'InputFeatures': uploadFS };
+                    let gptask = new esri.tasks.Geoprocessor(this.gpDissolveURL);
+                    gptask.submitJob(gpInputFS, (result) => {
+                        gptask.getResultData(result.jobId, "dissolved_features", (df) => {
+                            this.setUploadGeometry(df.value.features[0].geometry);
+                            this.zoomToGeoFilter();
+                        }, (err) => {
+                            console.log('error getting gp result data', err);
+                        })
+                    }, (status) => {
+                        console.log('status', status);
+                    },
+                        (error) => {
+                            console.log('gp error', error);
+                        });
                 }
-            })
+                var mService = this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === this.uploadGeoFilterLayerName).length > 0 ? this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === this.uploadGeoFilterLayerName)[0] : null;
+                let layer = mService.findLayerByName(this.uploadGeoFilterLayerName);
+                this.geo_filter.layer = layer;
+                window.setTimeout(() => {
+                    this.app.commandRegistry.command("RemoveUserAddedLayer").execute(layer);
+                    this.app.commandRegistry.command("ActivateView").execute("OE_SageGrouseConsPlnView");
+                }, 50);
+            });
+
+            window.setTimeout(() => {
+                this.showTour(null,null,this);
+            }, 50);
         }        
+    }           
+
+        setUploadGeometry(geometry) {
+        this.viewModel.aoiGeometry = geometry;
+        //query to get ids to include in layer def                    
+        let QueryTask = new esri.tasks.QueryTask(this.hex_layer_url);
+        let Query = new esri.tasks.Query();
+        Query.geometry = this.viewModel.aoiGeometry;
+        Query.returnGeometry = false;
+        Query.spatialRelationship = esri.tasks.Query.SPATIAL_REL_INTERSECTS;
+        QueryTask.executeForIds(Query, (results) => {
+            this.geo_filter.enabled = true;
+            this.geo_filter.ids = results;
+            this.geo_filter.type = this.uploadGeoFilterLayerName;               
+            this.updateQuery();
+            this.app.commandRegistry.command("RemoveStatus").execute();
+        }, (err) => {
+            console.log('error', err);
+        });
     }
 
     setDefaultFilters(reset?) {
@@ -140,12 +306,12 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                     case "Slider":
                         var categories = layer.DATAVALUES.getAt(0).categories;
                         let min = layer.MIN
-                            ? parseInt(layer.MIN)
+                            ? parseFloat(layer.MIN)
                             : 0;
                         let max = categories.length > 1
                             ? categories.length - 1
                             : layer.MAX
-                                ? parseInt(layer.MAX)
+                                ? parseFloat(layer.MAX)
                                 : 100;                            
                         let minVal = reset
                             ? min
@@ -160,7 +326,7 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                                     ? layer.DATAVALUES.getAt(0).optionValue.get()
                                     : layer.DATAVALUES.getAt(0).optionValue.get()[1]
                                 : max;
-                        let increment = layer.INCREMENT ? parseInt(layer.INCREMENT) : 1;
+                        let increment = layer.INCREMENT ? parseFloat(layer.INCREMENT) : 1;
 
                         layer.DATAVALUES.getItems().forEach(function (dv) {
                             $("#" + dv.optionValID).html(
@@ -276,11 +442,20 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
         }  
         this.updateQuery();
     }
-    toggleGeographicFilter(_evt, _elem, _cntx) {
-        this.viewModel.show_geo_filter.set(!this.viewModel.show_geo_filter.get());
-        this.viewModel.show_geo_filter_class.set(!this.viewModel.show_geo_filter.get() ? 'show-filters' : 'hide-filters');
-        this.viewModel._resizeFilterList();
+
+    toggleTabFilters(_a,_b,_c, activeTab?: string) {        
+        let showData = activeTab
+            ? activeTab === 'Data'
+            : !this.viewModel.show_data_filter.get();
+        let showGeo = activeTab ? activeTab === 'Geo' :
+            !this.viewModel.show_geo_filter.get();        
+        this.viewModel.show_data_filter.set(showData);
+        this.viewModel.show_data_filter_class.set(!showData ? 'tab-header show-filters' : 'tab-header hide-filters');
+        this.viewModel.show_geo_filter.set(showGeo);
+        this.viewModel.show_geo_filter_class.set(!showGeo ? 'tab-header show-filters' : 'tab-header hide-filters');
+        this.viewModel._resizeFilterList();        
     }
+    
     resetFilters() {
         this.geo_filter.enabled = false;
         this.geo_filter.ids = [];
@@ -319,14 +494,17 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
         this.esriMap.hideZoomSlider();
     }
     
-    uploadAOIFilter(_evt, _elem, _cntx) {
-        this.app.commandRegistry.command("UploadData").execute();
+    uploadAOIFilter(_evt, _elem, _cntx) {        
+        this.app.commandRegistry.command("UploadData").execute();        
     }
 
     removeFilter(_event, _element, context) {       
         if (context.type === 'geographic') {
             this.geo_filter.enabled = false;
-            this.geo_filter.ids = [];
+            this.geo_filter.ids = [];            
+            this.viewModel.aoiGeometry = null;            
+            this.viewModel.geo_history_filter_collection.refresh();
+            this.viewModel.show_recent_geo_filters.set(this.viewModel.geo_filter_collection.getLength() > 0);
         }
         //update data model to remove the filter for layer
         this.viewModel.dashboard_meta.getItems().forEach(folder => {
@@ -339,6 +517,7 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                 };
             });
         });
+        this.app.commandRegistry.command("ClearTemporaryMarkup").execute();
         this.updateQuery();
         this.setDefaultFilters();
     }
@@ -356,11 +535,141 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
     }
 
     setSearch(_evt, _el, cnxt) {
+        this.toggleTabFilters(null,null,null,'Data');
         this.viewModel.filterText.set(cnxt.layer);
     }
 
-    zoomToGeoFilter(_evt, _el, cntx) {
-        this.app.commandRegistry.command("ZoomToExtent").execute(this.aoiGeometry.getExtent());
+    zoomToGeoFilter() {
+        this.toggleTabFilters(null,null,null,'Geo');
+        this.app.commandRegistry.command("ZoomToExtent").execute(this.viewModel.aoiGeometry.getExtent().expand(2));
+    }
+
+    //++++++++++++++++++++++++
+    // Geo Filter History Functions
+    //++++++++++++++++++++++++
+    viewGeoHistoryArea(_evt, _el, cntx) {
+        cntx.historyShow.set(!cntx.historyShow.get());
+        this.updateHistoryMarkup();
+        return true;
+    }
+
+    updateHistoryMarkup() {
+        this.app.commandRegistry.command("ClearMarkupQuiet").execute();
+        this.app.commandRegistry.command("ClearTemporaryMarkup").execute();
+        this.viewModel.geo_filter_collection.getItems().forEach(gfc => {
+            if (gfc.historyShow.get()) {
+                this.app.commandRegistry.command("AddMarkup").execute(gfc.geometry);
+            }
+        });     
+    }
+
+    removeGeoHistoryArea(_evt, _el, cntx) {
+        let idxToRemove = 0;
+        this.viewModel.geo_filter_collection.getItems().forEach((gfc,idx) => {
+            if (gfc.geometry === cntx.geometry) {
+                idxToRemove = idx;            
+            }
+        }); 
+        this.viewModel.geo_filter_collection.removeAt(idxToRemove);
+        let has_active_geo_filter = this.viewModel.filter_collection.get().filter(f => f.type === 'geographic').length > 0;
+        this.viewModel.show_recent_geo_filters.set((this.viewModel.geo_filter_collection.getLength() > 1 && has_active_geo_filter) || (!has_active_geo_filter && this.viewModel.geo_filter_collection.getLength() > 0));
+        //if upload layer remove service from layer list
+        //if (cntx.mapLayer) {
+        //    this.app.commandRegistry.command("RemoveUserAddedLayer").execute(cntx.mapLayer);
+        //}        
+        this.updateHistoryMarkup();
+        var thisScope = this;
+        //window.setTimeout(() => {
+        //    thisScope.app.commandRegistry.command("SetCurrentTab").execute("Sage-Grouse Conservation Planning");
+        //}, 1500);
+        
+        
+    }
+
+    useGeoHistoryArea(_evt, _el, cntx) {
+        //turn off all other display and set active geo filter to selected geo
+        this.app.commandRegistry.command("ClearMarkupQuiet").execute();
+        this.app.commandRegistry.command("ClearTemporaryMarkup").execute();
+        this.viewModel.aoiGeometry = cntx.geometry;
+        this.viewModel.geo_filter_collection.getItems().forEach(gfc => {
+            gfc.historyShow.set(false);
+        });        
+        this.viewModel.geo_history_filter_collection.refresh();
+        this.uploadGeoFilterLayerName = cntx.mapLayer ? cntx.type : '';
+        this.geo_filter.enabled = true;
+        this.geo_filter.ids = cntx.ids;
+        this.geo_filter.type = cntx.geoType;
+        this.updateQuery();
+        this.zoomToGeoFilter();
+        return true;
+    }
+
+    //++++++++++++++++++++++++
+    // END Geo Filter History Functions
+    //++++++++++++++++++++++++
+  
+    downloadHexFilterAreas() {
+        this.app.commandRegistry.command("ActivateView").execute("OE_SageGrouseConsPlnDownloadView");
+    };
+
+    getReport() {
+        console.log('get report');
+        let workflowUrl = "https://lib-gis1.library.oregonstate.edu/arcgis/home/item.html?id=24c76ba4aab347a0be0b5db5a878c636";
+        let filters = { "filters": [] };
+        this.viewModel.filter_collection.get().forEach(fc => {
+            if (fc.type !== 'geographic') {
+                filters.filters.push(
+                    { "filterDef": fc.filterDef, "layer": fc.layer }
+                );
+            }            
+        });
+
+        let workflowArgs: any = {};
+        workflowArgs.workflowId = "cons_pln_generate_report";
+        workflowArgs.filterCollection = JSON.stringify(filters);
+        workflowArgs.layerDef = this.viewModel.active_layer_def;
+        workflowArgs.aoiGeometry = this.viewModel.aoiGeometry
+            ? this.viewModel.aoiGeometry
+            : JSON.parse("{\"rings\":[[[-13561079.235725246,5696991.214135939],[-12959366.9490645,5696991.214135939],[-12959366.9490645,5134414.685957194],[-13561079.235725246,5134414.685957194],[-13561079.235725246,5696991.214135939]]],\"spatialReference\":{\"wkid\":102100}}");      
+        this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
+    }
+
+    createGeoFilterObj() {
+        let idNum = (this.viewModel.geo_filter_collection.getLength() + 1).toString();
+        let filterObj = {
+            layer: "Geographic Filter: " + this.geo_filter.type,
+            geoType: this.geo_filter.type,
+            enabled: new Observable<Boolean>(this.geo_filter.enabled),
+            ids: this.geo_filter.ids,
+            geometry: this.viewModel.aoiGeometry,
+            show: new Observable<Boolean>(false),
+            mapLayer: this.geo_filter.layer,
+            filterDef: '',
+            type: 'geographic',
+            showID: 'show' + idNum,
+            historyShow: new Observable<Boolean>(false)
+        };
+        if (this.viewModel.geo_filter_collection.getLength() > 0) {
+            let alreadyInList = false;
+            this.viewModel.geo_filter_collection.getItems().forEach(gfc => {
+                alreadyInList = gfc.geometry === filterObj.geometry ? true : alreadyInList;
+            })
+            if (!alreadyInList) {
+                this.viewModel.geo_filter_collection.addItem(filterObj);
+            }
+        } else {
+            this.viewModel.geo_filter_collection.addItem(filterObj);
+        }
+        this.viewModel.geo_history_filter_collection.refresh();
+        this.viewModel.show_recent_geo_filters.set(this.viewModel.geo_filter_collection.getLength() > 1)
+        filterObj.show.bind(this, (showVal) => {
+            if (showVal) {
+                this.app.commandRegistry.command("AddTemporaryMarkupGeometry").execute(this.viewModel.aoiGeometry);
+            } else {
+                this.app.commandRegistry.command("ClearTemporaryMarkup").execute();
+            }
+        });
+        return filterObj;
     }
 
     updateQuery(updateObj?) {
@@ -386,7 +695,8 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                     let filter = {
                         label: dv.option,
                         field: dv.fieldValue,
-                        value: dv.optionValue.get()
+                        value: dv.optionValue.get(),
+                        categories: dv.categories
                     }
                     qo.filters.push(filter);
                 });
@@ -399,13 +709,9 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
         var layerDef = '';
         var filterCollection = [];
         //add geo filter if present
-        if (this.geo_filter.ids.length >0) {
-            filterCollection.push({
-                layer: "Geographic Filter",
-                enabled: new Observable<Boolean>(this.geo_filter.enabled),
-                filterDef: '',
-                type: 'geographic'
-            });
+        if (this.geo_filter.ids.length > 0) {
+            let filterObj = this.createGeoFilterObj();
+            filterCollection.push(filterObj);
         }
         query_obj.forEach((qo, _idx) => {
             if (qo['field']) {
@@ -419,6 +725,7 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                 let filterDef = '';
                 let filterDefSimple = ''; //for filter summary display more readable
                 let showFilter = false;
+                var divideBy = 1;
                 switch (qo["ui_type"]) {
                     case 'Checkbox':
                     case 'RadioButton':
@@ -449,20 +756,46 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                         });
                         filterDefSimple += ' )';
                         break;
-                    case 'RangeSlider':
-                        let divideBy = 1;
-                        filterDefSimple += '( >=' + qo['filters'][0]['value'][0] + ' AND <=' + qo['filters'][0]['value'][1] + ' )';
-                        if (qo['enabled']) {
-                            filterDef = qo['field'] + '>=' + qo['filters'][0]['value'][0] / divideBy + ' AND ' + qo['field'] + '<=' + qo['filters'][0]['value'][1] / divideBy;
+                    case 'RangeSlider':             
+                        let hasCategories = qo['filters'][0].categories.length > 0;             
+                        let minVal = qo['filters'][0]['value'][0];
+                        let maxVal = qo['filters'][0]['value'][1];
+                        if (hasCategories) {
+                            let selectedCategories = qo['filters'][0].categories.slice(minVal, maxVal+1);
+                            filterDefSimple += '( ';
+                            selectedCategories.forEach((sc, idx) => {
+                                let cat = sc['category'];
+                                let catVal = sc['categoryVal'];
+                                filterDefSimple += cat + (idx !== selectedCategories.length - 1 ? ', ' : '');
+                                if (qo['enabled']) {
+                                    if ($.isNumeric(catVal)) {
+                                        filterDef += qo['field'] + " = " + catVal + (idx !== selectedCategories.length - 1 ? ' OR ' : '');
+                                    } else {
+                                        filterDef += qo['field'] + " like '" + catVal + "'" + (idx !== selectedCategories.length - 1 ? ' OR ' : '');
+                                    }                                    
+                                }
+                            });
+                            filterDefSimple += ')';                            
+                        } else {
+                            filterDefSimple += '( >=' + minVal + ' AND <=' + maxVal + ' )';
+                            if (qo['enabled']) {
+                                filterDef = qo['field'] + '>='
+                                    + (hasCategories
+                                        ? minVal
+                                        : (minVal / divideBy))
+                                    + ' AND '
+                                    + qo['field'] + '<='
+                                    + (hasCategories ? maxVal : (maxVal / divideBy));
+                            }
                         }
                         showFilter = !(qo['filters'][0]['value'][0].toString() === qo['min'] && qo['filters'][0]['value'][1].toString() === qo['max']);
                         break;
                     case 'Slider':
-                        filterDefSimple += '( >=' + qo['filters'][0]['value'][0] + ' )';
+                        filterDefSimple += '( >=' + qo['filters'][0]['value'] + ' )';
                         if (qo['enabled']) {
-                            filterDef += qo['field'] + '>=' + qo['filters'][0]['value'][0] / divideBy;
+                            filterDef += qo['field'] + '>=' + (qo['filters'][0]['value'] / divideBy);
                         }
-                        showFilter = qo['filters'][0]['value'][0].toString() !== qo['max'];
+                        showFilter = qo['filters'][0]['value'].toString() !== qo['max'];
                         break;
                     default:
                         break;
@@ -492,7 +825,19 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
         this.viewModel.has_filters.set(filterCollection.length > 0);
         this.setLayerDef(layerDef);      
     }    
+
+    getHexCount(layerDef) {
+        let QueryTask = new esri.tasks.QueryTask(this.hex_layer_url);
+        let Query = new esri.tasks.Query();        
+        Query.returnGeometry = false;
+        Query.where = layerDef;
+        QueryTask.executeForCount(Query, (results) => {
+            this.viewModel.hexCount.set(results);
+        });
+    }
+
     setLayerDef(layerDef) {
+        this.viewModel.active_layer_def = layerDef;
         var mService = this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === 'HexSageCon').length > 0 ? this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === 'HexSageCon')[0] : null;
         let layer = mService.findLayerByName('HEX_SageCon');
         this.hex_layer_url = !this.hex_layer_url ? layer.getLayerUrl() : this.hex_layer_url;
@@ -501,5 +846,6 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
         mService.serviceLayer["setLayerDefinitions"](layerDefintion, true);
         mService.refresh();
         this.viewModel._resizeFilterList();
+        this.getHexCount(layerDef);
     }
 }

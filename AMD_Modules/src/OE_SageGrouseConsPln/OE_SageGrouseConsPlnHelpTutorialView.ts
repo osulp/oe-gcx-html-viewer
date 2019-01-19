@@ -17,5 +17,9 @@ export class OE_SageGrouseConsPlnHelpTutorialView extends ViewBase {
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
     }
+
+    activated() {
+        //$('.modal-overlay.active')
+    }
     
 }

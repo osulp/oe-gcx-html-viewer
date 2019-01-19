@@ -28,7 +28,9 @@
     <Content Include="post_build_modules.bat" />
     <Content Include="README.md" />
     <Content Include="src\OE_LayerActions\readme.txt" />
+    <Content Include="src\OE_SageGrouseConsPln\CSS\hopscotch-0.1.1.css" />
     <Content Include="src\OE_SageGrouseConsPln\ModuleJS.txt" />
+    <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnDownloadView.html" />
     <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnHelpTutorialView.html" />
     <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnModule.css" />
     <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnFilterInfoView.html" />
@@ -71,6 +73,7 @@
     <TypeScriptCompile Include="src\OE_Graphics\OE_GraphicsModule.ts" />
     <TypeScriptCompile Include="src\OE_HyperlinkBanner\OE_HyperlinkBannerModule.ts" />
     <TypeScriptCompile Include="src\OE_PickerListItemRenderer\OE_PickerListItemRendererModule.ts" />
+    <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnDownloadView.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnHelpTutorialView.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnModule.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnFilterInfoView.ts" />
@@ -132,10 +135,11 @@
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
     <TypeScriptSourceMap>True</TypeScriptSourceMap>
     <TypeScriptTarget>ES5</TypeScriptTarget>
-    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptAllowJs>True</TypeScriptAllowJs>
     <TypeScriptOutFile>notused.js</TypeScriptOutFile>
     <TypeScriptOutDir>
     </TypeScriptOutDir>

@@ -44,13 +44,14 @@
         border-top:none;
     }
 
-    .ul-query-layers li:nth-child(odd) {
-        /*background: #f0f0f0;*/
-    }
+    /*.ul-query-layers li:nth-child(odd) {
+        background: #f0f0f0;
+    }*/
 
-.folder-header-wrapper{
-    /*border-top:solid 1px #808080;*/
-}
+/*.folder-header-wrapper{
+    border-top:solid 1px #808080;
+}*/
+
 .folder-header-wrapper .tree-expander {
     width:20px;
     height:16px;
@@ -59,6 +60,7 @@
 .folder-title{
     font-size:1.1em;
     display:inline-block;
+    font-weight:bold;
 }
 .filter_options_wrapper{
     margin: 0 10px;
@@ -135,14 +137,22 @@
     color: #808080;
     margin-left:5px;
 }
+.filter-def input{
+    margin-right:5px;
+}
 
 #query-filter-wrapper{
     display:table-row;
     height:100%;
 }
+
+#query-filter-wrapper.bound-invisible{
+    display:none !important;
+}
+
 #filter-summary-control {
     display:table-row;   
-    margin:-10px 0 0 0;
+    /*margin:-10px 0 0 0;*/
 }
 
 #filter-summary ul li{
@@ -258,11 +268,18 @@
     margin: 10px 10px 0 10px;
     background-color: #f0f0f0;
     border-radius: 4px 4px 0 0;
+    position:relative;
 }
-.active-filter-header-wrapper:hover{
-    cursor:pointer;
-    /*text-decoration:underline;*/
-}
+
+    .dashboard-headers.tab-header-wrapper{
+        padding:0;
+    }      
+
+
+    .active-filter-header-wrapper:hover {
+        cursor: pointer;
+        /*text-decoration:underline;*/
+    }
 .active-filter-header-wrapper div{
     display:inline-block;
 }
@@ -284,7 +301,10 @@
 .reset-filters-wrapper{
     margin:7px 0;
 }
-    .reset-filters-wrapper div, .upload-btn {
+    .reset-filters-wrapper div
+    , .upload-btn
+    , .restoreGeoBtn
+    , .submit_download_request_btn {
         width: 29%;
         display: inline-block;
         text-align: center;
@@ -293,12 +313,18 @@
         border-radius: 4px;
         color: #1A72C4;
         background-color: #F5F5F5;
-    }   
+    }
 
-.reset-filters-wrapper div:hover, .upload-btn:hover{
-    text-decoration:underline;
-    cursor:pointer;
-}
+        .restoreGeoBtn{
+            width:15%;
+        }
+            .reset-filters-wrapper div:hover
+            , .upload-btn:hover
+            , .restoreGeoBtn:hover
+            , .submit_download_request_btn:hover {
+                text-decoration: underline;
+                cursor: pointer;
+            }
 
 .no-filters{
     padding:5px;
@@ -325,4 +351,92 @@
     font-size:.9em;
 }
 
+.tab-header {
+    display: inline-block;
+    padding: 5px 10px;
+    width: 42%;
+}
 
+.tab-header div:hover{
+    text-decoration:underline;
+}
+
+    .tab-header.show-filters {
+        background-color: #f0f0f0;
+        background-image: none;
+        color: #a8a8a8;
+        
+        height: unset;
+    }
+
+    .tab-header.hide-filters {
+        background-color: #555555;
+        background-image: none;
+        color: white;        
+        height: unset;
+    }
+
+.aoi-filter-commands-wrapper div{
+    display:inline-block;
+    padding:0 10px;
+    margin-top:5px;
+}
+    .aoi-filter-commands-wrapper div:first-child {
+        border-right: solid 1px #808080;
+    }
+
+    .aoi-filter-commands-wrapper div:hover{
+        text-decoration:none;
+    }
+    .aoi-filter-commands-wrapper div:nth-child(2):hover{
+        text-decoration:underline;
+    }
+
+.ul-history-layers {
+    margin-left: -25px;
+    margin-right: -25px;
+}
+.ul-history-layers li{
+    list-style:decimal;
+    font-size:.9em;
+}
+    .ul-history-layers li div {
+        display: inline-block;
+        padding: 2px 8px;       
+    }
+        .ul-history-layers li div:first-child {
+            border-right: 1px solid #808080;
+            width: 80px;
+            overflow-wrap:break-word;
+        }
+
+        .ul-history-layers .remove{
+            vertical-align:middle;
+        }
+        .ul-history-layers .remove:hover {
+            cursor: pointer;
+        }
+
+
+.download-popup-wrapper{
+    padding:15px;
+    max-width:400px;
+}
+
+.download-popup-wrapper select{
+    width:200px;
+}
+
+.help-tour{
+    position:absolute;
+    right:8px;
+    border-left:1px solid #555555;
+    padding:0 0 0 10px;
+}
+.help-tour:hover{
+    cursor:pointer;
+    text-decoration:underline;
+}
+.help-tour img{
+    margin-right:5px;
+}

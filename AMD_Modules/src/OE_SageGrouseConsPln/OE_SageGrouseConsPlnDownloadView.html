@@ -1,0 +1,46 @@
+﻿
+<div class="download-popup-wrapper">
+    <div data-binding="{@hidden:isDownloading}">
+        <div data-binding="{@hidden:downloadReady}">
+            <p>Select an output format below and click the download button to submit your download request.  It may take a minute or two to process your request depending on the size and extent of your selected filter area.</p>
+
+            <center>
+                <select data-binding="{@source: downloadFormats}{@value: selectedFormat}">
+                    <option data-binding="{@template-for: downloadFormats}{value: val}{@text: label}" />
+                </select>
+            </center>
+            <br />
+            <hr />
+            <br />
+            <center>
+                <div class="submit_download_request_btn" data-binding="{@event-onclick: download}">
+                    Submit Request
+                </div>
+            </center>
+        </div>
+    </div>
+    <div data-binding="{@visible:isDownloading}">
+        <br />
+        <center>
+            <img src="Resources/Images/loader-small.gif" title="processing request." /><div>
+                Processing your request.  Please be patient....
+            </div>
+        </center>
+        <br />
+    </div>
+    <div data-binding="{@visible:downloadReady}">
+        <br />       
+        <center>
+            <p>Your download is ready! </p>
+            <p>
+                <a data-binding="{href:downloadUrl}" download="Filtered Hex Sage-Grouse Filter" target="_blank"><img src="Resources/Images/Icons/download-16.png" title="Download requested hexagon filtered areas." />&nbsp;&nbsp;Get Download</a>
+            </p>
+        </center>
+        <br />
+    </div>
+    <div data-binding="{@visible:downloadError}">
+       <p>Sorry.  Your request was not able to be completed.  You may need to try a different geographic extent or format.  If the problem continues, you can contact us at:</p>
+        <a href="mailto:virtualoregon.support@oregonstate.edu?Subject:Help%20with%20sage-grouse%20Conservation%20Planning%20Tool" target="_top">virtualoregon.support@oregonstate.edu</a>
+    </div>
+
+</div>

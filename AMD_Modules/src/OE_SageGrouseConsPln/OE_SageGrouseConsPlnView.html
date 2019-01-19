@@ -1,18 +1,20 @@
 ﻿<a href="#"></a>
 <div id="report_area" dir="ltr">
     <div id="filter-summary-control">
-        <!--<div>Find sage-grouse conservation planning areas by filtering for desired location qualities that have been spatially attributed by hexagons.
-        </div>
-        <div>Help</div>-->
         <div>
             <div class="active-filter-header-wrapper dashboard-headers">
                 <div>
                     <input id="toggle-hex-layer" type="checkbox" data-binding="{@value: show_hex_layer}" /><label for="toggle-hex-layer"><b>SHOW SELECTED AREAS</b></label>
                 </div>
+                <div class="help-tour" data-binding="{@event-onclick: showTour}"><img src="Resources/Images/Icons/info-12.png" alt="Info Button" />Help Tutorial</div>
             </div>
             <div class="active-filter-header-wrapper dashboard-headers" data-binding="{@event-onclick: toggleFilters}">
                 <div><b>ACTIVE FILTERS</b></div>
                 <div data-binding="{class: show_filter_class}"></div>
+                <div>
+                    <span>Selected Hexagons: </span>
+                    <span data-binding="{@text:hexCount}"></span>
+                </div>
             </div>
             <div id="filter-summary" data-binding="{@visible: show_filter_summary}">
                 <div data-binding="{@visible: has_filters}">
@@ -26,9 +28,17 @@
                                     <div data-binding="{@text: layer}{@event-onclick:setSearch}" title="Click to see in filter list."></div>
                                     <div class="filter-def" data-binding="{@text: filterDef}"></div>
                                 </div>
-                                <div data-binding="{@template-select:geographic}{@event-onclick:zoomToGeoFilter}">
-                                    <div data-binding="{@text: layer}" title="Zoom to extent of geographic filter."></div>
-                                    <div class="filter-def">Zoom to extent</div>
+                                <div class="geo-filter" data-binding="{@template-select:geographic}">
+                                    <div data-binding="{@text: layer}{@event-onclick:zoomToGeoFilter}" title="Zoom to extent of geographic filter.">
+                                    </div>
+                                    <div class="aoi-filter-commands-wrapper">
+                                        <div class="filter-def">
+                                            <input type="checkbox" data-binding="{id:layer}{@value: show}" />
+                                            <label data-binding="{for:layer}">Display</label>
+                                        </div><div data-binding="{@event-onclick:zoomToGeoFilter}" class="filter-def">
+                                            Zoom to extent
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="active-filter-details remove" title="Clear filter.">
@@ -37,9 +47,9 @@
                         </li>
                     </ul>
                     <div class="reset-filters-wrapper">
-                        <div>Report</div>
-                        <div>Download</div>
-                        <div data-binding="{@event-onclick:resetFilters}">Clear Filters</div>
+                        <div data-binding="{@event-onclick:getReport}">Report</div>
+                        <div data-binding="{@event-onclick:downloadHexFilterAreas}">Download</div>
+                        <div id="clear-filters" data-binding="{@event-onclick:resetFilters}">Clear Filters</div>
                     </div>
                 </div>
                 <div class="no-filters" data-binding="{@hidden: has_filters}">
@@ -47,9 +57,13 @@
                 </div>
             </div>
         </div>
-        <div class="active-filter-header-wrapper dashboard-headers" data-binding="{@event-onclick: toggleGeographicFilter}">
-            <div><b>GEOGRAPHIC FILTER</b></div>
-            <div data-binding="{class: show_geo_filter_class}"></div>
+        <div id="filter-toggle" class="active-filter-header-wrapper dashboard-headers tab-header-wrapper">
+            <div data-binding="{class: show_data_filter_class}{@event-onclick: toggleTabFilters}">
+                <div><b>DATA FILTERS</b></div>
+            </div>
+            <div data-binding="{class: show_geo_filter_class}{@event-onclick: toggleTabFilters}">
+                <div><b>GEOGRAPHIC FILTER</b></div>
+            </div>
         </div>
         <div id="geo-filter" data-binding="{@visible: show_geo_filter}">
             <div>
@@ -81,25 +95,44 @@
                     </p>
                     <div class="upload-btn" data-binding="{@event-onclick: uploadAOIFilter}">Upload</div>
                 </fieldset>
+                <fieldset data-binding="{@visible: show_recent_geo_filters}">
+                    <legend>History</legend>
+                    <div>
+                        <ol class="ul-history-layers" data-binding="{@source: geo_history_filter_collection}">
+                            <li data-binding="{@template-for: geo_history_filter_collection}">
+                                <div data-binding="{@text: geoType}"></div>
+                                <div data-binding="{@event-onclick: viewGeoHistoryArea}">
+                                    <input data-binding="{id: showID}" type="checkbox" />
+                                    <label data-binding="{for: showID}">Show</label>
+                                </div>
+                                <div class="restoreGeoBtn" data-binding="{@event-onclick: useGeoHistoryArea}">
+                                    Restore
+                                </div>
+                                <div class="remove" data-binding="{@event-onclick:removeGeoHistoryArea}">
+                                    <img src="Resources/Images/Icons/delete-16.png" data-binding="{@event-onclick:removeGeoHistoryArea}" title="Clear from history." />
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                </fieldset>
             </div>
         </div>
-        <div class="dashboard-headers">
-            <div><b>DATA FILTERS</b></div>
-        </div>
-        <div id="quick-find-wrapper">
-            <div>Quick Find:</div>
-            <div>
-                <input type="text" data-binding="{@value: filterText}" />
+        <div data-binding="{@visible: show_data_filter}">
+            <div id="quick-find-wrapper">
+                <div>Quick Find:</div>
+                <div>
+                    <input type="text" data-binding="{@value: filterText}" />
+                </div>
+                <div id="quick-find-clear" data-binding="{@event-onclick:clearSearch}">Clear</div>
             </div>
-            <div id="quick-find-clear" data-binding="{@event-onclick:clearSearch}">Clear</div>
-        </div>
-        <div class="toggle-folders-wrapper">
-            <div data-binding="{@text: filter_number}"></div>
-            <div data-binding="{@event-onclick:collapseFolders}">Collapse All</div>
-            <div data-binding="{@event-onclick:expandFolders}">Expand All</div>
+            <div class="toggle-folders-wrapper">
+                <div data-binding="{@text: filter_number}"></div>
+                <div data-binding="{@event-onclick:collapseFolders}">Collapse All</div>
+                <div data-binding="{@event-onclick:expandFolders}">Expand All</div>
+            </div>
         </div>
     </div>
-    <div id="query-filter-wrapper">
+    <div id="query-filter-wrapper" data-binding="{@visible: show_data_filter}">
         <div class="table-cell body-content-outer-wrapper">
             <div class="body-content-inner-wrapper">
                 <div class="body-content">

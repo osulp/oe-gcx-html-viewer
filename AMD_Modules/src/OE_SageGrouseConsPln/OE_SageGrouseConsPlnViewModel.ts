@@ -9,6 +9,7 @@ import { FilterableCollection } from "geocortex/framework-ui/FilterableCollectio
 import { Site } from "geocortex/essentials/Site";
 import { ActivityContext } from "geocortex/workflow/ActivityContext";
 import { OE_SageGrouseConsPlnView } from './OE_SageGrouseConsPlnView';
+import { config } from "rx-lite";
 
 export interface Folder {
     folder: string;
@@ -16,17 +17,20 @@ export interface Folder {
     layers: ObservableCollection<any>;
 }
 
-export class SageGrouseConsPlnViewModel extends ViewModelBase {
+export class SageGrouseConsPlnViewModel extends ViewModelBase {    
     app: ViewerApplication;
     filterView: OE_SageGrouseConsPlnView;
     myWorkflowContext: any;
     myModel: any;
     dashboard_meta: ObservableCollection<Folder>;
-    //dashboard_meta_filter: ObservableCollection<Folder>;    
+    geo_filter_collection: ObservableCollection<any>;    
+    geo_history_filter_collection: FilterableCollection<any>;
     folders: ObservableCollection<string>;   
     show_filter_summary: Observable<boolean>;
     show_geo_filter: Observable<boolean>;
+    show_data_filter: Observable<boolean>;
     show_filter_class: Observable<string>;
+    show_data_filter_class: Observable<string>;
     show_geo_filter_class: Observable<string>;
     filter_collection: ObservableCollection<any>;
     has_filters: Observable<boolean>;
@@ -36,9 +40,20 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
     dashboard_meta_filter: FilterableCollection<any>;
     filter_number: Observable<string>;
     show_hex_layer: Observable<boolean>;
+    show_recent_geo_filters: Observable<boolean>;
+    aoiGeometry: any;
+    active_layer_def: string;
+    downloadFormats: ObservableCollection<any>;
+    selectedFormat: Observable<string> = new Observable("");  
+    isDownloading: Observable<boolean> = new Observable(false);
+    downloadReady: Observable<boolean> = new Observable(false);
+    downloadUrl: Observable<string> = new Observable("");
+    downloadError: Observable<boolean> = new Observable(false);
+    hexCount: Observable<string> = new Observable('0');
+    isUploading: boolean = false;
 
     constructor(app: ViewerApplication, lib: string) {
-        super(app, lib);        
+        super(app, lib);
         this.myModel = this;
         this.dashboard_meta = new ObservableCollection<Folder>();
         this.dashboard_meta_filter = new FilterableCollection<Folder>(this.dashboard_meta, this._FilterFilters.bind(this, this));
@@ -46,17 +61,33 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
         this.folders = new ObservableCollection([]);
         this.show_filter_summary = new Observable(true);
         this.show_filter_class = new Observable("hide-filters");
-        this.show_geo_filter_class = new Observable("show-filters");
+        this.show_geo_filter_class = new Observable("tab-header show-filters");
+        this.show_data_filter_class = new Observable("tab-header hide-filters");
         this.show_geo_filter = new Observable(false);
+        this.show_data_filter = new Observable(true);
         this.filter_collection = new ObservableCollection([]);
         this.has_filters = new Observable(false);
         this.get_info_layer = new ObservableCollection([]);
         this.filterText = new Observable<string>("");
         this.filterView = new OE_SageGrouseConsPlnView(app, lib);
         this.show_hex_layer = new Observable(true);
-        //this.dashboard_meta_filter.bind(this, (changedArgs: any) => {
-        //    console.log('what changed?', changedArgs);
-        //});
+        this.geo_filter_collection = new ObservableCollection<any>();
+        this.geo_history_filter_collection = new FilterableCollection<any>(this.geo_filter_collection, this._FilterGeoHistory.bind(this, this));
+        this.show_recent_geo_filters = new Observable(false);
+
+        this.downloadFormats = new ObservableCollection([
+            {
+                label: 'Shapefile',
+                val: 'Shapefile - SHAPE - .shp'
+            }, {
+                label: 'KML/KMZ',
+                val: 'OpenGIS KML Encoding Standard - OGCKML - .kmz'
+            },
+            {
+                label: 'File Geodatabse (.gdb)',
+                val: 'File Geodatabase - FILEGDB - .gdb'
+            }
+        ]);        
         // Listen for changes to the filter text to update the filtered collection.
         this.filterText.bind(this, () => {
             this.dashboard_meta_filter.refresh();
@@ -69,6 +100,10 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
             this.filter_number.set(layer_cnt.toString() + ' filter(s)');
             this.app.viewManager.getViewById("OE_SageGrouseConsPlnView")["setDefaultFilters"]();
         });
+        this.geo_filter_collection.bind(this, () => {
+            this.show_recent_geo_filters.set(this.geo_filter_collection.getLength() > 0);
+        });    
+    
         this.dashboard_meta.bind(this, (args) => {
             if (this.dashboard_meta.getLength() > 0) {
                 let layer_cnt = 0;
@@ -78,6 +113,50 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
                 this.filter_number.set(layer_cnt.toString() + ' filter(s)');
             }
         });
+    }
+
+
+    private _injectCSS(): void {
+
+        let link = document.createElement('link');
+        link.href = "";
+        link.type = 'text/css';
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
+    }
+
+    //
+    private _injectScript() {
+        $.ajax({
+            type: "GET",
+            url: "./Resources/Scripts/oe_added_scripts/hopscotch-0.1.1.min.js",
+            //url: "./Resources/Scripts/oe_added_scripts/bootstrap-tour-standalone.min.js",
+            //url: "./Resources/Scripts/oe_added_scripts/jquery.tour.js",
+            //url: "https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.0/intro.js",
+            //url: "https://raw.githubusercontent.com/yckart/jquery.tour.js/master/jquery.tour.js",           
+            //crossDomain: true,
+            dataType: "script",
+            success: function () {
+                console.log('success!');
+            },
+            error: function (err) {
+                console.log('fail', err);
+            }
+        });
+
+        //let script = document.createElement('script');
+        //script.setAttribute('src', "https://raw.github.com/yckart/jquery.tour.js/master/jquery.tour.js");
+        //script.setAttribute('type', 'text/javascript');
+        //script.onload = () => {
+        //    console.log('loaded introJs!');
+        //};
+        //document.head.appendChild(script);
+
+        //function loadScripts(e, t, r) { function n() { for (; d[0] && "loaded" == d[0][f];)c = d.shift(), c[o] = !i.parentNode.insertBefore(c, i) } for (var s, a, c, d = [], i = e.scripts[0], o = "onreadystatechange", f = "readyState"; s = r.shift();)a = e.createElement(t), "async" in i ? (a.async = !1, e.head.appendChild(a)) : i[f] ? (d.push(a), a[o] = n) : e.write("<" + t + ' src="' + s + '" defer></' + t + ">"), a.src = s } ([            "/Resources/Scripts/introJs/test.js",
+        //    "https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.min.js"
+        //])
+
+        
     }
 
 
@@ -98,32 +177,56 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
             });
             this.app.eventRegistry.event("PanelResizeEndEvent").subscribe(this, (args) => {
                 let thisScope = this;
-                window.setTimeout(thisScope._resizeFilterList, 500);                
+                window.setTimeout((thisScope) => { thisScope._resizeFilterList(thisScope) }, 500);                
             });       
             this.app.eventRegistry.event("DataFrameClosedEvent").subscribe(this, (args) => {
                 let thisScope = this;
-                window.setTimeout(thisScope._resizeFilterList, 500);
+                window.setTimeout((thisScope) => { thisScope._resizeFilterList(thisScope) }, 500);
             }); 
             
             this.app.eventRegistry.event("ViewContainerViewClosedEvent").subscribe(this, (args) => {
                 console.log('view container closing', args);
                 if (args.viewId === "OE_SageGrouseConsPlnView") {
-                    //turn off hex layer display
-                    this._hexLayerDisplay(false);
+                    //turn off hex layer display                    
+                    this._toggleLayerDisplay('HexSageCon', 'HEX_SageCon', false);
+                    //this._hexLayerDisplay(false);
                 }
-            });
-            this.app.eventRegistry.event("ViewDeactivatedEvent").subscribe(this, (args) => {
-                console.log('ViewDeactivatedEvent', args);
-            });
+            }); 
+            //////////////////////
+            //  Hide download symbolize options
+            //////////////////////
+            this.app.eventRegistry.event("ViewActivatedEvent").subscribe(this, (args) => {
+                if (args.id === "WaitForUploadDataMainResponse") {
+                    this.isUploading = true;
+                }
+                if (args.id === "SymbolDialogView" && this.isUploading) {
+                    window.setTimeout(() => {
+                        $('.button:contains("Proceed")').each((idx,btn) => {
+                            $(btn).click();
+                        });
+                    }, 50);                           
+                    this.isUploading = false;
+                }
+                if (args.id === "OE_SageGrouseConsPlnHelpTutorialView") {
+                    $(".modal-overlay.active").css("background", "pink");
+                }
+            });            
         }
     }
 
-    _hexLayerDisplay(show?:boolean) {
-        var mService = this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === 'HexSageCon').length > 0 ? this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === 'HexSageCon')[0] : null;
-        let layer = mService.findLayerByName('HEX_SageCon');
-        layer.setVisibility(show);
+    _toggleLayerDisplay(service, layer, show?: boolean) {
+        var mService = this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === service).length > 0 ? this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === service)[0] : null;
+        let serviceLayer = mService.findLayerByName(layer);
+        serviceLayer.setVisibility(show);
         mService.setVisibility(show);
         mService.refresh();
+    }
+
+    _removeService(service) {
+        let ms = this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === service).length > 0 ? this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === service)[0] : null;
+        if (ms) {
+            this.app.site.essentialsMap.removeMapService(ms);
+        }
     }
 
     _onSiteInitialized(site: Site, thisViewModel) {
@@ -196,9 +299,11 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
             //Set observable collection to bind to html
             thisViewModel.dashboard_meta.set(_queryMeta);     
             thisViewModel.app.commandRegistry.command("ActivateView").execute("OE_SageGrouseConsPlnView");   
-            //thisViewModel.app.commandRegistry.command("ActivateView").execute("OE_SageGrouseConsPlnActiveFiltersView"); 
+            //thisViewModel.app.commandRegistry.command("ActivateView").execute("OE_SageGrouseConsPlnHelpTutorialView"); 
             thisViewModel._resizeFilterList();            
-        });
+        });      
+        this._injectScript();
+       
     }
 
     _FilterFilters(thisViewModel: any, folder: any) {        
@@ -212,6 +317,12 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
         return hasLayers;
     }
 
+    _FilterGeoHistory(thisViewModel: any, filter: any) {
+        return this.aoiGeometry
+            ? filter.geometry !== this.aoiGeometry
+            : true;
+    }
+
     _LayerFilters(thisViewModel: any, layer: any) {
         if (layer.DATALAYER.toUpperCase().indexOf(thisViewModel.filterText.get().toUpperCase()) > -1) {
             return true;
@@ -219,17 +330,20 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
         return false;        
     }
 
-    _resizeFilterList() {
+    _resizeFilterList(thisViewModel?:any) {
         //set height for scroll list
-        if ($(".OE_SageGrouseConsPlnView").length > 0 ? $(".OE_SageGrouseConsPlnView")[0].classList.contains('active') : false ) {
-            let reportAreaHeight = $(".OE_SageGrouseConsPlnView").parent().height();
-            let summaryAreaHeight = $("#filter-summary-control").height();
-            summaryAreaHeight += this.firstSizing ? 49 : 10;
-            $(".body-content-inner-wrapper").height(reportAreaHeight - summaryAreaHeight + "px");
-            //set width
-            let reportAreaWidth = $(".OE_SageGrouseConsPlnView").parent().width() - 25;
-            $("#report_area").width(reportAreaWidth + "px");
-            this.firstSizing = reportAreaHeight ? false : true;
+        if ($(".OE_SageGrouseConsPlnView").length > 0 ? $(".OE_SageGrouseConsPlnView")[0].classList.contains('active') : false) {
+            let process = thisViewModel ? thisViewModel.show_data_filter.get() : this.show_data_filter ? this.show_data_filter.get() : false;
+            if (process) {
+                let reportAreaHeight = $(".OE_SageGrouseConsPlnView").parent().height();
+                let summaryAreaHeight = $("#filter-summary-control").height();
+                summaryAreaHeight += this.firstSizing ? 49 : 20;
+                $(".body-content-inner-wrapper").height(reportAreaHeight - summaryAreaHeight + "px");
+                //set width
+                let reportAreaWidth = $(".OE_SageGrouseConsPlnView").parent().width() - 25;
+                $("#report_area").width(reportAreaWidth + "px");
+                this.firstSizing = reportAreaHeight ? false : true;
+            }            
         }        
     }
 
@@ -237,7 +351,8 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
         return id.replace(/\ /ig, '')
             .replace(/\(/ig, '')
             .replace(/\)/ig, '')
-            .replace(/\-/ig, '');
+            .replace(/\-/ig, '')
+            .replace(/\:/ig,'');
     }
-    
 }
+
