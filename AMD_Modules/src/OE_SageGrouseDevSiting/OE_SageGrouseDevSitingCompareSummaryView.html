@@ -1,0 +1,134 @@
+﻿<a href="#"></a>
+<div class="report_area" dir="ltr">
+    <div data-binding="{@hidden:canCompare}">
+        In order to compare, please select two existing reports.
+    </div>
+    <div data-binding="{@visible:canCompare}">
+        <div class="print" data-binding="{@event-onclick:print}"><img src="Resources/Images/Icons/print-24.png" /></div>
+        <div id="printarea" class="report_area compare" data-binding="{@source: selected_reports}{@value: selected_reports}">
+            <div class="siting_compare_col" data-binding="{@template-for: selected_reports}{value: @context}">
+                <hr />
+                <div>
+                    <span class="data-label">Project Name:</span>
+                    <span class="data" data-binding="{@text:name}"></span>
+                </div>
+                <div>
+                    <span class="data-label">Development Type:</span>
+                    <span class="data" data-binding="{@text:dev_type}"></span>
+                </div>
+                <div class="dev-type-details" data-binding="{@visible:show_dev_type_details}">
+                    <!--<span>(</span>-->
+                    <span class="data" data-binding="{@text:dev_type_details}"></span>
+                    <!--<span>)</span>-->
+                </div>
+                <hr>
+                <span class="print-remove">This is a summary report. <b>Click the button below for a full report</b></span><br />
+                <div class="print-remove" id="btn-row-compare">
+                    <div class="cell" data-binding="{@event-onclick:getPDF}">Full Report</div>                                                                        <div class="cell" data-binding="{@event-onclick:downloadShapefiles}" title="Download project areas as a zipped shapefile.">
+                        Shapefile
+                    </div>
+                    <div class="cell" data-binding="{@event-onclick:downloadKml}" title="Download project areas as a KMZ file.">                                              KML/KMZ                                                     </div>
+                </div>
+                <hr />
+                <fieldset>
+                    <legend>Project Area</legend>
+                    <div class="sub-section-header">Direct Footprint</div>
+                    <div class="sub-section-wrapper">
+                        <div>
+                            <span class="data">Total Direct Footprint:</span>
+                            <span class="data" data-binding="{@text:proj_area}"></span>
+                        </div>
+                        <div>
+                            <span class="data">Direct Footprint in Significant Sage-Grouse Habitat:</span>
+                            <span class="data" data-binding="{@text:direct_hab_area}"></span>
+                        </div>
+                        <div class="trigger-msg-wrapper" data-binding="{@visible:has_all_hab_direct}">
+                            <span class="hab-area all-hab-area">All of the direct project footprint is in significant sage-grouse habitat.</span>
+                        </div>
+                        <div class="trigger-msg-wrapper" data-binding="{@visible:show_no_direct_hab_area}">
+                            <span class="hab-area no-hab-area">Project footprint is outside of mapped significant sage-grouse habitat and your project is <b>unlikely to require mitigation</b> for sage-grouse unless a state-level permit is necessary.</span>
+                        </div>
+                        <div class="trigger-msg-wrapper" data-binding="{@visible:has_part_hab_direct}">
+                            <span class="hab-area no-hab-area">Part, but not all, of the direct project footprint is in significant sage-grouse habitat.</span>
+                        </div>
+                        <div class="trigger-msg-wrapper" data-binding="{@visible:dev_rule_no_direct_hab_but_state}">
+                            <span class="hab-area no-hab-area">Project footprint is outside of mapped significant sage-grouse habitat, and mitigation will only be assessed for indirect impacts within sage-grouse habitat.</span>
+                        </div>
+                        <div>
+                            <span class="data">Direct Footprint in Close Proximity to a Lek: </span>
+                            <span class="data" data-binding="{@text:is_lek}"></span>
+                        </div>
+                    </div>
+                    <div class="sub-section-header">Indirect Impact Area</div>
+                    <div class="sub-section-wrapper">
+                        <div>
+                            <span class="data">Total Indirect Impact Area:</span>
+                            <span class="data" data-binding="{@text:indirect_area}"></span>
+                        </div>
+                        <div>
+                            <span class="data">Estimated Indirect Impact in Sage-Grouse Habitat:</span>
+                            <span class="data" data-binding="{@text:indirect_hab_area}"></span>
+                        </div>
+                        <div>
+                            <span class="data">Habitat Designation(s): </span>
+                            <span class="data" data-binding="{@text:hab_desig}"></span>
+                        </div>
+                    </div>
+                    <div class="sub-section-header">Land Management/Ownership</div>
+                    <div class="sub-section-wrapper">
+                        <div>
+                            <span class="data" data-binding="{@text:land_mngt}"></span>
+                        </div>
+                    </div>
+                    <div data-binding="{@visible:has_dev_rule_type}">
+                        <span class="data-label">Permitting Entity:</span>
+                        <span class="data" data-binding="{@text:dev_rule_type}"></span>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>
+                        Mitigation Hierarchy
+                    </legend>
+                    <div>
+                        <span class="data-label">Avoidance:</span><span> Avoidance </span>
+                        <span class="data-label" data-binding="{@text:avoidance}"></span>
+                        <span> apply in your identified area.</span>
+                    </div>
+                    <div>
+                        <span class="data-label">Minimization:</span>
+                        <span class="data">See full report for list of potential minimization measures.</span>
+                    </div>
+                    <!--<div>
+                        <span class="data-label">Minimization:</span>
+                        <span> Minimization measures for </span>
+                        <span data-binding="{@text:dev_type}"></span>
+                        <span> may include:</span>
+                        <ul data-binding="{@source: minimizations}">
+                            <li data-binding="{@template-for: minimizations}">
+                                <span data-binding="{@text:minimization}"></span>
+                            </li>
+                        </ul>
+                    </div>-->
+                    <div>
+                        <span class="data-label">Compensatory Mitigation</span>
+                        <span data-binding="{@text:compensatory_mitigation}"></span>
+                        <span> out of 100</span>
+                    </div>
+                    <div id="chart-wrapper">
+                        <img width="225" data-binding="{src: chart_url}">
+
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Contact Information</legend>
+                    <div data-binding="{@visible:is_odoe}{innerHTML:odoe_contact}"></div>
+                    <div data-binding="{@visible:is_dogami}{innerHTML:dogami_contact}"></div>
+                    <div data-binding="{innerHTML:cnty_contacts}"></div>
+                    <div data-binding="{innerHTML:blm_contacts}"></div>
+                </fieldset>
+            </div>
+            <div class="oe_clear"></div>
+        </div>
+    </div>
+</div>
+

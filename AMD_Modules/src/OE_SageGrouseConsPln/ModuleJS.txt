@@ -1,0 +1,25 @@
+﻿{
+                "moduleName": "OE_SageGrouseConsPln",
+                "require": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnModule",
+                "libraryId": "OE_AMD",
+                "configuration": {},
+                "views": [
+                    {
+                        "id": "OE_SageGrouseConsPlnView",
+                        "require": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnView",
+                        "markup": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnView.html",
+                        "title": "Sage-Grouse Conservation Planning",
+                        "viewModelId": "OE_SageGrouseConsPlnViewModel",
+                        "visible": false,
+                        "region": "DataRegion",
+                        "configuration": {}
+                    }
+                ],
+                "viewModels": [
+                  {
+                      "id": "OE_SageGrouseConsPlnViewModel",
+                      "require": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnViewModel",
+                      "configuration": {}
+                  }
+                ]
+            },

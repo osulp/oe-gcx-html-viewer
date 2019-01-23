@@ -1,0 +1,111 @@
+﻿<a href="#"></a>
+<div class="dashboard-view module workflow-form" dir="ltr">
+    <h3>Add new development siting project </h3>
+    <div style="text-align:right; width:100%; display: inline-block;" class="form-btns">
+        <button id="cancelBtn" class="button" type="button" data-binding="{@event-onclick:addNewProject}">Add New Development Site >></button>
+    </div>
+    <hr />
+    <h3>View project reports</h3>
+    <div data-binding="{@visible:report_list.getLength() > 1}">
+        <div>Select two reports to view a side-by-side comparison</div>
+    </div>
+    <div data-binding="{@visible:canCompare}">
+        <div style="text-align:right; width:100%; display: inline-block;" class="form-btns">
+            <button id="cancelBtn" class="button" type="button" data-binding="{@event-onclick:compareProjectReports}">Compare selected</button>
+        </div>
+    </div>
+    <div data-binding="{@hidden:canCompare}">
+        <div style="text-align:right; width:100%; display: inline-block;" class="form-btns">
+            <button title="Select two reports to enable compare reports" type="button" disabled>Compare selected</button>
+        </div>
+    </div>
+    <ul data-binding="{@source: report_list}">
+        <li data-binding="{@template-for: report_list}">
+            <div>
+                <div class="project-title-wrapper">
+                    <div class="project-checkbox-wrapper">
+                        <label class="container">
+                            <span class="data-label" data-binding="{@text:name}"></span>
+                            <input type="checkbox" data-binding="{@value:selected}{@event-onclick:zoomTo}">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-wrapper" data-binding="{@event-onclick:toggleExpand}">
+                        <div class="show-hide-wrapper" data-binding="{@visible:expanded}">
+                            <div>
+                                <img src="Resources/Images/Icons/chevron-down-24.png" />
+                            </div>
+                            <div class="show-hide">hide details</div>
+                            <div class="oe_clear"></div>
+                        </div>
+                        <div class="show-hide-wrapper" data-binding="{@hidden:expanded}">
+                            <div>
+                                <img src="Resources/Images/Icons/chevron-up-24.png" />
+                            </div>
+                            <div class="show-hide">show details</div>
+                            <div class="oe_clear"></div>
+                        </div>
+                    </div>
+                    <div class="oe_clear">&nbsp;</div>
+                </div>
+                <div class="report_action_link_wrapper">
+                    <div class="report_action_link" data-binding="{@event-onclick:viewFullReport}" title="Download a pdf full report for this development.">
+                        <span><img src="Resources/Images/Icons/Toolbar/reports-24.png" /></span>
+                        <span>Full Report (pdf)</span>
+                    </div>
+                    <div class="report_action_link" data-binding="{@event-onclick:viewReport}" title="View a pop-up summary of this development.">
+                        <span><img src="Resources/Images/Icons/link-external-24.png" /></span>
+                        <span>Summary</span>
+                    </div>
+                    <div class="report_action_link" data-binding="{@event-onclick:toggleDownloadOpts}" title="Download project areas as shapefile or kml">
+                        <span><img src="Resources/Images/Icons/download-24.png" /></span>
+                        <span></span>
+                        <div class="download_option_wrapper" data-binding="{@visible:view_download_opts}">
+                            <ul>
+                                <li class="download_option" data-binding="{@event-onclick:downloadShapefiles}" title="Download project areas as a zipped shapefile.">
+                                    Shapefile
+                                </li>
+                                <li class="download_option" data-binding="{@event-onclick:downloadKml}" title="Download project areas as a KMZ file.">
+                                    KML/KMZ
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="report_action_link" data-binding="{@event-onclick:deleteProjectReport}" title="Remove this development from recent projects.">
+                        <span><img src="Resources/Images/Icons/delete-16.png" /></span>
+                        <span></span>
+                    </div>
+                    <div class="oe_clear"></div>
+                    <div class="project-highlights" data-binding="{@visible:expanded}">
+                        <div>
+                            <span class="data-label">Project Name:</span>
+                            <span class="data" data-binding="{@text:name}"></span>
+                        </div>
+                        <div>
+                            <span class="data-label">Development Type:</span>
+                            <span class="data" data-binding="{@text:dev_type}"></span>
+                        </div>
+                        <div>
+                            <span class="data-label">Direct Footprint:</span>
+                            <span class="data" data-binding="{@text:proj_area}"></span>
+                        </div>
+                        <!--<div>
+        <span class="data-label">Indirect Impact Area:</span>
+        <span class="data" data-binding="{@text:indirect_area}"></span>
+    </div>-->
+                        <div>
+                            <span class="data-label">Compensatory Mitigation: </span>
+                            <!--<br />-->
+                            <!--<img width="50" class="img_chart" data-binding="{src: chart_simple_url}">-->
+                            <span data-binding="{@text:compensatory_mitigation}"></span>
+                            <span> out of 100</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_clear"></div>
+            </div>
+        </li>
+    </ul>
+    <hr />
+
+</div>

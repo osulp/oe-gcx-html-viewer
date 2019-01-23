@@ -27,16 +27,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>50922</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:49827/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
@@ -67,7 +58,9 @@
     <Content Include="Resources\Config\Defaults.json.js" />
     <Content Include="Resources\Styles\Custom\Desktop.css" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="web.config" />
+  </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Modules\SageGrouseDevSiting\SageGrouseDevSitingModule.ts" />
     <TypeScriptCompile Include="Modules\SageGrouseDevSiting\SageGrouseDevSitingModuleView.ts" />
@@ -92,6 +85,14 @@
     <TypeScriptCompile Include="Modules\M49\M49ModuleView.ts" />
     <TypeScriptCompile Include="Modules\M49\m49ModuleViewModel.ts" />
     <TypeScriptCompile Include="Modules\RasterFunctions\RasterFunctionsModule.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES3</TypeScriptTarget>

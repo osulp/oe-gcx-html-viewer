@@ -211,3 +211,5 @@ FakesAssemblies/
 /AMD_Modules/notused.js.map
 /AMD_Modules/notused.js
 /AMD_Modules/build_modules.bat
+/Web/Libraries/Custom/AMD/
+/Web/Libraries/Custom/Compiled/

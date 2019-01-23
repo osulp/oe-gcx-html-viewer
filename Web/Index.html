@@ -18,10 +18,10 @@
     <link rel="stylesheet" href="Resources/Styles/splash.css" />
     <style>
         #myProgress {
-            width: 100%;
+            width: 95%;
             background-color: #ddd;
             margin-top =100px;
-            margin-bottom =100px; 
+            margin-bottom =100px;
         }
 
         #myBar {
@@ -58,22 +58,22 @@
     <!-- Standard GVH Embed with custom Defaults.json.js configuration -->
     <script src="Resources/Compiled/loader.js"></script>
     <script>
-        // Uncomment the below line to only use local copies of Esri API files. This is done automatically in the Geocortex Mobile App Framework.                
+        // Uncomment the below line to only use local copies of Esri API files. This is done automatically in the Geocortex Mobile App Framework.
         //var geocortexUseLocalEsriApi = true;
         var viewerConfig = {
             "configurations": {
-                "default": "Resources/Config/Default/" + shellName + ".json.js"                
-                //"default": "Resources/Config/DevTy/ORWAP_SFAM_Combined.json.js"
+                "oe_default": "Resources/Config/Default/" + shellName + ".json.js",
+                "default": "Resources/Config/Default/dev_configs/sage_dev_siting/Desktop.json.js"
             },
-            "viewerConfigUri": null
+            "viewerConfigUri": ""
         };
-       
-        new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize({            
-            onSiteInitialized: function (app, loader) {                
+
+        new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize({
+            onSiteInitialized: function (app, loader) {
                 geocortex.config.io.timeout = 180 * 1000; // 180 seconds
             }
         });
-                
+
         //"default": "Resources/Config/Default/" + shellName + ".json.js"
 
         //// To load external css or javascript files in your project add the URL for each resource to this array
