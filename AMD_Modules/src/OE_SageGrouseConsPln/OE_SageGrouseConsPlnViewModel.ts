@@ -130,11 +130,6 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
         $.ajax({
             type: "GET",
             url: "./Resources/Scripts/oe_added_scripts/hopscotch-0.1.1.min.js",
-            //url: "./Resources/Scripts/oe_added_scripts/bootstrap-tour-standalone.min.js",
-            //url: "./Resources/Scripts/oe_added_scripts/jquery.tour.js",
-            //url: "https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.0/intro.js",
-            //url: "https://raw.githubusercontent.com/yckart/jquery.tour.js/master/jquery.tour.js",           
-            //crossDomain: true,
             dataType: "script",
             success: function () {
                 console.log('success!');
@@ -143,18 +138,17 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
                 console.log('fail', err);
             }
         });
-
-        //let script = document.createElement('script');
-        //script.setAttribute('src', "https://raw.github.com/yckart/jquery.tour.js/master/jquery.tour.js");
-        //script.setAttribute('type', 'text/javascript');
-        //script.onload = () => {
-        //    console.log('loaded introJs!');
-        //};
-        //document.head.appendChild(script);
-
-        //function loadScripts(e, t, r) { function n() { for (; d[0] && "loaded" == d[0][f];)c = d.shift(), c[o] = !i.parentNode.insertBefore(c, i) } for (var s, a, c, d = [], i = e.scripts[0], o = "onreadystatechange", f = "readyState"; s = r.shift();)a = e.createElement(t), "async" in i ? (a.async = !1, e.head.appendChild(a)) : i[f] ? (d.push(a), a[o] = n) : e.write("<" + t + ' src="' + s + '" defer></' + t + ">"), a.src = s } ([            "/Resources/Scripts/introJs/test.js",
-        //    "https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.min.js"
-        //])
+        //$.ajax({
+        //    type: "GET",
+        //    url: "./Resources/Scripts/oe_added_scripts/jQAllRangeSliders-min.js",
+        //    dataType: "script",
+        //    success: function () {
+        //        console.log('success!');
+        //    },
+        //    error: function (err) {
+        //        console.log('fail', err);
+        //    }
+        //});
 
         
     }

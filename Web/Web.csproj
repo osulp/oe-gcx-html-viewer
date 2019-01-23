@@ -539,6 +539,7 @@
     <Content Include="Resources\Scripts\jquery.ui.touch-punch.js" />
     <Content Include="Resources\Scripts\modernizr.js" />
     <Content Include="Resources\Scripts\native.js" />
+    <Content Include="Resources\Scripts\oe_added_scripts\jQAllRangeSliders-min.js" />
     <Content Include="Resources\Styles\Animations.css" />
     <Content Include="Resources\Styles\common.css" />
     <Content Include="Resources\Styles\Custom\Common.css" />

@@ -29,6 +29,7 @@
     <Content Include="README.md" />
     <Content Include="src\OE_LayerActions\readme.txt" />
     <Content Include="src\OE_SageGrouseConsPln\CSS\hopscotch-0.1.1.css" />
+    <Content Include="src\OE_SageGrouseConsPln\CSS\iThing-min.css" />
     <Content Include="src\OE_SageGrouseConsPln\ModuleJS.txt" />
     <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnDownloadView.html" />
     <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnHelpTutorialView.html" />

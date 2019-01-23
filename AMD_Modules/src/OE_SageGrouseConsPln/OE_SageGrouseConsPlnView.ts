@@ -34,6 +34,7 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
     gpExtractHexURL: string = 'https://lib-arcgis5.library.oregonstate.edu/arcgis/rest/services/geoprocessing/extractFilteredHex/GPServer/extractFilteredHex';
     uploadGeoFilterLayerName = '';    
     hopscotch;
+    canShowTour: boolean = true;
 
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
@@ -45,130 +46,139 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
         }        
     }
 
-    showTour(_evt,_el,context:any) {
-        this.hopscotch = window["hopscotch"] ? window["hopscotch"] : null;
-        if (this.hopscotch) {
-            // Set the context of the scope for the function callbacks to relate to the right context.  Checks against filterView of viewModel which gets passed on click events.
-            var thisScope = context.filterView ? this : context;
-            var demoFilterID = "#12SageGrouseProbabilityofWinterHabitatUseNonhabitat";
-            // Define the tour!
-            var tour = {
-                id: "cons-pln-tour",
-                steps: [
-                    {
-                        title: "Conservation Planning Tool Tour",
-                        content: "The Conservation Planning Tool lets you quickly identify areas based on your conservation priorities and landscape attributes.  Click on through this tour to learn how to use this tool.",
-                        target: ".panel-title-contents.bound-visible-inline",
-                        yOffset: -20,
-                        placement: "right"
-                    },
-                    {
-                        title: "Choose a filter type",
-                        content: "Select to filter by Data or Geographic Filter",
-                        target: "filter-toggle",
-                        placement: "right",
-                        yOffset: -20,
-                        showCTAButton: true,
-                        ctaLabel: "Show me",
-                        onCTA: () => {
-                            thisScope.toggleTabFilters();
-                        }
-                    },
-                    {
-                        title: "Find a filter",
-                        content: "You can scroll through the data filters or quick search by name.",
-                        target: "quick-find-wrapper",
-                        placement: "right",
-                        yOffset: -20,
-                        onShow: () => {
-                            thisScope.toggleTabFilters(null,null,thisScope,'Data');
+
+
+    showTour(_evt, _el, context: any) {
+        if (this.canShowTour || _el) {
+            this.hopscotch = window["hopscotch"] ? window["hopscotch"] : null;
+            if (this.hopscotch) {
+                // Set the context of the scope for the function callbacks to relate to the right context.  Checks against filterView of viewModel which gets passed on click events.
+                var thisScope = context.filterView ? this : context;
+                var demoFilterID = "#12SageGrouseProbabilityofWinterHabitatUseNonhabitat";
+                // Define the tour!
+                var tour = {
+                    id: "cons-pln-tour",
+                    steps: [
+                        {
+                            title: "Conservation Planning Tool Tour",
+                            content: "The Conservation Planning Tool lets you quickly identify areas based on your conservation priorities and landscape attributes.  Click on through this tour to learn how to use this tool.",
+                            target: ".panel-title-contents.bound-visible-inline",
+                            yOffset: -20,
+                            placement: "right",
+                            showCTAButton: _el ? false : true,
+                            ctaLabel: "Don't Show Again",
+                            onCTA: () => {
+                                thisScope.canShowTour = false;
+                                thisScope.hopscotch.endTour();
+                            }
                         },
-                        showCTAButton: true,
-                        ctaLabel: "Show me",
-                        onCTA: () => {
-                            thisScope.viewModel.filterText.set('wi');
-                        }
-                    },
-                    {
-                        title: "Adjust filter settings",
-                        content: "You can change the applied filter by deselecting/selecting categories or modifying the range sliders",
-                        target: ".ul-query-folders",
-                        placement: "right",
-                        onShow: () => {
-                            thisScope.toggleTabFilters(null,null,null,'Data');
-                            thisScope.viewModel.filterText.set('wi');
+                        {
+                            title: "Choose a filter type",
+                            content: "Select to filter by Data or Geographic Filter",
+                            target: "filter-toggle",
+                            placement: "right",
+                            yOffset: -20,
+                            showCTAButton: true,
+                            ctaLabel: "Show me",
+                            onCTA: () => {
+                                thisScope.toggleTabFilters();
+                            }
                         },
-                        showCTAButton: true,
-                        ctaLabel: "Show me",
-                        onCTA: () => {
-                            thisScope.viewModel.filterText.set('wi');
-                            $(demoFilterID).click();
-                        }
-                    },
-                    {
-                        title: "Active filters",
-                        content: "Active filters are displayed here.  And display the currently applied criteria for each filter. <br>  You can enable/disable an applied filter without deleting it by clicking the checkbox.  To remove the filter, use the x button.  <br> <b>TIP:</b> You can click on the filter name to quickly display the filter in the Data Filters tab to further modify the filter.",
-                        target: "#filter-summary",
-                        placement: "right",
-                        onShow: () => {
-                            thisScope.toggleTabFilters(null,null,null,'Data');
-                            thisScope.viewModel.filterText.set('wi');
-                            if ($(demoFilterID)[0].checked) {
+                        {
+                            title: "Find a filter",
+                            content: "You can scroll through the data filters or quick search by name.",
+                            target: "quick-find-wrapper",
+                            placement: "right",
+                            yOffset: -20,
+                            onShow: () => {
+                                thisScope.toggleTabFilters(null, null, thisScope, 'Data');
+                            },
+                            showCTAButton: true,
+                            ctaLabel: "Show me",
+                            onCTA: () => {
+                                thisScope.viewModel.filterText.set('wi');
+                            }
+                        },
+                        {
+                            title: "Adjust filter settings",
+                            content: "You can change the applied filter by deselecting/selecting categories or modifying the range sliders",
+                            target: ".ul-query-folders",
+                            placement: "right",
+                            onShow: () => {
+                                thisScope.toggleTabFilters(null, null, null, 'Data');
+                                thisScope.viewModel.filterText.set('wi');
+                            },
+                            showCTAButton: true,
+                            ctaLabel: "Show me",
+                            onCTA: () => {
+                                thisScope.viewModel.filterText.set('wi');
                                 $(demoFilterID).click();
-                            }                            
-                        }                        
-                    },
-                    {
-                        title: "Active filter controls",
-                        content: "When active filters are enabled, you can choose to get a PDF report of your selection, download the selected hexagons, or clear all filters.",
-                        target: ".reset-filters-wrapper",
-                        yOffset: -20,
-                        placement: "right",
-                        onShow: () => {
-                            thisScope.toggleTabFilters(null,null,null,'Data');
-                            thisScope.viewModel.filterText.set('wi');
-                            if ($(demoFilterID)[0].checked) {
-                                $(demoFilterID).click();
-                            }  
-                        }
-                    },
-                    {
-                        title: "Show/Hide selected hexagons",
-                        content: "To toggle the display of the selected hexagon layer, use this checkbox.",
-                        target: ".active-filter-header-wrapper.dashboard-headers",
-                        placement: "right",
-                        yOffset: -20,
-                        showCTAButton: true,
-                        ctaLabel: "Show me",
-                        onCTA: () => {                           
-                            $("#toggle-hex-layer").click();
-                        }
-                    },
+                            }
+                        },
+                        {
+                            title: "Active filters",
+                            content: "Active filters are displayed here.  And display the currently applied criteria for each filter. <br>  You can enable/disable an applied filter without deleting it by clicking the checkbox.  To remove the filter, use the x button.  <br> <b>TIP:</b> You can click on the filter name to quickly display the filter in the Data Filters tab to further modify the filter.",
+                            target: "#filter-summary",
+                            placement: "right",
+                            onShow: () => {
+                                thisScope.toggleTabFilters(null, null, null, 'Data');
+                                thisScope.viewModel.filterText.set('wi');
+                                if ($(demoFilterID)[0].checked) {
+                                    $(demoFilterID).click();
+                                }
+                            }
+                        },
+                        {
+                            title: "Active filter controls",
+                            content: "When active filters are enabled, you can choose to get a PDF report of your selection, download the selected hexagons, or clear all filters.",
+                            target: ".reset-filters-wrapper",
+                            yOffset: -20,
+                            placement: "right",
+                            onShow: () => {
+                                thisScope.toggleTabFilters(null, null, null, 'Data');
+                                thisScope.viewModel.filterText.set('wi');
+                                if ($(demoFilterID)[0].checked) {
+                                    $(demoFilterID).click();
+                                }
+                            }
+                        },
+                        {
+                            title: "Show/Hide selected hexagons",
+                            content: "To toggle the display of the selected hexagon layer, use this checkbox.",
+                            target: ".active-filter-header-wrapper.dashboard-headers",
+                            placement: "right",
+                            yOffset: -20,
+                            showCTAButton: true,
+                            ctaLabel: "Show me",
+                            onCTA: () => {
+                                $("#toggle-hex-layer").click();
+                            }
+                        },
 
-                ],
-                showCloseButton: true,
-                showPrevButton: true,
-                i18n: {
-                    stepNums: ['', '1', '2', '3', '4', '5', '6', '7']
-                },
-                onEnd: () => {
-                    //$("#clear-filters").click();
-                    thisScope.resetFilters();
-                    thisScope.clearSearch();
-                    //thisScope.setDefaultFilters(true);
-                },
-                onClose: () => {
-                    //$("#clear-filters").click();
-                    thisScope.resetFilters();
-                    thisScope.clearSearch();
-                    //thisScope.setDefaultFilters(true);
-                }
-           
-            };
+                    ],
+                    showCloseButton: true,
+                    showPrevButton: true,
+                    i18n: {
+                        stepNums: ['', '1', '2', '3', '4', '5', '6', '7']
+                    },
+                    onEnd: () => {
+                        //$("#clear-filters").click();
+                        thisScope.resetFilters();
+                        thisScope.clearSearch();
+                        //thisScope.setDefaultFilters(true);
+                    },
+                    onClose: () => {
+                        //$("#clear-filters").click();
+                        thisScope.resetFilters();
+                        thisScope.clearSearch();
+                        //thisScope.setDefaultFilters(true);
+                    }
 
-            // Start the tour!
-            this.hopscotch.startTour(tour);
+                };
 
+                // Start the tour!
+                this.hopscotch.startTour(tour);
+            }
         }
     }
 
@@ -335,6 +345,17 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                                     layer['UITYPE'] === 'RangeSlider' ?
                                         minVal.toString() + " - " + maxVal.toString()
                                         : maxVal.toString());
+                            //$("#" + dv.optionID).rangeSlider({
+                            //    symmetricPositionning: true,
+                            //    range: {
+                            //        min: min,
+                            //        max: max
+                            //    },
+                            //    defaultValues: {
+                            //        min: min,
+                            //        max:max
+                            //    }
+                            //})
                             $("#" + dv.optionID).slider({
                                 range: layer['UITYPE'] === 'RangeSlider',
                                 step: increment,
@@ -343,6 +364,9 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                                 value: layer['UITYPE'] === 'Slider' ? maxVal : null,
                                 values: layer['UITYPE'] === 'RangeSlider' ? [minVal, maxVal] : null,
                                 slide: function (_event, ui) {
+                                    if ((ui.values[0] + 1) >= ui.values[1]) {
+                                        return false;
+                                    }
                                     $("#" + this.id + "Val").html(
                                         categories.length > 1
                                             ? (categories[ui.values[0]].category + ' - ' + categories[ui.values[1]].category)
@@ -363,7 +387,7 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                                     };
                                     thisScope.updateQuery(updateObj);
                                 }
-                            })
+                            });
                             if (reset) {
                                 dv.optionValue.set(null);
                             }
@@ -760,35 +784,37 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                         let hasCategories = qo['filters'][0].categories.length > 0;             
                         let minVal = qo['filters'][0]['value'][0];
                         let maxVal = qo['filters'][0]['value'][1];
-                        if (hasCategories) {
-                            let selectedCategories = qo['filters'][0].categories.slice(minVal, maxVal+1);
-                            filterDefSimple += '( ';
-                            selectedCategories.forEach((sc, idx) => {
-                                let cat = sc['category'];
-                                let catVal = sc['categoryVal'];
-                                filterDefSimple += cat + (idx !== selectedCategories.length - 1 ? ', ' : '');
+                        showFilter = !(qo['filters'][0]['value'][0].toString() === qo['min'] && qo['filters'][0]['value'][1].toString() === qo['max']);
+                        if (showFilter) {
+                            if (hasCategories) {
+                                let selectedCategories = qo['filters'][0].categories.slice(minVal, maxVal + 1);
+                                filterDefSimple += '( ';
+                                selectedCategories.forEach((sc, idx) => {
+                                    let cat = sc['category'];
+                                    let catVal = sc['categoryVal'];
+                                    filterDefSimple += cat + (idx !== selectedCategories.length - 1 ? ', ' : '');
+                                    if (qo['enabled']) {
+                                        if ($.isNumeric(catVal)) {
+                                            filterDef += qo['field'] + " = " + catVal + (idx !== selectedCategories.length - 1 ? ' OR ' : '');
+                                        } else {
+                                            filterDef += qo['field'] + " like '" + catVal + "'" + (idx !== selectedCategories.length - 1 ? ' OR ' : '');
+                                        }
+                                    }
+                                });
+                                filterDefSimple += ')';
+                            } else {
+                                filterDefSimple += '( >=' + minVal + ' AND <=' + maxVal + ' )';
                                 if (qo['enabled']) {
-                                    if ($.isNumeric(catVal)) {
-                                        filterDef += qo['field'] + " = " + catVal + (idx !== selectedCategories.length - 1 ? ' OR ' : '');
-                                    } else {
-                                        filterDef += qo['field'] + " like '" + catVal + "'" + (idx !== selectedCategories.length - 1 ? ' OR ' : '');
-                                    }                                    
+                                    filterDef = qo['field'] + '>='
+                                        + (hasCategories
+                                            ? minVal
+                                            : (minVal / divideBy))
+                                        + ' AND '
+                                        + qo['field'] + '<='
+                                        + (hasCategories ? maxVal : (maxVal / divideBy));
                                 }
-                            });
-                            filterDefSimple += ')';                            
-                        } else {
-                            filterDefSimple += '( >=' + minVal + ' AND <=' + maxVal + ' )';
-                            if (qo['enabled']) {
-                                filterDef = qo['field'] + '>='
-                                    + (hasCategories
-                                        ? minVal
-                                        : (minVal / divideBy))
-                                    + ' AND '
-                                    + qo['field'] + '<='
-                                    + (hasCategories ? maxVal : (maxVal / divideBy));
                             }
                         }
-                        showFilter = !(qo['filters'][0]['value'][0].toString() === qo['min'] && qo['filters'][0]['value'][1].toString() === qo['max']);
                         break;
                     case 'Slider':
                         filterDefSimple += '( >=' + qo['filters'][0]['value'] + ' )';
