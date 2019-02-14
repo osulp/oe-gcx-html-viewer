@@ -2,6 +2,8 @@
 /// <reference path="./../../_Definitions/Framework.AMD.d.ts" />
 /// <reference path="./../../_Definitions/Framework.UI.AMD.d.ts" />
 /// <reference path="./../../_Definitions/Mapping.Infrastructure.AMD.d.ts" />
+/// <reference path="./../../_Definitions/Framework.AMD.d.ts" />
+
 import { ViewModelBase } from "geocortex/framework/ui/ViewModelBase";
 import { ViewerApplication } from "geocortex/infrastructure/Viewer";
 import { Observable, ObservableCollection } from "geocortex/framework/observables";
@@ -19,7 +21,7 @@ export interface Folder {
 
 export class SageGrouseConsPlnViewModel extends ViewModelBase {    
     app: ViewerApplication;
-    filterView: OE_SageGrouseConsPlnView;
+    filterView: OE_SageGrouseConsPlnView;   
     myWorkflowContext: any;
     myModel: any;
     dashboard_meta: ObservableCollection<Folder>;
@@ -127,6 +129,9 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
 
     //
     private _injectScript() {
+        //jQuery plugin for displaying tour/guide
+        //http://linkedin.github.io/hopscotch/
+        //////////////////////////////////
         $.ajax({
             type: "GET",
             url: "./Resources/Scripts/oe_added_scripts/hopscotch-0.1.1.min.js",
@@ -138,19 +143,20 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
                 console.log('fail', err);
             }
         });
-        //$.ajax({
-        //    type: "GET",
-        //    url: "./Resources/Scripts/oe_added_scripts/jQAllRangeSliders-min.js",
-        //    dataType: "script",
-        //    success: function () {
-        //        console.log('success!');
-        //    },
-        //    error: function (err) {
-        //        console.log('fail', err);
-        //    }
-        //});
-
-        
+        //jQuery Plugin for advanced range sliders
+        // http://ghusse.github.io/jQRangeSlider/options.html
+        ////////////////
+        $.ajax({
+            type: "GET",
+            url: "./Resources/Scripts/oe_added_scripts/jQAllRangeSliders-min.js",
+            dataType: "script",
+            success: function () {
+                console.log('success!');
+            },
+            error: function (err) {
+                console.log('fail', err);
+            }
+        });        
     }
 
 

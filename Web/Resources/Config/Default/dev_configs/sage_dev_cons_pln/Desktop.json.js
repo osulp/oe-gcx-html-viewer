@@ -6471,7 +6471,7 @@
                                 "configuration": {
                                     "minWidth": 200,
                                     "maxWidth": 500,
-                                    "dataFrameWidth": 350,
+                                    "dataFrameWidth": 450,
                                     "dataFrameOpenByDefault": false,
                                     "bottomRegionHeight": 400
                                 }

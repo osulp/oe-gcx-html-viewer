@@ -18,7 +18,7 @@
 }
 
 .slider{
-    width:75%;
+    width:90%;
     margin-top:5px;
 }
 
@@ -439,4 +439,12 @@
 }
 .help-tour img{
     margin-right:5px;
+}
+
+.ui-rangeSlider-arrow, .ui-rangeSlider-container, .ui-rangeSlider-bar {
+    height: 20px;
+}
+
+.ui-rangeSlider-label{
+    font-size:12px;
 }
