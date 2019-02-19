@@ -32,6 +32,7 @@ const outputDeclarationFile = argv.outDeclarationFile;
 const outputPath = argv.outDir || "./dist";
 const outputFile = argv.outFile;
 const minify = argv.minify || false;
+const excludeFolderName = argv.exclude;
 const isWatchMode = argv._.includes("watch");
 
 /** Used to replace absolute file paths to relative paths from the source folder */
@@ -129,10 +130,12 @@ function bundleFiles() {
     modules.forEach(moduleName => {
         // Ignore tsconfig.json/tslint.json files as they will mistakenly get bundled with language resources.
         // The bin and obj directories may contain .json metadata files.
+		// Also exclude any files in an excluded folder
         if (moduleName.toLowerCase().indexOf("tsconfig") > -1 ||
             moduleName.toLowerCase().indexOf("tslint") > -1 ||
             moduleName.toLowerCase() === "bin" ||
-            moduleName.toLowerCase() === "obj") {
+            moduleName.toLowerCase() === "obj" ||
+			moduleName === excludeFolderName) {
             return;
         }
 
@@ -140,6 +143,8 @@ function bundleFiles() {
         // in this module directory (at any depth in the module folder structure)
         let files = tsOutputKeys.filter(key => key.startsWith(moduleName));
         // let jsSourcePaths = glob.sync(`${jsTempDir}/${moduleName}/**/*.js`);
+		
+		
         let markupPaths = glob.sync(`${sourcePath}/${moduleName}/**/*.html`);
         let cssPaths = glob.sync(`${sourcePath}/${moduleName}/**/*.css`);
         let jsonPaths = glob.sync(`${sourcePath}/${moduleName}/**/*.json`);
@@ -443,7 +448,16 @@ gulp.task("ts-build", () => {
         mkdirp(outputPath);
     }
 
-    const tsResult = gulp.src(`${sourcePath}/**/*.{ts,tsx}`)
+	// If an 'excludeFolderName' has been provided (--exclude parameter)
+	// then add to the glob to exclude all code in this folder from compilation
+	// Note that this parameter only properly supports root level folders
+    const glob = [`${sourcePath}/**/*.{ts,tsx}`];
+    if (excludeFolderName) {
+        glob.push(`!${sourcePath}/${excludeFolderName}/`);
+        glob.push(`!${sourcePath}/${excludeFolderName}/**/*`)
+    }
+
+    const tsResult = gulp.src(glob)
         .pipe(tsProject())
         .on("error", () => {
             errorCount++;

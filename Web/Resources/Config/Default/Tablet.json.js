@@ -8094,7 +8094,7 @@
             {
                 "moduleName": "Workflow",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.workflow.WorkflowModule",
-                "deferLoading": true,
+                "deferLoading": false,
                 "configuration": {
                     "showTitleInFormBody": false,
                     "defaultContainerRegionName": "DataRegion",

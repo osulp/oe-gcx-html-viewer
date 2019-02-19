@@ -83,7 +83,6 @@
     <Content Include="Handheld.html" />
     <Content Include="Index.html" />
     <Content Include="Index.2.8.html" />
-    <Content Include="introJsTest.html" />
     <Content Include="Libraries\Custom\AMD\OE_Graphics.js" />
     <Content Include="Libraries\Custom\AMD\OE_HyperlinkBanner.js" />
     <Content Include="Libraries\Custom\AMD\OE_LayerActions.js" />
@@ -585,6 +584,7 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Resources\Config\Default\dev_configs\owrt\" />
     <Folder Include="Resources\Config\DevTy\" />
   </ItemGroup>
   <PropertyGroup>

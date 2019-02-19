@@ -58,6 +58,31 @@ define(["require", "exports", "geocortex/framework/ui/ViewBase"], function (requ
 });
 
 },
+"geocortex/oe_amd/OtherTemplate/OtherTemplateViewModel": function () {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+define(["require", "exports", "geocortex/framework/ui/ViewModelBase"], function (require, exports, ViewModelBase_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var OtherTemplateViewModel = (function (_super) {
+        __extends(OtherTemplateViewModel, _super);
+        function OtherTemplateViewModel() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        return OtherTemplateViewModel;
+    }(ViewModelBase_1.ViewModelBase));
+    exports.OtherTemplateViewModel = OtherTemplateViewModel;
+});
+
+},
 "url:/geocortex/oe_amd/OtherTemplate/OtherTemplateView.html": markup1,
 
     }

@@ -139,7 +139,10 @@ module oe.layer_actions_extension {
                         // check to see if div id already added, else create a new one
                         if (args.childRegions[0].activeViews.length > 1) {
                             let layerListView = args.childRegions[0].activeViews.filter((av: any) => av.id === "LayerActionsView");
-                            if (layerListView.length > 0) {
+                            if (layerListView.length > 0 &&
+                                typeof layerListView[0].viewModel.menuContext.value.description != "undefined" &&
+                                layerListView[0].viewModel.menuContext.value.description != null
+                            ) {
                                 this.layer_desc_full = layerListView[0].viewModel.menuContext.value.description.split("Metadata:")[0];
                                 this.layer_desc_full = this.layer_desc_full.split('Abstract:').length > 1
                                     ? this.layer_desc_full.split('Abstract:')[1]
@@ -172,7 +175,10 @@ module oe.layer_actions_extension {
 
                 // Show the text that was passed into the command.
                 // Metadata links are the first link in the description so split and send to first url.
-                var metadataLink = layer.description.split("http");
+                var metadataLink = "";
+                if (layer != null && layer != "undefined" && layer.description != null && layer.description != "undefined")
+                    metadataLink = layer.description.split("http");
+
                 var metadataLinkSpaceCount = 0;
 
                 if (metadataLink.length > 1) {
@@ -219,6 +225,12 @@ module oe.layer_actions_extension {
                 if (context == null)
                     return false;
 
+                if (context.mapService.serviceUrl == null || context.mapService.serviceUrl == "undefined")
+                    return false;
+
+                if (context.description == null || context.description == "undefined")
+                    return false;
+
                 //there is a description show this button
                 var isOEService = context.mapService.serviceUrl.match("lib-arcgis") !== -1 ? true : context.mapService.serviceUrl.match("arcgis.oregonexplorer.info") !== -1 ? true : false;
                 if (isOEService && context.description !== "")
@@ -242,7 +254,10 @@ module oe.layer_actions_extension {
 
                 // Show the text that was passed into the command.
                 // Download links are the second link in the description so split and send to second url.
-                var downloadLink = layer.description.split("http");
+                var downloadLink = "";
+                if (layer.description != null && layer.description != "undefined")
+                    downloadLink = layer.description.split("http");
+
                 downloadLink = downloadLink.length > 2 ? "http" + downloadLink[2] : "";
                 if (downloadLink !== "") {
                     //console.log("Opening download link...");
@@ -331,7 +346,11 @@ module oe.layer_actions_extension {
                 }
 
                 //download links always show
-                var downloadLink = context.description.split("http");
+                var downloadLink = ""
+
+                if (context.description != null && context.description != "undefined")
+                    downloadLink = context.description.split("http");
+
                 downloadLink = downloadLink.length > 2 ? "http" + downloadLink[2] : "";
                 if (downloadLink !== "")
                     return true;

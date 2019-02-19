@@ -22,7 +22,13 @@ module oe.raster_functions {
                 this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, (args) => {
                     this._onSiteInitialized(args);
                 });
-            }            
+            }                        
+        }
+
+        _onModuleInitialized(args: any, site: geocortex.essentials.Site) {
+
+            if (args == "RunWorkflowWithArguments")
+                this._onSiteInitialized(site);
         }
 
         _onSiteInitialized(site: geocortex.essentials.Site) {
@@ -31,7 +37,9 @@ module oe.raster_functions {
                 var imageServicesArray = [];
                 //find Image services
                 for (var x = 0; x < site.essentialsMap.mapServices.length; x++) {
-                    if (site.essentialsMap.mapServices[x].mapServiceType === "Image") {
+                    if (site.essentialsMap.mapServices[x].mapServiceType === "Image" &&
+                        this.app.commandRegistry.commands.RunWorkflowWithArguments != null &&
+                        this.app.commandRegistry.commands.RunWorkflowWithArguments != "undefined") {
                         var service:any = {};
                         service.id = site.essentialsMap.mapServices[x].id;
                         service.name = site.essentialsMap.mapServices[x].displayName;

@@ -77,7 +77,7 @@ export class OE_WildfireViewModel extends ViewModelBase {
             }
         });
 
-        var workingApp = <ViewerApplication>geocortex["framework"].applications[0];
+        var workingApp = <any>geocortex["framework"].applications[0];
         
         /*
             This module is added to the NavigationMapRegion region.
@@ -166,7 +166,8 @@ export class OE_WildfireViewModel extends ViewModelBase {
         }
 
         function CloseView() {
-            workingApp.commandRegistry.command("DeactivateView").execute("OE_WildfireView");
+            (<ViewerApplication>workingApp).commandRegistry.command("DeactivateView").execute("OE_WildfireView");
+            
         }               
     }
 }

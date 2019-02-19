@@ -93,7 +93,7 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase", "geo
                 return true;
             return false;
         };
-        OE_GraphicsModule.prototype._oeClearOEMarkup = function () {
+        OE_GraphicsModule.prototype._oeClearOEMarkup = function (group) {
             var t = GraphicsLayerUtils_1.getInternalGraphicsLayer(GraphicsLayerIds_1.MARKUP_LAYER_ID, this.app);
             if (!t)
                 return;
@@ -101,8 +101,15 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase", "geo
             while (i--) {
                 //only remove oe markup graphics
                 if (this._oeIsOEMarkup(t.graphics[i])) {
-                    this.app.event("MarkupDeletedEvent").publish(t.graphics[i]);
-                    t.remove(t.graphics[i]);
+                    //clear a specific group
+                    if (group != undefined && group != "" && t.graphics[i]["oe_group"] != undefined && t.graphics[i]["oe_group"] == group) {
+                        this.app.event("MarkupDeletedEvent").publish(t.graphics[i]);
+                        t.remove(t.graphics[i]);
+                    } // clear all oe markup
+                    else if (group == undefined || group == "") {
+                        this.app.event("MarkupDeletedEvent").publish(t.graphics[i]);
+                        t.remove(t.graphics[i]);
+                    }
                 }
             }
             //this._deactivateActiveToolIfNoMarkupExists(),
@@ -126,11 +133,17 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase", "geo
                 graphic["oe_markup"] = true;
                 //graphic.attributes = { "Extra Info": "extra Extra EXTRA!" };
                 if (this.customFeaturesIn != undefined && this.customFeaturesIn != "") {
+                    //feature group (for clearing specific groups)
+                    if (this.customFeaturesIn.group != undefined && this.customFeaturesIn.group != "") {
+                        graphic["oe_group"] = this.customFeaturesIn.group;
+                    }
+                    //feature name field and name value
                     if (this.customFeaturesIn.name != undefined && this.customFeaturesIn.name != "") {
                         var obj = new Object();
                         obj[this.customFeaturesIn.name] = this.customFeaturesIn.nameval;
                         graphic.attributes = obj;
                     }
+                    //feature color
                     if (this.customFeaturesIn.color != "") {
                         /*var fillSymbol = new esri.symbol.FillSymbol();
                         var outlineSymbol = new esri.symbol.SimpleLineSymbol();

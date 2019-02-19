@@ -15,7 +15,7 @@ export class OE_GraphicsModule extends ModuleBase {
         
     app: ViewerApplication;
     enableCustomFeatures: boolean;
-    customFeaturesIn: any; //name / value pairs {"color":"rgb(255,0,0)","name":"Title","nameval":"Value"}
+    customFeaturesIn: any; //name / value pairs {"color":"rgb(255,0,0)","name":"Title","nameval":"Value","group":"sfam_circles"}
 
     hideMapTipOnEdit: boolean; //also adds the OE property to graphics
     workflowIDRunOnEdit: string;
@@ -120,7 +120,7 @@ export class OE_GraphicsModule extends ModuleBase {
         return false;
     }
 
-    _oeClearOEMarkup()
+    _oeClearOEMarkup(group: string)
     {                
         var t = getInternalGraphicsLayer(MARKUP_LAYER_ID, this.app);        
         if (!t)
@@ -130,10 +130,17 @@ export class OE_GraphicsModule extends ModuleBase {
         while (i--)
         {
             //only remove oe markup graphics
-            if (this._oeIsOEMarkup(t.graphics[i])) {
+            if (this._oeIsOEMarkup(t.graphics[i]) ) {
 
-                this.app.event("MarkupDeletedEvent").publish(t.graphics[i]);
-                t.remove(t.graphics[i]);
+                //clear a specific group
+                if (group != undefined && group != "" && t.graphics[i]["oe_group"] != undefined && t.graphics[i]["oe_group"] == group) {
+                    this.app.event("MarkupDeletedEvent").publish(t.graphics[i]);
+                    t.remove(t.graphics[i]);
+                } // clear all oe markup
+                else if (group == undefined || group == "") {
+                    this.app.event("MarkupDeletedEvent").publish(t.graphics[i]);
+                    t.remove(t.graphics[i]);
+                }
             }
         }
 
@@ -165,6 +172,12 @@ export class OE_GraphicsModule extends ModuleBase {
             //graphic.attributes = { "Extra Info": "extra Extra EXTRA!" };
             if (this.customFeaturesIn != undefined && this.customFeaturesIn != "") {
 
+                //feature group (for clearing specific groups)
+                if (this.customFeaturesIn.group != undefined && this.customFeaturesIn.group != "") {
+                    graphic["oe_group"] = this.customFeaturesIn.group;
+                }
+
+                //feature name field and name value
                 if (this.customFeaturesIn.name != undefined && this.customFeaturesIn.name != "") {
                     var obj: any = new Object();
                     obj[this.customFeaturesIn.name] = this.customFeaturesIn.nameval;
@@ -172,6 +185,7 @@ export class OE_GraphicsModule extends ModuleBase {
                     graphic.attributes = obj;
                 }
 
+                //feature color
                 if (this.customFeaturesIn.color != "")
                 {
                     /*var fillSymbol = new esri.symbol.FillSymbol();
