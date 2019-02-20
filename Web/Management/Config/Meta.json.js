@@ -54,10 +54,6 @@
             "expandedShells": false
         },
         {
-            "name": "OptimizerIntegrationSectionView",
-            "expandedShells": false
-        },
-        {
             "name": "CollaborationSectionView",
             "expandedShells": false
         },
@@ -164,6 +160,10 @@
         {
             "name": "QueryBuilderActionsSectionView",
             "expandedShells": true
+        },
+        {
+            "name": "WorkflowSectionView",
+            "expandedShells": false
         }
     ]
 }

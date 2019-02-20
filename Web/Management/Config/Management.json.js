@@ -1,4 +1,4 @@
-{
+﻿{
     "configuration": {
         "defaultLibraryId": "Management",
         "libraries": [
@@ -44,7 +44,6 @@
                 ]
             }
         ],
-
         "widgets":
         [
             {
@@ -230,16 +229,16 @@
                                     "text": "@language-results-list-collection-element-actions-section-title"
                                 },
                                 {
+                                    "viewId": "ResultsTableActionsSectionView",
+                                    "text": "@language-results-table-actions-section-title"
+                                },
+                                {
                                     "viewId": "ResultsListSetActionsSectionView",
                                     "text": "@language-results-list-set-actions-section-title"
                                 },
                                 {
                                     "viewId": "ResultsListSetElementActionsSectionView",
                                     "text": "@language-results-list-set-element-actions-section-title"
-                                },
-                                {
-                                    "viewId": "ResultsTableActionsSectionView",
-                                    "text": "@language-results-table-actions-section-title"
                                 },
                                 {
                                     "viewId": "SelectionActionsSectionView",
@@ -280,6 +279,15 @@
             {
                 "moduleName": "Collaboration",
                 "moduleType": "geocortex.essentialsHtmlViewer.management.modules.collaboration.CollaborationModule",
+                "configuration": { },
+                "views": [
+                ],
+                "viewModels": [
+                ]
+            },
+            {
+                "moduleName": "WorkflowFive",
+                "moduleType": "geocortex.essentialsHtmlViewer.management.modules.workflowFive.WorkflowFiveModule",
                 "configuration": { },
                 "views": [
                 ],
@@ -446,12 +454,6 @@
                                     "cssClass": "icon-tool-behavior"
                                 },
                                 {
-                                    "viewId": "OptimizerIntegrationSectionView",
-                                    "text": "@language-optimizer-integration-title",
-                                    "iconUri": "",
-                                    "cssClass": "icon-optimizer"
-                                },
-                                {
                                     "viewId": "InsightIntegrationSectionView",
                                     "text": "@language-insight-integration-title",
                                     "iconUri": "",
@@ -462,6 +464,12 @@
                                     "text": "@language-collaboration-title",
                                     "iconUri": "",
                                     "cssClass": "icon-collaboration"
+                                },
+                                {
+                                    "viewId": "WorkflowFiveSectionView",
+                                    "text": "@language-workflow-five-title",
+                                    "iconUri": "",
+                                    "cssClass": "icon-workflow"
                                 }
                             ]
                         }
@@ -662,15 +670,6 @@
                         "visible": false
                     },
                     {
-                        "id": "OptimizerIntegrationSectionView",
-                        "type": "geocortex.essentialsHtmlViewer.management.modules.sectionmanager.SectionView",
-                        "viewModelId": "OptimizerIntegrationSectionViewModel",
-                        "markup": "Management/modules/SectionManager/SectionView.html",
-                        "region": "ManagementContentRegion",
-                        "title": "@language-optimizer-integration-title",
-                        "visible": false
-                    },
-                    {
                         "id": "InsightIntegrationSectionView",
                         "type": "geocortex.essentialsHtmlViewer.management.modules.sectionmanager.SectionView",
                         "viewModelId": "InsightIntegrationSectionViewModel",
@@ -821,7 +820,7 @@
                         "viewModelId": "ResultsListCollectionElementActionsSectionViewModel",
                         "markup": "Management/modules/SectionManager/SectionView.html",
                         "region": "ManagementContentRegion",
-                        "title": "@language-results-list-collection-actions-title",
+                        "title": "@language-results-list-collection-element-actions-title",
                         "visible": false
                     },
                     {
@@ -830,7 +829,7 @@
                         "viewModelId": "ResultsListSetActionsSectionViewModel",
                         "markup": "Management/modules/SectionManager/SectionView.html",
                         "region": "ManagementContentRegion",
-                        "title": "@language-results-list-collection-actions-title",
+                        "title": "@language-results-list-set-actions-title",
                         "visible": false
                     },
                     {
@@ -839,7 +838,7 @@
                         "viewModelId": "ResultsListSetElementActionsSectionViewModel",
                         "markup": "Management/modules/SectionManager/SectionView.html",
                         "region": "ManagementContentRegion",
-                        "title": "@language-results-list-collection-actions-title",
+                        "title": "@language-results-list-set-element-actions-title",
                         "visible": false
                     },
                     {
@@ -876,6 +875,15 @@
                         "markup": "Management/modules/SectionManager/SectionView.html",
                         "region": "ManagementContentRegion",
                         "title": "@language-collaboration-title",
+                        "visible": false
+                    },
+                    {
+                        "id": "WorkflowFiveSectionView",
+                        "type": "geocortex.essentialsHtmlViewer.management.modules.sectionmanager.SectionView",
+                        "viewModelId": "WorkflowFiveSectionViewModel",
+                        "markup": "Management/modules/SectionManager/SectionView.html",
+                        "region": "ManagementContentRegion",
+                        "title": "@language-workflow-five-title",
                         "visible": false
                     }
                 ],
@@ -1082,20 +1090,6 @@
                             },
                             "viewModelTemplate": {
                                 "type": "geocortex.essentialsHtmlViewer.management.modules.Pushpins.PushpinsViewModel",
-                                "configuration": { }
-                            }
-                        }
-                    },
-                    {
-                        "id": "OptimizerIntegrationSectionViewModel",
-                        "type": "geocortex.essentialsHtmlViewer.management.modules.sectionmanager.SectionViewModel",
-                        "configuration": { 
-                            "viewTemplate": {
-                                "type": "geocortex.essentialsHtmlViewer.management.modules.OptimizerIntegration.OptimizerIntegrationView",
-                                "markup": "Management/modules/OptimizerIntegration/OptimizerIntegrationView.html"
-                            },
-                            "viewModelTemplate": {
-                                "type": "geocortex.essentialsHtmlViewer.management.modules.OptimizerIntegration.OptimizerIntegrationViewModel",
                                 "configuration": { }
                             }
                         }
@@ -1497,6 +1491,21 @@
                             },
                             "viewModelTemplate": {
                                 "type": "geocortex.essentialsHtmlViewer.management.modules.collaboration.CollaborationViewModel",
+                                "configuration": { }
+                            }
+                        }
+                    },
+                    {
+                        "id": "WorkflowFiveSectionViewModel",
+                        "type": "geocortex.essentialsHtmlViewer.management.modules.sectionmanager.SectionViewModel",
+                        "configuration": {
+                            "allowConfigureIndividually": false,
+                            "viewTemplate": {
+                                "type": "geocortex.essentialsHtmlViewer.management.modules.workflowFive.WorkflowFiveView",
+                                "markup": "Management/modules/WorkflowFive/WorkflowFiveView.html"
+                            },
+                            "viewModelTemplate": {
+                                "type": "geocortex.essentialsHtmlViewer.management.modules.workflowFive.WorkflowFiveViewModel",
                                 "configuration": { }
                             }
                         }

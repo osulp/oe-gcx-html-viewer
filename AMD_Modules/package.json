@@ -18,7 +18,7 @@
     "typescript": "~2.3.4",
     "@types/react-dom": "^15.5.5",
     "tslint": "^5.4.2",
-    "eslint": "^4.0.0"
+    "eslint": "^3.19.0"
   },
   "peerDependencies": {
     "typescript": "2.x"

@@ -1,4 +1,4 @@
-geocortex.essentialsHtmlViewer.management.modules.toolbar.tools = [
+﻿geocortex.essentialsHtmlViewer.management.modules.toolbar.tools = [
         {
             "id": "FileGroup",
             "type": "toolbarGroup",
