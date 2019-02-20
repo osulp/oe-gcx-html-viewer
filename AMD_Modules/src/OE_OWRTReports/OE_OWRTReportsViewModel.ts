@@ -44,12 +44,16 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         
     loaderVisible: Observable<boolean> = new Observable<boolean>(true);
     loaderMessage: Observable<string> = new Observable<string>("Loading Report...");
+    loaderSpinner: Observable<boolean> = new Observable<boolean>(true);
+    loaderWarnIcon: Observable<boolean> = new Observable<boolean>(false);
+    inputBlockOnError: Observable<boolean> = new Observable<boolean>(false);
     
     esriMap: esri.Map;
 
     chartPartVisible: Observable<boolean> = new Observable<boolean>(true);
     chartActVisible: Observable<boolean> = new Observable<boolean>(false);
     chartActive: any;
+    activeChartName: Observable<string> = new Observable<string>("");
 
     chartFundingActivity: RestChartDefinition = null;
     chartFundingActivityData: any = {}        
@@ -66,6 +70,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     queryUrlActivityTypes: string;
     queryUrlResults: string;
     queryUrlMetrics: string;
+    queryUrlLandUse: string;
                  
     sequenceTasks: OE_OWRTReportsViewModelSequenceTask[] = [];    
     sequenceErrors: string = "";
@@ -86,20 +91,24 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     project_metrics: esri.tasks.FeatureSet = null;
     project_goals: esri.tasks.FeatureSet = null;
     project_activites: esri.tasks.FeatureSet = null;
+    project_species: esri.tasks.FeatureSet = null;
+    project_landuses: esri.tasks.FeatureSet = null;
     
     project_partcipants: ObservableCollection<object> = new ObservableCollection<object>(null);
     project_results_observe: ObservableCollection<object> = new ObservableCollection<object>(null);
     project_goals_observe: ObservableCollection<object> = new ObservableCollection<object>(null);
     project_metrics_observe: ObservableCollection<object> = new ObservableCollection<object>(null);
     project_activites_observe: ObservableCollection<object> = new ObservableCollection<object>(null);
-        
+                
     //project information block
+    projectID: string;
     project_nbr: Observable<string> = new Observable<string>("");
     project_name: Observable<string> = new Observable<string>("");
     project_start_year: Observable<string> = new Observable<string>("");
     project_complete_year: Observable<string> = new Observable<string>("");
     project_activities_blob: Observable<string> = new Observable<string>("");
     project_site_selection: Observable<string> = new Observable<string>("");
+    project_speices_observe: Observable<string> = new Observable<string>("");
 
     //project location block
     project_watershed: Observable<string> = new Observable<string>("");
@@ -162,6 +171,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this.queryUrlPartRoles = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PARTICIPANTS_ROLE_LU").id;
         this.queryUrlPartSuperTypes = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PARTICIPANTS_SUPERTYPE_LU").id;
         this.queryUrlPartTypes = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PARTICIPANTS_TYPE_LU").id;
+        this.queryUrlLandUse = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "LAND_USE").id;
         
         //get the OWRT drawing color data
         var requestHandle = esri.request({
@@ -332,13 +342,14 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this._sequenceQuery(this.queryUrlPartRoles, "1=1", ["participant_role_lu_id,role,active"], "partRoles", "Participant Role");
         this._sequenceQuery(this.queryUrlPartSuperTypes, "1=1", ["participant_super_type,super_type_lu_id"], "partSuperTypes", "Participant Super Type");
         this._sequenceQuery(this.queryUrlPartTypes, "1=1", ["participant_type,super_type_lu_id,participant_type_lu_id,active,gov_nongov"], "partTypes", "Participant Type");
-        
+                        
         //related records to project
         this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 0, ["*"], "projectInfo", "Project Info");
         this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 3, ["*"], "participants", "Participants");                
         this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 4, ["*"], "project_results", "Project Activity Results");
         this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 6, ["*"], "project_goals", "Project Goals");
-        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 5, ["*"], "project_metrics", "Project Metrics");        
+        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 5, ["*"], "project_metrics", "Project Metrics");
+        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 7, ["*"], "project_species", "Project Species");
 
         this._MoveCurrentSequenceProgress();
     }
@@ -353,9 +364,10 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     public _oeReportQueries(project_nbr: string) {
 
         this.loaderMessage.set("Loading Report...");
-
-        //this.locatorMapVisible.set(false);
+        this.loaderWarnIcon.set(false);
+        this.loaderSpinner.set(true);
         this.loaderVisible.set(true);
+        this.inputBlockOnError.set(false);
 
         //no number, default to one
         if (!project_nbr)
@@ -383,11 +395,11 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
             else
             {
                 if(!results)
-                    console.log("No result object returned.");
+                    this._StopOnErrorMessage("No result with project number "+project_nbr+" returned.");
                 else if (!results.featureSet)
-                    console.log("No feature set returned.");
+                    this._StopOnErrorMessage("No feature set with project number " + project_nbr + " returned.");
                 else if ((<esri.tasks.FeatureSet>results.featureSet).features.length < 1)
-                    console.log("Query successful. No matching records.");
+                    this._StopOnErrorMessage("No records matching project number " + project_nbr + ".");
             }
 
         })
@@ -422,9 +434,19 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
                 
     }
 
+    private _StopOnErrorMessage(message: string) {
+
+        this.loaderMessage.set(message);
+
+        this.loaderWarnIcon.set(true);
+        this.loaderSpinner.set(false);
+        this.inputBlockOnError.set(true);
+        this.loaderVisible.set(true);        
+    }
+
     private _BuildProjectInfo(featureSet: esri.tasks.FeatureSet) {
 
-        console.log("Features Found: " + featureSet.features.length);
+        //console.log("Features Found: " + featureSet.features.length);
         let graphicToUse = featureSet.features[0];
                 
         //single field values
@@ -446,6 +468,8 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
             fieldsToUse[i].target.set(this._GetFieldValue(graphicToUse, fieldsToUse[i].field));
         }
 
+        this.projectID = graphicToUse.attributes.ri_project_id;
+
         /*for (let fieldPointer in fieldsToUse) {
             if (typeof fieldsToUse[fieldPointer] !== "undefined" && fieldsToUse[fieldPointer] !== null)
                 fieldsToUse[fieldPointer].target.set(this._GetFieldValue(graphicToUse, fieldsToUse[fieldPointer].field));            
@@ -459,7 +483,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this.project_townshipRangeSection.set(townshipRangeSection);
                 
         //dominant land use
-        this.project_dominant_land_use.set("No Data");
+        //this.project_dominant_land_use.set("No Data");
 
         //build types featuersets
         this._BuildTypesAndRelationships(parseInt(this._GetFieldValue(graphicToUse, "OBJECTID"), 10));
@@ -476,6 +500,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this._BuildActivityResults();
         this._BuildGoals();
         this._BuildMetrics();
+        this._BuildSpecies();
 
         this._RelatedProjectInfo(); // also pulls in activities (for funding)
     }    
@@ -491,14 +516,71 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
             if (workingAttributes.project_site_selection)
                 this.project_site_selection.set(workingAttributes.project_site_selection.toString());
             
-            //get activity type funding
+            //get activity type funding and land use
 
             //clear tasks
-            this._NewSequence(this._BuildActivities);
+            this._NewSequence(this._QuerysThatRequireProjectID);
             //related records to project
             this._sequenceRelationshipQuery(this.queryUrlProjectInfo, workingAttributes.OBJECTID, 9, ["*"], "project_activites", "Project Activities");
+            this._sequenceQuery(this.queryUrlLandUse, "project_id=" + this.projectID, ["land_use"], "project_landuses", "Project Land Uses");
             this._MoveCurrentSequenceProgress();
         }
+    }
+
+    private _QuerysThatRequireProjectID() {
+
+        this._BuildActivities();
+        this._BuildLandUse();
+
+        //hide the loader overlay
+        this.loaderVisible.set(false);     
+    }
+
+    private _BuildLandUse() {
+
+        //Land use
+        var landUseString: string = "";
+
+        for (let i = 0; i < this.project_landuses.features.length; i++) {
+
+            let workingAttributes = this.project_landuses.features[i].attributes;
+            
+            landUseString += workingAttributes.land_use;
+
+            if (i < this.project_landuses.features.length - 1)
+                landUseString += ", ";
+        }
+
+        if (landUseString == "")
+            landUseString = "No land use on record.";
+
+        this.project_dominant_land_use.set(landUseString);
+    }
+
+    private _BuildSpecies() {
+
+        //species
+        var speciesString: string = "";
+
+        if (this.project_species && this.project_species.features) {
+
+            for (let i = 0; i < this.project_species.features.length; i++) {
+
+                let workingAttributes = this.project_species.features[i].attributes;
+
+                speciesString += workingAttributes.species;
+
+                if (i < this.project_species.features.length - 1)
+                    speciesString += ", ";
+            }
+
+        }
+
+        if (speciesString == "")
+            speciesString = "No species on record.";
+
+        this.project_speices_observe.set(speciesString);
+
     }
 
     private _BuildActivities() {
@@ -550,10 +632,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         }
 
         //Build funding chart
-        //this.chartActivity = this.createPieChart(chartFundingActivity, [chartFundingActivityData], "OE_pieChartFundingActivity");
-
-        //hide the loader overlay
-        this.loaderVisible.set(false);        
+        //this.chartActivity = this.createPieChart(chartFundingActivity, [chartFundingActivityData], "OE_pieChartFundingActivity");                  
     }
 
     private _FindActivitySymbolColor(activityType: string, cssType: boolean = true): any {
@@ -625,7 +704,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
 
             workingObject = workingAttributes;
 
-            workingObject.visible = new Observable<boolean>(true);
+            //workingObject.visible = new Observable<boolean>(true);
 
             if (!treatments[workingObject.treatment]) {
 
@@ -933,13 +1012,15 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this._destoryFundingChart();
 
         //Build funding chart
-        this.chartActive = this.createPieChart(this.chartFundingActivity, [this.chartFundingActivityData], "OE_pieChartFunding");
+        this.chartActive = this.createPieChart(this.chartFundingActivity, [this.chartFundingActivityData], "OE_pieChartFunding");        
+        this.activeChartName.set("Activity Funding");
     }
 
     public BuildChartParticipant() {
         this._destoryFundingChart();
 
         this.chartActive = this.createPieChart(this.chartFundingPart, [this.chartFundingPartData], "OE_pieChartFunding");      
+        this.activeChartName.set("Participant Funding");
     }
         
     private _destoryFundingChart() {
@@ -1014,9 +1095,13 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     private createPieChart(chartConfig: any, data: any, targetRegion: string): Chart {
                 
         let chartDefinition = new ChartDefinition(chartConfig);
-
+                
         // Create chart view model from chart config & data.
         let chartViewModel = this.chartFactory.createInstance(<any>chartDefinition, ChartFeatureType.SingleFeature, data);
+        chartViewModel.width.set(250);
+        //chartViewModel.autoSize.set(false);
+        //chartViewModel.interactiveLegend.set(true);
+        //chartViewModel.pieStartAngle.set(90);
         
         // Create the chart.
         let chart = <any>this.app.viewManager.createView({

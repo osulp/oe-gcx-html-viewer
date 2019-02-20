@@ -169,32 +169,9 @@ define(["require", "exports", "geocortex/framework/ui/ViewModelBase", "geocortex
             //if (this.mapClickEnabled)
             this.app.eventRegistry.event("MapClickedEvent").subscribe(null, handleMouseClick);
             function loadWorkflow(pointIn) {
-                //if (!fireRiskPopupEnabled)
-                //    return;
-                //loading div
-                /*var loadingDiv = $("#WildfireRisk_loading");
-                loadingDiv.css("display", "block");
-    
-                //swap blocks
-                $(".WildfireRiskPopupContent").css("display", "block");
-    
-                //link div
-                var linkDiv = $(".WildfireRisk_link");
-                linkDiv.css("display", "none");
-    
-                //content div
-                var contentDiv = $("#WildfireRisk_content");
-                contentDiv.css("display", "none");
-    
-                loadingDiv.text("Launching summary...");*/
-                //load the html view
-                //workingApp.commandRegistry.command("ActivateView").execute("OE_WildfireView");
-                //workingPointGeometry = pointIn.mapPoint;
                 var view = thisViewModel.app.viewManager.getViewById("OE_WildfireView");
                 thisViewModel.mapPointIn = pointIn;
                 view.buildWildfireRiskWorkflowRequest(false, thisViewModel);
-                //remove view after delay                    
-                //setTimeout(CloseView, 1800);
             }
             function enableFireriskPopup() {
                 exports.fireRiskPopupEnabled = true;
@@ -203,11 +180,8 @@ define(["require", "exports", "geocortex/framework/ui/ViewModelBase", "geocortex
                 exports.fireRiskPopupEnabled = false;
             }
             function openFireriskPopup(geometryIn, appIn) {
-                //if (!fireRiskPopupEnabled)
-                //  return;
                 var jsonIn = jQuery.parseJSON(geometryIn);
                 var newPoint = new esri.geometry.Point(jsonIn.x, jsonIn.y, new esri.SpatialReference({ wkid: jsonIn.spatialReference.wkid }));
-                //processMapPoint(newPoint);
                 loadWorkflow(newPoint);
             }
             function handleMouseClick(pointIn, appIn) {
@@ -324,6 +298,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "geocortex/framework/ui/ViewModelBase", "geocortex/framework/observables"], function (require, exports, ViewModelBase_1, observables_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    //import { } from "geocortex/framework/ui/ViewBase"
     //import { defaultMarkerSymbol } from "geocortex/infrastructure/SymbolUtils";
     //export var reportImageFeatureCollectionJSON;
     //export var reportImageExtent;
@@ -374,12 +349,25 @@ define(["require", "exports", "geocortex/framework/ui/ViewModelBase", "geocortex
             }
         };
         OE_Wildfire_DynamicFormViewModel.prototype._onSiteInitialized = function (site, thisViewModel) {
+            /*this.app.eventRegistry.event("ViewActivatedEvent").subscribe(this, function (args) {
+                //Check if activated view is the ResultsListView
+                if (args.id === "ResultsListView") {
+                }
+            )};*/
+            var _this = this;
+            this.app.eventRegistry.event("ViewContainerViewClosedEvent").subscribe(this, function (args) {
+                console.log('view container closing', args);
+                if (args.viewId === "OE_Wildfire_DynamicFormView") {
+                    _this.cleanOnClose();
+                }
+            });
             //dynamic external workflow form
             this.app.registerActivityIdHandler("displayWildfirePointResults", function CustomEventHandler(workflowContext, contextFunctions) {
                 //let myWorkflowContext: any;
                 //myWorkflowContext = $.extend({}, workflowContext);
                 thisViewModel.myModel = thisViewModel;
                 thisViewModel.myWorkflowContext = $.extend({}, workflowContext);
+                //thisViewModel.app.commandRegistry.command("ActivateView").execute("OE_Wildfire_DynamicFormView");
                 thisViewModel.app.commandRegistry.command("ActivateView").execute("OE_Wildfire_DynamicFormView");
                 thisViewModel.mainContent.set(thisViewModel.myWorkflowContext.getValue("mainContent"));
                 thisViewModel.homeOwnerReportContent.set(thisViewModel.myWorkflowContext.getValue("homeOwnerReportContent"));
@@ -402,6 +390,9 @@ define(["require", "exports", "geocortex/framework/ui/ViewModelBase", "geocortex
                     $(".wildfire_sfpd_content").css("display", "none");
                 }*/
             });
+        };
+        OE_Wildfire_DynamicFormViewModel.prototype.cleanOnClose = function () {
+            this.app.commandRegistry.command("ClearMarkupQuiet").execute();
         };
         OE_Wildfire_DynamicFormViewModel.prototype.closeView = function () {
             this.app.commandRegistry.command("DeactivateView").execute("OE_Wildfire_DynamicFormView");

@@ -1,8 +1,13 @@
 ﻿<div class="oe_owrtPR-module-view">
 
     <div class="oeOWRTReportLoading" data-binding="{@visible: loaderVisible}">
-        <img src="Resources/Images/Custom/project_loader.gif" />
-        <div data-binding="{@text: loaderMessage}">Loading report...</div>
+        <img data-binding="{@visible: loaderSpinner}" src="Resources/Images/Custom/project_loader.gif" />
+        <img data-binding="{@visible: loaderWarnIcon}" src="Resources/Images/Custom/warning.png" />
+        <div class="oeOWRTwarningMessage" data-binding="{@text: loaderMessage}">Loading report...</div>
+        <div data-binding="{@visible: inputBlockOnError}" class="oeOWRTerrorInput">
+            <div>Have a valid project number? <br />Enter a project number below and press enter.</div>
+            <input name="project_nbr" data-binding="{@event-onchange: loadProjectNbr}" />
+        </div>
     </div>
     
     <div class="oe_owrtPR-row">
@@ -11,7 +16,7 @@
             <fieldset class="oe_owrtPR-Info">
                 <legend>Restoration Project Information</legend>
                 <h1>Project Number</h1>
-                <div data-binding="{@text:project_nbr}"></div><input name="project_nbr" data-binding="{@event-onchange: loadProjectNbr}{value:project_nbr}" />
+                <div data-binding="{@text:project_nbr}"></div><input name="project_nbr" data-binding="{@event-onchange: loadProjectNbr}" />
                 <h1>Project Name</h1>
                 <div data-binding="{@text:project_name}"></div>
                 <h1>Project Dates</h1>
@@ -21,6 +26,8 @@
                 <div data-binding="{@text:project_activities_blob}"></div>
                 <h1>Project Site Selection</h1>
                 <div data-binding="{@text:project_site_selection}"></div>
+                <h1>Species</h1>
+                <div data-binding="{@text:project_speices_observe}"></div>
             </fieldset>
 
             <fieldset class="oeOwrtPRparticipants">
@@ -61,10 +68,12 @@
 
             <fieldset class="oeChartsFieldSet">
                 <legend>Funding Charts</legend>
-                <div class="OE_pieChartFunding" data-region-name="OE_pieChartFunding"></div>                
                 <div class="oeChartsLinks">
                     <a href="javascript:void(0)" data-binding="{@event-onclick: toggleChartActivity}">Activity Funding</a><a href="javascript:void(0)" data-binding="{@event-onclick: toggleChartPart}">Participant Funding</a>
                 </div>
+                <h1 data-binding="{@text: activeChartName}">Chart name</h1>
+                <div class="OE_pieChartFunding" data-region-name="OE_pieChartFunding" data-binding="{@visible: chartPartVisible}"></div>
+                <div class="OE_pieChartActivity" data-region-name="OE_pieChartActivity" data-binding="{@visible: chartActVisible}"></div>                
             </fieldset>
             
         </div>
@@ -129,12 +138,7 @@
                 <legend>Treatments &amp; Metrics</legend>
                 <ul data-binding="{@source: project_metrics_observe}">
                     <li data-binding="{@template-for: project_metrics_observe}">                       
-                        <div data-binding="{@text: treatment}"></div>           
-                        <div class="oeMetricToggle">
-                            <a href="javascript:void(0)" data-binding="{@event-onclick: toggleMetrics}">
-                                Hide Details
-                            </a>
-                        </div>           
+                        <div data-binding="{@text: treatment}"></div>                                   
                         <table style="clear:both;" data-binding="{@visible: visible}">
                             <tbody data-binding="{@source: metrics}">
                                 <tr data-binding="{@template-for: metrics}">

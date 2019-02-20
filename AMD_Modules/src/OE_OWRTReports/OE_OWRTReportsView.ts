@@ -20,11 +20,7 @@ export class OE_OWRTReportsView extends ViewBase {
         context.collapseImgVisisble.set(!context.collapseImgVisisble.get());
         context.expandImgVisisble.set(!context.expandImgVisisble.get());
     };
-
-    toggleMetrics(event, element, context) {        
-        context.visible.set(!context.visible.get());
-    };
-
+        
     toggleChartActivity(event, element, context) {
         (<OE_OWRTReportsViewModel>context).BuildChartActivity();
     }

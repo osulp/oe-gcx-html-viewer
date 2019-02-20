@@ -568,6 +568,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Config\Default\dev_configs\owrt\" />
+    <Folder Include="Resources\Config\Default\dev_configs\wildfire\" />
     <Folder Include="Resources\Config\DevTy\" />
   </ItemGroup>
   <PropertyGroup>

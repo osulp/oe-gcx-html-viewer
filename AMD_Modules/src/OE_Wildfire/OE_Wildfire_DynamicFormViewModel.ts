@@ -7,6 +7,7 @@ import { ViewerApplication } from "geocortex/infrastructure/Viewer";
 import { Observable } from "geocortex/framework/observables";
 import { Site } from "geocortex/essentials/Site";
 import { ActivityContext } from "geocortex/workflow/ActivityContext";
+//import { } from "geocortex/framework/ui/ViewBase"
 
 //import { defaultMarkerSymbol } from "geocortex/infrastructure/SymbolUtils";
 
@@ -74,7 +75,20 @@ export class OE_Wildfire_DynamicFormViewModel extends ViewModelBase {
     }
 
     _onSiteInitialized(site: Site, thisViewModel) {
-       
+
+        /*this.app.eventRegistry.event("ViewActivatedEvent").subscribe(this, function (args) {
+            //Check if activated view is the ResultsListView
+            if (args.id === "ResultsListView") {
+            }
+        )};*/
+
+        this.app.eventRegistry.event("ViewContainerViewClosedEvent").subscribe(this, (args) => {
+            console.log('view container closing', args);
+            if (args.viewId === "OE_Wildfire_DynamicFormView") {
+                this.cleanOnClose();
+            }
+        });
+                
         //dynamic external workflow form
         this.app.registerActivityIdHandler("displayWildfirePointResults", function CustomEventHandler(workflowContext, contextFunctions) {
 
@@ -84,7 +98,8 @@ export class OE_Wildfire_DynamicFormViewModel extends ViewModelBase {
 
             thisViewModel.myWorkflowContext = $.extend({}, workflowContext);
 
-            thisViewModel.app.commandRegistry.command("ActivateView").execute("OE_Wildfire_DynamicFormView");
+            //thisViewModel.app.commandRegistry.command("ActivateView").execute("OE_Wildfire_DynamicFormView");
+            thisViewModel.app.commandRegistry.command("ActivateView").execute("OE_Wildfire_DynamicFormView");            
 
             thisViewModel.mainContent.set(thisViewModel.myWorkflowContext.getValue("mainContent"));
             thisViewModel.homeOwnerReportContent.set(thisViewModel.myWorkflowContext.getValue("homeOwnerReportContent"));
@@ -110,6 +125,10 @@ export class OE_Wildfire_DynamicFormViewModel extends ViewModelBase {
                 $(".wildfire_sfpd_content").css("display", "none");
             }*/
         });
+    }
+
+    cleanOnClose() {
+        this.app.commandRegistry.command("ClearMarkupQuiet").execute();
     }
 
     closeView() {

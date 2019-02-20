@@ -101,38 +101,10 @@ export class OE_WildfireViewModel extends ViewModelBase {
         this.app.eventRegistry.event("MapClickedEvent").subscribe(null, handleMouseClick);
                         
         function loadWorkflow(pointIn) {
-
-            //if (!fireRiskPopupEnabled)
-            //    return;
-
-            //loading div
-            /*var loadingDiv = $("#WildfireRisk_loading");
-            loadingDiv.css("display", "block");
-
-            //swap blocks
-            $(".WildfireRiskPopupContent").css("display", "block");
-
-            //link div
-            var linkDiv = $(".WildfireRisk_link");
-            linkDiv.css("display", "none");
-
-            //content div
-            var contentDiv = $("#WildfireRisk_content");
-            contentDiv.css("display", "none");
-
-            loadingDiv.text("Launching summary...");*/
-
-            //load the html view
-            //workingApp.commandRegistry.command("ActivateView").execute("OE_WildfireView");
-
-            //workingPointGeometry = pointIn.mapPoint;
-
+            
             var view: any = thisViewModel.app.viewManager.getViewById("OE_WildfireView");
             thisViewModel.mapPointIn = pointIn;
-            view.buildWildfireRiskWorkflowRequest(false, thisViewModel);
-
-            //remove view after delay                    
-            //setTimeout(CloseView, 1800);
+            view.buildWildfireRiskWorkflowRequest(false, thisViewModel);            
         }
 
         function enableFireriskPopup()
@@ -146,14 +118,9 @@ export class OE_WildfireViewModel extends ViewModelBase {
 
         function openFireriskPopup(geometryIn, appIn) {
                         
-            //if (!fireRiskPopupEnabled)
-              //  return;
-
             var jsonIn = jQuery.parseJSON(geometryIn);
             var newPoint = new esri.geometry.Point(jsonIn.x, jsonIn.y, new esri.SpatialReference({ wkid: jsonIn.spatialReference.wkid }));
-
-            //processMapPoint(newPoint);
-
+            
             loadWorkflow(newPoint);
         }
 
