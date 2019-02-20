@@ -1,7 +1,450 @@
-﻿.report_area{
-    padding:10px;
+﻿.large-shell-right{
+    top:0;
+    right: 0;
+    bottom:0;
+    width:350px;
+    display:none;
+    background-color:white;
+}
+
+.large-shell-center{
+    right:350px;
+}
+
+#report_area {
+    padding: 0 10px 10px 10px;
+    width: 325px;
+    display: table;
 }
 
 .slider{
-    width:75%;
+    width:90%;
+    margin-top:5px;
+}
+
+.ul-query-folders {
+    list-style-type: none;
+    margin-left:-40px;
+}
+
+.ul-query-layers {
+    list-style-type:none;
+    margin-left:-15px;
+    margin-right:10px;
+}
+
+.ul-query-layers li{
+    /*background:#f1eded;*/
+    padding:5px 10px;
+    border-top:1px solid #f1eded;
+}
+
+    .ul-query-layers li:first-child {
+        padding: 5px 10px;
+        border-top:none;
+    }
+
+    /*.ul-query-layers li:nth-child(odd) {
+        background: #f0f0f0;
+    }*/
+
+/*.folder-header-wrapper{
+    border-top:solid 1px #808080;
+}*/
+
+.folder-header-wrapper .tree-expander {
+    width:20px;
+    height:16px;
+    display:inline-block;
+}
+.folder-title{
+    font-size:1.1em;
+    display:inline-block;
+    font-weight:bold;
+}
+.filter_options_wrapper{
+    margin: 0 10px;
+}
+
+#filter-summary, #geo-filter {
+    margin: 0 10px;
+    border-bottom: solid 2px #555555;
+    border-top: none;
+    padding: 5px 10px 0;
+    /*background-color: #f0f0f0;*/
+    border-radius: 0 0 4px 4px;
+    /*width: 90%;*/
+}
+
+#filter-summary ul{
+    margin: 2px 0 2px -30px;
+}
+
+.query-control-bar {
+    /*width: 90%;*/
+    padding: 10px;
+    margin: 10px 10px 0 10px;
+    background-color: #f0f0f0;
+    border-radius: 4px 4px 0 0;
+    border-top: solid 2px #555555;
+    border-bottom: solid 2px #555555;
+}
+
+.query-control-bar div{
+    display:inline-block;
+    width:49%;
+    border-left:1px solid #808080;
+    text-align:center;
+}
+
+.query-control-bar div:hover{
+    cursor:pointer;
+    text-decoration:underline;
+}
+
+.query-control-bar div:first-child{
+    border-left:none;
+}
+
+.get-info-btn-wrapper, .query-layer {
+    display: inline-block;
+}
+
+.query-layer{
+    width:92%;
+}
+
+.query-layer:hover{
+    text-decoration:underline;
+    cursor:pointer;
+}
+
+.get-info-btn{
+    background-image:url(Resources/Images/Icons/Custom/info_i_16px.png);
+    width:16px;
+    height:16px;
+    background-repeat:no-repeat;
+}
+
+.get-info-wrapper{
+    min-width:300px;
+    max-width: 400px;
+    padding:20px;
+}
+
+.filter-def{
+    font-size: .8em;
+    color: #808080;
+    margin-left:5px;
+}
+.filter-def input{
+    margin-right:5px;
+}
+
+#query-filter-wrapper{
+    display:table-row;
+    height:100%;
+}
+
+#query-filter-wrapper.bound-invisible{
+    display:none !important;
+}
+
+#filter-summary-control {
+    display:table-row;   
+    /*margin:-10px 0 0 0;*/
+}
+
+#filter-summary ul li{
+    list-style:none;
+    border-bottom:1px solid #808080;
+}
+
+.table-cell {
+    display: table-cell;
+}
+
+.body-content-outer-wrapper {
+    height: 100%;
+}
+
+.body-content-inner-wrapper {
+    height: 100%;
+    position: relative;
+    overflow: auto;
+}
+
+.body-content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#quick-find-wrapper{
+    padding:5px 10px;
+    margin:0 10px;
+    border-bottom:solid 1px #808080;
+}
+
+#quick-find-wrapper div{
+    display:inline-block;
+}
+
+#quick-find-wrapper input{
+    min-width: 200px;
+    width:100%;
+}
+
+#quick-find-clear{
+    padding:0 10px;
+}
+
+#quick-find-clear:hover{
+    text-decoration:underline;
+    cursor:pointer;
+}
+
+.active-filter-details{
+    display:inline-block;
+    width:85%;
+}
+
+    .active-filter-details:nth-child(2):hover{
+        text-decoration:underline;
+        cursor:pointer;
+    }
+
+    .active-filter-details.remove, .active-filter-details.toggle-active-filter {
+        vertical-align:top;
+        width: 5%;
+    }
+
+        .active-filter-details.toggle-active-filter input{
+            margin:4px 0;
+        }
+
+        .active-filter-details.remove div {
+            background-image: url(Resources/Images/Icons/delete-16.png);
+            width: 16px;
+            height: 16px;
+            margin: 5px;
+        }
+
+.active-filter-details.remove:hover{
+    cursor:pointer;
+}
+
+.toggle-folders-wrapper{
+    border-bottom:1px solid #808080;
+    padding:2px;
+    margin: 0 10px;
+    font-size:.9em;
+}
+
+.toggle-folders-wrapper div {
+    display: inline-block;
+    border-left: solid 1px #808080;
+    width: 30%;
+    text-align: center;
+}
+
+    .toggle-folders-wrapper div:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    .toggle-folders-wrapper div:first-child {
+        border-left: none;
+        color:#808080;
+    }
+        .toggle-folders-wrapper div:first-child:hover {
+            text-decoration: none;
+            cursor: default;
+        }
+
+.active-filter-header-wrapper, .dashboard-headers {
+    padding: 5px;
+    margin: 10px 10px 0 10px;
+    background-color: #f0f0f0;
+    border-radius: 4px 4px 0 0;
+    position:relative;
+}
+
+    .dashboard-headers.tab-header-wrapper{
+        padding:0;
+    }      
+
+
+    .active-filter-header-wrapper:hover {
+        cursor: pointer;
+        /*text-decoration:underline;*/
+    }
+.active-filter-header-wrapper div{
+    display:inline-block;
+}
+
+.show-filters{
+    width:24px;
+    height:16px;
+    background-image:url(Resources/Images/Icons/arrow-down-small-24.png);
+    background-repeat:no-repeat;
+}
+
+.hide-filters {
+    width: 24px;
+    height: 16px;
+    background-image: url(Resources/Images/Icons/arrow-up-small-24.png);
+    background-repeat: no-repeat;
+}
+
+.reset-filters-wrapper{
+    margin:7px 0;
+}
+    .reset-filters-wrapper div
+    , .upload-btn
+    , .restoreGeoBtn
+    , .submit_download_request_btn {
+        width: 29%;
+        display: inline-block;
+        text-align: center;
+        padding: 3px;
+        border: solid 1px #a7a7a7;
+        border-radius: 4px;
+        color: #1A72C4;
+        background-color: #F5F5F5;
+    }
+
+        .restoreGeoBtn{
+            width:15%;
+        }
+            .reset-filters-wrapper div:hover
+            , .upload-btn:hover
+            , .restoreGeoBtn:hover
+            , .submit_download_request_btn:hover {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+
+.no-filters{
+    padding:5px;
+    color:#808080;
+}
+
+#toggle-hex-layer{
+    margin: 2px 5px;
+}
+
+#draw-tools-wrapper div {
+    display: inline-block;
+    margin: 2px 15px;
+    width: 24px;
+    height: 24px;
+    font-size:.8em;
+}
+
+#geo-filter legend{
+    font-size:.9em;
+}
+
+#geo-filter fieldset p{
+    font-size:.9em;
+}
+
+.tab-header {
+    display: inline-block;
+    padding: 5px 10px;
+    width: 42%;
+}
+
+.tab-header div:hover{
+    text-decoration:underline;
+}
+
+    .tab-header.show-filters {
+        background-color: #f0f0f0;
+        background-image: none;
+        color: #a8a8a8;
+        
+        height: unset;
+    }
+
+    .tab-header.hide-filters {
+        background-color: #555555;
+        background-image: none;
+        color: white;        
+        height: unset;
+    }
+
+.aoi-filter-commands-wrapper div{
+    display:inline-block;
+    padding:0 10px;
+    margin-top:5px;
+}
+    .aoi-filter-commands-wrapper div:first-child {
+        border-right: solid 1px #808080;
+    }
+
+    .aoi-filter-commands-wrapper div:hover{
+        text-decoration:none;
+    }
+    .aoi-filter-commands-wrapper div:nth-child(2):hover{
+        text-decoration:underline;
+    }
+
+.ul-history-layers {
+    margin-left: -25px;
+    margin-right: -25px;
+}
+.ul-history-layers li{
+    list-style:decimal;
+    font-size:.9em;
+}
+    .ul-history-layers li div {
+        display: inline-block;
+        padding: 2px 8px;       
+    }
+        .ul-history-layers li div:first-child {
+            border-right: 1px solid #808080;
+            width: 80px;
+            overflow-wrap:break-word;
+        }
+
+        .ul-history-layers .remove{
+            vertical-align:middle;
+        }
+        .ul-history-layers .remove:hover {
+            cursor: pointer;
+        }
+
+
+.download-popup-wrapper{
+    padding:15px;
+    max-width:400px;
+}
+
+.download-popup-wrapper select{
+    width:200px;
+}
+
+.help-tour{
+    position:absolute;
+    right:8px;
+    border-left:1px solid #555555;
+    padding:0 0 0 10px;
+}
+.help-tour:hover{
+    cursor:pointer;
+    text-decoration:underline;
+}
+.help-tour img{
+    margin-right:5px;
+}
+
+.ui-rangeSlider-arrow, .ui-rangeSlider-container, .ui-rangeSlider-bar {
+    height: 20px;
+}
+
+.ui-rangeSlider-label{
+    font-size:12px;
 }

@@ -1,21 +1,25 @@
 ﻿# GVH Module Bundler
-This tool provides a starting point for developing AMD modules for the Geocortex Viewer for HTML5 2.8.1 and later. This tool assumes that your modules are written in [TypeScript](http://www.typescriptlang.org/). We've provided two sample modules in the `/src` folder which can be built into AMD modules using this tool that can be loaded into the Geocortex Viewer for HTML5.
+This tool provides a starting point for developing AMD (Asynchronous Module Definition) modules for the Geocortex Viewer for HTML5 2.8.1 and later. This tool assumes that your modules are written in [TypeScript](http://www.typescriptlang.org/). We've provided two sample modules in the `/src` folder which can be built, using this tool, into AMD modules that can be loaded into the Geocortex Viewer for HTML5.
 
 ## Dependencies
-**You’ll need to have Node >= 6 on your machine**. You can use [nvm](https://github.com/creationix/nvm#usage) to easily switch Node versions between different projects.
+**You’ll need to have [Node](https://nodejs.org/en/) >= 6 on your machine**. You can use [nvm](https://github.com/creationix/nvm#usage) to easily switch Node versions between different projects.
 
 **This tool doesn’t assume a Node backend**. The Node installation is only required for the build tool itself.
 
 ## Usage
-The first step is to download all dependencies by running:   
+The first step is to download all dependencies. To do this, open a command terminal, navigate to `/QuickStart` and then run:   
 ```sh
 npm install
 ```
+
+This will install all the dependencies found in `/QuickStart/package.json`
 
 Once that finishes, invoke the build by running:   
 ```sh
 npm run build
 ```
+
+The compiled module .js files will be placed in  `/QuickStart/dist`.
 
 ### Options:
 | Command      | Default  | Description|
@@ -104,4 +108,14 @@ In your `modules` section:
 ## Notes
 
 - All `Language.json` files will be bundled into a single `[libraryId]-Language.json` file in the output directory.
-- All `.css` files in the module folders will be bundled together (and loaded) with the module output.
+- All `.css` files in the module folders will be bundled together (and loaded) with the module's `.js` output files.
+- If you need to use a different version of typescript, you can open `/QuickStart/package.json` and change the typescript version used by the project in the "devDependencies" section:
+```js
+"devDependencies": {
+    "typescript": "~2.3.4", // Change this to whatever version you want to use
+    "@types/react-dom": "^15.5.5",
+    "tslint": "^5.4.2",
+    "eslint": "^3.19.0"
+  },
+```
+- not all versions of typescript will work with GVH.

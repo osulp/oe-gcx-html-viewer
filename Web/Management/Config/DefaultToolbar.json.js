@@ -1,4 +1,4 @@
-geocortex.essentialsHtmlViewer.management.modules.toolbar.defaultToolbar = [
+﻿geocortex.essentialsHtmlViewer.management.modules.toolbar.defaultToolbar = [
                         {
                             "id": "ToolsTab",
                             "type": "toolbarGroup",

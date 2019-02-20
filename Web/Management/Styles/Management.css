@@ -1,4 +1,4 @@
-
+﻿
 /* BEGIN: Utility Classes --------------- */
 
 .inactive,
@@ -885,12 +885,27 @@ div.toolbar-contents > .blank-node + ul > .branch-node > .flyout {
     width: 100%;
 }
 
-/* Hide the '# of tools' option for compact toolbar in handheld, as it isn't configurable. */
+/* Hide the '# of tools' option in handheld, as it isn't configurable. */
 .ToolbarSectionView_Handheld .numberOfToolsToDisplay {
     display: none;
 }
 
+/* Hide the 'tabbed toolbar labels checkbox' option in handheld, as it isn't configurable. */
+.ToolbarSectionView_Handheld .tabbedToolbarLabelsCheckbox {
+    display: none;
+}
+
 /* ------ END: Tree View with Draggable Sorting ------ */
+
+/* ------ BEGIN: GW5 --------------- */
+
+.workflow-inputs-text-area {
+    width: 298px;
+    height: 8em;
+    resize: vertical;
+}
+
+/* ------ END: GW5 --------------- */
 
 /*-------- Shared ------------*/
 .command-parameter-text-area {
@@ -904,5 +919,52 @@ div.toolbar-contents > .blank-node + ul > .branch-node > .flyout {
 }
 .command-parameter-alert-img {
     padding-left: 0.5em;
+}
+/*-------- END: Shared -------*/
+
+/*-------- Collaboration ------------*/
+.room-option {
+    position: relative;
+    font-style: italic;
+}
+
+.room-option.active {
+    font-style: normal;
+}
+
+.room-option:after {
+    display: block;
+    content: " ";
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    border: 1px dotted black;
+    box-sizing: border-box;
+    margin: 0.5em;
+}
+
+.room-option.result-selected:after {
+    border-color: #ccc;
+}
+
+.room-option.highlighted:after {
+    border-color: white;
+}
+
+.room-option.active:after {
+    background-color: #1A72C4;
+    border: none;
+}
+
+.room-option.active.result-selected:after {
+    background-color: #ccc;
+}
+
+.room-option.active.highlighted:after {
+    background-color: white;
 }
 /*-------- END: Shared -------*/

@@ -37,10 +37,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TypeScriptTarget>ES5</TypeScriptTarget>
-    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
-    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptModuleKind>UMD</TypeScriptModuleKind>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
     <TypeScriptOutFile />
     <TypeScriptOutDir />
@@ -82,13 +82,14 @@
     <Content Include="favicon_oe.ico" />
     <Content Include="Handheld.html" />
     <Content Include="Index.html" />
-    <Content Include="Index.2.8.html" />
     <Content Include="Libraries\Custom\AMD\OE_Graphics.js" />
     <Content Include="Libraries\Custom\AMD\OE_HyperlinkBanner.js" />
+    <Content Include="Libraries\Custom\AMD\OE_LayerActions.js" />
     <Content Include="Libraries\Custom\AMD\OE_PickerListItemRenderer.js" />
     <Content Include="Libraries\Custom\AMD\OE_SageGrouseConsPln.js" />
     <Content Include="Libraries\Custom\AMD\OE_SageGrouseDevSiting.js" />
     <Content Include="Libraries\Custom\AMD\OE_Search.js" />
+    <Content Include="Libraries\Custom\AMD\OE_Utility.js" />
     <Content Include="Libraries\Custom\AMD\OE_Wildfire.js" />
     <Content Include="Libraries\Custom\AMD\OtherTemplate.js" />
     <Content Include="Libraries\Custom\AMD\Template.js" />
@@ -96,10 +97,25 @@
     <Content Include="Libraries\Custom\AMD\OE_AMD-Language.json" />
     <Content Include="gmaf\ViewerPackage.ashx" />
     <None Include="Libraries\Custom\Config\Defaults.json.js.bak" />
+    <Content Include="Resources\Images\Custom\broadcasting.png" />
+    <Content Include="Resources\Images\Custom\demographics-24.png" />
+    <Content Include="Resources\Images\Custom\dlcd_logo.png" />
+    <Content Include="Resources\Images\Custom\drivetimes-24.png" />
+    <Content Include="Resources\Images\Custom\GotoLayers.png" />
+    <Content Include="Resources\Images\Custom\identify-24.png" />
+    <Content Include="Resources\Images\Custom\oe-default-banner-logo-only.png" />
+    <Content Include="Resources\Images\Custom\oe-default-banner-mid.png" />
+    <Content Include="Resources\Images\Custom\oe-default-banner.png" />
+    <Content Include="Resources\Images\Custom\profile-tool-24.png" />
+    <Content Include="Resources\Images\Custom\README.txt" />
+    <Content Include="Resources\Images\Custom\schools-search-24.png" />
+    <Content Include="Resources\Images\Custom\splash-logo.png" />
+    <Content Include="Resources\Images\Custom\sprite-green-0.3.png" />
+    <Content Include="Resources\Images\Custom\sprite-orange-0.3.png" />
+    <Content Include="Resources\Images\Custom\zoom-next-24.png" />
+    <Content Include="Resources\Images\Custom\zoom-previous-24.png" />
+    <Content Include="Resources\Scripts\oe_added_scripts\hopscotch-0.1.1.min.js" />
     <Content Include="Libraries\Custom\Styles\Custom\Desktop.css" />
-    <Content Include="offline.aspx" />
-    <Content Include="offline.js" />
-    <Content Include="online.js" />
     <Content Include="Resources\3rdPartyMaps\3rdParty.css" />
     <Content Include="Resources\3rdPartyMaps\BingMaps.html" />
     <Content Include="Resources\3rdPartyMaps\Pictometry.aspx" />
@@ -210,8 +226,8 @@
     <Content Include="Resources\Compiled\ZoomControl.js" />
     <Content Include="Resources\Config\CacheManifestConfig.xml" />
     <Content Include="Resources\Config\Default\Desktop.json.js" />
-    <Content Include="Resources\Config\Default\dev_configs\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\Desktop.json.dev.siting.js" />
+    <Content Include="Resources\Config\Default\dev_configs\dev_reg\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_siting\Desktop.json.2.10.js" />
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_siting\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_siting\Handheld.json.js" />
@@ -221,10 +237,8 @@
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_cons_pln\Tablet.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\sfam\Desktop.json.js" />
     <Content Include="Resources\Config\Default\Handheld.json.js" />
-    <Content Include="Resources\Config\Default\Handheld.json.oe.js" />
     <Content Include="Resources\Config\Default\Tablet.json.js" />
     <Content Include="Resources\Config\Default\_archive\Desktop.json.js" />
-    <Content Include="Resources\Config\Default\Desktop.json.oe.js" />
     <Content Include="Resources\Config\Default\_archive\Handheld.json.js" />
     <Content Include="Resources\Config\Default\_archive\Tablet.json.js" />
     <Content Include="Resources\Config\OfflineManifestParameters.xml" />
@@ -516,13 +530,14 @@
     <Content Include="Resources\Locales\Custom.en-US.json.js" />
     <Content Include="Resources\Locales\Framework.UI.en-US.json.js" />
     <Content Include="Resources\Locales\Mapping.en-US.json.js" />
-    <Content Include="Resources\Scripts\esri-sup.js" />
     <Content Include="Resources\Scripts\fastclick.js" />
     <Content Include="Resources\Scripts\jquery-ui-timepicker-addon.min.js" />
+    <Content Include="Resources\Scripts\jquery-ui.checkboxradio.min.js" />
     <Content Include="Resources\Scripts\jquery.ui.custom.js" />
     <Content Include="Resources\Scripts\jquery.ui.touch-punch.js" />
     <Content Include="Resources\Scripts\modernizr.js" />
     <Content Include="Resources\Scripts\native.js" />
+    <Content Include="Resources\Scripts\oe_added_scripts\jQAllRangeSliders-min.js" />
     <Content Include="Resources\Styles\Animations.css" />
     <Content Include="Resources\Styles\common.css" />
     <Content Include="Resources\Styles\Custom\Common.css" />
@@ -540,6 +555,7 @@
     <Content Include="Resources\Styles\Handheld.css" />
     <Content Include="Resources\Styles\IE-small.css" />
     <Content Include="Resources\Styles\IE.css" />
+    <Content Include="Resources\Styles\introjs.css" />
     <Content Include="Resources\Styles\jquery.ui.custom.css" />
     <Content Include="Resources\Styles\Tablet.css" />
     <Content Include="SignInHelper.html" />
@@ -568,7 +584,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Config\Default\dev_configs\owrt\" />
-    <Folder Include="Resources\Config\Default\dev_configs\wildfire\" />
     <Folder Include="Resources\Config\DevTy\" />
   </ItemGroup>
   <PropertyGroup>

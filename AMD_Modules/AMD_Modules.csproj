@@ -28,9 +28,19 @@
     <Content Include="post_build_modules.bat" />
     <Content Include="README.md" />
     <Content Include="src\OE_OWRTReports\readme.txt" />
+    <Content Include="src\OE_LayerActions\readme.txt" />
+    <Content Include="src\OE_SageGrouseConsPln\CSS\hopscotch-0.1.1.css" />
+    <Content Include="src\OE_SageGrouseConsPln\CSS\iThing-min.css" />
     <Content Include="src\OE_SageGrouseConsPln\ModuleJS.txt" />
+    <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnDownloadView.html" />
+    <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnHelpTutorialView.html" />
     <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnModule.css" />
+    <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnFilterInfoView.html" />
     <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnView.html" />
+    <Content Include="src\OE_SageGrouseConsPln\Templates\radiobutton.html" />
+    <Content Include="src\OE_SageGrouseConsPln\Templates\slider.html" />
+    <Content Include="src\OE_SageGrouseConsPln\Templates\rangeslider.html" />
+    <Content Include="src\OE_SageGrouseConsPln\Templates\checkbox.html" />
     <Content Include="src\OE_SageGrouseDevSiting\ModuleJS.txt" />
     <Content Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingDashboardView.html" />
     <Content Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingCompareSummaryView.html" />
@@ -40,8 +50,6 @@
     <Content Include="src\OE_Wildfire\Language.json" />
     <Content Include="src\OE_SageGrouseDevSiting\Language.json" />
     <Content Include="src\OE_SageGrouseConsPln\Language.json" />
-    <None Include="src\OtherTemplate\Language.json" />
-    <None Include="src\OtherTemplate\OtherTemplateView.html" />
     <Content Include="bin.js" />
     <Content Include="gulpfile.js" />
     <Content Include="src\OE_Graphics\CSS\OE_GraphicsModule.css" />
@@ -56,8 +64,11 @@
     <Content Include="src\OE_Wildfire\OE_Wildfire_DynamicFormView.html" />
     <Content Include="src\OE_OWRTReports\CSS\OE_OWRTReportsModule.css" />
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsView.html" />
+    <Content Include="src\OE_LayerActions\CSS\OE_LayerActionsModule.css" />
+    <Content Include="src\OE_LayerActions\OE_LayerActionsView.html" />
     <Content Include="src\Template\CSS\TemplateModule.css" />
     <Content Include="src\OE_OWRTReports\Language.json" />
+    <Content Include="src\OE_LayerActions\Language.json" />
     <None Include="src\Template\Language.json" />
     <None Include="src\Template\TemplateView.html" />
   </ItemGroup>
@@ -66,7 +77,10 @@
     <TypeScriptCompile Include="src\OE_HyperlinkBanner\OE_HyperlinkBannerModule.ts" />
     <TypeScriptCompile Include="src\OE_OWRTReports\OE_JsonAdapter.ts" />
     <TypeScriptCompile Include="src\OE_PickerListItemRenderer\OE_PickerListItemRendererModule.ts" />
+    <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnDownloadView.ts" />
+    <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnHelpTutorialView.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnModule.ts" />
+    <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnFilterInfoView.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnViewModel.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnView.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingModule.ts" />
@@ -82,9 +96,9 @@
     <TypeScriptCompile Include="src\OE_Wildfire\OE_Wildfire_DynamicFormView.ts" />
     <TypeScriptCompile Include="src\OE_Wildfire\OE_WildfireView.ts" />
     <TypeScriptCompile Include="src\OE_Wildfire\OE_WildfireViewModel.ts" />
-    <TypeScriptCompile Include="src\OtherTemplate\OtherTemplateModule.ts" />
-    <TypeScriptCompile Include="src\OtherTemplate\OtherTemplateView.ts" />
-    <TypeScriptCompile Include="src\OtherTemplate\OtherTemplateViewModel.ts" />
+    <Content Include="src\OE_LayerActions\OE_LayerActionsModule.ts" />
+    <Content Include="src\OE_LayerActions\OE_LayerActionsView.ts" />
+    <Content Include="src\OE_LayerActions\OE_LayerActionsViewModel.ts" />
     <None Include="src\Template\TemplateModule.ts" />
     <None Include="src\Template\TemplateView.ts" />
     <None Include="src\Template\TemplateViewModel.ts" />
@@ -125,10 +139,11 @@
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
     <TypeScriptSourceMap>True</TypeScriptSourceMap>
     <TypeScriptTarget>ES5</TypeScriptTarget>
-    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptAllowJs>True</TypeScriptAllowJs>
     <TypeScriptOutFile>notused.js</TypeScriptOutFile>
     <TypeScriptOutDir>
     </TypeScriptOutDir>
