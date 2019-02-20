@@ -37,7 +37,8 @@ require(["moment/moment"], function(moment) {
     window.moment = moment;
 });
 
-require(["dojo/on","dojo/aspect"], function (on, aspect) {
+require(["dojo/on","dojo/aspect", "dojo/io/script"], function (on, aspect, script) {
     dojo.on = on;
     dojo.aspect = aspect;
+    dojo.io.script = script;
 });

@@ -138,10 +138,14 @@ function bundleFiles() {
 			moduleName === excludeFolderName) {
             return;
         }
+		
+		console.log("Bundling module " + moduleName);
 
         // Retrieve any js emitted by TypeScript, as well as any html/json/css files
         // in this module directory (at any depth in the module folder structure)
-        let files = tsOutputKeys.filter(key => key.startsWith(moduleName));
+        let files = tsOutputKeys.filter(key => key.startsWith(moduleName + "/"));
+		
+		files.forEach(fileName => console.log("    " + fileName))
         // let jsSourcePaths = glob.sync(`${jsTempDir}/${moduleName}/**/*.js`);
 		
 		

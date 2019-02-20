@@ -82,7 +82,6 @@
     <Content Include="favicon_oe.ico" />
     <Content Include="Handheld.html" />
     <Content Include="Index.html" />
-    <Content Include="Index.2.8.html" />
     <Content Include="Libraries\Custom\AMD\OE_Graphics.js" />
     <Content Include="Libraries\Custom\AMD\OE_HyperlinkBanner.js" />
     <Content Include="Libraries\Custom\AMD\OE_LayerActions.js" />

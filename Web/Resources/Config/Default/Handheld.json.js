@@ -1,11 +1,11 @@
 {
     "configuration": {
-        "version": "2.11",
+        "version": "2.12",
         "application": {
             "proxyUri": "proxy.ashx?",
             "allowUnsafeContent": true,
             "offlineStorageSpaceMb": "50",
-            "geometryServiceUrl": "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer",
+            "geometryServiceUrl": "https:/lib-gis3.library.oregonstate.edu/arcgis/rest/services/Utilities/Geometry/GeometryServer",
             "deferredModuleLoading": true,
             "mobileMode": true
         },
@@ -80,68 +80,79 @@
                     }
                 ]
             },
-			{
+            {
                 "id": "https://apps.geocortex.com/workflow/latest/dist/hosts/gvh/loader.js!",
                 "async": true
+            },           
+    {
+        "id": "OE_AMD",
+            "async": true,
+                "location": "Libraries/Custom/AMD",
+                    "locales": [
+                        {
+                            "locale": "inv",
+                            "uri": "Libraries/Custom/AMD/OE_AMD-Language.json"
+                        }
+                    ]
             },
-             {
-                 "id":"Custom",
-                 "uri":"Libraries/Custom/Compiled/Custom.js",
-                 "locales":[
-                     {
-                         "locale":"en-US",
-                         "uri":"Resources/Locales/Custom.en-US.json.js"
-                     }
-                 ]
-             }
+            {
+                "id": "Custom",
+                "uri": "Libraries/Custom/Compiled/Custom.js",
+                "locales": [
+                    {
+                        "locale": "en-US",
+                        "uri": "Resources/Locales/Custom.en-US.json.js"
+                    }
+                ]
+            }
         ],
-        "modules": [            
-            {
-                "moduleName": "LayerActionsExtension",
-                "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
-                "libraryId": "Custom",
-                "configuration": {
-                    "showLayerDescription":false,
-                    "allowAllLayerTypes":true,
-                    "metadataHyperlinkOverride":true,
-                    "expandLayerTreeOnVisible":true
-                }
-            },                            
-             {
-                 "moduleName": "InitialExtent",
-                 "moduleType": "oe.initial_extent.InitialExtentModule",
-                 "libraryId": "Custom",
-                 "configuration": {}
-             },
-          {
-              "moduleName" : "Elevation",
-              "moduleType" : "oe.elevation.ElevationModule",
-              "libraryId" : "Custom",
-              "configuration" : {},
-              "views" : [{
-                  "id" : "ElevationModuleView",
-                  "viewModelId" : "ElevationModuleViewModel",
-                  "visible" : false,
-                  "markup" : "Modules/Elevation/ElevationModuleView.html",
-                  "type" : "oe.elevation.ElevationModuleView",
-                  "region" : "LeftFooterRegion",
-                  "configuration" : {}
-              }
-              ],
-              "viewModels" : [{
-                  "id" : "ElevationModuleViewModel",
-                  "type" : "oe.elevation.ElevationModuleViewModel",
+            "modules": [
+                {
+                    "moduleName": "LayerActionsExtension",
+                    "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
+                    "libraryId": "Custom",
+                    "configuration": {
+                        "showLayerDescription": false,
+                        "allowAllLayerTypes": true,
+                        "metadataHyperlinkOverride": true,
+                        "expandLayerTreeOnVisible": true
+                    }
+                },
+                {
+                    "moduleName": "InitialExtent",
+                    "moduleType": "oe.initial_extent.InitialExtentModule",
+                    "libraryId": "Custom",
+                    "configuration": {}
+                },
+                {
+                    "moduleName": "Elevation",
+                    "moduleType": "oe.elevation.ElevationModule",
+                    "libraryId": "Custom",
+                    "configuration": {},
+                    "views": [{
+                        "id": "ElevationModuleView",
+                        "viewModelId": "ElevationModuleViewModel",
+                        "visible": false,
+                        "markup": "Modules/Elevation/ElevationModuleView.html",
+                        "type": "oe.elevation.ElevationModuleView",
+                        "region": "LeftFooterRegion",
+                        "configuration": {}
+                    }
+                    ],
+                    "viewModels": [{
+                        "id": "ElevationModuleViewModel",
+                        "type": "oe.elevation.ElevationModuleViewModel",
 
-                  "configuration" : {}
-              }
-              ]
-          },
-            {
-                "moduleName" : "RasterFunctions",
-                "moduleType" : "oe.raster_functions.RasterFunctionsModule",
-                "libraryId" : "Custom",
-                "configuration" : {}
-            },
+                        "configuration": {}
+                    }
+                    ]
+                },
+                {
+                    "moduleName": "RasterFunctions",
+                    "moduleType": "oe.raster_functions.RasterFunctionsModule",
+                    "libraryId": "Custom",
+                    "configuration": {}
+                },
             {
                 "moduleName": "Menu",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.Menu.MenuModule",
@@ -257,7 +268,7 @@
                                     "command": "showServiceInfo",
                                     "commandParameter": "{{context}}",
                                     "hideOnDisable": true
-                                },                                
+                                },
                                 {
                                     "text": "@language-menu-add-a-feature",
                                     "description": "@language-menu-add-a-feature-desc",
@@ -911,6 +922,22 @@
                                     "commandParameter": "{{context}}"
                                 },
                                 {
+                                    "text": "@language-menu-select-all",
+                                    "description": "@language-menu-select-all-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/star-add-all-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "AddFeatureSetToStarredSelection",
+                                    "commandParameter": "{{context}}"
+                                },
+                                {
+                                    "text": "@language-menu-deselect-all",
+                                    "description": "@language-menu-deselect-all-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/star-remove-all-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "RemoveFeatureSetFromStarredSelection",
+                                    "commandParameter": "{{context}}"
+                                },
+                                {
                                     "text": "@language-menu-show-charting-view",
                                     "description": "@language-menu-show-charting-view-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/charting-24.png",
@@ -1019,6 +1046,22 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/buffer-shape-24.png",
                                     "hideOnDisable": true,
                                     "command": "IdentifyBufferedFeatureSet",
+                                    "commandParameter": "{{context}}"
+                                },
+                                {
+                                    "text": "@language-menu-select-all",
+                                    "description": "@language-menu-select-all-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/star-add-all-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "AddFeatureSetToStarredSelection",
+                                    "commandParameter": "{{context}}"
+                                },
+                                {
+                                    "text": "@language-menu-deselect-all",
+                                    "description": "@language-menu-deselect-all-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/star-remove-all-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "RemoveFeatureSetFromStarredSelection",
                                     "commandParameter": "{{context}}"
                                 },
                                 {
@@ -1165,22 +1208,6 @@
                                     "command": "ListReports",
                                     "commandParameter": "{{context}}",
                                     "hideOnDisable": true
-                                },
-                                {
-                                    "text": "@language-menu-results-add-feature",
-                                    "description": "@language-menu-results-add-feature-desc",
-                                    "iconUri": "Resources/Images/Icons/add-24.png",
-                                    "hideOnDisable": true,
-                                    "batch": [
-                                        {
-                                            "command": "HideFeatureDetails"
-                                        },
-                                        {
-                                            "command": "AddFeatureToResults",
-                                            "commandParameter": "{{context}}",
-                                            "abortBatchOnFailure": true
-                                        }
-                                    ]
                                 },
                                 {
                                     "text": "@language-menu-results-remove-feature",
@@ -3015,16 +3042,20 @@
                     "fillColor": "RGBA(236,236,58,0.1)",
                     "outerBorderColor": "RGBA(200,200,0,1)",
                     "borderColor": "RGBA(255,255,151,1)",
-                    "focusedFillColor": "RGBA(0,255,255,0.2)",
+                    "focusedFillColor": "RGBA(0,255,255,0.4)",
                     "focusedBorderColor": "RGBA(0,255,255,1)",
                     "focusedOuterBorderColor": "RGBA(87,170,255,1)",
-                    "outerBorderWidth": 5,
-                    "borderWidth": 2,
-                    "highlightLineOpacity": 0.5,
+                    "selectionFillColor": "RGBA(0,255,255,0.1)",
+                    "outerBorderWidth": 6,
+                    "borderWidth": 3.5,
+                    "focusScale": 1.67,
+                    "useFeatureColorForHighlight": false,
+                    "useFeatureColorForSelection": true,
+                    "highlightLineOpacity": 0.75,
                     "maxHighlightableGeometryVertices": 5000,
                     "geometryGeneralization": {
                         "geometryGeneralizationEnabled": true,
-                        "thresholdVertices": 5000,
+                        "thresholdVertices": 10000,
                         "maxDeviationInMeters": 250
                     }
                 }
@@ -3237,6 +3268,14 @@
                                     "text": "@language-menu-bookmark-add",
                                     "description": "@language-menu-bookmark-add-desc",
                                     "command": "ShowAddBookmark",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "iconUri": "Resources/Images/Icons/Toolbar/star-show-24.png",
+                                    "text": "@language-menu-view-selection",
+                                    "description": "@language-menu-view-selection-desc",
+                                    "command": "ShowSelection",
+                                    "commandParameter": null,
                                     "hideOnDisable": true
                                 },
                                 {
@@ -3709,7 +3748,9 @@
                         {
                             "name": "MapCalloutClosedBehavior",
                             "event": "MapCalloutClosedEvent",
-                            "commands": []
+                            "commands": [
+                                "StopEditingClickableFeature"
+                            ]
                         },
                         {
                             "name": "MapTipFeatureChangedBehavior",
@@ -4437,15 +4478,6 @@
                         "configuration": {}
                     }
                 ]
-            },
-            {
-                "moduleName": "OptimizerIntegration",
-                "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.optimizerIntegration.OptimizerIntegrationModule",
-                "isEnabled": false,
-                "configuration": {
-                    "userName": "DefaultUser",
-                    "dataRelayUri": "http://localhost/Geocortex/Optimizer/Rest/DataRelay/LogData.ashx?f=json"
-                }
             },
             {
                 "moduleName": "PlotCoordinates",
@@ -5357,7 +5389,8 @@
                 "require": "Mapping/modules/Shells/ShellModule",
                 "configuration": {
                     "css": [
-                        "Resources/Styles/Handheld.css",
+                        "Resources/Styles/Custom/common.css",
+                        "Resources/Styles/Custom/Handheld.css",
                         "Resources/Styles/SmallShell.css",
                         "Resources/Styles/Custom/sites.css",
                         "Resources/Styles/Custom/sites_handheld.css",
@@ -5695,7 +5728,7 @@
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                 "configuration": {
-                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root"
+                    "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root_oreall"
                 },
                 "views": [
                     {
@@ -6439,7 +6472,7 @@
             {
                 "moduleName": "Workflow",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.workflow.WorkflowModule",
-                "deferLoading": false,
+                "deferLoading": true,
                 "configuration": {
                     "showTitleInFormBody": false,
                     "defaultContainerRegionName": "ModalWindowRegion",
@@ -6721,6 +6754,16 @@
                 "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.Forms.RadioButtonFormItemView",
                 "markup": "Mapping/infrastructure/ui/components/Forms/RadioButtonFormItemView.html",
                 "libraryId": "Mapping.Infrastructure"
+            },
+            {
+                "id": "SelectionStar",
+                "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.ui.components.SelectionStar.SelectionStar",
+                "markup": "Mapping/infrastructure/ui/components/SelectionStar/SelectionStar.html",
+                "libraryId": "Mapping.Infrastructure",
+                "configuration": {
+                    "enabled": true,
+                    "persistHighlights": true
+                }
             },
             {
                 "id": "SymbologySettings",

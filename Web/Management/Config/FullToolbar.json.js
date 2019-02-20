@@ -1,4 +1,4 @@
-geocortex.essentialsHtmlViewer.management.modules.toolbar.fullToolbar = [
+﻿geocortex.essentialsHtmlViewer.management.modules.toolbar.fullToolbar = [
 
     {
         "id": "FileTab",
@@ -385,7 +385,17 @@ geocortex.essentialsHtmlViewer.management.modules.toolbar.fullToolbar = [
                      "hideOnDisable": false,
                      "name": "@language-querybuilder-simple-title",
                      "tooltip": "@language-querybuilder-simple-tooltip"
-                 }
+                 },
+                 {
+                    "id": "ShowSelectionButton",
+                    "type": "button",
+                    "iconUri": "Resources/Images/Icons/Toolbar/star-show-24.png",
+                    "command": "ShowSelection",
+                    "commandParameter": null,
+                    "hideOnDisable": true,
+                    "name": "@language-menu-view-selection",
+                    "tooltip": "@language-menu-view-selection-desc"
+                }
               ],
               "layout": "Large"
           },

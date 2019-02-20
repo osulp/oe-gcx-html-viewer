@@ -49,7 +49,7 @@
     <Content Include="src\OE_Utility\readme.txt" />
     <Content Include="src\OE_Wildfire\Language.json" />
     <Content Include="src\OE_SageGrouseDevSiting\Language.json" />
-    <Content Include="src\OE_SageGrouseConsPln\Language.json" />    
+    <Content Include="src\OE_SageGrouseConsPln\Language.json" />
     <Content Include="bin.js" />
     <Content Include="gulpfile.js" />
     <Content Include="src\OE_Graphics\CSS\OE_GraphicsModule.css" />
@@ -95,10 +95,10 @@
     <TypeScriptCompile Include="src\OE_Wildfire\OE_Wildfire_DynamicFormViewModel.ts" />
     <TypeScriptCompile Include="src\OE_Wildfire\OE_Wildfire_DynamicFormView.ts" />
     <TypeScriptCompile Include="src\OE_Wildfire\OE_WildfireView.ts" />
-    <TypeScriptCompile Include="src\OE_Wildfire\OE_WildfireViewModel.ts" />    
+    <TypeScriptCompile Include="src\OE_Wildfire\OE_WildfireViewModel.ts" />
     <Content Include="src\OE_LayerActions\OE_LayerActionsModule.ts" />
     <Content Include="src\OE_LayerActions\OE_LayerActionsView.ts" />
-    <Content Include="src\OE_LayerActions\OE_LayerActionsViewModel.ts" />     
+    <Content Include="src\OE_LayerActions\OE_LayerActionsViewModel.ts" />
     <None Include="src\Template\TemplateModule.ts" />
     <None Include="src\Template\TemplateView.ts" />
     <None Include="src\Template\TemplateViewModel.ts" />
