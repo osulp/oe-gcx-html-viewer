@@ -82,11 +82,14 @@
     <Content Include="favicon_oe.ico" />
     <Content Include="Handheld.html" />
     <Content Include="Index.html" />
+    <Content Include="Libraries\Custom\AMD\OE_AddLayerToLayerList.js" />
     <Content Include="Libraries\Custom\AMD\OE_Graphics.js" />
     <Content Include="Libraries\Custom\AMD\OE_HyperlinkBanner.js" />
     <Content Include="Libraries\Custom\AMD\OE_LayerActions.js" />
+    <Content Include="Libraries\Custom\AMD\OE_OWRTReports.js" />
     <Content Include="Libraries\Custom\AMD\OE_PickerListItemRenderer.js" />
     <Content Include="Libraries\Custom\AMD\OE_SageGrouseConsPln.js" />
+    <Content Include="Libraries\Custom\AMD\OE_SageGrouseDevRegistry.js" />
     <Content Include="Libraries\Custom\AMD\OE_SageGrouseDevSiting.js" />
     <Content Include="Libraries\Custom\AMD\OE_Search.js" />
     <Content Include="Libraries\Custom\AMD\OE_Utility.js" />
@@ -97,6 +100,10 @@
     <Content Include="Libraries\Custom\AMD\OE_AMD-Language.json" />
     <Content Include="gmaf\ViewerPackage.ashx" />
     <None Include="Libraries\Custom\Config\Defaults.json.js.bak" />
+    <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Handheld.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Tablet.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\dev_reg\Desktop.json.js" />
     <Content Include="Resources\Images\Custom\broadcasting.png" />
     <Content Include="Resources\Images\Custom\demographics-24.png" />
     <Content Include="Resources\Images\Custom\dlcd_logo.png" />
@@ -227,7 +234,7 @@
     <Content Include="Resources\Config\CacheManifestConfig.xml" />
     <Content Include="Resources\Config\Default\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\Desktop.json.dev.siting.js" />
-    <Content Include="Resources\Config\Default\dev_configs\dev_reg\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\dev_reg\Desktop.2.8.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_siting\Desktop.json.2.10.js" />
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_siting\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_siting\Handheld.json.js" />

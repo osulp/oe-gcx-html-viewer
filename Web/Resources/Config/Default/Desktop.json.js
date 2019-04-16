@@ -4389,9 +4389,9 @@
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.layerList.LayerListModule",
                 "configuration": {
                     "enableLegendIntegration": true,
-                    "onlyShowSwatchesOnVisibleLayers": false,
-                    "autoActivateAncestorVisibilities": false,
-                    "enableLayerIcons": false
+                    "onlyShowSwatchesOnVisibleLayers": true,
+                    "autoActivateAncestorVisibilities": true,
+                    "enableLayerIcons": true
                 },
                 "views": [
                     {
@@ -6353,10 +6353,7 @@
                         "Resources/Styles/Custom/common.css",
                         "Resources/Styles/Custom/Desktop.css",
                         "Resources/Styles/Custom/sites.css",
-                        "Resources/Styles/Custom/sites_desktop.css",
-                        "{ViewerConfigUri}../../Styles/Custom/common.css",
-                        "{ViewerConfigUri}../../Styles/Custom/Desktop.css",
-                        "{ViewerConfigUri}../../Styles/Custom/Desktop_OE.css"
+                        "Resources/Styles/Custom/sites_desktop.css"                        
                     ],
                     "homePanelVisible": true
                 },

@@ -859,7 +859,7 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                     });
                 }               
                 //check for spatial filter                
-                layerDef += filterDef + ')' + (this.geo_filter.enabled
+                layerDef += filterDef + ')' + (this.geo_filter.enabled && _idx === 0
                     ? ' AND OBJECTID in (' + this.geo_filter.ids.toString() + ')'
                     : '');
                 layerDef = layerDef === '()'

@@ -1,0 +1,39 @@
+﻿
+.region .view.TemplateModuleView.active {
+    margin: 0;
+}
+
+.template-module-view
+{
+    position: absolute;
+    z-index: 100;
+    width: 200px;
+    right: 0;
+    background: white;
+    color: black;
+    padding: 6px;
+    border: 1px solid #333;
+    margin-top: 75px;
+    margin-right: 2px;
+}
+
+.oe_add_layer_wrapper
+{   
+    width: 95%;
+    padding: 0.5em;
+    background: #F8F8F8;
+    border-bottom: 1px solid #D9D9D9;
+    display:block;
+    float:none;
+    clear:both;
+    font-size:.8em;
+}
+.oe_add_layer_wrapper img{
+    width:20px !important; 
+    height: 20px !important;
+}
+
+.layer-list{
+    position:relative !important;  
+    top:unset !important;      
+}

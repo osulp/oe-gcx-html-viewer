@@ -1,0 +1,90 @@
+﻿<a href="#"></a>
+<div class="module workflow-form" dir="ltr">
+    <!--<div id="report-date" data-binding="{@text:reportDate}"></div>-->
+    <form id="customForm" title="Project Impact Report">
+        <div data-binding="{@visible:pac_intersect}" class="form-container">
+            <div class="report_header">
+                <div class="pac_title">
+                    <!--<span>Report for:</span>-->
+                    <h2 data-binding="{@text: report_title}"></h2>
+                    <!--<h4 data-binding="{@visible:has_proj_name}">(Includes developments in <span data-binding="{@text:dev_name}"></span>)</h4>-->
+                    <h4>(Includes approved projects in any intersected PACs and only the selected project/development)</h4>
+                    <!--<h5 data-biding="{@visible:is_updated_development_area}">Showing updated area potential impact.</h5>-->
+                </div>
+                <div>
+                    <span>Total area of project/development: </span><span data-binding="{@text:proj_dev_area}"></span><br />
+                    <span>Number of developments: </span><span data-binding="{@text:dev_num}"></span><br />
+                    <span>Part of PAC(s): </span><span data-binding="{@text:pac_name_list}"></span>
+                </div>
+
+                <!--<div class="project_wrapper">
+                    <span>Project area: </span><b data-binding="{@text:proj_dev_area}"></b>
+                </div>-->
+            </div>
+            <div data-binding="{@source: proj_pac_report_data}">
+                <div class="summary-wrapper" data-binding="{@template-for: proj_pac_report_data}">
+                    <h3>Summary of PAC Development</h3>
+                    <h3 data-binding="{@text:pac_name}"></h3>
+                    <div data-biding="{@visible:is_updated_development_area}" class="pac_sum_desc">(Includes approved and as-built projects in the PAC and only the selected project/development; no other in-review projects in are included)</div>
+                    <br />
+                    <div class="pac_area_wrapper">
+                        <span>Total area of PAC: </span>
+                        <b data-binding="{@text: pac_area}"></b>
+                    </div>
+                    <div class="baseline_pac_wrapper">
+                        <span>Baseline developed area: <b data-binding="{@text:baseline_area}"></b>, <b data-binding="{@text:baseline_percent}"></b></span>
+                    </div>
+                    <br />
+                    <b data-binding="{@text: report_title}"></b><b> Impact on PAC</b>
+                    <div class="project-impact-wrapper">
+                        <div>
+                            <span>Project Area in PAC:</span><br />
+                            <b data-binding="{@text:input_area_pac_area}"></b>
+                        </div>
+                        <div>
+                            <span>Percent area of PAC:</span><br />
+                            <b data-binding="{@text:input_area_pac_percent}"></b>
+                        </div>
+                    </div>
+                    <br />
+                    <div>
+                        <span><b>Total developed area: </b></span>
+                        <span data-binding="{@text: overall_area_val}"></span>
+                        <span><b data-binding="{@text: overall_cap_val}"></b></span>
+                    </div>
+                    <div class="notes">The total developed area is not allowed to exceed 3%.</div>
+                    <div>
+                        <span><b>New developed area in decade: </b></span>
+                        <span data-binding="{@text: decade_area_val}"></span>
+                        <span><b data-binding="{@text: decade_cap_val}"></b></span>
+                    </div>
+                    <div class="notes">The total developed area is not allowed to exceed 1% per decade.</div>
+                    <br />
+                </div>
+            </div>
+        </div>
+        <div data-binding="{@visible:no_pac_intersect}" class="form-container">
+            <div class="report_header">
+                <div class="pac_title">
+                    <h2 data-binding="{@text: report_title}"></h2>
+                    <h4>(This project/development does not intersect any of the PACs)</h4>
+                </div>
+            </div>
+            <h3>Project/Development Info</h3>
+            <div class="project-impact-wrapper">
+                <div>
+                    <span>Project Area:</span>
+                    <h2 data-binding="{@text:proj_dev_area}"></h2>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div style="text-align:right; width:100%; display:inline-block;" class="form-btns">
+                <!--<button id="okBtn" class="button" type="button" data-binding="{@event-onclick:runNewReport}"><< New Report</button>
+                <button id="okBtn" class="button" type="button" data-binding="{@event-onclick:getPDF}">Continue >></button>-->
+                <button id="cancelBtn" class="button" type="button" data-binding="{@event-onclick:cancelForm}">Close</button>
+            </div>
+        </div>
+    </form>
+</div>
+

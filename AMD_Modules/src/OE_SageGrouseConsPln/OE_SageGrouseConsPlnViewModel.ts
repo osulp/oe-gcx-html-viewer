@@ -173,15 +173,25 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
                 this._onSiteInitialized(args, thisViewModel);
             });
             this.app.eventRegistry.event("ApplicationResizedEvent").subscribe(this, (args) => {
-                this._resizeFilterList();
+                if (this._resizeFilterList) {
+                    this._resizeFilterList(this);
+                }
             });
             this.app.eventRegistry.event("PanelResizeEndEvent").subscribe(this, (args) => {
                 let thisScope = this;
-                window.setTimeout((thisScope) => { thisScope._resizeFilterList(thisScope) }, 500);                
+                window.setTimeout((thisScope) => {
+                    if (thisScope) {
+                        thisScope._resizeFilterList(thisScope);
+                    }
+                }, 500);                
             });       
             this.app.eventRegistry.event("DataFrameClosedEvent").subscribe(this, (args) => {
                 let thisScope = this;
-                window.setTimeout((thisScope) => { thisScope._resizeFilterList(thisScope) }, 500);
+                window.setTimeout((thisScope) => {
+                    if (thisScope) {
+                        thisScope._resizeFilterList(thisScope);
+                    }
+                }, 500);
             }); 
             
             this.app.eventRegistry.event("ViewContainerViewClosedEvent").subscribe(this, (args) => {

@@ -223,97 +223,59 @@
                         "configuration": {}
                     },
                     {
-                        "moduleName": "OE_SageGrouseDevRegistry",
-                        "require": "geocortex/oe_amd/OE_SageGrouseDevRegistry/OE_SageGrouseDevRegistryModule",
+                        "moduleName": "OE_SageGrouseConsPln",
+                        "require": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnModule",
                         "libraryId": "OE_AMD",
-                        "configuration": {
-                            "adminGroupID": "f1f343e0846d4f7c8b1c74e2af5f597b",
-                            "publicViewerTitle": "Sage-Grouse Development Registry Viewer",
-                            "editorViewerTitle": "Sage-Grouse Development Registry Editor",
-                            "productionAgolUrl": "https://services.arcgis.com/uUvqNMGPm7axC2dD/arcgis/rest/services/Oregon_Sage_Grouse_Development_Registry/FeatureServer/0",
-                            "devAgolUrl": "https://services.arcgis.com/uUvqNMGPm7axC2dD/arcgis/rest/services/osgdr_dev/FeatureServer/0",
-                            "lineBufferCategories": [
-                                "Infrastructure (Powerline)",
-                                "Infrastructure (Road)",
-                                "Infrastructure (Railroad)",
-                                "Infrastructure (Pipeline)"
-                            ],
-                            "lineBufferSubCats": [
-                                "Above Ground Power Line",
-                                "Temporary Road",
-                                "Access Road",
-                                "Surface Street",
-                                "Major Road",
-                                "Interstate Highway",
-                                "Mainline",
-                                "Spur"
-                            ],
-                            "adminHomePanelContent": "%3Cdiv%20style%3D%22padding%3A20px%22%3E%3Ch2%3ESage%20Grouse%20Development%20Registry%3C%2Fh2%3E%3Cbr%3E%3Cp%3EAs%20part%20of%20the%20SageCon%20partnership%2C%20Oregon%20committed%20to%20limiting%20the%20amount%20of%20human%20development%20within%20sage%20grouse%20core%20habitat%20in%20an%20effort%20to%20conserve%20the%20species.%20On%20September%2016%2C%202015%2C%20Governor%20Brown%20signed%20Executive%20Order%2015-18%20which%20directed%20the%20OR%20Dept.%20of%20Land%20Conservation%20%26%20Development%20(DLCD)%20to%20maintain%20a%20central%20registry%20of%20development%20on%20all%20lands%20within%20sage%20grouse%20habitat%20in%20coordination%20with%20the%20Bureau%20of%20Land%20Management%20(BLM)%20and%20county%20governments.%20The%20central%20registry%20must%20use%20the%20adopted%20baseline%20level%20of%20development%20within%20each%20Priority%20Area%20for%20Conservation%20(PAC)%20and%20track%20the%20location%20and%20extent%20of%20new%20development%20in%20each%20PAC%20over%20time.%3C%2Fp%3E%3Cp%3E%20%3Ca%20href%3D%22%22https%3A%2F%2Farcweb.sos.state.or.us%2Fpages%2Frules%2Foars_600%2Foar_660%2F660_023.html%22%22%20target%3D%22%22_blank%22%22%20%3EOregon%20Administrative%20Rule%20(OAR)%20660-023-0115%20%3C%2Fa%3E%20identifies%20significant%20sage%20grouse%20habitat%20and%20directs%20counties%20to%20apply%20a%20hierarchy%20of%20mitigation%20to%20land%20use%20proposals.%20The%20rule%20also%20establishes%20a%20metering%20mechanism%20that%20allows%20only%201%25%20of%20each%20PAC%20to%20be%20developed%20per%2010-year%20increment%2C%20and%20establishes%20a%20hard%20ceiling%20that%20would%20not%20allow%20human-caused%20development%20to%20ever%20occupy%20more%20than%203%25%20of%20any%20PAC.%20This%20tool%20shows%20the%20human%20development%20within%20the%20sage%20grouse%20PACs.%20Users%20can%20run%20a%20report%20to%20see%20the%20amount%20of%20development%20relative%20to%20the%201%25%20and%203%25%20development%20thresholds.%20%3C%2Fp%3E%3Cp%3EThe%20public%20viewer%20was%20created%20for%20informational%20purposes%20only.%20The%20development%20projects%20and%20baseline%20data%20are%20not%20suitable%20for%20legal%2C%20engineering%2C%20or%20surveying%20purposes.%20Please%20see%20the%20county%20planning%20department%20or%20the%20local%20BLM%20office%20for%20questions%20related%20to%20development%20projects%20in%20the%20registry.%20Only%20authorized%20users%20are%20permitted%20to%20add%20new%20development%20projects%20into%20the%20registry.%20For%20questions%20regarding%20authorized%20access%20to%20the%20registry%2C%20contact%20DLCD%20%40%20503-373-0050.%3C%2Fp%3EThe%20State%20of%20Oregon%2C%20Oregon%20State%20University%2C%20Oregon%20State%20University%20Libraries%2C%20or%20any%20of%20the%20data%20providers%20cannot%20accept%20any%20responsibility%20for%2C%20or%20claims%20attributable%20to%2C%20errors%2C%20omissions%2C%20misuse%2C%20misinterpretation%2C%20or%20positional%20accuracy%20in%20the%20digital%20data%20or%20underlying%20records.%20In%20no%20event%20shall%20these%20institutions%20be%20liable%20for%20direct%2C%20indirect%2C%20special%2C%20incidental%20or%20consequential%20loss%20or%20damage%20of%20any%20nature%20caused%20to%20any%20person%2C%20party%20or%20entity%20as%20a%20result%20of%20use%20of%20the%20information%20set%20forth%20herein.%3C%2Fp%3E%3C%2Fdiv%3E",
-                            "layerFilters": {
-                                "Default": [
-                                    "dst_cat",
-                                    "dst_nm",
-                                    "clctn_dt",
-                                    "land_user",
-                                    "land_owner",
-                                    "name_submitter",
-                                    "name_agency",
-                                    "odfw_prj_id",
-                                    "or_dev_reg_proj_id",
-                                    "or_lgscale",
-                                    "dst_stat",
-                                    "subcat"
-                                ],
-                                "Infrastructure (Powerline)": [
-                                    "vltg"
-                                ]
-                            }
-                        },
-                        "views": [                    
+                        "configuration": {},
+                        "views": [
                             {
-                                "id": "OE_SageGrouseDevRegistryView",
-                                "require": "geocortex/oe_amd/OE_SageGrouseDevRegistry/OE_SageGrouseDevRegistryView",
-                                "markup": "geocortex/oe_amd/OE_SageGrouseDevRegistry/OE_SageGrouseDevRegistryView.html",
-                                "title": "PAC Development Report",
-                                "viewModelId": "OE_SageGrouseDevRegistryViewModel",
-                                "visible": false,                                                                
+                                "id": "OE_SageGrouseConsPlnView",
+                                "require": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnView",
+                                "markup": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnView.html",
+                                "title": "Sage-Grouse Conservation Planning",
+                                "viewModelId": "OE_SageGrouseConsPlnViewModel",
+                                "visible": false,
+                                "region": "DataRegion",
+                                "configuration": {}
+                            }, {
+                                "id": "OE_SageGrouseConsPlnFilterInfoView",
+                                "require": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnFilterInfoView",
+                                "markup": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnFilterInfoView.html",
+                                "title": "Query Filter Description",
+                                "viewModelId": "OE_SageGrouseConsPlnViewModel",
+                                "visible": false,
                                 "region": "ModalWindowRegion",
                                 "configuration": {}
                             },
                             {
-                                "id": "OE_SageGrouseDevRegistryViewProjectReportView",
-                                "title": "Project Impact Report",
-                                "require": "geocortex/oe_amd/OE_SageGrouseDevRegistry/OE_SageGrouseDevRegistryProjectReportView",
-                                "markup": "geocortex/oe_amd/OE_SageGrouseDevRegistry/OE_SageGrouseDevRegistryProjectReportView.html",
-                                "viewModelId": "OE_SageGrouseDevRegistryProjectReportViewModel",
-                                "visible": false,                                
-                                "region": "DataRegion",
+                                "id": "OE_SageGrouseConsPlnHelpTutorialView",
+                                "require": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnHelpTutorialView",
+                                "markup": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnHelpTutorialView.html",
+                                "title": "Conservation Planning Query Tool Overview",
+                                "viewModelId": "OE_SageGrouseConsPlnViewModel",
+                                "visible": false,
+                                "region": "ModalWindowRegion",
                                 "configuration": {}
                             },
                             {
-                                "id": "OE_SageGrouseDevRegistryAllPacsReport",
-                                "title": "All PACs Reports",
-                                "require": "geocortex/oe_amd/OE_SageGrouseDevRegistry/OE_SageGrouseDevRegistryAllPacsReport",
-                                "markup": "geocortex/oe_amd/OE_SageGrouseDevRegistry/OE_SageGrouseDevRegistryAllPacsReport.html",
-                                "viewModelId": "OE_SageGrouseDevRegistryViewModel",
-                                "visible": false,                                
-                                "region": "DataRegion",
+                                "id": "OE_SageGrouseConsPlnDownloadView",
+                                "require": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnDownloadView",
+                                "markup": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnDownloadView.html",
+                                "title": "Download Selected Hexagon Areas",
+                                "viewModelId": "OE_SageGrouseConsPlnViewModel",
+                                "visible": false,
+                                "region": "ModalWindowRegion",
                                 "configuration": {}
                             }
                         ],
                         "viewModels": [
                             {
-                                "id": "OE_SageGrouseDevRegistryViewModel",
-                                "require": "geocortex/oe_amd/OE_SageGrouseDevRegistry/OE_SageGrouseDevRegistryViewModel",
-                                "configuration": {}
-                            },
-                            {
-                                "id": "OE_SageGrouseDevRegistryProjectReportViewModel",
-                                "require": "geocortex/oe_amd/OE_SageGrouseDevRegistry/OE_SageGrouseDevRegistryProjectReportViewModel",
+                                "id": "OE_SageGrouseConsPlnViewModel",
+                                "require": "geocortex/oe_amd/OE_SageGrouseConsPln/OE_SageGrouseConsPlnViewModel",
                                 "configuration": {}
                             }
                         ]
-                    },                    
+                    },
                     {
                         "moduleName": "Menu",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.Menu.MenuModule",
@@ -6841,7 +6803,7 @@
                         "moduleName": "Site",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                         "configuration": {
-                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/agol/REST/sites/dev_reg_dev",
+                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/_sage_grouse_data_viewer",
                             "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                             "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                             "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined"
@@ -7483,13 +7445,14 @@
                                                 }
                                             ]
                                         }
+
                                     ]
                                 },
                                 {
                                     "id": "mUa7UpiS",
                                     "type": "toolbarGroup",
                                     "name": "Find",
-                                    "isDefault": true,
+                                    "isDefault": false,
                                     "items": [
                                         {
                                             "id": "HomeButton",
@@ -7502,87 +7465,96 @@
                                             "tooltip": "@language-toolbar-home-tooltip"
                                         },
                                         {
-                                            "id": "NavigationGroup",
+                                            "id": "8wef38jd",
                                             "type": "toolbarGroup",
-                                            "name": "@language-toolbar-group-navigation",
+                                            "name": "Navigation",
                                             "layout": "Large",
                                             "items": [
                                                 {
-                                                    "id": "PanButton",
-                                                    "type": "button",
-                                                    "iconUri": "Resources/Images/Icons/Toolbar/pan-24.png",
-                                                    "command": "ClearActiveTool",
-                                                    "commandParameter": null,
-                                                    "hideOnDisable": false,
-                                                    "name": "@language-toolbar-navigation-pan",
-                                                    "tooltip": "@language-toolbar-navigation-pan-tooltip"
-                                                },
-                                                {
-                                                    "id": "ZoomInTool",
-                                                    "type": "tool",
-                                                    "iconUri": "Resources/Images/Icons/Toolbar/zoom-in-24.png",
-                                                    "command": "ZoomToExtent",
-                                                    "drawMode": "EXTENT",
-                                                    "name": "@language-toolbar-navigation-zoom-in",
-                                                    "tooltip": "@language-toolbar-navigation-zoom-in-tooltip",
-                                                    "hideOnDisable": false,
-                                                    "isSticky": false,
-                                                    "statusText": "@language-toolbar-navigation-zoom-in-desc"
-                                                },
-                                                {
-                                                    "id": "ZoomOutTool",
-                                                    "type": "tool",
-                                                    "iconUri": "Resources/Images/Icons/Toolbar/zoom-out-24.png",
-                                                    "command": "ZoomOutToExtent",
-                                                    "drawMode": "EXTENT",
-                                                    "name": "@language-toolbar-navigation-zoom-out",
-                                                    "tooltip": "@language-toolbar-navigation-zoom-out-tooltip",
-                                                    "hideOnDisable": false,
-                                                    "isSticky": false,
-                                                    "statusText": "@language-toolbar-navigation-zoom-out-desc"
-                                                },
-                                                {
-                                                    "id": "InitialExtentButton",
-                                                    "type": "button",
-                                                    "iconUri": "Resources/Images/Icons/Toolbar/zoom-initial-24.png",
-                                                    "command": "ZoomToInitialExtent",
-                                                    "commandParameter": null,
-                                                    "hideOnDisable": false,
-                                                    "name": "@language-toolbar-navigation-initial-extent",
-                                                    "tooltip": "@language-toolbar-navigation-initial-extent-tooltip"
-                                                },
-                                                {
-                                                    "id": "PreviousExtentButton",
-                                                    "type": "button",
-                                                    "iconUri": "Resources/Images/Icons/Toolbar/zoom-previous-32.png",
-                                                    "command": "ZoomToPreviousExtent",
-                                                    "commandParameter": null,
-                                                    "hideOnDisable": false,
-                                                    "name": "@language-toolbar-navigation-previous-extent",
-                                                    "tooltip": "@language-toolbar-navigation-previous-extent-tooltip"
-                                                },
-                                                {
-                                                    "id": "NextExtentButton",
-                                                    "type": "button",
-                                                    "iconUri": "Resources/Images/Icons/Toolbar/zoom-next-32.png",
-                                                    "command": "ZoomToNextExtent",
-                                                    "commandParameter": null,
-                                                    "hideOnDisable": false,
-                                                    "name": "@language-toolbar-navigation-next-extent",
-                                                    "tooltip": "@language-toolbar-navigation-next-extent-tooltip"
-                                                },
-                                                {
-                                                    "id": "BookmarksButton",
-                                                    "type": "button",
-                                                    "iconUri": "Resources/Images/Icons/bookmark-24.png",
-                                                    "command": "ShowBookmarks",
-                                                    "commandParameter": null,
-                                                    "hideOnDisable": false,
-                                                    "name": "@language-toolbar-bookmark",
-                                                    "tooltip": "@language-toolbar-bookmark-open"
+                                                    "id": "NavigationGroup",
+                                                    "type": "flyout",
+                                                    "name": "@language-toolbar-group-navigation",
+                                                    "layout": "Large",
+                                                    "items": [
+                                                        {
+                                                            "id": "PanButton",
+                                                            "type": "button",
+                                                            "iconUri": "Resources/Images/Icons/Toolbar/pan-24.png",
+                                                            "command": "ClearActiveTool",
+                                                            "commandParameter": null,
+                                                            "hideOnDisable": false,
+                                                            "name": "@language-toolbar-navigation-pan",
+                                                            "tooltip": "@language-toolbar-navigation-pan-tooltip"
+                                                        },
+                                                        {
+                                                            "id": "ZoomInTool",
+                                                            "type": "tool",
+                                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-in-24.png",
+                                                            "command": "ZoomToExtent",
+                                                            "drawMode": "EXTENT",
+                                                            "name": "@language-toolbar-navigation-zoom-in",
+                                                            "tooltip": "@language-toolbar-navigation-zoom-in-tooltip",
+                                                            "hideOnDisable": false,
+                                                            "isSticky": false,
+                                                            "statusText": "@language-toolbar-navigation-zoom-in-desc"
+                                                        },
+                                                        {
+                                                            "id": "ZoomOutTool",
+                                                            "type": "tool",
+                                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-out-24.png",
+                                                            "command": "ZoomOutToExtent",
+                                                            "drawMode": "EXTENT",
+                                                            "name": "@language-toolbar-navigation-zoom-out",
+                                                            "tooltip": "@language-toolbar-navigation-zoom-out-tooltip",
+                                                            "hideOnDisable": false,
+                                                            "isSticky": false,
+                                                            "statusText": "@language-toolbar-navigation-zoom-out-desc"
+                                                        },
+                                                        {
+                                                            "id": "InitialExtentButton",
+                                                            "type": "button",
+                                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-initial-24.png",
+                                                            "command": "ZoomToInitialExtent",
+                                                            "commandParameter": null,
+                                                            "hideOnDisable": false,
+                                                            "name": "@language-toolbar-navigation-initial-extent",
+                                                            "tooltip": "@language-toolbar-navigation-initial-extent-tooltip"
+                                                        },
+                                                        {
+                                                            "id": "FullExtentButton",
+                                                            "type": "button",
+                                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-full-24.png",
+                                                            "command": "ZoomToFullExtent",
+                                                            "commandParameter": null,
+                                                            "hideOnDisable": false,
+                                                            "name": "@language-toolbar-navigation-full-extent",
+                                                            "tooltip": "@language-toolbar-navigation-full-extent-tooltip"
+                                                        },
+                                                        {
+                                                            "id": "PreviousExtentButton",
+                                                            "type": "button",
+                                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-previous-32.png",
+                                                            "command": "ZoomToPreviousExtent",
+                                                            "commandParameter": null,
+                                                            "hideOnDisable": false,
+                                                            "name": "@language-toolbar-navigation-previous-extent",
+                                                            "tooltip": "@language-toolbar-navigation-previous-extent-tooltip"
+                                                        },
+                                                        {
+                                                            "id": "NextExtentButton",
+                                                            "type": "button",
+                                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-next-32.png",
+                                                            "command": "ZoomToNextExtent",
+                                                            "commandParameter": null,
+                                                            "hideOnDisable": false,
+                                                            "name": "@language-toolbar-navigation-next-extent",
+                                                            "tooltip": "@language-toolbar-navigation-next-extent-tooltip"
+                                                        }
+                                                    ]
                                                 }
                                             ]
-                                        },
+                                        }
+                                        ,
                                         {
                                             "id": "TIPLIQoE",
                                             "type": "toolbarGroup",
@@ -7600,87 +7572,33 @@
                                                     "hideOnDisable": false,
                                                     "isSticky": false,
                                                     "statusText": "@language-toolbar-identify-point-desc"
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "id": "EeD54kqL",
-                                            "type": "toolbarGroup",
-                                            "name": "Oregon Development Registry",
-                                            "layout": "Large",
-                                            "items": [
+                                                },
                                                 {
-                                                    "id": "XWVepsnv",
+                                                    "id": "BookmarksButton",
                                                     "type": "button",
-                                                    "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/feature-create-24.png",
-                                                    "command": "runAddEditDevFeatures",
+                                                    "iconUri": "Resources/Images/Icons/bookmark-24.png",
+                                                    "command": "ShowBookmarks",
                                                     "commandParameter": null,
-                                                    "hideOnDisable": true,
-                                                    "name": "Add Development",
-                                                    "tooltip": "Add Development"
-                                                },
-                                                {
-                                                    "id": "6AwCJe1l",
-                                                    "type": "button",
-                                                    "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/data-edit-24.png",
-                                                    "command": "RunWorkflowById",
-                                                    "commandParameter": "edit_development",
-                                                    "hideOnDisable": true,
-                                                    "name": "Edit Development",
-                                                    "tooltip": "Edit and existing development"
-                                                },
-                                                {
-                                                    "id": "KZQUM1m2",
-                                                    "type": "button",
-                                                    "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/reports-24.png",
-                                                    "command": "RunWorkflowWithArguments",
-                                                    "commandParameter": {
-                                                        "workflowId": "development_report",
-                                                        "reportType": "Current"
-                                                    },
                                                     "hideOnDisable": false,
-                                                    "name": "PAC Development Report",
-                                                    "tooltip": "Generate a Development Report for a PAC"
+                                                    "name": "@language-toolbar-bookmark",
+                                                    "tooltip": "@language-toolbar-bookmark-open"
                                                 },
                                                 {
-                                                    "id": "fMPT9de0",
-                                                    "type": "button",
-                                                    "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/reports-24.png",
-                                                    "command": "RunWorkflowById",
-                                                    "commandParameter": "development_impact_report",
-                                                    "hideOnDisable": true,
-                                                    "name": "Estimated Development Impact Report",
-                                                    "tooltip": "Includes developments currently in-review in the PAC cap calculations"
-                                                },
-                                                {
-                                                    "id": "reportAllPacs",
-                                                    "type": "button",
-                                                    "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/reports-24.png",
-                                                    "command": "RunWorkflowById",
-                                                    "commandParameter": "get_all_pac_reports",
-                                                    "hideOnDisable": true,
-                                                    "name": "Report for all PACs",
-                                                    "tooltip": "Get a report of all PAC developments for a selected "
-                                                },
-                                                {
-                                                    "id": "assignLgScale",
-                                                    "type": "button",
-                                                    "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/feature-edit-24.png",
-                                                    "command": "oe_assign_lg_scale",
-                                                    "commandParameter": "assignLgScaleSdartt",
-                                                    "hideOnDisable": true,
-                                                    "name": "Assign Large Scale to Federal Development Projects",
-                                                    "tooltip": "Assign Large Scale to Federal Development Projects"
-                                                },
-                                                {
-                                                    "id": "bTxhfEbW",
-                                                    "type": "button",
-                                                    "iconUri": "{ViewerConfigUri}../../../Resources/Images/Form.png",
-                                                    "command": "oe_dev_reg_user_guide",
-                                                    "commandParameter": "https://oe.oregonexplorer.info/ExternalContent/DevelopmentRegistry/Registry_UserGuide_September2017.pdf ",
-                                                    "hideOnDisable": true,
-                                                    "name": "User Guide",
-                                                    "tooltip": null
+                                                    "id": "PlotCoordinatesToggleButton",
+                                                    "type": "toggleButton",
+                                                    "name": "@language-plotcoordinates-tool-name",
+                                                    "tooltip": "@language-plotcoordinates-tool-tooltip",
+                                                    "iconUri": "Resources/Images/Icons/Toolbar/coordinates-add-24.png",
+                                                    "hideOnDisable": false,
+                                                    "toggleStateName": "PlotCoordinatesState",
+                                                    "toggleOn": {
+                                                        "command": "SetActiveTool",
+                                                        "commandParameter": "PlotCoordinatesTool"
+                                                    },
+                                                    "toggleOff": {
+                                                        "command": "ClearActiveTool",
+                                                        "commandParameter": null
+                                                    }
                                                 }
                                             ]
                                         }
@@ -7791,7 +7709,8 @@
                                                     ]
                                                 }
                                             ]
-                                        },
+                                        }
+                                        ,
                                         {
                                             "id": "15IeHye2",
                                             "type": "toolbarGroup",
@@ -7855,6 +7774,16 @@
                                                     "tooltip": "@language-toolbar-tasks-add-layers-tooltip"
                                                 },
                                                 {
+                                                    "id": "LayerCatalogButton",
+                                                    "type": "button",
+                                                    "iconUri": "Resources/Images/Icons/Toolbar/layer-catalog-24.png",
+                                                    "command": "ShowLayerCatalog",
+                                                    "commandParameter": null,
+                                                    "hideOnDisable": false,
+                                                    "name": "@language-toolbar-tasks-layer-catalog",
+                                                    "tooltip": "@language-toolbar-tasks-layer-catalog-tooltip"
+                                                },
+                                                {
                                                     "id": "UploadDataButton",
                                                     "type": "button",
                                                     "iconUri": "Resources/Images/Icons/Toolbar/upload-24.png",
@@ -7863,6 +7792,24 @@
                                                     "hideOnDisable": false,
                                                     "name": "@language-toolbar-tasks-upload-data",
                                                     "tooltip": "@language-toolbar-tasks-upload-data-tooltip"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": "Q4iAJTaD",
+                                            "type": "toolbarGroup",
+                                            "name": "Links",
+                                            "layout": "Large",
+                                            "items": [
+                                                {
+                                                    "id": "ShowExternalComponentViewButton",
+                                                    "type": "button",
+                                                    "iconUri": "Resources/Images/Icons/Toolbar/map-3rd-party-24.png",
+                                                    "command": "ShowExternalComponentView",
+                                                    "commandParameter": null,
+                                                    "hideOnDisable": false,
+                                                    "name": "@language-toolbar-3rd-party-maps-show-maps",
+                                                    "tooltip": "@language-toolbar-3rd-party-maps-show-maps-tooltip"
                                                 }
                                             ]
                                         }
@@ -7973,7 +7920,8 @@
                                                     ]
                                                 }
                                             ]
-                                        },
+                                        }
+                                        ,
                                         {
                                             "id": "VytV4olt",
                                             "type": "toolbarGroup",
@@ -8202,7 +8150,7 @@
                                     "id": "VsFdt8zF",
                                     "type": "toolbarGroup",
                                     "name": "Analysis",
-                                    "isDefault": false,
+                                    "isDefault": true,
                                     "items": [
                                         {
                                             "id": "4lseind59a",
@@ -8303,112 +8251,131 @@
                                                     ]
                                                 }
                                             ]
-                                        },
+                                        }
+                                        ,
                                         {
-                                            "id": "AdvancedMeasurementGroup",
+                                            "id": "9HImRpyR",
                                             "type": "toolbarGroup",
-                                            "name": "@language-toolbar-group-advanced-measurement",
+                                            "name": "Measure",
                                             "layout": "Large",
                                             "items": [
                                                 {
-                                                    "id": "AdvancedMeasurementTools",
+                                                    "id": "MeasurementTools",
                                                     "type": "flyout",
                                                     "name": "@language-toolbar-group-measurement-tools",
                                                     "layout": "Large",
                                                     "items": [
                                                         {
-                                                            "id": "MeasureLineTool",
+                                                            "id": "MeasureDistanceTool",
                                                             "type": "tool",
-                                                            "iconUri": "Resources/Images/Icons/Toolbar/measure-polyline-24.png",
+                                                            "iconUri": "Resources/Images/Icons/Toolbar/measure-distance-24.png",
                                                             "command": "MeasureDistance",
                                                             "drawMode": "POLYLINE",
-                                                            "name": "@language-measurement-measure-line-tool-name",
-                                                            "tooltip": "@language-measurement-measure-line-tool-tooltip",
+                                                            "name": "@language-measurement-measure-distance-tool-name",
+                                                            "tooltip": "@language-measurement-measure-distance-tool-tooltip",
                                                             "hideOnDisable": false,
                                                             "isSticky": true,
-                                                            "statusText": "@language-measurement-measure-line-tool-status"
+                                                            "statusText": "@language-measurement-measure-distance-tool-status"
                                                         },
                                                         {
-                                                            "id": "MeasureFreehandLineTool",
+                                                            "id": "MeasureAreaTool",
                                                             "type": "tool",
-                                                            "iconUri": "Resources/Images/Icons/Toolbar/measure-freehand-24.png",
-                                                            "command": "MeasureDistance",
-                                                            "drawMode": "FREEHAND_POLYLINE",
-                                                            "name": "@language-measurement-measure-freehand-line-tool-name",
-                                                            "tooltip": "@language-measurement-measure-freehand-line-tool-tooltip",
-                                                            "hideOnDisable": false,
-                                                            "isSticky": true,
-                                                            "statusText": "@language-measurement-measure-freehand-line-tool-status"
-                                                        },
-                                                        {
-                                                            "id": "MeasureFreehandPolygonTool",
-                                                            "type": "tool",
-                                                            "iconUri": "Resources/Images/Icons/Toolbar/measure-polygon-freehand-24.png",
-                                                            "command": "MeasureArea",
-                                                            "drawMode": "FREEHAND_POLYGON",
-                                                            "name": "@language-measurement-measure-freehand-polygon-tool-name",
-                                                            "tooltip": "@language-measurement-measure-freehand-polygon-tool-tooltip",
-                                                            "hideOnDisable": false,
-                                                            "isSticky": true,
-                                                            "statusText": "@language-measurement-measure-freehand-polygon-tool-status"
-                                                        },
-                                                        {
-                                                            "id": "MeasureEllipseTool",
-                                                            "type": "tool",
-                                                            "iconUri": "Resources/Images/Icons/Toolbar/measure-ellipse-24.png",
-                                                            "command": "MeasureArea",
-                                                            "drawMode": "ELLIPSE",
-                                                            "name": "@language-measurement-measure-ellipse-tool-name",
-                                                            "tooltip": "@language-measurement-measure-ellipse-tool-tooltip",
-                                                            "hideOnDisable": false,
-                                                            "isSticky": true,
-                                                            "statusText": "@language-measurement-measure-ellipse-tool-status"
-                                                        },
-                                                        {
-                                                            "id": "MeasureCircleTool",
-                                                            "type": "tool",
-                                                            "iconUri": "Resources/Images/Icons/Toolbar/measure-circle-24.png",
-                                                            "command": "MeasureArea",
-                                                            "drawMode": "CIRCLE",
-                                                            "name": "@language-measurement-measure-circle-tool-name",
-                                                            "tooltip": "@language-measurement-measure-circle-tool-tooltip",
-                                                            "hideOnDisable": false,
-                                                            "isSticky": true,
-                                                            "statusText": "@language-measurement-measure-circle-tool-status"
-                                                        },
-                                                        {
-                                                            "id": "MeasurePolygonTool",
-                                                            "type": "tool",
-                                                            "iconUri": "Resources/Images/Icons/Toolbar/measure-polygon-24.png",
+                                                            "iconUri": "Resources/Images/Icons/Toolbar/measure-area-24.png",
                                                             "command": "MeasureArea",
                                                             "drawMode": "POLYGON",
-                                                            "name": "@language-measurement-measure-polygon-tool-name",
-                                                            "tooltip": "@language-measurement-measure-polygon-tool-tooltip",
+                                                            "name": "@language-measurement-measure-area-tool-name",
+                                                            "tooltip": "@language-measurement-measure-area-tool-tooltip",
                                                             "hideOnDisable": false,
                                                             "isSticky": true,
-                                                            "statusText": "@language-measurement-measure-polygon-tool-status"
-                                                        },
-                                                        {
-                                                            "id": "MeasureRectangleTool",
-                                                            "type": "tool",
-                                                            "iconUri": "Resources/Images/Icons/Toolbar/measure-rectangle-24.png",
-                                                            "command": "MeasureArea",
-                                                            "drawMode": "RECTANGLE",
-                                                            "name": "@language-measurement-measure-rectangle-tool-name",
-                                                            "tooltip": "@language-measurement-measure-rectangle-tool-tooltip",
-                                                            "hideOnDisable": false,
-                                                            "isSticky": true,
-                                                            "statusText": "@language-measurement-measure-rectangle-tool-status"
+                                                            "statusText": "@language-measurement-measure-area-tool-status"
                                                         }
                                                     ]
+                                                }
+
+                                            ]
+                                        },
+                                        {
+                                            "id": "MeasurementToolControlRegion",
+                                            "type": "region",
+                                            "regionName": "MeasurementToolControlRegion"
+                                        },
+                                        {
+                                            "id": "rlezqUoA",
+                                            "type": "toolbarGroup",
+                                            "name": "Edit Measurement",
+                                            "layout": "Large",
+                                            "items": [
+                                                {
+                                                    "id": "DeleteMarkupTool",
+                                                    "type": "tool",
+                                                    "iconUri": "Resources/Images/Icons/Toolbar/erase-24.png",
+                                                    "command": "DeleteMarkup",
+                                                    "drawMode": "POINT",
+                                                    "name": "@language-toolbar-markup-delete",
+                                                    "tooltip": "@language-toolbar-markup-delete-tooltip",
+                                                    "hideOnDisable": false,
+                                                    "isSticky": true,
+                                                    "statusText": "@language-toolbar-markup-delete-desc"
                                                 },
                                                 {
-                                                    "id": "AdvancedMeasurementToolControlRegion",
-                                                    "type": "region",
-                                                    "regionName": "MeasurementToolControlRegion"
+                                                    "id": "ClearMarkup",
+                                                    "type": "button",
+                                                    "iconUri": "Resources/Images/Icons/Toolbar/clear-24.png",
+                                                    "command": "ClearMarkup",
+                                                    "commandParameter": null,
+                                                    "hideOnDisable": false,
+                                                    "name": "@language-toolbar-markup-clear",
+                                                    "tooltip": "@language-toolbar-markup-clear-tooltip"
+                                                },
+                                                {
+                                                    "id": "EditMarkupTool",
+                                                    "type": "tool",
+                                                    "iconUri": "Resources/Images/Icons/Toolbar/draw-edit-24.png",
+                                                    "command": "EditMarkup",
+                                                    "drawMode": "POINT",
+                                                    "name": "@language-toolbar-markup-edit",
+                                                    "tooltip": "@language-toolbar-markup-edit-tooltip",
+                                                    "hideOnDisable": false,
+                                                    "isSticky": true,
+                                                    "statusText": "@language-toolbar-markup-edit-desc"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": "EditControlRegion",
+                                            "type": "region",
+                                            "regionName": "EditControlRegion"
+                                        },
+                                        {
+                                            "id": "mCCFPeOm",
+                                            "type": "toolbarGroup",
+                                            "name": "Conservation Planning",
+                                            "layout": "Large",
+                                            "items": [
+                                                {
+                                                    "id": "xJhzJd1p",
+                                                    "type": "button",
+                                                    "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/reports-24.png",
+                                                    "command": "RunWorkflowById",
+                                                    "commandParameter": "cons_pln_filters",
+                                                    "hideOnDisable": false,
+                                                    "name": "Conservation Planning Filters",
+                                                    "tooltip": "Find areas for Sage-grouse conservation planning."
+                                                },
+                                                {
+                                                    "id": "ubNHe5fc",
+                                                    "type": "button",
+                                                    "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/query-24.png",
+                                                    "command": "OpenWebPage",
+                                                    "commandParameter": "https://oe.oregonexplorer.info/ExternalContent/SageGrouseDevelopmentSiting/Sage-GrouseDevelopmentSitingToolv1HelpDoc.pdf",
+                                                    "hideOnDisable": false,
+                                                    "name": "Help",
+                                                    "tooltip": "Help on how to use and interpret the tool."
                                                 }
                                             ]
                                         }
+
+
                                     ]
                                 }
                             ]

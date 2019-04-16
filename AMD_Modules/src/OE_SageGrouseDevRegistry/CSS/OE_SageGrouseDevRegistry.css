@@ -1,0 +1,245 @@
+﻿
+.region .view.TemplateModuleView.active {
+    margin: 0;
+}
+
+.template-module-view {
+    position: absolute;
+    z-index: 100;
+    width: 500px;
+    right: 0;
+    background: white;
+    color: black;
+    padding: 6px;
+    border: 1px solid #333;
+    margin-top: 46px;
+    margin-right: 2px;
+}
+
+    .mainForm input[type="text"], .mainForm textarea, .mainForm select {
+        /*width: 65%;*/
+        margin-bottom: 5px;
+    }
+
+    .mainForm input[type="date"] {
+        display: block;
+    }
+
+.textBox {
+    border-radius: 2px;
+    border: 1px solid #AAAAAA;
+}
+
+.error {
+    /*width: 100%;*/
+    padding: 0;
+    display: inline-block;
+    /*font-size: 80%;*/
+    color: red;
+    /*background-color: #900;*/
+    border-radius: 0 0 5px 5px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.myLabel {
+    font-weight: bold;
+    min-width: 30% !important;
+    display: inline-flex;
+    overflow: hidden;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+
+#customForm fieldset{
+    border:solid 1px #a7a7a7;
+    border-radius:0.25em;
+    margin:1.5em auto;
+}
+
+#customForm{
+    font-size:.9em;
+}
+
+#customForm table{
+    width:100%;
+}
+
+#customForm tr:nth-child(odd) {background: rgba(204, 204, 204, 0.50)}
+#customForm tr:nth-child(even) {background: #FFF}
+#customForm thead tr {background:#fff !important}
+
+
+#decade_tbl tr:nth-child(odd) {background: rgba(204, 204, 204, 0.50)}
+#decade_tbl tr:nth-child(even) {background: #FFF}
+#decade_tbl thead tr {background:#fff !important}
+
+#customForm table td {
+    padding:.3em 1.3em;
+}
+
+#customForm table tr:last-child{
+    font-weight:bold;
+}
+.cap_val{
+    /*float:right;*/
+    width:100%;
+    border:1px solid #a7a7a7;
+    border-radius:4px;
+    padding:.5em;
+}
+.cap_val h2{
+    text-align:center;
+    width:100%;
+}
+
+.notes{
+    /*float:right;*/
+    font-size:.8em;
+    margin-left:1em;
+    /*margin-top:1em;*/
+}
+
+.project-impact-wrapper {
+    padding: .5em;
+    min-height:65px;
+    text-align:center;
+}
+
+.project-impact-wrapper div {
+    width:45%;
+    border:1px solid #a7a7a7;
+    border-radius:4px;
+    padding:.5em;
+    margin:.5em;
+    float:left;
+    background-color:white;
+}
+
+.pac_sum_desc {
+    font-size:.9em;
+    color:#333;
+    font-style:italic;
+}
+
+   .clear{
+       clear:both;
+       float:none;
+   }
+
+#report-date{
+    width:100%;
+    text-align:left;
+    color:#333;
+    font-size:.9em;
+    font-style:italic;
+}
+
+.summary-wrapper{
+    border:1px solid #a7a7a7;
+    border-radius:4px;
+    padding:.5em;
+    margin:1.5em .5em auto;
+    font-size:1.1em;
+    background-color:rgba(204, 204, 204, 0.50);
+}
+
+.summary-wrapper h2{
+    margin-bottom:10px;
+}
+.details h3{
+    font-size:1.5em;
+}
+
+.details{
+    padding:1em;
+}
+
+#customForm h4{
+    margin:auto auto .5em .5em;
+    color:#333;
+}
+
+.container {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+.container-child {       
+    border:1px solid #a7a7a7;
+    border-radius:4px;
+    padding: 10px;
+    width: 100px;
+    min-width:100px;   
+    margin-top: 10px;        
+    font-weight: bold;
+    font-size: .85em;    
+}
+.pac_title_summary {
+    /*text-transform:uppercase;*/
+    font-size: 1.1em;
+    width: 110%;
+    height: 30px;
+    line-height: 30px;
+    margin: -10px -10px 10px;
+    text-align: center;
+    padding: 5px;
+    background-color: rgba(204, 204, 204, 0.50)
+}
+.pac_title_summary span{
+    display:inline-block;
+    vertical-align:middle;
+    line-height:normal;
+}
+.total_dev, .decade_dev {
+    width: 46%;    
+    font-size: .9em;    
+    text-align:center;
+}
+
+.total_dev{
+    border-right:solid 2px #a7a7a7;
+}
+.all_pac_percent{
+    font-size:1.4em;
+}
+#time-slider-wrapper{
+    width:75%;
+    margin:auto;
+}
+#all-pac-reports-wrapper{
+    padding:10px;
+}
+
+.ui-rangeSlider-arrow, .ui-rangeSlider-container, .ui-rangeSlider-bar {
+    height: 20px;
+}
+
+.ui-rangeSlider-label {
+    font-size: 12px;
+}
+.selected_date_dev{
+    text-align:center;
+    border-top:solid 1px #a7a7a7;
+    margin-top:3px;
+    width:100%;
+}
+.pac_summary:hover{
+    cursor:pointer;
+    background:#e4e3e3;
+}
+
+.report-type-wrapper div{
+    display:inline-block;
+    margin: 5px 5px 10px 10px;
+}

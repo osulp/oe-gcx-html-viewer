@@ -3568,9 +3568,9 @@
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.layerList.LayerListModule",
                 "configuration": {
                     "enableLegendIntegration": true,
-                    "onlyShowSwatchesOnVisibleLayers": false,
-                    "autoActivateAncestorVisibilities": false,
-                    "enableLayerIcons": false
+                    "onlyShowSwatchesOnVisibleLayers": true,
+                    "autoActivateAncestorVisibilities": true,
+                    "enableLayerIcons": true
                 },
                 "views": [
                     {

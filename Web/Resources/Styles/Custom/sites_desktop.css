@@ -23,6 +23,10 @@
     padding-left: 2em;
 }
 
+.layer-invisible:after {
+    display: none !important;
+}
+
 @media screen and (max-width: 1300px) {    
     table.banner-text tbody {
         vertical-align: middle;

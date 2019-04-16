@@ -11,6 +11,7 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <TypeScriptToolsVersion>2.4</TypeScriptToolsVersion>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -41,6 +42,13 @@
     <Content Include="src\OE_SageGrouseConsPln\Templates\slider.html" />
     <Content Include="src\OE_SageGrouseConsPln\Templates\rangeslider.html" />
     <Content Include="src\OE_SageGrouseConsPln\Templates\checkbox.html" />
+    <Content Include="src\OE_SageGrouseDevRegistry\CSS\iThing-min.css" />
+    <Content Include="src\OE_SageGrouseDevRegistry\Language.json" />
+    <Content Include="src\OE_SageGrouseDevRegistry\ModuleJS.txt" />
+    <Content Include="src\OE_SageGrouseDevRegistry\CSS\OE_SageGrouseDevRegistry.css" />
+    <Content Include="src\OE_SageGrouseDevRegistry\OE_SageGrouseDevRegistryAllPacsReport.html" />
+    <Content Include="src\OE_SageGrouseDevRegistry\OE_SageGrouseDevRegistryProjectReportView.html" />
+    <Content Include="src\OE_SageGrouseDevRegistry\OE_SageGrouseDevRegistryView.html" />
     <Content Include="src\OE_SageGrouseDevSiting\ModuleJS.txt" />
     <Content Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingDashboardView.html" />
     <Content Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingCompareSummaryView.html" />
@@ -66,9 +74,12 @@
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsView.html" />
     <Content Include="src\OE_LayerActions\CSS\OE_LayerActionsModule.css" />
     <Content Include="src\OE_LayerActions\OE_LayerActionsView.html" />
+    <Content Include="src\OE_AddLayerToLayerList\CSS\OE_AddLayerToLayerListModule.css" />
+    <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListView.html" />
     <Content Include="src\Template\CSS\TemplateModule.css" />
     <Content Include="src\OE_OWRTReports\Language.json" />
     <Content Include="src\OE_LayerActions\Language.json" />
+    <Content Include="src\OE_AddLayerToLayerList\Language.json" />
     <None Include="src\Template\Language.json" />
     <None Include="src\Template\TemplateView.html" />
   </ItemGroup>
@@ -83,6 +94,12 @@
     <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnFilterInfoView.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnViewModel.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnView.ts" />
+    <TypeScriptCompile Include="src\OE_SageGrouseDevRegistry\OE_SageGrouseDevRegistryModule.ts" />
+    <TypeScriptCompile Include="src\OE_SageGrouseDevRegistry\OE_SageGrouseDevRegistryAllPacsReport.ts" />
+    <TypeScriptCompile Include="src\OE_SageGrouseDevRegistry\OE_SageGrouseDevRegistryProjectReportView.ts" />
+    <TypeScriptCompile Include="src\OE_SageGrouseDevRegistry\OE_SageGrouseDevRegistryProjectReportViewModel.ts" />
+    <TypeScriptCompile Include="src\OE_SageGrouseDevRegistry\OE_SageGrouseDevRegistryView.ts" />
+    <TypeScriptCompile Include="src\OE_SageGrouseDevRegistry\OE_SageGrouseDevRegistryViewModel.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingModule.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingDashboardView.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingCompareSummaryView.ts" />
@@ -105,6 +122,9 @@
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsModule.ts" />
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsView.ts" />
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsViewModel.ts" />
+    <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListModule.ts" />
+    <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListView.ts" />
+    <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListViewModel.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\OE_Search\CSS\" />
