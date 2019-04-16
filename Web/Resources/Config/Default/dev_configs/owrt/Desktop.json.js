@@ -144,11 +144,26 @@
                     "visible": false,        
                     "region": "ModalWindowRegion",
                     "configuration": {}
+                },
+                {
+                    "id": "OE_OWRTReportsAreaView",
+                    "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsAreaView",
+                    "markup": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsAreaView.html",        
+                    "viewModelId": "OE_OWRTReportsAreaViewModel",
+                    "title": "OWRT Area Report",        
+                    "visible": false,        
+                    "region": "ModalWindowRegion",
+                    "configuration": {}
                 }],
                 "viewModels": [
                 {
                     "id": "OE_OWRTReportsViewModel",      
                     "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsViewModel",      
+                    "configuration": {}
+                },
+                {
+                    "id": "OE_OWRTReportsAreaViewModel",      
+                    "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsAreaViewModel",      
                     "configuration": {}
                 }]
             },
@@ -2080,8 +2095,7 @@
                         {
                             "name": "ChartPointMouseDownBehavior",
                             "event": "ChartPointMouseDownEvent",
-                            "commands": [
-                                "ShowMap",
+                            "commands": [                                
                                 "RunChartFeatureActions"
                             ]
                         }
@@ -4068,7 +4082,14 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",
                                     "text": "OWRT Report",
                                     "description": "",
-                                    "command": "oeOWRTprojectReport"
+                                    "command": "oeOWRTprojectReport",
+                                    "commandParameter": 20090660
+                                },
+                                {
+                                    "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",
+                                    "text": "OWRT Area Report",
+                                    "description": "",
+                                    "command": "oeOWRTareaReport"                                    
                                 },
                                 {
                                     "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",

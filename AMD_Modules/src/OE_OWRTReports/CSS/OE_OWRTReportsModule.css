@@ -152,7 +152,7 @@
     background-color: White;
 }
     
-.oe_owrtPR-Info legend
+.oe_owrtPR-Info legend, .oeOWRTAreaPanelCell legend
 {
     font-weight: bold;
     font-size: 1.3em;
@@ -335,6 +335,7 @@
 
 .oeActivityByFundingRow div {
     display:table-cell;
+    padding-bottom:2px;
 }
 
 .oeActivityByFundingRow div:first-child {    
@@ -393,6 +394,7 @@
 .oeActResultsRow div {
     display:table-cell;
     padding-left:8px;
+    padding-bottom:4px;
 }
 
 .oeActResultsRow div:first-child { 
@@ -414,7 +416,7 @@
 
 .oeOWRTactivityGoals li
 {
-    padding:0 0 0 0;
+    padding:0 0 2px 0;
     margin: 0 0 0 0;
     text-transform: capitalize;
 }
@@ -433,7 +435,7 @@
 
 .oeOwrtTreatmentMetrics ul li
 {
-    padding:0 0 0 0;
+    padding:0 0 4px 0;
     margin: 0 0 0 0;    
 }
 
@@ -446,6 +448,7 @@
 .oeOwrtTreatmentMetrics div
 {
     font-weight:bold;
+    padding-bottom:4px;
 }
 
 .oeMetricToggle
@@ -457,6 +460,7 @@
 .oeOwrtTreatmentMetrics table
 {
     margin:0 0 0 0.4em;
+    width:220px;
 }
 
 .oeOwrtTreatmentMetricsDescriptionColumn
@@ -469,4 +473,451 @@
 {
     width: 50%;
     text-align:right;
+}
+
+
+
+
+/* Area Report */
+
+.oe_owrtAreaReport-module-view
+{
+    position: inherit;
+    z-index: 100;
+    width: 900px;
+    right: 0;
+    background: white;
+    color: black;
+    padding: 6px;
+    border: none;
+    margin-top: 12px;
+    margin-right: 2px;
+    min-height:570px;
+
+    font: 12px Myriad,Helvetica,Tahoma,Arial,clean,sans-serif;
+    font-size: .9em;
+}
+
+.oeOWRTOptions
+{
+    width: 902px;
+    background-color: #ccc;
+    padding: 4px 0px;
+    border: 1px solid #bbb;
+}
+
+.oeOWRTOptionsPanel
+{
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    top: 78px;
+    width: 902px;
+    z-index: 5000;
+    overflow: hidden;
+    background-color: #fff;
+    border: 1px solid #bbb;
+    height:120px;
+}
+
+.oeOWRTOptionsTable
+{
+    margin:10px;
+}
+
+.oeOWRTOptionsTable button, .oeOWRTerrorInput button {
+    padding: .5em 1em;
+    background: #F5F5F5;
+    border: 1px solid #CCCCCC;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    color: #1A72C4;
+    box-shadow: 0;
+}
+
+.oeOWRTOptionsTable button:hover, .oeOWRTerrorInput button:hover {
+    background-color: #1A72C4;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+
+.oeOWRTOptionsTable h1{
+    font-size:1em;
+    font-weight:bold;
+    border-bottom: solid 1px black;
+    width:100%;
+    margin-bottom:0.6em;
+    padding:0.2em 0;
+}
+
+.oeOWRTOptionsTable td
+{
+    text-align: center;
+    border-left: dashed 1px #a7a7a7;
+    width:25%;
+    padding:0 4px;
+    vertical-align:top;
+}
+
+.oeOWRTOptionsTable td:first-child
+{
+    text-align: center;
+    border-left: none 1px #a7a7a7;
+}
+
+.oeOWRTOptionsTable h2{
+    font-size:0.9em;
+    font-weight:normal;
+}
+
+.oeOWRTOptionsTable input{
+    display:inline;
+    width:40px;
+}
+
+.oeOWRTOptions a
+{
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    padding-left: 8px;
+}
+
+.oeOWRTAreaTabs
+{
+    margin-left:4px;
+    padding-top:24px;
+}
+
+.oeOWRTAreaTabs div
+{
+    float:left;
+    border:1px solid #ccc;
+    border-bottom:0;
+    min-height:16px;
+    padding:4px 8px;
+    background-color:#e2e2e2;
+    margin-right:4px;
+    width:60px;
+    text-align:center;
+}
+
+.oeOWRTAreaTabs div a
+{
+    display:block;
+    text-decoration:none;
+    font-size:1em;
+    width:100%;
+}
+
+div.oeOWRTAreaTabEnabled
+{
+    background-color:#fff;
+    font-size:1.1em;
+    font-weight:bold;
+}
+
+.oeOWRTAreaPanel{
+    display:table;
+    clear:both;
+    width:98%;
+    min-height:460px;
+    border: 1px solid #ccc;
+    padding:10px;
+}
+
+.oeOWRTAreaPanel legend
+{
+    color: #aa4e3c;
+}
+
+.oeOWRTAreaPanel h1
+{
+    font-size: 1.2em;
+    font-weight: bold;        
+}
+
+.oeOWRTAreaPanelOverviewLeft
+{
+    width: 260px;
+    padding-left:8px;
+}
+
+.oeOWRTAreaPanelOverviewLeft fieldset
+{
+    margin-right:8px;
+}
+
+.oeOWRTAreaPanelOverviewLeft fieldset h1
+{    
+    float:left;
+}
+
+.oeOWRTAreaPanelCell
+{
+    display:table-cell  
+}
+
+.oeOWRTFloatRight
+{
+    float:right;
+}
+
+.oeOWRTAreaPanelOverviewRight
+{
+    
+}
+
+.oeOWRTAreaPanelOverviewRight fieldset
+{
+    position:relative;
+}
+
+.oeOWRTAreaQueryInfo
+{    
+    position:absolute;
+    right:10px;
+    top: 90px;
+}
+
+.oeOWRTAreaQueryInfo div
+{
+    font-size:0.9em;
+    text-align:right;
+}
+
+#oeOWRTAreaMap{
+    position:relative;
+    width: 600px;
+    height: 420px;
+    outline: none;
+}
+
+.oeOWRTAreaChartSelectBox
+{
+    position:absolute;
+    color: #292929;
+    border: 1px solid #BABABA;
+    background-color: #E8E8E8;
+    margin-left: 1em;
+    margin-right: 1em;
+    font-size: 1em;    
+    width: 200px;
+    margin-top: 1em;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.oeOWRTAreaChartSelectBox div
+{
+    padding: .5em;
+    font-size: 1em;
+    width: 100%;
+    color: Blue;
+}
+
+.oeOWRTAreaChartSelectBox div a 
+{
+    display:block;
+    width:100%;
+    text-decoration: none;
+    color: #595959;
+}
+
+.oeOWRTAreaChartSelectBox div a:hover
+{
+    text-decoration: underline;
+    font-weight:bold;
+}
+
+div.oeOWRTAreaChartSelectionBoxSelected {
+    background-color: #8C8C8C;
+    color: White;
+}
+
+div.oeOWRTAreaChartSelectionBoxSelected a{    
+    color: White;
+}
+
+.oeOWRTAreaProjectChart, .oeOWRTAreaFundingChart, .oeOWRTAreaResultsChart
+{
+    position:relative;
+    width:550px;
+    min-height:400px;
+    padding-top:16px;
+}
+
+.oeOWRTAreaPanelResults
+{
+    display:block;
+    padding:10px;
+    height:443px;
+    overflow-y:scroll;
+}
+
+.oeOWRTAreaPanelResults fieldset
+{
+    width:600px;
+    margin:20px auto 10px auto;
+}
+
+.owrtResultsTable
+{
+    width: 100%;
+}
+
+.owrtResultsTable td, .owrtResultsTable th
+{
+    padding: 2px 1px;
+}
+
+.owrtResultsTable tr th
+{
+    text-align:left;
+    background-image: linear-gradient(to bottom, rgba(234,238,247,0), rgba(234,238,247,1));
+}
+
+.owrtResultsTable tr td, .owrtResultsTable tr th
+{
+    padding:2px 4px;
+}
+
+.owrtResultsTable tr td
+{
+    border: solid #eee;
+    border-width: 0 1px 1px 0;
+}
+
+th.sorted.ascending:after {
+	content: "  \2191";
+    font-size:14px;
+}
+
+th.sorted.descending:after {
+	content: " \2193";
+    font-size:14px;
+}
+
+.owrtResultsTable tr th:nth-child(2), .owrtResultsTable tr td:nth-child(2)
+{
+    width:100px;
+    text-align:right;
+}
+
+.owrtResultsTable tr th:nth-child(3),.owrtResultsTable tr td:nth-child(3)
+{
+    width: 160px;
+    text-align: center;
+}
+
+.owrtResultsTable tr:nth-child(2n+1)
+{
+    background-color:#fafafa;
+}
+
+.owrtResultsTable tr:hover
+{
+    background-color:#e7e9f9;
+}
+
+.owrtChartTableToggleLink
+{
+    text-align:right;
+    padding-right:10px;
+}
+
+.owrtChartTableToggleLink img
+{
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    padding-right: 8px;
+}
+
+.owrtChartsTableContainer
+{
+    position: absolute;
+    display: block;
+    top: 182px;
+    left: 295px;
+    height: 405px;
+    background-color: white;
+    width: 600px;
+    overflow-x:auto;    
+    overflow-y:hidden;
+    z-index: 30;
+}
+
+.owrtChartTableToggleLink
+{
+    position: absolute;
+    display: block;
+    top: 162px;
+    left: 800px;
+    z-index: 40;
+}
+
+.owrtChartTables
+{
+    width:100%;
+}
+
+.owrtChartTables tbody
+{
+    display:block;
+    height:360px;
+    overflow-y:scroll;
+}
+
+.owrtChartTables thead
+{
+    display:block;
+}
+
+.owrtChartTables tr th
+{    
+    text-align:left;
+    background-image: linear-gradient(to bottom, rgba(234,238,247,0), rgba(234,238,247,1));    
+    padding:2px 4px;
+    border: solid #eee;
+    border-width: 0 1px 1px 0;    
+}
+
+.owrtChartTableShared tr th, .owrtChartTableShared tr td, .owrtChartTableFundInvestByYear tr th, .owrtChartTableFundInvestByYear tr td
+{
+    width:300px;
+}
+
+.owrtChartTables tr td
+{
+    border: solid #eee;
+    border-width: 0 1px 1px 0;    
+    padding:2px 4px;    
+}
+
+.owrtChartTables tr td:nth-child(1n+2)
+{    
+    text-align:right;
+}
+
+.owrtChartTables tr:nth-child(2n+1)
+{
+    background-color:#fafafa;
+}
+
+.owrtChartTables tr:hover
+{
+    background-color:#e7e9f9;
+}
+
+.owrtChartTableFundInvestByActByYear {
+    width: 1370px;
+    table-layout:fixed;
+}
+
+.owrtChartTableFundInvestByActByYear tr td, .owrtChartTableFundInvestByActByYear tr th {
+    width: 100px;
+    display: inline-block;
+    white-space: nowrap;
 }

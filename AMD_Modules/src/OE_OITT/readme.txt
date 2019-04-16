@@ -3,27 +3,27 @@ Module Include
 -------------------------------------
 
 {
-    "moduleName": "OE_OWRTReports",
+    "moduleName": "OE_OITT",
     "libraryId": "OE_AMD",
-    "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsModule",
+    "require": "geocortex/oe_amd/OE_OITT/OE_OITTModule",
     "configuration": {
         
     },
 	"views": [
     {
-        "id": "OE_OWRTReportsView",
-        "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsView",
-        "markup": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsView.html",        
-        "viewModelId": "OE_OWRTReportsViewModel",
-        "title": "OWRT Project Report",        
+        "id": "OE_OITTView",
+        "require": "geocortex/oe_amd/OE_OITT/OE_OITTView",
+        "markup": "geocortex/oe_amd/OE_OITT/OE_OITTView.html",        
+        "viewModelId": "OE_OITTViewModel",
+        "title": "OITT Project Reports",
         "visible": false,        
         "region": "NavigationMapRegion",
         "configuration": {}
     }],
 	"viewModels": [
     {
-        "id": "OE_OWRTReportsViewModel",      
-        "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsViewModel",      
+        "id": "OE_OITTViewModel",      
+        "require": "geocortex/oe_amd/OE_OITT/OE_OITTViewModel",      
         "configuration": {}
     }]
 }

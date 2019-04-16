@@ -27,6 +27,8 @@
     <Content Include="package.json" />
     <Content Include="post_build_modules.bat" />
     <Content Include="README.md" />
+    <Content Include="src\OE_OITT\readme.txt" />
+    <Content Include="src\OE_OWRTReports\OE_OWRTReportsAreaView.html" />
     <Content Include="src\OE_OWRTReports\readme.txt" />
     <Content Include="src\OE_LayerActions\readme.txt" />
     <Content Include="src\OE_SageGrouseConsPln\CSS\hopscotch-0.1.1.css" />
@@ -66,9 +68,12 @@
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsView.html" />
     <Content Include="src\OE_LayerActions\CSS\OE_LayerActionsModule.css" />
     <Content Include="src\OE_LayerActions\OE_LayerActionsView.html" />
+    <Content Include="src\OE_OITT\CSS\TemplateModule.css" />
+    <Content Include="src\OE_OITT\TemplateView.html" />
     <Content Include="src\Template\CSS\TemplateModule.css" />
     <Content Include="src\OE_OWRTReports\Language.json" />
     <Content Include="src\OE_LayerActions\Language.json" />
+    <Content Include="src\OE_OITT\Language.json" />
     <None Include="src\Template\Language.json" />
     <None Include="src\Template\TemplateView.html" />
   </ItemGroup>
@@ -76,6 +81,8 @@
     <TypeScriptCompile Include="src\OE_Graphics\OE_GraphicsModule.ts" />
     <TypeScriptCompile Include="src\OE_HyperlinkBanner\OE_HyperlinkBannerModule.ts" />
     <TypeScriptCompile Include="src\OE_OWRTReports\OE_JsonAdapter.ts" />
+    <Content Include="src\OE_OWRTReports\OE_OWRTReportsAreaViewModel.ts" />
+    <Content Include="src\OE_OWRTReports\OE_OWRTReportsAreaView.ts" />
     <TypeScriptCompile Include="src\OE_PickerListItemRenderer\OE_PickerListItemRendererModule.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnDownloadView.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnHelpTutorialView.ts" />
@@ -105,6 +112,9 @@
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsModule.ts" />
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsView.ts" />
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsViewModel.ts" />
+    <Content Include="src\OE_OITT\TemplateModule.ts" />
+    <Content Include="src\OE_OITT\TemplateView.ts" />
+    <Content Include="src\OE_OITT\TemplateViewModel.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\OE_Search\CSS\" />

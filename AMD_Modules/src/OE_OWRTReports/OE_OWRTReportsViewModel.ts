@@ -35,9 +35,7 @@ export class OE_OWRTReportsViewModelSequenceTask {
 }
 
 export class OE_OWRTReportsViewModel extends ViewModelBase {
-        
-    //appSite: geocortex.framework.application.Application;
-    //myModule: OE_OWRTReportsViewModel;
+     
     app: ViewerApplication;
     chartFactory: ChartViewModelFactory;
     dataSource: any;
@@ -49,6 +47,8 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     inputBlockOnError: Observable<boolean> = new Observable<boolean>(false);
     
     esriMap: esri.Map;
+    esriProjectLayer: esri.layers.FeatureLayer;
+    esriMapSymbol: esri.symbol.SimpleFillSymbol;
 
     chartPartVisible: Observable<boolean> = new Observable<boolean>(true);
     chartActVisible: Observable<boolean> = new Observable<boolean>(false);
@@ -118,10 +118,6 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     project_townshipRangeSection: Observable<string> = new Observable<string>("");
     project_dominant_land_use: Observable<string> = new Observable<string>("");
         
-    /*constructor(app: ViewerApplication, lib: string) {
-        super(app, lib);        
-    }*/
-
     initialize(config: any): void {
 
         var site = (<any>this).app.site;
@@ -140,29 +136,17 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     }
 
     _onSiteInitialized() {
-
-        //build custom image url
-        //this.app.site.url        
-
+        
         //register tagging command
         this.app.commandRegistry.command("oeOWRTprojectReport").register(this, this._oeOWRTprojectReport);
-                        
+                                
         // Register our custom JSON data adapter with the charting infrastructure.
         let jsonDataAdapter = new OE_ChartPointJsonAdapter();
         let sourceTypeString = ChartFieldSourceType[(<any>ChartFieldSourceType).Json];
         ChartPointAdapterRegistry.registerAdapter((<any>jsonDataAdapter), sourceTypeString);
 
         this.initializeChartFactory();                
-
-        //get the OWRT map service
-        //let mService = this.app.site.essentialsMap.mapServices.filter((ms: MapService) => ms.displayName == "OWRT").length > 0 ?
-        //    this.app.site.essentialsMap.mapServices.filter((ms: MapService) => ms.displayName === 'OWRT')[0] : null;
-
-
-        //get the layer to query?
-        //let workLayer = mService.layers.filter((ly: Layer) => ly.name == "ALL_POLYS_SDE_WM").length > 0 ?
-        //    mService.layers.filter((ly: Layer) => ly.name === "ALL_POLYS_SDE_WM")[0] : null;
-
+        
         let mService = this._GetServiceByName("OWRT");
         this.queryUrlOWRT = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "ALL_POLYS_SDE_WM").id;
         this.queryUrlCentroids = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "CentroidsSimple").id;
@@ -172,6 +156,17 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this.queryUrlPartSuperTypes = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PARTICIPANTS_SUPERTYPE_LU").id;
         this.queryUrlPartTypes = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PARTICIPANTS_TYPE_LU").id;
         this.queryUrlLandUse = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "LAND_USE").id;
+
+        //create the map symbol
+        this.esriMapSymbol = new esri.symbol.SimpleFillSymbol(
+            esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+            new esri.symbol.SimpleLineSymbol(
+                esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                new esri.Color([0, 255, 255]), 2),
+                new esri.Color([0, 255, 255, 0.35])
+        );
+
+        //new esri.Color([0, 255, 255]), 4), new esri.Color([0, 255, 255, 0.25])
         
         //get the OWRT drawing color data
         var requestHandle = esri.request({
@@ -270,8 +265,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         var queryTask = new esri.tasks.QueryTask(queryString);
         queryTask.on("complete", (results: any) => {
 
-            if (results && results.featureSet && (<esri.tasks.FeatureSet>results.featureSet).features.length > 0) {
-                //targetFeatureSet = results.featureSet;
+            if (results && results.featureSet && (<esri.tasks.FeatureSet>results.featureSet).features.length > 0) {                
                 myModel[targetFeatureSet] = results.featureSet;
             }
             else {
@@ -286,8 +280,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
 
             this._MoveCurrentSequenceProgress();
         });
-
-        //queryTask.execute(query);
+                
         this.sequenceTasks.push(new OE_OWRTReportsViewModelSequenceTask(queryTask, query));
     }
 
@@ -305,8 +298,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         queryTask.on("execute-relationship-query-complete", (results: any) => {
 
             if (results && results.featureSets[objectID] && (<esri.tasks.FeatureSet>results.featureSets[objectID]).features.length > 0) {
-
-                //targetFeatureSet = (<esri.tasks.FeatureSet>results.featureSets[objectID]);                
+       
                 myModel[targetFeatureSet] = (<esri.tasks.FeatureSet>results.featureSets[objectID]);
             }
             else {
@@ -322,8 +314,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
 
             this._MoveCurrentSequenceProgress();
         });
-
-        //queryTask.executeRelationshipQuery(query);
+                
         this.sequenceTasks.push(new OE_OWRTReportsViewModelSequenceTask(queryTask, query, true));                
     }
         
@@ -332,9 +323,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         //clear tasks
         this.sequenceTasks = [];
 
-        //setup a new sequence
-        //this.sequenceDoneValue = 8;
-        //this.sequenceProgress = 0;
+        //setup a new sequence        
         this.sequenceErrors = "";
         this.sequenceOnComplete = this._BuildRelationships; //when the follow sequence of queries are done build the relationships
 
@@ -354,10 +343,24 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this._MoveCurrentSequenceProgress();
     }
         
-    private _oeOWRTprojectReport(project_nbr: string) {
+    private _oeOWRTprojectReport(project_nbr: any) {
         
         //ModalWindowRegion
         this.app.commandRegistry.command("ActivateView").execute("OE_OWRTReportsView");                                
+
+        if (typeof project_nbr != "string")
+        {
+            if (typeof project_nbr === "number")
+            {
+                project_nbr = project_nbr.toString();
+            }
+            else if (typeof project_nbr._graphic !== "undefined")
+            {                
+                //table context
+                project_nbr = project_nbr._graphic.attributes.project_nbr;
+            }
+        }
+
         this._oeReportQueries(project_nbr);
     }
 
@@ -371,26 +374,38 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
 
         //no number, default to one
         if (!project_nbr)
-            project_nbr = "20090660";
+        {            
+            this._StopOnErrorMessage("No project number supplied. Example project number: 20090660.");
+            return;
+        }
+
+        //force string type
+        project_nbr = project_nbr.toString();
 
         //invalid number, default to one
         var matchResult = project_nbr.match(/^[0-9]+$/g);
         if (matchResult == undefined || matchResult === null || matchResult.length < 1) {
-            project_nbr = "20090660";
+            this._StopOnErrorMessage("The project number is not valid: " + project_nbr + ".");
+            return;
         }
 
         //primary record query.  All related information queries are in the function of this call back       
         var query = new esri.tasks.Query();
         query.where = "project_nbr = " + project_nbr;
         query.outFields = ["*"];
-        query.returnGeometry = false;
+        query.returnGeometry = true;
+
+        var thisView = this;
 
         var queryTask = new esri.tasks.QueryTask(this.queryUrlOWRT);
         queryTask.on("complete", (results: any) => {             
 
             if (results && results.featureSet && (<esri.tasks.FeatureSet>results.featureSet).features.length > 0) {
+
                 //build primary chart from record
                 this._BuildProjectInfo(<esri.tasks.FeatureSet>results.featureSet);
+
+                this._loadEsirMap(null, <esri.tasks.FeatureSet>results.featureSet, thisView);
             }
             else
             {
@@ -406,7 +421,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         queryTask.execute(query);
         
         //simple centroid geometry query
-        var queryCentroid = new esri.tasks.Query();
+        /*var queryCentroid = new esri.tasks.Query();
         queryCentroid.where = "project_nbr = " + project_nbr;
         queryCentroid.outFields = ["*"];
         queryCentroid.returnGeometry = true;
@@ -430,7 +445,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
             }
 
         })
-        queryTaskCentroid.execute(queryCentroid);
+        queryTaskCentroid.execute(queryCentroid);*/
                 
     }
 
@@ -521,7 +536,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
             //clear tasks
             this._NewSequence(this._QuerysThatRequireProjectID);
             //related records to project
-            this._sequenceRelationshipQuery(this.queryUrlProjectInfo, workingAttributes.OBJECTID, 9, ["*"], "project_activites", "Project Activities");
+            this._sequenceRelationshipQuery(this.queryUrlProjectInfo, workingAttributes.OBJECTID, 15, ["*"], "project_activites", "Project Activities");
             this._sequenceQuery(this.queryUrlLandUse, "project_id=" + this.projectID, ["land_use"], "project_landuses", "Project Land Uses");
             this._MoveCurrentSequenceProgress();
         }
@@ -1030,11 +1045,11 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this.chartActive = null;                
     }
 
-    private _loadEsirMap(graphicIn: esri.Graphic) {
+    private _loadEsirMap(graphicIn: esri.Graphic, featureSetIn: esri.tasks.FeatureSet, thisView: OE_OWRTReportsViewModel) {
 
         var point: esri.geometry.Point = null;
 
-        if (graphicIn && graphicIn.geometry)
+        if (graphicIn && graphicIn != null && graphicIn.geometry)
             point = <esri.geometry.Point>graphicIn.geometry;
         else
             point = new esri.geometry.Point(-120.58, 44.17);
@@ -1047,31 +1062,61 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
                 zoom: 5,
                 basemap: "streets",
                 minZoom: 5,
-                slider: false
+                slider: true
             });
+
+            var viewThis = this;
 
             this.esriMap.on("load", function (event: any) {
                 console.log(event.map);
 
-                var markerSymbol = new esri.symbol.SimpleMarkerSymbol();
+                
+                //markerSymbol.setColor(new esri.Color("#00FFFF"));
+                //markerSymbol.setOutline(new esri.symbol.SimpleLineSymbol())
+                
+                /*var markerSymbol = new esri.symbol.SimpleMarkerSymbol();
                 markerSymbol.setColor(new esri.Color("#00FFFF"));                
-                (<esri.Map>event.map).graphics.add(new esri.Graphic(point, markerSymbol));
+                (<esri.Map>event.map).graphics.add(new esri.Graphic(point, markerSymbol));*/
+
+                for (let i = 0; i < featureSetIn.features.length; i++)
+                {
+                    featureSetIn.features[i].setSymbol(thisView.esriMapSymbol);
+                    (<esri.Map>event.map).graphics.add(featureSetIn.features[i]);
+                }
+
+                //this.esriProjectLayer = new esri.layers.FeatureLayer(this._MakeFeatureCollection(featureSetIn));
+                //(<esri.Map>event.map).addLayer(this.esriProjectLayer);
 
                 var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/40");
                 (<esri.Map>event.map).addLayer(featureLayer);
+                                
+                (<esri.Map>event.map).setExtent(esri.graphicsExtent(featureSetIn.features).expand(2));
             });                     
         }
         else
         {
             this.esriMap.graphics.clear();
 
-            var markerSymbol = new esri.symbol.SimpleMarkerSymbol();
+            for (let i = 0; i < featureSetIn.features.length; i++) {
+                featureSetIn.features[i].setSymbol(this.esriMapSymbol);
+                this.esriMap.graphics.add(featureSetIn.features[i]);
+            }
+
+            this.esriMap.setExtent(esri.graphicsExtent(featureSetIn.features).expand(2));
+
+            /*var markerSymbol = new esri.symbol.SimpleMarkerSymbol();
             markerSymbol.setColor(new esri.Color("#00FFFF"));
-            this.esriMap.graphics.add(new esri.Graphic(point, markerSymbol));
+            this.esriMap.graphics.add(new esri.Graphic(point, markerSymbol));*/
+
+            //if (typeof this.esriProjectLayer != "undefined")
+                //this.esriMap.removeLayer(this.esriProjectLayer);
+
+            //this.esriProjectLayer = new esri.layers.FeatureLayer(this._MakeFeatureCollection(featureSetIn));
+            //this.esriMap.addLayer(this.esriProjectLayer);            
         }
 
     }
-    
+        
     private initializeChartFactory(): void {
 
         let chartingLibraryId = "Charting";        
