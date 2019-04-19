@@ -29,12 +29,12 @@ export class OE_LayerActionsModule extends ModuleBase {
     downloadLinkURI: string = "";
 
     downloadWorkflowEnabled: boolean; // by default this is true, workflow is an opt out
-    downloadWorkflowOverride: DownloadOverrideWorkflow; //override default workflow ID - This is an object with a workflow id, argument names, and argument values
+    downloadWorkflowOverride: DownloadOverrideWorkflow; //override default workflow ID - This is an object with a workflow id, argument names, and argument values    
 
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
     }
-
+    
     initialize(config: any): void {
         this.showLayerDescription = config.showLayerDescription !== undefined ? config.showLayerDescription : false;
         this.showLayerDescViewHide = config.showLayerDescViewHide !== undefined ? config.showLayerDescViewHide : true;
@@ -74,6 +74,19 @@ export class OE_LayerActionsModule extends ModuleBase {
     handleFolderClickEvent(context) {
         if (context.isVisible.get() == true)
             context.isExpanded.set(true);
+    }
+
+    async getServiceLayerDescription(layerURL) {
+        let result;
+        try {
+            result = await $.ajax({
+                url: layerURL,
+                type: 'GET'
+            });
+            return result;
+        } catch (ex) {
+            console.error(ex);
+        }
     }
 
     _onSiteInitialized(site:Site) {
@@ -165,10 +178,10 @@ export class OE_LayerActionsModule extends ModuleBase {
 
         }
 
-        this["registerOnClickForLayerDesc"] = function () {
+        //this["registerOnClickForLayerDesc"] = function () {
 
-        }
-        this.app.commandRegistry.command("showMetadata").register(this, function (layer) {
+        //}
+        this.app.commandRegistry.command("showMetadata").register(this, async function (layer) {
 
             //override metadata link
             if (this.metadataHyperlinkOverride && this.metadataHyperlinkURI != "") {
@@ -176,9 +189,21 @@ export class OE_LayerActionsModule extends ModuleBase {
                 return;
             }
 
+            //get service layer description: 
+            let serviceLayerDesc = await this.getServiceLayerDescription(layer.getLayerUrl() + "?f=json");
+
+            
             // Show the text that was passed into the command.
             // Metadata links are the first link in the description so split and send to first url.
-            var metadataLink = layer.description.split("http");
+            var metadataLink = "";
+
+            if (serviceLayerDesc.description) {
+                metadataLink = serviceLayerDesc.description.split("http");
+            } else {
+                if (layer != null && layer != "undefined" && layer.description != null && layer.description != "undefined")
+                    metadataLink = layer.description.split("http");
+            }            
+
             var metadataLinkSpaceCount = 0;
 
             if (metadataLink.length > 1) {
@@ -225,12 +250,24 @@ export class OE_LayerActionsModule extends ModuleBase {
             if (context == null)
                 return false;
 
-            //there is a description show this button
-            var isOEService = context.mapService.serviceUrl.match("lib-arcgis") !== -1 ? true : context.mapService.serviceUrl.match("arcgis.oregonexplorer.info") !== -1 ? true : false;
-            if (isOEService && context.description !== "")
-                return true;
+            if (context.mapService.serviceUrl == null || context.mapService.serviceUrl == "undefined")
+                    return false;
 
-            return false;
+                if (context.description == null || context.description == "undefined")
+                    return false;
+
+                //there is a description show this button
+                var isOEService = context.mapService.serviceUrl.match("lib-gis") !== -1
+                    ? true
+                    : context.mapService.serviceUrl.match("lib-gis") !== -1
+                        ? true
+                        : context.mapService.serviceUrl.match("arcgis.oregonexplorer.info") !== -1
+                            ? true
+                            : false;
+                if (isOEService && context.description !== "")
+                    return true;
+
+                return false;
 
         });
         // view LayerActionsView active
@@ -238,7 +275,7 @@ export class OE_LayerActionsModule extends ModuleBase {
         this.app.commandRegistry.command("showServiceInfo").register(this, function (layer) {
             window.open(layer.getLayerUrl(), "_blank");
         });
-        this.app.commandRegistry.command("showDownload").register(this, function (layer) {
+        this.app.commandRegistry.command("showDownload").register(this, async function (layer) {
 
             //override download link
             if (this.downloadHyperlinkOverride && this.downloadLinkURI != "") {
@@ -246,9 +283,26 @@ export class OE_LayerActionsModule extends ModuleBase {
                 return;
             }
 
+
+            //get service layer description: 
+            let serviceLayerDesc = await this.getServiceLayerDescription(layer.getLayerUrl() + "?f=json");
+
+
+            // Show the text that was passed into the command.
+            // Download links are the first link in the description so split and send to first url.
+            var downloadLink = "";
+
+            if (serviceLayerDesc.description) {
+                downloadLink = serviceLayerDesc.description.split("http");
+            } else {
+                if (layer != null && layer != "undefined" && layer.description != null && layer.description != "undefined")
+                    downloadLink = layer.description.split("http");
+            }            
+
+
             // Show the text that was passed into the command.
             // Download links are the second link in the description so split and send to second url.
-            var downloadLink = layer.description.split("http");
+
             downloadLink = downloadLink.length > 2 ? "http" + downloadLink[2] : "";
             if (downloadLink !== "") {
                 //console.log("Opening download link...");
@@ -316,46 +370,61 @@ export class OE_LayerActionsModule extends ModuleBase {
 
                 this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
             }
-        }, function (context) {
+        }, function (context):boolean {
+                async function canExecute(context) {
+                    if (this.downloadHyperlinkOverride && this.downloadLinkURI != "") {
+                        return true;
+                    }
 
-            if (this.downloadHyperlinkOverride && this.downloadLinkURI != "") {
-                return true;
-            }
+                    if (context === null)
+                        return false;
 
-            if (context === null)
-                return false;
+                    //hide
+                    if (context.properties.hideDownload != undefined && context.properties.hideDownload === "False")
+                        return false;
 
-            //hide
-            if (context.properties.hideDownload != undefined && context.properties.hideDownload === "False")
-                return false;
+                    //hide if download link override and workflow is disabled
+                    if (this.downloadHyperlinkOverride && this.downloadLinkURI == "" && !this.downloadWorkflowEnabled) {
+                        return false;
+                    }
 
-            //hide if download link override and workflow is disabled
-            if (this.downloadHyperlinkOverride && this.downloadLinkURI == "" && !this.downloadWorkflowEnabled) {
-                return false;
-            }
+                    //download links always show
+                    var downloadLink = ""
 
-            //download links always show
-            var downloadLink = context.description.split("http");
-            downloadLink = downloadLink.length > 2 ? "http" + downloadLink[2] : "";
-            if (downloadLink !== "")
-                return true;
+                    //get service layer description: 
+                    let serviceLayerDesc = await this.getServiceLayerDescription(context.getLayerUrl() + "?f=json");
 
-            //is this a type that can be exported?
-            if (!this.allowAllLayerTypes && context.type !== LayerType.FEATURE_LAYER)
-                return false;
+                    if (serviceLayerDesc.description !== "") {
+                        downloadLink = serviceLayerDesc.description.split("http");
+                    } else if (context.description != null && context.description != "undefined")
+                        downloadLink = context.description.split("http");
 
-            //is the map service there?
-            if (context.mapService == null || context.mapService == "")
-                return false;
-            if (context.mapService.serviceUrl == null || context.mapService.serviceUrl == "")
-                return false;
+                    downloadLink = downloadLink.length > 2 ? "http" + downloadLink[2] : "";
+                    if (downloadLink !== "")
+                        return true;
 
-            return true;
+                    //is this a type that can be exported?
+                    if (!this.allowAllLayerTypes && context.type != LayerType.FEATURE_LAYER)
+                        return false;
+
+                    //is the map service there?
+                    if (context.mapService == null || context.mapService == "")
+                        return false;
+                    if (context.mapService.serviceUrl == null || context.mapService.serviceUrl == "")
+                        return false;
+
+                    return true;
+                }
+                let showDownload = canExecute(context);
+                if (showDownload) {
+                    return true;
+                } else {
+                    return false;
+                }               
 
             //return (context === null ? false : (context.properties.hideDownload === undefined ? true : context.properties.hideDownload === "False" ? false : false));
         });
 
     }
-
 
 }

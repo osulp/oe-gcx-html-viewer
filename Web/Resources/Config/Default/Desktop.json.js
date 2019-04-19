@@ -135,19 +135,19 @@
                         "linkUri": "http://oregonexplorer.info"
                     }
                 },
-                {
-                    "moduleName": "LayerActionsExtension",
-                    "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
-                    "libraryId": "Custom",
-                    "configuration": {
-                        "showLayerDescription": false,
-                        "allowAllLayerTypes": true,
-                        "metadataHyperlinkOverride": true,
-                        "expandLayerTreeOnVisible": true,
-                        "downloadHyperlinkOverride": true,
-                        "downloadWorkflowEnabled": true
-                    }
-                },
+               {
+                   "moduleName": "OE_LayerActions",
+                   "libraryId": "OE_AMD",
+                   "require": "geocortex/oe_amd/OE_LayerActions/OE_LayerActionsModule",
+                   "configuration": {
+                       "showLayerDescription": true,
+                       "showLayerDescViewHide": false,
+                       "allowAllLayerTypes:": true,
+                       "metadataHyperlinkOverride": true,
+                       "downloadHyperlinkOverride": true,
+                       "expandLayerTreeOnVisible": true                    
+                   }
+               }, 
                 {
                     "moduleName": "InitialExtent",
                     "moduleType": "oe.initial_extent.InitialExtentModule",

@@ -2,3 +2,7 @@
     padding: 20px;
     font-size: 1em !important;
 }
+
+.layer-invisible:after {
+    display: none !important;
+}

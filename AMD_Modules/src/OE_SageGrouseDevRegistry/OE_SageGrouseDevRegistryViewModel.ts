@@ -196,8 +196,8 @@ export class OE_SageGrouseDevRegistryViewModel extends ViewModelBase {
                 pac_baseline_area_dbl: pac.pac_area_baseline,
                 show_date_range: thisViewModel.show_custom_date_range_data.get(),
                 pac_area_baseline_area: thisViewModel.addCommas(pac.pac_area_baseline.toFixed(0)) + " acres",
-                total_dev_percent: all_pac_dev_area ? (_all_pac_dev_area / pac.pac_area * 100).toFixed(1) + "%" : "N/A",
-                decade_dev_percent: all_decade_dev_area ? (_decade_pac_dev_area / pac.pac_area * 100).toFixed(1) + "%" : "0%",
+                total_dev_percent: _all_pac_dev_area ? (_all_pac_dev_area / pac.pac_area * 100).toFixed(1) + "%" : "N/A",
+                decade_dev_percent: _decade_pac_dev_area ? (_decade_pac_dev_area / pac.pac_area * 100).toFixed(1) + "%" : "0%",
                 filtered_date_percent: _filtered_data_dev_area ? (_filtered_data_dev_area / pac.pac_area * 100).toFixed(1) + "%" : "0%",
             };
             _all_pacs_summary.push(pac_obj);

@@ -46,11 +46,11 @@ export class OE_SageGrouseDevRegistryAllPacsReport extends ViewBase {
             }
         });
         $("#time-slider").bind("userValuesChanged ", function (event, data) {            
+            thisScope.viewModel.selected_preset_date_range.set('custom'); 
             thisScope.viewModel.date_filter.set({
                 min: data.values.min,
                 max: data.values.max
-            });
-            thisScope.viewModel.selected_preset_date_range.set('custom');                    
+            });                               
         });
 
         this.viewModel.selected_preset_date_range.bind(this.viewModel, (selectedDateRange) => {

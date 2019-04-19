@@ -243,3 +243,15 @@
     display:inline-block;
     margin: 5px 5px 10px 10px;
 }
+
+fieldset{
+    border:solid 1px #a7a7a7 !important;
+    border-radius:4px !important;
+    margin:5px 0 !important;
+}
+
+legend {
+    padding:0 .5em !important;
+    font-weight:600 !important;
+    margin:0 !important;
+}
