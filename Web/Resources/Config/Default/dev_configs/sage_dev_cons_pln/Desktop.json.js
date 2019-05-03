@@ -11,7 +11,7 @@
             "allowUnsafeContent": true,
                 "deferredModuleLoading": true,
                     "offlineStorageSpaceMb": "50",
-                        "geometryServiceUrl": "http://lib-gis3.library.oregonstate.edu/arcgis/rest/services/Utilities/Geometry/GeometryServer"
+                        "geometryServiceUrl": "https://lib-gis3.library.oregonstate.edu/arcgis/rest/services/Utilities/Geometry/GeometryServer"
         },
         "defaultLibraryId": "Mapping",
             "libraries": [
@@ -136,18 +136,22 @@
                         }
                     },
                     {
-                        "moduleName": "LayerActionsExtension",
-                        "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
-                        "libraryId": "Custom",
+                        "moduleName": "OE_LayerActions",
+                        "libraryId": "OE_AMD",
+                        "require": "geocortex/oe_amd/OE_LayerActions/OE_LayerActionsModule",
                         "configuration": {
-                            "showLayerDescription": false,
-                            "allowAllLayerTypes": true,
+                            "showLayerDescription": true,
+                            "showLayerDescViewHide": false,
+                            "allowAllLayerTypes:": true,
                             "metadataHyperlinkOverride": true,
-                            "expandLayerTreeOnVisible": true,
                             "downloadHyperlinkOverride": true,
-                            "downloadWorkflowEnabled": true
+                            "expandLayerTreeOnVisible": true,
+                            "downloadWorkflowOverride": {
+                                "workflowID": "Extract_Data",
+                                "workflowArgs": ["arcgisLayerName"]
+                            }
                         }
-                    },
+                    },  
                     {
                         "moduleName": "InitialExtent",
                         "moduleType": "oe.initial_extent.InitialExtentModule",
@@ -6762,7 +6766,7 @@
                         "moduleName": "Site",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                         "configuration": {
-                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/_sage_grouse_data_viewer",
+                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/_sage_grouse_data_viewer",
                             "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                             "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                             "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined"

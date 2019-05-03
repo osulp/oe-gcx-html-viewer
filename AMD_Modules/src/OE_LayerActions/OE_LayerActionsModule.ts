@@ -81,12 +81,44 @@ export class OE_LayerActionsModule extends ModuleBase {
         try {
             result = await $.ajax({
                 url: layerURL,
-                type: 'GET'
+                crossDomain: true,
+                dataType: "json",
+                type: 'POST'
             });
             return result;
         } catch (ex) {
             console.error(ex);
         }
+    }
+
+    async getLinkUrl(layer: any, type: string) {
+        let returnLink = '';
+        let linkArray = []
+        //get service layer description: 
+        let serviceLayerDesc = await this.getServiceLayerDescription(layer.getLayerUrl() + "?f=json");
+        let isFTP = false;
+
+        if (serviceLayerDesc.description) {
+            isFTP = type === 'download' && serviceLayerDesc.description.split("ftp://").length > 1;
+            linkArray = serviceLayerDesc.description.match(isFTP ? /\bftp?:\/\/\S+/gi : /\bhttps?:\/\/\S+/gi); //.split(isFTP ? "ftp" : "http");
+        } else {
+            if (layer != null && layer != "undefined" && layer.description != null && layer.description != "undefined")
+                linkArray = layer.description.match(isFTP ? /\bftp?:\/\/\S+/gi : /\bhttps?:\/\/\S+/gi);//.split("http");
+        }
+
+        if (linkArray.length > 0) {
+            if (type === 'metadata') {
+                returnLink = linkArray[0];
+            } else { //download
+                if (linkArray.length > 1 || isFTP) {
+                    returnLink = linkArray[linkArray.length - 1];
+                } else {
+                    returnLink = '';
+                }
+                returnLink = returnLink.indexOf(".zip") !== -1 ? returnLink : '';
+            }                     
+        }        
+        return returnLink;
     }
 
     _onSiteInitialized(site:Site) {
@@ -181,6 +213,8 @@ export class OE_LayerActionsModule extends ModuleBase {
         //this["registerOnClickForLayerDesc"] = function () {
 
         //}
+        
+
         this.app.commandRegistry.command("showMetadata").register(this, async function (layer) {
 
             //override metadata link
@@ -189,50 +223,7 @@ export class OE_LayerActionsModule extends ModuleBase {
                 return;
             }
 
-            //get service layer description: 
-            let serviceLayerDesc = await this.getServiceLayerDescription(layer.getLayerUrl() + "?f=json");
-
-            
-            // Show the text that was passed into the command.
-            // Metadata links are the first link in the description so split and send to first url.
-            var metadataLink = "";
-
-            if (serviceLayerDesc.description) {
-                metadataLink = serviceLayerDesc.description.split("http");
-            } else {
-                if (layer != null && layer != "undefined" && layer.description != null && layer.description != "undefined")
-                    metadataLink = layer.description.split("http");
-            }            
-
-            var metadataLinkSpaceCount = 0;
-
-            if (metadataLink.length > 1) {
-                var metadataLinkArray = metadataLink[1].split(" ");
-
-                metadataLinkSpaceCount = metadataLinkArray.length;
-                metadataLink = "http" + metadataLinkArray[0].replace("Download:", "").replace("download:", "").replace("Download", "").replace("download", "");
-            }
-            else {
-                metadataLink = "";
-            }
-
-            //metadataLink = metadataLink.length > 1 ? "http" + metadataLink[1].split(" ")[0].replace("Download:", "").replace("download:", "").replace("Download", "").replace("download", "") : "";
-
-            //remove invalid last characters
-            var invalidTerminatingChars = [".", ",", "?", "!", ")", "\""];
-            while (invalidTerminatingChars.indexOf(metadataLink.slice(-1)) > -1)
-                metadataLink = metadataLink.slice(0, -1);
-
-            //check for typos
-            var urlArray = metadataLink.split("/");
-            if (urlArray.length > 0) {
-                var lastStringArray = urlArray[urlArray.length - 1].split(".");
-                if (lastStringArray.length > 2 && metadataLinkSpaceCount > 0) {
-                    lastStringArray.splice(lastStringArray.length - 1, 1);
-                    urlArray[urlArray.length - 1] = lastStringArray.join(".");
-                    metadataLink = urlArray.join("/");
-                }
-            }
+            var metadataLink = await this.getLinkUrl(layer,'metadata');
 
             if (metadataLink !== "") {
                 window.open(metadataLink, "_blank");
@@ -283,27 +274,8 @@ export class OE_LayerActionsModule extends ModuleBase {
                 return;
             }
 
-
-            //get service layer description: 
-            let serviceLayerDesc = await this.getServiceLayerDescription(layer.getLayerUrl() + "?f=json");
-
-
-            // Show the text that was passed into the command.
-            // Download links are the first link in the description so split and send to first url.
-            var downloadLink = "";
-
-            if (serviceLayerDesc.description) {
-                downloadLink = serviceLayerDesc.description.split("http");
-            } else {
-                if (layer != null && layer != "undefined" && layer.description != null && layer.description != "undefined")
-                    downloadLink = layer.description.split("http");
-            }            
-
-
-            // Show the text that was passed into the command.
-            // Download links are the second link in the description so split and send to second url.
-
-            downloadLink = downloadLink.length > 2 ? "http" + downloadLink[2] : "";
+            let downloadLink = await this.getLinkUrl(layer, 'download');
+           
             if (downloadLink !== "") {
                 //console.log("Opening download link...");
                 window.open(downloadLink, "_blank");
@@ -360,7 +332,7 @@ export class OE_LayerActionsModule extends ModuleBase {
 
                 //custom workflow arguments
                 if (this.downloadWorkflowOverride != "") {
-                    if (this.downloadWorkflowOverride.argNames !== undefined && this.downloadWorkflowOverride.argValues !== undefined) {
+                    if (this.downloadWorkflowOverride.argNames !== undefined && this.downloadWorkflowOverride.argValues !== undefined) {                        
                         for (var i = 0; i < this.downloadWorkflowOverride.argNames.length; i++) {
                             if (i < this.downloadWorkflowOverride.argValues.length)
                                 workflowArgs[this.downloadWorkflowOverride.argNames[i]] = this.downloadWorkflowOverride.argValues[i];
@@ -371,41 +343,30 @@ export class OE_LayerActionsModule extends ModuleBase {
                 this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
             }
         }, function (context):boolean {
-                async function canExecute(context) {
-                    if (this.downloadHyperlinkOverride && this.downloadLinkURI != "") {
-                        return true;
-                    }
-
-                    if (context === null)
+                function canExecute(context) {
+                    if (context === null) {
                         return false;
+                    }                       
 
                     //hide
-                    if (context.properties.hideDownload != undefined && context.properties.hideDownload === "False")
+                    if (context.properties.hideDownload != undefined && context.properties.hideDownload === "False") {
                         return false;
+                    }                        
 
-                    //hide if download link override and workflow is disabled
-                    if (this.downloadHyperlinkOverride && this.downloadLinkURI == "" && !this.downloadWorkflowEnabled) {
-                        return false;
-                    }
+                    ////hide if download link override and workflow is disabled
+                    //if (this.downloadHyperlinkOverride && this.downloadLinkURI == "" && !this.downloadWorkflowEnabled) {
+                    //    return false;
+                    //}
 
-                    //download links always show
-                    var downloadLink = ""
+                    ////download links always show
+                    //var downloadLink = this.getLinkUrl(context.layer, 'download');
+                    
+                    //if (downloadLink !== "")
+                    //    return true;
 
-                    //get service layer description: 
-                    let serviceLayerDesc = await this.getServiceLayerDescription(context.getLayerUrl() + "?f=json");
-
-                    if (serviceLayerDesc.description !== "") {
-                        downloadLink = serviceLayerDesc.description.split("http");
-                    } else if (context.description != null && context.description != "undefined")
-                        downloadLink = context.description.split("http");
-
-                    downloadLink = downloadLink.length > 2 ? "http" + downloadLink[2] : "";
-                    if (downloadLink !== "")
-                        return true;
-
-                    //is this a type that can be exported?
-                    if (!this.allowAllLayerTypes && context.type != LayerType.FEATURE_LAYER)
-                        return false;
+                    ////is this a type that can be exported?
+                    //if (!this.allowAllLayerTypes && context.type != LayerType.FEATURE_LAYER)
+                    //    return false;
 
                     //is the map service there?
                     if (context.mapService == null || context.mapService == "")

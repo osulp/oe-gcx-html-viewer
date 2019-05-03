@@ -1,1 +1,10 @@
 ﻿/* Put custom desktop styling in this file. Put custom images in the Custom subfolder of the Images directory. */
+
+.gcx-list-content, .gcx-list-button {
+    padding: 0 15px;
+    min-height: unset;
+}
+
+.gcx-list-label {
+    padding-top: 3px !important;
+}
