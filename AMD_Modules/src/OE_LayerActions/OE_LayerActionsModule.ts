@@ -101,10 +101,11 @@ export class OE_LayerActionsModule extends ModuleBase {
         if (serviceLayerDesc.description) {
             isFTP = type === 'download' && serviceLayerDesc.description.split("ftp://").length > 1;
             linkArray = serviceLayerDesc.description.match(isFTP ? /\bftp?:\/\/\S+/gi : /\bhttps?:\/\/\S+/gi); //.split(isFTP ? "ftp" : "http");
-        } else {
-            if (layer != null && layer != "undefined" && layer.description != null && layer.description != "undefined")
-                linkArray = layer.description.match(isFTP ? /\bftp?:\/\/\S+/gi : /\bhttps?:\/\/\S+/gi);//.split("http");
         }
+        //else {
+        //    if (layer != null && layer != "undefined" && layer.description != null && layer.description != "undefined")
+        //        linkArray = layer.description.match(isFTP ? /\bftp?:\/\/\S+/gi : /\bhttps?:\/\/\S+/gi);//.split("http");
+        //}
 
         if (linkArray.length > 0) {
             if (type === 'metadata') {

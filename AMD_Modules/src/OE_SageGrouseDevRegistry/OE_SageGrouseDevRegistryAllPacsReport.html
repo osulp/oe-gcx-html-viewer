@@ -1,4 +1,4 @@
-﻿<div id="all-pac-reports-wrapper">    
+﻿<div id="all-pac-reports-wrapper">
     <fieldset>
         <legend>Date Range</legend>
         <div id="time-slider-wrapper">
@@ -10,9 +10,16 @@
                     </select>
                 </center>
             </div>
-            <div class="slider" id="time-slider">
-            </div>
-            <br />
+            <div class="container">
+                <div class="container-child">
+                    <h4>Start date:</h4>
+                    <input id="startDate" style="width: 100%;" />
+                </div>
+                <div class="container-child">
+                    <h4>End date:</h4>
+                    <input id="endDate" style="width: 100%;" />
+                </div>
+            </div>            
         </div>
     </fieldset>
     <fieldset>
@@ -23,10 +30,10 @@
                 <select id="report_type_selector" data-binding="{@source: report_types}{@value: selected_report_type}">
                     <option data-binding="{@template-for: report_types}{value: val}{@text: label}" />
                 </select>
-            </div>           
+            </div>
         </div>
         <div class="container" data-binding="{@source: all_pac_summary}">
-            <div class="container-child pac_summary"  data-binding="{@template-for: all_pac_summary}{@event-onclick:showPACReport}" title="Click to view details">
+            <div class="container-child pac_summary" data-binding="{@template-for: all_pac_summary}{@event-onclick:showPACReport}" title="Click to view details">
                 <div class="container">
                     <div class="pac_title_summary">
                         <span data-binding="{@text:pac_name}"></span>
@@ -40,13 +47,13 @@
                         <div class="all_pac_percent" data-binding="{@text:decade_dev_percent}"></div>
                     </div>
                     <!--<div>
-                    <span>PAC Area:</span>
-                    <span data-binding="{@text:pac_area}"></span>
-                </div>
-                <div>
-                    <span>Baseline area:</span>
-                    <span data-binding="{@text:pac_area_baseline_area}"></span>
-                </div>-->
+                        <span>PAC Area:</span>
+                        <span data-binding="{@text:pac_area}"></span>
+                    </div>
+                    <div>
+                        <span>Baseline area:</span>
+                        <span data-binding="{@text:pac_area_baseline_area}"></span>
+                    </div>-->
                 </div>
                 <div data-binding="{@visible:show_date_range}" class="selected_date_dev">
                     <div>Selected Dates</div>

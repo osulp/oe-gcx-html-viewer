@@ -14,6 +14,7 @@
     <link rel="apple-touch-icon" sizes="120x120" href="Resources/Images/Icons/iOS/apple-touch-icon-iphone-retina.png" />
     <link rel="apple-touch-icon" sizes="144x144" href="Resources/Images/Icons/iOS/apple-touch-icon-144x144.png" />
     <link rel="apple-touch-icon" sizes="152x152" href="Resources/Images/Icons/iOS/apple-touch-icon-ipad-retina.png" />
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css" />-->
 
     <link rel="stylesheet" href="Resources/Styles/splash.css" />
     <style>
@@ -62,7 +63,7 @@
         //var geocortexUseLocalEsriApi = true;
         var viewerConfig = {
             "configurations": {
-                "default": "Resources/Config/Default/dev_configs/sage_dev_cons_pln/Desktop.json.js",
+                "default": "Resources/Config/Default/dev_configs/dev_reg/Desktop.json.js",
                 "oe_default": "Resources/Config/Default/" + shellName + ".json.js",
                 "add_layer_dev": "Resources/Config/Default/dev_configs/add_layer_dev/Desktop.json.js",
                 "oe_dev": "Resources/Config/Default/dev_configs/owrt/Desktop.json.js",
@@ -72,7 +73,7 @@
                 "owrt": "Resources/Config/Default/dev_configs/owrt/Desktop.json.js"
             },
             "viewerConfigUri": ""
-        };
+        };       
 
         new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize({
             onSiteInitialized: function (app, loader) {
@@ -83,7 +84,7 @@
         //"default": "Resources/Config/Default/" + shellName + ".json.js"
 
         //// To load external css or javascript files in your project add the URL for each resource to this array
-        //var resources = [];
+        
 
     </script>
 
@@ -103,7 +104,7 @@
             }
         }
         new move();
-    </script>
+    </script>    
 
     <script type="text/javascript">
 

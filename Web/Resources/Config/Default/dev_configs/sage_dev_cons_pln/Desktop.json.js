@@ -151,7 +151,14 @@
                                 "workflowArgs": ["arcgisLayerName"]
                             }
                         }
-                    },  
+                    }, 
+                    {
+                        "moduleName": "OE_ShowHideMeasurementLabels",
+                        "libraryId": "OE_AMD",
+                        "require": "geocortex/oe_amd/OE_ShowHideMeasurementLabels/OE_ShowHideMeasurementLabelsModule",
+                        "configuration": {}
+                        
+                    }, 
                     {
                         "moduleName": "InitialExtent",
                         "moduleType": "oe.initial_extent.InitialExtentModule",
@@ -6984,6 +6991,25 @@
                                             }
                                         },
                                         {
+                                            "id": "MeasurementLineLabelToggle",
+                                            "type": "toggleButton",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/draw-text-24.png",
+                                            "toggleStateName": "",
+                                            "toggleOn": {
+                                                "name": "Hide Labels",
+                                                "command": "ChangeTheDisplay",
+                                                "commandParameter": "hide",
+                                                "tooltip": "Disable Labels for Measurement Lines"
+                                            },
+                                            "toggleOff": {
+                                                "name": "Show Labels",
+                                                "command": "ChangeTheDisplay",
+                                                "commandParameter": "show",
+                                                "tooltip": "Enable Labels for Measurement Lines"
+                                            }
+
+                                        },
+                                        {
                                             "id": "MeasureSelectSnappingLayersButton",
                                             "type": "button",
                                             "iconUri": "Resources/Images/Icons/Toolbar/layers-snapping-24.png",
@@ -6992,7 +7018,7 @@
                                             "hideOnDisable": false,
                                             "name": "@language-toolbar-snapping-select-layers",
                                             "tooltip": "@language-toolbar-snapping-select-layers-tooltip"
-                                        }
+                                        }                                        
                                     ]
                                 },
                                 {

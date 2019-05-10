@@ -4,10 +4,12 @@
 /// <reference path="./../../_Definitions/Mapping.Infrastructure.AMD.d.ts" />
 import { ViewModelBase } from "geocortex/framework/ui/ViewModelBase";
 import { ViewerApplication } from "geocortex/infrastructure/Viewer";
+import { Site } from "geocortex/essentials/Site";
 import { Observable, ObservableCollection } from "geocortex/framework/observables";
 import { _activeAnimations } from "geocortex/framework-ui/animation/AnimationSequence";
 
 export var oeSageGrouseDevSitingReports: any[] = [];
+
 
 export class OE_SageGrouseDevRegistryViewModel extends ViewModelBase {
     app: ViewerApplication;
@@ -103,7 +105,9 @@ export class OE_SageGrouseDevRegistryViewModel extends ViewModelBase {
     initialize(config: any): void {
         var myApp = this.app;
         var myLibID = this.libraryId;
-        var thisViewModel = this;
+        var site: Site = (<any>this).app.site;
+
+        var thisViewModel = this;        
 
         this.selected_report_type.set('Current');
 
@@ -131,11 +135,8 @@ export class OE_SageGrouseDevRegistryViewModel extends ViewModelBase {
             let cached = wc.getValue("cached");
 
             thisViewModel.processPACReport(selected_pac, pac_area, baseline_area, pac_data, report_type, is_public, cached);
-        });
-            
-
-        this._injectScript();
-    }
+        });        
+    }    
 
     processPACSummaries(): void {
         let thisViewModel = this;
@@ -421,19 +422,7 @@ export class OE_SageGrouseDevRegistryViewModel extends ViewModelBase {
         thisViewModel.overall_projected_tbl.set(overall_cap_projected_tbl);
     }
 
-    private _injectScript() {       
-        $.ajax({
-            type: "GET",
-            url: "./Resources/Scripts/oe_added_scripts/jQAllRangeSliders-min.js",
-            dataType: "script",
-            success: function () {
-                console.log('success!');
-            },
-            error: function (err) {
-                console.log('fail', err);
-            }
-        });
-    }
+    
     setExceedanceMsgs() {
         this.exceedsCurrentDecade.set(Number(this.decade_cap_val.get()) > 1);
         this.exceedsCurrentMax.set(Number(this.overall_cap_val.get()) > 3);

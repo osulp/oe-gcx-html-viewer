@@ -348,7 +348,23 @@ export class OE_SageGrouseDevRegistryModule extends ModuleBase {
 
     }
 
+    private _injectScript() {
+        let thisContext = this;
+        $.ajax({
+            type: "GET",
+            url: "./Resources/Scripts/oe_added_scripts/jQAllRangeSliders-min.js",
+            dataType: "script",
+            success: function () {
+                console.log('success!');
+            },
+            error: function (err) {
+                console.log('fail', err);
+            }
+        });        
+    }
+
     _onSiteInitialized(site: Site) {
+        this._injectScript();
         let thisModel = this;
         let isAuthenticated = this.app.site.principal.isAuthenticated;
         this._handleDisplayModifications(isAuthenticated);

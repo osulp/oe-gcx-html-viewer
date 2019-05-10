@@ -188,6 +188,13 @@
                         }
                     },
                     {
+                        "moduleName": "OE_ShowHideMeasurementLabels",
+                        "libraryId": "OE_AMD",
+                        "require": "geocortex/oe_amd/OE_ShowHideMeasurementLabels/OE_ShowHideMeasurementLabelsModule",
+                        "configuration": {}
+
+                    }, 
+                    {
                         "moduleName": "InitialExtent",
                         "moduleType": "oe.initial_extent.InitialExtentModule",
                         "libraryId": "Custom",
@@ -7057,6 +7064,25 @@
                                                 "command": "DeactivateSnapping",
                                                 "tooltip": "@language-toolbar-snapping-alt-disable"
                                             }
+                                        },
+                                        {
+                                            "id": "MeasurementLineLabelToggle",
+                                            "type": "toggleButton",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/draw-text-24.png",
+                                            "toggleStateName": "",
+                                            "toggleOn": {
+                                                "name": "Hide Labels",
+                                                "command": "ChangeTheDisplay",
+                                                "commandParameter": "hide",
+                                                "tooltip": "Disable Labels for Measurement Lines"
+                                            },
+                                            "toggleOff": {
+                                                "name": "Show Labels",
+                                                "command": "ChangeTheDisplay",
+                                                "commandParameter": "show",
+                                                "tooltip": "Enable Labels for Measurement Lines"
+                                            }
+
                                         },
                                         {
                                             "id": "MeasureSelectSnappingLayersButton",

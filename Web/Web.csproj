@@ -121,6 +121,7 @@
     <Content Include="Resources\Images\Custom\sprite-orange-0.3.png" />
     <Content Include="Resources\Images\Custom\zoom-next-24.png" />
     <Content Include="Resources\Images\Custom\zoom-previous-24.png" />
+    <Content Include="Resources\Scripts\oe_added_scripts\daterangepicker.min.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\hopscotch-0.1.1.min.js" />
     <Content Include="Libraries\Custom\Styles\Custom\Desktop.css" />
     <Content Include="Resources\3rdPartyMaps\3rdParty.css" />
@@ -545,6 +546,7 @@
     <Content Include="Resources\Scripts\modernizr.js" />
     <Content Include="Resources\Scripts\native.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\jQAllRangeSliders-min.js" />
+    <Content Include="Resources\Scripts\oe_added_scripts\lightpick.js" />
     <Content Include="Resources\Styles\Animations.css" />
     <Content Include="Resources\Styles\common.css" />
     <Content Include="Resources\Styles\Custom\Common.css" />
@@ -562,7 +564,6 @@
     <Content Include="Resources\Styles\Handheld.css" />
     <Content Include="Resources\Styles\IE-small.css" />
     <Content Include="Resources\Styles\IE.css" />
-    <Content Include="Resources\Styles\introjs.css" />
     <Content Include="Resources\Styles\jquery.ui.custom.css" />
     <Content Include="Resources\Styles\Tablet.css" />
     <Content Include="SignInHelper.html" />
@@ -579,6 +580,7 @@
     <Content Include="proxy.php" />
     <Content Include="Resources\3rdPartyMaps\ThirdPartyMap.js.map" />
     <None Include="packages.config" />
+    <Content Include="Resources\Scripts\oe_added_scripts\datepicker.min.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

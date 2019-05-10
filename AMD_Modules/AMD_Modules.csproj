@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>2.4</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.4.2</TypeScriptToolsVersion>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -42,6 +42,7 @@
     <Content Include="src\OE_SageGrouseConsPln\Templates\slider.html" />
     <Content Include="src\OE_SageGrouseConsPln\Templates\rangeslider.html" />
     <Content Include="src\OE_SageGrouseConsPln\Templates\checkbox.html" />
+    <Content Include="src\OE_SageGrouseDevRegistry\CSS\daterangepicker.css" />
     <Content Include="src\OE_SageGrouseDevRegistry\CSS\iThing-min.css" />
     <Content Include="src\OE_SageGrouseDevRegistry\Language.json" />
     <Content Include="src\OE_SageGrouseDevRegistry\ModuleJS.txt" />
@@ -54,6 +55,7 @@
     <Content Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingCompareSummaryView.html" />
     <Content Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingSummaryView.html" />
     <Content Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingModule.css" />
+    <Content Include="src\OE_ShowHideMeasurementLabels\README.txt" />
     <Content Include="src\OE_Utility\readme.txt" />
     <Content Include="src\OE_Wildfire\Language.json" />
     <Content Include="src\OE_SageGrouseDevSiting\Language.json" />
@@ -107,6 +109,7 @@
     <TypeScriptCompile Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingViewModel.ts" />
     <TypeScriptCompile Include="src\OE_Search\OE_SearchModule.ts" />
     <TypeScriptCompile Include="src\OE_Search\OE_SearchProvider.ts" />
+    <Content Include="src\OE_ShowHideMeasurementLabels\OE_ShowHideMeasurementLabelsModule.ts" />
     <TypeScriptCompile Include="src\OE_Utility\OE_UtilityModule.ts" />
     <TypeScriptCompile Include="src\OE_Wildfire\OE_WildfireModule.ts" />
     <TypeScriptCompile Include="src\OE_Wildfire\OE_Wildfire_DynamicFormViewModel.ts" />

@@ -8,13 +8,13 @@ import { OE_SageGrouseDevRegistryViewModel } from './OE_SageGrouseDevRegistryVie
 
 
 var myWorkflowContext;
-//var myApp;
-//var myLibID;
 
 export class OE_SageGrouseDevRegistryAllPacsReport extends ViewBase {
 
     app: ViewerApplication;
-    viewModel: OE_SageGrouseDevRegistryViewModel;    
+    viewModel: OE_SageGrouseDevRegistryViewModel;       
+    startDateElem:any;
+    endDateElem: any;
 
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
@@ -23,35 +23,69 @@ export class OE_SageGrouseDevRegistryAllPacsReport extends ViewBase {
     cancelForm = function (event, element, context) {
         myWorkflowContext.setValue("finalFormBtn", 'Close');
         myWorkflowContext.completeActivity();
-        this.app.commandRegistry.command("DeactivateView").execute("OE_SageGrouseDevRegistryAllPacsReport");
-        //$(".panel-header-button.right.close-16.bound-visible").show();
+        this.app.commandRegistry.command("DeactivateView").execute("OE_SageGrouseDevRegistryAllPacsReport");        
         return true;
     };
 
     activated() {
-        var thisScope = this;
-        ///////////////////////////////////////
-        // RangeSlider Plugin Alternate option with bubble handles
-        //////////////////////////////////////        
-        $("#time-slider").dateRangeSlider({
-            symmetricPositionning: true,
-            bounds: {
-                min: new Date(2015, 7, 13),
-                max: new Date()
-            },
-            step: { days: 1 },
-            defaultValues: {
-                min: new Date(2015, 7, 13),
-                max: new Date()
+        var thisScope = this;        
+
+        function startChange() {
+            var startDate: any = thisScope.startDateElem.value(),
+                endDate: any = thisScope.endDateElem.value();
+
+            if (startDate) {
+                startDate = new Date(startDate);
+                startDate.setDate(startDate.getDate());
+                thisScope.endDateElem.min(startDate);
+            } else if (endDate) {
+                thisScope.startDateElem.max(new Date(endDate));
+            } else {
+                endDate = new Date();
+                thisScope.startDateElem.max(endDate);
+                thisScope.endDateElem.min(endDate);
             }
-        });
-        $("#time-slider").bind("userValuesChanged ", function (event, data) {            
-            thisScope.viewModel.selected_preset_date_range.set('custom'); 
+            thisScope.viewModel.selected_preset_date_range.set('custom');
             thisScope.viewModel.date_filter.set({
-                min: data.values.min,
-                max: data.values.max
-            });                               
-        });
+                min: thisScope.startDateElem.value(),
+                max: thisScope.endDateElem.value()
+            });    
+        }
+
+        function endChange() {
+            var endDate: any = thisScope.endDateElem.value(),
+                startDate: any = thisScope.startDateElem.value();
+
+            if (endDate) {
+                endDate = new Date(endDate);
+                endDate.setDate(endDate.getDate());
+                thisScope.startDateElem.max(endDate);
+            } else if (startDate) {
+                thisScope.endDateElem.min(new Date(startDate));
+            } else {
+                endDate = new Date();
+                thisScope.startDateElem.max(endDate);
+                thisScope.endDateElem.min(endDate);
+            }
+            thisScope.viewModel.selected_preset_date_range.set('custom');
+            thisScope.viewModel.date_filter.set({
+                min: thisScope.startDateElem.value(),
+                max: thisScope.endDateElem.value()
+            });  
+        }
+
+        this.startDateElem = $("#startDate").kendoDatePicker({
+            change: startChange,
+            value: new Date(2015, 7, 13)
+        }).data("kendoDatePicker");
+
+        this.endDateElem = $("#endDate").kendoDatePicker({
+            change: endChange,
+            value: new Date()
+        }).data("kendoDatePicker");
+
+        this.startDateElem.max(this.endDateElem.value());
+        this.endDateElem.min(this.startDateElem.value());
 
         this.viewModel.selected_preset_date_range.bind(this.viewModel, (selectedDateRange) => {
             let minDate;
@@ -73,9 +107,7 @@ export class OE_SageGrouseDevRegistryAllPacsReport extends ViewBase {
                         maxDate = new Date();
                         this.viewModel.show_custom_date_range_data.set(false);
                         break;
-                } 
-                $("#time-slider").dateRangeSlider("min", minDate);
-                $("#time-slider").dateRangeSlider("max", maxDate);
+                }                 
                 thisScope.viewModel.date_filter.set({
                     min: minDate,
                     max: maxDate
@@ -83,10 +115,15 @@ export class OE_SageGrouseDevRegistryAllPacsReport extends ViewBase {
                 
             }
         });
+
+        this.viewModel.date_filter.bind(this.viewModel, (dateFilter: any) => {
+            this.startDateElem.value(dateFilter.min);
+            this.endDateElem.value(dateFilter.max);
+        });
+
         this.viewModel.selected_report_type.bind(this.viewModel, (selectedReportType) => {
             this.viewModel.processPACSummaries();
-        })
-        //$("#time-slider").rangeSlider("resize");
+        })        
     }      
 
     showPACReport(evt, el, ctx) {        
