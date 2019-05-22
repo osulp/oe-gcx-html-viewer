@@ -269,7 +269,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     loadSpinnerFunding: Observable<boolean> = new Observable<boolean>(true);
     loadSpinnerResults: Observable<boolean> = new Observable<boolean>(true);
 
-    primaryQueryString: Observable<string> = new Observable<string>("1=1");
+    primaryQueryString: Observable<string> = new Observable<string>("1=1");    
     primaryObjectIDString: Observable<string> = new Observable<string>("");
     requiredFeaturesLoaded: Observable<boolean> = new Observable<boolean>(false);
     
@@ -351,7 +351,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     
     //report options    
     pipeParamsFromURL: any;
-    reportWorkingQuery: string;
+    //reportWorkingQuery: string;
     lastQuery: string;
     isCustomReport: boolean = false;
     customGeometry: esri.geometry.Polygon = null;
@@ -824,7 +824,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         this.sequenceOnComplete = this._RequiredFeatureSetsDone; //when the follow sequence of queries are done build the relationships
                 
         this._sequenceQuery(this.queryUrlBasins, "1=1", ["oweb_name"], "fsBasins","", "Basins");
-        this._sequenceQuery(this.queryUrlHUC8, "1=1", ["name"], "fsHUC8", "", "HUC8");
+        this._sequenceQuery(this.queryUrlHUC8, "1=1", ["name,huc8"], "fsHUC8", "", "HUC8");
         this._sequenceQuery(this.queryUrlCounty, "1=1", ["name10"], "fsCounty", "","Counties");
         this._sequenceQuery(this.queryUrlWSC, "1=1", ["instname"], "fsWSC", "", "WSC");
         this._sequenceQuery(this.queryUrlSWCD, "1=1", ["SWCD_Name"], "fsSWCD", "", "SWCD");
@@ -845,9 +845,9 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
             this.ReportOptionsSubmission();
     }
 
-    private _BuildNewReport(whereIn: string) {
-
-        this.reportWorkingQuery = whereIn;
+    private _BuildNewReport() {
+                
+        //this.reportWorkingQuery = whereIn;
         this.fsSelectedAreaGeometry = null;
 
         //geometry is needed to query the main records set (basin, county, wsc, swcd)
@@ -856,11 +856,11 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         }
         else
         {
-            this._GetReportFeatureSets(whereIn);
+            this._GetReportFeatureSets();
         }
     }
 
-    private _GetReportFeatureSets(whereIn: string) {
+    private _GetReportFeatureSets() {
         
         //clear tasks
         this.sequenceTasks = [];
@@ -884,6 +884,8 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
             this.selectedAreaGeometry = <esri.geometry.Polygon>this.fsSelectedAreaGeometry.features[0].geometry;        
         }
 
+        let whereIn = this.primaryQueryString.get();
+
         this._sequenceQueryLarge(this.queryUrlOWRT, whereIn, queryGeometry,
             ["OBJECTID", "project_nbr"],
             "graphicsArrayPrimaryRecords", "Poly Projects", false);
@@ -901,7 +903,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     }
 
     private _GetReportGeometryDone() {
-        this._GetReportFeatureSets(this.reportWorkingQuery);
+        this._GetReportFeatureSets();
     }
 
     private _GetReportFeatureSetsDone() {
@@ -959,7 +961,9 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         //json request requires an extent of state for geotype of state.
         if (strGeoType == "state")
             strExtent = "state";
-                        
+        //else if ((strGeoType) == "subbasin")
+        //    strExtent = HUC8;
+                                        
         let reportThis = this;
                 
         for (let i = 0; i < indexesToLoad.length; i++)
@@ -1406,8 +1410,8 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                 break;
             case "subbasin":
                 this.areaNamePointsQueryString.set("UPPER(subbasin_actual) =");
-                this.areaNamePolyQueryString.set("UPPER(name) =");
-                this._BuildAreaList(this.fsHUC8, "name", "name", forceAreaSelection);
+                this.areaNamePolyQueryString.set("UPPER(huc8) =");
+                this._BuildAreaList(this.fsHUC8, "name", "huc8", forceAreaSelection);
                 this.selectedAreaQueryUrl = this.queryUrlHUC8;
                 break;
             case "county":
@@ -1505,6 +1509,10 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
         //area name will be used to select geometry outline
         var searchValue = this.areaNameSelected.get().toUpperCase();
+
+        //the primary query is used for selecting geometry, the subbasin name is used, not the huc for selecting geometry
+        if (this.geoTypeValue.get() == "subbasin")
+            searchValue = this.areaName.get().toUpperCase();
 
         //query for projects (points)
         let queryString = this.areaNamePointsQueryString.get();
@@ -2243,7 +2251,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         var thisView = this;
                                                 
         //reset variables
-        this.primaryQueryString.set("1=1");
+        this.primaryQueryString.set("1=1");        
         this.geoTypeGeometryLayerDef.set("");
         this.geoTypeValue.set("state");
         this.areaNameVisisble.set(false);
@@ -2426,7 +2434,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
             this.geoTypeValue.set("custom");            
         }
                   
-        this._BuildNewReport(this.primaryQueryString.get());
+        this._BuildNewReport();
     }
         
     public StopOnErrorMessage(message: string) {
