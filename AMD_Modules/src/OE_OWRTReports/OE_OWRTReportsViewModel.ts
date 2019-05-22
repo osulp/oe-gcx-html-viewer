@@ -45,6 +45,15 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     loaderSpinner: Observable<boolean> = new Observable<boolean>(true);
     loaderWarnIcon: Observable<boolean> = new Observable<boolean>(false);
     inputBlockOnError: Observable<boolean> = new Observable<boolean>(false);
+
+    printAreaVisible: Observable<boolean> = new Observable<boolean>(true);
+    printButtonVisible: Observable<boolean> = new Observable<boolean>(false);
+
+    tabMainClassName: Observable<string> = new Observable<string>("");
+    tabChartsClassName: Observable<string> = new Observable<string>("");
+
+    mainReportVisible: Observable<boolean> = new Observable<boolean>(true);
+    chartReportVisible: Observable<boolean> = new Observable<boolean>(true);
     
     esriMap: esri.Map;
     esriProjectLayer: esri.layers.FeatureLayer;
@@ -52,8 +61,12 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
 
     chartPartVisible: Observable<boolean> = new Observable<boolean>(true);
     chartActVisible: Observable<boolean> = new Observable<boolean>(false);
-    chartActive: any;
+    //chartActive: any;
+    chartMainFunding: any;
+    chartMainActivity: any;
     activeChartName: Observable<string> = new Observable<string>("");
+    chartFunding: any;
+    chartActivity: any;
 
     chartFundingActivity: RestChartDefinition = null;
     chartFundingActivityData: any = {}        
@@ -132,7 +145,8 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     }
         
     deactivated() {
-        this._destoryFundingChart();
+        this._destoryMainCharts();
+        this._destoryPrintCharts();
     }
 
     _onSiteInitialized() {
@@ -223,6 +237,17 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         }
 
         return "";
+    }
+
+    private _IsNullOrEmpty(testValue: any, testLength: number = -1): boolean {
+
+        if (typeof testValue === "undefined" || testValue == null)
+            return true;
+
+        if (testLength > -1)
+            return !(testValue.length > testLength);
+
+        return false;
     }
 
     private _NewSequence(onComplete:any)
@@ -360,17 +385,23 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
                 project_nbr = project_nbr._graphic.attributes.project_nbr;
             }
         }
-
+        
         this._oeReportQueries(project_nbr);
     }
-
+    
     public _oeReportQueries(project_nbr: string) {
+
+        this.printButtonVisible.set(false);
 
         this.loaderMessage.set("Loading Report...");
         this.loaderWarnIcon.set(false);
         this.loaderSpinner.set(true);
         this.loaderVisible.set(true);
         this.inputBlockOnError.set(false);
+
+        this.printAreaVisible.set(true);
+        this.mainReportVisible.set(true);
+        this.chartReportVisible.set(true);
 
         //no number, default to one
         if (!project_nbr)
@@ -418,35 +449,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
             }
 
         })
-        queryTask.execute(query);
-        
-        //simple centroid geometry query
-        /*var queryCentroid = new esri.tasks.Query();
-        queryCentroid.where = "project_nbr = " + project_nbr;
-        queryCentroid.outFields = ["*"];
-        queryCentroid.returnGeometry = true;
-
-        var queryTaskCentroid = new esri.tasks.QueryTask(this.queryUrlCentroids);
-        queryTaskCentroid.on("complete", (results: any) => {
-
-            if (results && results.featureSet && (<esri.tasks.FeatureSet>results.featureSet).features.length > 0) {                
-
-                //this._loadLocatorMap((<esri.tasks.FeatureSet>results.featureSet).features[0]);
-                this._loadEsirMap((<esri.tasks.FeatureSet>results.featureSet).features[0]);
-
-            }
-            else {
-                if (!results)
-                    console.log("Centroid: No result object returned.");
-                else if (!results.featureSet)
-                    console.log("Centroid: No feature set returned.");
-                else if ((<esri.tasks.FeatureSet>results.featureSet).features.length < 1)
-                    console.log("Centroid: Query successful. No matching records.");
-            }
-
-        })
-        queryTaskCentroid.execute(queryCentroid);*/
-                
+        queryTask.execute(query);                        
     }
 
     private _StopOnErrorMessage(message: string) {
@@ -516,7 +519,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this._BuildGoals();
         this._BuildMetrics();
         this._BuildSpecies();
-
+                
         this._RelatedProjectInfo(); // also pulls in activities (for funding)
     }    
 
@@ -547,8 +550,86 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this._BuildActivities();
         this._BuildLandUse();
 
+        //build main charts
+        this.BuildMainCharts();
+
+        //build print charts now
+        this.BuildAllChartsForPrint();
+                
+        //hide print area
+        this.printAreaVisible.set(false);
+
+        this.ToggleTabMain();
+
         //hide the loader overlay
-        this.loaderVisible.set(false);     
+        this.loaderVisible.set(false);
+
+        this.printButtonVisible.set(true);            
+    }
+
+    public ToggleTabMain() {
+
+        this.chartReportVisible.set(false);
+        this.mainReportVisible.set(true);        
+
+        this.tabMainClassName.set("oeOWRTReportsTabEnabled");
+        this.tabChartsClassName.set("");
+    }
+
+    public ToggleTabCharts() {
+
+        this.mainReportVisible.set(false);
+        this.chartReportVisible.set(true);
+
+        this.tabMainClassName.set("");
+        this.tabChartsClassName.set("oeOWRTReportsTabEnabled");
+    }
+        
+    public PrintReport() {
+
+        var PW = window.open('', '_blank', 'Print content');
+
+        let styleTags = document.getElementsByTagName("style");
+        let styleHtml = "";
+
+        for (let i = 0; i < styleTags.length; i++) {
+            styleHtml = styleHtml + " " + styleTags[i].innerHTML;
+        }
+
+        this.printAreaVisible.set(true);
+
+        $("#oe_owrtPR_divMapPrint").html($("#oe_owrtPR_divMap").html());
+
+        PW.document.write("<div class=\"oe_owrtPR- module - view\">" + document.getElementById("oeOWRTDetailReportPrintArea").innerHTML + "</div>");
+        PW.document.head.innerHTML = "<style>" + styleHtml + " body, html {overflow:visible; font-family:\"Segoe UI\", \"Helvetica Neue\", \"Droid Sans\", Arial, sans-serif; font-size:.8em} fieldset{margin:10px;}</style>";
+        PW.document.close();
+
+        let divLayers = PW.document.getElementById("oe_owrtPR_divMap_layer0");
+        let divImages = divLayers.firstChild;
+        let imageNodes: any = divImages.childNodes;
+
+        for (let i = 0; i < imageNodes.length; i++) {
+            imageNodes[i].style.width = "128px";
+            imageNodes[i].style.height = "128px";
+
+            if (i == 0)
+                imageNodes[i].style.transform = "translate3d(0px, 0px, -1px)";
+            else if (i == 1)
+                imageNodes[i].style.transform = "translate3d(-128px, 128px, -1px)";
+            else if (i == 2)
+                imageNodes[i].style.transform = "translate3d(128px, -128px, -1px)";
+            else if (i == 3)
+                imageNodes[i].style.transform = "translate3d(0px, 0px, -1px)";
+            else if (i>=4)
+                imageNodes[i].style.display = "none";
+        }
+
+        this.printAreaVisible.set(false);
+
+        PW.focus();
+        PW.print();
+        PW.close();
+
     }
 
     private _BuildLandUse() {
@@ -702,6 +783,15 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
 
         this.project_metrics_observe.clear();
 
+        if (this._IsNullOrEmpty(this.project_metrics) || this._IsNullOrEmpty(this.project_metrics.features))
+        {
+            let workingObject: any = { "treatment": "No treatments & metrics records for this project.", "metrics": {}};
+            //workingObject.metrics = new ObservableCollection<object>();
+            //workingObject.metrics.addItem({"treatment":"No treatments & metrics for this record.", "metric": "", "displayValue": "" });
+            this.project_metrics_observe.addItem(workingObject);
+            return;
+        }
+
         //sort by treatment name
         this.project_metrics.features.sort((a: any, b: any) => {
             if (a.attributes.treatment < b.attributes.treatment) return -1;
@@ -741,6 +831,10 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
 
         this.project_goals_observe.clear();
 
+        if (this._IsNullOrEmpty(this.project_goals) || this._IsNullOrEmpty(this.project_goals.features)) {
+            return;
+        }
+
         //sort by goal 
         this.project_goals.features.sort((a: any, b: any) => {
             if (a.attributes.goal < b.attributes.goal) return -1;
@@ -767,6 +861,10 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         //this.project_treatments_observe.clear();  
 
         //var treatments: any = {};
+
+        if (this._IsNullOrEmpty(this.project_results) || this._IsNullOrEmpty(this.project_results.features)) {
+            return;
+        }
 
         //sort by activity type
         this.project_results.features.sort((a: any, b: any) => {
@@ -944,6 +1042,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
                 workingObject = workingAttributes;
                 //workingObject.htmlID = "participant" + workingPartID;
                 workingObject.visible = new Observable<boolean>(false);
+                workingObject.showParticipantBlock = new Observable<boolean>(true);
                 workingObject.collapseImgVisisble = new Observable<boolean>(false);                
                 workingObject.expandImgVisisble = new Observable<boolean>(true);
 
@@ -959,8 +1058,8 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
                 inkindTotal += workingObject.inkind+0;
 
                 workingObject.cash = "$"+workingObject.cash;
-                workingObject.inkind = "$"+workingObject.inkind;
-
+                workingObject.inkind = "$" + workingObject.inkind;
+                                
                 //roles
                 workingObject.roles = new ObservableCollection<object>();
                 workingObject.roles.addItem({ "name": this._GetFieldByTypeID(this.partRoles, "participant_role_lu_id", workingObject.participant_role_lu_id, "role") });
@@ -999,17 +1098,18 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         let footerObject = null;
         footerObject = new Object();
         footerObject.visible = new Observable<boolean>(false);
+        footerObject.showParticipantBlock = new Observable<boolean>(false);        
         footerObject.collapseImgVisisble = new Observable<boolean>(false);
         footerObject.expandImgVisisble = new Observable<boolean>(false);
         footerObject.roles = new ObservableCollection<object>();
         footerObject.types = new ObservableCollection<object>();
         footerObject.cash = "$"+cashTotal;
-        footerObject.inkind = "$" +inkindTotal;
+        footerObject.inkind = "$" + inkindTotal;        
         this.project_partcipants.addItem(footerObject);
 
         //Build funding chart
         //this.fundingChart = this.createPieChart(chartFundingPart, [chartFundingPartData], "OE_pieChartFunding");     
-        this.BuildChartParticipant();
+        //this.BuildChartParticipant();
     }
 
     private _GetFieldValue(graphic: esri.Graphic, field: string): string {
@@ -1023,26 +1123,47 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         return graphic.attributes[field];
     }
 
-    public BuildChartActivity() {
-        this._destoryFundingChart();
+    public BuildMainCharts() {
+        this._destoryMainCharts();
 
         //Build funding chart
-        this.chartActive = this.createPieChart(this.chartFundingActivity, [this.chartFundingActivityData], "OE_pieChartFunding");        
-        this.activeChartName.set("Activity Funding");
+        this.chartMainActivity = this.createPieChart(this.chartFundingActivity, [this.chartFundingActivityData], "OE_pieChartActivity",400);
+        this.activeChartName.set("Activity Funding");                
+
+        this.chartMainFunding = this.createPieChart(this.chartFundingPart, [this.chartFundingPartData], "OE_pieChartFunding",400);
+        this.activeChartName.set("Participant Funding");    
+    }
+    
+    public BuildAllChartsForPrint() {
+
+        this._destoryPrintCharts();
+
+        this.chartActivity = this.createPieChart(this.chartFundingActivity, [this.chartFundingActivityData], "OE_ChartActivityForPrint", 380);
+        this.chartFunding = this.createPieChart(this.chartFundingPart, [this.chartFundingPartData], "OE_ChartFundingForPrint", 380);        
     }
 
-    public BuildChartParticipant() {
-        this._destoryFundingChart();
+    private _destoryPrintCharts() {
+        if (this.chartFunding) {
+            this.app.command("DestroyView").execute(this.chartFunding.id);
+        }
+        this.chartFunding = null;        
 
-        this.chartActive = this.createPieChart(this.chartFundingPart, [this.chartFundingPartData], "OE_pieChartFunding");      
-        this.activeChartName.set("Participant Funding");
+        if (this.chartActivity) {
+            this.app.command("DestroyView").execute(this.chartActivity.id);
+        }
+        this.chartActivity = null;     
     }
         
-    private _destoryFundingChart() {
-        if (this.chartActive) {
-            this.app.command("DestroyView").execute(this.chartActive.id);
+    private _destoryMainCharts() {
+        if (this.chartMainFunding) {
+            this.app.command("DestroyView").execute(this.chartMainFunding.id);
         }
-        this.chartActive = null;                
+        this.chartMainFunding = null;                
+
+        if (this.chartMainActivity) {
+            this.app.command("DestroyView").execute(this.chartMainActivity.id);
+        }
+        this.chartMainActivity = null;                
     }
 
     private _loadEsirMap(graphicIn: esri.Graphic, featureSetIn: esri.tasks.FeatureSet, thisView: OE_OWRTReportsViewModel) {
@@ -1090,7 +1211,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
                 var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/40");
                 (<esri.Map>event.map).addLayer(featureLayer);
                                 
-                (<esri.Map>event.map).setExtent(esri.graphicsExtent(featureSetIn.features).expand(2));
+                (<esri.Map>event.map).setExtent(esri.graphicsExtent(featureSetIn.features).expand(2));                
             });                     
         }
         else
@@ -1137,13 +1258,13 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this.app.registerFrameworkObject(<any>this.chartFactory);
     }
 
-    private createPieChart(chartConfig: any, data: any, targetRegion: string): Chart {
+    private createPieChart(chartConfig: any, data: any, targetRegion: string, widthIn:number=250): Chart {
                 
         let chartDefinition = new ChartDefinition(chartConfig);
                 
         // Create chart view model from chart config & data.
         let chartViewModel = this.chartFactory.createInstance(<any>chartDefinition, ChartFeatureType.SingleFeature, data);
-        chartViewModel.width.set(250);
+        chartViewModel.width.set(widthIn);
         //chartViewModel.autoSize.set(false);
         //chartViewModel.interactiveLegend.set(true);
         //chartViewModel.pieStartAngle.set(90);

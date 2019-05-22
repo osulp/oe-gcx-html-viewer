@@ -9,175 +9,424 @@
             <input name="project_nbr" data-binding="{@event-onchange: loadProjectNbr}" />
         </div>
     </div>
-    
-    <div class="oe_owrtPR-row">
-        <div class="oe_owrtPR-column">
 
-            <fieldset class="oe_owrtPR-Info">
-                <legend>Restoration Project Information</legend>
-                <h1>Project Number</h1>
-                <div data-binding="{@text:project_nbr}"></div><input name="project_nbr" data-binding="{@event-onchange: loadProjectNbr}" />
-                <h1>Project Name</h1>
-                <div data-binding="{@text:project_name}"></div>
-                <h1>Project Dates</h1>
-                <div>Start: <span data-binding="{@text:project_start_year}"></span></div>
-                <div>Completion: <span data-binding="{@text:project_complete_year}"></span></div>
-                <h1>Project Activities</h1>
-                <div data-binding="{@text:project_activities_blob}"></div>
-                <h1>Project Site Selection</h1>
-                <div data-binding="{@text:project_site_selection}"></div>
-                <h1>Species</h1>
-                <div data-binding="{@text:project_speices_observe}"></div>
-            </fieldset>
+    <div class="oeOWRTPrintButton" data-binding="{@visible: printButtonVisible}" >
+        <button data-binding="{@event-onclick: printReport}"><img style="width:16px;" src="Resources/Images/Icons/print-24.png" />&nbsp;&nbsp; Print</button>
+    </div>
 
-            <fieldset class="oeOwrtPRparticipants">
-                <legend>Project Participants &amp; Funding</legend>
+    <div class="oeOWRTReportTabs">
+        <div data-binding="{className: tabMainClassName}"><a href="javascript:void(0)" data-binding="{@event-onclick: toggleTabMain}">Report</a></div>
+        <div data-binding="{className: tabChartsClassName}"><a href="javascript:void(0)" data-binding="{@event-onclick: toggleTabCharts}">Charts</a></div>
+    </div>
 
-                <div class="oeParticipantDivTable">
-                    <div class="oeTableRowHeader">
-                        <div>Participant(s)</div>
-                        <div style="padding-right:5px">Cash</div>
-                        <div>In-Kind</div>
-                    </div>
-                    <div class="oeTableRowsContainer" data-binding="{@source: project_partcipants}">
-                        <div class="oeTableRow oeTableRowAltColors" data-binding="{@template-for: project_partcipants}">                        
-                            <div class="oePartCell oePartCellParticipant">
-                                <a href="javascript:void(0)" data-binding="{@event-onclick: toggleElement}">
-                                    <img data-binding="{@visible: collapseImgVisisble}" src="Resources/Images/Custom/collapse.gif" /><img data-binding="{@visible: expandImgVisisble}" src="Resources/Images/Custom/expand.gif" /> <span data-binding="{@text: participant}"></span>
-                                </a>
-                                <div class="participantDiv" data-binding="{id: htmlID}{@visible: visible}">
-                                    <span data-binding="{@text: contact}"></span>
-                                    <h1>Roles</h1>
-                                    <ul data-binding="{@source:roles}">
-                                        <li data-binding="{@template-for: roles} {@text: name}"></li>
-                                    </ul>
-                                    <h2>Type of Participant</h2>
-                                    <ul data-binding="{@source:types}">
-                                        <li data-binding="{@template-for: types} {@text: name}"></li>
-                                    </ul>
+    <div class="oeOWRTReportMain" data-binding="{@visible: mainReportVisible}">
+
+        <div class="oe_owrtPR-row">
+            <div class="oe_owrtPR-column">
+
+                <fieldset class="oe_owrtPR-Info">
+                    <legend>Restoration Project Information</legend>
+                    <h1>Project Number</h1>
+                    <div data-binding="{@text:project_nbr}"></div>
+                    <h1>Project Name</h1>
+                    <div data-binding="{@text:project_name}"></div>
+                    <h1>Project Dates</h1>
+                    <div>Start: <span data-binding="{@text:project_start_year}"></span></div>
+                    <div>Completion: <span data-binding="{@text:project_complete_year}"></span></div>
+                    <h1>Project Activities</h1>
+                    <div data-binding="{@text:project_activities_blob}"></div>
+                    <h1>Project Site Selection</h1>
+                    <div data-binding="{@text:project_site_selection}"></div>
+                    <h1>Species</h1>
+                    <div data-binding="{@text:project_speices_observe}"></div>
+                </fieldset>
+
+                <fieldset class="oeOwrtPRparticipants">
+                    <legend>Project Participants &amp; Funding</legend>
+
+                    <div class="oeParticipantDivTable">
+                        <div class="oeTableRowHeader">
+                            <div>Participant(s)</div>
+                            <div style="padding-right:5px">Cash</div>
+                            <div>In-Kind</div>
+                        </div>
+                        <div class="oeTableRowsContainer" data-binding="{@source: project_partcipants}">
+                            <div class="oeTableRow oeTableRowAltColors" data-binding="{@template-for: project_partcipants}">
+                                <div class="oePartCell oePartCellParticipant">
+                                    <a href="javascript:void(0)" data-binding="{@event-onclick: toggleElement}">
+                                        <img data-binding="{@visible: collapseImgVisisble}" src="Resources/Images/Custom/collapse.gif" /><img data-binding="{@visible: expandImgVisisble}" src="Resources/Images/Custom/expand.gif" /> <span data-binding="{@text: participant}"></span>
+                                    </a>
+                                    <div class="participantDiv" data-binding="{id: htmlID}{@visible: visible}">
+                                        <span data-binding="{@text: contact}"></span>
+                                        <h1>Roles</h1>
+                                        <ul data-binding="{@source:roles}">
+                                            <li data-binding="{@template-for: roles} {@text: name}"></li>
+                                        </ul>
+                                        <h2>Type of Participant</h2>
+                                        <ul data-binding="{@source:types}">
+                                            <li data-binding="{@template-for: types} {@text: name}"></li>
+                                        </ul>
+                                    </div>
                                 </div>
+                                <div class="oePartCell oePartCellFundValue" data-binding="{@text: cash}"></div>
+                                <div class="oePartCell oePartCellFundValue" data-binding="{@text: inkind}"></div>
                             </div>
-                            <div class="oePartCell oePartCellFundValue" data-binding="{@text: cash}"></div>
-                            <div class="oePartCell oePartCellFundValue" data-binding="{@text: inkind}"></div>                        
                         </div>
                     </div>
 
-                </div>
-                
-            </fieldset>
-
-            <fieldset class="oeChartsFieldSet">
-                <legend>Funding Charts</legend>
-                <div class="oeChartsLinks">
-                    <a href="javascript:void(0)" data-binding="{@event-onclick: toggleChartActivity}">Activity Funding</a><a href="javascript:void(0)" data-binding="{@event-onclick: toggleChartPart}">Participant Funding</a>
-                </div>
-                <h1 data-binding="{@text: activeChartName}">Chart name</h1>
-                <div class="OE_pieChartFunding" data-region-name="OE_pieChartFunding" data-binding="{@visible: chartPartVisible}"></div>
-                <div class="OE_pieChartActivity" data-region-name="OE_pieChartActivity" data-binding="{@visible: chartActVisible}"></div>                
-            </fieldset>
-            
-        </div>
-
-        <div class="oe_owrtPR-column">
-            <div class="oe_owrtPR-Activities">Restoration Activities</div>
-
-            <div class="oeOWRTactivityBoxes" data-binding="{@source: project_activites_observe}">
-                <strong>Activities:</strong>&nbsp;
-                <div data-binding="{@template-for: project_activites_observe}">
-                    <img src="Resources/Images/Custom/10x10_transparent.png" data-binding="{style: colorFromLegend}" />&nbsp;<span data-binding="{@text: activity_type}"></span> &nbsp;
-                </div>                
+                </fieldset>                                
             </div>
 
-            <fieldset class="oeOwrtActivityOverview">
-                <legend>Activity Overview</legend>
+            <div class="oe_owrtPR-column">
+                <div class="oe_owrtPR-Activities">Restoration Activities</div>
 
-                <h1>Cost By Activity Type</h1>
-
-                <div class="oeActivityByFundingTable">
-                    <div class="oeActivityByFundingHeader">
-                        <div>Activity Type</div>
-                        <div>Cash</div>
-                        <div>In-Kind</div>
-                        <div>TOTAL</div>
+                <div class="oeOWRTactivityBoxes" data-binding="{@source: project_activites_observe}">
+                    <strong>Activities:</strong>&nbsp;
+                    <div data-binding="{@template-for: project_activites_observe}">
+                        <img src="Resources/Images/Custom/10x10_transparent.png" data-binding="{style: colorFromLegend}" />&nbsp;<span data-binding="{@text: activity_type}"></span> &nbsp;
                     </div>
-                    <div class="oeTableRowsContainer" data-binding="{@source: project_activites_observe}">
-                        <div class="oeActivityByFundingRow" data-binding="{@template-for: project_activites_observe}">
-                            <div data-binding="{@text: activity_type}"></div>
-                            <div data-binding="{@text: cash}"></div>
-                            <div data-binding="{@text: inkind}"></div>
-                            <div data-binding="{@text: total}"></div>
+                </div>
+
+                <fieldset class="oeOwrtActivityOverview">
+                    <legend>Activity Overview</legend>
+
+                    <h1>Cost By Activity Type</h1>
+
+                    <div class="oeActivityByFundingTable">
+                        <div class="oeActivityByFundingHeader">
+                            <div>Activity Type</div>
+                            <div>Cash</div>
+                            <div>In-Kind</div>
+                            <div>TOTAL</div>
+                        </div>
+                        <div class="oeTableRowsContainer" data-binding="{@source: project_activites_observe}">
+                            <div class="oeActivityByFundingRow" data-binding="{@template-for: project_activites_observe}">
+                                <div data-binding="{@text: activity_type}"></div>
+                                <div data-binding="{@text: cash}"></div>
+                                <div data-binding="{@text: inkind}"></div>
+                                <div data-binding="{@text: total}"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <h1>Results by Activity Type</h1>
 
-                <div class="oeActResultsTable">
-                    <div class="oeAcResultsHeader">
-                        <div>Activity Type</div>
-                        <div>Quantity</div>
-                        <div>Result</div>
-                    </div>
-                    <div class="oeTableRowsContainer" data-binding="{@source: project_results_observe}">
-                        <div class="oeActResultsRow" data-binding="{@template-for: project_results_observe}">
-                            <div data-binding="{@text: activity_type}"></div>
-                            <div data-binding="{@text: quantity}"></div>
-                            <div data-binding="{@text: result}"></div>
+                    <h1>Results by Activity Type</h1>
+
+                    <div class="oeActResultsTable">
+                        <div class="oeAcResultsHeader">
+                            <div>Activity Type</div>
+                            <div>Quantity</div>
+                            <div>Result</div>
+                        </div>
+                        <div class="oeTableRowsContainer" data-binding="{@source: project_results_observe}">
+                            <div class="oeActResultsRow" data-binding="{@template-for: project_results_observe}">
+                                <div data-binding="{@text: activity_type}"></div>
+                                <div data-binding="{@text: quantity}"></div>
+                                <div data-binding="{@text: result}"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                                
-                <h1>Goals</h1>                
-                <ul class="oeOWRTactivityGoals" data-binding="{@source: project_goals_observe}">
-                    <li data-binding="{@template-for: project_goals_observe}{@text: goal}"></li>
-                </ul>
 
-            </fieldset>
+                    <h1>Goals</h1>
+                    <ul class="oeOWRTactivityGoals" data-binding="{@source: project_goals_observe}">
+                        <li data-binding="{@template-for: project_goals_observe}{@text: goal}"></li>
+                    </ul>
 
-            <fieldset class="oeOwrtTreatmentMetrics">
-                <legend>Treatments &amp; Metrics</legend>
-                <ul data-binding="{@source: project_metrics_observe}">
-                    <li data-binding="{@template-for: project_metrics_observe}">                       
-                        <div data-binding="{@text: treatment}"></div>                                   
-                        <table style="clear:both;" data-binding="{@visible: visible}">
-                            <tbody data-binding="{@source: metrics}">
-                                <tr data-binding="{@template-for: metrics}">
-                                    <td class="oeOwrtTreatmentMetricsDescriptionColumn" data-binding="{@text: metric}"></td>
-                                    <td class="oeOwrtTreatmentMetricsValueColumn" data-binding="{@text: displayValue}"></td>
-                                </tr>
-                            </tbody>                            
-                        </table>
-                    </li>
-                </ul>
-            </fieldset>
+                </fieldset>
 
+                <fieldset class="oeOwrtTreatmentMetrics">
+                    <legend>Treatments &amp; Metrics</legend>
+                    <ul data-binding="{@source: project_metrics_observe}">
+                        <li data-binding="{@template-for: project_metrics_observe}">
+                            <div data-binding="{@text: treatment}"></div>
+                            <table style="clear:both;" data-binding="{@visible: visible}">
+                                <tbody data-binding="{@source: metrics}">
+                                    <tr data-binding="{@template-for: metrics}">
+                                        <td class="oeOwrtTreatmentMetricsDescriptionColumn" data-binding="{@text: metric}"></td>
+                                        <td class="oeOwrtTreatmentMetricsValueColumn" data-binding="{@text: displayValue}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </li>
+                    </ul>
+                </fieldset>
+
+            </div>
+
+            <div class="oe_owrtPR-column">
+
+                <fieldset class="oe_owrtPR-Loc">
+                    <legend>Project Location</legend>
+
+                    <div id="oe_owrtPR_divMap" data-binding="{@visible: locatorMapVisible}" style="position: relative; width: 280px; height: 250px;"></div>
+
+                    <div class="oeOWRTlocationData">
+                        <h1>Basin</h1>
+                        <div data-binding="{@text:project_watershed}"></div>
+                        <h1>Sub-Basin</h1>
+                        <div data-binding="{@text:project_subwatershed}"></div>
+                        <h1>Tributary Of</h1>
+                        <div data-binding="{@text:project_tributary_of}"></div>
+                        <h1>Stream</h1>
+                        <div data-binding="{@text:project_stream_name}"></div>
+                        <h1>Township, Range, Section</h1>
+                        <div data-binding="{@text:project_townshipRangeSection}"></div>
+                        <h1>Dominant Land Use</h1>
+                        <div data-binding="{@text:project_dominant_land_use}"></div>
+                    </div>
+
+                </fieldset>
+
+            </div>
         </div>
 
-        <div class="oe_owrtPR-column">
+    </div>
 
-            <fieldset class="oe_owrtPR-Loc">
-                <legend>Project Location</legend>
+    <div class="oeOWRTReportCharts" data-binding="{@visible: chartReportVisible}">
+        
+        <table class="oeDetailChartTable">
+            <tr>
+                <td>
+
+                    <fieldset class="oeChartsFieldSet">
+                        <legend>Participant Funding</legend>
+                        <div class="OE_pieChartFunding" data-region-name="OE_pieChartFunding"></div>
+                    </fieldset>
+
+                </td>
+                <td>
+
+                    <fieldset class="oeChartsFieldSet">
+                        <legend>Activity Funding</legend>
+                        <div class="OE_pieChartActivity" data-region-name="OE_pieChartActivity"></div>
+                    </fieldset>
+
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    
+    
+    
+    <div id="oeOWRTDetailReportPrintArea" data-binding="{@visible:printAreaVisible}">
                 
-                <div id="oe_owrtPR_divMap" data-binding="{@visible: locatorMapVisible}" style="position: relative; width: 280px; height: 250px;"></div>
+        <div class="oe_owrtPR-Activities">OWRT Project Report</div>
+        <br />
 
-                <div class="oeOWRTlocationData">
-                    <h1>Basin</h1>
-                    <div data-binding="{@text:project_watershed}"></div>
-                    <h1>Sub-Basin</h1>
-                    <div data-binding="{@text:project_subwatershed}"></div>
-                    <h1>Tributary Of</h1>
-                    <div data-binding="{@text:project_tributary_of}"></div>
-                    <h1>Stream</h1>
-                    <div data-binding="{@text:project_stream_name}"></div>
-                    <h1>Township, Range, Section</h1>
-                    <div data-binding="{@text:project_townshipRangeSection}"></div>
-                    <h1>Dominant Land Use</h1>
-                    <div data-binding="{@text:project_dominant_land_use}"></div>
-                </div>
+        <table class="oeOWRTDetailReportPrintTable">
+            <tr>
+                <td>
+
+                    <fieldset class="oe_owrtPR-Info" style="font-size:0.8em;">
+                        <legend>Restoration Project Information</legend>
+                        <h1>Project Number</h1>
+                        <div data-binding="{@text:project_nbr}"></div>
+                        <h1>Project Name</h1>
+                        <div data-binding="{@text:project_name}"></div>
+                        <h1>Project Dates</h1>
+                        <div>Start: <span data-binding="{@text:project_start_year}"></span></div>
+                        <div>Completion: <span data-binding="{@text:project_complete_year}"></span></div>
+                        <h1>Project Activities</h1>
+                        <div data-binding="{@text:project_activities_blob}"></div>
+                        <h1>Project Site Selection</h1>
+                        <div data-binding="{@text:project_site_selection}"></div>
+                        <h1>Species</h1>
+                        <div data-binding="{@text:project_speices_observe}"></div>
+                    </fieldset>
+
+                </td>
+                <td>
+
+                    <fieldset class="oe_owrtPR-Loc" style="font-size:0.8em">
+                        <legend>Project Location</legend>
+
+                        <div id="oe_owrtPR_divMapPrint" style="position: relative; width: 256px; height: 256px;"></div>
+
+                        <div class="oeOWRTlocationData">
+                            <h1>Basin</h1>
+                            <div data-binding="{@text:project_watershed}"></div>
+                            <h1>Sub-Basin</h1>
+                            <div data-binding="{@text:project_subwatershed}"></div>
+                            <h1>Tributary Of</h1>
+                            <div data-binding="{@text:project_tributary_of}"></div>
+                            <h1>Stream</h1>
+                            <div data-binding="{@text:project_stream_name}"></div>
+                            <h1>Township, Range, Section</h1>
+                            <div data-binding="{@text:project_townshipRangeSection}"></div>
+                            <h1>Dominant Land Use</h1>
+                            <div data-binding="{@text:project_dominant_land_use}"></div>
+                        </div>
+
+                    </fieldset>
+
+                </td>
+            </tr>
+        </table>
+
+        <div style="page-break-before:always"></div>
+
+        <div class="oe_owrtPR-Activities">Participants and Funding</div>
+        <br />
+
+        <table class="oeOWRTDetailReportPrintTable">
+            <tr>
+                <td>
+
+                    <fieldset class="oeOwrtPRparticipants" style="width:700px; font-size:0.8em">
+                        <legend>Project Participants &amp; Funding</legend>
+                        <div class="oeParticipantDivTable">
+                            <div class="oeTableRowHeader">
+                                <div>Participant(s)</div>
+                                <div style="padding-right:5px">Cash</div>
+                                <div>In-Kind</div>
+                            </div>
+                            <div class="oeTableRowsContainer" data-binding="{@source: project_partcipants}">
+                                <div class="oeTableRow oeTableRowAltColors" data-binding="{@template-for: project_partcipants}">
+                                    <div class="oePartCell oePartCellParticipant" style="width:500px">
+                                        <div data-binding="{@visible: showParticipantBlock}">
+                                            <a href="javascript:void(0)" data-binding="{@event-onclick: toggleElement}">
+                                                <span data-binding="{@text: participant}"></span>
+                                            </a>
+                                            <div class="participantDiv" data-binding="{id: htmlID}">
+                                                <span data-binding="{@text: contact}" style="padding: 0 0 0 1em;"></span>
+                                                <h1>Roles</h1>
+                                                <ul data-binding="{@source:roles}">
+                                                    <li data-binding="{@template-for: roles} {@text: name}"></li>
+                                                </ul>
+                                                <h2>Type of Participant</h2>
+                                                <ul data-binding="{@source:types}">
+                                                    <li data-binding="{@template-for: types} {@text: name}"></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="oePartCell oePartCellFundValue" data-binding="{@text: cash}"></div>
+                                    <div class="oePartCell oePartCellFundValue" data-binding="{@text: inkind}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </td>
+            </tr>
+        </table>
+        
+
+        <div style="page-break-before:always"></div>
+        
+        <div class="oe_owrtPR-Activities">Restoration Activities</div>
                 
-            </fieldset>
+        <table class="oeOWRTDetailReportPrintTable">
+            <tr>
+                <td colspan="2">
+                    <div class="oeOWRTactivityBoxes" data-binding="{@source: project_activites_observe}" style="text-align:left; padding-left:40px">
+                        <strong>Activities:</strong>&nbsp;
+                        <div data-binding="{@template-for: project_activites_observe}">
+                            <img src="Resources/Images/Custom/10x10_transparent.png" data-binding="{style: colorFromLegend}" />&nbsp;<span data-binding="{@text: activity_type}"></span> &nbsp;
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                                       
+                    <fieldset class="oeOwrtActivityOverview" style="font-size:0.8em">
+                        <legend>Activity Overview</legend>
 
-        </div>
+                        <h1>Cost By Activity Type</h1>
+
+                        <div class="oeActivityByFundingTable">
+                            <div class="oeActivityByFundingHeader">
+                                <div>Activity Type</div>
+                                <div>Cash</div>
+                                <div>In-Kind</div>
+                                <div>TOTAL</div>
+                            </div>
+                            <div class="oeTableRowsContainer" data-binding="{@source: project_activites_observe}">
+                                <div class="oeActivityByFundingRow" data-binding="{@template-for: project_activites_observe}">
+                                    <div data-binding="{@text: activity_type}"></div>
+                                    <div data-binding="{@text: cash}"></div>
+                                    <div data-binding="{@text: inkind}"></div>
+                                    <div data-binding="{@text: total}"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h1>Results by Activity Type</h1>
+
+                        <div class="oeActResultsTable">
+                            <div class="oeAcResultsHeader">
+                                <div>Activity Type</div>
+                                <div>Quantity</div>
+                                <div>Result</div>
+                            </div>
+                            <div class="oeTableRowsContainer" data-binding="{@source: project_results_observe}">
+                                <div class="oeActResultsRow" data-binding="{@template-for: project_results_observe}">
+                                    <div data-binding="{@text: activity_type}"></div>
+                                    <div data-binding="{@text: quantity}"></div>
+                                    <div data-binding="{@text: result}"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h1>Goals</h1>
+                        <ul class="oeOWRTactivityGoals" data-binding="{@source: project_goals_observe}">
+                            <li data-binding="{@template-for: project_goals_observe}{@text: goal}"></li>
+                        </ul>
+
+                    </fieldset>
+
+                </td>
+                <td>                   
+
+                    <fieldset class="oeOwrtTreatmentMetrics" style="font-size:0.8em">
+                        <legend>Treatments &amp; Metrics</legend>
+                        <ul data-binding="{@source: project_metrics_observe}">
+                            <li data-binding="{@template-for: project_metrics_observe}">
+                                <div data-binding="{@text: treatment}"></div>
+                                <table style="clear:both;" data-binding="{@visible: visible}">
+                                    <tbody data-binding="{@source: metrics}">
+                                        <tr data-binding="{@template-for: metrics}">
+                                            <td class="oeOwrtTreatmentMetricsDescriptionColumn" data-binding="{@text: metric}"></td>
+                                            <td class="oeOwrtTreatmentMetricsValueColumn" data-binding="{@text: displayValue}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </li>
+                        </ul>
+                    </fieldset>
+
+                </td>
+            </tr>
+        </table>
+
+        <div style="page-break-before:always"></div>
+
+        <div class="oe_owrtPR-Activities">Funding Charts</div>
+        <br />
+
+        <table class="oeOWRTDetailReportPrintTable">
+            <tr>
+                <td>
+
+                    <fieldset class="oeChartsFieldSet" style="width:400px; font-size:0.8em">
+                        <legend>Activity Funding</legend>
+                        <div class="ChartActivityForPrint" data-region-name="OE_ChartActivityForPrint"></div>
+                    </fieldset>
+
+                </td>
+                <td>
+
+                    <fieldset class="oeChartsFieldSet" style="width:400px; font-size:0.8em">
+                        <legend>Participant Funding</legend>                
+                        <div class="ChartFundingForPrint" data-region-name="OE_ChartFundingForPrint"></div>
+                    </fieldset>
+
+                </td>
+            </tr>
+        </table>
+
+        
     </div>
     
 </div>

@@ -15,9 +15,9 @@ Module Include
         "require": "geocortex/oe_amd/OE_OITT/OE_OITTView",
         "markup": "geocortex/oe_amd/OE_OITT/OE_OITTView.html",        
         "viewModelId": "OE_OITTViewModel",
-        "title": "OITT Project Reports",
+        "title": "OITT Project Report",
         "visible": false,        
-        "region": "NavigationMapRegion",
+        "region": "ModalWindowRegion",
         "configuration": {}
     }],
 	"viewModels": [

@@ -26,91 +26,6 @@
     padding-bottom:16px;
 }
 
-.oeOWRTLoaderTab {
-    position: absolute;
-    top: 135px;
-    left: 10px;
-    width: 890px;
-    height: 420px;
-    background-color: #ffffff;
-    text-align: center;
-    padding-top: 50px;
-    z-index: 900;
-}
-
-.oeOWRTLoaderTab div {
-    font-size:1.6em;
-}
-
-#oeOWRTDetailReportPrintArea {
-    /**keep me for injected css discovery*/    
-}
-
-.oeOWRTDetailReportPrintTable
-{
-    border-collapse:unset;    
-}
-
-.oeOWRTDetailReportPrintTable tr td
-{
-    vertical-align:top;
-}
-
-.oeOWRTPrintButton {
-    position: absolute;
-    left: 10px;
-    top: 5px;
-}
-
-.oeOWRTPrintButton button
-{
-    padding: .5em 1em;
-    background: #F5F5F5;
-    border: 1px solid #CCCCCC;
-    border-radius: 0.25rem;
-    font-weight: 600;
-    color: #1A72C4;
-    box-shadow: 0;
-}
-
-.oeOWRTPrintButton button:hover
-{
-    background-color: #1A72C4;
-    color: #ffffff;
-    text-decoration: none;
-}
-
-.oeOWRTReportTabs div{
-    display:inline-block;
-    border: 1px solid #ccc;
-    border-bottom: 0;
-    min-height: 16px;
-    padding: 4px 8px;
-    background-color: #e2e2e2;
-    margin-right: 4px;
-    width: 100px;
-    text-align: center;
-    overflow:hidden;
-}
-
-.oeOWRTReportTabs div a{
-    text-decoration:none;
-    display:block;
-}
-
-div.oeOWRTReportsTabEnabled{
-    background-color: #fff;
-    font-size: 1.1em;
-    font-weight: bold;
-    overflow:hidden;
-}
-
-.oeOWRTReportMain, .oeOWRTReportCharts {        
-    border: 1px solid #ccc;
-    padding: 5px;
-    margin-top: -4px;
-}
-
 .oe_owrtPR-module-view
 {
     position: inherit;
@@ -131,8 +46,8 @@ div.oeOWRTReportsTabEnabled{
 .oe_owrtPR-column {
   float: left;
   width: 32.3%;
-  padding-right: .2%;
-  padding-left: .2%;
+  padding-right: .5%;
+  padding-left: .5%;
 }
 
 /* Clear floats after the columns */
@@ -310,21 +225,10 @@ div.oeOWRTReportsTabEnabled{
     padding: .2em .2em .2em .8em;
 }
 
-.oeDetailChartTable
-{
-    border-collapse:unset;    
-}
-
-.oeDetailChartTable tr td
-{
-    vertical-align:top;
-}
-
 .oeChartsFieldSet
 {
-    width: 400px;
+    width: 270px;
     min-height:470px;
-    margin-left:15px;
 }
 
 .oeChartsFieldSet legend
@@ -356,7 +260,7 @@ div.oeOWRTReportsTabEnabled{
     color: #aa4e3c;
 }
 
-.OE_pieChartFunding, .OE_pieChartActivity, .ChartFundingForPrint, .ChartActivityForPrint
+.OE_pieChartFunding, OE_pieChartActivity
 {
     width:250px;
 }
@@ -695,13 +599,8 @@ div.oeOWRTReportsTabEnabled{
     padding:4px 8px;
     background-color:#e2e2e2;
     margin-right:4px;
-    width:100px;
+    width:60px;
     text-align:center;
-}
-
-.oeOWRTAreaTabs div img
-{
-    float: left;
 }
 
 .oeOWRTAreaTabs div a
@@ -712,7 +611,7 @@ div.oeOWRTReportsTabEnabled{
     width:100%;
 }
 
-div.oeOWRTAreaTabEnabled
+div.oittAreaTabEnabled
 {
     background-color:#fff;
     font-size:1.1em;
@@ -832,12 +731,12 @@ div.oeOWRTAreaTabEnabled
     font-weight:bold;
 }
 
-div.oeOWRTAreaChartSelectionBoxSelected {
+div.oittChartSelectionBoxSelected {
     background-color: #8C8C8C;
     color: White;
 }
 
-div.oeOWRTAreaChartSelectionBoxSelected a{    
+div.oittChartSelectionBoxSelected a{    
     color: White;
 }
 
@@ -1013,12 +912,12 @@ th.sorted.descending:after {
 }
 
 .owrtChartTableFundInvestByActByYear {
-    width: 1370px;
+    width: 2500px;
     table-layout:fixed;
 }
 
 .owrtChartTableFundInvestByActByYear tr td, .owrtChartTableFundInvestByActByYear tr th {
-    width: 100px;
+    width: 150px;
     display: inline-block;
     white-space: nowrap;
 }

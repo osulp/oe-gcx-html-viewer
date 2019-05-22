@@ -3,30 +3,45 @@ Module Include
 -------------------------------------
 
 {
-    "moduleName": "OE_OWRTReports",
-    "libraryId": "OE_AMD",
-    "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsModule",
-    "configuration": {
+        "moduleName": "OE_OWRTReports",
+        "libraryId": "OE_AMD",
+        "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsModule",
+        "configuration": {
         
-    },
-	"views": [
-    {
-        "id": "OE_OWRTReportsView",
-        "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsView",
-        "markup": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsView.html",        
-        "viewModelId": "OE_OWRTReportsViewModel",
-        "title": "OWRT Project Report",        
-        "visible": false,        
-        "region": "NavigationMapRegion",
-        "configuration": {}
-    }],
-	"viewModels": [
-    {
-        "id": "OE_OWRTReportsViewModel",      
-        "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsViewModel",      
-        "configuration": {}
-    }]
-}
+        },
+        "views": [
+        {
+            "id": "OE_OWRTReportsView",
+            "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsView",
+            "markup": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsView.html",        
+            "viewModelId": "OE_OWRTReportsViewModel",
+            "title": "OWRT Project Report",        
+            "visible": false,        
+            "region": "ModalWindowRegion",
+            "configuration": {}
+        },
+        {
+            "id": "OE_OWRTReportsAreaView",
+            "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsAreaView",
+            "markup": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsAreaView.html",        
+            "viewModelId": "OE_OWRTReportsAreaViewModel",
+            "title": "OWRT Area Report",        
+            "visible": false,        
+            "region": "ModalWindowRegion",
+            "configuration": {}
+        }],
+        "viewModels": [
+        {
+            "id": "OE_OWRTReportsViewModel",      
+            "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsViewModel",      
+            "configuration": {}
+        },
+        {
+            "id": "OE_OWRTReportsAreaViewModel",      
+            "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsAreaViewModel",      
+            "configuration": {}
+        }]
+    }
 
 -------------------------------------
 Required library
@@ -146,11 +161,42 @@ Events that would selecte the data on the map or show the map need to be removed
 
 
 
-
-
-
-
 -------------------------------------
 Workflow Example
 -------------------------------------
 N/A
+
+
+
+-------------------------------------
+Menu Command Example
+-------------------------------------
+Command: oeOWRTprojectReport
+Command Parameter: 20090660
+
+Detail Report URL
+https://tools.oregonexplorer.info/dev_current/index.html?viewer=owrt-dev&pn=20090660
+
+
+
+Command: oeOWRTareaReport
+Command Paramaeter:
+
+Pipe delimited: geoType | areaType | years comma delimited
+
+geoTypes:
+
+state
+basin
+subbasin
+county
+wsc
+swcd
+
+areaType:
+
+string
+
+
+Area Report URL
+https://tools.oregonexplorer.info/dev_current/index.html?viewer=owrt-dev&ar=1&geoType=basin&areaType=Grande%20Ronde&years=2010,2011,2012

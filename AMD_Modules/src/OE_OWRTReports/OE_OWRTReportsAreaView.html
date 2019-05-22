@@ -9,7 +9,20 @@
             <button data-binding="{@event-onclick: reportOptionsSubmission}">Get Report</button>
         </div>
     </div>
-        
+
+    <div class="oeOWRTLoaderTab" data-binding="{@visible: loaderProjectsVisible}">
+        <div>Loading...</div>
+    </div>
+
+    <div class="oeOWRTLoaderTab" data-binding="{@visible: loaderFundsVisible}">
+        <div>Loading...</div>
+    </div>
+
+    <div class="oeOWRTLoaderTab" data-binding="{@visible: loaderResultsVisible}">
+        <div>Loading...</div>
+    </div>
+
+            
     <div class="oeOWRTOptions">
         <a href="javascript:void(0)" data-binding="{@event-onclick: toggleReportOptionPanel}">Report Options</a>
     </div>
@@ -52,9 +65,9 @@
            
     <div class="oeOWRTAreaTabs">
         <div data-binding="{className: tabOverviewClass}"><a href="javascript:void(0)" data-binding="{@event-onclick: toggleTabOverview}">Overview</a></div>
-        <div data-binding="{className: tabProjectsClass}"><a href="javascript:void(0)" data-binding="{@event-onclick: toggleTabProjects}">Projects</a></div>
-        <div data-binding="{className: tabFundingClass}"><a href="javascript:void(0)" data-binding="{@event-onclick: toggleTabFunding}">Funding</a></div>
-        <div data-binding="{className: tabResultsClass}"><a href="javascript:void(0)" data-binding="{@event-onclick: toggleTabResults}">Results</a></div>
+        <div data-binding="{className: tabProjectsClass}"><img data-binding="{@visible: loadSpinnerProjects}" width="14" height="14" src="Resources/Images/Custom/loading-transparent.gif" /><a href="javascript:void(0)" data-binding="{@event-onclick: toggleTabProjects}">Projects</a></div>
+        <div data-binding="{className: tabFundingClass}"><img data-binding="{@visible: loadSpinnerFunding}" width="14" height="14" src="Resources/Images/Custom/loading-transparent.gif" /><a href="javascript:void(0)" data-binding="{@event-onclick: toggleTabFunding}">Funding</a></div>
+        <div data-binding="{className: tabResultsClass}"><img data-binding="{@visible: loadSpinnerResults}" width="14" height="14" src="Resources/Images/Custom/loading-transparent.gif" /><a href="javascript:void(0)" data-binding="{@event-onclick: toggleTabResults}">Results</a></div>
     </div>
 
     <div class="oeOWRTAreaPanel oeOWRTAreaPanelOverview" data-binding="{@visible: areaPanelOverviewVisisble}">
@@ -163,7 +176,10 @@
         </a>
     </div>
 
+   
+
     <div class="oeOWRTAreaPanel oeOWRTAreaPanelProjects" data-binding="{@visible: areaPanelProjectsVisisble}">
+                
         <div class="oeOWRTAreaPanelCell oeOWRTAreaPanelOverviewLeft">
             <div class="oeOWRTAreaChartSelectBox">
                 <div data-binding="{className: oeOWRTProjChartYearClass}">
@@ -179,10 +195,13 @@
                 <legend data-binding="{@text:projectChartLegendText}" data-content="">Title of Current Chart</legend>                
                 <div class="oeOWRTAreaProjectChart" data-region-name="oeOWRTAreaProjectsChart"></div>                                
             </fieldset>            
-        </div>
+        </div>                
     </div>
 
+    
+
     <div class="oeOWRTAreaPanel oeOWRTAreaPanelFunding" data-binding="{@visible: areaPanelFundingVisisble}">
+                                
         <div class="oeOWRTAreaPanelCell oeOWRTAreaPanelOverviewLeft">
             <div class="oeOWRTAreaChartSelectBox">
                 <div data-binding="{className: oeOWRTFundingChartTotalClass}">
@@ -210,7 +229,9 @@
         </div>
     </div>
 
+   
     <div class="oeOWRTAreaPanel oeOWRTAreaPanelResults" data-binding="{@visible: areaPanelResultsVisisble}">
+                
         <table class="owrtResultsTable">
             <thead>
                 <tr>

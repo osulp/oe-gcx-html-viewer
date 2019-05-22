@@ -2,14 +2,18 @@
 /// <reference path="./../../_Definitions/Framework.AMD.d.ts" />
 /// <reference path="./../../_Definitions/Framework.UI.AMD.d.ts" />
 /// <reference path="./../../_Definitions/Mapping.Infrastructure.AMD.d.ts" />
-import { ViewBase } from "geocortex/framework/ui/ViewBase";
+import { ModuleBase } from "geocortex/framework/application/ModuleBase";
 import { ViewerApplication } from "geocortex/infrastructure/Viewer";
 
-export class OE_OITTView extends ViewBase {
+export class OE_OITTModule extends ModuleBase {
 
     app: ViewerApplication;
 
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
     }
+
+    initialize(config: any): void {        
+    }
+
 }

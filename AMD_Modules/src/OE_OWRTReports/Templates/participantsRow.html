@@ -1,0 +1,20 @@
+﻿<div class="oeTableRow oeTableRowAltColors" data-binding="{@source: project_partcipants}{@template-for: project_partcipants}">
+    <div class="oePartCell oePartCellParticipant" style="width:500px">
+        <a href="javascript:void(0)" data-binding="{@event-onclick: toggleElement}">
+            <span data-binding="{@text: participant}"></span>
+        </a>
+        <div class="participantDiv" data-binding="{id: htmlID}">
+            <span data-binding="{@text: contact}"></span>
+            <h1>Roles</h1>
+            <ul data-binding="{@source:roles}">
+                <li data-binding="{@template-for: roles} {@text: name}"></li>
+            </ul>
+            <h2>Type of Participant</h2>
+            <ul data-binding="{@source:types}">
+                <li data-binding="{@template-for: types} {@text: name}"></li>
+            </ul>
+        </div>
+    </div>
+    <div class="oePartCell oePartCellFundValue"></div>
+    <div class="oePartCell oePartCellFundValue"></div>
+</div>
