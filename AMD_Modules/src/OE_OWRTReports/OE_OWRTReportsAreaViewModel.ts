@@ -295,10 +295,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     chartFundingPartData: any = {};
 
     queryUrlOWRT: string;    
-    //queryReportPoints: string;
-    queryUrlProjectInfo: string;
-    queryUrlParts: string;
-
+    
     urlMainMapService: string;
     layerIDProjectPoints: number;
     urlSWCDMapService: string;
@@ -308,7 +305,10 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     queryUrlSWCD: string;
     queryUrlBasins: string;
     queryUrlHUC8: string;
-        
+
+    queryUrlActivityTypes: string;
+
+    //drop down menus, area geometry, activity types for chart table view
     fsBasins: esri.tasks.FeatureSet = null;
     fsHUC8: esri.tasks.FeatureSet = null;
     fsCounty: esri.tasks.FeatureSet = null;
@@ -316,18 +316,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     fsSWCD: esri.tasks.FeatureSet = null;
     fsSelectedAreaGeometry: esri.tasks.FeatureSet = null;    
     fsActivityTypeStrings: esri.tasks.FeatureSet = null;
-
-    fsProjectInfo: esri.tasks.FeatureSet = null;
-    fsActivities: esri.tasks.FeatureSet = null;
-    fsParticipants: esri.tasks.FeatureSet = null;
-    fsResults: esri.tasks.FeatureSet = null;
-    fsResultsFishPassage: esri.tasks.FeatureSet = null;
-    fsCentroidsForMap: esri.tasks.FeatureSet = null;
-
-    fsPartSuperTypes: esri.tasks.FeatureSet = null;
-    fsPartTypes: esri.tasks.FeatureSet = null;
-    participantTypeSuperTypeMap: any = {};
-
+    
     owebRequestsCount: number = 0;
     owebRequestsDone: number = 0;
     owebRequestsErrors: string = null;
@@ -341,6 +330,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
     activeTab: string = "overview";
 
+    //async completion tallies
     toCompleteProject: number = 1;
     toCompleteFunds: number = 3;
     toCompleteResults: number = 1;
@@ -349,15 +339,8 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     toCompleteResultsCurrent: number = 0;
                 
     selectedAreaGeometry: esri.geometry.Polygon = null;    
-    graphicsArrayPrimaryRecords: esri.Graphic[] = null;
-    primaryRecordIDSlots: any[] = null;
-    projectInfoIDS: any[] = null;
-    projectInfoAtts: any[] = null;
-        
-    queryUrlPartSuperTypes: string;
-    queryUrlPartTypes: string;    
-    queryUrlActivityTypes: string;
-                     
+    graphicsArrayPrimaryRecords: esri.Graphic[] = null;        
+             
     sequenceTasks: OE_OWRTReportsViewModelSequenceTask[] = [];    
     sequenceErrors: string = "";
     sequenceOnComplete: any = null;
@@ -403,8 +386,6 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     lastProjectTabChartName: string;
     lastFundingTabChartName: string;
     lastResultsChartName: string;
-    //projectChartString: string;
-    //fundingChartString: string;
 
     //table data view
     owrtChartsTableContainerVisible: Observable<boolean> = new Observable<boolean>(false);
@@ -427,8 +408,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
     //funding invest by act by year table
     owrtTableDataFundInvestByActByYear: ObservableCollection<object> = new ObservableCollection<object>(null); //{"year:0,"combined":0,"upland":0,"instream":0.....etc}    
-    
-                    
+                        
     //overview
     areaPanelOverviewVisisble: Observable<boolean> = new Observable<boolean>(true);
     areaTotalProjects: Observable<string> = new Observable<string>("0");
@@ -442,12 +422,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     fsRankingsInvestment: esri.tasks.FeatureSet;
     rankingsCount: any = [];
     rankingsInvestment: any = [];
-        
-    //projectAttributesMap[project_nbr] = projectAttributes;
-    projectNbrAttributesMap: object = {};
-    //projectIDAttributesMap[project_id] = projectAttributes;
-    projectIDAttributesMap: object = {};
-
+    
     //projects    
     projectsTabProcessed: boolean = false;
 
@@ -512,38 +487,6 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
     oeOWRTResultsChartCrossingsClass: Observable<string> = new Observable<string>("");
         
-    resultsCrossingsDefs: any;
-    resultsCrossingsData: object[]; //{"year:"","total":0}
-        
-    resultsWaterflowDefs: any;
-    resultsWaterflowData: object[];
-
-    resultsScreensDefs: any;
-    resultsScreensData: object[];
-
-    resultsFishHabitatMilesDefs: any;
-    resultsFishHabitatMilesData: object[];
-
-    resultsRiparianMilesDefs: any;
-    resultsRiparianMilesData: object[];
-
-    resultsInstreamMilesDefs: any;
-    resultsInstreamMilesData: object[];
-
-    resultsWetlandDefs: any;
-    resultsWetlandData: object[];
-
-    resultsUplandDefs: any;
-    resultsUplandData: object[];
-
-    resultsRiparianDefs: any;
-    resultsRiparianData: object[];
-
-    resultsEstuarineDefs: any;
-    resultsEstuarineData: object[];
-
-    
-        
     initialize(config: any): void {
 
         var site = (<any>this).app.site;
@@ -591,21 +534,13 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         let mService = this._GetServiceByName("OWRT_DEV");
         this.urlMainMapService = mService.serviceUrl;
         this.layerIDProjectPoints = Number(this._GetLayerIDByName(mService, "Poly_Centroids").id);
-        //this.layerIDProjectPoints = Number(this._GetLayerIDByName(mService, "PointsForReport").id);
-        //this.queryReportPoints = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "PointsForReport").id;
-        //this.queryUrlOWRT = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "ALL_POLYS_SDE_WM").id;
         this.queryUrlOWRT = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Poly_Centroids").id;
                         
         this.queryUrlCounty = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Oregon Counties").id;
         this.queryUrlBasins = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Oregon Plan Basins").id;
         this.queryUrlHUC8 = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "8-Digit Hydrologic Unit Code").id;
         this.queryUrlWSC = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Watershed Councils").id;
-
-        this.queryUrlProjectInfo = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PROJECT_INFO").id;
-
-        this.queryUrlParts = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PARTICIPANTS").id;
-        this.queryUrlPartSuperTypes = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PARTICIPANTS_SUPERTYPE_LU").id;
-        this.queryUrlPartTypes = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PARTICIPANTS_TYPE_LU").id;        
+        
         this.queryUrlActivityTypes = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "ACTIVITY_TYPES").id;
 
         mService = this._GetServiceByName("Soil and Water Conservation District Boundaries (WM)");
@@ -628,16 +563,13 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                 { "name": "State", "value": "state" },
                 { "name": "OWEB Reporting Basin", "value": "basin" },
                 { "name": "Subbasin", "value": "subbasin" },
-                { "name": "County", "value": "county" },
-                { "name": "Watershed Council", "value": "wsc" },
-                { "name": "Soil & Water Conservation District", "value": "swcd" }
+                { "name": "County", "value": "county" }                
             ]
         );
 
-        //this.esriMapSymbol = new esri.symbol.SimpleMarkerSymbol();
-        //this.esriMapSymbol.setColor(new esri.Color([0, 255, 255, 0.45])); 
-        //new esri.Color([0, 255, 255]), 4), new esri.Color([0, 255, 255, 0.25])
-        
+        //{ "name": "Watershed Council", "value": "wsc" },
+        //{ "name": "Soil & Water Conservation District", "value": "swcd" }
+                
         //get the OWRT drawing color data
         var requestHandle = esri.request({
             "url": this.queryUrlOWRT + "?f=json",            
@@ -780,10 +712,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
             query.outStatistics = outStats;
         if (statsGroup != null)
             query.groupByFieldsForStatistics = statsGroup;
-
-        //console.log("Queuing: " + queryString);
-        //console.log("Where: " + where);
-        
+                
         var queryTask = new esri.tasks.QueryTask(queryString);
         let onSuccess;
 
@@ -854,13 +783,9 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                 
         let queryTask = new esri.tasks.QueryTask(queryURL);
         var onSuccess = queryTask.on("execute-relationship-query-complete", (results: any) => {
-
-            //if (results && results.featureSets[objectID] && (<esri.tasks.FeatureSet>results.featureSets[objectID]).features.length > 0) {
-       
-            //myModel[targetFeatureSet] = (<esri.tasks.FeatureSet>results.featureSets[objectID]);
+                        
             if (results && typeof results.featureSets != "undefined" && results.featureSets != null) {
-
-                //myModel[targetFeatureSet] = results.featureSets;
+                
                 if (resetTargetFeatureSet)
                     myModel[targetFeatureSet] = new esri.tasks.FeatureSet();
 
@@ -905,30 +830,13 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         this._sequenceQuery(this.queryUrlSWCD, "1=1", ["SWCD_Name"], "fsSWCD", "", "SWCD");
                 
         //types
-        this._sequenceQuery(this.queryUrlActivityTypes, "1=1", ["activity_type"], "fsActivityTypeStrings", "", "Activity Type Strings", false, true, ["activity_type"]);                
-        this._sequenceQuery(this.queryUrlPartSuperTypes, "1=1", ["participant_super_type,super_type_lu_id"], "fsPartSuperTypes", "", "Participant Super Type");
-        this._sequenceQuery(this.queryUrlPartTypes, "1=1", ["super_type_lu_id,participant_type_lu_id"], "fsPartTypes", "", "Participant Type");
+        this._sequenceQuery(this.queryUrlActivityTypes, "1=1", ["activity_type"], "fsActivityTypeStrings", "", "Activity Type Strings", false, true, ["activity_type"]);
 
         this._MoveCurrentSequenceProgress();
     }
 
     private _RequiredFeatureSetsDone() {
-                
-        this.participantTypeSuperTypeMap = {};
-
-        //build participant type to super type map
-        for (let i = 0; i < this.fsPartTypes.features.length; i++)
-        {                        
-            //store partType id as object property and store the super type name as the value            
-            for (let sIndex = 0; sIndex < this.fsPartSuperTypes.features.length; sIndex++)
-            {
-                if (this.fsPartTypes.features[i].attributes.super_type_lu_id == this.fsPartSuperTypes.features[sIndex].attributes.super_type_lu_id) {
-                    this.participantTypeSuperTypeMap[this.fsPartTypes.features[i].attributes.participant_type_lu_id] = this.fsPartSuperTypes.features[sIndex].attributes.participant_super_type;                    
-                    break;
-                }
-            }
-        }
-
+      
         this.requiredFeaturesLoaded.set(true);
         
         if (!this._IsNullOrEmpty(this.pipeParamsFromURL))
@@ -953,11 +861,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     }
 
     private _GetReportFeatureSets(whereIn: string) {
-
-        //this._GetReportJSONSets();
-                
-        //console.log("Report query: " + whereIn);
-
+        
         //clear tasks
         this.sequenceTasks = [];
 
@@ -983,11 +887,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         this._sequenceQueryLarge(this.queryUrlOWRT, whereIn, queryGeometry,
             ["OBJECTID", "project_nbr"],
             "graphicsArrayPrimaryRecords", "Poly Projects", false);
-
-        /*this._sequenceQueryLarge(this.queryUrlOWRT, whereIn, queryGeometry,
-            ["OBJECTID", "project_id", "project_nbr","total_cash", "total_inkind", "complete_year"],
-            "graphicsArrayPrimaryRecords", "Poly Projects", false);*/
-        
+                
         this._MoveCurrentSequenceProgress();
     }
         
@@ -1005,198 +905,13 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     }
 
     private _GetReportFeatureSetsDone() {
-
-        var recordsPerRequest = 50;
-        var recordToTrigger = recordsPerRequest;
-        var targetSlot = 0;
-
-        this.primaryRecordIDSlots = [];
-        this.primaryRecordIDSlots[targetSlot] = [];
-
-        this.projectIDAttributesMap = {};
-        //this.projectNbrAttributesMap = {};
-
-        let usedProjectIDs = {};
-
-        let usedProjectNbrs = {};
-        let nbrCount = 0;
-        let idCount = 0;
-
-        /*for (let i = 0; i < this.graphicsArrayPrimaryRecords.length; i++) {
-
-            let workingAttributes = this.graphicsArrayPrimaryRecords[i].attributes;
-
-            //move slot
-            if (this.primaryRecordIDSlots[targetSlot].length >= recordsPerRequest) {
-                targetSlot++;
-                this.primaryRecordIDSlots[targetSlot] = [];
-            }
-
-            //only include unique project numbers.  The poly layer has multiple records for the same project number for project polygons and activity types
-            if (this._IsNullOrEmpty(usedProjectIDs[workingAttributes.project_id]))
-            {
-                //project objectids (should be unique?)
-                this.primaryRecordIDSlots[targetSlot].push(Number(workingAttributes.OBJECTID));
-                idCount++;
-            }
-            usedProjectIDs[workingAttributes.project_id] = workingAttributes.project_id;        
-        }*/
-
+                    
         this._GetReportJSONSets(this._OWEBOverviewReady, [0]);
         this._GetReportJSONSets(this._OWEBProjectsReady, [1, 2]);
         this._GetReportJSONSets(this._OWEBFundsReady, [3]);
-        this._GetReportJSONSets(this._OWEBResultsReady, [4]);
-
-        /*if (this.geoTypeValue.get().toLowerCase() == "state")
-            this._GetRelationshipData(this._BuildOverview);
-        else
-            this._GetRelationshipData(this._BuildOverview, true, true, true);*/
-    }
-
-    private _GetProjectInfo()
-    {
-        let workingURL = this.queryUrlOWRT;//this.queryUrlProjectInfo;
-
-        //clear tasks
-        this.sequenceTasks = [];
-        this.sequenceErrors = "";
-        this.sequenceOnComplete = this._ProjectInfosDone;
-
-        let relatedIDCount: number = 0;
-
-        //related project info
-        if (this._IsNullOrEmpty(this.fsProjectInfo)) {
-
-            this.fsProjectInfo = new esri.tasks.FeatureSet();
-            for (let i = 0; i < this.primaryRecordIDSlots.length; i++) {
-                this._sequenceRelationshipQuery(workingURL, this.primaryRecordIDSlots[i], 0, ["OBJECTID", "project_id","project_nbr", "total_cash", "total_inkind","complete_year"], "fsProjectInfo", "Project Info Table", false);
-            }
-        }
-
-        this._MoveCurrentSequenceProgress();
-    }    
-
-    private _ProjectInfosDone(): void {
-
-        var recordsPerRequest = 50;
-        var recordToTrigger = recordsPerRequest;
-        var targetSlot = 0;
-
-        //this.primaryRecordIDSlots = [];
-        //this.primaryRecordIDSlots[targetSlot] = [];
-
-        this.projectInfoIDS = [];
-        this.projectInfoIDS[targetSlot] = [];
-
-        this.projectIDAttributesMap = {};
-        let projectIDCount = 0;
-
-        //unique project records by OBJECTID
-        //this.projectInfoAtts = [];
-
-        let projectNbrs = {};
-        let projectNbrCount = 0;
-                
-        for (let i = 0; i < this.fsProjectInfo.features.length; i++) {
-
-            let workingAttributes = this.fsProjectInfo.features[i].attributes;
-
-            //move slot
-            if (this.projectInfoIDS[targetSlot].length >= recordsPerRequest) {
-                targetSlot++;
-                this.projectInfoIDS[targetSlot] = [];
-            }
-
-            //project objectids (should be unique?)
-            this.projectInfoIDS[targetSlot].push(Number(workingAttributes.OBJECTID));
-
-            //unique values only
-            if (this._IsNullOrEmpty(this.projectIDAttributesMap[workingAttributes.project_id])) {
-
-                this.projectIDAttributesMap[workingAttributes.project_id] = workingAttributes;
-                projectIDCount++;
-            }
-
-            //unique project_nbrs
-            if (this._IsNullOrEmpty(projectNbrs[workingAttributes.project_nbr])) {
-
-                projectNbrs[workingAttributes.project_nbr] = 1;
-                projectNbrCount++;
-            }
-        }
-
-        console.log("Nbr: "+projectNbrCount);
-        console.log("ID: "+projectIDCount);
-        
-        if (this.geoTypeValue.get().toLowerCase() == "state")
-            this._GetRelationshipData(this._BuildOverview);
-        else
-            this._GetRelationshipData(this._BuildOverview, true, true, true);
+        this._GetReportJSONSets(this._OWEBResultsReady, [4]);        
     }
     
-    private _GetRelationshipData(onComplete:any,getActivities:boolean=false,getParticipants:boolean=false,getResults:boolean=false) {
-
-        //console.log("Total project ids for relationship queries: " + this.primaryRecordIDSlots.length);        
-
-        let workingURL = this.queryUrlOWRT;//this.queryUrlProjectInfo;
-
-        //clear tasks
-        this.sequenceTasks = [];
-        this.sequenceErrors = "";
-        this.sequenceOnComplete = onComplete;
-
-        let relatedIDCount: number = 0;
-                        
-        //related activities
-        if (getActivities && this._IsNullOrEmpty(this.fsActivities)) {
-                        
-            this.fsActivities = new esri.tasks.FeatureSet();
-            for (let i = 0; i < this.primaryRecordIDSlots.length; i++) {
-                this._sequenceRelationshipQuery(workingURL, this.primaryRecordIDSlots[i], 9, ["OBJECTID", "total", "activity_type", "project_nbr"], "fsActivities", "Activities", false);
-            }
-        }
-        
-        //setup participants relationships queries
-        if (getParticipants && this._IsNullOrEmpty(this.fsParticipants))
-        {
-            this.fsParticipants = new esri.tasks.FeatureSet();
-
-            for (let i = 0; i < this.primaryRecordIDSlots.length; i++) {
-                this._sequenceRelationshipQuery(workingURL, this.primaryRecordIDSlots[i], 3,
-                    ["OBJECTID","participant_id", "cash", "inkind", "participant_type_lu_id"], "fsParticipants", "Participants Relationships",
-                    false,"cash > 0 OR inkind > 0");
-            }
-
-            /*for (let i = 0; i < this.primaryRecordProjectIDSlots.length; i++) {
-                this._sequenceQuery(this.queryUrlParts, "(cash > 0 OR inkind > 0) AND project_id IN (" + this.primaryRecordProjectIDSlots[i].join(",") + ")",
-                    ["OBJECTID", "participant_id", "cash", "inkind", "participant_type_lu_id"], "fsParticipants", null, "Parts",null,false,null,null,false,false,true);
-            }*/            
-        }
-
-        //setup results relationship queries
-        if (getResults && this._IsNullOrEmpty(this.fsResults))
-        {
-            this.fsResults = new esri.tasks.FeatureSet();
-            this.fsResultsFishPassage = new esri.tasks.FeatureSet();
-                        
-            for (let i = 0; i < this.primaryRecordIDSlots.length; i++) {
-
-                //get records not related to a specific fish passage group
-                this._sequenceRelationshipQuery(workingURL, this.primaryRecordIDSlots[i], 4, ["OBJECTID","project_id", "activity_type", "quantity", "unit"], "fsResults", "Results Relationships", false,
-                    "result NOT LIKE '%fish habitat made accessible%' AND result NOT LIKE '%accessible by the removal%'");
-
-                //get specific fish passage group (this would be ResultsLUID of 2 and 17) Text search eliminates 18 which would be included otherwise
-                this._sequenceRelationshipQuery(workingURL, this.primaryRecordIDSlots[i], 4, ["OBJECTID","project_id", "activity_type", "quantity", "unit"], "fsResultsFishPassage", "Results Fish Passage", false,
-                    "result LIKE '%fish habitat made accessible%' AND result NOT LIKE '%accessible by the removal%'");
-            }
-        }
-
-        console.log("Activites: " + getActivities + " Participants: " + getParticipants+" Results: "+ getResults)
-        console.log("Total relationship requests to perform: " + this.sequenceTasks.length);
-
-        this._MoveCurrentSequenceProgress();  
-    }
-
     private _GetReportJSONSets(onComplete:any, indexesToLoad:number[]): void
     {                   
         let d = new Date();
@@ -1244,9 +959,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         //json request requires an extent of state for geotype of state.
         if (strGeoType == "state")
             strExtent = "state";
-
-        //let requestURL = urlBase + "?strYears=" + strYears + "&strGeoType=" + strGeoType + "&strExtent=" + strExtent + "&sReportType=" + reportTypes[0];
-                
+                        
         let reportThis = this;
                 
         for (let i = 0; i < indexesToLoad.length; i++)
@@ -1354,8 +1067,6 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
                     if (this._IsNullOrEmpty(this.fundingChartByActivityYearData[fundingByActYearIndex[year]][workingType.ProjType]))
                         this.fundingChartByActivityYearData[fundingByActYearIndex[year]][workingType.ProjType] = workingType[year];
-                    //else
-                    //  this.fundingChartByActivityYearData[fundingByActYearIndex[year]][workingType.ProjType] += workingType[year];
                 }
             }
         }
@@ -1511,7 +1222,6 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
             if (this._IsNullOrEmpty(this.owebRequestsErrors))
             {
-                //this._OwebJsonToReportData();
                 onComplete(this);
             }
             else
@@ -1584,204 +1294,15 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         }
         
     }
-
-    /*private _BuildOverview(): void
-    {
-        let sYearNum: number;
-        let eYearNum: number;
-
-        //overview data
-        let totalProjects = 0;
-        var totalInvestment = 0;
-
-        //projects data
-        this.projectChartYearData = [];
-        var yearArrayIndex: object = {};
-
-        //funding data
-        this.totalInvestedCash = 0;
-        this.totalInvestedInkind = 0;
-        
-        this.fundingChartByYearData = [];
-        let investmentsByYearKey = {};
-
-        //setup investments by year dataset
-        sYearNum = Number(this.startYear.get());
-        eYearNum = Number(this.endYear.get());
-        for (let year = sYearNum; year <= eYearNum; year++) {
-            investmentsByYearKey[year] = this.fundingChartByYearData.length;
-            this.fundingChartByYearData.push({ "year": year, "cash": 0, "inkind": 0 }); //new object
-        }
-
-        //build year series
-        for (var i = sYearNum; i <= eYearNum; i++) {
-            //the new year index will be the length of the array                     
-            if (yearArrayIndex[i] === "undefined" || yearArrayIndex[i] == null)
-                yearArrayIndex[i] = this.projectChartYearData.length;
-
-            this.projectChartYearData.push({ "year": i, "projects": 0 });
-        }
-
-        for (let i = 0; i < this.fsProjectInfo.features.length; i++) {
-
-            let workingAttributes = this.fsProjectInfo.features[i].attributes;
-                        
-            //project number map
-            this.projectNbrAttributesMap[workingAttributes.project_nbr] = workingAttributes;
-
-            //total invested
-            totalInvestment += workingAttributes.total_cash + workingAttributes.total_inkind;
-
-            //funding data
-            this.totalInvestedCash += workingAttributes.total_cash;
-            this.totalInvestedInkind += workingAttributes.total_inkind;
-
-            //investments by year
-            if (investmentsByYearKey[workingAttributes.complete_year] === "undefined" || investmentsByYearKey[workingAttributes.complete_year] == null) {
-                investmentsByYearKey[workingAttributes.complete_year] = this.fundingChartByYearData.length;
-                this.fundingChartByYearData.push({ "year": workingAttributes.complete_year, "cash": workingAttributes.total_cash, "inkind": workingAttributes.total_inkind }); //new object
-            }
-            else {
-                this.fundingChartByYearData[investmentsByYearKey[workingAttributes.complete_year]]["cash"] += workingAttributes.total_cash;//sum object
-                this.fundingChartByYearData[investmentsByYearKey[workingAttributes.complete_year]]["inkind"] += workingAttributes.total_inkind;//sum object
-            }
-            
-            //projects by year data
-            if (sYearNum <= Number(workingAttributes.complete_year) && Number(workingAttributes.complete_year) <= eYearNum)
-                this.projectChartYearData[yearArrayIndex[Number(workingAttributes.complete_year)]]["projects"] += 1;
-
-            totalProjects++;
-        }
-
-        //total projects
-        this.areaTotalProjects.set(totalProjects.toString());
-
-        //total investment
-        this.areaTotalInvestment.set("$" + totalInvestment.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$&,'));
-        
-        this._LoadReport();
-    }*/
-
+    
     private _BuildOverview(): void
-    {
-        //build related queries with X records per query.
-        //Relationships queries require objectids        
-        var recordsPerRequest = 50;
-        var recordToTrigger = recordsPerRequest;
-        var targetSlot = 0;
-
-        this.primaryRecordIDSlots = [];
-        this.primaryRecordIDSlots[targetSlot] = [];
-
-        this.projectIDAttributesMap = {};
-        this.projectNbrAttributesMap = {};
-
-        let project_nbr_dupes = "";
-
-        let sYearNum: number;
-        let eYearNum: number;
-
-        //overview data
-        //this.areaTotalProjects.set(features.length.toString());
-        let totalProjects = 0;
-        var totalInvestment = 0;
-
-        let totalProjectsPIDUnique = 0;
-        let totalInvestmentPIDUnique = 0;
-        let PIDUsed = {};
-
-        let totalProjectsPNumUnique = 0;
-        let totalInvestmentPNumUnique = 0;
-        let PNumUsed = {};
-
-        //projects data
-        //this.projectChartYearData = [];
-        var yearArrayIndex: object = {};
-
+    {        
         //funding data
         this.totalInvestedCash = 0;
         this.totalInvestedInkind = 0;
-        //let projectedSummed: any = {};
-        //let processedProjectNumber: any = {};
 
-        //this.fundingChartByYearData = [];
         let investmentsByYearKey = {};
-
-        /*
-
-        //setup investments by year dataset
-        sYearNum = Number(this.startYear.get());
-        eYearNum = Number(this.endYear.get());
-        for (let year = sYearNum; year <= eYearNum; year++) {
-            investmentsByYearKey[year] = this.fundingChartByYearData.length;
-            this.fundingChartByYearData.push({ "year": year, "cash": 0, "inkind": 0 }); //new object
-        }
-
-        //build year series
-        for (var i = sYearNum; i <= eYearNum; i++) {
-            if (yearArrayIndex[i] === "undefined" || yearArrayIndex[i] == null)
-                yearArrayIndex[i] = this.projectChartYearData.length;
-
-            this.projectChartYearData.push({ "year": i, "projects": 0 });
-        }
-
-        for (let i = 0; i < this.graphicsArrayPrimaryRecords.length; i++) {
-
-            let workingAttributes = this.graphicsArrayPrimaryRecords[i].attributes;
-
-            //move slot
-            if (this.primaryRecordIDSlots[targetSlot].length >= recordsPerRequest) {
-                targetSlot++;
-                this.primaryRecordIDSlots[targetSlot] = [];
-            }
-
-            //project objectids (should be unique?)
-            this.primaryRecordIDSlots[targetSlot].push(Number(workingAttributes.OBJECTID));
-
-            //unique values only
-            if (this._IsNullOrEmpty(this.projectIDAttributesMap[workingAttributes.project_id])) {
-
-                this.projectIDAttributesMap[workingAttributes.project_id] = workingAttributes;
-
-                //total invested
-                totalInvestment += workingAttributes.total_cash + workingAttributes.total_inkind;
-
-                //funding data
-                this.totalInvestedCash += workingAttributes.total_cash;
-                this.totalInvestedInkind += workingAttributes.total_inkind;
-
-                //investments by year
-                if (investmentsByYearKey[workingAttributes.complete_year] === "undefined" || investmentsByYearKey[workingAttributes.complete_year] == null) {
-                    investmentsByYearKey[workingAttributes.complete_year] = this.fundingChartByYearData.length;
-                    this.fundingChartByYearData.push({ "year": workingAttributes.complete_year, "cash": workingAttributes.total_cash, "inkind": workingAttributes.total_inkind }); //new object
-                }
-                else {
-                    this.fundingChartByYearData[investmentsByYearKey[workingAttributes.complete_year]]["cash"] += workingAttributes.total_cash;//sum object
-                    this.fundingChartByYearData[investmentsByYearKey[workingAttributes.complete_year]]["inkind"] += workingAttributes.total_inkind;//sum object
-                }
-
-                //projects by year data
-                if (sYearNum <= Number(workingAttributes.complete_year) && Number(workingAttributes.complete_year) <= eYearNum)
-                    this.projectChartYearData[yearArrayIndex[Number(workingAttributes.complete_year)]]["projects"] += 1;
-
-                totalProjects++;
-            }
-
-            //project number map
-            this.projectNbrAttributesMap[workingAttributes.project_nbr] = workingAttributes;                        
-        }
-
-        //total projects
-        this.areaTotalProjects.set(totalProjects.toString());
-
-        //total investment
-        this.areaTotalInvestment.set("$" + totalInvestment.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$&,'));
-
-        */
-
-        //console.log("PID Uniques: " + totalProjectsPIDUnique + " :: " + totalInvestmentPIDUnique);
-        //console.log("PNum Uniques: " + totalProjectsPNumUnique + " :: " + totalInvestmentPNumUnique);
-                
+                        
         this._LoadReport();
     }
                 
@@ -1814,26 +1335,12 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     private _LoadReport() {
                 
         //map and overview data
-        this._loadEsirMap(null, null, this);
-        //this._BuildOverview(this.graphicsArrayPrimaryRecords);
-
-        //build related chart(s)
-        //this.ShowProjectChartYear("", true);
-        //this.ShowFundingTotal("", true);
-        //this.ShowFundingYear("", true);
+        this._loadEsirMap(null, null, this);       
 
         this.ranksVisible.set(false);
 
         //load everything if the selection is smaller
         if (this.geoTypeValue.get() !== "state") {
-            //this._ProcessActivities();
-            //this._ProcessParticipants();
-            //this._ProcessResults();
-
-            //this.projectsTabProcessed = true;
-            //this.fundingTabProcessed = true;
-            //this.resultsTabProcessed = true;
-
             this.ranksVisible.set(false);
         }
                                 
@@ -1852,9 +1359,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         return valueIn;
     }
 
-    public OptionsGeoTypeChanged(geoTypeValueIn: string, geoTypeName:string, forceAreaSelection:string = null) {
-        //console.log(geoTypeSelected);
-
+    public OptionsGeoTypeChanged(geoTypeValueIn: string, geoTypeName:string, forceAreaSelection:string = null) {        
         //force the geotype name if there is a matching value
         this.geoTypeName.set(this._GetGeoTypeNameByValue(geoTypeValueIn));
 
@@ -1897,16 +1402,13 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                 break;
             case "state":
             default:
-                //this.geoTypeValue.set("1=1");
                 this.areaNameVisisble.set(false);
                 this.areaNamePolyQueryString.set("");
                 this.geoTypeGeometryLayerDef.set("");
                 this.areaNameSelected.set("");
-                //this.esriLayerDefintionString.set("1=1");
 
                 this.areaNamePointsQueryString.set("1=1");
                 this.BuildOptionsQuery();
-                //this.OptionsAreaChanged("1=1");
 
                 this.reportAreaList.clear();
                 this.reportAreaListVisible.set(false);
@@ -2060,9 +1562,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                 this.owrtTableHdrName.set("Contribution Types");
                 this.owrtTableHdrValue.set("Total Investment");
                 this.owrtChartsTableSharedVisible.set(true);
-
-                //(12345.67).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                //Number(someNumber.toFixed(1)).toLocaleString()
+                
                 this.owrtTableData.clear();
                 this.owrtTableData.addItem({ "name": "Cash",
                     "value": "$" + Number((<any>this.fundingChartTotalData[0]).cash).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
@@ -2157,7 +1657,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                         let workingAtt = this.fsActivityTypeStrings.features[aIndex].attributes.activity_type;
                         let sortAtt = workingAtt + "Sort";
                         newObject[sortAtt] = workingObject[workingAtt]; //copy raw value into new attribute
-                        newObject[workingAtt] = "$" + workingObject[workingAtt].toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+                        newObject[workingAtt] = "$" + Math.round(workingObject[workingAtt]).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
                         totalVal += Number((<any>workingObject[workingAtt]));
                     }
@@ -2211,33 +1711,11 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
         this.activeTab = "projects";
 
-        if (!this.projectsTabProcessed) {
-            /*this.loaderMessage.set("Loading Funding Tab...");
-            this.loaderVisible.set(true);
-            this.loaderSpinner.set(true);
-            this.reportOptionsPanelVisible.set(false);*/
-
+        if (!this.projectsTabProcessed) {            
             this.loaderProjectsVisible.set(true);
-
-            //this._GetReportJSONSets(this._OWEBFundingSourceQueryDone, [3]);
             return;
         }
-               
-        /*if (!this.projectsTabProcessed && this._IsNullOrEmpty(this.fsActivities))
-        {
-            this.loaderMessage.set("Loading Projects Tab...");
-            this.loaderVisible.set(true);
-            this.loaderSpinner.set(true);
-            this.reportOptionsPanelVisible.set(false);
-            //this.resultsFieldSetVisible.set(false);
-
-            this._GetRelationshipData(this._ProjectTabDataLoaded, true);
-            return;
-        }
-
-        if (!this.projectsTabProcessed)
-            this._ProcessActivities();*/
-
+         
         this.loaderProjectsVisible.set(false);
         this.projectsTabProcessed = true;
         this.loaderVisible.set(false);
@@ -2266,36 +1744,11 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         this.activeTab = "funding";
 
         if (!this.fundingTabProcessed)
-        {
-            /*this.loaderMessage.set("Loading Funding Tab...");
-            this.loaderVisible.set(true);
-            this.loaderSpinner.set(true);
-            this.reportOptionsPanelVisible.set(false);*/
-                        
+        {                        
             this.loaderFundsVisible.set(true);
-            
-            //this._GetReportJSONSets(this._OWEBFundingSourceQueryDone, [3]);
             return;
         }
-
-        /*if (!this.fundingTabProcessed && (this._IsNullOrEmpty(this.fsParticipants))) {
-            this.loaderMessage.set("Loading Funding Tab...");
-            this.loaderVisible.set(true);
-            this.loaderSpinner.set(true);
-            this.reportOptionsPanelVisible.set(false);
-            //this.resultsFieldSetVisible.set(false);
-
-            this._GetRelationshipData(this._FundingTabDataLoaded, true, true);
-            //this._GetActivityStats(this.LoadFundingTab);
-            return;
-        }
-                
-        if (!this.fundingTabProcessed)
-        {
-            this._ProcessActivities();
-            this._ProcessParticipants();
-        } */           
-
+        
         this.fundingTabProcessed = true;
         this.loaderFundsVisible.set(false);
 
@@ -2324,41 +1777,14 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
         this.activeTab = "results";
 
-        if (!this.resultsTabProcessed) {
-
-            /*this.loaderMessage.set("Loading Results Tab...");
-            this.loaderVisible.set(true);
-            this.loaderSpinner.set(true);
-            this.reportOptionsPanelVisible.set(false);*/
-
+        if (!this.resultsTabProcessed) {            
             this.loaderResultsVisible.set(true);
-
-            //this._GetReportJSONSets(this._OWEBResultsQueryDone, [4]);
             return;
         }
-
-        /*if (!this.resultsTabProcessed && this._IsNullOrEmpty(this.fsResults) ) {
-            this.loaderMessage.set("Loading Results Tab...");
-            this.loaderVisible.set(true);
-            this.loaderSpinner.set(true);
-            this.reportOptionsPanelVisible.set(false);
-            //this.resultsFieldSetVisible.set(false);
-
-            this._GetRelationshipData(this._ResultsTabDataLoaded, false, false, true);
-            return;
-        }
-
-        if (!this.resultsTabProcessed) {
-            this._ProcessResults();
-        }*/
-
+        
         this.loaderResultsVisible.set(false);
         this.resultsTabProcessed = true;
-        this.loaderVisible.set(false);
-                
-        //if (!this.resultsChart)
-            //this.ShowChart("results", "");
-            //this.ShowFundingTotal("total");
+        this.loaderVisible.set(false);                
     }
 
     private _ResultsTabDataLoaded() {
@@ -2488,14 +1914,11 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
             return;
         }
         
-        let colorsToUse: any = [[70, 132, 238], [220, 57, 18]];
-        //let colorsToUse: any = this._generateRGBArrayFromCount(2);
+        let colorsToUse: any = [[70, 132, 238], [220, 57, 18]];        
         this.fundingChartTotalDefs = this._BuildRestChartDefinition("activeChart", "Number of Projects by Year", "Pie", true, false, null, null);
                 
         this._BuildRestChartDefinitionSeriesItem(this.fundingChartTotalDefs, "Cash", "cash", colorsToUse, "C0");
-        this._BuildRestChartDefinitionSeriesItem(this.fundingChartTotalDefs, "Inkind", "inkind", colorsToUse, "C0");
-
-        //this.fundingChartTotalData = [{ "cash": this.totalInvestedCash, "inkind": this.totalInvestedInkind}];
+        this._BuildRestChartDefinitionSeriesItem(this.fundingChartTotalDefs, "Inkind", "inkind", colorsToUse, "C0");                
     }
         
     public ShowFundingYear(activeChartString: string, setupOnly: boolean=false) {
@@ -2659,8 +2082,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
             showVerticalStrips: false,
             showHorizontalStrips: false
         }
-                
-        //let colorsToUse: any = [[70, 132, 238], [220, 57, 18]];
+        
         let colorsToUse: any = this._generateRGBArrayFromCount(this.fsActivityTypeStrings.features.length);
         this.fundingChartByActivityYearDefs = this._BuildRestChartDefinition("activeChart", "Investments By Activity By Year", "Linear", true, false, chartCategoryDefs, areaDef);
 
@@ -2689,37 +2111,10 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                 }
                 else
                     axisIn.visible = false;
-
-                //(workingAtt.charAt(0).toUpperCase() + workingAtt.slice(1))
+                        
                 this._BuildRestChartDefinitionSeriesItem(this.fundingChartByActivityYearDefs, activityName, activityName, colorsToUse, "C0", "Line", axisIn);
             }
-        }
-
-       
-        
-        //create a series for each activity type
-        /*for (let i = 0; i < this.fsActivityTypeStrings.features.length; i++)
-        {
-            let workingAtt: string = this.fsActivityTypeStrings.features[i].attributes.activity_type;
-
-            let axisIn: RestChartAxisDefinition = {
-                visible: false,
-                showLabels: true,
-                showTicks: true,
-                title: "Funding",
-                minimum: 0                 
-            }
-
-            //only show the first axis
-            if (i == 0)
-                axisIn.visible = true;
-            else
-                axisIn.visible = false;
-
-            //(workingAtt.charAt(0).toUpperCase() + workingAtt.slice(1))
-            this._BuildRestChartDefinitionSeriesItem(this.fundingChartByActivityYearDefs, (workingAtt.charAt(0).toUpperCase() + workingAtt.slice(1)), workingAtt, colorsToUse, "C0", "Line", axisIn);
-        }*/
-        
+        }        
     }
 
     private ShowFundingSource(activeChartString: string, setupOnly:boolean=false) {
@@ -2736,9 +2131,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
             return;
         }
-
-        //let colorsToUse: any = [[70, 132, 238], [220, 57, 18]];
-
+        
         let workingObject = this.fundingChartBySourceData[0];
 
         let colorsToUse: any = this._generateRGBArrayFromCount(Object.keys(workingObject).length);
@@ -2849,10 +2242,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         
         //setup sort table on results tab
         $(".owrtResultsTable").tablesort();
-        /*$('.owrtResultsTable th.owrtResultsTotal').data('sortBy', function (th, td, tablesort) {
-            return parseInt(td.text());
-        });*/
-
+        
         $(".owrtChartTableShared").tablesort();
         $(".owrtChartTableFundInvestByYear").tablesort();
         $(".owrtChartTableFundInvestByActByYear").tablesort();        
@@ -2881,8 +2271,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
         //check for url paramemters
         if (!this._IsNullOrEmpty(this.pipeParamsFromURL)) {
-
-            //if (typeof this.pipeParamsFromURL == "string")
+            
             console.log("Params type: " + (typeof this.pipeParamsFromURL));
 
             //pipe delimited string
@@ -2984,29 +2373,17 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         this.activeTabChartName = "";
         this.projectChartActive = null;
         this.fundingChartActive = null;
-
-        //clear featuresets        
-        this.fsActivities = null;
-        this.fsParticipants = null;
-        this.fsResults = null;
-        this.fsCentroidsForMap = null;
-
+        
         //clear projects tab
-        this.projectsTabProcessed = false;
-        //this.projectChartActData = null;
-        this.projectChartActDefs = null;
-        //this.projectChartYearData = null;
+        this.projectsTabProcessed = false;        
+        this.projectChartActDefs = null;        
         this.projectChartYearDefs = null;        
         
         //clear funding tab
-        this.fundingTabProcessed = false;
-        //this.fundingChartByActivityData = null;
-        this.fundingChartByActivityDefs = null;
-        //this.fundingChartByActivityYearData = null;
-        this.fundingChartByActivityYearDefs = null;
-        //this.fundingChartByYearData = null;
-        this.fundingChartByYearDefs = null;
-        //this.fundingChartBySourceData = null;
+        this.fundingTabProcessed = false;        
+        this.fundingChartByActivityDefs = null;        
+        this.fundingChartByActivityYearDefs = null;        
+        this.fundingChartByYearDefs = null;        
         this.fundingChartBySourceDefs = null;
         
         //clear results tab
@@ -3023,473 +2400,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                   
         this._BuildNewReport(this.primaryQueryString.get());
     }
-    
-    private _ProcessResults() {
         
-        if (this._IsNullOrEmpty(this.fsResults))
-            return;
-
-        //results loop
-        let sYearNum: number;
-        let eYearNum: number;
-
-        this.resultsCrossingsData = [];
-        var crossingKey: any = {};
-
-        this.resultsScreensData = [];
-        var screenKey: any = {};
-
-        this.resultsInstreamMilesData = [];
-        var instreamMilesKey: any = {};
-
-        this.resultsFishHabitatMilesData = [];
-        var fishHabitatMilesKey: any = {};
-
-        this.resultsRiparianMilesData = [];
-        var riparianMilesKey: any = {};
-
-        this.resultsWaterflowData = [];
-        var waterflowKey: any = {};
-
-        this.resultsWetlandData = [];
-        var wetlandKey: any = {};
-
-        this.resultsUplandData = [];
-        var uplandKey: any = {};
-
-        this.resultsRiparianData = [];
-        var riparianKey: any = {};
-
-        this.resultsEstuarineData = [];
-        var estuarineKey: any = {};
-
-        //load all data with all years and zero count
-        let resultsDataSets: any[] = [
-            { "data": "resultsCrossingsData", "key": crossingKey },
-            { "data": "resultsScreensData", "key": screenKey },
-            { "data": "resultsInstreamMilesData", "key": instreamMilesKey },
-            { "data": "resultsFishHabitatMilesData", "key": fishHabitatMilesKey },
-            { "data": "resultsRiparianMilesData", "key": riparianMilesKey },
-            { "data": "resultsWaterflowData", "key": waterflowKey },
-            { "data": "resultsWetlandData", "key": wetlandKey },
-            { "data": "resultsUplandData", "key": uplandKey },
-            { "data": "resultsRiparianData", "key": riparianKey },
-            { "data": "resultsEstuarineData", "key": estuarineKey }
-        ];
-
-        sYearNum = Number(this.startYear.get());
-        eYearNum = Number(this.endYear.get());
-
-        for (let i = 0; i < resultsDataSets.length; i++) {
-            for (let year = sYearNum; year <= eYearNum; year++) {
-                resultsDataSets[i].key[year] = this[resultsDataSets[i].data].length;
-                this[resultsDataSets[i].data].push({ "year": year, "total": 0 }); //new object
-            }
-        }
-
-        let workingAtts: any;
-        let workingProjectAtts: any;
-
-        //clear results table data
-        this.resultsTableData.clear(); //object {"name":"result name","total":0,"graph":"resultGraphname"}
-
-        let resultsTableCrossing = { "name": "Total number of road/stream crossings improved for fish passage", "total": 0, "display": "0", "chart": "crossing" };
-        let resultsTableInstreamMiles = { "name": "Total miles of stream treated (instream activities)", "total": 0, "display": "0","chart": "instreamMiles" };
-        let resultsTableFishHabitatMiles = { "name": "Total miles of fish habitat made accessible due to road/stream crossing improvements (e.g. improvement or removal of culverts and other structures)", "total": 0, "display": "0","chart": "fishHabitatMiles" };
-        let resultsTableRiparianMiles = { "name": "Total linear stream miles treated (riparian activities)", "total": 0, "display": "0","chart": "riparianMiles" };
-        let resultsTableWaterflow = { "name": "Total water flow acquired", "total": 0, "display": "0","chart": "waterflow" };
-        let resultsTableWetland = { "name": "Total acres treated (wetland activities)", "total": 0, "display": "0","chart": "wetland" };
-        let resultsTableUpland = { "name": "Total acres treated (upland activities)", "total": 0, "display": "0","chart": "upland" };
-        let resultsTableRiparian = { "name": "Total acres treated (riparian activities)", "total": 0, "display": "0","chart": "riparian" };
-        let resultsTableEstuarine = { "name": "Total acres treated (estuarine activities)", "total": 0, "display": "0","chart": "estuarine" };
-        let resultsTableScreens = { "name": "Flow rate of water diverted by screens", "total": 0, "display": "0","chart": "screens" };
-                
-        let objectIDUsed = {};
-        
-        //special fish passage results
-        for (let i = 0; i < this.fsResultsFishPassage.features.length; i++) {
-            workingAtts = this.fsResultsFishPassage.features[i].attributes;
-            workingProjectAtts = this.projectIDAttributesMap[workingAtts.project_id];
-
-            //use unique objectids
-            if (!this._IsNullOrEmpty(objectIDUsed[workingAtts.OBJECTID]))
-                continue;
-            objectIDUsed[workingAtts.OBJECTID] = 1;
-
-            if (workingAtts.activity_type.toLowerCase() != "fish passage" || workingAtts.unit.toLowerCase() != "mile")
-                continue;
-            
-            if (fishHabitatMilesKey[workingProjectAtts.complete_year] === "undefined" || fishHabitatMilesKey[workingProjectAtts.complete_year] == null) {
-                fishHabitatMilesKey[workingProjectAtts.complete_year] = this.resultsFishHabitatMilesData.length;
-                this.resultsFishHabitatMilesData.push({ "year": workingProjectAtts.complete_year, "total": workingAtts.quantity }); //new object
-                resultsTableFishHabitatMiles.total += workingAtts.quantity;
-            }
-            else {
-                this.resultsFishHabitatMilesData[fishHabitatMilesKey[workingProjectAtts.complete_year]]["total"] += workingAtts.quantity;//sum object
-                resultsTableFishHabitatMiles.total += workingAtts.quantity;
-            }            
-        }
-
-        objectIDUsed = {};
-                        
-        //all other results
-        for (let i = 0; i < this.fsResults.features.length; i++) {
-            workingAtts = this.fsResults.features[i].attributes;
-            workingProjectAtts = this.projectIDAttributesMap[workingAtts.project_id];
-
-            //use unique objectids
-            if (!this._IsNullOrEmpty(objectIDUsed[workingAtts.OBJECTID]))
-                continue;
-            objectIDUsed[workingAtts.OBJECTID] = 1;
-
-            //object = {"year":"","total":""}
-            if (workingAtts.activity_type.toLowerCase() == "fish passage") {
-
-                if (workingAtts.unit.toLowerCase() == "crossing") {
-                    if (crossingKey[workingProjectAtts.complete_year] === "undefined" || crossingKey[workingProjectAtts.complete_year] == null) {
-                        crossingKey[workingProjectAtts.complete_year] = this.resultsCrossingsData.length;
-                        this.resultsCrossingsData.push({ "year": workingProjectAtts.complete_year, "total": workingAtts.quantity }); //new object
-                        resultsTableCrossing.total += workingAtts.quantity;
-                    }
-                    else {
-                        this.resultsCrossingsData[crossingKey[workingProjectAtts.complete_year]]["total"] += workingAtts.quantity;//sum object
-                        resultsTableCrossing.total += workingAtts.quantity;
-                    }
-                }
-                /*else if (workingAtts.unit.toLowerCase() == "mile") {
-                    if (fishHabitatMilesKey[workingProjectAtts.complete_year] === "undefined" || fishHabitatMilesKey[workingProjectAtts.complete_year] == null) {
-                        fishHabitatMilesKey[workingProjectAtts.complete_year] = this.resultsFishHabitatMilesData.length;
-                        this.resultsFishHabitatMilesData.push({ "year": workingProjectAtts.complete_year, "total": workingAtts.quantity }); //new object
-                        resultsTableFishHabitatMiles.total += workingAtts.quantity;
-                    }
-                    else {
-                        this.resultsFishHabitatMilesData[fishHabitatMilesKey[workingProjectAtts.complete_year]]["total"] += workingAtts.quantity;//sum object
-                        resultsTableFishHabitatMiles.total += workingAtts.quantity;
-                    }
-                }*/
-
-            }
-            else if (workingAtts.activity_type.toLowerCase() == "fish screening" && workingAtts.unit.toLowerCase() == "cfs") {
-                if (screenKey[workingProjectAtts.complete_year] === "undefined" || screenKey[workingProjectAtts.complete_year] == null) {
-                    screenKey[workingProjectAtts.complete_year] = this.resultsScreensData.length;
-                    this.resultsScreensData.push({ "year": workingProjectAtts.complete_year, "total": workingAtts.quantity }); //new object
-                    resultsTableScreens.total += workingAtts.quantity;
-                }
-                else {
-                    this.resultsScreensData[screenKey[workingProjectAtts.complete_year]]["total"] += workingAtts.quantity;//sum object
-                    resultsTableScreens.total += workingAtts.quantity;
-                }
-            }
-            else if (workingAtts.activity_type.toLowerCase() == "instream" && workingAtts.unit.toLowerCase() == "mile") {
-                if (instreamMilesKey[workingProjectAtts.complete_year] === "undefined" || instreamMilesKey[workingProjectAtts.complete_year] == null) {
-                    instreamMilesKey[workingProjectAtts.complete_year] = this.resultsInstreamMilesData.length;
-                    this.resultsInstreamMilesData.push({ "year": workingProjectAtts.complete_year, "total": workingAtts.quantity }); //new object
-                    resultsTableInstreamMiles.total += workingAtts.quantity;
-                }
-                else {
-                    this.resultsInstreamMilesData[instreamMilesKey[workingProjectAtts.complete_year]]["total"] += workingAtts.quantity;//sum object
-                    resultsTableInstreamMiles.total += workingAtts.quantity;
-                }
-            }
-            else if (workingAtts.activity_type.toLowerCase() == "instream flow" && workingAtts.unit.toLowerCase() == "cfs") {
-
-                if (waterflowKey[workingProjectAtts.complete_year] === "undefined" || waterflowKey[workingProjectAtts.complete_year] == null) {
-                    waterflowKey[workingProjectAtts.complete_year] = this.resultsWaterflowData.length;
-                    this.resultsWaterflowData.push({ "year": workingProjectAtts.complete_year, "total": workingAtts.quantity }); //new object
-                    resultsTableWaterflow.total += workingAtts.quantity;
-                }
-                else {
-                    this.resultsWaterflowData[waterflowKey[workingProjectAtts.complete_year]]["total"] += workingAtts.quantity;//sum object
-                    resultsTableWaterflow.total += workingAtts.quantity;
-                }
-
-            }
-            else if (workingAtts.activity_type.toLowerCase() == "riparian") {
-
-                if (workingAtts.unit.toLowerCase() == "acre") {
-                    if (riparianKey[workingProjectAtts.complete_year] === "undefined" || riparianKey[workingProjectAtts.complete_year] == null) {
-                        riparianKey[workingProjectAtts.complete_year] = this.resultsRiparianData.length;
-                        this.resultsRiparianData.push({ "year": workingProjectAtts.complete_year, "total": workingAtts.quantity }); //new object
-                        resultsTableRiparian.total += workingAtts.quantity;
-                    }
-                    else {
-                        this.resultsRiparianData[riparianKey[workingProjectAtts.complete_year]]["total"] += workingAtts.quantity;//sum object
-                        resultsTableRiparian.total += workingAtts.quantity;
-                    }
-                }
-                else if (workingAtts.unit.toLowerCase() == "mile") {
-                    if (riparianMilesKey[workingProjectAtts.complete_year] === "undefined" || riparianMilesKey[workingProjectAtts.complete_year] == null) {
-                        riparianMilesKey[workingProjectAtts.complete_year] = this.resultsRiparianMilesData.length;
-                        this.resultsRiparianMilesData.push({ "year": workingProjectAtts.complete_year, "total": workingAtts.quantity }); //new object
-                        resultsTableRiparianMiles.total += workingAtts.quantity;
-                    }
-                    else {
-                        this.resultsRiparianMilesData[riparianMilesKey[workingProjectAtts.complete_year]]["total"] += workingAtts.quantity;//sum object
-                        resultsTableRiparianMiles.total += workingAtts.quantity;
-                    }
-                }
-            }
-            else if (workingAtts.activity_type.toLowerCase() == "estuarine" && workingAtts.unit.toLowerCase() == "acre") {
-                if (estuarineKey[workingProjectAtts.complete_year] === "undefined" || estuarineKey[workingProjectAtts.complete_year] == null) {
-                    estuarineKey[workingProjectAtts.complete_year] = this.resultsEstuarineData.length;
-                    this.resultsEstuarineData.push({ "year": workingProjectAtts.complete_year, "total": workingAtts.quantity }); //new object
-                    resultsTableEstuarine.total += workingAtts.quantity;
-                }
-                else {
-                    this.resultsEstuarineData[estuarineKey[workingProjectAtts.complete_year]]["total"] += workingAtts.quantity;//sum object
-                    resultsTableEstuarine.total += workingAtts.quantity;
-                }
-            }
-            else if (workingAtts.activity_type.toLowerCase() == "wetland" && workingAtts.unit.toLowerCase() == "acre") {
-                if (wetlandKey[workingProjectAtts.complete_year] === "undefined" || wetlandKey[workingProjectAtts.complete_year] == null) {
-                    wetlandKey[workingProjectAtts.complete_year] = this.resultsWetlandData.length;
-                    this.resultsWetlandData.push({ "year": workingProjectAtts.complete_year, "total": workingAtts.quantity }); //new object
-                    resultsTableWetland.total += workingAtts.quantity;
-                }
-                else {
-                    this.resultsWetlandData[wetlandKey[workingProjectAtts.complete_year]]["total"] += workingAtts.quantity;//sum object
-                    resultsTableWetland.total += workingAtts.quantity;
-                }
-            }
-            else if (workingAtts.activity_type.toLowerCase() == "upland" && workingAtts.unit.toLowerCase() == "acre") {
-                if (uplandKey[workingProjectAtts.complete_year] === "undefined" || uplandKey[workingProjectAtts.complete_year] == null) {
-                    uplandKey[workingProjectAtts.complete_year] = this.resultsUplandData.length;
-                    this.resultsUplandData.push({ "year": workingProjectAtts.complete_year, "total": workingAtts.quantity }); //new object
-                    resultsTableUpland.total += workingAtts.quantity;
-                }
-                else {
-                    this.resultsUplandData[uplandKey[workingProjectAtts.complete_year]]["total"] += workingAtts.quantity;//sum object
-                    resultsTableUpland.total += workingAtts.quantity;
-                }
-            }
-            else if (workingAtts.activity_type.toLowerCase() == "road") {
-
-            }
-
-        }
-                
-        this._AddResultsToTable(resultsTableCrossing);
-        this._AddResultsToTable(resultsTableFishHabitatMiles);
-        this._AddResultsToTable(resultsTableScreens);
-        this._AddResultsToTable(resultsTableInstreamMiles);
-        this._AddResultsToTable(resultsTableRiparian);
-        this._AddResultsToTable(resultsTableRiparianMiles);
-        this._AddResultsToTable(resultsTableEstuarine);
-        this._AddResultsToTable(resultsTableWetland);
-        this._AddResultsToTable(resultsTableUpland);
-        this._AddResultsToTable(resultsTableWaterflow);
-        
-        //clear when done
-        this.fsResults = null;                
-
-        //build related charts
-        this.resultsCrossingsDefs = this.ShowResultsChart("", this.resultsCrossingsData, this.resultsCrossingsDefs, "total", "Crossings", true);
-
-        this.resultsScreensDefs = this.ShowResultsChart("", this.resultsScreensData, this.resultsScreensDefs, "total", "cfs", true);
-        this.resultsWaterflowDefs = this.ShowResultsChart("", this.resultsWaterflowData, this.resultsWaterflowDefs, "total", "cfs", true);
-
-        this.resultsInstreamMilesDefs = this.ShowResultsChart("", this.resultsInstreamMilesData, this.resultsInstreamMilesDefs, "total", "Miles", true);
-        this.resultsRiparianMilesDefs = this.ShowResultsChart("", this.resultsRiparianMilesData, this.resultsRiparianMilesDefs, "total", "Miles", true);
-        this.resultsFishHabitatMilesDefs = this.ShowResultsChart("", this.resultsFishHabitatMilesData, this.resultsFishHabitatMilesDefs, "total", "Miles", true);
-
-        this.resultsUplandDefs = this.ShowResultsChart("", this.resultsUplandData, this.resultsUplandDefs, "total", "Acres", true);
-        this.resultsRiparianDefs = this.ShowResultsChart("", this.resultsRiparianData, this.resultsRiparianDefs, "total", "Acres", true);
-        this.resultsWetlandDefs = this.ShowResultsChart("", this.resultsWetlandData, this.resultsWetlandDefs, "total", "Acres", true);
-        this.resultsEstuarineDefs = this.ShowResultsChart("", this.resultsEstuarineData, this.resultsEstuarineDefs, "total", "Acres", true);
-    }
-
-    private _AddResultsToTable(resultTableObject: any) {
-        resultTableObject.total = Math.round(resultTableObject.total);
-        resultTableObject.display = (<any>Math.round(resultTableObject.total)).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-        this.resultsTableData.addItem(resultTableObject);
-    }
-
-    private _ProcessParticipants() {
-
-        if (this._IsNullOrEmpty(this.fsParticipants))
-            return;
-        
-        //participants loop
-        this.fundingChartBySourceData = [];
-        let fundingSourceObject: any = {};
-
-        let partIDSummed: any = {};
-        let totalPartsIncluded: number = 0;
-        
-        for (let i = 0; i < this.fsParticipants.features.length; i++) {
-            let atts = this.fsParticipants.features[i].attributes;
-
-            //skip duplicate participant_id's.  participants are duplicated for multiple roles...
-            if (!this._IsNullOrEmpty(partIDSummed[atts.participant_id]))
-                continue;
-                        
-            if (atts.cash < 1 && atts.inkind < 1)
-                continue;
-
-            let superType: string = "";
-            //get the working super type
-            if (this.participantTypeSuperTypeMap[atts.participant_type_lu_id] !== "undefined" && this.participantTypeSuperTypeMap[atts.participant_type_lu_id] != null)
-                superType = this.participantTypeSuperTypeMap[atts.participant_type_lu_id];
-
-            //investments by activity
-            if (fundingSourceObject[superType] === "undefined" || fundingSourceObject[superType] == null) {                
-                fundingSourceObject[superType] = atts.cash + atts.inkind;
-            }
-            else {                
-                fundingSourceObject[superType] += atts.cash + atts.inkind;//sum
-            }
-            
-            partIDSummed[atts.participant_id] = atts.participant_id;
-
-            totalPartsIncluded++;
-        }
-        this.fundingChartBySourceData.push(fundingSourceObject);
-
-        console.log("Participants included: "+totalPartsIncluded);
-        
-        this.fsParticipants = null;
-
-        //build related chart(s)        
-        this.ShowFundingSource("", true);
-    }
-
-    private _ProcessActivities() {
-
-        if (this._IsNullOrEmpty(this.fsActivities))
-            return;
-
-        let sYearNum: number;
-        let eYearNum: number;
-
-        this.fundingChartByActivityData = [];
-        let investmentsByActivityKey = {};
-
-        this.fundingChartByActivityYearData = [];
-        let investmentsByActivityByYearKey = {};
-
-        //setup investments by activity by year
-        sYearNum = Number(this.startYear.get());
-        eYearNum = Number(this.endYear.get());
-        for (let year = sYearNum; year <= eYearNum; year++) {
-            investmentsByActivityByYearKey[year] = this.fundingChartByActivityYearData.length;            
-
-            let yearActFAB: any = { "year": year };
-            //add all activity types
-            for (let aIndex = 0; aIndex < this.fsActivityTypeStrings.features.length; aIndex++) {
-                yearActFAB[this.fsActivityTypeStrings.features[aIndex].attributes.activity_type] = 0;
-            }
-
-            this.fundingChartByActivityYearData.push(yearActFAB);
-        }
-
-        //setup by activity counts
-        this.projectChartActData = [];
-        var activityIndex: object = {};
-                                
-        //activity counts
-        for (let i = 0; i < this.fsActivityTypeStrings.features.length; i++) {
-
-            //skip any null attributes... why are these null?
-            if (typeof this.fsActivityTypeStrings.features[i] === "undefined" || this.fsActivityTypeStrings.features[i] == null)
-                continue;
-
-            var workingAtt: string = this.fsActivityTypeStrings.features[i].attributes.activity_type;
-
-            //the new year index will be the length of the array                     
-            if (activityIndex[workingAtt] === "undefined" || activityIndex[workingAtt] == null)
-                activityIndex[workingAtt] = this.projectChartActData.length;
-
-            this.projectChartActData.push({ "activity": workingAtt, "count": 0 });
-        }
-
-        let PIDUsed = {};
-        let PIDActUsed = {};
-        let projectActivity: string;
-                                
-        //activities loop
-        for (let rIndex = 0; rIndex < this.fsActivities.features.length; rIndex++) {
-            let atts = this.fsActivities.features[rIndex].attributes;
-
-            //project activity
-            projectActivity = atts.project_nbr + atts.activity_type;
-
-            //PID unique
-            if (this._IsNullOrEmpty(PIDUsed[atts.project_nbr]))
-            {
-                PIDUsed[atts.project_nbr] = 1;
-
-                //activity counts
-                if (atts.activity_type)
-                    this.projectChartActData[activityIndex[atts.activity_type]]["count"] += 1;
-                                
-            }
-
-            //PID Activity unique
-            if (this._IsNullOrEmpty(PIDActUsed[projectActivity])) {
-
-                PIDActUsed[projectActivity] = 1;
-
-                //investments by activity
-                if (investmentsByActivityKey[atts.activity_type] === "undefined" || investmentsByActivityKey[atts.activity_type] == null) {
-                    investmentsByActivityKey[atts.activity_type] = this.fundingChartByActivityData.length;
-                    this.fundingChartByActivityData.push({ "activity": atts.activity_type, "total": atts.total / 1 }); //new object
-                }
-                else {
-                    this.fundingChartByActivityData[investmentsByActivityKey[atts.activity_type]]["total"] += atts.total / 1;//sum object
-                }
-
-                //get complete year for matching project number
-                let workingCompleteYear: number = 0;
-                if (typeof this.projectNbrAttributesMap[atts.project_nbr] != "undefined" && this.projectNbrAttributesMap[atts.project_nbr] != null)
-                    workingCompleteYear = this.projectNbrAttributesMap[atts.project_nbr]["complete_year"];
-                if (typeof workingCompleteYear === "undefined" || workingCompleteYear == null || workingCompleteYear == NaN)
-                    workingCompleteYear = 0;
-
-                //skip year 0
-                if (workingCompleteYear == 0)
-                    continue;
-
-                //key is year
-                let actYearKey = workingCompleteYear.toString();//atts.activity_type + workingCompleteYear.toString();
-
-                //investments by activity by year
-                if (investmentsByActivityByYearKey[actYearKey] === "undefined" || investmentsByActivityByYearKey[actYearKey] == null) {
-
-                    investmentsByActivityByYearKey[actYearKey] = this.fundingChartByActivityYearData.length;
-
-                    let yearActFAB: any = { "year": actYearKey };
-                    //add all activity types
-                    for (let aIndex = 0; aIndex < this.fsActivityTypeStrings.features.length; aIndex++) {
-                        yearActFAB[this.fsActivityTypeStrings.features[aIndex].attributes.activity_type] = 0;
-                    }
-
-                    yearActFAB[atts.activity_type] = atts.total;
-
-                    this.fundingChartByActivityYearData.push(yearActFAB); //new object                
-                }
-                else {
-                    this.fundingChartByActivityYearData[investmentsByActivityByYearKey[actYearKey]][atts.activity_type] += atts.total;//sum object
-                }
-            }
-                        
-        }
-
-        this.projectChartActData.sort((a: any, b: any) => {
-            if (a.activity < b.activity) return -1;
-            if (a.activity > b.activity) return 1;
-            return 0;
-        });
-
-        this.projectChartActData.reverse();
-        
-        this.fsActivities = null;
-
-        //build related chart(s)
-        this.ShowProjectsActivity("", true);        
-        this.ShowFundingActivity("", true);
-        this.ShowFundingActivityYear("", true);
-    }
-
     public StopOnErrorMessage(message: string) {
 
         this.loaderMessage.set(message);
@@ -3645,9 +2556,6 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     
     private _LoadMapLayerNext()
     {
-        //project points
-        //this.esriProjectLayer.setDefinitionExpression(this.esriMapPrimaryQuery.get());  
-
         if (this._IsNullOrEmpty(this.esriMapLayerDefs) || this.esriMapLayerDefs.length < 1) {
             this.areaMapLegend.set("Map");
             return;
@@ -3868,28 +2776,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
             
             let workingDataSet:any = this.owebResultChartDataSets[workingChart];
             this._ShowOWEBResultChart(this[workingDataSet.dataKey], workingDataSet.unit, "total", workingDataSet.name);
-
-            /*if (workingChart == "crossing")
-                this.ShowResultsChart(workingChart, this.resultsCrossingsData, this.resultsCrossingsDefs, "total", "Crossings");
-            else if (workingChart == "upland")
-                this.ShowResultsChart(workingChart, this.resultsUplandData, this.resultsUplandDefs, "total", "Acres");
-            else if (workingChart == "riparian")
-                this.ShowResultsChart(workingChart, this.resultsRiparianData, this.resultsRiparianDefs, "total", "Acres");                
-            else if (workingChart == "wetland")
-                this.ShowResultsChart(workingChart, this.resultsWetlandData, this.resultsWetlandDefs, "total", "Acres");
-            else if (workingChart == "estuarine")
-                this.ShowResultsChart(workingChart, this.resultsEstuarineData, this.resultsEstuarineDefs, "total", "Acres");
-            else if (workingChart == "waterflow")
-                this.ShowResultsChart(workingChart, this.resultsWaterflowData, this.resultsWaterflowDefs, "total", "CFS");
-            else if (workingChart == "screens")
-                this.ShowResultsChart(workingChart, this.resultsScreensData, this.resultsScreensDefs, "total", "CFS");
-            else if (workingChart == "instreamMiles")
-                this.ShowResultsChart(workingChart, this.resultsInstreamMilesData, this.resultsInstreamMilesDefs, "total", "Miles");
-            else if (workingChart == "fishHabitatMiles")
-                this.ShowResultsChart(workingChart, this.resultsFishHabitatMilesData, this.resultsFishHabitatMilesDefs, "total", "Miles");
-            else if (workingChart == "riparianMiles")
-                this.ShowResultsChart(workingChart, this.resultsRiparianMilesData, this.resultsRiparianMilesDefs, "total", "Miles");*/
-
+            
             this.lastResultsChartName = this.activeTabChartName;
         }
     }
@@ -3916,12 +2803,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     
     private _BuildRestChartDefinition(idIn: string, displayName: string, chartType: string, enableCommonSeriesRange: boolean, flipChart: boolean,
         catDefs: RestChartCategoryDefinition, areaDef: RestChartAreaDefinition ): RestChartDefinition {
-
-        //chartType = Pie, Linear
-        //enableCommonSeriesRange = true for linear types?
-
-        //category is the horizontal axis for a bar chart
-
+        
         if (areaDef == null)
         {
             areaDef = {
@@ -3999,10 +2881,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                     //drop off the alpha value for IE support                    
                     var colorArray: Array<number> = this.owrtActivitySymbols[i].symbol.color.slice()
                     colorArray.pop();
-
-                    //drop off the alpha value for IE support
-                    //let maxIndex = this.owrtActivitySymbols[i].symbol.color.length - 1;
-
+                    
                     for (let c = 0; c < colorArray.length; c++) {
                         colorOut += colorArray[c];
 
@@ -4020,8 +2899,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                     colorArray.pop();
 
                     return colorArray;
-                }                
-                //return "background-color: rgb(" + this.owrtActivitySymbols[i].symbol.color.toString() + ")";
+                }
             }
         }
 
@@ -4132,6 +3010,5 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         }
 
         return colorsOut;
-    }
-    
+    }    
 }
