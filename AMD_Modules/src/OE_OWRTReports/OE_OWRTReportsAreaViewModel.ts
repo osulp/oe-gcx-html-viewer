@@ -998,15 +998,32 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     private _OWEBOverviewProcess(): void {
 
         //Totals
-        let jTotals: any = JSON.parse(this.owebResults_project_Totals);
-        jTotals = jTotals.getOWRI_Report_Project_Totals[0];
-
-        //area totals
-        this.areaTotalInvestment.set("$" + jTotals.TotalInvestment.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$&,'));
-        this.areaTotalProjects.set(jTotals.TotalProjects);
+        this.areaTotalInvestment.set("$0");
+        this.areaTotalProjects.set("0");
         //total investment in projects        
-        this.fundingChartTotalData = [{ "cash": jTotals.TotalCash, "inkind": jTotals.TotalInkind }];
+        this.fundingChartTotalData = [{ "cash": 0, "inkind": 0 }];
 
+        if (!this._IsNullOrEmpty(this.owebResults_project_Totals))
+        {
+            let jTotals: any = JSON.parse(this.owebResults_project_Totals);
+
+            if (!this._IsNullOrEmpty(jTotals) && !this._IsNullOrEmpty(jTotals.getOWRI_Report_Project_Totals[0]))
+            {
+                jTotals = jTotals.getOWRI_Report_Project_Totals[0];
+
+                //area totals
+                if (!this._IsNullOrEmpty(jTotals.TotalInvestment))
+                    this.areaTotalInvestment.set("$" + jTotals.TotalInvestment.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$&,'));
+                if (!this._IsNullOrEmpty(jTotals.TotalProjects))
+                    this.areaTotalProjects.set(jTotals.TotalProjects);
+                //total investment in projects                        
+                this.fundingChartTotalData = [{
+                    "cash": (!this._IsNullOrEmpty(jTotals.TotalCash)) ? jTotals.TotalCash : 0,
+                    "inkind": (!this._IsNullOrEmpty(jTotals.TotalInkind)) ? jTotals.TotalInkind : 0
+                }];
+            }                        
+        }
+        
         this.ShowFundingTotal("", true);
 
         this._toCompleteFundsCheck();
@@ -1021,23 +1038,25 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     private _OWEBProjectsProcess(): void {
 
         //projects by year
-        let yearTotals: any = JSON.parse(this.owebResults_project_Year);
-
+        
         this.projectChartYearData = [];
         this.fundingChartByYearData = [];
 
-        if (!this._IsNullOrEmpty(yearTotals.getOWRI_Report_Projects_Year)) {
+        if (!this._IsNullOrEmpty(this.owebResults_project_Year))
+        {
+            let yearTotals: any = JSON.parse(this.owebResults_project_Year);
 
-            //project count by year
-            this.projectChartYearData = yearTotals.getOWRI_Report_Projects_Year;
-            //funding by year
-            this.fundingChartByYearData = yearTotals.getOWRI_Report_Projects_Year;
+            if (!this._IsNullOrEmpty(yearTotals.getOWRI_Report_Projects_Year)) {
+
+                //project count by year
+                this.projectChartYearData = yearTotals.getOWRI_Report_Projects_Year;
+                //funding by year
+                this.fundingChartByYearData = yearTotals.getOWRI_Report_Projects_Year;
+            }
         }
-
-
+        
         //projects by activity, funding by activity, funding by activity by year
-        let projectTypeDetails: any = JSON.parse(this.owebResults_project_Type_Year_Funding);
-
+      
         this.projectChartActData = [];
         this.fundingChartByActivityData = [];
         this.fundingChartByActivityYearData = [];
@@ -1047,30 +1066,35 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         let sYearNum: number = Number(this.startYear.get());
         let eYearNum: number = Number(this.endYear.get());
 
-        if (!this._IsNullOrEmpty(projectTypeDetails)) {
+        if (!this._IsNullOrEmpty(this.owebResults_project_Type_Year_Funding) && this.owebResults_project_Type_Year_Funding.Length > 0)
+        {
+            let projectTypeDetails: any = JSON.parse(this.owebResults_project_Type_Year_Funding);
 
-            for (let stringIndex in projectTypeDetails) {
-                let workingType: any = projectTypeDetails[stringIndex][0];
+            if (!this._IsNullOrEmpty(projectTypeDetails)) {
 
-                //project count by activity
-                this.projectChartActData.push(workingType);
-                //funding total by activity
-                this.fundingChartByActivityData.push(workingType);
+                for (let stringIndex in projectTypeDetails) {
+                    let workingType: any = projectTypeDetails[stringIndex][0];
 
-                //funding by activity by year
-                for (let year = sYearNum; year <= eYearNum; year++) {
+                    //project count by activity
+                    this.projectChartActData.push(workingType);
+                    //funding total by activity
+                    this.fundingChartByActivityData.push(workingType);
 
-                    if (this._IsNullOrEmpty(fundingByActYearIndex[year])) {
-                        fundingByActYearIndex[year] = this.fundingChartByActivityYearData.length;
-                        this.fundingChartByActivityYearData.push({ "year": year });
+                    //funding by activity by year
+                    for (let year = sYearNum; year <= eYearNum; year++) {
+
+                        if (this._IsNullOrEmpty(fundingByActYearIndex[year])) {
+                            fundingByActYearIndex[year] = this.fundingChartByActivityYearData.length;
+                            this.fundingChartByActivityYearData.push({ "year": year });
+                        }
+
+                        if (this._IsNullOrEmpty(this.fundingChartByActivityYearData[fundingByActYearIndex[year]][workingType.ProjType]))
+                            this.fundingChartByActivityYearData[fundingByActYearIndex[year]][workingType.ProjType] = workingType[year];
                     }
-
-                    if (this._IsNullOrEmpty(this.fundingChartByActivityYearData[fundingByActYearIndex[year]][workingType.ProjType]))
-                        this.fundingChartByActivityYearData[fundingByActYearIndex[year]][workingType.ProjType] = workingType[year];
                 }
             }
         }
-
+        
         this.ShowProjectChartYear("", true);
         this.ShowProjectsActivity("", true);        
         this.ShowFundingYear("", true);
@@ -1089,21 +1113,24 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
         this.fundingTabProcessed = true;
 
-        //funding source chart data
-        let fundingSource: any = JSON.parse(this.owebResults_funding_Source);
-
+        //funding source chart data        
         this.fundingChartBySourceData = [];
 
-        if (!this._IsNullOrEmpty(fundingSource)) {
+        if (!this._IsNullOrEmpty(this.owebResults_funding_Source))
+        {
+            let fundingSource: any = JSON.parse(this.owebResults_funding_Source);
 
-            let fundingSourceObject: any = {};
+            if (!this._IsNullOrEmpty(fundingSource)) {
 
-            for (let stringIndex in fundingSource) {
-                let workingObject = fundingSource[stringIndex][0];
-                fundingSourceObject[workingObject.Funding_Source] = workingObject.TotalContribution;
+                let fundingSourceObject: any = {};
+
+                for (let stringIndex in fundingSource) {
+                    let workingObject = fundingSource[stringIndex][0];
+                    fundingSourceObject[workingObject.Funding_Source] = workingObject.TotalContribution;
+                }
+
+                this.fundingChartBySourceData.push(fundingSourceObject);
             }
-
-            this.fundingChartBySourceData.push(fundingSourceObject);
         }
 
         this.ShowFundingSource("", true);                
@@ -1121,10 +1148,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
         let sYearNum: number = Number(this.startYear.get());
         let eYearNum: number = Number(this.endYear.get());
-
-        //results tab
-        let resultsData: any = JSON.parse(this.owebResults_results);
-
+               
         let resultDataSetKeys = {
             "Total number of road/stream crossings improved for fish passage": "resultsCrossingsData",
             "Flow rate of water diverted by screens": "resultsScreensData",
@@ -1141,33 +1165,37 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         this.owebResultChartDataSets = {};
         this.resultsTableData.clear();
 
-        if (!this._IsNullOrEmpty(resultsData)) {
+        if (!this._IsNullOrEmpty(this.owebResults_results))
+        {
+            //results tab
+            let resultsData: any = JSON.parse(this.owebResults_results);
 
-            let fundingSourceObject: any = {};
+            if (!this._IsNullOrEmpty(resultsData)) {
 
-            for (let stringIndex in resultsData) {
-                let workingObject = resultsData[stringIndex][0];
+                let fundingSourceObject: any = {};
 
-                this.owebResultChartDataSets[workingObject.Result] = {
-                    "unit": workingObject.Unit,
-                    "total": workingObject.TotalResult,
-                    "chart": workingObject.Result,
-                    "name": workingObject.Result,
-                    "dataKey": resultDataSetKeys[workingObject.Result]
-                };
+                for (let stringIndex in resultsData) {
+                    let workingObject = resultsData[stringIndex][0];
 
-                this._AddOWEBResultsToTable(this.owebResultChartDataSets[workingObject.Result]);
+                    this.owebResultChartDataSets[workingObject.Result] = {
+                        "unit": workingObject.Unit,
+                        "total": workingObject.TotalResult,
+                        "chart": workingObject.Result,
+                        "name": workingObject.Result,
+                        "dataKey": resultDataSetKeys[workingObject.Result]
+                    };
 
-                this[resultDataSetKeys[workingObject.Result]] = [];
+                    this._AddOWEBResultsToTable(this.owebResultChartDataSets[workingObject.Result]);
 
-                //funding by activity by year
-                for (let year = sYearNum; year <= eYearNum; year++) {
-                    this[resultDataSetKeys[workingObject.Result]].push({ "year": year, "total": workingObject[year] });
+                    this[resultDataSetKeys[workingObject.Result]] = [];
+
+                    //funding by activity by year
+                    for (let year = sYearNum; year <= eYearNum; year++) {
+                        this[resultDataSetKeys[workingObject.Result]].push({ "year": year, "total": workingObject[year] });
+                    }
                 }
             }
-        }
-
-        //this._ResultsTabDataLoaded();           
+        }      
 
         this._toCompleteResultsCheck();
     }
