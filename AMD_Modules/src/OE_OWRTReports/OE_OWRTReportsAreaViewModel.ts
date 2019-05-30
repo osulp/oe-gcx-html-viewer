@@ -4,6 +4,7 @@
 /// <reference path="./../../_Definitions/Mapping.Infrastructure.AMD.d.ts" />
 /// <reference path="./../../_Definitions/dojo.d.ts" />
 
+import { ViewBase } from "geocortex/framework/ui/ViewBase";
 import { ViewModelBase } from "geocortex/framework/ui/ViewModelBase";
 import { ViewerApplication } from "geocortex/infrastructure/Viewer";
 
@@ -14,6 +15,7 @@ import { Layer } from "geocortex/essentials/Layer";
 
 import { ChartViewModelFactory } from "geocortex/charting/ChartViewModelFactory";
 import { Chart } from "geocortex/charting/Chart";
+import { SeriesViewModel } from "geocortex/charting/SeriesViewModel";
 import { KendoFormatProvider } from "geocortex/charting/globalization/KendoFormatProvider";
 import { ChartSeriesProvider } from "geocortex/charting/ChartSeriesProvider";
 import { ChartPointAdapterRegistry } from "geocortex/charting/infrastructure/ChartPointAdapterRegistry"
@@ -284,7 +286,9 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     esirMapPointLayers: esri.layers.FeatureLayer[];
 
     esriPointsLayer: esri.layers.ArcGISDynamicMapServiceLayer = null;
-        
+
+    //chart
+    kChartActive: kendo.dataviz.ui.Chart;
     chartPartVisible: Observable<boolean> = new Observable<boolean>(true);
     chartActVisible: Observable<boolean> = new Observable<boolean>(false);
     chartActive: any;
@@ -295,6 +299,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     chartFundingPartData: any = {};
 
     queryUrlOWRT: string;    
+    queryCentroidsSimple: string;
     
     urlMainMapService: string;
     layerIDProjectPoints: number;
@@ -356,6 +361,8 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     isCustomReport: boolean = false;
     customGeometry: esri.geometry.Polygon = null;
 
+    yearRangeSlider: any;
+    optionsImageSrc: Observable<string> = new Observable<string>("Resources/Images/Icons/arrow-right-small-24.png");
     reportOptionsPanelVisible: Observable<boolean> = new Observable<boolean>(false);
     reportAreaListVisible: Observable<boolean> = new Observable<boolean>(false);
     reportAreaList: ObservableCollection<object> = new ObservableCollection<object>(null);
@@ -501,18 +508,18 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     }
         
     deactivated() {
-        this._destroyAllCharts();
+        this._destoryActiveChart();
 
         //remove all map layers
         if (!this._IsNullOrEmpty(this.esriMap))
             this.esriMap.removeAllLayers();
     }
-
+    
     _onSiteInitialized() {
         
         //register tagging command
         this.app.commandRegistry.command("oeOWRTareaReport").register(this, this.OpenAreaReport);
-
+        
         //set default year selection
         let dateTmp = new Date();
         let workingYear: number = dateTmp.getFullYear();
@@ -528,13 +535,14 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         let sourceTypeString = ChartFieldSourceType[(<any>ChartFieldSourceType).Json];
         ChartPointAdapterRegistry.registerAdapter((<any>jsonDataAdapter), sourceTypeString);
 
-        this.initializeChartFactory();                
+        //this.initializeChartFactory();                
         
         //let mService = this._GetServiceByName("OWRT");
         let mService = this._GetServiceByName("OWRT_DEV");
         this.urlMainMapService = mService.serviceUrl;
         this.layerIDProjectPoints = Number(this._GetLayerIDByName(mService, "Poly_Centroids").id);
         this.queryUrlOWRT = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Poly_Centroids").id;
+        this.queryCentroidsSimple = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "CentroidsSimple").id;
                         
         this.queryUrlCounty = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Oregon Counties").id;
         this.queryUrlBasins = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Oregon Plan Basins").id;
@@ -572,7 +580,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                 
         //get the OWRT drawing color data
         var requestHandle = esri.request({
-            "url": this.queryUrlOWRT + "?f=json",            
+            "url": this.queryCentroidsSimple + "?f=json",            
             handleAs: "json",
             callbackParamName: "callback"
         });
@@ -1064,13 +1072,13 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         this.projectChartActData = [];
         this.fundingChartByActivityData = [];
         this.fundingChartByActivityYearData = [];
-
+        
         let fundingByActYearIndex: any = {};
 
         let sYearNum: number = Number(this.startYear.get());
         let eYearNum: number = Number(this.endYear.get());
 
-        if (!this._IsNullOrEmpty(this.owebResults_project_Type_Year_Funding) && this.owebResults_project_Type_Year_Funding.Length > 0)
+        if (!this._IsNullOrEmpty(this.owebResults_project_Type_Year_Funding))
         {
             let projectTypeDetails: any = JSON.parse(this.owebResults_project_Type_Year_Funding);
 
@@ -1083,10 +1091,10 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                     this.projectChartActData.push(workingType);
                     //funding total by activity
                     this.fundingChartByActivityData.push(workingType);
-
+                                        
                     //funding by activity by year
                     for (let year = sYearNum; year <= eYearNum; year++) {
-
+                        
                         if (this._IsNullOrEmpty(fundingByActYearIndex[year])) {
                             fundingByActYearIndex[year] = this.fundingChartByActivityYearData.length;
                             this.fundingChartByActivityYearData.push({ "year": year });
@@ -1094,16 +1102,16 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
                         if (this._IsNullOrEmpty(this.fundingChartByActivityYearData[fundingByActYearIndex[year]][workingType.ProjType]))
                             this.fundingChartByActivityYearData[fundingByActYearIndex[year]][workingType.ProjType] = workingType[year];
-                    }
+                    }                                        
                 }
             }
         }
         
-        this.ShowProjectChartYear("", true);
+        /*this.ShowProjectChartYear("", true);
         this.ShowProjectsActivity("", true);        
         this.ShowFundingYear("", true);
         this.ShowFundingActivity("", true);
-        this.ShowFundingActivityYear("", true);
+        this.ShowFundingActivityYear("", true);*/
 
         this._toCompleteProjectsCheck();
         this._toCompleteFundsCheck();
@@ -1276,55 +1284,78 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
     private _ShowOWEBResultChart(chartDataIn: any, seriesName: string, seriesField: string, activeChartString:string): void
     {
-        var chartCategoryDefs: RestChartCategoryDefinition = {
-            field: {
-                displayName: "Year",
-                name: "year",
-                sourceType: (<any>ChartFieldSourceType).Json
-            },
-            axis: {
-                title: "",
-                visible: true,
-                showLabels: true
+
+        if (!this._IsNullOrEmpty(chartDataIn)) {
+
+            //only draw the chart if it is null
+            if (!this.projectChart || this.projectChartActive != activeChartString) {
+                this.projectChartActive = activeChartString;
+
+                this._destoryActiveChart();
+                                
+                let catValues = [];             
+                let dataValues = [];   
+                                                       
+                for (let i = 0; i < chartDataIn.length; i++) {
+                    catValues.push(chartDataIn[i].year);
+                    dataValues.push({ "total": Math.round(parseInt(chartDataIn[i].total)) } );
+                }
+
+                let rotationAngle = 0;
+                if (catValues.length > 8)
+                    rotationAngle = -45;
+                
+                let opts: any = {
+                    title: {
+                        text: ""
+                    },
+                    legend: {
+                        visible: true,
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "line"                        
+                    },                   
+                    series: [{
+                        name: seriesName,
+                        type: "line",
+                        color: "#4684EE",
+                        field: "total",
+                        data: dataValues                       
+                    }],
+                    valueAxis: [{
+                        title: { text: seriesName },
+                        line: {
+                            visible: true
+                        },
+                        minorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            name: seriesName,
+                            rotation: "auto",
+                            format: "{0:n0}"
+                        }
+                    }],
+                    categoryAxis: [{
+                        title: { text: "" },
+                        categories: catValues,
+                        majorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: { angle: rotationAngle }
+                        }
+                    }],
+                    tooltip: {
+                        visible: true,
+                        template: 'Year: #= category # <br /> ' + seriesName +': #= kendo.toString(value,"n0") #'
+                    }
+                };
+
+                this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaResultsChart")[0], opts);
             }
-        }
-
-        var areaDef: RestChartAreaDefinition = {
-            background: [255, 255, 255, 255],
-            foreground: [0, 0, 0, 255],
-            showLabels: true,
-            colorPalette: ChartColorPalette.Rainbow,
-            showToolTips: true,
-            actionSelect: false,
-            actionPan: false,
-            actionZoom: false,
-            actionFeatureDetails: false,
-            actionRunCommand: false,
-            enableCommonSeriesRange: true,
-            showVerticalGridLines: false,
-            showHorizontalGridLines: true,
-            showVerticalStrips: false,
-            showHorizontalStrips: false
-        }
-
-        let axisIn: RestChartAxisDefinition = {
-            visible: true,
-            showLabels: true,
-            showTicks: true,
-            title: "",
-            minimum: 0
-        }
-
-        let colorsToUse: any = [[70, 132, 238]];
-        let workingDefs = this._BuildRestChartDefinition("activeChart", "", "Linear", true, false, chartCategoryDefs, areaDef);
-        this._BuildRestChartDefinitionSeriesItem(workingDefs, seriesName, seriesField, colorsToUse, "N0", "Line", axisIn);
-        
-        //only draw the chart if it is null
-        if (!this.resultsChart || this.resultsChartActive != activeChartString) {
-            this.resultsChartActive = activeChartString;
-            this.BuildChart("resultsChart", workingDefs, chartDataIn, "oeOWRTAreaResultsChart", 550);
-        }
-        
+        }         
     }
     
     private _BuildOverview(): void
@@ -1375,9 +1406,30 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         if (this.geoTypeValue.get() !== "state") {
             this.ranksVisible.set(false);
         }
-                                
+                                                
         //hide the loader overlay
         this.loaderVisible.set(false);
+    }
+
+    private _YearSliderChanged()
+    {
+        let val = this.yearRangeSlider.value();
+
+        this.startYear.set(val[0].toString());
+        this.endYear.set(val[1].toString());
+
+        this.yearRangeString.set(this.startYear.get() + " - " + this.endYear.get());
+        this.BuildOptionsQuery();
+    }
+
+    private _YearSliderChange(minVal: string, maxVal: string)
+    {
+        this.startYear.set(minVal);
+        this.endYear.set(maxVal);
+
+        this.yearRangeString.set(this.startYear.get() + " - " + this.endYear.get());
+
+        this.yearRangeSlider.value([this.startYear.get(), this.endYear.get()]);
     }
 
     private _GetGeoTypeNameByValue(valueIn: string): string {
@@ -1480,7 +1532,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
             this.OptionsAreaChanged(setValue, setValue);
     }
 
-    public OptionsYearStartChanged(value:string)
+    /*public OptionsYearStartChanged(value:string)
     {
         this.startYear.set(value);
         this.yearRangeString.set(this.startYear.get() + " - " + this.endYear.get());
@@ -1492,7 +1544,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         this.endYear.set(value);
         this.yearRangeString.set(this.startYear.get() + " - " + this.endYear.get());
         this.BuildOptionsQuery();
-    }
+    }*/
 
     public OptionsAreaChanged(areaValue: string, areaNameIn: string)
     {        
@@ -1549,6 +1601,14 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         this.owrtChartsTableSharedVisible.set(false);
         this.owrtChartsTableFundInvestByYearVisible.set(false);
         this.owrtChartsTableFundInvestByActByYearVisible.set(false);
+    }
+
+    public ToggleOptionsArrow(val:boolean)
+    {
+        if (val)
+            this.optionsImageSrc.set("Resources/Images/Icons/arrow-right-small-24.png");
+        else
+            this.optionsImageSrc.set("Resources/Images/Icons/arrow-down-small-16.png");         
     }
 
     public ToggleChartTableView()
@@ -1829,418 +1889,545 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
         
     public ShowProjectChartYear(activeChartString: string, setupOnly: boolean = false)
-    {   
-        if (!setupOnly && !this._IsNullOrEmpty(this.projectChartYearData) && !this._IsNullOrEmpty(this.projectChartYearDefs)) {
+    {
+        if (!setupOnly && !this._IsNullOrEmpty(this.projectChartYearData)) {
+
             //only draw the chart if it is null
             if (!this.projectChart || this.projectChartActive != activeChartString) {
-                this.projectChartActive = activeChartString;                
-                this.BuildChart("projectChart", this.projectChartYearDefs, this.projectChartYearData, "oeOWRTAreaProjectsChart", 550);                
+                this.projectChartActive = activeChartString;
+
+                this._destoryActiveChart();
+
+                let catValues = [];                
+                let dataValues = [];
+                for (let index in this.projectChartYearData)
+                {
+                    catValues.push((<any>this.projectChartYearData[index]).Year);
+                    dataValues.push((<any>this.projectChartYearData[index]).TotalProjects);
+                }
+
+                let rotationAngle = 0;
+                if (catValues.length > 10)
+                    rotationAngle = -45;
+
+                let opts: any = {
+                    title: {
+                        text: ""
+                    },
+                    legend: {
+                        visible: true,
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "column"                        
+                    },
+                    series: [{
+                        name: "Projects",
+                        color: "#4684EE",                
+                        data: dataValues
+                    }],
+                    valueAxis: [{
+                        title: { text: "Projects" },
+                        line: {
+                            visible: true
+                        },
+                        minorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: "auto",
+                            format: "{0:n0}"                            
+                        }
+                    }],
+                    categoryAxis: [{
+                        categories: catValues,
+                        majorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: { angle: rotationAngle }                            
+                        }
+                    }],
+                    tooltip: {
+                        visible: true,
+                        template: 'Year: #= category # <br /> #= series.name #: #= kendo.toString(value,"n0") #'
+                    }
+                };
+
+
+                this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaProjectChart")[0], opts);
             }
-
-            return;
-        }
-                
-        var chartCategoryDefs: RestChartCategoryDefinition = {
-            field: {
-                displayName: "Year",
-                name: "Year",
-                sourceType: (<any>ChartFieldSourceType).Json
-            },
-            axis: {
-                title: "Year",
-                visible: true,
-                showLabels: true
-            }
-        }
-
-        var axisIn: RestChartAxisDefinition = {
-            visible: true,
-            showLabels: true,
-            showTicks: true,
-            title: "Projects"
-        }
-
-        var areaDef: RestChartAreaDefinition = {
-            background: [255, 255, 255, 255],
-            foreground: [0, 0, 0, 255],
-            showLabels: true,
-            colorPalette: ChartColorPalette.Rainbow,
-            showToolTips: true,
-            actionSelect: false,
-            actionPan: false,
-            actionZoom: false,
-            actionFeatureDetails: false,
-            actionRunCommand: false,
-            enableCommonSeriesRange: true,
-            showHorizontalGridLines: true
-        }
-
-        let colorsToUse: any = [[70, 132, 238]];
-        this.projectChartYearDefs = this._BuildRestChartDefinition("activeChart", "Number of Projects by Year", "Linear", true, false, chartCategoryDefs, areaDef);
-                        
-        this._BuildRestChartDefinitionSeriesItem(this.projectChartYearDefs, "Projects", "TotalProjects", colorsToUse, "N0", "Bar", axisIn);
-        
+        }                        
     }
 
     public ShowProjectsActivity(activeChartString: string, setupOnly: boolean = false) {
 
-        if (!setupOnly && !this._IsNullOrEmpty(this.projectChartActData) && !this._IsNullOrEmpty(this.projectChartActDefs)) {
+        if (!setupOnly && !this._IsNullOrEmpty(this.projectChartActData)) {
+
             //only draw the chart if it is null
             if (!this.projectChart || this.projectChartActive != activeChartString) {
                 this.projectChartActive = activeChartString;
-                this.BuildChart("projectChart", this.projectChartActDefs, this.projectChartActData, "oeOWRTAreaProjectsChart", 550);                
+
+                this._destoryActiveChart();
+
+                let catValues = [];
+                let dataValues = [];
+                for (let index in this.projectChartActData) {
+                    catValues.push((<any>this.projectChartActData[index]).ProjType);
+                    dataValues.push((<any>this.projectChartActData[index]).NumProj);
+                }
+
+                let opts: any = {
+                    title: {
+                        text: ""
+                    },
+                    legend: {
+                        visible: true,
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "bar"
+                    },
+                    series: [{
+                        name: "Activity",
+                        color: "#4684EE",
+                        data: dataValues
+                    }],
+                    valueAxis: [{
+                        line: {
+                            visible: true
+                        },
+                        minorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: "auto",
+                            format: "{0:n0}"
+                        }
+                    }],
+                    categoryAxis: [{
+                        title: { text: "Activity" },
+                        categories: catValues,
+                        majorGridLines: {
+                            visible: false
+                        }
+                    }],
+                    tooltip: {
+                        visible: true,                        
+                        template: 'Activity: #= category # <br /> Projects: #= kendo.toString(value,"n0") #'
+                    }
+                };
+
+
+                this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaProjectChart")[0], opts);
             }
-
-            return;
-        }
-        
-        var chartCategoryDefs: RestChartCategoryDefinition = {
-            field: {
-                displayName: "Activity",
-                name: "ProjType",
-                sourceType: (<any>ChartFieldSourceType).Json
-            },
-            axis: {
-                title: "Activity",
-                visible: true,
-                showLabels: true,
-                reverseValues: true
-            }
-        }
-
-        var axisIn: RestChartAxisDefinition = {
-            visible: true,
-            showLabels: true,
-            showTicks: true,
-            title: "Projects"            
-        }
-
-        var areaDef: RestChartAreaDefinition = {
-            background: [255, 255, 255, 255],
-            foreground: [0, 0, 0, 255],
-            showLabels: true,
-            colorPalette: ChartColorPalette.Rainbow,
-            showToolTips: true,
-            actionSelect: false,
-            actionPan: false,
-            actionZoom: false,
-            actionFeatureDetails: false,
-            actionRunCommand: false,
-            enableCommonSeriesRange: true,
-            showHorizontalGridLines: true
-        }
-
-        let colorsToUse: any = [[70, 132, 238]];
-        this.projectChartActDefs = this._BuildRestChartDefinition("activeChart", "Number of Projects by Activity", "Linear", true, true, chartCategoryDefs, areaDef);                
-        this._BuildRestChartDefinitionSeriesItem(this.projectChartActDefs, "Number of Projects", "NumProj", colorsToUse, "N0", "Bar", axisIn);
-                
+        }                        
     }
 
     public ShowFundingTotal(activeChartString: string, setupOnly: boolean=false) {
 
-        //if the data is already built show the chart and exit
-        if (!setupOnly && typeof this.fundingChartTotalData != "undefined" && this.fundingChartTotalData != null) {
+        if (!setupOnly && !this._IsNullOrEmpty(this.fundingChartTotalData)) {
 
             //only draw the chart if it is null
-            if (!this.fundingChart || this.fundingChartActive != activeChartString) {
-                this.fundingChartActive = activeChartString;
-                this.BuildChart("fundingChart", this.fundingChartTotalDefs, this.fundingChartTotalData, "oeOWRTAreaFundingChart", 550);
-            }
+            if (!this.projectChart || this.projectChartActive != activeChartString) {
+                this.projectChartActive = activeChartString;
 
-            return;
-        }
-        
-        let colorsToUse: any = [[70, 132, 238], [220, 57, 18]];        
-        this.fundingChartTotalDefs = this._BuildRestChartDefinition("activeChart", "Number of Projects by Year", "Pie", true, false, null, null);
+                this._destoryActiveChart();
                 
-        this._BuildRestChartDefinitionSeriesItem(this.fundingChartTotalDefs, "Cash", "cash", colorsToUse, "C0");
-        this._BuildRestChartDefinitionSeriesItem(this.fundingChartTotalDefs, "Inkind", "inkind", colorsToUse, "C0");                
+                let total = (<any>this.fundingChartTotalData[0]).cash + (<any>this.fundingChartTotalData[0]).inkind;
+                let cash = (<any>this.fundingChartTotalData[0]).cash;
+                let inkind = (<any>this.fundingChartTotalData[0]).inkind;
+                                
+                let opts: any = {
+                    title: {
+                        text: ""
+                    },
+                    legend: {
+                        visible: true,
+                        position: "bottom"
+                    },
+                    dataSource: {
+                        data: [
+                            { "name": "Cash", "val": cash, "p": cash / total, color: "#4684EE" },
+                            { "name": "Inkind", "val": inkind, "p": inkind / total, color: "#ee6f44" }
+                        ]
+                    },
+                    seriesDefaults: {
+                        type: "pie",
+                        labels: {
+                            visible: true,                          
+                            format: "{0:P}",  
+                            template: '#= category #: #= kendo.format("{0:P0}",value)#'
+                        }
+                    },
+                    series: [{
+                        type: "pie",                        
+                        color: "#4684EE",
+                        field: "p",
+                        categoryField: "name"
+                    }],
+                    valueAxis: [{
+                        line: {
+                            visible: true
+                        },
+                        minorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: "auto"
+                        }
+                    }],
+                    categoryAxis: [{
+                        title: { text: "" },
+                        categories: [],
+                        majorGridLines: {
+                            visible: false
+                        }
+                    }],
+                    tooltip: {
+                        visible: true,
+                        format: "{0:C0}",
+                        template: '#= category #: #= kendo.format("{0:P0}",value)# <br /> #= kendo.format("{0:C0}",dataItem.val) #'
+                    }
+                };
+
+
+                this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaFundingChart")[0], opts);
+            }
+        }
     }
         
-    public ShowFundingYear(activeChartString: string, setupOnly: boolean=false) {
+    public ShowFundingYear(activeChartString: string, setupOnly: boolean = false) {
 
-        //if the data is already built show the chart and exit
-        if (!setupOnly && typeof this.fundingChartByYearData != "undefined" && this.fundingChartByYearData != null &&
-            typeof this.fundingChartByYearDefs != "undefined" && this.fundingChartByYearDefs != null) {
+        if (!setupOnly && !this._IsNullOrEmpty(this.fundingChartByYearData)) {
 
             //only draw the chart if it is null
-            if (!this.fundingChart || this.fundingChartActive != activeChartString) {
-                this.fundingChartActive = activeChartString;
-                this.BuildChart("fundingChart", this.fundingChartByYearDefs, this.fundingChartByYearData, "oeOWRTAreaFundingChart", 550);
+            if (!this.projectChart || this.projectChartActive != activeChartString) {
+                this.projectChartActive = activeChartString;
+
+                this._destoryActiveChart();
+
+                let catValues = [];
+                let dataValuesCash = [];
+                let dataValuesInkind = [];
+                for (let index in this.fundingChartByYearData) {
+                    catValues.push((<any>this.fundingChartByYearData[index]).Year);
+                    dataValuesCash.push((<any>this.fundingChartByYearData[index]).TotalCash);
+                    dataValuesInkind.push((<any>this.fundingChartByYearData[index]).TotalInkind);
+                }
+
+                let rotationAngle = 0;
+                if (catValues.length > 8)
+                    rotationAngle = -45;
+
+                let opts: any = {
+                    title: {
+                        text: ""
+                    },
+                    legend: {
+                        visible: true,
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "column"
+                    },
+                    series: [{
+                        name: "Cash",
+                        color: "#4684EE",
+                        data: dataValuesCash
+                    },
+                    {
+                        name: "Inkind",
+                        color: "#ee6f44",
+                        data: dataValuesInkind                      
+                    }
+                    ],
+                    valueAxis: [{
+                        line: {
+                            visible: true
+                        },
+                        minorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: "auto",
+                            format: "{0:C0}"
+                        }
+                    }],
+                    categoryAxis: [{
+                        title: { text: "Year" },
+                        categories: catValues,
+                        majorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: { angle: rotationAngle }
+                        }
+                    }],
+                    tooltip: {
+                        visible: true,
+                        template: 'Year: #= category # <br /> #=series.name#:  #= kendo.format("{0:C0}",value) #'
+                    }
+                };
+
+
+                this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaFundingChart")[0], opts);
             }
-
-            return;
-        }
-
-        var chartCategoryDefs: RestChartCategoryDefinition = {
-            field: {
-                displayName: "Year",
-                name: "Year",
-                sourceType: (<any>ChartFieldSourceType).Json
-            },
-            axis: {
-                title: "Year",
-                visible: true,
-                showLabels: true
-            }
-        }
-
-        var axisIn: RestChartAxisDefinition = {
-            visible: true,
-            showLabels: true,
-            showTicks: true,
-            title: ""            
-        }
-
-        var areaDef: RestChartAreaDefinition = {
-            background: [255, 255, 255, 255],
-            foreground: [0, 0, 0, 255],
-            showLabels: true,
-            colorPalette: ChartColorPalette.Rainbow,
-            showToolTips: true,
-            actionSelect: false,
-            actionPan: false,
-            actionZoom: false,
-            actionFeatureDetails: false,
-            actionRunCommand: false,
-            enableCommonSeriesRange: true,
-            showHorizontalGridLines: true
-        }
-                
-        let colorsToUse: any = [[70, 132, 238], [220, 57, 18]];
-        this.fundingChartByYearDefs = this._BuildRestChartDefinition("activeChart", "Investments By Year", "Linear", true, false, chartCategoryDefs, areaDef);        
-        this._BuildRestChartDefinitionSeriesItem(this.fundingChartByYearDefs, "Cash", "TotalCash", colorsToUse, "C0", "Bar", axisIn);
-        this._BuildRestChartDefinitionSeriesItem(this.fundingChartByYearDefs, "In Kind", "TotalInkind", colorsToUse, "C0");
+        }        
     }
           
-    private ShowFundingActivity(activeChartString: string, setupOnly:boolean=false) {
+    private ShowFundingActivity(activeChartString: string, setupOnly: boolean = false) {
 
-        //if the data is already built show the chart and exit
-        if (!setupOnly && typeof this.fundingChartByActivityData != "undefined" && this.fundingChartByActivityData != null &&
-            typeof this.fundingChartByActivityDefs != "undefined" && this.fundingChartByActivityDefs != null) {
+        if (!setupOnly && !this._IsNullOrEmpty(this.fundingChartByActivityData)) {
 
             //only draw the chart if it is null
-            if (!this.fundingChart || this.fundingChartActive != activeChartString) {
-                this.fundingChartActive = activeChartString;
-                this.BuildChart("fundingChart", this.fundingChartByActivityDefs, this.fundingChartByActivityData, "oeOWRTAreaFundingChart", 550);
+            if (!this.projectChart || this.projectChartActive != activeChartString) {
+                this.projectChartActive = activeChartString;
+
+                this._destoryActiveChart();
+
+                let catValues = [];
+                let dataValues = [];
+                for (let index in this.fundingChartByActivityData) {
+                    catValues.push((<any>this.fundingChartByActivityData[index]).ProjType);
+                    dataValues.push((<any>this.fundingChartByActivityData[index]).TotalFunding);
+                }
+
+                let opts: any = {
+                    title: {
+                        text: ""
+                    },
+                    legend: {
+                        visible: true,
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "bar"
+                    },
+                    series: [{
+                        name: "Activity",
+                        color: "#4684EE",
+                        data: dataValues
+                    }],
+                    valueAxis: [{
+                        line: {
+                            visible: true
+                        },
+                        minorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: "auto",
+                            format: "{0:C0}"
+                        }
+                    }],
+                    categoryAxis: [{
+                        title: { text: "Activity" },
+                        categories: catValues,
+                        majorGridLines: {
+                            visible: false
+                        }
+                    }],
+                    tooltip: {
+                        visible: true,
+                        template: 'Activity: #= category # <br /> Total Investment: #= kendo.format("{0:C0}",value) #'
+                    }
+                };
+
+
+                this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaFundingChart")[0], opts);
             }
-
-            return;
-        }
-
-        var chartCategoryDefs: RestChartCategoryDefinition = {
-            field: {
-                displayName: "Activity",
-                name: "ProjType",
-                sourceType: (<any>ChartFieldSourceType).Json
-            },
-            axis: {
-                title: "",
-                visible: true,
-                showLabels: true,
-                reverseValues: true
-            }
-        }
-
-        var axisIn: RestChartAxisDefinition = {
-            visible: true,
-            showLabels: false,
-            showTicks: true,
-            title: ""            
-        }
-
-        var areaDef: RestChartAreaDefinition = {
-            background: [255, 255, 255, 255],
-            foreground: [0, 0, 0, 255],
-            showLabels: true,
-            colorPalette: ChartColorPalette.Rainbow,
-            showToolTips: true,
-            actionSelect: false,
-            actionPan: false,
-            actionZoom: false,
-            actionFeatureDetails: false,
-            actionRunCommand: false,
-            enableCommonSeriesRange: true,
-            showVerticalGridLines: false,
-            showHorizontalGridLines: true,
-            showVerticalStrips: false,
-            showHorizontalStrips: false
-        }
-
-        let colorsToUse: any = [[70, 132, 238], [220, 57, 18]];
-        this.fundingChartByActivityDefs = this._BuildRestChartDefinition("activeChart", "Investments By Activity", "Linear", true, true, chartCategoryDefs, areaDef);
-        this._BuildRestChartDefinitionSeriesItem(this.fundingChartByActivityDefs, "Total", "TotalFunding", colorsToUse, "C0", "Bar", axisIn);                
-        //#,##0,,M
+        }              
     }
 
     private ShowFundingActivityYear(activeChartString:string, setupOnly:boolean=false) {
 
-        //if the data is already built show the chart and exit
-        if (!setupOnly && typeof this.fundingChartByActivityYearData != "undefined" && this.fundingChartByActivityYearData != null &&
-            typeof this.fundingChartByActivityYearDefs != "undefined" && this.fundingChartByActivityYearDefs != null) {
+        if (!setupOnly && !this._IsNullOrEmpty(this.fundingChartByActivityYearData)) {
 
             //only draw the chart if it is null
-            if (!this.fundingChart || this.fundingChartActive != activeChartString) {
-                this.fundingChartActive = activeChartString;
-                this.BuildChart("fundingChart", this.fundingChartByActivityYearDefs, this.fundingChartByActivityYearData, "oeOWRTAreaFundingChart", 550);
-            }
+            if (!this.projectChart || this.projectChartActive != activeChartString) {
+                this.projectChartActive = activeChartString;
 
-            return;
-        }
+                this._destoryActiveChart();
 
-        var chartCategoryDefs: RestChartCategoryDefinition = {
-            field: {
-                displayName: "Year",
-                name: "year",
-                sourceType: (<any>ChartFieldSourceType).Json
-            },
-            axis: {
-                title: "",
-                visible: true,
-                showLabels: true
-            }
-        }
-                
-        var areaDef: RestChartAreaDefinition = {
-            background: [255, 255, 255, 255],
-            foreground: [0, 0, 0, 255],
-            showLabels: true,
-            colorPalette: ChartColorPalette.Rainbow,
-            showToolTips: true,
-            actionSelect: false,
-            actionPan: false,
-            actionZoom: false,
-            actionFeatureDetails: false,
-            actionRunCommand: false,
-            enableCommonSeriesRange: true,
-            showVerticalGridLines: false,
-            showHorizontalGridLines: true,
-            showVerticalStrips: false,
-            showHorizontalStrips: false
-        }
-        
-        let colorsToUse: any = this._generateRGBArrayFromCount(this.fsActivityTypeStrings.features.length);
-        this.fundingChartByActivityYearDefs = this._BuildRestChartDefinition("activeChart", "Investments By Activity By Year", "Linear", true, false, chartCategoryDefs, areaDef);
+                let catValues = [];
 
-        if (!this._IsNullOrEmpty(this.fundingChartByActivityYearData) && this.fundingChartByActivityYearData.length>0)
-        {
-            let needAxis: boolean = true;
+                let seriesSet = [];
+                let seriesObj = { "name": "", "color":"", "data": [] };
+                let seriesIndexs = {};
 
-            for (let activityName in this.fundingChartByActivityYearData[0]) {
+                let workingObj: any;
+                for (let index in this.fundingChartByActivityYearData) {
 
-                if (activityName == "year")
-                    continue;
+                    workingObj = this.fundingChartByActivityYearData[index];
+                    catValues.push(workingObj.year);
 
-                let axisIn: RestChartAxisDefinition = {
-                    visible: false,
-                    showLabels: true,
-                    showTicks: true,
-                    title: "Funding",
-                    minimum: 0
+                    for (let propIndex in workingObj)
+                    {
+                        if (propIndex == "year") //skip year property
+                            continue;
+                                                
+                        //create index for this activity type
+                        if (this._IsNullOrEmpty(seriesIndexs[propIndex]))
+                        {
+                            seriesIndexs[propIndex] = seriesSet.length;
+                            seriesObj = {
+                                "name": propIndex,
+                                "color": this._FindActivitySymbolColor(propIndex,false,true),
+                                "data": [parseInt(workingObj[propIndex])]
+                            };
+                            seriesSet.push(seriesObj);
+                        }
+                        else
+                        {
+                            seriesSet[seriesIndexs[propIndex]].data.push(parseInt(workingObj[propIndex]));
+                        }                                                                                                                        
+                    }                    
                 }
 
-                //only show the first axis
-                if (needAxis)
+                let rotationAngle = 0;
+                if (catValues.length > 8)
+                    rotationAngle = -45;
+                               
+                let opts: any = {
+                    title: {
+                        text: ""
+                    },
+                    legend: {
+                        visible: true,
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "line"
+                    },
+                    series: seriesSet,
+                    valueAxis: [{
+                        line: {
+                            visible: true
+                        },
+                        minorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: "auto",
+                            format: "{0:C0}"
+                        }
+                    }],
+                    categoryAxis: [{
+                        title: { text: "Year" },
+                        categories: catValues,
+                        majorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: { angle: rotationAngle }
+                        }
+                    }],
+                    tooltip: {
+                        visible: true,
+                        template: 'Year: #= category # <br /> #= series.name #: #= kendo.format("{0:C0}",value) #'
+                    }
+                };
+                
+                this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaFundingChart")[0], opts);
+            }
+        }              
+    }
+
+    private ShowFundingSource(activeChartString: string, setupOnly: boolean = false) {
+
+        if (!setupOnly && !this._IsNullOrEmpty(this.fundingChartBySourceData)) {
+
+            //only draw the chart if it is null
+            if (!this.projectChart || this.projectChartActive != activeChartString) {
+                this.projectChartActive = activeChartString;
+
+                this._destoryActiveChart();
+                                
+                let dataSets = [];
+                let dataObj = { "name": "", "val": 0,"p":0, color: "" };
+                                
+                let workingColor: any;
+                let total: number = 0;
+
+                let colorCount: number = 0;
+
+                for (let propIndex in this.fundingChartBySourceData[0]) {
+                    total += this.fundingChartBySourceData[0][propIndex];
+                    colorCount++;
+                }
+
+                let colorsToUse: any = this._generateRGBArrayFromCount(colorCount, true);
+                
+                for (let propIndex in this.fundingChartBySourceData[0])
                 {
-                    axisIn.visible = true;
-                    needAxis = false;
+                    workingColor = colorsToUse.pop();
+
+                    dataObj = {
+                        "name": propIndex,
+                        "val": (<any>this.fundingChartBySourceData[0][propIndex]),
+                        "p": (<any>this.fundingChartBySourceData[0][propIndex])/total,
+                        "color": workingColor
+                        };
+                    dataSets.push(dataObj);
                 }
-                else
-                    axisIn.visible = false;
-                        
-                this._BuildRestChartDefinitionSeriesItem(this.fundingChartByActivityYearDefs, activityName, activityName, colorsToUse, "C0", "Line", axisIn);
+
+                let opts: any = {
+                    title: {
+                        text: ""
+                    },
+                    legend: {
+                        visible: true,
+                        position: "bottom"
+                    },
+                    dataSource: {
+                        data: dataSets
+                    },
+                    seriesDefaults: {
+                        type: "pie",
+                        labels: {
+                            visible: true,
+                            format: "{0:P1}",
+                            template: '#= category #: #= kendo.format("{0:P1}",value)#'
+                        }
+                    },
+                    series: [{
+                        type: "pie",
+                        color: "#4684EE",
+                        field: "p",
+                        categoryField: "name"
+                    }],
+                    valueAxis: [{
+                        line: {
+                            visible: true
+                        },
+                        minorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: "auto"
+                        }
+                    }],
+                    categoryAxis: [{
+                        title: { text: "" },
+                        categories: [],
+                        majorGridLines: {
+                            visible: false
+                        }
+                    }],
+                    tooltip: {
+                        visible: true,
+                        format: "{0:C0}",
+                        template: '#= category #: #= kendo.format("{0:P1}",value)# <br /> #= kendo.format("{0:C0}",dataItem.val) #'
+                    }
+                };
+
+
+                this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaFundingChart")[0], opts);
             }
         }        
     }
-
-    private ShowFundingSource(activeChartString: string, setupOnly:boolean=false) {
-
-        //if the data is already built show the chart and exit
-        if (!setupOnly && typeof this.fundingChartBySourceData != "undefined" && this.fundingChartBySourceData != null &&
-            typeof this.fundingChartBySourceDefs != "undefined" && this.fundingChartBySourceDefs != null) {
-
-            //only draw the chart if it is null
-            if (!this.fundingChart || this.fundingChartActive != activeChartString) {
-                this.fundingChartActive = activeChartString;
-                this.BuildChart("fundingChart", this.fundingChartBySourceDefs, this.fundingChartBySourceData, "oeOWRTAreaFundingChart", 550);
-            }
-
-            return;
-        }
-        
-        let workingObject = this.fundingChartBySourceData[0];
-
-        let colorsToUse: any = this._generateRGBArrayFromCount(Object.keys(workingObject).length);
-        this.fundingChartBySourceDefs = this._BuildRestChartDefinition("activeChart", "Funding Source", "Pie", true, false, null, null);
                 
-        for (var propName in workingObject)
-        {
-            this._BuildRestChartDefinitionSeriesItem(this.fundingChartBySourceDefs, propName, propName, colorsToUse, "C0");
-        }        
-    }
-
-    private ShowResultsChart(activeChartString: string, workingData: object[], workingDefs: any, seriesField:string, seriesName:string, setupOnly: boolean = false)
-    {
-        //if the data is already built show the chart and exit
-        if (!setupOnly && typeof workingData != "undefined" && workingData != null &&
-            typeof workingDefs != "undefined" && workingDefs != null) {
-
-            //only draw the chart if it is null
-            if (!this.resultsChart || this.resultsChartActive != activeChartString) {
-                this.resultsChartActive = activeChartString;
-                this.BuildChart("resultsChart", workingDefs, workingData, "oeOWRTAreaResultsChart", 550);
-            }
-
-            return;
-        }
-
-
-        var chartCategoryDefs: RestChartCategoryDefinition = {
-            field: {
-                displayName: "Year",
-                name: "year",
-                sourceType: (<any>ChartFieldSourceType).Json
-            },
-            axis: {
-                title: "",
-                visible: true,
-                showLabels: true
-            }
-        }
-
-        var areaDef: RestChartAreaDefinition = {
-            background: [255, 255, 255, 255],
-            foreground: [0, 0, 0, 255],
-            showLabels: true,
-            colorPalette: ChartColorPalette.Rainbow,
-            showToolTips: true,
-            actionSelect: false,
-            actionPan: false,
-            actionZoom: false,
-            actionFeatureDetails: false,
-            actionRunCommand: false,
-            enableCommonSeriesRange: true,
-            showVerticalGridLines: false,
-            showHorizontalGridLines: true,
-            showVerticalStrips: false,
-            showHorizontalStrips: false
-        }
-
-        let axisIn: RestChartAxisDefinition = {
-            visible: true,
-            showLabels: true,
-            showTicks: true,
-            title: "",
-            minimum: 0
-        }
-
-        let colorsToUse: any = [[70, 132, 238]];
-        workingDefs = this._BuildRestChartDefinition("activeChart", "", "Linear", true, false, chartCategoryDefs, areaDef);
-        this._BuildRestChartDefinitionSeriesItem(workingDefs, seriesName, seriesField, colorsToUse, "N0", "Line", axisIn);
-
-        return workingDefs;
-    }
-        
     public OpenAreaReport(pipeParamsIn:string) {
 
         //geoType: string, geoValue: string, extent: string, years: string
@@ -2282,6 +2469,30 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         $(".owrtChartTableShared").tablesort();
         $(".owrtChartTableFundInvestByYear").tablesort();
         $(".owrtChartTableFundInvestByActByYear").tablesort();        
+                
+        if (this._IsNullOrEmpty(this.yearRangeSlider))
+        {
+            this.yearRangeSlider = new kendo.ui.RangeSlider(document.getElementsByClassName("owrtYearSlider")[0],
+                {
+                    orientation: "horizontal",
+                    min: this.yearMin,
+                    max: this.yearMax,
+                    smallStep: 1,
+                    largeStep: 5,
+                    leftDragHandleTitle: "Start Year",
+                    rightDragHandleTitle: "End Year",
+                    tooltip: { format: "{0:0}" },
+                    change: function () {
+                        thisView._YearSliderChanged();
+                    }
+                }
+            )            
+        }
+        else
+        {
+            //this.yearRangeSlider.value([this.startYear.get(), this.endYear.get()]);
+            this._YearSliderChange(this.startYear.get(), this.endYear.get());
+        } 
         
         //check for url paramemters, use these later to load this report
         if ( !this._IsNullOrEmpty(pipeParamsIn) )
@@ -2327,13 +2538,17 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                     var years: string[] = paramStrings[2].split(",");
 
                     if (years.length > 1) {
-                        this.OptionsYearStartChanged(years[0]);
-                        this.OptionsYearEndChanged(years[years.length - 1]);
+                        //this.OptionsYearStartChanged(years[0]);
+                        //this.OptionsYearEndChanged(years[years.length - 1]);
+
+                        this._YearSliderChange(years[0], years[years.length - 1]);
                     }
                 }
                 else {
-                    this.OptionsYearStartChanged(this.yearMin.toString());
-                    this.OptionsYearEndChanged(this.yearMax.toString());
+                    //this.OptionsYearStartChanged(this.yearMin.toString());
+                    //this.OptionsYearEndChanged(this.yearMax.toString());
+
+                    this._YearSliderChange(this.yearMin.toString(), this.yearMax.toString());
                 }
 
                 //set geotype and areaselection
@@ -2382,7 +2597,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     public ReportOptionsSubmission() {
                 
         //clear all active charts
-        this._destroyAllCharts();
+        this._destoryActiveChart();
 
         this.loaderWarnIcon.set(false);
         this.inputBlockOnError.set(false);
@@ -2457,55 +2672,48 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                                
         return graphic.attributes[field];
     }
+    
+    private _GetDivider(records: object[], targetField: string): number {
 
-    public BuildChart(targetChart:string, chartConfig: any, chartData: any, targetRegionID: string, widthIn:number) {
+        let bigNumber = 0;
 
-        //destry the active chart
-        this._destoryActiveChart(targetChart);
-                
-        let chartDefinition = new ChartDefinition(chartConfig);
+        for (let i = 0; i < records.length; i++) {
+            if (records[i][targetField] > bigNumber)
+                bigNumber = records[i][targetField];
+        }
 
-        // Create chart view model from chart config & data.
-        let chartViewModel = this.chartFactory.createInstance(<any>chartDefinition, ChartFeatureType.SingleFeature, chartData);        
-        chartViewModel.width.set(widthIn);
+        if (bigNumber > 1000000)
+            return 100000;
 
-        // Create the chart.
-        let chart = <any>this.app.viewManager.createView({
-            markupResource: "Charting/charting/Chart.html",
-            typeName: "geocortex.charting.Chart",
-            isVisible: true,
-            libraryId: "Charting",
-            regionName: targetRegionID
-        });
+        if (bigNumber > 100000)
+            return 1000;
 
-        // Attach the view to the view model. This will cause all of its binding expressions to be evaluated.
-        chart.attach(chartViewModel);
+        return 0;
+    }
 
-        this[targetChart] = chart;
+    private _abbreviateNumber(num, fixed) {
+        if (num === null) { return null; } // terminate early
+        if (num === 0) { return '0'; } // terminate early
+        fixed = (!fixed || fixed < 0) ? 0 : fixed; // number of decimal places to show
+        var b = (num).toPrecision(2).split("e"), // get power
+            k = b.length === 1 ? 0 : Math.floor(Math.min(b[1].slice(1), 14) / 3), // floor at decimals, ceiling at trillions
+            c = k < 1 ? num.toFixed(0 + fixed) : (num / Math.pow(10, k * 3)).toFixed(1 + fixed), // divide by power
+            d = c < 0 ? c : Math.abs(c), // enforce -0 is 0
+            e = d + ['', 'K', 'M', 'B', 'T'][k]; // append power
+        return e;
     }
             
-    private _destoryActiveChart(targetName:string ) {
-        if (this[targetName]) {
-            this.app.command("DestroyView").execute(this[targetName].id);
+    private _destoryActiveChart() {
+
+        //if (!this._IsNullOrEmpty(this.kChartActive) && !this._IsNullOrEmpty(this.kChartActive.destroy) && typeof this.kChartActive.destroy == 'function')
+        //    this.kChartActive.destroy();
+
+        try {
+            this.kChartActive.destroy();
         }
-        this[targetName] = null;                
+        catch (e) {}
     }
-
-    private _destroyAllCharts() {
-
-        if (this.projectChart)
-            this.app.command("DestroyView").execute(this.projectChart.id);
-        this.projectChart = null;
-
-        if (this.fundingChart)
-            this.app.command("DestroyView").execute(this.fundingChart.id);
-        this.fundingChart = null;
-
-        if (this.resultsChart)
-            this.app.command("DestroyView").execute(this.resultsChart.id);
-        this.resultsChart = null;
-    }
-
+    
     private _LoadMapLayers() {
 
         //remove old layers
@@ -2816,96 +3024,12 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
             this.lastResultsChartName = this.activeTabChartName;
         }
     }
-        
-    private initializeChartFactory(): void {
-
-        let chartingLibraryId = "Charting";        
-        let numberAndDateFormatter = new KendoFormatProvider();
-        let seriesProvider = new ChartSeriesProvider(<any>this.app, chartingLibraryId);
-        let aggregator = new ChartPointCollectionAggregator();
-        aggregator.formatProvider = numberAndDateFormatter;
-
-        this.chartFactory = new ChartViewModelFactory(<any>this.app, chartingLibraryId);
-        this.chartFactory.id = "ChartViewModelFactory";
-                
-        this.chartFactory.initialize(<any>{
-            formatProvider: numberAndDateFormatter,
-            seriesProvider: seriesProvider,
-            aggregator: aggregator
-        });
-
-        this.app.registerFrameworkObject(<any>this.chartFactory);
-    }
     
-    private _BuildRestChartDefinition(idIn: string, displayName: string, chartType: string, enableCommonSeriesRange: boolean, flipChart: boolean,
-        catDefs: RestChartCategoryDefinition, areaDef: RestChartAreaDefinition ): RestChartDefinition {
-        
-        if (areaDef == null)
-        {
-            areaDef = {
-                background: [255, 255, 255, 255],
-                foreground: [0, 0, 0, 255],
-                showLabels: true,
-                colorPalette: ChartColorPalette.Rainbow,
-                showToolTips: true,
-                actionSelect: false,
-                actionPan: false,
-                actionZoom: false,
-                actionFeatureDetails: false,
-                actionRunCommand: false,
-                enableCommonSeriesRange: enableCommonSeriesRange
-            }
+    private _FindActivitySymbolColor(activityType: string, cssType: boolean = true, toHex:boolean = false): any {
+
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
         }
-
-        let json: RestChartDefinition = {
-            id: idIn,
-            displayName: displayName,
-            visible: true,
-            flipChart: flipChart,
-            chartType: chartType,                        
-            area: areaDef,
-            legend: {
-                position: "Bottom"
-            },
-            category: catDefs,
-            series: []
-        }
-
-        return json;
-    }
-        
-    private _BuildRestChartDefinitionSeriesItem(chartDef: RestChartDefinition, title: string, fieldName: string, colorsToUse: any, valueFormat: string,
-        seriesType: string = "Bar", axisIn: RestChartAxisDefinition = null) {
-
-        //valueFormat = microsoft style field format values?  C0, F2
-
-        if (axisIn == null)
-        {
-            axisIn = {};
-            axisIn.visible = false;
-            axisIn.showLabels = true;
-            axisIn.showTicks = true;
-        }
-                
-        var obj: RestChartSeriesDefinition = {
-            id: chartDef.series.length.toString(),
-            title: title,
-            seriesType: seriesType,
-            valueFormat: valueFormat,
-            color: colorsToUse[chartDef.series.length],
-            field: {
-                name: fieldName,
-                displayFormat: "",
-                sortingFormat: "000000000000000.###############",
-                sourceType: (<any>ChartFieldSourceType).Json
-            },
-            axis: axisIn
-        }
-                                               
-        chartDef.series.push(obj);
-    }
-
-    private _FindActivitySymbolColor(activityType: string, cssType: boolean = true): any {
 
         for (let i = 0; i < this.owrtActivitySymbols.length; i++) {
             var valueString = this.owrtActivitySymbols[i].value;
@@ -2934,16 +3058,28 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                     var colorArray: Array<number> = this.owrtActivitySymbols[i].symbol.color.slice()
                     colorArray.pop();
 
-                    return colorArray;
+                    if (toHex)
+                        return rgbToHex(colorArray[0], colorArray[1], colorArray[2]);
+                    else
+                        return colorArray;
                 }
             }
         }
 
         //default color
-        return "background-color: rgb(255, 99, 71)";
+        if (cssType)
+            return "background-color: rgb(255, 99, 71)";
+        else
+        {
+            if (toHex)
+                return rgbToHex(255, 99, 71);
+            else
+                return "rgb(255, 99, 71)";
+        }
+            
     }
 
-    private _generateRGBArrayFromCount(maxColors: number) {
+    private _generateRGBArrayFromCount(maxColors: number, asHex:boolean = false) {
 
         /**
              * HSV to RGB color conversion
@@ -3024,11 +3160,23 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
             return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
         };
 
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+
         var colorsOut = [];
 
         //return a single color
         if (maxColors == 1) {
-            colorsOut.push([224, 100, 50]);
+
+            if (asHex) {                
+                colorsOut.push(rgbToHex(224, 100, 50));
+            }
+            else
+            {
+                colorsOut.push([224, 100, 50]);
+            }
+                        
             return colorsOut;
         }
 
@@ -3038,11 +3186,22 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
         // hold the generated colors        
         var sv = 70;
+        let workingRGB;
         for (var x = 0; x < maxColors; x++) {
             // alternate the s, v for more
             // contrast between the colors.
             sv = sv > 90 ? 70 : sv + 10;
-            colorsOut.push(hsvToRgb(i * x, sv, sv));
+
+            if (asHex)
+            {
+                workingRGB = hsvToRgb(i * x, sv, sv);
+                colorsOut.push(rgbToHex(workingRGB[0], workingRGB[1], workingRGB[2]));
+            }
+            else
+            {
+                colorsOut.push(hsvToRgb(i * x, sv, sv));
+            }
+            
         }
 
         return colorsOut;

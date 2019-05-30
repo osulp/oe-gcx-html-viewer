@@ -15,7 +15,9 @@ export class OE_OITTView extends ViewBase {
     }
 
     toggleReportOptionPanel(event, element, context) {
-        context.reportOptionsPanelVisible.set(!context.reportOptionsPanelVisible.get());
+        let val = context.reportOptionsPanelVisible.get();
+        context.reportOptionsPanelVisible.set(!val);
+        (<OE_OITTViewModel>context).ToggleOptionsArrow(val);
     }
 
     geoTypeChanged(event, element, context) {
@@ -25,15 +27,7 @@ export class OE_OITTView extends ViewBase {
     areaOptionChanged(event, element, context) {
         (<OE_OITTViewModel>context).OptionsAreaChanged(element.value, element.selectedOptions[0].label);
     }
-
-    yearStartChanged(event, element, context) {
-        (<OE_OITTViewModel>context).OptionsYearStartChanged(element.value);
-    }
-
-    yearEndChanged(event, element, context) {
-        (<OE_OITTViewModel>context).OptionsYearEndChanged(element.value);
-    }
-
+        
     toggleChartDataAsTable(event, element, context) {
         (<OE_OITTViewModel>context).ToggleChartTableView();
     }

@@ -295,11 +295,15 @@ export class OE_OITTViewModel extends ViewModelBase {
 
     toggleReportOptionPanel: Observable<boolean> = new Observable<boolean>(false);
 
+    yearRangeSlider: any;
+    optionsImageSrc: Observable<string> = new Observable<string>("Resources/Images/Icons/arrow-right-small-24.png");
     reportOptionsPanelVisible: Observable<boolean> = new Observable<boolean>(false);
     reportAreaListVisible: Observable<boolean> = new Observable<boolean>(false);
     reportAreaList: ObservableCollection<object> = new ObservableCollection<object>(null);
 
-    startYearDefault: number = 1995;
+    minYear: number = 1995;
+    maxYear: number = 2017;
+    startYearDefault: number = 2012;
     endYearDefault: number = 2017;
 
     startYear: Observable<string> = new Observable<string>(this.startYearDefault.toString());
@@ -556,12 +560,53 @@ export class OE_OITTViewModel extends ViewModelBase {
         $(".owrtChartTableFundInvestByYear").tablesort();
         //$(".owrtChartTableFundInvestByActByYear").tablesort();
 
+        //reset variables
+        this.primaryQueryString.set("1=1");
+        this.geoTypeGeometryLayerDef.set("");
+        this.geoTypeValue.set("state");
+        this.areaNameVisisble.set(false);
+        this.reportAreaListVisible.set(false);
+        this.startYear.set(this.startYearDefault.toString());
+        this.endYear.set(this.endYearDefault.toString());
+        this.OptionsGeoTypeChanged("state", "State");
+        this.yearRangeString.set(this.startYear.get() + " - " + this.endYear.get());
+        
+
+        let thisView = this;
+
+        if (this._IsNullOrEmpty(this.yearRangeSlider)) {
+            this.yearRangeSlider = new kendo.ui.RangeSlider(document.getElementsByClassName("owrtYearSlider")[0],
+                {
+                    orientation: "horizontal",
+                    min: this.minYear,
+                    max: this.maxYear,
+                    smallStep: 1,
+                    largeStep: 5,
+                    leftDragHandleTitle: "Start Year",
+                    rightDragHandleTitle: "End Year",
+                    tooltip: { format: "{0:0}" },
+                    change: function () {
+                        thisView._YearSliderChanged();
+                    }
+                }
+            )
+        }
+        else {            
+            this._YearSliderChange(this.startYear.get(), this.endYear.get());
+        } 
+
         //check for url paramemters, use these later to load this report
         if (!this._IsNullOrEmpty(pipeParamsIn))
             this.pipeParamsFromURL = pipeParamsIn;
 
-        if (this.requiredFeaturesLoaded.get())
-            this.ReportOptionsSubmission();
+        if (this.requiredFeaturesLoaded.get()) {
+            //check for pipe params for load
+            if (!this._IsNullOrEmpty(this.pipeParamsFromURL))
+                this._LoadReportFromURLParams();
+            else {
+                this.ReportOptionsSubmission();
+            }
+        }
         else
             this._GetRequredFeatureSets();
     }
@@ -851,9 +896,14 @@ export class OE_OITTViewModel extends ViewModelBase {
                 var years: string[] = paramStrings[2].split(",");
 
                 if (years.length > 1) {
-                    this.OptionsYearStartChanged(years[0]);
-                    this.OptionsYearEndChanged(years[years.length - 1]);
+                    this._YearSliderChange(years[0], years[years.length - 1]);
+                    //this.OptionsYearStartChanged(years[0]);
+                    //this.OptionsYearEndChanged(years[years.length - 1]);
                 }
+            }
+            else
+            {
+                this._YearSliderChange(this.minYear.toString(), this.maxYear.toString());
             }
 
             //set geotype and areaselection
@@ -864,6 +914,25 @@ export class OE_OITTViewModel extends ViewModelBase {
                         
             this.ReportOptionsSubmission();
         }
+    }
+
+    private _YearSliderChanged() {
+        let val = this.yearRangeSlider.value();
+
+        this.startYear.set(val[0].toString());
+        this.endYear.set(val[1].toString());
+
+        this.yearRangeString.set(this.startYear.get() + " - " + this.endYear.get());
+        this.BuildOptionsQuery();
+    }
+
+    private _YearSliderChange(minVal: string, maxVal: string) {
+        this.startYear.set(minVal);
+        this.endYear.set(maxVal);
+
+        this.yearRangeString.set(this.startYear.get() + " - " + this.endYear.get());
+
+        this.yearRangeSlider.value([this.startYear.get(), this.endYear.get()]);
     }
 
     private _GetGeoTypeNameByValue(valueIn: string): string {
@@ -968,7 +1037,7 @@ export class OE_OITTViewModel extends ViewModelBase {
             this.OptionsAreaChanged(setValue, setValue);
     }
 
-    public OptionsYearStartChanged(value: string) {
+    /*public OptionsYearStartChanged(value: string) {
         this.startYear.set(value);
         this.yearRangeString.set(this.startYear.get() + " - " + this.endYear.get());
         this.BuildOptionsQuery();
@@ -978,7 +1047,7 @@ export class OE_OITTViewModel extends ViewModelBase {
         this.endYear.set(value);
         this.yearRangeString.set(this.startYear.get() + " - " + this.endYear.get());
         this.BuildOptionsQuery();
-    }
+    }*/
 
     public OptionsAreaChanged(areaValue: string, areaNameIn: string) {
         this.areaName.set(areaNameIn);
@@ -1102,6 +1171,13 @@ export class OE_OITTViewModel extends ViewModelBase {
         this.oittChartsTableSharedVisible.set(false);
         this.oittChartsTableFundYearVisible.set(false);
         this.oittChartsTableFundTypeYearVisible.set(false);
+    }
+
+    public ToggleOptionsArrow(val: boolean) {
+        if (val)
+            this.optionsImageSrc.set("Resources/Images/Icons/arrow-right-small-24.png");
+        else
+            this.optionsImageSrc.set("Resources/Images/Icons/arrow-down-small-16.png");
     }
 
     private _loadEsirMap(thisView: OE_OITTViewModel) {
@@ -1533,6 +1609,10 @@ export class OE_OITTViewModel extends ViewModelBase {
 
     public ChartFundingByProjectType(activeChartString: string, setupOnly: boolean = false)
     {
+        let useDivider = this._GetDivider(this.chartFundingType, "s");
+        let xAxisTitle = "Total";
+        xAxisTitle += (useDivider > 0) ? " (" + useDivider.toString() + "s) " : "";
+
         if (setupOnly) {
 
             var chartCategoryDefs: RestChartCategoryDefinition = {
@@ -1552,9 +1632,9 @@ export class OE_OITTViewModel extends ViewModelBase {
 
             var axisIn: RestChartAxisDefinition = {
                 visible: true,
-                showLabels: false,
+                showLabels: true,
                 showTicks: true,
-                title: "",
+                title: xAxisTitle,
                 axisLabelMode: 1
             }
 
@@ -1578,7 +1658,7 @@ export class OE_OITTViewModel extends ViewModelBase {
 
             let colorsToUse: any = [[70, 132, 238], [220, 57, 18]];
             this.chartDefsFundingType = this._BuildRestChartDefinition("activeChart", "Investments By Type", "Linear", true, true, chartCategoryDefs, areaDef);
-            this._BuildRestChartDefinitionSeriesItem(this.chartDefsFundingType, "Total", "s", colorsToUse, "C2", "Bar", axisIn);
+            this._BuildRestChartDefinitionSeriesItem(this.chartDefsFundingType, "Total", "s", colorsToUse, "C0", "Bar", axisIn);
             //#,##0,,M
 
         }
@@ -1586,10 +1666,29 @@ export class OE_OITTViewModel extends ViewModelBase {
             //render the chart!
             if (!this.fundingChart || this.fundingChartString != activeChartString) {
                 this.fundingChartString = activeChartString;
-                this.BuildChart("fundingChart", this.chartDefsFundingType, this.chartFundingType, "oeOWRTAreaFundingChart", 550);
+                this.BuildChart("fundingChart", this.chartDefsFundingType, this.chartFundingType, "oeOWRTAreaFundingChart", 550, useDivider);
             }
         }
         
+    }
+
+    private _GetDivider(records: object[], targetField: string): number {
+
+        let bigNumber = 0;
+
+        for (let i = 0; i < records.length; i++)
+        {
+            if (records[i][targetField] > bigNumber)
+                bigNumber = records[i][targetField];
+        }
+
+        if (bigNumber > 1000000)
+            return 100000;
+
+        if (bigNumber > 100000)
+            return 1000;
+
+        return 0;
     }
 
     public ChartProjectYearCount(activeChartString: string, setupOnly: boolean = false) {
@@ -1794,7 +1893,7 @@ export class OE_OITTViewModel extends ViewModelBase {
         }        
     }
 
-    public BuildChart(targetChart: string, chartConfig: any, chartData: any, targetRegionID: string, widthIn: number) {
+    public BuildChart(targetChart: string, chartConfig: any, chartData: any, targetRegionID: string, widthIn: number, divideBy: number = 0) {
 
         //destry the active chart
         this._destoryActiveChart(targetChart);
@@ -1804,6 +1903,15 @@ export class OE_OITTViewModel extends ViewModelBase {
         // Create chart view model from chart config & data.
         let chartViewModel = this.chartFactory.createInstance(<any>chartDefinition, ChartFeatureType.SingleFeature, chartData);
         chartViewModel.width.set(widthIn);
+
+        if (divideBy > 0) {
+            let series = chartViewModel.seriesViewModels.getItems()[0];
+            let val:number;
+            for (let i = 0; i < series.items.items.length; i++) {
+                val = series.items.items[i].value / divideBy;
+                series.items.items[i].value = (series.items.items[i].value > 0 && val < 1) ? 1 : val;
+            }
+        }
 
         // Create the chart.
         let chart = <any>this.app.viewManager.createView({

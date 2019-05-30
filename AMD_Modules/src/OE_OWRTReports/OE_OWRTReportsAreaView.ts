@@ -22,7 +22,9 @@ export class OE_OWRTReportsAreaView extends ViewBase {
     };
 
     toggleReportOptionPanel(event, element, context) {        
-        context.reportOptionsPanelVisible.set(!context.reportOptionsPanelVisible.get());
+        let val = context.reportOptionsPanelVisible.get();
+        context.reportOptionsPanelVisible.set(!val);
+        (<OE_OWRTReportsAreaViewModel>context).ToggleOptionsArrow(val);
     }
 
     geoTypeChanged(event, element, context) {
@@ -32,15 +34,7 @@ export class OE_OWRTReportsAreaView extends ViewBase {
     areaOptionChanged(event, element, context) {
         (<OE_OWRTReportsAreaViewModel>context).OptionsAreaChanged(element.value, element.selectedOptions[0].label);
     }
-
-    yearStartChanged(event, element, context) {
-        (<OE_OWRTReportsAreaViewModel>context).OptionsYearStartChanged(element.value);
-    }
-
-    yearEndChanged(event, element, context) {
-        (<OE_OWRTReportsAreaViewModel>context).OptionsYearEndChanged(element.value);
-    }
-
+    
     reportOptionsSubmission(event, element, context) {
         (<OE_OWRTReportsAreaViewModel>context).ReportOptionsSubmission();
     }

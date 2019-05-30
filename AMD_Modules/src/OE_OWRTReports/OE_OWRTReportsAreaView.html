@@ -24,7 +24,10 @@
 
             
     <div class="oeOWRTOptions">
-        <a href="javascript:void(0)" data-binding="{@event-onclick: toggleReportOptionPanel}">Report Options</a>
+        <a href="javascript:void(0)" data-binding="{@event-onclick: toggleReportOptionPanel}">
+            <img data-binding="{src: optionsImageSrc}" src="Resources/Images/Icons/arrow-right-small-24.png" />
+            <span>Options</span>
+        </a>
     </div>
 
     <div class="oeOWRTOptionsPanel" data-binding="{@visible: reportOptionsPanelVisible}">
@@ -46,7 +49,11 @@
                 <td>
                     <h1>Select Year(s)</h1>
                     <div>
-                        From: <input data-binding="{@text:startYear}{value:startYear}{@event-onchange: yearStartChanged}" name="yearFrom" /> To: <input data-binding="{@text:endYear}{value:endYear}{@event-onchange: yearEndChanged}" name="yearTo" />
+                        Year Range: <span input data-binding="{@text:startYear}"></span> - <span data-binding="{@text:endYear}"></span>
+                        <div class="owrtYearSlider">
+                            <input value="2012" />
+                            <input value="2017" />
+                        </div>
                     </div>
                 </td>
                 <td>
