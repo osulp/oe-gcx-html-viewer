@@ -10,10 +10,6 @@ import { ObservableCollection } from "geocortex/framework/observables";
 import { MapService } from "geocortex/essentials/MapService";
 import { Layer } from "geocortex/essentials/Layer";
 
-import { ChartViewModelFactory } from "geocortex/charting/ChartViewModelFactory";
-import { Chart } from "geocortex/charting/Chart";
-import { KendoFormatProvider } from "geocortex/charting/globalization/KendoFormatProvider";
-import { ChartSeriesProvider } from "geocortex/charting/ChartSeriesProvider";
 import { ChartPointAdapterRegistry } from "geocortex/charting/infrastructure/ChartPointAdapterRegistry"
 import { ChartPointCollectionAggregator } from "geocortex/charting/infrastructure/aggregation/ChartPointCollectionAggregator";
 import { ChartDefinition } from "geocortex/charting/infrastructure/configuration/ChartDefinition";
@@ -282,9 +278,7 @@ export class OE_OITTViewModel extends ViewModelBase {
 
     urlMainMapService: string;
     queryURLProjects: string;
-
-    chartFactory: ChartViewModelFactory;
-
+        
     loaderVisible: Observable<boolean> = new Observable<boolean>(true);
     loaderMessage: Observable<string> = new Observable<string>("Loading Report...");
     loaderSpinner: Observable<boolean> = new Observable<boolean>(true);
@@ -301,10 +295,10 @@ export class OE_OITTViewModel extends ViewModelBase {
     reportAreaListVisible: Observable<boolean> = new Observable<boolean>(false);
     reportAreaList: ObservableCollection<object> = new ObservableCollection<object>(null);
 
-    minYear: number = 1995;
-    maxYear: number = 2017;
-    startYearDefault: number = 2012;
-    endYearDefault: number = 2017;
+    minYear: number = 1999;
+    maxYear: number = 2018;
+    startYearDefault: number = 2014;
+    endYearDefault: number = 2018;
 
     startYear: Observable<string> = new Observable<string>(this.startYearDefault.toString());
     endYear: Observable<string> = new Observable<string>(this.endYearDefault.toString());
@@ -331,6 +325,8 @@ export class OE_OITTViewModel extends ViewModelBase {
     tabFundingClass: Observable<string> = new Observable<string>("");
 
     //tab charts
+    kChartActive: kendo.dataviz.ui.Chart;
+
     oittProjChartYearClass: Observable<string> = new Observable<string>("oittChartSelectionBoxSelected");
     oittProjChartTypeClass: Observable<string> = new Observable<string>("");
 
@@ -436,12 +432,10 @@ export class OE_OITTViewModel extends ViewModelBase {
         this._SetupJQueryTableSort();
 
         // Register our custom JSON data adapter with the charting infrastructure.
-        let jsonDataAdapter = new OE_ChartPointJsonAdapter();
-        let sourceTypeString = ChartFieldSourceType[(<any>ChartFieldSourceType).Json];
-        ChartPointAdapterRegistry.registerAdapter((<any>jsonDataAdapter), sourceTypeString);
-
-        this.initializeChartFactory();
-
+        //let jsonDataAdapter = new OE_ChartPointJsonAdapter();
+        //let sourceTypeString = ChartFieldSourceType[(<any>ChartFieldSourceType).Json];
+        //ChartPointAdapterRegistry.registerAdapter((<any>jsonDataAdapter), sourceTypeString);
+        
         //let mService = this._GetServiceByName("OWRT");
         let mService = this._GetServiceByName("OITT_2016");
         this.urlMainMapService = mService.serviceUrl;
@@ -774,7 +768,7 @@ export class OE_OITTViewModel extends ViewModelBase {
         //loop over projects
         if (this.projectsGraphicsArray.length > 0) {
 
-            this.areaTotalProjects.set(this.projectsGraphicsArray.length.toString());
+            this.areaTotalProjects.set(this.projectsGraphicsArray.length.toLocaleString('en'));
 
             for (let i = 0; i < this.projectsGraphicsArray.length; i++)
             {
@@ -787,7 +781,7 @@ export class OE_OITTViewModel extends ViewModelBase {
                 //any federal funds?
                 if (!this._IsNullOrEmpty(atts.FederalFunds) && atts.FederalFunds.toString() != "null")
                 {
-                    totalInvestment += Number(atts.FederalFunds);
+                    //totalInvestment += Number(atts.FederalFunds);
                     this.areaTotalFed += Number(atts.FederalFunds);
                 }
 
@@ -1080,7 +1074,7 @@ export class OE_OITTViewModel extends ViewModelBase {
         //all queries are selected by state or geometry
         queryString = "1=1";
 
-        queryString += " AND YearEnd BETWEEN " + this.startYear.get() + " AND " + this.endYear.get();
+        queryString += " AND YearStart BETWEEN " + this.startYear.get() + " AND " + this.endYear.get();
 
         this.primaryQueryString.set(queryString);
     }
@@ -1480,7 +1474,102 @@ export class OE_OITTViewModel extends ViewModelBase {
 
     public ChartFundingByTypeByYear(activeChartString: string, setupOnly: boolean = false)
     {
-        if (setupOnly)
+        if (!setupOnly && !this._IsNullOrEmpty(this.chartFundingTypeYear)) {
+
+            //only draw the chart if it is null
+            if (!this.projectChart || this.fundingChartString != activeChartString) {
+                this.fundingChartString = activeChartString;
+
+                this._destoryActiveChart();
+
+                let colorsToUse = this._generateRGBArrayFromCount(this.chartFundingTypeYear.length, true);
+
+                let catValues = [];
+
+                let seriesSet = [];
+                let seriesObj = { "name": "", "color": "", "data": [] };
+                let seriesIndexs = {};
+                let colorIndex = 0;
+
+                let workingObj: any;
+                for (let index in this.chartFundingTypeYear) {
+
+                    workingObj = this.chartFundingTypeYear[index];
+                    catValues.push(workingObj.year);
+
+                    colorIndex = 0;
+
+                    for (let propIndex in workingObj) {
+                        if (propIndex == "year") //skip year property
+                            continue;
+
+                        //create index for this activity type
+                        if (this._IsNullOrEmpty(seriesIndexs[propIndex])) {
+                            seriesIndexs[propIndex] = seriesSet.length;
+                            seriesObj = {
+                                "name": propIndex,
+                                "color": colorsToUse[colorIndex],
+                                "data": [parseInt(workingObj[propIndex])]
+                            };
+                            seriesSet.push(seriesObj);
+                        }
+                        else {
+                            seriesSet[seriesIndexs[propIndex]].data.push(parseInt(workingObj[propIndex]));
+                        }
+
+                        colorIndex++;
+                    }
+                }
+
+                let rotationAngle = 0;
+                if (catValues.length > 8)
+                    rotationAngle = -45;
+
+                let opts: any = {
+                    title: {
+                        text: ""
+                    },
+                    legend: {
+                        visible: true,
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "line"
+                    },
+                    series: seriesSet,
+                    valueAxis: [{
+                        line: {
+                            visible: true
+                        },
+                        minorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: "auto",
+                            format: "{0:C0}"
+                        }
+                    }],
+                    categoryAxis: [{
+                        title: { text: "Year" },
+                        categories: catValues,
+                        majorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: { angle: rotationAngle }
+                        }
+                    }],
+                    tooltip: {
+                        visible: true,
+                        template: 'Year: #= category # <br /> #= series.name #: #= kendo.format("{0:C0}",value) #'
+                    }
+                };
+
+                this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaFundingChart")[0], opts);
+            }
+        }     
+
+        /*if (setupOnly)
         {
 
             var chartCategoryDefs: RestChartCategoryDefinition = {
@@ -1547,13 +1636,90 @@ export class OE_OITTViewModel extends ViewModelBase {
                 this.fundingChartString = activeChartString;
                 this.BuildChart("fundingChart", this.chartDefsFundingTypeYear, this.chartFundingTypeYear, "oeOWRTAreaFundingChart", 550);
             }
-        }
+        }*/
 
     }
 
     public ChartFundingByYear(activeChartString: string, setupOnly: boolean = false)
     {
-        if (setupOnly) {
+
+        if (!setupOnly && !this._IsNullOrEmpty(this.chartFundingYear)) {
+
+            //only draw the chart if it is null
+            if (!this.projectChart || this.fundingChartString != activeChartString) {
+                this.fundingChartString = activeChartString;
+
+                this._destoryActiveChart();
+
+                let catValues = [];
+                let dataValuesCash = [];
+                let dataValuesInkind = [];
+                for (let index in this.chartFundingYear) {
+                    catValues.push((<any>this.chartFundingYear[index]).y);
+                    dataValuesCash.push((<any>this.chartFundingYear[index]).fund);
+                    dataValuesInkind.push((<any>this.chartFundingYear[index]).fed);
+                }
+
+                let rotationAngle = 0;
+                if (catValues.length > 8)
+                    rotationAngle = -45;
+
+                let opts: any = {
+                    title: {
+                        text: ""
+                    },
+                    legend: {
+                        visible: true,
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "column"
+                    },
+                    series: [{
+                        name: "Funding",
+                        color: "#4684EE",
+                        data: dataValuesCash
+                    },
+                    {
+                        name: "Federal",
+                        color: "#ee6f44",
+                        data: dataValuesInkind
+                    }
+                    ],
+                    valueAxis: [{
+                        line: {
+                            visible: true
+                        },
+                        minorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: "auto",
+                            format: "{0:C0}"
+                        }
+                    }],
+                    categoryAxis: [{
+                        title: { text: "Year" },
+                        categories: catValues,
+                        majorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: { angle: rotationAngle }
+                        }
+                    }],
+                    tooltip: {
+                        visible: true,
+                        template: 'Year: #= category # <br /> #=series.name#:  #= kendo.format("{0:C0}",value) #'
+                    }
+                };
+
+
+                this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaFundingChart")[0], opts);
+            }
+        }
+
+        /*if (setupOnly) {
 
             var chartCategoryDefs: RestChartCategoryDefinition = {
                 field: {
@@ -1603,13 +1769,75 @@ export class OE_OITTViewModel extends ViewModelBase {
                 this.fundingChartString = activeChartString;
                 this.BuildChart("fundingChart", this.chartDefsFundingYear, this.chartFundingYear, "oeOWRTAreaFundingChart", 550);
             }
-        }
+        }*/
 
     }
 
     public ChartFundingByProjectType(activeChartString: string, setupOnly: boolean = false)
     {
-        let useDivider = this._GetDivider(this.chartFundingType, "s");
+
+        if (!setupOnly && !this._IsNullOrEmpty(this.chartFundingType)) {
+
+            //only draw the chart if it is null
+            if (!this.projectChart || this.fundingChartString != activeChartString) {
+                this.fundingChartString = activeChartString;
+
+                this._destoryActiveChart();
+
+                let catValues = [];
+                let dataValues = [];
+                for (let index in this.chartFundingType) {
+                    catValues.push((<any>this.chartFundingType[index]).t);
+                    dataValues.push((<any>this.chartFundingType[index]).s);
+                }
+
+                let opts: any = {
+                    title: {
+                        text: ""
+                    },
+                    legend: {
+                        visible: true,
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "bar"
+                    },
+                    series: [{
+                        name: "Activity",
+                        color: "#4684EE",
+                        data: dataValues
+                    }],
+                    valueAxis: [{
+                        line: {
+                            visible: true
+                        },
+                        minorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: "auto",
+                            format: "{0:C0}"
+                        }
+                    }],
+                    categoryAxis: [{
+                        title: { text: "Activity" },
+                        categories: catValues,
+                        majorGridLines: {
+                            visible: false
+                        }
+                    }],
+                    tooltip: {
+                        visible: true,
+                        template: 'Activity: #= category # <br /> Total Investment: #= kendo.format("{0:C0}",value) #'
+                    }
+                };
+
+
+                this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaFundingChart")[0], opts);
+            }
+        }
+
+        /*let useDivider = this._GetDivider(this.chartFundingType, "s");
         let xAxisTitle = "Total";
         xAxisTitle += (useDivider > 0) ? " (" + useDivider.toString() + "s) " : "";
 
@@ -1668,7 +1896,7 @@ export class OE_OITTViewModel extends ViewModelBase {
                 this.fundingChartString = activeChartString;
                 this.BuildChart("fundingChart", this.chartDefsFundingType, this.chartFundingType, "oeOWRTAreaFundingChart", 550, useDivider);
             }
-        }
+        }*/
         
     }
 
@@ -1693,6 +1921,75 @@ export class OE_OITTViewModel extends ViewModelBase {
 
     public ChartProjectYearCount(activeChartString: string, setupOnly: boolean = false) {
 
+        if (!setupOnly && !this._IsNullOrEmpty(this.chartProjectYearCount)) {
+
+            //only draw the chart if it is null
+            if (!this.projectChart || this.projectChartString != activeChartString) {
+                this.projectChartString = activeChartString;
+
+                this._destoryActiveChart();
+
+                let catValues = [];
+                let dataValues = [];
+                for (let index in this.chartProjectYearCount) {
+                    catValues.push((<any>this.chartProjectYearCount[index]).y);
+                    dataValues.push((<any>this.chartProjectYearCount[index]).c);
+                }
+
+                let rotationAngle = 0;
+                if (catValues.length > 10)
+                    rotationAngle = -45;
+
+                let opts: any = {
+                    title: {
+                        text: ""
+                    },
+                    legend: {
+                        visible: true,
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "column"
+                    },
+                    series: [{
+                        name: "Projects",
+                        color: "#4684EE",
+                        data: dataValues
+                    }],
+                    valueAxis: [{
+                        title: { text: "Projects" },
+                        line: {
+                            visible: true
+                        },
+                        minorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: "auto",
+                            format: "{0:n0}"
+                        }
+                    }],
+                    categoryAxis: [{
+                        categories: catValues,
+                        majorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: { angle: rotationAngle }
+                        }
+                    }],
+                    tooltip: {
+                        visible: true,
+                        template: 'Year: #= category # <br /> #= series.name #: #= kendo.toString(value,"n0") #'
+                    }
+                };
+
+
+                this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaProjectChart")[0], opts);
+            }
+        }               
+
+        /*
         if (setupOnly)
         {            
             var chartCategoryDefs: RestChartCategoryDefinition = {
@@ -1742,11 +2039,73 @@ export class OE_OITTViewModel extends ViewModelBase {
                 this.projectChartString = activeChartString;
                 this.BuildChart("projectChart", this.chartDefsProjectYearCount, this.chartProjectYearCount, "oeOWRTAreaProjectsChart", 550);
             }
-        }               
+        }        */       
     }
 
     public ChartProjectTypeCount(activeChartString: string, setupOnly: boolean = false) {
 
+        if (!setupOnly && !this._IsNullOrEmpty(this.chartProjectTypeCount)) {
+
+            //only draw the chart if it is null
+            if (!this.projectChart || this.projectChartString != activeChartString) {
+                this.projectChartString = activeChartString;
+
+                this._destoryActiveChart();
+
+                let catValues = [];
+                let dataValues = [];
+                for (let index in this.chartProjectTypeCount) {
+                    catValues.push((<any>this.chartProjectTypeCount[index]).t);
+                    dataValues.push((<any>this.chartProjectTypeCount[index]).c);
+                }
+
+                let opts: any = {
+                    title: {
+                        text: ""
+                    },
+                    legend: {
+                        visible: true,
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "bar"
+                    },
+                    series: [{
+                        name: "Activity",
+                        color: "#4684EE",
+                        data: dataValues
+                    }],
+                    valueAxis: [{
+                        line: {
+                            visible: true
+                        },
+                        minorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: "auto",
+                            format: "{0:n0}"
+                        }
+                    }],
+                    categoryAxis: [{
+                        title: { text: "Activity" },
+                        categories: catValues,
+                        majorGridLines: {
+                            visible: false
+                        }
+                    }],
+                    tooltip: {
+                        visible: true,
+                        template: 'Activity: #= category # <br /> Projects: #= kendo.toString(value,"n0") #'
+                    }
+                };
+
+
+                this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaProjectChart")[0], opts);
+            }
+        }             
+
+        /*
         if (setupOnly) {
 
             var chartCategoryDefs: RestChartCategoryDefinition = {
@@ -1795,11 +2154,84 @@ export class OE_OITTViewModel extends ViewModelBase {
                 this.projectChartString = activeChartString;
                 this.BuildChart("projectChart", this.chartDefsProjectTypeCount, this.chartProjectTypeCount, "oeOWRTAreaProjectsChart", 550);
             }
-        }
+        }*/
     }
 
     public ChartFundingTotal(activeChartString: string, setupOnly: boolean = false) {
-        
+
+        this.chartFundingTotal = [{ "funds": this.areaTotalFunds, "fed": this.areaTotalFed }];
+
+        if (!setupOnly && !this._IsNullOrEmpty(this.chartFundingTotal)) {
+            
+            //only draw the chart if it is null
+            if (!this.projectChart || this.fundingChartString != activeChartString) {
+                this.fundingChartString = activeChartString;
+
+                this._destoryActiveChart();
+
+                let total = (<any>this.chartFundingTotal[0]).funds + (<any>this.chartFundingTotal[0]).fed;
+                let cash = (<any>this.chartFundingTotal[0]).funds;
+                let inkind = (<any>this.chartFundingTotal[0]).fed;
+
+                let opts: any = {
+                    title: {
+                        text: ""
+                    },
+                    legend: {
+                        visible: true,
+                        position: "bottom"
+                    },
+                    dataSource: {
+                        data: [
+                            { "name": "Funds", "val": cash, "p": cash / total, color: "#4684EE" },
+                            { "name": "Federal Funds", "val": inkind, "p": inkind / total, color: "#ee6f44" }
+                        ]
+                    },
+                    seriesDefaults: {
+                        type: "pie",
+                        labels: {
+                            visible: true,
+                            format: "{0:P}",
+                            template: '#= category #: #= kendo.format("{0:P0}",value)#'
+                        }
+                    },
+                    series: [{
+                        type: "pie",
+                        color: "#4684EE",
+                        field: "p",
+                        categoryField: "name"
+                    }],
+                    valueAxis: [{
+                        line: {
+                            visible: true
+                        },
+                        minorGridLines: {
+                            visible: false
+                        },
+                        labels: {
+                            rotation: "auto"
+                        }
+                    }],
+                    categoryAxis: [{
+                        title: { text: "" },
+                        categories: [],
+                        majorGridLines: {
+                            visible: false
+                        }
+                    }],
+                    tooltip: {
+                        visible: true,
+                        format: "{0:C0}",
+                        template: '#= category #: #= kendo.format("{0:P0}",value)# <br /> #= kendo.format("{0:C0}",dataItem.val) #'
+                    }
+                };
+
+
+                this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaFundingChart")[0], opts);
+            }
+        }
+
+        /*
         if (setupOnly) {
             let colorsToUse: any = [[70, 132, 238], [220, 57, 18]];
             //let colorsToUse: any = this._generateRGBArrayFromCount(2);
@@ -1817,7 +2249,7 @@ export class OE_OITTViewModel extends ViewModelBase {
                 this.fundingChartString = activeChartString;
                 this.BuildChart("fundingChart", this.chartDefsFundingTotal, this.chartFundingTotal, "oeOWRTAreaFundingChart", 550);
             }
-        }               
+        } */              
     }
 
     private _ClearFundingClasses() {
@@ -1892,43 +2324,14 @@ export class OE_OITTViewModel extends ViewModelBase {
             }
         }        
     }
+        
+    private _destoryActiveChart(targetName: string = "") {
 
-    public BuildChart(targetChart: string, chartConfig: any, chartData: any, targetRegionID: string, widthIn: number, divideBy: number = 0) {
-
-        //destry the active chart
-        this._destoryActiveChart(targetChart);
-
-        let chartDefinition = new ChartDefinition(chartConfig);
-
-        // Create chart view model from chart config & data.
-        let chartViewModel = this.chartFactory.createInstance(<any>chartDefinition, ChartFeatureType.SingleFeature, chartData);
-        chartViewModel.width.set(widthIn);
-
-        if (divideBy > 0) {
-            let series = chartViewModel.seriesViewModels.getItems()[0];
-            let val:number;
-            for (let i = 0; i < series.items.items.length; i++) {
-                val = series.items.items[i].value / divideBy;
-                series.items.items[i].value = (series.items.items[i].value > 0 && val < 1) ? 1 : val;
-            }
+        try {
+            this.kChartActive.destroy();
         }
+        catch (e) { }
 
-        // Create the chart.
-        let chart = <any>this.app.viewManager.createView({
-            markupResource: "Charting/charting/Chart.html",
-            typeName: "geocortex.charting.Chart",
-            isVisible: true,
-            libraryId: "Charting",
-            regionName: targetRegionID
-        });
-
-        // Attach the view to the view model. This will cause all of its binding expressions to be evaluated.
-        chart.attach(chartViewModel);
-
-        this[targetChart] = chart;
-    }
-
-    private _destoryActiveChart(targetName: string) {
         if (this[targetName]) {
             this.app.command("DestroyView").execute(this[targetName].id);
         }
@@ -2122,27 +2525,7 @@ export class OE_OITTViewModel extends ViewModelBase {
 
         return;
     }
-
-    private initializeChartFactory(): void {
-
-        let chartingLibraryId = "Charting";
-        let numberAndDateFormatter = new KendoFormatProvider();
-        let seriesProvider = new ChartSeriesProvider(<any>this.app, chartingLibraryId);
-        let aggregator = new ChartPointCollectionAggregator();
-        aggregator.formatProvider = numberAndDateFormatter;
-
-        this.chartFactory = new ChartViewModelFactory(<any>this.app, chartingLibraryId);
-        this.chartFactory.id = "ChartViewModelFactory";
-
-        this.chartFactory.initialize(<any>{
-            formatProvider: numberAndDateFormatter,
-            seriesProvider: seriesProvider,
-            aggregator: aggregator
-        });
-
-        this.app.registerFrameworkObject(<any>this.chartFactory);
-    }
-
+       
     private _BuildRestChartDefinition(idIn: string, displayName: string, chartType: string, enableCommonSeriesRange: boolean, flipChart: boolean,
         catDefs: RestChartCategoryDefinition, areaDef: RestChartAreaDefinition): RestChartDefinition {
 
@@ -2215,7 +2598,60 @@ export class OE_OITTViewModel extends ViewModelBase {
         chartDef.series.push(obj);
     }
 
-    private _generateRGBArrayFromCount(maxColors: number) {
+    private _FindActivitySymbolColor(activityType: string, cssType: boolean = true, toHex: boolean = false): any {
+
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+
+        for (let i = 0; i < this.owrtActivitySymbols.length; i++) {
+            var valueString = this.owrtActivitySymbols[i].value;
+
+            if (valueString.toLowerCase() == activityType.toLowerCase()) {
+                if (cssType) {
+                    var colorOut = "background-color: rgb(";
+
+                    //drop off the alpha value for IE support                    
+                    var colorArray: Array<number> = this.owrtActivitySymbols[i].symbol.color.slice()
+                    colorArray.pop();
+
+                    for (let c = 0; c < colorArray.length; c++) {
+                        colorOut += colorArray[c];
+
+                        if (c < colorArray.length - 1)
+                            colorOut += ",";
+                    }
+
+                    colorOut += ")";
+
+                    return colorOut;
+                }
+                else {
+                    //drop off the alpha value for IE support
+                    var colorArray: Array<number> = this.owrtActivitySymbols[i].symbol.color.slice()
+                    colorArray.pop();
+
+                    if (toHex)
+                        return rgbToHex(colorArray[0], colorArray[1], colorArray[2]);
+                    else
+                        return colorArray;
+                }
+            }
+        }
+
+        //default color
+        if (cssType)
+            return "background-color: rgb(255, 99, 71)";
+        else {
+            if (toHex)
+                return rgbToHex(255, 99, 71);
+            else
+                return "rgb(255, 99, 71)";
+        }
+
+    }
+
+    private _generateRGBArrayFromCount(maxColors: number, asHex: boolean = false) {
 
         /**
              * HSV to RGB color conversion
@@ -2296,11 +2732,22 @@ export class OE_OITTViewModel extends ViewModelBase {
             return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
         };
 
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+
         var colorsOut = [];
 
         //return a single color
         if (maxColors == 1) {
-            colorsOut.push([224, 100, 50]);
+
+            if (asHex) {
+                colorsOut.push(rgbToHex(224, 100, 50));
+            }
+            else {
+                colorsOut.push([224, 100, 50]);
+            }
+
             return colorsOut;
         }
 
@@ -2310,14 +2757,23 @@ export class OE_OITTViewModel extends ViewModelBase {
 
         // hold the generated colors        
         var sv = 70;
+        let workingRGB;
         for (var x = 0; x < maxColors; x++) {
             // alternate the s, v for more
             // contrast between the colors.
             sv = sv > 90 ? 70 : sv + 10;
-            colorsOut.push(hsvToRgb(i * x, sv, sv));
+
+            if (asHex) {
+                workingRGB = hsvToRgb(i * x, sv, sv);
+                colorsOut.push(rgbToHex(workingRGB[0], workingRGB[1], workingRGB[2]));
+            }
+            else {
+                colorsOut.push(hsvToRgb(i * x, sv, sv));
+            }
+
         }
 
         return colorsOut;
-    }
+    }    
 
 }

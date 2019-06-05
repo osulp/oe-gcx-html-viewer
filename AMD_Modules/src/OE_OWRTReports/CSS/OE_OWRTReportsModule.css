@@ -793,9 +793,13 @@ div.oeOWRTAreaTabEnabled
 
 .oeOWRTAreaQueryInfo
 {    
-    position:absolute;
+    /*position:absolute;
     right:10px;
-    top: 90px;
+    top: 90px;*/
+    position:relative;
+    right:10px;
+    height:0px;
+    pointer-events:none;
 }
 
 .oeOWRTAreaQueryInfo div
@@ -968,11 +972,20 @@ th.sorted.descending:after {
 
 .owrtChartTableToggleLink
 {
-    position: absolute;
+    /*position: absolute;
     display: block;
     top: 162px;
     left: 800px;
-    z-index: 40;
+    z-index: 40;*/
+}
+
+.owrtTableProjects
+{    
+   position:relative;
+    width:590px;
+    min-height:400px;
+    padding-top:16px;
+    overflow-x:auto;
 }
 
 .owrtChartTables

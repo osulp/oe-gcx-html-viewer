@@ -86,21 +86,12 @@ export class OE_OWRTReportsAreaView extends ViewBase {
     toggleResultsChart(event, element, context) {
         var vm:any = this.viewModel;
         (<OE_OWRTReportsAreaViewModel>vm).ShowChart("results", context.chart, context.name);
-        //(<OE_OWRTReportsAreaViewModel>context).ShowChart("results", context.chart);
     }
 
     toggleChartDataAsTable(event, element, context) {
         (<OE_OWRTReportsAreaViewModel>context).ToggleChartTableView();
     }
-        
-    /*toggleChartActivity(event, element, context) {
-        (<OE_OWRTReportsViewModel>context).BuildChartActivity();
-    }
-
-    toggleChartPart(event, element, context) {        
-        (<OE_OWRTReportsViewModel>context).BuildChartParticipant();
-    }*/
-
+    
     loadAreaReport(event, element, context) {
         console.log("Load Area Report");
         //context._oeReportQueries(element.value);

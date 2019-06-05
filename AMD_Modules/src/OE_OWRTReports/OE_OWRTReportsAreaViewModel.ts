@@ -398,9 +398,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     owrtChartsTableContainerVisible: Observable<boolean> = new Observable<boolean>(false);
 
     owrtChartsTableSharedVisible: Observable<boolean> = new Observable<boolean>(false);
-    owrtChartsTableFundInvestByYearVisible: Observable<boolean> = new Observable<boolean>(false);
-    owrtChartsTableFundInvestByActByYearVisible: Observable<boolean> = new Observable<boolean>(false);
-        
+            
     owrtTableLinkText: Observable<string> = new Observable<string>("Table View");
     owrtTableLinkImg: Observable<string> = new Observable<string>("Resources/Images/Icons/paging-control-table-24.png");
     owrtChartTableLinkVisible: Observable<boolean> = new Observable<boolean>(false);
@@ -409,6 +407,31 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     owrtTableHdrName: Observable<string> = new Observable<string>("");
     owrtTableHdrValue: Observable<string> = new Observable<string>("");
     owrtTableData: ObservableCollection<object> = new ObservableCollection<object>(null); //{"name:"","value":0}    
+
+    //projects table
+    owrtChartProjectsVisible: Observable<boolean> = new Observable<boolean>(true);
+    owrtTableProjectsVisible: Observable<boolean> = new Observable<boolean>(false);
+    owrtTableProjectsHeader: Observable<string> = new Observable<string>("");
+    owrtTableProjectsValue: Observable<string> = new Observable<string>("");
+    owrtTableProjectsData: ObservableCollection<object> = new ObservableCollection<object>(null); //{"name:"","value":0}    
+
+    //funding table
+    owrtChartFundsVisible: Observable<boolean> = new Observable<boolean>(true);
+
+    owrtTableFundsVisible: Observable<boolean> = new Observable<boolean>(false);
+    owrtTableFundInvestByYearVisible: Observable<boolean> = new Observable<boolean>(false);
+    owrtTableFundInvestByActByYearVisible: Observable<boolean> = new Observable<boolean>(false);
+
+    owrtTableFundsHeader: Observable<string> = new Observable<string>("");
+    owrtTableFundsValue: Observable<string> = new Observable<string>("");
+    owrtTableFundsData: ObservableCollection<object> = new ObservableCollection<object>(null); //{"name:"","value":0}    
+
+    //results table
+    owrtChartResultsVisible: Observable<boolean> = new Observable<boolean>(true);
+    owrtTabletResultsVisible: Observable<boolean> = new Observable<boolean>(false);
+    owrtTabletResultsHeader: Observable<string> = new Observable<string>("");
+    owrtTabletResultsValue: Observable<string> = new Observable<string>("");
+    owrtTabletResultsData: ObservableCollection<object> = new ObservableCollection<object>(null); //{"name:"","value":0}
 
     //funding invest by year table
     owrtTableDataFundInvestByYear: ObservableCollection<object> = new ObservableCollection<object>(null); //{"year:0,"cash":0,"inkind":0}    
@@ -1027,7 +1050,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                 if (!this._IsNullOrEmpty(jTotals.TotalInvestment))
                     this.areaTotalInvestment.set("$" + jTotals.TotalInvestment.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$&,'));
                 if (!this._IsNullOrEmpty(jTotals.TotalProjects))
-                    this.areaTotalProjects.set(jTotals.TotalProjects);
+                    this.areaTotalProjects.set(jTotals.TotalProjects.toLocaleString('en'));
                 //total investment in projects                        
                 this.fundingChartTotalData = [{
                     "cash": (!this._IsNullOrEmpty(jTotals.TotalCash)) ? jTotals.TotalCash : 0,
@@ -1589,7 +1612,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
     public CloseChartTableView()
     {
-        this.owrtChartsTableContainerVisible.set(false);
+        //this.owrtChartsTableContainerVisible.set(false);
         this.owrtTableLinkText.set("Table View");
         this.owrtTableLinkImg.set("Resources/Images/Icons/paging-control-table-24.png");
 
@@ -1598,9 +1621,13 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
     public HideAllTableViews()
     {
+        this.owrtTableProjectsVisible.set(false);
+
         this.owrtChartsTableSharedVisible.set(false);
-        this.owrtChartsTableFundInvestByYearVisible.set(false);
-        this.owrtChartsTableFundInvestByActByYearVisible.set(false);
+
+        this.owrtTableFundsVisible.set(false);
+        this.owrtTableFundInvestByYearVisible.set(false);
+        this.owrtTableFundInvestByActByYearVisible.set(false);
     }
 
     public ToggleOptionsArrow(val:boolean)
@@ -1614,160 +1641,265 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     public ToggleChartTableView()
     {
         //hide all views first
-        this.HideAllTableViews();
+        //this.HideAllTableViews();
 
-        if (!this.owrtChartsTableContainerVisible.get()) {
+        //if (!this.owrtChartsTableContainerVisible.get()) {
            
             this.owrtTableLinkText.set("Chart View");
             this.owrtTableLinkImg.set("Resources/Images/Icons/charting-24.png");
-                        
+
             if (this.activeTabChartName == "projectsyear")
             {
-                this.owrtTableHdrName.set("Year");
-                this.owrtTableHdrValue.set("Number of Projects");
-                this.owrtChartsTableSharedVisible.set(true);
+                if (!this.owrtTableProjectsVisible.get()) {
 
-                this.owrtTableData.clear();
-                for (let i = 0; i < this.projectChartYearData.length; i++) {
-                    this.owrtTableData.addItem({
-                        "name": (<any>this.projectChartYearData[i]).Year,
-                        "value": (<any>this.projectChartYearData[i]).TotalProjects,
-                        "data-sort-value": isNaN(parseInt((<any>this.projectChartYearData[i]).TotalProjects)) ? 0 : parseInt((<any>this.projectChartYearData[i]).TotalProjects)
-                    });
-                }                
-                
-            }
+                    this.HideAllTableViews();
+
+                    this.owrtTableProjectsHeader.set("Year");
+                    this.owrtTableProjectsValue.set("Number of Projects");
+                    this.owrtChartProjectsVisible.set(false);
+                    this.owrtTableProjectsVisible.set(true);
+                                        
+                    this.owrtTableProjectsData.clear();
+                    for (let i = 0; i < this.projectChartYearData.length; i++) {
+                        this.owrtTableProjectsData.addItem({
+                            "name": (<any>this.projectChartYearData[i]).Year,
+                            "value": (<any>this.projectChartYearData[i]).TotalProjects,
+                            "data-sort-value": isNaN(parseInt((<any>this.projectChartYearData[i]).TotalProjects)) ? 0 : parseInt((<any>this.projectChartYearData[i]).TotalProjects)
+                        });
+                    }
+                }
+                else
+                {
+                    this.owrtTableProjectsVisible.set(false);
+                    this.owrtChartProjectsVisible.set(true);
+                    this.CloseChartTableView();
+                }
+            }            
             else if (this.activeTabChartName == "projectsactivity")
             {
-                this.owrtTableHdrName.set("Project Types");
-                this.owrtTableHdrValue.set("Number of Projects");
-                this.owrtChartsTableSharedVisible.set(true);
 
-                this.owrtTableData.clear();
-                for (let i = 0; i < this.projectChartActData.length; i++) {
-                    this.owrtTableData.addItem({
-                        "name": (<any>this.projectChartActData[i]).ProjType,
-                        "value": (<any>this.projectChartActData[i]).NumProj,
-                        "data-sort-value": isNaN(parseInt((<any>this.projectChartActData[i]).NumProj)) ? 0 : parseInt((<any>this.projectChartActData[i]).NumProj)
-                    });
-                }                
+                if (!this.owrtTableProjectsVisible.get()) {
+
+                    this.HideAllTableViews();
+
+                    this.owrtTableProjectsHeader.set("Project Types");
+                    this.owrtTableProjectsValue.set("Number of Projects");
+                    this.owrtChartProjectsVisible.set(false);
+                    this.owrtTableProjectsVisible.set(true);
+
+                    this.owrtTableProjectsData.clear();
+                    for (let i = 0; i < this.projectChartActData.length; i++) {
+                        this.owrtTableProjectsData.addItem({
+                            "name": (<any>this.projectChartActData[i]).ProjType,
+                            "value": (<any>this.projectChartActData[i]).NumProj,
+                            "data-sort-value": isNaN(parseInt((<any>this.projectChartActData[i]).NumProj)) ? 0 : parseInt((<any>this.projectChartActData[i]).NumProj)
+                        });
+                    }
+                }
+                else
+                {
+                    this.owrtTableProjectsVisible.set(false);
+                    this.owrtChartProjectsVisible.set(true);
+                    this.CloseChartTableView();
+                }      
                 
             }                        
             else if (this.activeTabChartName == "fundingtotal") {
 
-                this.owrtTableHdrName.set("Contribution Types");
-                this.owrtTableHdrValue.set("Total Investment");
-                this.owrtChartsTableSharedVisible.set(true);
-                
-                this.owrtTableData.clear();
-                this.owrtTableData.addItem({ "name": "Cash",
-                    "value": "$" + Number((<any>this.fundingChartTotalData[0]).cash).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
-                    "data-sort-value": isNaN(parseInt((<any>this.fundingChartTotalData[0]).cash)) ? 0 : parseInt((<any>this.fundingChartTotalData[0]).cash)
-                });
-                this.owrtTableData.addItem({
-                    "name": "Inkind",
-                    "value": "$" + Number((<any>this.fundingChartTotalData[0]).inkind).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
-                    "data-sort-value": isNaN(parseInt((<any>this.fundingChartTotalData[0]).inkind)) ? 0 : parseInt((<any>this.fundingChartTotalData[0]).inkind)
-                });                                                
+                if (!this.owrtTableFundsVisible.get()) {
+
+                    this.HideAllTableViews();
+
+                    this.owrtTableFundsHeader.set("Contribution Types");
+                    this.owrtTableFundsValue.set("Total Investment");
+                    this.owrtChartFundsVisible.set(false);
+                    this.owrtTableFundsVisible.set(true);
+                    
+                    this.owrtTableFundsData.clear();
+                    this.owrtTableFundsData.addItem({
+                        "name": "Cash",
+                        "value": "$" + Number((<any>this.fundingChartTotalData[0]).cash).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
+                        "data-sort-value": isNaN(parseInt((<any>this.fundingChartTotalData[0]).cash)) ? 0 : parseInt((<any>this.fundingChartTotalData[0]).cash)
+                    });
+                    this.owrtTableFundsData.addItem({
+                        "name": "Inkind",
+                        "value": "$" + Number((<any>this.fundingChartTotalData[0]).inkind).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
+                        "data-sort-value": isNaN(parseInt((<any>this.fundingChartTotalData[0]).inkind)) ? 0 : parseInt((<any>this.fundingChartTotalData[0]).inkind)
+                    });
+                }
+                else
+                {
+                    this.owrtTableFundsVisible.set(false);
+                    this.owrtChartFundsVisible.set(true);
+                    this.CloseChartTableView();
+                }                                   
                 
             }    
             else if (this.activeTabChartName == "fundingactivity") {
 
-                this.owrtTableHdrName.set("Project Types");
-                this.owrtTableHdrValue.set("Funding");
-                this.owrtChartsTableSharedVisible.set(true);
+                if (!this.owrtTableFundsVisible.get()) {
 
-                let totalVal:number = 0;
+                    this.HideAllTableViews();
 
-                this.owrtTableData.clear();
-                for (let i = 0; i < this.fundingChartByActivityData.length; i++) {
-                    
-                    this.owrtTableData.addItem({
-                        "name": (<any>this.fundingChartByActivityData[i]).ProjType,
-                        "value": "$" + Number((<any>this.fundingChartByActivityData[i]).TotalFunding).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
-                        "data-sort-value": isNaN(parseInt((<any>this.fundingChartByActivityData[i]).TotalFunding)) ? 0 : parseInt((<any>this.fundingChartByActivityData[i]).TotalFunding)
-                    });
+                    this.owrtTableFundsHeader.set("Project Types");
+                    this.owrtTableFundsValue.set("Funding");
+                    this.owrtChartFundsVisible.set(false);
+                    this.owrtTableFundsVisible.set(true);
 
-                    totalVal += Number((<any>this.fundingChartByActivityData[i]).total);
-                }                                
+                    let totalVal: number = 0;
+
+                    this.owrtTableFundsData.clear();
+                    for (let i = 0; i < this.fundingChartByActivityData.length; i++) {
+
+                        this.owrtTableFundsData.addItem({
+                            "name": (<any>this.fundingChartByActivityData[i]).ProjType,
+                            "value": "$" + Number((<any>this.fundingChartByActivityData[i]).TotalFunding).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
+                            "data-sort-value": isNaN(parseInt((<any>this.fundingChartByActivityData[i]).TotalFunding)) ? 0 : parseInt((<any>this.fundingChartByActivityData[i]).TotalFunding)
+                        });
+
+                        totalVal += Number((<any>this.fundingChartByActivityData[i]).total);
+                    } 
+                }
+                else {
+                    this.owrtTableFundsVisible.set(false);
+                    this.owrtChartFundsVisible.set(true);
+                    this.CloseChartTableView();
+                }       
+                
+                                               
             }           
             else if (this.activeTabChartName == "fundingsource") {
 
-                this.owrtTableHdrName.set("Funding Source");
-                this.owrtTableHdrValue.set("Funding");
-                this.owrtChartsTableSharedVisible.set(true);
-                            
-                this.owrtTableData.clear();
+                if (!this.owrtTableFundsVisible.get()) {
 
-                let workingObject: any = this.fundingChartBySourceData[0];
+                    this.HideAllTableViews();
 
-                let totalVal: number = 0;
+                    this.owrtTableFundsHeader.set("Funding Source");
+                    this.owrtTableFundsValue.set("Funding");
+                    this.owrtChartFundsVisible.set(false);
+                    this.owrtTableFundsVisible.set(true);
 
-                for (let key in workingObject)
-                {                                                            
-                    this.owrtTableData.addItem({
-                        "name": key,
-                        "value": "$" + workingObject[key].toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
-                        "data-sort-value": isNaN(parseInt(workingObject[key])) ? 0 : parseInt(workingObject[key])
-                    });
 
-                    totalVal += Number((<any>workingObject[key]));
+                    this.owrtTableFundsData.clear();
+
+                    let workingObject: any = this.fundingChartBySourceData[0];
+
+                    let totalVal: number = 0;
+
+                    for (let key in workingObject) {
+                        this.owrtTableFundsData.addItem({
+                            "name": key,
+                            "value": "$" + workingObject[key].toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
+                            "data-sort-value": isNaN(parseInt(workingObject[key])) ? 0 : parseInt(workingObject[key])
+                        });
+
+                        totalVal += Number((<any>workingObject[key]));
+                    }
                 }
+                else {
+                    this.owrtTableFundsVisible.set(false);
+                    this.owrtChartFundsVisible.set(true);
+                    this.CloseChartTableView();
+                }       
+                   
                                 
             }
             else if (this.activeTabChartName == "fundingyear") {
 
-                this.owrtChartsTableFundInvestByYearVisible.set(true);
+                if (!this.owrtTableFundInvestByYearVisible.get()) {
 
-                let totalVal: number = 0;
-                                
-                this.owrtTableDataFundInvestByYear.clear();
-                for (let i = 0; i < this.fundingChartByYearData.length; i++) {
+                    this.HideAllTableViews();
 
-                    this.owrtTableDataFundInvestByYear.addItem({
-                        "year": (<any>this.fundingChartByYearData[i]).Year,
-                        "cash": "$" + Number((<any>this.fundingChartByYearData[i]).TotalCash).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
-                        "inkind": "$" + Number((<any>this.fundingChartByYearData[i]).TotalInkind).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
-                        "cashForSort": isNaN(parseInt((<any>this.fundingChartByYearData[i]).TotalCash)) ? 0 : parseInt((<any>this.fundingChartByYearData[i]).TotalCash),
-                        "inkindForSort": isNaN(parseInt((<any>this.fundingChartByYearData[i]).TotalInkind)) ? 0 : parseInt((<any>this.fundingChartByYearData[i]).TotalInkind)
-                    });
+                    this.owrtTableFundsHeader.set("Funding Source");
+                    this.owrtTableFundsValue.set("Funding");
+                    this.owrtChartFundsVisible.set(false);
 
-                    totalVal += Number((<any>this.fundingChartByYearData[i]).inkind) + Number((<any>this.fundingChartByYearData[i]).cash);
+                    //this.owrtTableFundsVisible.set(true);
+                    this.owrtTableFundInvestByYearVisible.set(true);
+
+                    let totalVal: number = 0;
+
+                    //owrtTableDataFundInvestByYear
+                    this.owrtTableFundsData.clear();
+                    for (let i = 0; i < this.fundingChartByYearData.length; i++) {
+
+                        this.owrtTableFundsData.addItem({
+                            "year": (<any>this.fundingChartByYearData[i]).Year,
+                            "cash": "$" + Number((<any>this.fundingChartByYearData[i]).TotalCash).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
+                            "inkind": "$" + Number((<any>this.fundingChartByYearData[i]).TotalInkind).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
+                            "cashForSort": isNaN(parseInt((<any>this.fundingChartByYearData[i]).TotalCash)) ? 0 : parseInt((<any>this.fundingChartByYearData[i]).TotalCash),
+                            "inkindForSort": isNaN(parseInt((<any>this.fundingChartByYearData[i]).TotalInkind)) ? 0 : parseInt((<any>this.fundingChartByYearData[i]).TotalInkind)
+                        });
+
+                        totalVal += Number((<any>this.fundingChartByYearData[i]).inkind) + Number((<any>this.fundingChartByYearData[i]).cash);
+                    }
                 }
+                else
+                {
+                    //this.owrtTableFundsVisible.set(false);
+                    this.owrtTableFundInvestByYearVisible.set(false);
+                    this.owrtChartFundsVisible.set(true);
+                    this.CloseChartTableView();
+                }  
                                 
             }
             else if (this.activeTabChartName == "fundingactivityYear") {
-                
-                this.owrtChartsTableFundInvestByActByYearVisible.set(true);
 
-                let totalVal: number = 0;
 
-                this.owrtTableDataFundInvestByActByYear.clear();
-                for (let i = 0; i < this.fundingChartByActivityYearData.length; i++) {
+                if (!this.owrtTableFundInvestByActByYearVisible.get()) {
 
-                    let workingObject = this.fundingChartByActivityYearData[i];
-                    let newObject = { "year": workingObject["year"] };
+                    this.HideAllTableViews();
 
-                    //add display and sort values to new object
-                    for (let aIndex = 0; aIndex < this.fsActivityTypeStrings.features.length; aIndex++) {
-                        let workingAtt = this.fsActivityTypeStrings.features[aIndex].attributes.activity_type;
-                        let sortAtt = workingAtt + "Sort";
-                        newObject[sortAtt] = workingObject[workingAtt]; //copy raw value into new attribute
-                        newObject[workingAtt] = "$" + Math.round(workingObject[workingAtt]).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+                    this.owrtTableFundsHeader.set("Funding Source");
+                    this.owrtTableFundsValue.set("Funding");
+                    this.owrtChartFundsVisible.set(false);
 
-                        totalVal += Number((<any>workingObject[workingAtt]));
+                    //this.owrtTableFundsVisible.set(true);
+                    //this.owrtChartsTableFundInvestByActByYearVisible.set(true);
+                    this.owrtTableFundInvestByActByYearVisible.set(true);
+
+                    let totalVal: number = 0;
+
+                    //owrtTableDataFundInvestByActByYear
+                    this.owrtTableFundsData.clear();
+                    for (let i = 0; i < this.fundingChartByActivityYearData.length; i++) {
+
+                        let workingObject = this.fundingChartByActivityYearData[i];
+                        let newObject = { "year": workingObject["year"] };
+
+                        //add display and sort values to new object
+                        for (let aIndex = 0; aIndex < this.fsActivityTypeStrings.features.length; aIndex++) {
+                            let workingAtt = this.fsActivityTypeStrings.features[aIndex].attributes.activity_type;
+                            let sortAtt = workingAtt + "Sort";
+                            newObject[sortAtt] = workingObject[workingAtt]; //copy raw value into new attribute
+                            newObject[workingAtt] = "$" + Math.round(workingObject[workingAtt]).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+                            totalVal += Number((<any>workingObject[workingAtt]));
+                        }
+
+                        this.owrtTableFundsData.addItem(newObject);
                     }
-                    
-                    this.owrtTableDataFundInvestByActByYear.addItem(newObject);                    
-                }                                
+
+                }
+                else {
+                    //this.owrtTableFundsVisible.set(false);
+                    this.owrtTableFundInvestByActByYearVisible.set(false);
+                    this.owrtChartFundsVisible.set(true);
+                    this.CloseChartTableView();
+                }  
+                                                
             }
+            else {
+                this.CloseChartTableView();
+            }  
+        
             
             //show container
-            this.owrtChartsTableContainerVisible.set(true);
-        }
+            //this.owrtChartsTableContainerVisible.set(true);
+        /*}
         else {
             this.CloseChartTableView();
-        }
+        }*/
 
     }
         
@@ -2955,6 +3087,8 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
         if (workingTab == "projects")
         {
+            this.owrtChartProjectsVisible.set(true);
+
             if (workingChart == "year") {
                 this.oeOWRTProjChartYearClass.set("oeOWRTAreaChartSelectionBoxSelected");
                 this.projectChartLegendText.set("Number of Projects by Year");
@@ -2974,6 +3108,8 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         }
         else if (workingTab == "funding")
         {
+            this.owrtChartFundsVisible.set(true);
+
             if (workingChart == "total") {
                 this._ClearFundingClasses();
                 this.oeOWRTFundingChartTotalClass.set("oeOWRTAreaChartSelectionBoxSelected");
