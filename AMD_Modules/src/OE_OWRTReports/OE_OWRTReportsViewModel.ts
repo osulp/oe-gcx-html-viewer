@@ -164,12 +164,21 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         let mService = this._GetServiceByName("OWRT");
         this.queryUrlOWRT = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "ALL_POLYS_SDE_WM").id;
         this.queryUrlCentroids = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "CentroidsSimple").id;
-                
-        this.queryUrlProjectInfo = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PROJECT_INFO").id;
-        this.queryUrlPartRoles = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PARTICIPANTS_ROLE_LU").id;
-        this.queryUrlPartSuperTypes = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PARTICIPANTS_SUPERTYPE_LU").id;
-        this.queryUrlPartTypes = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PARTICIPANTS_TYPE_LU").id;
-        this.queryUrlLandUse = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "LAND_USE").id;
+                                
+        this.queryUrlProjectInfo = mService.serviceUrl + "/";
+        this.queryUrlProjectInfo += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PROJECT_INFO"))) ? "28" : this._GetTableIDByName(mService, "PROJECT_INFO").id;
+
+        this.queryUrlPartRoles = mService.serviceUrl + "/";
+        this.queryUrlPartRoles += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PARTICIPANTS_ROLE_LU"))) ? "25" : this._GetTableIDByName(mService, "PARTICIPANTS_ROLE_LU").id;
+
+        this.queryUrlPartSuperTypes = mService.serviceUrl + "/";
+        this.queryUrlPartSuperTypes += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PARTICIPANTS_SUPERTYPE_LU"))) ? "26" : this._GetTableIDByName(mService, "PARTICIPANTS_SUPERTYPE_LU").id;
+
+        this.queryUrlPartTypes = mService.serviceUrl + "/";
+        this.queryUrlPartTypes += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PARTICIPANTS_TYPE_LU"))) ? "27" : this._GetTableIDByName(mService, "PARTICIPANTS_TYPE_LU").id;
+
+        this.queryUrlLandUse = mService.serviceUrl + "/";
+        this.queryUrlLandUse += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "LAND_USE"))) ? "22" : this._GetTableIDByName(mService, "LAND_USE").id;
 
         //create the map symbol
         this.esriMapSymbol = new esri.symbol.SimpleFillSymbol(
@@ -221,8 +230,13 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
 
     private _GetTableIDByName(mService: MapService, name: string): Layer {
 
-        let workLayer = mService.tables.filter((ly: Layer) => ly.name == name).length > 0 ?
-            mService.tables.filter((ly: Layer) => ly.name === name)[0] : null;
+        let workLayer = null;
+
+        try {
+            workLayer = mService.tables.filter((ly: Layer) => ly.name == name).length > 0 ?
+                mService.tables.filter((ly: Layer) => ly.name === name)[0] : null;
+        }
+        catch (e) { }
 
         return workLayer;
     }

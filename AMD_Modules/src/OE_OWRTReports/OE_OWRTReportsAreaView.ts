@@ -27,12 +27,12 @@ export class OE_OWRTReportsAreaView extends ViewBase {
         (<OE_OWRTReportsAreaViewModel>context).ToggleOptionsArrow(val);
     }
 
-    geoTypeChanged(event, element, context) {
-        (<OE_OWRTReportsAreaViewModel>context).OptionsGeoTypeChanged(element.value, element.selectedOptions[0].label);
+    geoTypeChanged(event, element, context) {        
+        (<OE_OWRTReportsAreaViewModel>context).OptionsGeoTypeChanged(element.value, element.options[element.selectedIndex].text);
     }
 
-    areaOptionChanged(event, element, context) {
-        (<OE_OWRTReportsAreaViewModel>context).OptionsAreaChanged(element.value, element.selectedOptions[0].label);
+    areaOptionChanged(event, element, context) {        
+        (<OE_OWRTReportsAreaViewModel>context).OptionsAreaChanged(element.value, element.options[element.selectedIndex].text);
     }
     
     reportOptionsSubmission(event, element, context) {

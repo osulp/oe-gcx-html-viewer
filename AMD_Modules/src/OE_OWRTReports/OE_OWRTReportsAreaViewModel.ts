@@ -561,7 +561,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         //this.initializeChartFactory();                
         
         //let mService = this._GetServiceByName("OWRT");
-        let mService = this._GetServiceByName("OWRT_DEV");
+        let mService = this._GetServiceByName("OWRT");
         this.urlMainMapService = mService.serviceUrl;
         this.layerIDProjectPoints = Number(this._GetLayerIDByName(mService, "Poly_Centroids").id);
         this.queryUrlOWRT = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Poly_Centroids").id;
@@ -571,8 +571,9 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         this.queryUrlBasins = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Oregon Plan Basins").id;
         this.queryUrlHUC8 = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "8-Digit Hydrologic Unit Code").id;
         this.queryUrlWSC = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Watershed Councils").id;
-        
-        this.queryUrlActivityTypes = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "ACTIVITY_TYPES").id;
+
+        this.queryUrlActivityTypes = mService.serviceUrl + "/";
+        this.queryUrlActivityTypes += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "ACTIVITY_TYPES"))) ? "20" : this._GetTableIDByName(mService, "ACTIVITY_TYPES").id;
 
         mService = this._GetServiceByName("Soil and Water Conservation District Boundaries (WM)");
         this.urlSWCDMapService = mService.serviceUrl;
@@ -650,8 +651,13 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
     private _GetTableIDByName(mService: MapService, name: string): Layer {
 
-        let workLayer = mService.tables.filter((ly: Layer) => ly.name == name).length > 0 ?
-            mService.tables.filter((ly: Layer) => ly.name === name)[0] : null;
+        let workLayer = null;
+
+        try {
+            workLayer = mService.tables.filter((ly: Layer) => ly.name == name).length > 0 ?
+                mService.tables.filter((ly: Layer) => ly.name === name)[0] : null;
+        }
+        catch(e){}
 
         return workLayer;
     }
