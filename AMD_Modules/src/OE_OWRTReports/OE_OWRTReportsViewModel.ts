@@ -39,6 +39,8 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     app: ViewerApplication;
     chartFactory: ChartViewModelFactory;
     dataSource: any;
+
+    reportMapServiceName: string;
         
     loaderVisible: Observable<boolean> = new Observable<boolean>(true);
     loaderMessage: Observable<string> = new Observable<string>("Loading Report...");
@@ -134,6 +136,9 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     initialize(config: any): void {
 
         var site = (<any>this).app.site;
+
+        this.reportMapServiceName = config.reportMapServiceName || "OWRT";
+
         if (site && site.isInitialized) {
             this._onSiteInitialized();
         }
@@ -161,7 +166,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
 
         this.initializeChartFactory();                
         
-        let mService = this._GetServiceByName("OWRT");
+        let mService = this._GetServiceByName(this.reportMapServiceName);
         this.queryUrlOWRT = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "ALL_POLYS_SDE_WM").id;
         this.queryUrlCentroids = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "CentroidsSimple").id;
                                 

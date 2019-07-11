@@ -238,6 +238,8 @@ export class OE_OITTViewModel extends ViewModelBase {
     app: ViewerApplication;
     //greeting: Observable<string> = new Observable<string>();
 
+    reportMapServiceName: string;
+
     esriMap: esri.Map;
     esriAreaLayer: esri.layers.FeatureLayer;
     esriMapSymbolFill: esri.symbol.SimpleFillSymbol;
@@ -406,6 +408,9 @@ export class OE_OITTViewModel extends ViewModelBase {
     initialize(config: any): void {
 
         var site = (<any>this).app.site;
+
+        this.reportMapServiceName = config.reportMapServiceName || "OITT_2016";
+
         if (site && site.isInitialized) {
             this._onSiteInitialized();
         }
@@ -437,7 +442,8 @@ export class OE_OITTViewModel extends ViewModelBase {
         //ChartPointAdapterRegistry.registerAdapter((<any>jsonDataAdapter), sourceTypeString);
         
         //let mService = this._GetServiceByName("OWRT");
-        let mService = this._GetServiceByName("OITT_2016");
+        //let mService = this._GetServiceByName("OITT_2016");
+        let mService = this._GetServiceByName(this.reportMapServiceName);
         this.urlMainMapService = mService.serviceUrl;
         this.layerIDProjectPoints = Number(this._GetLayerIDByName(mService, "Projects_Cluster_Scales").id);
         this.queryURLProjects = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Projects_Cluster_Scales").id;        

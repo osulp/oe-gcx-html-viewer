@@ -34,12 +34,16 @@ Module Include
         {
             "id": "OE_OWRTReportsViewModel",      
             "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsViewModel",      
-            "configuration": {}
+            "configuration": {
+				"reportMapServiceName": "OWRT"
+			}
         },
         {
             "id": "OE_OWRTReportsAreaViewModel",      
             "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsAreaViewModel",      
-            "configuration": {}
+            "configuration": {
+				"reportMapServiceName": "OWRT"
+			}
         }]
     }
 

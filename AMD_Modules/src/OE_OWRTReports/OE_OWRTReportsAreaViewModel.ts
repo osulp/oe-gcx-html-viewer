@@ -255,6 +255,8 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     chartFactory: ChartViewModelFactory;
     dataSource: any;
 
+    reportMapServiceName: string;
+
     geoService: string = "http://arcgis.oregonexplorer.info/arcgis/rest/services/Utilities/Geometry/GeometryServer";
         
     loaderVisible: Observable<boolean> = new Observable<boolean>(true);
@@ -520,6 +522,9 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     initialize(config: any): void {
 
         var site = (<any>this).app.site;
+
+        this.reportMapServiceName = config.reportMapServiceName || "OWRT";
+
         if (site && site.isInitialized) {
             this._onSiteInitialized();
         }
@@ -557,11 +562,8 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         let jsonDataAdapter = new OE_ChartPointJsonAdapter();
         let sourceTypeString = ChartFieldSourceType[(<any>ChartFieldSourceType).Json];
         ChartPointAdapterRegistry.registerAdapter((<any>jsonDataAdapter), sourceTypeString);
-
-        //this.initializeChartFactory();                
-        
-        //let mService = this._GetServiceByName("OWRT");
-        let mService = this._GetServiceByName("OWRT");
+                                
+        let mService = this._GetServiceByName(this.reportMapServiceName);
         this.urlMainMapService = mService.serviceUrl;
         this.layerIDProjectPoints = Number(this._GetLayerIDByName(mService, "Poly_Centroids").id);
         this.queryUrlOWRT = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Poly_Centroids").id;

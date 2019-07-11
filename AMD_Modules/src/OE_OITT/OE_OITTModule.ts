@@ -13,7 +13,7 @@ export class OE_OITTModule extends ModuleBase {
         super(app, lib);
     }
 
-    initialize(config: any): void {        
+    initialize(config: any): void {      
     }
 
 }

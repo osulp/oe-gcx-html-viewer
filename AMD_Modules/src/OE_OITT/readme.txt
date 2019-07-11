@@ -6,8 +6,7 @@ Module Include
     "moduleName": "OE_OITT",
     "libraryId": "OE_AMD",
     "require": "geocortex/oe_amd/OE_OITT/OE_OITTModule",
-    "configuration": {
-        
+    "configuration": {         
     },
 	"views": [
     {
@@ -24,7 +23,9 @@ Module Include
     {
         "id": "OE_OITTViewModel",      
         "require": "geocortex/oe_amd/OE_OITT/OE_OITTViewModel",      
-        "configuration": {}
+        "configuration": {
+			"reportMapServiceName": "OITT_2016"
+		}
     }]
 }
 
