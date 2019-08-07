@@ -1,0 +1,1090 @@
+[
+  {
+    "folder": "Ownership and Management Designation",
+    "layers": [
+      {
+        "layerName": "Sage-Grouse Habitat Designation",
+        "layerDesc": "Sage-Grouse Habitat Designations represent the importance of habitat areas for sage-grouse. Core Habitat (also called Priority Areas for Conservation  or PACs) is the most productive habitat for sage-grouse, containing a large majority of the breeding population and occupied sage-grouse leks in Oregon. Low Density Habitat depicts areas that may be important for connectivity, and General Habitat shows areas that are sagebrush habitat but may not support current sage-grouse populations. Original datasets were summarized to 1 square mile hexagons for the purposes of querying; filtering based on this dataset identifies hexagons based on their majority habitat designation.",
+        "layerDataValues": [
+          {
+            "label": "Core",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "GSG_HabDesig",
+                "values": [
+                  {
+                    "value": "Core",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Low Density",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "GSG_HabDesig",
+                "values": [
+                  {
+                    "value": "Low Density",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "General Habitat",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "GSG_HabDesig",
+                "values": [
+                  {
+                    "value": "General Habitat",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Non-Habitat",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "GSG_HabDesig",
+                "values": [
+                  {
+                    "value": "NA",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Land Ownership",
+        "layerDesc": "Land ownership allows users to query based on major land ownership and management classes found in the sagebrush range in Oregon. A hexagon will be selected if more than 10% of the hexagon contains the ownership category in the query. Many hexagons will contain multiple ownership types and will appear under multiple query criteria.",
+        "layerDataValues": [
+          {
+            "label": "BLM",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "PCT_BLM",
+                "values": [
+                  {
+                    "value": "10",
+                    "type": "min"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Other Federal Agency",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "PCT_OTHFED",
+                "values": [
+                  {
+                    "value": "10",
+                    "type": "min"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Private",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "PCT_PVT",
+                "values": [
+                  {
+                    "value": "10",
+                    "type": "min"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Tribal Government",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "PCT_TRIBAL",
+                "values": [
+                  {
+                    "value": "10",
+                    "type": "min"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "State or Local Government",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "PCT_STATE_LOCALGOV",
+                "values": [
+                  {
+                    "value": "10",
+                    "type": "min"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },      
+      {
+        "layerName": "Protected Lands (Percent)",
+        "layerDesc": "Percent Protected Land shows the percentage of each 1 square mile hexagon used for querying that is protected in the National Gap Analysis Project (GAP) status 1 or 2. For more information, see https://gapanalysis.usgs.gov/blog/iucn-definitions/",
+        "layerDataValues": [
+          {
+            "label": "Core",
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "100",
+            "increment": "10",
+            "fields": [
+              {
+                "field": "PctProt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "folder": "Existing Condition",
+    "layers": [
+      {
+        "layerName": "Habitat Intactness",
+        "layerDesc": "Habitat Intactness estimates the intactness of the sagebrush landscape in terms of both vegetation composition and development impacts by combining existing vegetation condition and existing development impacts (direct and indirect impacts). Areas with the highest scores are mapped as high condition, native vegetation in areas with low development impacts. Input datasets are also available for viewing and download (Vegetation Condition and Existing Development Impacts layers). The original dataset was summarized to 1 square mile hexagons for the purposes of querying; filtering based on this dataset identifies hexagons based on their average score.",
+        "layerDataValues": [
+          {
+            "label": "HabIntactness",
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "4",
+            "fields": [
+              {
+                "field": "HabIntactness",
+                "values": [
+                  {
+                    "label": "Very Low",
+                    "min": "0",
+                    "max": "0.155"
+                  },
+                  {
+                    "label": "Low",
+                    "min": "0.156",
+                    "max": "0.348"
+                  },
+                  {
+                    "label": "Moderate",
+                    "min": "0.349",
+                    "max": "0.539"
+                  },
+                  {
+                    "label": "High",
+                    "min": "0.540",
+                    "max": "0.745"
+                  },
+                  {
+                    "label": "Very High",
+                    "min": "0.746",
+                    "max": "1"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Vegetation Condition (Primary Threat)",
+        "layerDesc": "Vegetation condition is mapped based on the primary threats to the sagebrush ecosystem from a threat-based model of rangeland condition developed in the state of Oregon. Primary threats are summarized as poor understory condition and juniper encroachment. For more information, see the documentation. http://oe.oregonexplorer.info/externalcontent/sagecon/metadata/Oregon%20Ecostate%20Map%20Description.pdf. The original dataset was summarized to 1 square mile hexagons for the purposes of querying;",
+        "layerDataValues": [
+          {
+            "label": "Not Habitat",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "PrimaryThreat",
+                "values": [
+                  {
+                    "value": "NA",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "No Major Threats",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "PrimaryThreat",
+                "values": [
+                  {
+                    "value": "None",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Invasive Grass Threat",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "PrimaryThreat",
+                "values": [
+                  {
+                    "value": "IAG",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Juniper Threat",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "PrimaryThreat",
+                "values": [
+                  {
+                    "value": "JUOC",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Invasive Grass and Juniper Threat",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "PrimaryThreat",
+                "values": [
+                  {
+                    "value": "IAG & JUOC",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Invasive Annual Grass Cover",
+        "layerDesc": "Invasive Annual Grass Cover shows percent cover of invasive annual grass species, primarily cheatgrass, medusahead, and Ventenata. The original dataset was summarized to 1 square mile hexagons for the purposes of querying; filtering based on this dataset identifies hexagons based on their average percent cover.",
+        "layerDataValues": [
+          {
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "100",
+            "increment": "5",
+            "fields": [
+              {
+                "field": "IAG_Cov"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Perennial Grass Cover",
+        "layerDesc": "Perennial Grass Cover displays percent cover of perennial grass species, including both native and non-native perennial grasses. The original dataset was summarized to 1 square mile hexagons for the purposes of querying; filtering based on this dataset identifies hexagons based on their average percent cover.",
+        "layerDataValues": [
+          {
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "100",
+            "increment": "5",
+            "fields": [
+              {
+                "field": "PerGrassCov"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Sagebrush Cover",
+        "layerDesc": "Sagebrush Cover displays percent cover of all sagebrush (Artemisia) species. The original dataset was summarized to 1 square mile hexagons for the purposes of querying; filtering based on this dataset identifies hexagons based on their average percent cover.",
+        "layerDataValues": [
+          {
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "50",
+            "increment": "5",
+            "fields": [
+              {
+                "field": "SageCov"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Tree Cover",
+        "layerDesc": "Tree Cover shows percent cover of trees (including but not limited to juniper). The original dataset was summarized to 1 square mile hexagons for the purposes of querying; filtering based on this dataset identifies hexagons based on their average percent cover.",
+        "layerDataValues": [
+          {
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "75",
+            "increment": "5",
+            "fields": [
+              {
+                "field": "TreeCov"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Sage-Grouse Seasonal Habitat",
+        "layerDesc": "The Sage-Grouse Seasonal Habitat map depicts areas that are likely to provide spring, summer, and/or winter seasonal habitat for sage-grouse, or are not likely to provide habitat in any season. The original dataset was summarized to 1 square mile hexagons for the purposes of querying; filtering based on this dataset identifies hexagons based on their majority seasonal habitat designation.",
+        "layerDataValues": [
+          {
+            "label": "Potential Spring Sage-Grouse Habitat",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "HabProbSp",
+                "values": [
+                  {
+                    "value": "Habitat",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Potential Summer Sage-Grouse Habitat",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "HabProbSu",
+                "values": [
+                  {
+                    "value": "Habitat",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Potential Winter Sage-Grouse Habitat",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "HabProbWin",
+                "values": [
+                  {
+                    "value": "Habitat",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Unlikely to Provide Sage-Grouse Habitat",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "HabProbNone",
+                "values": [
+                  {
+                    "value": "Not Habitat",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Existing Development Impacts",
+        "layerDesc": "Existing Development Impacts show the direct and indirect impacts of mapped human development in the range of sagebrush habitat in Oregon, such as roads, powerlines, and mines. Indirect impacts such as noise and predator subsidies extend beyond the footprint of the development. For more information about development impacts, see the Sage-Grouse Development Siting Tool: https://tools.oregonexplorer.info/OE_HtmlViewer/index.html?viewer=sage_grouse_dev_siting.",
+        "layerDataValues": [
+          {
+            "label": "DevImpctScr",
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "4",
+            "fields": [
+              {
+                "field": "DevImpctScr",
+                "values": [
+                  {
+                    "label": "Very Low Impact",
+                    "min": "0",
+                    "max": "0.135"
+                  },
+                  {
+                    "label": "Low Impact",
+                    "min": "0.136",
+                    "max": "0.331"
+                  },
+                  {
+                    "label": "Moderate Impact",
+                    "min": "0.332",
+                    "max": "0.535"
+                  },
+                  {
+                    "label": "High Impact",
+                    "min": "0.536",
+                    "max": "0.768"
+                  },
+                  {
+                    "label": "Very High Impact",
+                    "min": "0.769",
+                    "max": "1"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "folder": "Restoration Potential",
+    "layers": [
+      {
+        "layerName": "Restoration Uplift Potential",
+        "layerDesc": "Restoration Uplift Potential approximates the ability of a site to provide uplift, or an improvement in site condition, by combining existing vegetation condition, an estimate of post-restoration potential, and existing development impacts (direct and indirect impacts). Areas with the highest scores are mapped as moderate condition with high potential to achieve an improvement in condition (e.g., through removal of encroaching conifers), in areas with low development impacts. The original dataset was summarized to 1 square mile hexagons for the purposes of querying; filtering based on this dataset identifies hexagons based on their average score.",
+        "layerDataValues": [
+          {
+            "label": "PotRestUplft",
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "4",
+            "fields": [
+              {
+                "field": "PotRestUplft",
+                "values": [
+                  {
+                    "label": "Very Low Uplift Potential",
+                    "min": "0",
+                    "max": "0.018"
+                  },
+                  {
+                    "label": "Low Uplift Potential",
+                    "min": "0.019",
+                    "max": "0.057"
+                  },
+                  {
+                    "label": "Moderate Uplift Potential",
+                    "min": "0.058",
+                    "max": "0.139"
+                  },
+                  {
+                    "label": "High Uplift Potential",
+                    "min": "0.140",
+                    "max": "0.318"
+                  },
+                  {
+                    "label": "Very High Uplift Potential",
+                    "min": "0.319",
+                    "max": "0.7"
+                  }
+
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Fire and Invasives Threat",
+        "layerDesc": "The Fire and Invasives Threat theme score ranks areas within the SageCon planning area based on their resistance and resilience to wildfire and invasive annual grasses. Scores are based on cover of bare ground and perennial grass cover, maximum temperature, precipitation, burn probability, and elevation. Data are summarized to 1 square mile hexagons..",
+        "layerDataValues": [
+          {
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "4",
+            "increment": "1",
+            "fields": [
+              {
+                "field": "QT_FireInv",
+                "values": [
+                  {
+                    "label": "Very Low",
+                    "value": "5",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Low",
+                    "value": "4",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Moderate",
+                    "value": "3",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "High",
+                    "value": "2",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Very High",
+                    "value": "1",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "BLM Conservation Priority",
+        "layerDesc": "The BLM Conservation Priority Geographic Area map was developed to support sage-grouse planning and project prioritization across BLM managed lands in the Great Basin. Conservation priority identifies areas for protection or conservation based on wild horse and burro, annual herbaceous, conifer encroachment, anthro disturbance, and wildfire risk. Original datasets were summarized to 1 square mile hexagons for the purposes of querying; filtering based on this dataset identifies hexagons based on their majority priority category.",
+        "layerDataValues": [
+          {
+            "label": "Core",
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "3",
+            "increment": "1",
+            "fields": [
+              {
+                "field": "BLM_TPOW_CONS",
+                "values": [
+                  {
+                    "label": "Not Assessed",
+                    "value": "0",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Low",
+                    "value": "1",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Moderate",
+                    "value": "2",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "High",
+                    "value": "3",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "BLM Restoration Priority ",
+        "layerDesc": "The BLM Restoration Priority Geographic Area map was developed to support sage-grouse planning and project prioritization across BLM managed lands in the Great Basin. Restoration priority identifies areas for activities such as juniper removal and weed management based on population index, habitat management area, sagebrush, connectivity, and perennial grass. Original datasets were summarized to 1 square mile hexagons for the purposes of querying; filtering based on this dataset identifies hexagons based on their majority priority category.",
+        "layerDataValues": [
+          {
+            "label": "Core",
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "3",
+            "increment": "1",
+            "fields": [
+              {
+                "field": "BLM_TPOW_REST",
+                "values": [
+                  {
+                    "label": "Not Assessed",
+                    "value": "0",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Low",
+                    "value": "1",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Moderate",
+                    "value": "2",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "High",
+                    "value": "3",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Burn Probability",
+        "layerDesc": "Burn Probability represents the likelihood of a large wildfire (>250 acres) burning a given location, based on wildfire simulation modeling.",
+        "layerDataValues": [
+          {
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "4",
+            "fields": [
+              {
+                "field": "BurnProb",
+                "values": [
+                  {
+                    "label": "Very Low",
+                    "min": "0",
+                    "max": "0.004"
+                  },
+                  {
+                    "label": "Low",
+                    "min": "0.005",
+                    "max": "0.009"
+                  },
+                  {
+                    "label": "Moderate",
+                    "min": "0.010",
+                    "max": "0.014"
+                  },
+                  {
+                    "label": "High",
+                    "min": "0.015",
+                    "max": "0.021"
+                  },
+                  {
+                    "label": "Very High",
+                    "min": "0.022",
+                    "max": "0.038"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Most Recent Fire Year",
+        "layerDesc": "Year most recently burned, based on fire perimeters from 2000-2018. The original dataset was summarized to 1 square mile hexagons for the purposes of querying; filtering based on this dataset identifies hexagons where a fire burned at least 10% of the area.",
+        "layerDataValues": [
+          {
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "19",
+            "increment": "1",
+            "fields": [
+              {
+                "field": "RcntYearBurn",
+                "values": [
+                  {
+                    "label": "Prior to 2000",
+                    "value": "-1",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "2000",
+                    "value": "2000",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "2001",
+                    "value": "2001",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "2002",
+                    "value": "2002",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "2003",
+                    "value": "2003",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "2004",
+                    "value": "2004",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "2005",
+                    "value": "2005",
+                    "type": "fixed"
+                  },
+
+                  {
+                    "label": "2006",
+                    "value": "2006",
+                    "type": "fixed"
+                  },
+
+                  {
+                    "label": "2007",
+                    "value": "2007",
+                    "type": "fixed"
+                  },
+
+                  {
+                    "label": "2008",
+                    "value": "2008",
+                    "type": "fixed"
+                  },
+
+                  {
+                    "label": "2009",
+                    "value": "2009",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "2010",
+                    "value": "2010",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "2011",
+                    "value": "2011",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "2012",
+                    "value": "2012",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "2013",
+                    "value": "2013",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "2014",
+                    "value": "2014",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "2015",
+                    "value": "2015",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "2016",
+                    "value": "2016",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "2017",
+                    "value": "2017",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "2018",
+                    "value": "2018",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Number of Years Burned Since 2000",
+        "layerDesc": "Number of years an area was burned between 2000-2018, based on fire perimeters. The original dataset was summarized to 1 square mile hexagons for the purposes of querying; filtering based on this dataset identifies hexagons where a fire burned at least 10% of the area.",
+        "layerDataValues": [
+          {
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "6",
+            "increment": "1",
+            "fields": [
+              {
+                "field": "FireCnt"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Sage-Grouse Connectivity",
+        "layerDesc": "The Sage-Grouse Connectivity datasets identify areas important for maintaining connections between sage-grouse populations in the state. Barrier removal priorities are areas within a connectivity zone that act as barriers to potential sage-grouse movement, where restoration would lead to the greatest improvement in structural connectivity. Connectivity pinchpoints are areas where connectivity could be severed with the loss of a relatively small amount of habitat. Areas not indentified as barriers or pinchpoints are considered general connectivity zones, and represent a lower priority for restoring connectivity. The original data have been summarized to 1 mile hexagons for querying.",
+        "layerDataValues": [
+          {
+            "label": "Barrier Removal Priority",
+            "uiType": "checkbox",
+            "default": "unchecked",
+            "fields": [
+              {
+                "field": "BarrierImpScore",
+                "values": [
+                  {
+                    "value": "7.32001",
+                    "type": "min"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Connectivity Pinchpoint",
+            "uiType": "checkbox",
+            "default": "unchecked",
+            "fields": [
+              {
+                "field": "PinchPntScr",
+                "values": [
+                  {
+                    "value": "4.5",
+                    "type": "min"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Low Connectivity Value",
+            "uiType": "checkbox",
+            "default": "unchecked",
+            "fields": [
+              {
+                "field": "PinchPntScr",
+                "values": [
+                  {
+                    "value": "4.5",
+                    "type": "max"
+                  }
+                ]
+              },
+              {
+                "field": "BarrierImpScore",
+                "values": [
+                  {
+                    "value": "7.32001",
+                    "type": "max"
+                  }
+                ]
+              }
+
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Biodiversity Significance",
+        "layerDesc": "The Biodiversity Co-Benefit theme score ranks areas based on biodiversity assessments for other important species and habitats besides sage-grouse. Scores are based on The Nature Conservancy (TNC) Conservation Priority Areas, Oregon Department of Fish and Widlife (ODFW) Conservation Opportunity Areas, ODFW Crucial Habitat, TNC Conservation Irreplacability Score, and US Fish and Wildlife Service (USFWS) Critical Habitat. Data are summarized to 1 square mile hexagons.",
+        "layerDataValues": [
+          {
+            "label": "Core",
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "4",
+            "increment": "1",
+            "fields": [
+              {
+                "field": "QT_Bio_CoBen",
+                "values": [
+                  {
+                    "label": "Highly Significant",
+                    "value": "5",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Significant",
+                    "value": "4",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Moderate",
+                    "value": "3",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Low",
+                    "value": "2",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Very Low",
+                    "value": "1",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "folder": "Energy Development Potential",
+    "layers": [
+      {
+        "layerName": "Solar Energy Development Potential",
+        "layerDesc": "The Solar Energy Development Potential theme score ranks polygons within the SageCon Planning Area based on their potential to support solar energy development. Scores are based on distance to transmission lines, distance to major roads, energy development exclusion zones, solar potential, slope, heat load, and terrain roughness.  Data are summarized to 1 square mile hexagons.",
+        "layerDataValues": [
+          {
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "4",
+            "increment": "1",
+            "fields": [
+              {
+                "field": "QT_Solar_DP",
+                "values": [
+                  {
+                    "label": "Very High",
+                    "value": "5",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "High",
+                    "value": "4",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Moderate",
+                    "value": "3",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Low",
+                    "value": "2",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Very Low",
+                    "value": "1",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Wind Energy Development Potential",
+        "layerDesc": "The Wind Energy Development Potential theme score ranks polygons based on their potential to support wind energy development. Scores are based on distance to transmission lines, energy development exclusion zones, distance to major roads, and wind power class. Data are summarized to 1 square mile hexagons.",
+        "layerDataValues": [
+          {
+            "uiType": "rangeslider",
+            "min": "0",
+            "max": "4",
+            "increment": "1",
+            "fields": [
+              {
+                "field": "QT_Wind_DP",
+                "values": [
+                  {
+                    "label": "Very High",
+                    "value": "5",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "High",
+                    "value": "4",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Moderate",
+                    "value": "3",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Low",
+                    "value": "2",
+                    "type": "fixed"
+                  },
+                  {
+                    "label": "Very Low",
+                    "value": "1",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layerName": "Energy Development Exclusion Zones",
+        "layerDesc": "Delineates areas excluded from major energy development by the Energy Facility Siting Council (EFSC) of Oregon. The original dataset was summarized to 1 square mile hexagons for the purposes of querying; filtering based on this dataset identifies hexagons based on their majority exclusion designation.",
+        "layerDataValues": [
+          {
+            "label": "No exclusions",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "EnergyExclusion",
+                "values": [
+                  {
+                    "value": "1",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Geothermal excluded",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "EnergyExclusion",
+                "values": [
+                  {
+                    "value": "2",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Excluded",
+            "uiType": "checkbox",
+            "fields": [
+              {
+                "field": "EnergyExclusion",
+                "values": [
+                  {
+                    "value": "3",
+                    "type": "fixed"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

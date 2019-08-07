@@ -4,11 +4,27 @@
         <div>
             <div class="active-filter-header-wrapper dashboard-headers">
                 <div>
-                    <input id="toggle-hex-layer" type="checkbox" data-binding="{@value: show_hex_layer}" /><label for="toggle-hex-layer"><b>SHOW HEXAGONS</b></label>
+                    <input id="toggle-hex-layer" type="checkbox" data-binding="{@value: show_hex_layer}" /><label for="toggle-hex-layer"><b>SHOW OR HIDE HEXAGON LAYER</b></label>
                 </div>
                 <div class="help-tour" data-binding="{@event-onclick: showTour}"><img src="Resources/Images/Icons/info-12.png" alt="Info Button" />Help Tutorial</div>
             </div>
-            <div class="active-filter-header-wrapper dashboard-headers" data-binding="{@event-onclick: toggleFilters}">
+            <div class="active-filter-header-wrapper dashboard-headers example-queries" data-binding="{@event-onclick: toggleExampleFilters}">
+                <div><b>EXAMPLE QUERIES</b></div>
+                <div data-binding="{class: show_example_filter_class}"></div>
+            </div>
+            <div id="example-filters-wrapper" data-binding="{@visible: show_example_filters}">
+                <ul data-binding="{@source: example_filters_collection}">
+                    <li data-binding="{@template-for: example_filters_collection}">
+                        <div class="example-list-entry-wrapper">
+                            <div data-binding="{id:tour_id} {@text:label} {@event-onclick:runExampleTour}"></div>
+                            <div><button data-binding="{@event-onclick:applyExample}">Apply</button>
+                                </div>
+                        </div>
+                        
+                    </li>
+                </ul>
+            </div>
+            <div id="active-filters" class="active-filter-header-wrapper dashboard-headers" data-binding="{@event-onclick: toggleFilters}">
                 <div><b>ACTIVE FILTERS</b></div>
                 <div data-binding="{class: show_filter_class}"></div>
                 <div>
@@ -34,7 +50,7 @@
                                     <div class="aoi-filter-commands-wrapper">
                                         <div class="filter-def">
                                             <input type="checkbox" data-binding="{id:layer}{@value: show}" />
-                                            <label data-binding="{for:layer}">Display</label>
+                                            <label data-binding="{for:layer}">Display Boundary </label>
                                         </div><div data-binding="{@event-onclick:zoomToGeoFilter}" class="filter-def">
                                             Zoom to extent
                                         </div>
@@ -136,9 +152,9 @@
         <div class="table-cell body-content-outer-wrapper">
             <div class="body-content-inner-wrapper">
                 <div class="body-content">
-                    <ul class="ul-query-folders" data-binding="{@source: dashboard_meta_filter}">
+                    <ul id="scroll-filter-body" class="ul-query-folders" data-binding="{@source: dashboard_meta_filter}">
                         <li data-binding="{@template-for: dashboard_meta_filter}">
-                            <div data-binding="{@event-onclick:onFolderClick}" class="folder-header-wrapper">
+                            <div data-binding="{@event-onclick:onFolderClick} {@hidden:show_selected_filters}" class="folder-header-wrapper">
                                 <div class="tree-expander expanded" title="Collapse or expand" data-binding="{@visible:visible}">&nbsp;</div>
                                 <div class="tree-expander collapsed" data-binding="{@hidden:visible}">&nbsp;</div>
                                 <div class="folder-title" data-binding="{@text:folder}"></div>
@@ -147,20 +163,23 @@
                                 <ul class="ul-query-layers" data-binding="{@source: filteredLayers}">
                                     <li data-binding="{@template-for: filteredLayers}">
                                         <div data-binding="{@event-onclick:onGetInfo}">
-                                            <div class="data-label query-layer" data-binding="{@text:DATALAYER}"></div>
-                                            <div class="get-info-btn-wrapper">
+                                            <div class="data-label query-layer" data-binding="{@text:layerName}"></div>
+                                            <div class="get-info-btn-wrapper" data-binding="{@hidden:show_selected_filters}">
                                                 <button class="get-info-btn" title="Click to see description of this layer."></button>
                                             </div>
                                         </div>
-                                        <div data-binding="{@source: @context}{@template-selector:UITYPE}">
-                                            <div data-binding="{@template-select:Checkbox
+                                        <div data-binding="{@source:layerDataValues}">
+                                            <div data-binding="{@template-for:layerDataValues}">
+                                                <div data-binding="{@source:@context}{@template-selector:uiType}">
+                                                    <div data-binding="{@template-select:checkbox
 }{@template: geocortex/oe_amd/OE_SageGrouseConsPln/Templates/checkbox.html}"></div>
-                                            <div data-binding="{@template-select:RadioButton
-}{@template: geocortex/oe_amd/OE_SageGrouseConsPln/Templates/radiobutton.html}"></div>
-                                            <div data-binding="{@template-select:Slider
-}{@template: geocortex/oe_amd/OE_SageGrouseConsPln/Templates/slider.html}"></div>
-                                            <div data-binding="{@template-select:RangeSlider
+                                                    <div data-binding="{@template-select:rangeslider
 }{@template: geocortex/oe_amd/OE_SageGrouseConsPln/Templates/rangeslider.html}"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clone-filter-desc" data-binding="{@visible:show_selected_filters}">
+                                            <span data-binding="{@text:layerDesc}"></span>
                                         </div>
                                     </li>
                                 </ul>

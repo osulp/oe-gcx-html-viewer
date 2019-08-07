@@ -1,7 +1,4 @@
-﻿<div class="filter_options_wrapper" data-binding="{@source: DATAVALUES}">
-    <div data-binding="{@template-for: DATAVALUES}">
+﻿<div class="filter_options_wrapper">    
         <input type="checkbox" data-binding="{id: optionID}{@value: optionValue}{@event-onchange:onUIChangeEvtHandler}" />
-        <label data-binding="{for: optionID} {@text: option}">            
-        </label>
-    </div>    
+        <label data-binding="{for: optionID} {@text: label}"></label>    
 </div>

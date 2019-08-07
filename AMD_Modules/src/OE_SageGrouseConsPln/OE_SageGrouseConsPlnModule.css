@@ -18,7 +18,7 @@
 }
 
 .slider{
-    width:90%;
+    width:90%;    
     margin-top:5px;
 }
 
@@ -63,7 +63,7 @@
     font-weight:bold;
 }
 .filter_options_wrapper{
-    margin: 0 10px;
+    margin: 5px 10px;
 }
 
 #filter-summary, #geo-filter {
@@ -447,4 +447,68 @@
 
 .ui-rangeSlider-label{
     font-size:12px;
+}
+
+.clone-filter-desc{
+    font-size:12px;
+    margin:10px 0 30px 20px;
+}
+
+.form-control input, .form-control textarea{
+    width:100% !important;
+}
+
+.form-item.required .form-label{
+    min-width: 5% !important;
+}
+
+#example-filters-wrapper ul li{
+    list-style:none;
+    margin-left:-15px;
+    border-bottom:1px solid #a8a8a8;
+}
+
+.example-list-entry-wrapper {
+    margin: 0 auto;
+    max-width:400px;
+    display: -webkit-flex; /* Safari */
+    display: flex; /* Standard syntax */
+    padding:3px 0;
+}
+    .example-list-entry-wrapper button {
+        text-align: center;
+        padding: 3px;
+        border: solid 1px #a7a7a7;
+        border-radius: 4px;
+        color: #1A72C4;
+        background-color: #F5F5F5;
+    }
+
+        .example-list-entry-wrapper button:hover {
+            text-decoration:underline;
+        }
+        .example-list-entry-wrapper div:first-child {
+            width: 80%;
+            margin: auto;
+            text-decoration:underline;
+            color:#1A72C4;
+        }
+            .example-list-entry-wrapper div:first-child:hover{
+                cursor:pointer;
+            }
+
+            .example-list-entry-wrapper div:nth-child(2) {
+                width: 15%;
+                margin: auto;
+                text-align: center;
+            }
+
+#map_graphics_layer g path {
+    fill: none !important;    
+    stroke: rgb(255, 0, 0) !important;
+}
+
+#TemporaryMarkup_layer g path {
+    fill: none !important;
+    stroke: rgb(255, 0, 0) !important;
 }

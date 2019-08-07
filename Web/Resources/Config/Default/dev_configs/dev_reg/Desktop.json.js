@@ -288,7 +288,7 @@
                                 "configuration": {}
                             },
                             {
-                                "id": "OE_SageGrouseDevRegistryViewProjectReportView",
+                                "id": "OE_SageGrouseDevRegistryProjectReportView",
                                 "title": "Project Impact Report",
                                 "require": "geocortex/oe_amd/OE_SageGrouseDevRegistry/OE_SageGrouseDevRegistryProjectReportView",
                                 "markup": "geocortex/oe_amd/OE_SageGrouseDevRegistry/OE_SageGrouseDevRegistryProjectReportView.html",
@@ -785,6 +785,30 @@
                                             "text": "@language-collaboration-open-event-image",
                                             "description": "@language-collaboration-open-event-image-desc",
                                             "command": "OpenEventFeatureImage",
+                                            "commandParameter": "{{context}}",
+                                            "commandParameter": "{{context}}",
+                                            "hideOnDisable": true
+                                        },
+                                        {
+                                            "text": "Project Impact Report",
+                                            "description": "Get a project impact report in relation the PAC development thresholds.",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
+                                            "command": "oe_project_report",
+                                            "commandParameter": "{{context}}",
+                                            "hideOnDisable": true
+                                        },
+                                        {
+                                            "iconUri": "",
+                                            "text": "Measure Area",
+                                            "description": "Measure the area of this development",
+                                            "command": "oe_measurement_area",
+                                            "commandParameter": "{{context}}",
+                                            "hideOnDisable": true
+                                        },
+                                        {
+                                            "text": "Delete Measurement",
+                                            "description": "Delete added messurement",
+                                            "command": "oe_delete_measurement",
                                             "commandParameter": "{{context}}",
                                             "hideOnDisable": true
                                         }

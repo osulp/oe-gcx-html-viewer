@@ -545,6 +545,9 @@
     <Content Include="Resources\Scripts\jquery.ui.touch-punch.js" />
     <Content Include="Resources\Scripts\modernizr.js" />
     <Content Include="Resources\Scripts\native.js" />
+    <Content Include="Resources\Scripts\oe_added_scripts\html2canvas.esm.js" />
+    <Content Include="Resources\Scripts\oe_added_scripts\html2canvas.js" />
+    <Content Include="Resources\Scripts\oe_added_scripts\html2canvas.min.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\jQAllRangeSliders-min.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\lightpick.js" />
     <Content Include="Resources\Styles\Animations.css" />
@@ -581,6 +584,7 @@
     <Content Include="Resources\3rdPartyMaps\ThirdPartyMap.js.map" />
     <None Include="packages.config" />
     <Content Include="Resources\Scripts\oe_added_scripts\datepicker.min.js" />
+    <Content Include="Resources\ModuleConfig\SageConLandscapePlanningFilters\query_filters_config.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

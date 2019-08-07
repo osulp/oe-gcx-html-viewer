@@ -37,8 +37,12 @@
     <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnHelpTutorialView.html" />
     <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnModule.css" />
     <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnFilterInfoView.html" />
+    <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnView.old.html" />
     <Content Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnView.html" />
+    <Content Include="src\OE_SageGrouseConsPln\Templates\checkbox.old.html" />
     <Content Include="src\OE_SageGrouseConsPln\Templates\radiobutton.html" />
+    <Content Include="src\OE_SageGrouseConsPln\Templates\rangeslider.old.html" />
+    <Content Include="src\OE_SageGrouseConsPln\Templates\slider.old.html" />
     <Content Include="src\OE_SageGrouseConsPln\Templates\slider.html" />
     <Content Include="src\OE_SageGrouseConsPln\Templates\rangeslider.html" />
     <Content Include="src\OE_SageGrouseConsPln\Templates\checkbox.html" />

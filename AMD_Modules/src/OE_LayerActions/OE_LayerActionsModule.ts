@@ -107,18 +107,22 @@ export class OE_LayerActionsModule extends ModuleBase {
         //        linkArray = layer.description.match(isFTP ? /\bftp?:\/\/\S+/gi : /\bhttps?:\/\/\S+/gi);//.split("http");
         //}
 
-        if (linkArray.length > 0) {
-            if (type === 'metadata') {
-                returnLink = linkArray[0];
-            } else { //download
-                if (linkArray.length > 1 || isFTP) {
-                    returnLink = linkArray[linkArray.length - 1];
-                } else {
-                    returnLink = '';
+        if (linkArray) {
+            if (linkArray.length > 0) {
+                if (type === 'metadata') {
+                    returnLink = linkArray[0];
+                } else { //download
+                    if (linkArray.length > 1 || isFTP) {
+                        returnLink = linkArray[linkArray.length - 1];
+                    } else {
+                        returnLink = '';
+                    }
+                    returnLink = returnLink.indexOf(".zip") !== -1 ? returnLink : '';
                 }
-                returnLink = returnLink.indexOf(".zip") !== -1 ? returnLink : '';
-            }                     
-        }        
+            }
+        } else {
+            returnLink = '';
+        }
         return returnLink;
     }
 

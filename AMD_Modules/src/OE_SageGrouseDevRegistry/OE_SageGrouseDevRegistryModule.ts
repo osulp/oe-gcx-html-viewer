@@ -364,7 +364,7 @@ export class OE_SageGrouseDevRegistryModule extends ModuleBase {
     }
 
     _onSiteInitialized(site: Site) {
-        this._injectScript();
+        //this._injectScript();
         let thisModel = this;
         let isAuthenticated = this.app.site.principal.isAuthenticated;
         this._handleDisplayModifications(isAuthenticated);
@@ -374,6 +374,13 @@ export class OE_SageGrouseDevRegistryModule extends ModuleBase {
         this.app.commandRegistry.command("oe_assign_lg_scale").register(this, () => {
             var workflowArgs = {};
             workflowArgs["workflowId"] = "assignLgScaleSdartt";
+            this.app.commandRegistry.commands["RunWorkflowWithArguments"].execute(workflowArgs);
+        }, () => {
+            return isAdmin;
+            });
+        this.app.commandRegistry.command("oe_get_all_pac_reports_admin").register(this, () => {
+            var workflowArgs = {};
+            workflowArgs["workflowId"] = "get_all_pac_reports";
             this.app.commandRegistry.commands["RunWorkflowWithArguments"].execute(workflowArgs);
         }, () => {
             return isAdmin;

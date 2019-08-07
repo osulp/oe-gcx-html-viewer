@@ -8,7 +8,7 @@ import { OE_SageGrouseDevRegistryViewModel } from './OE_SageGrouseDevRegistryVie
 
 
 var myWorkflowContext;
-//var myApp;
+var myApp;
 //var myLibID;
 
 export class OE_SageGrouseDevRegistryProjectReportView extends ViewBase {
