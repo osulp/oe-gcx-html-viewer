@@ -93,72 +93,39 @@
                         "uri": "Libraries/Custom/AMD/OE_AMD-Language.json"
                     }
                 ]
-            },
-            {
-                "id": "Custom",
-                "uri": "Libraries/Custom/Compiled/Custom.js",
-                "locales": [
-                    {
-                        "locale": "en-US",
-                        "uri": "Resources/Locales/Custom.en-US.json.js"
-                    }
-                ]
             }
         ],
         "modules": [
             {
-                "moduleName": "LayerActionsExtension",
-                "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
-                "libraryId": "Custom",
+                "moduleName": "OE_HyperlinkBanner",
+                "libraryId": "OE_AMD",
+                "require": "geocortex/oe_amd/OE_HyperlinkBanner/OE_HyperlinkBannerModule",
+                "configuration": {
+                    "linkUri": "http://oregonexplorer.info"
+                }
+            },
+            {
+                "moduleName": "OE_Elevation",
+                "libraryId": "OE_AMD",
+                "require": "geocortex/oe_amd/OE_Elevation/OE_ElevationModule",
+                "configuration": {
+                }
+            },
+            {
+                "moduleName": "OE_LayerActions",
+                "libraryId": "OE_AMD",
+                "require": "geocortex/oe_amd/OE_LayerActions/OE_LayerActionsModule",
                 "configuration": {
                     "showLayerDescription": false,
-                    "allowAllLayerTypes": true,
+                    "showLayerDescViewHide": true,
+                    "allowAllLayerTypes:": false,
                     "metadataHyperlinkOverride": true,
-                    "expandLayerTreeOnVisible": true
+                    "expandLayerTreeOnVisible": true,
+                    "downloadWorkflowEnabled": false,
+                    "downloadWorkflowOverride_DISABLE": {
+                        "workflowID": "WildfireDataExtract"
+                    }
                 }
-            },
-            {
-                "moduleName": "InitialExtent",
-                "moduleType": "oe.initial_extent.InitialExtentModule",
-                "libraryId": "Custom",
-                "configuration": {}
-            },
-            {
-                "moduleName": "HyperlinkBanner",
-                "moduleType": "oe.hyperlink_banner.HyperlinkBannerModule",
-                "libraryId": "Custom",
-                "configuration": {
-                    "linkUri": "https://oregonexplorer.info"
-                }
-            },
-            {
-                "moduleName": "Elevation",
-                "moduleType": "oe.elevation.ElevationModule",
-                "libraryId": "Custom",
-                "configuration": {},
-                "views": [{
-                    "id": "ElevationModuleView",
-                    "viewModelId": "ElevationModuleViewModel",
-                    "visible": false,
-                    "markup": "Modules/Elevation/ElevationModuleView.html",
-                    "type": "oe.elevation.ElevationModuleView",
-                    "region": "LeftFooterRegion",
-                    "configuration": {}
-                }
-                ],
-                "viewModels": [{
-                    "id": "ElevationModuleViewModel",
-                    "type": "oe.elevation.ElevationModuleViewModel",
-
-                    "configuration": {}
-                }
-                ]
-            },
-            {
-                "moduleName": "RasterFunctions",
-                "moduleType": "oe.raster_functions.RasterFunctionsModule",
-                "libraryId": "Custom",
-                "configuration": {}
             },
             {
                 "moduleName": "Menu",

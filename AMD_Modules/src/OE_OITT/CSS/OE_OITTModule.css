@@ -1,0 +1,948 @@
+﻿.oeOWRTReportLoading
+{
+    position:absolute;
+    top:3em;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color:#ffffff;
+    text-align:center;
+    padding-top:50px;
+    z-index:1000;
+}
+
+.oeOWRTwarningMessage{
+    padding-top:10px;
+    font-size:1.4em;
+    font-weight:bold;
+}
+
+.oeOWRTerrorInput {
+    padding-top:12px;
+}
+
+.oeOWRTerrorInput div {
+    font-size:1.2em;
+    padding-bottom:16px;
+}
+
+.oe_owrtPR-module-view
+{
+    position: inherit;
+    z-index: 100;
+    width: 900px;
+    right: 0;
+    background: white;
+    color: black;
+    padding: 6px;
+    border: none;
+    margin-top: 12px;
+    margin-right: 2px;
+
+    font: 12px Myriad,Helvetica,Tahoma,Arial,clean,sans-serif;
+    font-size: .9em;
+}
+
+.oe_owrtPR-column {
+  float: left;
+  width: 32.3%;
+  padding-right: .5%;
+  padding-left: .5%;
+}
+
+/* Clear floats after the columns */
+.oe_owrtPR-row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.oeParticipantDivTable
+{
+    display: table;
+    width:100%;
+}
+
+.oeTableRowHeader {
+    display: table-row;
+    width:100%;    
+    white-space:nowrap;
+    text-align:right;
+    background-color:#E8E8DC;
+}
+
+.oeTableRowHeader div:first-child {
+    text-align:left;
+}
+
+.oeTableRowHeader div
+{
+    display:table-cell; 
+    font-weight:bold;
+    padding: 4px 0px;
+}
+
+.oeTableRowsContainer{
+    width:100%;
+    margin:0;
+    padding:0;
+    display:table-row-group;
+}
+
+.oeTableRow
+{
+    display:table-row;
+    width:100%;
+}
+
+.oeTableRow:last-child .oePartCell
+{
+    background-color:#ffffff;    
+    border-right:0;
+    font-weight:bold;
+}
+
+.oeTableRow:last-child .oePartCellFundValue
+{
+    background-color:#ffffff;
+    border-top:solid 1px #a7a7a7;
+    border-right:0;
+}
+
+.oePartCell
+{
+    display:table-cell;    
+    padding: 6px 2px;
+}
+
+.oePartCellParticipant
+{
+    width:180px;
+    border-right: solid 1px #a7a7a7;
+}
+
+.oePartCellParticipant a{
+    font-size: 1.1em;
+    font-weight: bold;
+    text-decoration: none;
+    color: #000000;
+}
+
+.oePartCellFundValue {
+    font-size: .9em;
+    text-align: right;    
+    border-right: solid 1px #a7a7a7;
+}
+
+.oeTableRowAltColors:nth-child(odd) {
+    background-color: #FFFFFF;
+}
+
+.oeTableRowAltColors:nth-child(even) {
+    background-color: #F5F5F5;
+}
+
+.oe_owrtPR-Info
+{
+    border: 1px solid #ccc;    
+    padding: 0 .5em 1em .5em;
+    margin-bottom: 1.5em;
+    background-color: White;
+}
+
+.oeOWRTAreaPanelCell fieldset {
+    border: solid 1px #a7a7a7;
+    border-radius: 4px;
+    margin: 5px 0;
+}
+
+.oeOWRTAreaPanelCell legend {
+    font-size: 1.2em;
+}
+
+.oe_owrtPR-Info legend, .oeOWRTAreaPanelCell legend {
+    font-weight: bold;
+    font-size: 1.3em;
+    color: #aa4e3c;
+    padding-left: .5em;
+}
+
+.oe_owrtPR-Info h1
+{
+    margin:0;
+    background-color: #E8E8DC;
+    padding-top: .2em;
+    padding-bottom: .2em;    
+    padding-left: .5em;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.oe_owrtPR-Info div
+{
+    font-size: 1em;
+    padding: .2em .2em .2em .8em;
+}
+
+.oe_owrtPR-Activities
+{
+    font-size: 2em;
+    background-color: #61635B;
+    color: White;
+    padding: .5em;
+}
+
+.oe_owrtPR-Loc
+{
+    border: 1px solid #ccc;    
+    padding: 0 .5em 1em .5em;
+    margin-bottom: 1.5em;
+    background-color: White;
+}
+
+#oe_owrtPR_divMap
+{
+    border: 0.3em solid #734F3D;
+    padding:0px 1px 0px 0px; /*esri map overlaps boarder on the right by 1px.  This makes the border look uniform*/
+    margin:4px 0px 8px 0px;
+}
+
+.oe_owrtPR-Loc legend
+{
+    font-weight: bold;
+    font-size: 1.3em;
+    color: #aa4e3c;
+    padding-left: .5em;
+}
+
+.oeOWRTlocationData h1
+{
+    margin:0;
+    background-color: #E8E8DC;
+    padding-top: .2em;
+    padding-bottom: .2em;    
+    padding-left: .5em;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.oeOWRTlocationData div
+{
+    font-size: 1em;
+    padding: .2em .2em .2em .8em;
+}
+
+.oeChartsFieldSet {
+    width: 270px;
+    min-height: 470px;
+    margin: 5px 15px 5px 10px;
+    border: solid 1px #a7a7a7;
+    border-radius: 4px;
+}
+
+.oeChartsFieldSet legend
+{
+    color: #aa4e3c;
+}
+
+.oeChartsFieldSet h1
+{
+    font-size: 1em;
+    font-weight: bold;
+    text-align:center;
+    margin-top:16px;
+}
+
+
+.oeChartsLinks {
+    text-align:center;
+    margin-top:4px;
+}
+
+.oeChartsLinks a {
+    padding: 0 1em 0 1em;
+    border-left: solid 1px #a7a7a7;
+    border-right: solid 1px #a7a7a7;
+}
+
+.oeOwrtPRparticipants legend {
+    color: #aa4e3c;
+}
+
+.OE_pieChartFunding, OE_pieChartActivity
+{
+    width:250px;
+}
+
+.participantDiv
+{
+    padding:0 0;
+}
+
+.participantDiv span
+{
+    display:block;
+    padding:.5em 0 .5em 1em;
+    margin:0;
+}
+
+.participantDiv h1, .participantDiv h2
+{
+    margin:0;
+    padding: 0 0 0 1em;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.participantDiv ul {
+    margin:0 0 0 3em;
+    padding:0;
+
+    list-style-image: url("Resources/Images/Custom/listicon.gif");
+}
+
+.participantDiv ul li{    
+    margin:0;
+    padding:0;
+    text-transform:capitalize;
+}
+
+.oeOwrtActivityOverview legend
+{
+    color: #aa4e3c;
+}
+
+.oeActivityByFundingTable {
+    display:table;
+    width: 98%;
+    text-align: left;
+    margin-left:0.6em;
+}
+
+.oeActivityByFundingHeader {
+    display: table-row;
+    width:100%;    
+    white-space:nowrap;
+    text-align:right;    
+}
+
+.oeActivityByFundingHeader div {
+    display:table-cell; 
+    font-weight:bold;
+    padding: 4px 0px;
+}
+
+.oeActivityByFundingHeader div:first-child {
+    text-align:left;
+}
+
+.oeActivityByFundingRow {
+    display:table-row;
+    width:100%;
+    text-align: right;    
+}
+
+.oeActivityByFundingRow div {
+    display:table-cell;
+    padding-bottom:2px;
+}
+
+.oeActivityByFundingRow div:first-child {    
+    text-align: left;    
+}
+
+.oeOwrtActivityOverview h1
+{
+    margin:0;
+    padding: 0.6em 0 0.6em 0;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.oeOWRTactivityBoxes {
+    padding:0.5em 0;
+    text-align:right;
+}
+
+.oeOWRTactivityBoxes div{
+    display:inline;
+}
+
+.oeActResultsTable {
+    display:table;
+    width:98%;    
+    text-align:left;
+    margin-left: 0.6em;
+}
+
+.oeAcResultsHeader {
+    display: table-row;
+    width:100%;        
+    text-align:left;
+}
+
+.oeAcResultsHeader div
+{
+    display:table-cell; 
+    font-weight:bold;
+    padding-left:8px;
+    padding-bottom:4px;
+}
+
+.oeAcResultsHeader div:first-child {    
+    padding-left:0px;
+}
+
+.oeActResultsRow
+{
+    display:table-row;
+    width:100%;
+    text-align: left;    
+}
+
+.oeActResultsRow div {
+    display:table-cell;
+    padding-left:8px;
+    padding-bottom:4px;
+}
+
+.oeActResultsRow div:first-child { 
+    padding-left:0px;
+}
+
+.oeOWRTactivityGoals
+{    
+    padding:0 0 0 0;
+    margin: 0 0 0 0;
+}
+
+.oeOWRTactivityGoals
+{
+    margin:0 0 0 1.7em;
+    padding:0;
+    list-style-image: url("Resources/Images/Custom/listicon.gif");
+}
+
+.oeOWRTactivityGoals li
+{
+    padding:0 0 2px 0;
+    margin: 0 0 0 0;
+    text-transform: capitalize;
+}
+
+.oeOwrtTreatmentMetrics legend
+{
+    color: #aa4e3c;
+}
+
+.oeOwrtTreatmentMetrics ul
+{
+    margin:0 0 0 2em;
+    padding:0;
+    list-style-image: url("Resources/Images/Custom/listicon.gif");
+}
+
+.oeOwrtTreatmentMetrics ul li
+{
+    padding:0 0 4px 0;
+    margin: 0 0 0 0;    
+}
+
+.oeOwrtTreatmentMetrics a {
+    font-style:italic;
+    font-size:0.9em;
+    color:gray;
+}
+
+.oeOwrtTreatmentMetrics div
+{
+    font-weight:bold;
+    padding-bottom:4px;
+}
+
+.oeMetricToggle
+{
+    text-align: right;
+    padding-bottom:4px;
+}
+
+.oeOwrtTreatmentMetrics table
+{
+    margin:0 0 0 0.4em;
+    width:220px;
+}
+
+.oeOwrtTreatmentMetricsDescriptionColumn
+{
+    width: 50%;
+    text-transform: capitalize;
+}
+
+.oeOwrtTreatmentMetricsValueColumn
+{
+    width: 50%;
+    text-align:right;
+}
+
+
+
+
+/* Area Report */
+
+.oe_owrtAreaReport-module-view
+{
+    position: inherit;
+    z-index: 100;
+    width: 900px;
+    right: 0;
+    background: white;
+    color: black;
+    padding: 6px;
+    border: none;
+    margin-top: 12px;
+    margin-right: 2px;
+    min-height:570px;
+
+    font: 12px Myriad,Helvetica,Tahoma,Arial,clean,sans-serif;
+    font-size: .9em;
+}
+
+.oeOWRTOptions
+{
+    width: 902px;
+    background-color: #ccc;
+    padding: 4px 0px;
+    border: 1px solid #bbb;
+}
+
+.oeOWRTOptions img{
+    display:inline-block;
+    width:12px;
+    height:12px;
+}
+
+.oeOWRTOptions span{
+    display:inline-block;
+    padding-left:5px;
+}
+
+.k-slider-selection
+{
+    background-color:#02A7EA;
+}
+
+.oeOWRTOptionsPanel
+{
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    top: 78px;
+    width: 902px;
+    z-index: 5000;
+    overflow: hidden;
+    background-color: #fff;
+    border: 1px solid #bbb;
+    height:120px;
+}
+
+.oeOWRTOptionsTable
+{
+    margin:10px;
+}
+
+.oeOWRTOptionsTable button, .oeOWRTerrorInput button {
+    padding: .5em 1em;
+    background: #F5F5F5;
+    border: 1px solid #CCCCCC;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    color: #1A72C4;
+    box-shadow: 0;
+}
+
+.oeOWRTOptionsTable button:hover, .oeOWRTerrorInput button:hover {
+    background-color: #1A72C4;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+
+.oeOWRTOptionsTable h1{
+    font-size:1em;
+    font-weight:bold;
+    border-bottom: solid 1px black;
+    width:100%;
+    margin-bottom:0.6em;
+    padding:0.2em 0;
+}
+
+.oeOWRTOptionsTable td
+{
+    text-align: center;
+    border-left: dashed 1px #a7a7a7;
+    width:25%;
+    padding:0 4px;
+    vertical-align:top;
+}
+
+.oeOWRTOptionsTable td:first-child
+{
+    text-align: center;
+    border-left: none 1px #a7a7a7;
+}
+
+.oeOWRTOptionsTable h2{
+    font-size:0.9em;
+    font-weight:normal;
+}
+
+.oeOWRTOptionsTable input{
+    display:inline;
+    width:40px;
+}
+
+.oeOWRTOptions a
+{
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    padding-left: 8px;
+}
+
+.oeOWRTAreaTabs
+{
+    margin-left:4px;
+    padding-top:24px;
+}
+
+.oeOWRTAreaTabs div
+{
+    float:left;
+    border:1px solid #ccc;
+    border-bottom:0;
+    min-height:16px;
+    padding:4px 8px;
+    background-color:#e2e2e2;
+    margin-right:4px;
+    width:60px;
+    text-align:center;
+}
+
+.oeOWRTAreaTabs div a
+{
+    display:block;
+    text-decoration:none;
+    font-size:1em;
+    width:100%;
+}
+
+div.oittAreaTabEnabled
+{
+    background-color:#fff;
+    font-size:1.1em;
+    font-weight:bold;
+}
+
+.oeOWRTAreaPanel{
+    display:table;
+    clear:both;
+    width:98%;
+    min-height:460px;
+    border: 1px solid #ccc;
+    padding:10px;
+}
+
+.oeOWRTAreaPanel legend
+{
+    color: #aa4e3c;
+}
+
+.oeOWRTAreaPanel h1
+{
+    font-size: 1.2em;
+    font-weight: bold;        
+}
+
+.oeOWRTAreaPanelOverviewLeft
+{
+    width: 260px;
+    padding-left:8px;
+}
+
+.oeOWRTAreaPanelOverviewLeft fieldset
+{
+    margin-right:8px;
+}
+
+.oeOWRTAreaPanelOverviewLeft fieldset h1
+{    
+    float:left;
+}
+
+.oeOWRTAreaPanelCell
+{
+    display:table-cell  
+}
+
+.oeOWRTFloatRight
+{
+    float:right;
+}
+
+.oeOWRTAreaPanelOverviewRight
+{
+    
+}
+
+.oeOWRTAreaPanelOverviewRight fieldset
+{
+    position:relative;
+}
+
+.oeOWRTAreaQueryInfo
+{    
+    position:absolute;
+    right:10px;
+    top: 90px;
+}
+
+.oeOWRTAreaQueryInfo div
+{
+    font-size:0.9em;
+    text-align:right;
+}
+
+#oeOWRTAreaMap{
+    position:relative;
+    width: 600px;
+    height: 420px;
+    outline: none;
+}
+
+.oeOWRTAreaChartSelectBox
+{
+    position:absolute;
+    color: #292929;
+    border: 1px solid #BABABA;
+    background-color: #E8E8E8;
+    margin-left: 1em;
+    margin-right: 1em;
+    font-size: 1em;    
+    width: 200px;
+    margin-top: 1em;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.oeOWRTAreaChartSelectBox div
+{
+    padding: .5em;
+    font-size: 1em;
+    width: 100%;
+    color: Blue;
+}
+
+.oeOWRTAreaChartSelectBox div a 
+{
+    display:block;
+    width:100%;
+    text-decoration: none;
+    color: #595959;
+}
+
+.oeOWRTAreaChartSelectBox div a:hover
+{
+    text-decoration: underline;
+    font-weight:bold;
+}
+
+div.oittChartSelectionBoxSelected {
+    background-color: #8C8C8C;
+    color: White;
+}
+
+div.oittChartSelectionBoxSelected a{    
+    color: White;
+}
+
+.oeOWRTAreaProjectChart, .oeOWRTAreaFundingChart, .oeOWRTAreaResultsChart
+{
+    position:relative;
+    width:550px;
+    min-height:400px;
+    padding-top:16px;
+}
+
+.oeOWRTAreaPanelResults
+{
+    display:block;
+    padding:10px;
+    height:443px;
+    overflow-y:scroll;
+}
+
+.oeOWRTAreaPanelResults fieldset
+{
+    width:600px;
+    margin:20px auto 10px auto;
+}
+
+.owrtResultsTable
+{
+    width: 100%;
+}
+
+.owrtResultsTable td, .owrtResultsTable th
+{
+    padding: 2px 1px;
+}
+
+.owrtResultsTable tr th
+{
+    text-align:left;
+    background-image: linear-gradient(to bottom, rgba(234,238,247,0), rgba(234,238,247,1));
+}
+
+.owrtResultsTable tr td, .owrtResultsTable tr th
+{
+    padding:2px 4px;
+}
+
+.owrtResultsTable tr td
+{
+    border: solid #eee;
+    border-width: 0 1px 1px 0;
+}
+
+th.sorted.ascending:after {
+	content: "  \2191";
+    font-size:14px;
+}
+
+th.sorted.descending:after {
+	content: " \2193";
+    font-size:14px;
+}
+
+.owrtResultsTable tr th:nth-child(2), .owrtResultsTable tr td:nth-child(2)
+{
+    width:100px;
+    text-align:right;
+}
+
+.owrtResultsTable tr th:nth-child(3),.owrtResultsTable tr td:nth-child(3)
+{
+    width: 160px;
+    text-align: center;
+}
+
+.owrtResultsTable tr:nth-child(2n+1)
+{
+    background-color:#fafafa;
+}
+
+.owrtResultsTable tr:hover
+{
+    background-color:#e7e9f9;
+}
+
+.owrtChartTableToggleLink
+{
+    text-align:right;
+    padding-right:10px;
+}
+
+.owrtChartTableToggleLink img
+{
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    padding-right: 8px;
+}
+
+.owrtChartsTableContainer
+{
+    position: absolute;
+    display: block;
+    top: 182px;
+    left: 295px;
+    height: 405px;
+    background-color: white;
+    width: 600px;
+    overflow-x:auto;    
+    overflow-y:hidden;
+    z-index: 30;
+}
+
+.owrtChartTableToggleLink
+{
+    position: absolute;
+    display: block;
+    top: 162px;
+    left: 800px;
+    z-index: 40;
+}
+
+.owrtChartTables
+{
+    width:100%;
+}
+
+.owrtChartTables tbody
+{
+    display:block;
+    height:360px;
+    overflow-y:scroll;
+}
+
+.owrtChartTables thead
+{
+    display:block;
+}
+
+.owrtChartTables tr th
+{    
+    text-align:left;
+    background-image: linear-gradient(to bottom, rgba(234,238,247,0), rgba(234,238,247,1));    
+    padding:2px 4px;
+    border: solid #eee;
+    border-width: 0 1px 1px 0;    
+}
+
+.owrtChartTableShared tr th, .owrtChartTableShared tr td, .owrtChartTableFundInvestByYear tr th, .owrtChartTableFundInvestByYear tr td
+{
+    width:300px;
+}
+
+.owrtChartTables tr td
+{
+    border: solid #eee;
+    border-width: 0 1px 1px 0;    
+    padding:2px 4px;    
+}
+
+.owrtChartTables tr td:nth-child(1n+2)
+{    
+    text-align:right;
+}
+
+.owrtChartTables tr:nth-child(2n+1)
+{
+    background-color:#fafafa;
+}
+
+.owrtChartTables tr:hover
+{
+    background-color:#e7e9f9;
+}
+
+.owrtChartTableFundInvestByActByYear {
+    width: 2500px;
+    table-layout:fixed;
+}
+
+.owrtChartTableFundInvestByActByYear tr td, .owrtChartTableFundInvestByActByYear tr th {
+    width: 150px;
+    display: inline-block;
+    white-space: nowrap;
+}

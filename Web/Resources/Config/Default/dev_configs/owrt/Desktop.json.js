@@ -89,16 +89,6 @@
                 "async": true
             },
             {
-                "id":"Custom",
-                "uri":"Libraries/Custom/Compiled/Custom.js",
-                "locales":[
-                    {
-                        "locale":"en-US",
-                        "uri":"Resources/Locales/Custom.en-US.json.js"
-                    }
-                ]
-            },
-            {
                 "id": "OE_AMD",
                 "async": true,
                 "location": "Libraries/Custom/AMD",
@@ -144,11 +134,26 @@
                     "visible": false,        
                     "region": "ModalWindowRegion",
                     "configuration": {}
+                },
+                {
+                    "id": "OE_OWRTReportsAreaView",
+                    "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsAreaView",
+                    "markup": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsAreaView.html",        
+                    "viewModelId": "OE_OWRTReportsAreaViewModel",
+                    "title": "OWRT Area Report",        
+                    "visible": false,        
+                    "region": "ModalWindowRegion",
+                    "configuration": {}
                 }],
                 "viewModels": [
                 {
                     "id": "OE_OWRTReportsViewModel",      
                     "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsViewModel",      
+                    "configuration": {}
+                },
+                {
+                    "id": "OE_OWRTReportsAreaViewModel",      
+                    "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsAreaViewModel",      
                     "configuration": {}
                 }]
             },
@@ -161,53 +166,24 @@
                 }
             },
             {
-			    "moduleName": "LayerActionsExtension",
-			    "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
-                "libraryId": "Custom",
-                "configuration": {
-                    "showLayerDescription":false,
-                    "allowAllLayerTypes":true,
-                    "metadataHyperlinkOverride":true,
-                    "expandLayerTreeOnVisible":true,
-                    "downloadHyperlinkOverride":true,
-                    "downloadWorkflowEnabled":true
+                "moduleName": "OE_Elevation",
+                "libraryId": "OE_AMD",
+                "require": "geocortex/oe_amd/OE_Elevation/OE_ElevationModule",
+                "configuration": {                    
                 }
             },
             {
-                "moduleName": "InitialExtent",
-                "moduleType": "oe.initial_extent.InitialExtentModule",
-                "libraryId": "Custom",
-                "configuration": {}
-            },             
-          {
-              "moduleName" : "Elevation",
-              "moduleType" : "oe.elevation.ElevationModule",
-              "libraryId" : "Custom",
-              "configuration" : {},
-              "views" : [{
-                  "id" : "ElevationModuleView",
-                  "viewModelId" : "ElevationModuleViewModel",
-                  "visible" : false,
-                  "markup" : "Modules/Elevation/ElevationModuleView.html",
-                  "type" : "oe.elevation.ElevationModuleView",
-                  "region" : "LeftFooterRegion",
-                  "configuration" : {}
-              }
-              ],
-              "viewModels" : [{
-                  "id" : "ElevationModuleViewModel",
-                  "type" : "oe.elevation.ElevationModuleViewModel",
-
-                  "configuration" : {}
-              }
-              ]
-          },          
-            {
-                "moduleName" : "RasterFunctions",
-                "moduleType" : "oe.raster_functions.RasterFunctionsModule",
-                "libraryId" : "Custom",
-                "configuration" : {}
-            },            
+                "moduleName": "OE_LayerActions",
+                "libraryId": "OE_AMD",
+                "require": "geocortex/oe_amd/OE_LayerActions/OE_LayerActionsModule",
+                "configuration": {
+                    "showLayerDescription": true,
+                    "showLayerDescViewHide": true,
+                    "allowAllLayerTypes:": false,
+                    "metadataHyperlinkOverride": true,
+                    "expandLayerTreeOnVisible": true              
+                }
+            },                      
             {
                 "moduleName": "Menu",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.Menu.MenuModule",
@@ -2080,8 +2056,7 @@
                         {
                             "name": "ChartPointMouseDownBehavior",
                             "event": "ChartPointMouseDownEvent",
-                            "commands": [
-                                "ShowMap",
+                            "commands": [                                
                                 "RunChartFeatureActions"
                             ]
                         }
@@ -3834,12 +3809,12 @@
                 "moduleName": "Highlight",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.Highlight.HighlightModule",
                 "configuration": {
-                    "fillColor": "RGBA(236,236,58,0.1)",
-                    "outerBorderColor": "RGBA(200,200,0,1)",
-                    "borderColor": "RGBA(255,255,151,1)",
-                    "focusedFillColor": "RGBA(0,255,255,0.2)",
-                    "focusedBorderColor": "RGBA(0,255,255,1)",
-                    "focusedOuterBorderColor": "RGBA(87,170,255,1)",
+                    "fillColor": "RGBA(0, 220, 255,0.1)",
+                    "outerBorderColor": "RGBA(0, 170, 255,1)",
+                    "borderColor": "RGBA(0, 240, 253,1)",
+                    "focusedFillColor": "RGBA(255, 0, 0,0.2)",
+                    "focusedBorderColor": "RGBA(255, 0, 0,1)",
+                    "focusedOuterBorderColor": "RGBA(255, 0, 0,1)",
                     "outerBorderWidth": 5,
                     "borderWidth": 2,
                     "highlightLineOpacity": 0.5,
@@ -4068,8 +4043,22 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",
                                     "text": "OWRT Report",
                                     "description": "",
-                                    "command": "oeOWRTprojectReport"
+                                    "command": "oeOWRTprojectReport",
+                                    "commandParameter": 20090660
                                 },
+                                {
+                                    "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",
+                                    "text": "OWRT Area Report",
+                                    "description": "",
+                                    "command": "oeOWRTareaReport"                                    
+                                },
+                                 {
+                                     "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",
+                                     "text": "OWRT Area Report With Params",
+                                     "description": "",
+                                     "command": "oeOWRTareaReport",                            
+                                     "commandParameter": ["My Area","{\"spatialReference\":{\"wkid\":2992},\"rings\":[[[578590.98224657134,1011881.8414306544],[557935.25391172117,995442.99563696724],[531247.65141534712,1011412.9433425764],[541700.20007296465,1032820.6546777178],[578590.98224657134,1011881.8414306544]]]}"]
+                                 },
                                 {
                                     "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",
                                     "text": "@language-menu-home-panel",
@@ -6917,7 +6906,7 @@
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                 "configuration": {
-                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/OWRT",
+                    "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/OWRT",
                     "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                     "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                     "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined"

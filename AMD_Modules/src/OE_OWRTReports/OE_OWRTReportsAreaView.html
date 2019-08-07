@@ -1,0 +1,365 @@
+﻿<div class="oe_owrtAreaReport-module-view">
+
+    <div class="oeOWRTReportLoading" data-binding="{@visible: loaderVisible}">
+        <img data-binding="{@visible: loaderSpinner}" src="Resources/Images/Custom/project_loader.gif" />
+        <img data-binding="{@visible: loaderWarnIcon}" src="Resources/Images/Custom/warning.png" />
+        <div class="oeOWRTwarningMessage" data-binding="{@text: loaderMessage}">Loading report...</div>
+        <div data-binding="{@visible: inputBlockOnError}" class="oeOWRTerrorInput">
+            <div>Try again?  If this error persists please contact the site admin.</div>
+            <button data-binding="{@event-onclick: reportOptionsSubmission}">Get Report</button>
+        </div>
+    </div>
+
+    <div class="oeOWRTLoaderTab" data-binding="{@visible: loaderProjectsVisible}">
+        <div>Loading...</div>
+    </div>
+
+    <div class="oeOWRTLoaderTab" data-binding="{@visible: loaderFundsVisible}">
+        <div>Loading...</div>
+    </div>
+
+    <div class="oeOWRTLoaderTab" data-binding="{@visible: loaderResultsVisible}">
+        <div>Loading...</div>
+    </div>
+
+            
+    <div class="oeOWRTOptions">
+        <a href="javascript:void(0)" data-binding="{@event-onclick: toggleReportOptionPanel}">
+            <img data-binding="{src: optionsImageSrc}" src="Resources/Images/Icons/arrow-right-small-24.png" />
+            <span>Options</span>
+        </a>
+    </div>
+
+    <div class="oeOWRTOptionsPanel" data-binding="{@visible: reportOptionsPanelVisible}">
+        <table class="oeOWRTOptionsTable">
+            <tr>
+                <td>
+                    <h1>Select Geography Type</h1>
+                    <select data-binding="{@source: geoTypeList}{@event-onchange: geoTypeChanged}{@value: geoTypeValue}">
+                        <option data-binding="{@template-for: geoTypeList}{value: value}{@text: name}"></option>                        
+                    </select>
+                </td>
+                <td>
+                    <h1>Select Report Area</h1>
+                    <h2 data-binding="{@text:geoTypeName}">Geo Type</h2>
+                    <select data-binding="{@source: reportAreaList}{@visible: reportAreaListVisible}{@event-onchange: areaOptionChanged}{@value: areaNameSelected}">
+                        <option data-binding="{@template-for: reportAreaList}{value: value}{@text: name}"></option>
+                    </select>                    
+                </td>
+                <td>
+                    <h1>Select Year(s)</h1>
+                    <div>
+                        Year Range: <span input data-binding="{@text:startYear}"></span> - <span data-binding="{@text:endYear}"></span>
+                        <div class="owrtYearSlider">
+                            <input value="2012" />
+                            <input value="2017" />
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <h1>Generate New Report</h1>
+                    <button data-binding="{@event-onclick: reportOptionsSubmission}">Get Report</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="oeOWRTAreaQueryInfo">
+        <div>&nbsp;</div>
+        <div data-binding="{@text: geoTypeName}"></div>
+        <div data-binding="{@text: areaName}{@visible: areaNameVisisble}"></div>
+        <div data-binding="{@text: yearRangeString}"></div>
+    </div>
+           
+    <div class="oeOWRTAreaTabs">
+        <div data-binding="{className: tabOverviewClass}"><a href="javascript:void(0)" data-binding="{@event-onclick: toggleTabOverview}">Overview</a></div>
+        <div data-binding="{className: tabProjectsClass}"><img data-binding="{@visible: loadSpinnerProjects}" width="14" height="14" src="Resources/Images/Custom/loading-transparent.gif" /><a href="javascript:void(0)" data-binding="{@event-onclick: toggleTabProjects}">Projects</a></div>
+        <div data-binding="{className: tabFundingClass}"><img data-binding="{@visible: loadSpinnerFunding}" width="14" height="14" src="Resources/Images/Custom/loading-transparent.gif" /><a href="javascript:void(0)" data-binding="{@event-onclick: toggleTabFunding}">Funding</a></div>
+        <div data-binding="{className: tabResultsClass}"><img data-binding="{@visible: loadSpinnerResults}" width="14" height="14" src="Resources/Images/Custom/loading-transparent.gif" /><a href="javascript:void(0)" data-binding="{@event-onclick: toggleTabResults}">Results</a></div>
+    </div>
+
+    <div class="oeOWRTAreaPanel oeOWRTAreaPanelOverview" data-binding="{@visible: areaPanelOverviewVisisble}">
+        <div class="oeOWRTAreaPanelCell oeOWRTAreaPanelOverviewLeft">
+            <fieldset>
+                <legend>Total Number of Projects</legend>
+                <h1 data-binding="{@text:areaTotalProjects}">0</h1>
+                <div class="oeOWRTFloatRight" data-binding="{@visible: ranksVisible}">
+                    <div>Overall Rank: <strong>0</strong></div>
+                    <a href="javascript:void(0)">See full list of rankings</a>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Total Investment</legend>
+                <h1 data-binding="{@text:areaTotalInvestment}">0</h1>
+                <div class="oeOWRTFloatRight" data-binding="{@visible: ranksVisible}">
+                    <div>Overall Rank: <strong>0</strong></div>
+                    <a href="javascript:void(0)">See full list of rankings</a>
+                </div>
+            </fieldset>
+            <fieldset data-binding="{@visible: ranksVisible}">
+                <legend>Overall Project Number Rank</legend>
+            </fieldset>
+        </div>
+        <div class="oeOWRTAreaPanelCell oeOWRTAreaPanelOverviewRight">
+            <fieldset>
+                <legend data-binding="{@text: areaMapLegend}">Map</legend>
+                <div id="oeOWRTAreaMap"></div>
+            </fieldset>
+        </div>
+    </div>        
+
+    <div class="owrtChartsTableContainer" data-binding="{@visible: owrtChartsTableContainerVisible}">
+
+        <table class="owrtChartTableShared owrtChartTables" data-binding="{@visible: owrtChartsTableSharedVisible}">
+            <thead>
+                <tr>
+                    <th class="owrtChartsTableProjectsName" data-binding="{@text: owrtTableHdrName}"></th>
+                    <th class="owrtChartsTableProjectsValue" data-binding="{@text: owrtTableHdrValue}"></th>
+                </tr>
+            </thead>
+            <tbody data-binding="{@source: owrtTableData}">
+                <tr data-binding="{@template-for: owrtTableData}">
+                    <td data-binding="{@text: name}"></td>
+                    <td data-binding="{@text: value}{data-sort-value: data-sort-value}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="owrtChartTableFundInvestByYear owrtChartTables" data-binding="{@visible: owrtChartsTableFundInvestByYearVisible}">
+            <thead>
+                <tr>
+                    <th class="owrtChartsTableProjectsName">Year</th>
+                    <th class="owrtChartsTableProjectsValue">Cash</th>
+                    <th class="owrtChartsTableProjectsValue">In Kind</th>
+                </tr>
+            </thead>
+            <tbody data-binding="{@source: owrtTableDataFundInvestByYear}">
+                <tr data-binding="{@template-for: owrtTableDataFundInvestByYear}">
+                    <td data-binding="{@text: year}"></td>
+                    <td data-binding="{@text: cash}{data-sort-value: cashForSort}"></td>
+                    <td data-binding="{@text: inkind}{data-sort-value: inkindForSort}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="owrtChartTableFundInvestByActByYear owrtChartTables" data-binding="{@visible: owrtChartsTableFundInvestByActByYearVisible}">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Combined</th>
+                    <th>Estuarine</th>
+                    <th>Fish Passage</th>
+                    <th>Fish Screening</th>
+                    <th>Instream</th>
+                    <th>Instream Flow</th>
+                    <th>Riparian</th>
+                    <th>Road</th>
+                    <th>Upland</th>
+                    <th>Urban</th>
+                    <th>Wetland</th>
+                </tr>
+            </thead>
+            <tbody data-binding="{@source: owrtTableDataFundInvestByActByYear}">
+                <tr data-binding="{@template-for: owrtTableDataFundInvestByActByYear}">
+                    <td data-binding="{@text: year}"></td>
+                    <td data-binding="{@text: Combined}{data-sort-value: CombinedSort}"></td>
+                    <td data-binding="{@text: Estuarine}{data-sort-value: EstuarineSort}"></td>
+                    <td data-binding="{@text: Fish Passage}{data-sort-value: Fish PassageSort}"></td>
+                    <td data-binding="{@text: Fish Screening}{data-sort-value: Fish ScreeningSort}"></td>
+                    <td data-binding="{@text: Instream}{data-sort-value: InstreamSort}"></td>
+                    <td data-binding="{@text: Instream Flow}{data-sort-value: Instream FlowSort}"></td>
+                    <td data-binding="{@text: Riparian}{data-sort-value: RiparianSort}"></td>
+                    <td data-binding="{@text: Road}{data-sort-value: RoadSort}"></td>
+                    <td data-binding="{@text: Upland}{data-sort-value: UplandSort}"></td>
+                    <td data-binding="{@text: Urban}{data-sort-value: UrbanSort}"></td>
+                    <td data-binding="{@text: Wetland}{data-sort-value: WetlandSort}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="oeOWRTAreaPanel oeOWRTAreaPanelProjects" data-binding="{@visible: areaPanelProjectsVisisble}">
+                
+        <div class="oeOWRTAreaPanelCell oeOWRTAreaPanelOverviewLeft">
+            <div class="oeOWRTAreaChartSelectBox">
+                <div data-binding="{className: oeOWRTProjChartYearClass}">
+                    <a href="javascript:void(0)" data-binding="{@event-onclick: toggleProjectsChartYear}"># of Projects By Year</a>
+                </div>
+                <div data-binding="{className: oeOWRTProjChartActivityClass}">
+                    <a href="javascript:void(0)" data-binding="{@event-onclick: toggleProjectsChartActivity}"># of Projects By Activity</a>
+                </div>
+            </div>
+        </div>
+        <div class="oeOWRTAreaPanelCell oeOWRTAreaPanelOverviewRight">
+            <fieldset>
+                <legend data-binding="{@text:projectChartLegendText}" data-content="">Title of Current Chart</legend>                
+
+                <div class="owrtChartTableToggleLink" data-binding="{@visible: owrtChartTableLinkVisible}">
+                    <a href="javascript:void(0)" data-binding="{@event-onclick: toggleChartDataAsTable}">
+                        <img data-binding="{src: owrtTableLinkImg}" src="Resources/Images/Icons/charting-24.png" /><span data-binding="{@text:owrtTableLinkText}">View Table</span>
+                    </a>
+                </div>
+
+                    <div class="oeOWRTAreaProjectChart" data-region-name="oeOWRTAreaProjectsChart" data-binding="{@visible:owrtChartProjectsVisible}"></div>
+
+                    <div class="owrtTableProjects" data-binding="{@visible: owrtTableProjectsVisible}">
+                        <table class="owrtChartTableShared owrtChartTables">
+                            <thead>
+                                <tr>
+                                    <th class="owrtChartsTableProjectsName" data-binding="{@text: owrtTableProjectsHeader}"></th>
+                                    <th class="owrtChartsTableProjectsValue" data-binding="{@text: owrtTableProjectsValue}"></th>
+                                </tr>
+                            </thead>
+                            <tbody data-binding="{@source: owrtTableProjectsData}">
+                                <tr data-binding="{@template-for: owrtTableProjectsData}">
+                                    <td data-binding="{@text: name}"></td>
+                                    <td data-binding="{@text: value}{data-sort-value: data-sort-value}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+            </fieldset>            
+        </div>                
+    </div>
+
+    
+
+    <div class="oeOWRTAreaPanel oeOWRTAreaPanelFunding" data-binding="{@visible: areaPanelFundingVisisble}">
+                                
+        <div class="oeOWRTAreaPanelCell oeOWRTAreaPanelOverviewLeft">
+            <div class="oeOWRTAreaChartSelectBox">
+                <div data-binding="{className: oeOWRTFundingChartTotalClass}">
+                    <a href="javascript:void(0)" data-binding="{@event-onclick: toggleFundingChartTotal}">Total Investment in Projects</a>
+                </div>
+                <div data-binding="{className: oeOWRTFundingChartYearClass}">
+                    <a href="javascript:void(0)" data-binding="{@event-onclick: toggleFundingChartYear}">Investments By Year</a>
+                </div>
+                <div data-binding="{className: oeOWRTFundingChartActivityClass}">
+                    <a href="javascript:void(0)" data-binding="{@event-onclick: toggleFundingChartActivity}">Investments By Activity</a>
+                </div>
+                <div data-binding="{className: oeOWRTFundingChartActivityYearClass}">
+                    <a href="javascript:void(0)" data-binding="{@event-onclick: toggleFundingChartActivityYear}">Investments By Activity By Year</a>
+                </div>
+                <div data-binding="{className: oeOWRTFundingChartSourceClass}">
+                    <a href="javascript:void(0)" data-binding="{@event-onclick: toggleFundingChartSource}">Investments By Source</a>
+                </div>
+            </div>
+        </div>
+        <div class="oeOWRTAreaPanelCell oeOWRTAreaPanelOverviewRight">
+            <fieldset>
+                <legend data-binding="{@text:fundingChartLegendText}">Title of Current Chart</legend>
+
+                <div class="owrtChartTableToggleLink" data-binding="{@visible: owrtChartTableLinkVisible}">
+                    <a href="javascript:void(0)" data-binding="{@event-onclick: toggleChartDataAsTable}">
+                        <img data-binding="{src: owrtTableLinkImg}" src="Resources/Images/Icons/charting-24.png" /><span data-binding="{@text:owrtTableLinkText}">View Table</span>
+                    </a>
+                </div>
+
+                <div class="oeOWRTAreaFundingChart" data-region-name="oeOWRTAreaFundingChart" data-binding="{@visible:owrtChartFundsVisible}"></div>
+
+                <div class="owrtTableProjects" data-binding="{@visible: owrtTableFundsVisible}">
+                    <table class="owrtChartTableShared owrtChartTables">
+                        <thead>
+                            <tr>
+                                <th class="owrtChartsTableProjectsName" data-binding="{@text: owrtTableFundsHeader}"></th>
+                                <th class="owrtChartsTableProjectsValue" data-binding="{@text: owrtTableFundssValue}"></th>
+                            </tr>
+                        </thead>
+                        <tbody data-binding="{@source: owrtTableFundsData}">
+                            <tr data-binding="{@template-for: owrtTableFundsData}">
+                                <td data-binding="{@text: name}"></td>
+                                <td data-binding="{@text: value}{data-sort-value: data-sort-value}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="owrtTableProjects" data-binding="{@visible: owrtTableFundInvestByYearVisible}">
+                    <table class="owrtChartTableFundInvestByYear owrtChartTables"">
+                        <thead>
+                            <tr>
+                                <th class="owrtChartsTableProjectsName">Year</th>
+                                <th class="owrtChartsTableProjectsValue">Cash</th>
+                                <th class="owrtChartsTableProjectsValue">In Kind</th>
+                            </tr>
+                        </thead>
+                        <tbody data-binding="{@source: owrtTableFundsData}">
+                            <tr data-binding="{@template-for: owrtTableFundsData}">
+                                <td data-binding="{@text: year}"></td>
+                                <td data-binding="{@text: cash}{data-sort-value: cashForSort}"></td>
+                                <td data-binding="{@text: inkind}{data-sort-value: inkindForSort}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="owrtTableProjects" data-binding="{@visible: owrtTableFundInvestByActByYearVisible}">
+                    <table class="owrtChartTableFundInvestByActByYear owrtChartTables"">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Combined</th>
+                                <th>Estuarine</th>
+                                <th>Fish Passage</th>
+                                <th>Fish Screening</th>
+                                <th>Instream</th>
+                                <th>Instream Flow</th>
+                                <th>Riparian</th>
+                                <th>Road</th>
+                                <th>Upland</th>
+                                <th>Urban</th>
+                                <th>Wetland</th>
+                            </tr>
+                        </thead>
+                        <tbody data-binding="{@source: owrtTableFundsData}">
+                            <tr data-binding="{@template-for: owrtTableFundsData}">
+                                <td data-binding="{@text: year}"></td>
+                                <td data-binding="{@text: Combined}{data-sort-value: CombinedSort}"></td>
+                                <td data-binding="{@text: Estuarine}{data-sort-value: EstuarineSort}"></td>
+                                <td data-binding="{@text: Fish Passage}{data-sort-value: Fish PassageSort}"></td>
+                                <td data-binding="{@text: Fish Screening}{data-sort-value: Fish ScreeningSort}"></td>
+                                <td data-binding="{@text: Instream}{data-sort-value: InstreamSort}"></td>
+                                <td data-binding="{@text: Instream Flow}{data-sort-value: Instream FlowSort}"></td>
+                                <td data-binding="{@text: Riparian}{data-sort-value: RiparianSort}"></td>
+                                <td data-binding="{@text: Road}{data-sort-value: RoadSort}"></td>
+                                <td data-binding="{@text: Upland}{data-sort-value: UplandSort}"></td>
+                                <td data-binding="{@text: Urban}{data-sort-value: UrbanSort}"></td>
+                                <td data-binding="{@text: Wetland}{data-sort-value: WetlandSort}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                </fieldset>
+        </div>
+    </div>
+
+   
+    <div class="oeOWRTAreaPanel oeOWRTAreaPanelResults" data-binding="{@visible: areaPanelResultsVisisble}">
+                
+        <table class="owrtResultsTable">
+            <thead>
+                <tr>
+                    <th>Results</th>
+                    <th class="owrtResultsTotal">Total</th>
+                    <th class="no-sort">Graph Result by Year</th>
+                </tr>
+            </thead>
+            <tbody data-binding="{@source: resultsTableData}">
+                <tr data-binding="{@template-for: resultsTableData}">
+                    <td data-binding="{@text: name}"></td>
+                    <td data-binding="{@text: display}{data-sort-value: total}"></td>
+                    <td><a href="javascript:void(0)" data-binding="{@event-onclick: toggleResultsChart}">See Graph</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <fieldset data-binding="{@visible: resultsFieldSetVisible}">
+            <legend data-binding="{@text:resultsChartLegendText}">Title of Current Chart</legend>
+            <div class="oeOWRTAreaResultsChart" data-region-name="oeOWRTAreaResultsChart" ></div>                        
+        </fieldset>
+    </div>
+
+
+    
+</div>

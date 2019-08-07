@@ -28,8 +28,12 @@
     <Content Include="package.json" />
     <Content Include="post_build_modules.bat" />
     <Content Include="README.md" />
+    <Content Include="src\OE_OITT\readme.txt" />
+    <Content Include="src\OE_OWRTReports\OE_OWRTReportsAreaView.html" />
     <Content Include="src\OE_OWRTReports\readme.txt" />
     <Content Include="src\OE_LayerActions\readme.txt" />
+    <Content Include="src\OE_OWRTReports\Templates\participantsTotal.html" />
+    <Content Include="src\OE_OWRTReports\Templates\participantsRow.html" />
     <Content Include="src\OE_SageGrouseConsPln\CSS\hopscotch-0.1.1.css" />
     <Content Include="src\OE_SageGrouseConsPln\CSS\iThing-min.css" />
     <Content Include="src\OE_SageGrouseConsPln\ModuleJS.txt" />
@@ -80,19 +84,26 @@
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsView.html" />
     <Content Include="src\OE_LayerActions\CSS\OE_LayerActionsModule.css" />
     <Content Include="src\OE_LayerActions\OE_LayerActionsView.html" />
+    <Content Include="src\OE_OITT\CSS\OE_OITTModule.css" />
+    <Content Include="src\OE_OITT\OE_OITTView.html" />
     <Content Include="src\OE_AddLayerToLayerList\CSS\OE_AddLayerToLayerListModule.css" />
     <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListView.html" />
     <Content Include="src\Template\CSS\TemplateModule.css" />
     <Content Include="src\OE_OWRTReports\Language.json" />
     <Content Include="src\OE_LayerActions\Language.json" />
+    <Content Include="src\OE_OITT\Language.json" />
     <Content Include="src\OE_AddLayerToLayerList\Language.json" />
     <None Include="src\Template\Language.json" />
     <None Include="src\Template\TemplateView.html" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="src\OE_Graphics\OE_GraphicsModule.ts" />
+    <TypeScriptCompile Include="src\OE_Elevation\OE_ElevationModule.ts" />
     <TypeScriptCompile Include="src\OE_HyperlinkBanner\OE_HyperlinkBannerModule.ts" />
+    <TypeScriptCompile Include="src\OE_OITT\OE_JsonAdapter.ts" />
     <TypeScriptCompile Include="src\OE_OWRTReports\OE_JsonAdapter.ts" />
+    <Content Include="src\OE_OWRTReports\OE_OWRTReportsAreaViewModel.ts" />
+    <Content Include="src\OE_OWRTReports\OE_OWRTReportsAreaView.ts" />
     <TypeScriptCompile Include="src\OE_PickerListItemRenderer\OE_PickerListItemRendererModule.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnDownloadView.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseConsPln\OE_SageGrouseConsPlnHelpTutorialView.ts" />
@@ -129,6 +140,9 @@
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsModule.ts" />
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsView.ts" />
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsViewModel.ts" />
+    <Content Include="src\OE_OITT\OE_OITTModule.ts" />
+    <Content Include="src\OE_OITT\OE_OITTView.ts" />
+    <Content Include="src\OE_OITT\OE_OITTViewModel.ts" />
     <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListModule.ts" />
     <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListView.ts" />
     <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListViewModel.ts" />

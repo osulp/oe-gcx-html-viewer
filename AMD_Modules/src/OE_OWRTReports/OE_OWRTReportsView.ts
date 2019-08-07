@@ -14,28 +14,36 @@ export class OE_OWRTReportsView extends ViewBase {
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
     }
-
+    
     toggleElement(event, element, context) {        
         context.visible.set(!context.visible.get());
         context.collapseImgVisisble.set(!context.collapseImgVisisble.get());
         context.expandImgVisisble.set(!context.expandImgVisisble.get());
     };
 
-    toggleMetrics(event, element, context) {        
-        context.visible.set(!context.visible.get());
-    };
+    toggleTabMain(event, element, context) {
+        (<OE_OWRTReportsViewModel>context).ToggleTabMain();
+    }
 
-    toggleChartActivity(event, element, context) {
+    toggleTabCharts(event, element, context) {
+        (<OE_OWRTReportsViewModel>context).ToggleTabCharts();
+    }
+        
+    /*toggleChartActivity(event, element, context) {
         (<OE_OWRTReportsViewModel>context).BuildChartActivity();
     }
 
     toggleChartPart(event, element, context) {        
         (<OE_OWRTReportsViewModel>context).BuildChartParticipant();
-    }
+    }*/
 
     loadProjectNbr(event, element, context) {
         console.log("Change event");
         context._oeReportQueries(element.value);
+    }
+    
+    printReport(event, element, context) {
+        (<OE_OWRTReportsViewModel>context).PrintReport();
     }
     
 }

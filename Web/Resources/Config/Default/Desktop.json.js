@@ -89,16 +89,6 @@
                 "async": true
             },
             {
-                "id": "Custom",
-                "uri": "Libraries/Custom/Compiled/Custom.js",
-                "locales": [
-                    {
-                        "locale": "en-US",
-                        "uri": "Resources/Locales/Custom.en-US.json.js"
-                    }
-                ]
-            },
-            {
                 "id": "OE_AMD",
                 "async": true,
                 "location": "Libraries/Custom/AMD",
@@ -112,27 +102,18 @@
         ],
             "modules": [
                 {
-                    "moduleName": "OE_Utility",
-                    "libraryId": "OE_AMD",
-                    "require": "geocortex/oe_amd/OE_Utility/OE_UtilityModule",
-                    "configuration": {}
-                },
-                {
-                    "moduleName": "OE_Graphics",
-                    "libraryId": "OE_AMD",
-                    "require": "geocortex/oe_amd/OE_Graphics/OE_GraphicsModule",
-                    "configuration": {
-                        "hideMapTipOnEdit": true,
-                        "workflowIDRunOnEdit": "",
-                        "openMarkupStyleOnEdit": false
-                    }
-                },
-                {
                     "moduleName": "OE_HyperlinkBanner",
                     "libraryId": "OE_AMD",
                     "require": "geocortex/oe_amd/OE_HyperlinkBanner/OE_HyperlinkBannerModule",
                     "configuration": {
                         "linkUri": "http://oregonexplorer.info"
+                    }
+                },
+                {
+                    "moduleName": "OE_Elevation",
+                    "libraryId": "OE_AMD",
+                    "require": "geocortex/oe_amd/OE_Elevation/OE_ElevationModule",
+                    "configuration": {
                     }
                 },
                {
@@ -175,14 +156,7 @@
 
                         "configuration": {}
                     }
-                    ]
                 },
-                {
-                    "moduleName": "RasterFunctions",
-                    "moduleType": "oe.raster_functions.RasterFunctionsModule",
-                    "libraryId": "Custom",
-                    "configuration": {}
-                },   
             {
                 "moduleName": "Menu",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.Menu.MenuModule",

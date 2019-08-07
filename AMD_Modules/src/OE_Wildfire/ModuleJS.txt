@@ -15,7 +15,7 @@
         "configuration": {}
     },
 	{
-        "id": "OE_Wildfire_FormView",
+        "id": "OE_Wildfire_DynamicFormView",
         "require": "geocortex/oe_amd/OE_Wildfire/OE_Wildfire_DynamicFormView",
         "markup": "geocortex/oe_amd/OE_Wildfire/OE_Wildfire_DynamicFormView.html",        
         "viewModelId": "OE_Wildfire_DynamicFormViewModel",

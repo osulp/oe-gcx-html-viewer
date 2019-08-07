@@ -35,21 +35,40 @@ export class OE_OWRTReportsViewModelSequenceTask {
 }
 
 export class OE_OWRTReportsViewModel extends ViewModelBase {
-        
-    //appSite: geocortex.framework.application.Application;
-    //myModule: OE_OWRTReportsViewModel;
+     
     app: ViewerApplication;
     chartFactory: ChartViewModelFactory;
     dataSource: any;
+
+    reportMapServiceName: string;
         
     loaderVisible: Observable<boolean> = new Observable<boolean>(true);
     loaderMessage: Observable<string> = new Observable<string>("Loading Report...");
+    loaderSpinner: Observable<boolean> = new Observable<boolean>(true);
+    loaderWarnIcon: Observable<boolean> = new Observable<boolean>(false);
+    inputBlockOnError: Observable<boolean> = new Observable<boolean>(false);
+
+    printAreaVisible: Observable<boolean> = new Observable<boolean>(true);
+    printButtonVisible: Observable<boolean> = new Observable<boolean>(false);
+
+    tabMainClassName: Observable<string> = new Observable<string>("");
+    tabChartsClassName: Observable<string> = new Observable<string>("");
+
+    mainReportVisible: Observable<boolean> = new Observable<boolean>(true);
+    chartReportVisible: Observable<boolean> = new Observable<boolean>(true);
     
     esriMap: esri.Map;
+    esriProjectLayer: esri.layers.FeatureLayer;
+    esriMapSymbol: esri.symbol.SimpleFillSymbol;
 
     chartPartVisible: Observable<boolean> = new Observable<boolean>(true);
     chartActVisible: Observable<boolean> = new Observable<boolean>(false);
-    chartActive: any;
+    //chartActive: any;
+    chartMainFunding: any;
+    chartMainActivity: any;
+    activeChartName: Observable<string> = new Observable<string>("");
+    chartFunding: any;
+    chartActivity: any;
 
     chartFundingActivity: RestChartDefinition = null;
     chartFundingActivityData: any = {}        
@@ -66,6 +85,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     queryUrlActivityTypes: string;
     queryUrlResults: string;
     queryUrlMetrics: string;
+    queryUrlLandUse: string;
                  
     sequenceTasks: OE_OWRTReportsViewModelSequenceTask[] = [];    
     sequenceErrors: string = "";
@@ -86,20 +106,24 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     project_metrics: esri.tasks.FeatureSet = null;
     project_goals: esri.tasks.FeatureSet = null;
     project_activites: esri.tasks.FeatureSet = null;
+    project_species: esri.tasks.FeatureSet = null;
+    project_landuses: esri.tasks.FeatureSet = null;
     
     project_partcipants: ObservableCollection<object> = new ObservableCollection<object>(null);
     project_results_observe: ObservableCollection<object> = new ObservableCollection<object>(null);
     project_goals_observe: ObservableCollection<object> = new ObservableCollection<object>(null);
     project_metrics_observe: ObservableCollection<object> = new ObservableCollection<object>(null);
     project_activites_observe: ObservableCollection<object> = new ObservableCollection<object>(null);
-        
+                
     //project information block
+    projectID: string;
     project_nbr: Observable<string> = new Observable<string>("");
     project_name: Observable<string> = new Observable<string>("");
     project_start_year: Observable<string> = new Observable<string>("");
     project_complete_year: Observable<string> = new Observable<string>("");
     project_activities_blob: Observable<string> = new Observable<string>("");
     project_site_selection: Observable<string> = new Observable<string>("");
+    project_speices_observe: Observable<string> = new Observable<string>("");
 
     //project location block
     project_watershed: Observable<string> = new Observable<string>("");
@@ -109,13 +133,12 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     project_townshipRangeSection: Observable<string> = new Observable<string>("");
     project_dominant_land_use: Observable<string> = new Observable<string>("");
         
-    /*constructor(app: ViewerApplication, lib: string) {
-        super(app, lib);        
-    }*/
-
     initialize(config: any): void {
 
         var site = (<any>this).app.site;
+
+        this.reportMapServiceName = config.reportMapServiceName || "OWRT";
+
         if (site && site.isInitialized) {
             this._onSiteInitialized();
         }
@@ -127,41 +150,51 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     }
         
     deactivated() {
-        this._destoryFundingChart();
+        this._destoryMainCharts();
+        this._destoryPrintCharts();
     }
 
     _onSiteInitialized() {
-
-        //build custom image url
-        //this.app.site.url        
-
+        
         //register tagging command
         this.app.commandRegistry.command("oeOWRTprojectReport").register(this, this._oeOWRTprojectReport);
-                        
+                                
         // Register our custom JSON data adapter with the charting infrastructure.
         let jsonDataAdapter = new OE_ChartPointJsonAdapter();
         let sourceTypeString = ChartFieldSourceType[(<any>ChartFieldSourceType).Json];
         ChartPointAdapterRegistry.registerAdapter((<any>jsonDataAdapter), sourceTypeString);
 
         this.initializeChartFactory();                
-
-        //get the OWRT map service
-        //let mService = this.app.site.essentialsMap.mapServices.filter((ms: MapService) => ms.displayName == "OWRT").length > 0 ?
-        //    this.app.site.essentialsMap.mapServices.filter((ms: MapService) => ms.displayName === 'OWRT')[0] : null;
-
-
-        //get the layer to query?
-        //let workLayer = mService.layers.filter((ly: Layer) => ly.name == "ALL_POLYS_SDE_WM").length > 0 ?
-        //    mService.layers.filter((ly: Layer) => ly.name === "ALL_POLYS_SDE_WM")[0] : null;
-
-        let mService = this._GetServiceByName("OWRT");
+        
+        let mService = this._GetServiceByName(this.reportMapServiceName);
         this.queryUrlOWRT = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "ALL_POLYS_SDE_WM").id;
         this.queryUrlCentroids = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "CentroidsSimple").id;
-                
-        this.queryUrlProjectInfo = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PROJECT_INFO").id;
-        this.queryUrlPartRoles = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PARTICIPANTS_ROLE_LU").id;
-        this.queryUrlPartSuperTypes = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PARTICIPANTS_SUPERTYPE_LU").id;
-        this.queryUrlPartTypes = mService.serviceUrl + "/" + this._GetTableIDByName(mService, "PARTICIPANTS_TYPE_LU").id;
+                                
+        this.queryUrlProjectInfo = mService.serviceUrl + "/";
+        this.queryUrlProjectInfo += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PROJECT_INFO"))) ? "28" : this._GetTableIDByName(mService, "PROJECT_INFO").id;
+
+        this.queryUrlPartRoles = mService.serviceUrl + "/";
+        this.queryUrlPartRoles += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PARTICIPANTS_ROLE_LU"))) ? "25" : this._GetTableIDByName(mService, "PARTICIPANTS_ROLE_LU").id;
+
+        this.queryUrlPartSuperTypes = mService.serviceUrl + "/";
+        this.queryUrlPartSuperTypes += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PARTICIPANTS_SUPERTYPE_LU"))) ? "26" : this._GetTableIDByName(mService, "PARTICIPANTS_SUPERTYPE_LU").id;
+
+        this.queryUrlPartTypes = mService.serviceUrl + "/";
+        this.queryUrlPartTypes += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PARTICIPANTS_TYPE_LU"))) ? "27" : this._GetTableIDByName(mService, "PARTICIPANTS_TYPE_LU").id;
+
+        this.queryUrlLandUse = mService.serviceUrl + "/";
+        this.queryUrlLandUse += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "LAND_USE"))) ? "22" : this._GetTableIDByName(mService, "LAND_USE").id;
+
+        //create the map symbol
+        this.esriMapSymbol = new esri.symbol.SimpleFillSymbol(
+            esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+            new esri.symbol.SimpleLineSymbol(
+                esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                new esri.Color([0, 255, 255]), 2),
+                new esri.Color([0, 255, 255, 0.35])
+        );
+
+        //new esri.Color([0, 255, 255]), 4), new esri.Color([0, 255, 255, 0.25])
         
         //get the OWRT drawing color data
         var requestHandle = esri.request({
@@ -202,8 +235,13 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
 
     private _GetTableIDByName(mService: MapService, name: string): Layer {
 
-        let workLayer = mService.tables.filter((ly: Layer) => ly.name == name).length > 0 ?
-            mService.tables.filter((ly: Layer) => ly.name === name)[0] : null;
+        let workLayer = null;
+
+        try {
+            workLayer = mService.tables.filter((ly: Layer) => ly.name == name).length > 0 ?
+                mService.tables.filter((ly: Layer) => ly.name === name)[0] : null;
+        }
+        catch (e) { }
 
         return workLayer;
     }
@@ -218,6 +256,17 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         }
 
         return "";
+    }
+
+    private _IsNullOrEmpty(testValue: any, testLength: number = -1): boolean {
+
+        if (typeof testValue === "undefined" || testValue == null)
+            return true;
+
+        if (testLength > -1)
+            return !(testValue.length > testLength);
+
+        return false;
     }
 
     private _NewSequence(onComplete:any)
@@ -260,8 +309,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         var queryTask = new esri.tasks.QueryTask(queryString);
         queryTask.on("complete", (results: any) => {
 
-            if (results && results.featureSet && (<esri.tasks.FeatureSet>results.featureSet).features.length > 0) {
-                //targetFeatureSet = results.featureSet;
+            if (results && results.featureSet && (<esri.tasks.FeatureSet>results.featureSet).features.length > 0) {                
                 myModel[targetFeatureSet] = results.featureSet;
             }
             else {
@@ -276,8 +324,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
 
             this._MoveCurrentSequenceProgress();
         });
-
-        //queryTask.execute(query);
+                
         this.sequenceTasks.push(new OE_OWRTReportsViewModelSequenceTask(queryTask, query));
     }
 
@@ -295,8 +342,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         queryTask.on("execute-relationship-query-complete", (results: any) => {
 
             if (results && results.featureSets[objectID] && (<esri.tasks.FeatureSet>results.featureSets[objectID]).features.length > 0) {
-
-                //targetFeatureSet = (<esri.tasks.FeatureSet>results.featureSets[objectID]);                
+       
                 myModel[targetFeatureSet] = (<esri.tasks.FeatureSet>results.featureSets[objectID]);
             }
             else {
@@ -312,8 +358,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
 
             this._MoveCurrentSequenceProgress();
         });
-
-        //queryTask.executeRelationshipQuery(query);
+                
         this.sequenceTasks.push(new OE_OWRTReportsViewModelSequenceTask(queryTask, query, true));                
     }
         
@@ -322,9 +367,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         //clear tasks
         this.sequenceTasks = [];
 
-        //setup a new sequence
-        //this.sequenceDoneValue = 8;
-        //this.sequenceProgress = 0;
+        //setup a new sequence        
         this.sequenceErrors = "";
         this.sequenceOnComplete = this._BuildRelationships; //when the follow sequence of queries are done build the relationships
 
@@ -332,99 +375,115 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this._sequenceQuery(this.queryUrlPartRoles, "1=1", ["participant_role_lu_id,role,active"], "partRoles", "Participant Role");
         this._sequenceQuery(this.queryUrlPartSuperTypes, "1=1", ["participant_super_type,super_type_lu_id"], "partSuperTypes", "Participant Super Type");
         this._sequenceQuery(this.queryUrlPartTypes, "1=1", ["participant_type,super_type_lu_id,participant_type_lu_id,active,gov_nongov"], "partTypes", "Participant Type");
-        
+                        
         //related records to project
         this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 0, ["*"], "projectInfo", "Project Info");
         this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 3, ["*"], "participants", "Participants");                
         this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 4, ["*"], "project_results", "Project Activity Results");
         this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 6, ["*"], "project_goals", "Project Goals");
-        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 5, ["*"], "project_metrics", "Project Metrics");        
+        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 5, ["*"], "project_metrics", "Project Metrics");
+        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 7, ["*"], "project_species", "Project Species");
 
         this._MoveCurrentSequenceProgress();
     }
         
-    private _oeOWRTprojectReport(project_nbr: string) {
+    private _oeOWRTprojectReport(project_nbr: any) {
         
         //ModalWindowRegion
         this.app.commandRegistry.command("ActivateView").execute("OE_OWRTReportsView");                                
+
+        if (typeof project_nbr != "string")
+        {
+            if (typeof project_nbr === "number")
+            {
+                project_nbr = project_nbr.toString();
+            }
+            else if (typeof project_nbr._graphic !== "undefined")
+            {                
+                //table context
+                project_nbr = project_nbr._graphic.attributes.project_nbr;
+            }
+        }
+        
         this._oeReportQueries(project_nbr);
     }
-
+    
     public _oeReportQueries(project_nbr: string) {
 
-        this.loaderMessage.set("Loading Report...");
+        this.printButtonVisible.set(false);
 
-        //this.locatorMapVisible.set(false);
+        this.loaderMessage.set("Loading Report...");
+        this.loaderWarnIcon.set(false);
+        this.loaderSpinner.set(true);
         this.loaderVisible.set(true);
+        this.inputBlockOnError.set(false);
+
+        this.printAreaVisible.set(true);
+        this.mainReportVisible.set(true);
+        this.chartReportVisible.set(true);
 
         //no number, default to one
         if (!project_nbr)
-            project_nbr = "20090660";
+        {            
+            this._StopOnErrorMessage("No project number supplied. Example project number: 20090660.");
+            return;
+        }
+
+        //force string type
+        project_nbr = project_nbr.toString();
 
         //invalid number, default to one
         var matchResult = project_nbr.match(/^[0-9]+$/g);
         if (matchResult == undefined || matchResult === null || matchResult.length < 1) {
-            project_nbr = "20090660";
+            this._StopOnErrorMessage("The project number is not valid: " + project_nbr + ".");
+            return;
         }
 
         //primary record query.  All related information queries are in the function of this call back       
         var query = new esri.tasks.Query();
         query.where = "project_nbr = " + project_nbr;
         query.outFields = ["*"];
-        query.returnGeometry = false;
+        query.returnGeometry = true;
+
+        var thisView = this;
 
         var queryTask = new esri.tasks.QueryTask(this.queryUrlOWRT);
         queryTask.on("complete", (results: any) => {             
 
             if (results && results.featureSet && (<esri.tasks.FeatureSet>results.featureSet).features.length > 0) {
+
                 //build primary chart from record
                 this._BuildProjectInfo(<esri.tasks.FeatureSet>results.featureSet);
+
+                this._loadEsirMap(null, <esri.tasks.FeatureSet>results.featureSet, thisView);
             }
             else
             {
                 if(!results)
-                    console.log("No result object returned.");
+                    this._StopOnErrorMessage("No result with project number "+project_nbr+" returned.");
                 else if (!results.featureSet)
-                    console.log("No feature set returned.");
+                    this._StopOnErrorMessage("No feature set with project number " + project_nbr + " returned.");
                 else if ((<esri.tasks.FeatureSet>results.featureSet).features.length < 1)
-                    console.log("Query successful. No matching records.");
+                    this._StopOnErrorMessage("No records matching project number " + project_nbr + ".");
             }
 
         })
-        queryTask.execute(query);
-        
-        //simple centroid geometry query
-        var queryCentroid = new esri.tasks.Query();
-        queryCentroid.where = "project_nbr = " + project_nbr;
-        queryCentroid.outFields = ["*"];
-        queryCentroid.returnGeometry = true;
+        queryTask.execute(query);                        
+    }
 
-        var queryTaskCentroid = new esri.tasks.QueryTask(this.queryUrlCentroids);
-        queryTaskCentroid.on("complete", (results: any) => {
+    private _StopOnErrorMessage(message: string) {
 
-            if (results && results.featureSet && (<esri.tasks.FeatureSet>results.featureSet).features.length > 0) {                
+        this.loaderMessage.set(message);
 
-                //this._loadLocatorMap((<esri.tasks.FeatureSet>results.featureSet).features[0]);
-                this._loadEsirMap((<esri.tasks.FeatureSet>results.featureSet).features[0]);
-
-            }
-            else {
-                if (!results)
-                    console.log("Centroid: No result object returned.");
-                else if (!results.featureSet)
-                    console.log("Centroid: No feature set returned.");
-                else if ((<esri.tasks.FeatureSet>results.featureSet).features.length < 1)
-                    console.log("Centroid: Query successful. No matching records.");
-            }
-
-        })
-        queryTaskCentroid.execute(queryCentroid);
-                
+        this.loaderWarnIcon.set(true);
+        this.loaderSpinner.set(false);
+        this.inputBlockOnError.set(true);
+        this.loaderVisible.set(true);        
     }
 
     private _BuildProjectInfo(featureSet: esri.tasks.FeatureSet) {
 
-        console.log("Features Found: " + featureSet.features.length);
+        //console.log("Features Found: " + featureSet.features.length);
         let graphicToUse = featureSet.features[0];
                 
         //single field values
@@ -446,6 +505,8 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
             fieldsToUse[i].target.set(this._GetFieldValue(graphicToUse, fieldsToUse[i].field));
         }
 
+        this.projectID = graphicToUse.attributes.ri_project_id;
+
         /*for (let fieldPointer in fieldsToUse) {
             if (typeof fieldsToUse[fieldPointer] !== "undefined" && fieldsToUse[fieldPointer] !== null)
                 fieldsToUse[fieldPointer].target.set(this._GetFieldValue(graphicToUse, fieldsToUse[fieldPointer].field));            
@@ -459,7 +520,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this.project_townshipRangeSection.set(townshipRangeSection);
                 
         //dominant land use
-        this.project_dominant_land_use.set("No Data");
+        //this.project_dominant_land_use.set("No Data");
 
         //build types featuersets
         this._BuildTypesAndRelationships(parseInt(this._GetFieldValue(graphicToUse, "OBJECTID"), 10));
@@ -476,7 +537,8 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this._BuildActivityResults();
         this._BuildGoals();
         this._BuildMetrics();
-
+        this._BuildSpecies();
+                
         this._RelatedProjectInfo(); // also pulls in activities (for funding)
     }    
 
@@ -491,14 +553,149 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
             if (workingAttributes.project_site_selection)
                 this.project_site_selection.set(workingAttributes.project_site_selection.toString());
             
-            //get activity type funding
+            //get activity type funding and land use
 
             //clear tasks
-            this._NewSequence(this._BuildActivities);
+            this._NewSequence(this._QuerysThatRequireProjectID);
             //related records to project
-            this._sequenceRelationshipQuery(this.queryUrlProjectInfo, workingAttributes.OBJECTID, 9, ["*"], "project_activites", "Project Activities");
+            this._sequenceRelationshipQuery(this.queryUrlProjectInfo, workingAttributes.OBJECTID, 15, ["*"], "project_activites", "Project Activities");
+            this._sequenceQuery(this.queryUrlLandUse, "project_id=" + this.projectID, ["land_use"], "project_landuses", "Project Land Uses");
             this._MoveCurrentSequenceProgress();
         }
+    }
+
+    private _QuerysThatRequireProjectID() {
+
+        this._BuildActivities();
+        this._BuildLandUse();
+
+        //build main charts
+        this.BuildMainCharts();
+
+        //build print charts now
+        this.BuildAllChartsForPrint();
+                
+        //hide print area
+        this.printAreaVisible.set(false);
+
+        this.ToggleTabMain();
+
+        //hide the loader overlay
+        this.loaderVisible.set(false);
+
+        this.printButtonVisible.set(true);            
+    }
+
+    public ToggleTabMain() {
+
+        this.chartReportVisible.set(false);
+        this.mainReportVisible.set(true);        
+
+        this.tabMainClassName.set("oeOWRTReportsTabEnabled");
+        this.tabChartsClassName.set("");
+    }
+
+    public ToggleTabCharts() {
+
+        this.mainReportVisible.set(false);
+        this.chartReportVisible.set(true);
+
+        this.tabMainClassName.set("");
+        this.tabChartsClassName.set("oeOWRTReportsTabEnabled");
+    }
+        
+    public PrintReport() {
+
+        var PW = window.open('', '_blank', 'Print content');
+
+        let styleTags = document.getElementsByTagName("style");
+        let styleHtml = "";
+
+        for (let i = 0; i < styleTags.length; i++) {
+            styleHtml = styleHtml + " " + styleTags[i].innerHTML;
+        }
+
+        this.printAreaVisible.set(true);
+
+        $("#oe_owrtPR_divMapPrint").html($("#oe_owrtPR_divMap").html());
+
+        PW.document.write("<div class=\"oe_owrtPR- module - view\">" + document.getElementById("oeOWRTDetailReportPrintArea").innerHTML + "</div>");
+        PW.document.head.innerHTML = "<style>" + styleHtml + " body, html {overflow:visible; font-family:\"Segoe UI\", \"Helvetica Neue\", \"Droid Sans\", Arial, sans-serif; font-size:.8em} fieldset{margin:10px;}</style>";
+        PW.document.close();
+
+        let divLayers = PW.document.getElementById("oe_owrtPR_divMap_layer0");
+        let divImages = divLayers.firstChild;
+        let imageNodes: any = divImages.childNodes;
+
+        for (let i = 0; i < imageNodes.length; i++) {
+            imageNodes[i].style.width = "128px";
+            imageNodes[i].style.height = "128px";
+
+            if (i == 0)
+                imageNodes[i].style.transform = "translate3d(0px, 0px, -1px)";
+            else if (i == 1)
+                imageNodes[i].style.transform = "translate3d(-128px, 128px, -1px)";
+            else if (i == 2)
+                imageNodes[i].style.transform = "translate3d(128px, -128px, -1px)";
+            else if (i == 3)
+                imageNodes[i].style.transform = "translate3d(0px, 0px, -1px)";
+            else if (i>=4)
+                imageNodes[i].style.display = "none";
+        }
+
+        this.printAreaVisible.set(false);
+
+        PW.focus();
+        PW.print();
+        PW.close();
+
+    }
+
+    private _BuildLandUse() {
+
+        //Land use
+        var landUseString: string = "";
+
+        for (let i = 0; i < this.project_landuses.features.length; i++) {
+
+            let workingAttributes = this.project_landuses.features[i].attributes;
+            
+            landUseString += workingAttributes.land_use;
+
+            if (i < this.project_landuses.features.length - 1)
+                landUseString += ", ";
+        }
+
+        if (landUseString == "")
+            landUseString = "No land use on record.";
+
+        this.project_dominant_land_use.set(landUseString);
+    }
+
+    private _BuildSpecies() {
+
+        //species
+        var speciesString: string = "";
+
+        if (this.project_species && this.project_species.features) {
+
+            for (let i = 0; i < this.project_species.features.length; i++) {
+
+                let workingAttributes = this.project_species.features[i].attributes;
+
+                speciesString += workingAttributes.species;
+
+                if (i < this.project_species.features.length - 1)
+                    speciesString += ", ";
+            }
+
+        }
+
+        if (speciesString == "")
+            speciesString = "No species on record.";
+
+        this.project_speices_observe.set(speciesString);
+
     }
 
     private _BuildActivities() {
@@ -550,10 +747,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         }
 
         //Build funding chart
-        //this.chartActivity = this.createPieChart(chartFundingActivity, [chartFundingActivityData], "OE_pieChartFundingActivity");
-
-        //hide the loader overlay
-        this.loaderVisible.set(false);        
+        //this.chartActivity = this.createPieChart(chartFundingActivity, [chartFundingActivityData], "OE_pieChartFundingActivity");                  
     }
 
     private _FindActivitySymbolColor(activityType: string, cssType: boolean = true): any {
@@ -608,6 +802,15 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
 
         this.project_metrics_observe.clear();
 
+        if (this._IsNullOrEmpty(this.project_metrics) || this._IsNullOrEmpty(this.project_metrics.features))
+        {
+            let workingObject: any = { "treatment": "No treatments & metrics records for this project.", "metrics": {}};
+            //workingObject.metrics = new ObservableCollection<object>();
+            //workingObject.metrics.addItem({"treatment":"No treatments & metrics for this record.", "metric": "", "displayValue": "" });
+            this.project_metrics_observe.addItem(workingObject);
+            return;
+        }
+
         //sort by treatment name
         this.project_metrics.features.sort((a: any, b: any) => {
             if (a.attributes.treatment < b.attributes.treatment) return -1;
@@ -625,7 +828,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
 
             workingObject = workingAttributes;
 
-            workingObject.visible = new Observable<boolean>(true);
+            //workingObject.visible = new Observable<boolean>(true);
 
             if (!treatments[workingObject.treatment]) {
 
@@ -646,6 +849,10 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     private _BuildGoals() {
 
         this.project_goals_observe.clear();
+
+        if (this._IsNullOrEmpty(this.project_goals) || this._IsNullOrEmpty(this.project_goals.features)) {
+            return;
+        }
 
         //sort by goal 
         this.project_goals.features.sort((a: any, b: any) => {
@@ -673,6 +880,10 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         //this.project_treatments_observe.clear();  
 
         //var treatments: any = {};
+
+        if (this._IsNullOrEmpty(this.project_results) || this._IsNullOrEmpty(this.project_results.features)) {
+            return;
+        }
 
         //sort by activity type
         this.project_results.features.sort((a: any, b: any) => {
@@ -850,6 +1061,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
                 workingObject = workingAttributes;
                 //workingObject.htmlID = "participant" + workingPartID;
                 workingObject.visible = new Observable<boolean>(false);
+                workingObject.showParticipantBlock = new Observable<boolean>(true);
                 workingObject.collapseImgVisisble = new Observable<boolean>(false);                
                 workingObject.expandImgVisisble = new Observable<boolean>(true);
 
@@ -865,8 +1077,8 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
                 inkindTotal += workingObject.inkind+0;
 
                 workingObject.cash = "$"+workingObject.cash;
-                workingObject.inkind = "$"+workingObject.inkind;
-
+                workingObject.inkind = "$" + workingObject.inkind;
+                                
                 //roles
                 workingObject.roles = new ObservableCollection<object>();
                 workingObject.roles.addItem({ "name": this._GetFieldByTypeID(this.partRoles, "participant_role_lu_id", workingObject.participant_role_lu_id, "role") });
@@ -905,17 +1117,18 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         let footerObject = null;
         footerObject = new Object();
         footerObject.visible = new Observable<boolean>(false);
+        footerObject.showParticipantBlock = new Observable<boolean>(false);        
         footerObject.collapseImgVisisble = new Observable<boolean>(false);
         footerObject.expandImgVisisble = new Observable<boolean>(false);
         footerObject.roles = new ObservableCollection<object>();
         footerObject.types = new ObservableCollection<object>();
         footerObject.cash = "$"+cashTotal;
-        footerObject.inkind = "$" +inkindTotal;
+        footerObject.inkind = "$" + inkindTotal;        
         this.project_partcipants.addItem(footerObject);
 
         //Build funding chart
         //this.fundingChart = this.createPieChart(chartFundingPart, [chartFundingPartData], "OE_pieChartFunding");     
-        this.BuildChartParticipant();
+        //this.BuildChartParticipant();
     }
 
     private _GetFieldValue(graphic: esri.Graphic, field: string): string {
@@ -929,31 +1142,54 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         return graphic.attributes[field];
     }
 
-    public BuildChartActivity() {
-        this._destoryFundingChart();
+    public BuildMainCharts() {
+        this._destoryMainCharts();
 
         //Build funding chart
-        this.chartActive = this.createPieChart(this.chartFundingActivity, [this.chartFundingActivityData], "OE_pieChartFunding");
+        this.chartMainActivity = this.createPieChart(this.chartFundingActivity, [this.chartFundingActivityData], "OE_pieChartActivity",400);
+        this.activeChartName.set("Activity Funding");                
+
+        this.chartMainFunding = this.createPieChart(this.chartFundingPart, [this.chartFundingPartData], "OE_pieChartFunding",400);
+        this.activeChartName.set("Participant Funding");    
+    }
+    
+    public BuildAllChartsForPrint() {
+
+        this._destoryPrintCharts();
+
+        this.chartActivity = this.createPieChart(this.chartFundingActivity, [this.chartFundingActivityData], "OE_ChartActivityForPrint", 380);
+        this.chartFunding = this.createPieChart(this.chartFundingPart, [this.chartFundingPartData], "OE_ChartFundingForPrint", 380);        
     }
 
-    public BuildChartParticipant() {
-        this._destoryFundingChart();
+    private _destoryPrintCharts() {
+        if (this.chartFunding) {
+            this.app.command("DestroyView").execute(this.chartFunding.id);
+        }
+        this.chartFunding = null;        
 
-        this.chartActive = this.createPieChart(this.chartFundingPart, [this.chartFundingPartData], "OE_pieChartFunding");      
+        if (this.chartActivity) {
+            this.app.command("DestroyView").execute(this.chartActivity.id);
+        }
+        this.chartActivity = null;     
     }
         
-    private _destoryFundingChart() {
-        if (this.chartActive) {
-            this.app.command("DestroyView").execute(this.chartActive.id);
+    private _destoryMainCharts() {
+        if (this.chartMainFunding) {
+            this.app.command("DestroyView").execute(this.chartMainFunding.id);
         }
-        this.chartActive = null;                
+        this.chartMainFunding = null;                
+
+        if (this.chartMainActivity) {
+            this.app.command("DestroyView").execute(this.chartMainActivity.id);
+        }
+        this.chartMainActivity = null;                
     }
 
-    private _loadEsirMap(graphicIn: esri.Graphic) {
+    private _loadEsirMap(graphicIn: esri.Graphic, featureSetIn: esri.tasks.FeatureSet, thisView: OE_OWRTReportsViewModel) {
 
         var point: esri.geometry.Point = null;
 
-        if (graphicIn && graphicIn.geometry)
+        if (graphicIn && graphicIn != null && graphicIn.geometry)
             point = <esri.geometry.Point>graphicIn.geometry;
         else
             point = new esri.geometry.Point(-120.58, 44.17);
@@ -966,31 +1202,61 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
                 zoom: 5,
                 basemap: "streets",
                 minZoom: 5,
-                slider: false
+                slider: true
             });
+
+            var viewThis = this;
 
             this.esriMap.on("load", function (event: any) {
                 console.log(event.map);
 
-                var markerSymbol = new esri.symbol.SimpleMarkerSymbol();
+                
+                //markerSymbol.setColor(new esri.Color("#00FFFF"));
+                //markerSymbol.setOutline(new esri.symbol.SimpleLineSymbol())
+                
+                /*var markerSymbol = new esri.symbol.SimpleMarkerSymbol();
                 markerSymbol.setColor(new esri.Color("#00FFFF"));                
-                (<esri.Map>event.map).graphics.add(new esri.Graphic(point, markerSymbol));
+                (<esri.Map>event.map).graphics.add(new esri.Graphic(point, markerSymbol));*/
+
+                for (let i = 0; i < featureSetIn.features.length; i++)
+                {
+                    featureSetIn.features[i].setSymbol(thisView.esriMapSymbol);
+                    (<esri.Map>event.map).graphics.add(featureSetIn.features[i]);
+                }
+
+                //this.esriProjectLayer = new esri.layers.FeatureLayer(this._MakeFeatureCollection(featureSetIn));
+                //(<esri.Map>event.map).addLayer(this.esriProjectLayer);
 
                 var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/40");
                 (<esri.Map>event.map).addLayer(featureLayer);
+                                
+                (<esri.Map>event.map).setExtent(esri.graphicsExtent(featureSetIn.features).expand(2));                
             });                     
         }
         else
         {
             this.esriMap.graphics.clear();
 
-            var markerSymbol = new esri.symbol.SimpleMarkerSymbol();
+            for (let i = 0; i < featureSetIn.features.length; i++) {
+                featureSetIn.features[i].setSymbol(this.esriMapSymbol);
+                this.esriMap.graphics.add(featureSetIn.features[i]);
+            }
+
+            this.esriMap.setExtent(esri.graphicsExtent(featureSetIn.features).expand(2));
+
+            /*var markerSymbol = new esri.symbol.SimpleMarkerSymbol();
             markerSymbol.setColor(new esri.Color("#00FFFF"));
-            this.esriMap.graphics.add(new esri.Graphic(point, markerSymbol));
+            this.esriMap.graphics.add(new esri.Graphic(point, markerSymbol));*/
+
+            //if (typeof this.esriProjectLayer != "undefined")
+                //this.esriMap.removeLayer(this.esriProjectLayer);
+
+            //this.esriProjectLayer = new esri.layers.FeatureLayer(this._MakeFeatureCollection(featureSetIn));
+            //this.esriMap.addLayer(this.esriProjectLayer);            
         }
 
     }
-    
+        
     private initializeChartFactory(): void {
 
         let chartingLibraryId = "Charting";        
@@ -1011,12 +1277,16 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this.app.registerFrameworkObject(<any>this.chartFactory);
     }
 
-    private createPieChart(chartConfig: any, data: any, targetRegion: string): Chart {
+    private createPieChart(chartConfig: any, data: any, targetRegion: string, widthIn:number=250): Chart {
                 
         let chartDefinition = new ChartDefinition(chartConfig);
-
+                
         // Create chart view model from chart config & data.
         let chartViewModel = this.chartFactory.createInstance(<any>chartDefinition, ChartFeatureType.SingleFeature, data);
+        chartViewModel.width.set(widthIn);
+        //chartViewModel.autoSize.set(false);
+        //chartViewModel.interactiveLegend.set(true);
+        //chartViewModel.pieStartAngle.set(90);
         
         // Create the chart.
         let chart = <any>this.app.viewManager.createView({

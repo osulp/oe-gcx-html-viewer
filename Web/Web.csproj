@@ -82,6 +82,7 @@
     <Content Include="favicon_oe.ico" />
     <Content Include="Handheld.html" />
     <Content Include="Index.html" />
+    <Content Include="Libraries\Custom\AMD\OE_Elevation.js" />
     <Content Include="Libraries\Custom\AMD\OE_AddLayerToLayerList.js" />
     <Content Include="Libraries\Custom\AMD\OE_Graphics.js" />
     <Content Include="Libraries\Custom\AMD\OE_HyperlinkBanner.js" />
@@ -596,6 +597,7 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Resources\Config\Default\dev_configs\oitt\" />
     <Folder Include="Resources\Config\Default\dev_configs\owrt\" />
     <Folder Include="Resources\Config\DevTy\" />
   </ItemGroup>
