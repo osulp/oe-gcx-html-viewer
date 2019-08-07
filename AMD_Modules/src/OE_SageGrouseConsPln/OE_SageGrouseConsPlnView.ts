@@ -12,7 +12,7 @@ import { DisplayNotificationArgs, NotificationActionButton } from "geocortex/inf
 import { Observable } from "geocortex/framework/observables";
 import { AddStatusArgs } from "geocortex/infrastructure/commandArgs/AddStatusArgs";
 import { base64Decode } from "geocortex/framework/utils/utils";
-import html2canvas from "html2canvas";
+
 //import { getGraphicsLayer } from "geocortex/infrastructure/GraphicUtils";
 //import { ExportGraphicsLayerArgs } from "geocortex/infrastructure/commandArgs/ExportGraphicsLayerArgs";
 //import { request } from "geocortex/geocortex";
