@@ -89,16 +89,6 @@
                 "async": true
             },
             {
-                "id": "Custom",
-                "uri": "Libraries/Custom/Compiled/Custom.js",
-                "locales": [
-                    {
-                        "locale": "en-US",
-                        "uri": "Resources/Locales/Custom.en-US.json.js"
-                    }
-                ]
-            },
-            {
                 "id": "OE_AMD",
                 "async": true,
                 "location": "Libraries/Custom/AMD",
@@ -112,22 +102,6 @@
         ],
             "modules": [
                 {
-                    "moduleName": "OE_Utility",
-                    "libraryId": "OE_AMD",
-                    "require": "geocortex/oe_amd/OE_Utility/OE_UtilityModule",
-                    "configuration": {}
-                },
-                {
-                    "moduleName": "OE_Graphics",
-                    "libraryId": "OE_AMD",
-                    "require": "geocortex/oe_amd/OE_Graphics/OE_GraphicsModule",
-                    "configuration": {
-                        "hideMapTipOnEdit": true,
-                        "workflowIDRunOnEdit": "",
-                        "openMarkupStyleOnEdit": false
-                    }
-                },
-                {
                     "moduleName": "OE_HyperlinkBanner",
                     "libraryId": "OE_AMD",
                     "require": "geocortex/oe_amd/OE_HyperlinkBanner/OE_HyperlinkBannerModule",
@@ -136,53 +110,28 @@
                     }
                 },
                 {
-                    "moduleName": "LayerActionsExtension",
-                    "moduleType": "oe.layer_actions_extension.LayerActionsExtension",
-                    "libraryId": "Custom",
+                    "moduleName": "OE_Elevation",
+                    "libraryId": "OE_AMD",
+                    "require": "geocortex/oe_amd/OE_Elevation/OE_ElevationModule",
+                    "configuration": {
+                    }
+                },
+                {
+                    "moduleName": "OE_LayerActions",
+                    "libraryId": "OE_AMD",
+                    "require": "geocortex/oe_amd/OE_LayerActions/OE_LayerActionsModule",
                     "configuration": {
                         "showLayerDescription": false,
-                        "allowAllLayerTypes": true,
+                        "showLayerDescViewHide": true,
+                        "allowAllLayerTypes:": false,
                         "metadataHyperlinkOverride": true,
                         "expandLayerTreeOnVisible": true,
-                        "downloadHyperlinkOverride": true,
-                        "downloadWorkflowEnabled": true
+                        "downloadWorkflowEnabled": false,
+                        "downloadWorkflowOverride_DISABLE": {
+                            "workflowID": "WildfireDataExtract"
+                        }
                     }
                 },
-                {
-                    "moduleName": "InitialExtent",
-                    "moduleType": "oe.initial_extent.InitialExtentModule",
-                    "libraryId": "Custom",
-                    "configuration": {}
-                },
-                {
-                    "moduleName": "Elevation",
-                    "moduleType": "oe.elevation.ElevationModule",
-                    "libraryId": "Custom",
-                    "configuration": {},
-                    "views": [{
-                        "id": "ElevationModuleView",
-                        "viewModelId": "ElevationModuleViewModel",
-                        "visible": false,
-                        "markup": "Modules/Elevation/ElevationModuleView.html",
-                        "type": "oe.elevation.ElevationModuleView",
-                        "region": "LeftFooterRegion",
-                        "configuration": {}
-                    }
-                    ],
-                    "viewModels": [{
-                        "id": "ElevationModuleViewModel",
-                        "type": "oe.elevation.ElevationModuleViewModel",
-
-                        "configuration": {}
-                    }
-                    ]
-                },
-                {
-                    "moduleName": "RasterFunctions",
-                    "moduleType": "oe.raster_functions.RasterFunctionsModule",
-                    "libraryId": "Custom",
-                    "configuration": {}
-                },   
             {
                 "moduleName": "Menu",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.Menu.MenuModule",

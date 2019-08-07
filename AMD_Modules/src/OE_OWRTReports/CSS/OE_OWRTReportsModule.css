@@ -236,6 +236,16 @@ div.oeOWRTReportsTabEnabled{
     margin-bottom: 1.5em;
     background-color: White;
 }
+
+.oeOWRTAreaPanelCell fieldset {
+    border: solid 1px #a7a7a7;
+    border-radius: 4px;
+    margin: 5px 0;
+}
+
+.oeOWRTAreaPanelCell legend {
+    font-size: 1.2em;    
+}
     
 .oe_owrtPR-Info legend, .oeOWRTAreaPanelCell legend
 {
@@ -320,11 +330,12 @@ div.oeOWRTReportsTabEnabled{
     vertical-align:top;
 }
 
-.oeChartsFieldSet
-{
+.oeChartsFieldSet {
     width: 400px;
-    min-height:470px;
-    margin-left:15px;
+    min-height: 470px;
+    margin: 5px 15px 5px 10px;
+    border: solid 1px #a7a7a7;
+    border-radius: 4px;
 }
 
 .oeChartsFieldSet legend

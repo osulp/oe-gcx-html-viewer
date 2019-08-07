@@ -142,8 +142,6 @@
     background-color: #F5F5F5;
 }
 
-
-
 .oe_owrtPR-Info
 {
     border: 1px solid #ccc;    
@@ -151,9 +149,18 @@
     margin-bottom: 1.5em;
     background-color: White;
 }
-    
-.oe_owrtPR-Info legend, .oeOWRTAreaPanelCell legend
-{
+
+.oeOWRTAreaPanelCell fieldset {
+    border: solid 1px #a7a7a7;
+    border-radius: 4px;
+    margin: 5px 0;
+}
+
+.oeOWRTAreaPanelCell legend {
+    font-size: 1.2em;
+}
+
+.oe_owrtPR-Info legend, .oeOWRTAreaPanelCell legend {
     font-weight: bold;
     font-size: 1.3em;
     color: #aa4e3c;
@@ -225,10 +232,12 @@
     padding: .2em .2em .2em .8em;
 }
 
-.oeChartsFieldSet
-{
+.oeChartsFieldSet {
     width: 270px;
-    min-height:470px;
+    min-height: 470px;
+    margin: 5px 15px 5px 10px;
+    border: solid 1px #a7a7a7;
+    border-radius: 4px;
 }
 
 .oeChartsFieldSet legend

@@ -6,7 +6,7 @@ metadataHyperlinkOverride requires a layer hyperlink named "Metadata" to overrid
 {
 	"moduleName": "OE_LayerActions",	
 	"libraryId": "OE_AMD",
-	"require": "geocortex/oe_amd/OE_LayerActions/OE_LayerActions",
+	"require": "geocortex/oe_amd/OE_LayerActions/OE_LayerActionsModule",
 	"configuration": {
         "showLayerDescription":true,
 		"showLayerDescViewHide":true,
