@@ -118,9 +118,9 @@
                             "allowAllLayerTypes:": false,
                             "metadataHyperlinkOverride": true,
                             "expandLayerTreeOnVisible": true,
-                            "downloadWorkflowEnabled": true,
+                            "downloadWorkflowEnabled": false,
                             "downloadHyperlinkOverride": true,
-                            "downloadWorkflowOverride": {
+                            "downloadWorkflowOverride_DISABLE": {
                                 "workflowID": "WildfireDataExtract"
                             }
                         }
@@ -6876,7 +6876,7 @@
                         "moduleName": "Site",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                         "configuration": {
-                            "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/wildfire_risk_PNRA_professional",
+                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/m49",
                             "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                             "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                             "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined"

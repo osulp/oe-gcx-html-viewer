@@ -105,6 +105,7 @@
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Tablet.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\dev_reg\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\wildfire\Desktop.json.js" />
     <Content Include="Resources\Images\Custom\broadcasting.png" />
     <Content Include="Resources\Images\Custom\demographics-24.png" />
     <Content Include="Resources\Images\Custom\dlcd_logo.png" />
@@ -597,6 +598,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Resources\Config\Default\dev_configs\aquaculture\" />
+    <Folder Include="Resources\Config\Default\dev_configs\m49\" />
     <Folder Include="Resources\Config\Default\dev_configs\oitt\" />
     <Folder Include="Resources\Config\Default\dev_configs\owrt\" />
     <Folder Include="Resources\Config\DevTy\" />
