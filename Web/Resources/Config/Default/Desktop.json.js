@@ -126,7 +126,8 @@
                        "allowAllLayerTypes:": true,
                        "metadataHyperlinkOverride": true,
                        "downloadHyperlinkOverride": true,
-                       "expandLayerTreeOnVisible": true                    
+                       "expandLayerTreeOnVisible": true,
+                       "downloadWorkflowEnabled": true
                    }
                }, 
                 {

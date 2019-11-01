@@ -121,7 +121,8 @@
                     "allowAllLayerTypes:": false,
                     "metadataHyperlinkOverride": true,
                     "expandLayerTreeOnVisible": true,
-                    "downloadWorkflowEnabled": false,
+                    "downloadHyperlinkOverride": true,
+                    "downloadWorkflowEnabled": true,
                     "downloadWorkflowOverride_DISABLE": {
                         "workflowID": "WildfireDataExtract"
                     }
