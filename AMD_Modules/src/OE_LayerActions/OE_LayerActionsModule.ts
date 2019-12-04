@@ -151,11 +151,13 @@ export class OE_LayerActionsModule extends ModuleBase {
                 for (var i = 0; i < args.layerHyperlinks.length; i++) {
 
                     //check for metadata override
-                    if (this.metadataHyperlinkOverride && args.layerHyperlinks[i].text.toLowerCase().indexOf("metadata") > -1) {
+                    //if (this.metadataHyperlinkOverride && args.layerHyperlinks[i].text.toLowerCase().indexOf("metadata") > -1) {
+                    if (this.metadataHyperlinkOverride && args.layerHyperlinks[i].text.trim().toLowerCase() == "metadata") {
                         //$(aLink).css("display", "none");
                         this.metadataHyperlinkURI = args.layerHyperlinks[i].uri;
                     }
-                    else if (this.downloadHyperlinkOverride && args.layerHyperlinks[i].text.toLowerCase().indexOf("download") > -1) {
+                    //else if (this.downloadHyperlinkOverride && args.layerHyperlinks[i].text.toLowerCase().indexOf("download") > -1) {
+                    else if (this.downloadHyperlinkOverride && args.layerHyperlinks[i].text.trim().toLowerCase() == "download") {
                         //$(aLink).css("display", "none");
                         this.downloadLinkURI = args.layerHyperlinks[i].uri;
                     }
@@ -175,10 +177,10 @@ export class OE_LayerActionsModule extends ModuleBase {
                     aLink = layerHyperLinksArray[i];
 
                     //check for metadata override
-                    if (this.metadataHyperlinkOverride && aLink.innerText.toLowerCase().indexOf("metadata") > -1) {
+                    if (this.metadataHyperlinkOverride && aLink.innerText.trim().toLowerCase() == "metadata") {
                         $(aLink).css("display", "none");
                     }
-                    else if (this.downloadHyperlinkOverride && aLink.innerText.toLowerCase().indexOf("download") > -1) {
+                    else if (this.downloadHyperlinkOverride && aLink.innerText.trim().toLowerCase() == "download") {
                         $(aLink).css("display", "none");
                     }
                 }
@@ -214,12 +216,7 @@ export class OE_LayerActionsModule extends ModuleBase {
             });
 
         }
-
-        //this["registerOnClickForLayerDesc"] = function () {
-
-        //}
         
-
         this.app.commandRegistry.command("showMetadata").register(this, async function (layer) {
 
             //override metadata link
@@ -281,8 +278,7 @@ export class OE_LayerActionsModule extends ModuleBase {
 
             let downloadLink = await this.getLinkUrl(layer, 'download');
            
-            if (downloadLink !== "") {
-                //console.log("Opening download link...");
+            if (downloadLink !== "") {                
                 window.open(downloadLink, "_blank");
                 return;
             }
@@ -359,21 +355,6 @@ export class OE_LayerActionsModule extends ModuleBase {
                             return false;
                         }
                     }                 
-
-                    ////hide if download link override and workflow is disabled
-                    //if (this.downloadHyperlinkOverride && this.downloadLinkURI == "" && !this.downloadWorkflowEnabled) {
-                    //    return false;
-                    //}
-
-                    ////download links always show
-                    //var downloadLink = this.getLinkUrl(context.layer, 'download');
-                    
-                    //if (downloadLink !== "")
-                    //    return true;
-
-                    ////is this a type that can be exported?
-                    //if (!this.allowAllLayerTypes && context.type != LayerType.FEATURE_LAYER)
-                    //    return false;
 
                     //is the map service there?
                     if (context.mapService == null || context.mapService == "")
