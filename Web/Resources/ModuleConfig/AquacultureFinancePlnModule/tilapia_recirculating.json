@@ -1,0 +1,42 @@
+{
+  "knowledge_screen": {
+    "_comment":  "This section is for specific species and production information.",
+    "title": "Tilapia growing in Recirculating Systems",
+    "content": "Content about tilaplia growing in recirculating systems.....",
+    "links": [
+      {
+        "title": "Info about XXXXX",
+        "href": "https://oregonexplorer.info"
+      },
+      {
+        "title": "More info about XXXXX",
+        "href": "https://oregonexplorer.info"
+      }
+    ]
+  },
+  "inputs": {
+    "_comment": "The inputs broken out by input screens.",
+    "screens": [
+      {
+        "id": 1,
+        "title": "Initial Parameters",
+        "inputs": [
+          {
+            "id": "growthRates",
+            "label":  "Growth rates"
+            "type": "rangeslider",
+            "min": "0",
+            "max": "10",
+            "default": "2",
+            "help_text": "Enter the anticipated growth rate for tilapia",
+            "help_link":  "https://moreinfo.com"
+          }
+        ]
+      }
+    ]
+
+  },
+  "outputs": {
+
+  }
+}

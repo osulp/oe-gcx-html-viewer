@@ -61,6 +61,7 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
             //this.setDefaultFilters(true);
             this.viewModel.show_hex_layer.bind(this, () => {
                 this.viewModel._toggleLayerDisplay('HexSageCon', 'HexBaseScored', this.viewModel.show_hex_layer.get());
+                this.viewModel._toggleLayerDisplay('HexBaseScoredFill', 'HexBaseScoredFill', this.viewModel.show_hex_layer.get());
             });
             if (this.drawToolBar == null) {
                 this.esriMap = this.app.site.essentialsMap.getMap();
@@ -182,20 +183,21 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                     case 'herbicide_no_sagebrush':
                     case 'juniper_removal':
                         tour = {
-                            id: tour_id,
+                            id: example.tour_id,
                             steps: [
                                 {
                                     title: "EXAMPLE: " + example.label,
                                     content: example.description,
-                                    target: '#' + tour_id,
+                                    target: '#' + example.tour_id,
                                     yOffset: -20,
                                     placement: "right",
-                                    showCTAButton: true,
-                                    ctaLabel: "Apply Query",
-                                    onCTA: () => {
-                                        thisScope.hopscotch.endTour();
-                                        thisScope.applyExample(null, null, example);
-                                    }
+                                    //showCTAButton: true,
+                                    //ctaLabel: "Apply Query",
+                                    //onCTA: () => {
+                                    //    thisScope.hopscotch.endTour();
+                                    //    thisScope.hopscotch = null;
+                                    //    thisScope.applyExample(null, null, example);
+                                    //}
                                 }
                             ],
                             showCloseButton: false,
@@ -419,12 +421,14 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                                         ? dv.optionValue.get()[0]
                                         : dv.optionValue.get().min
                                     : min;
+                            minVal = minVal !== undefined ? minVal : min;
                             let maxVal = reset ? max
                                 : dv.optionValue.get()
                                     ? dv.optionValue.get()[1]
                                         ? dv.optionValue.get()[1]
                                         : dv.optionValue.get().max
                                     : max;
+                            maxVal = maxVal !== undefined ? maxVal : min;
                             let increment = dv.increment ? parseFloat(dv.increment) : 1;
 
                             $("#" + dv.optionValID).html(
@@ -437,76 +441,84 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                             // RangeSlider Plugin Alternate option with bubble handles
                             //////////////////////////////////////
                             //implement then destroy in order to recreate for updating.
-                            try {        
-                                if (thisScope.hasLoaded) {
-                                    $("#" + dv.optionID).rangeSlider('destroy');
-                                }
-                            } catch (ex) {}
+                            //try {        
+                            //    if (thisScope.hasLoaded) {
+                            //        $("#" + dv.optionID).rangeSlider('destroy');
+                            //    }
+                            //} catch (ex) {}
                                                   
-                            $("#" + dv.optionID).rangeSlider({
-                                symmetricPositionning: true,
-                                bounds: {
-                                    min: min,
-                                    max: max
-                                },
-                                step: increment,
-                                defaultValues: {
-                                    min: minVal,
-                                    max: maxVal
-                                },
-                                formatter: function (val) {
-                                    if (categories.length > 1) {
-                                        return categories[parseInt(val)]['label'];
-                                    }
-                                    else {
-                                        return val.toString().indexOf('.') !== -1 ? (Math.round(0.04 * 100) / 100) : val;
-                                    }
-                                }
-                            });
-                            $("#" + dv.optionID).bind("valuesChanged", function (event, data) {
-                                var updateObj = {
-                                    id: event.target
-                                        ? event.target['id']
-                                        : event.srcElement.id !== ""
-                                            ? event.srcElement.id
-                                            : event.srcElement.parentNode["id"],
-                                    values: data.values ? data.values : data.value
-                                };
-                                thisScope.updateQuery(updateObj);
-                            });
-                            $("#" + dv.optionID).rangeSlider("resize");
-                            //$("#" + dv.optionID).slider({
-                            //    range: dv.uiType === 'rangeslider',
-                            //    step: increment,
-                            //    min: min,
-                            //    max: max,
-                            //    value: dv.uiType === 'slider' ? maxVal : null,
-                            //    values: dv.uiType === 'rangeslider' ? [minVal ? minVal : min, maxVal ? maxVal : max] : null,
-                            //    slide: function (_event, ui) {
-                            //        if ((ui.values[0] + .005) >= ui.values[1]) {
-                            //            return false;
-                            //        }
-                            //        $("#" + this.id + "Val").html(
-                            //            categories.length > 1
-                            //                ? (categories[ui.values[0]].label + ' - ' + categories[ui.values[1]].label)
-                            //                : ui.values
-                            //                    ? ui.values[0] + (dv.uiType === 'rangeslider' ? " - " + ui.values[1] : '')
-                            //                    : ui.value.toString()
-                            //        );
+                            //$("#" + dv.optionID).rangeSlider({
+                            //    symmetricPositionning: true,
+                            //    bounds: {
+                            //        min: min,
+                            //        max: max
                             //    },
-                            //    stop: function (event, ui) {
-                            //        console.log('now run something', event);
-                            //        let updateObj = {
-                            //            id: event.target
-                            //                ? event.target['id']
-                            //                : event.srcElement.id !== ""
-                            //                    ? event.srcElement.id
-                            //                    : event.srcElement.parentNode["id"],
-                            //            values: ui.values ? ui.values : ui.value
-                            //        };
-                            //        thisScope.updateQuery(updateObj);
+                            //    step: increment,
+                            //    defaultValues: {
+                            //        min: minVal,
+                            //        max: maxVal
+                            //    },
+                            //    formatter: function (val) {
+                            //        if (categories.length > 1) {
+                            //            return categories[parseInt(val)]['label'];
+                            //        }
+                            //        else {
+                            //            return val.toString().indexOf('.') !== -1 ? (Math.round(0.04 * 100) / 100) : val;
+                            //        }
                             //    }
                             //});
+                            //$("#" + dv.optionID).bind("valuesChanged", function (event, data) {
+                            //    var updateObj = {
+                            //        id: event.target
+                            //            ? event.target['id']
+                            //            : event.srcElement.id !== ""
+                            //                ? event.srcElement.id
+                            //                : event.srcElement.parentNode["id"],
+                            //        values: data.values ? data.values : data.value
+                            //    };
+                            //    thisScope.updateQuery(updateObj);
+                            //});
+                            //$("#" + dv.optionID).rangeSlider("resize");
+                            ////////////////////////////////////////////////
+                            // Traditional JQuery Rangeslider
+                            ////////////////////////////////////////////////
+                            $("#" + dv.optionID).slider({
+                                range: dv.uiType === 'rangeslider',
+                                step: increment,
+                                min: min,
+                                max: max,
+                                value: dv.uiType === 'slider' ? maxVal : null,
+                                values: dv.uiType === 'rangeslider' ? [minVal ? minVal : min, maxVal ? maxVal : max] : null,
+                                slide: function (_event, ui) {
+                                    //if ((ui.values[0] + .005) >= ui.values[1]) {
+                                    //    return false;
+                                    //}
+                                    if (ui.values[0] == ui.values[1]) {
+                                        $(this).addClass('touch');
+                                    } else {
+                                        $(this).removeClass('touch');
+                                    }
+                                    $("#" + this.id + "Val").html(
+                                        categories.length > 1
+                                            ? (categories[ui.values[0]].label + ' - ' + categories[ui.values[1]].label)
+                                            : ui.values
+                                                ? ui.values[0] + (dv.uiType === 'rangeslider' ? " - " + ui.values[1] : '')
+                                                : ui.value.toString()
+                                    );
+                                },
+                                stop: function (event, ui) {
+                                    console.log('now run something', event);
+                                    let updateObj = {
+                                        id: event.target
+                                            ? event.target['id']
+                                            : event.srcElement.id !== ""
+                                                ? event.srcElement.id
+                                                : event.srcElement.parentNode["id"],
+                                        values: ui.values ? ui.values : ui.value
+                                    };
+                                    thisScope.updateQuery(updateObj);
+                                }
+                            });
                             if (reset) {
                                 dv.optionValue.set(null);
                             }
@@ -807,55 +819,54 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
         this.toggleTabFilters(null, null, null, 'Data');
         this.viewModel.show_selected_filters.set(true);
         let thisScope = this;
-        window.setTimeout(() => {
-            let clone = document.getElementById("scroll-filter-body").cloneNode(true);
-            $("body").append(clone);
-            //let clone = $("#scroll-filter-body");    
-            //let cloneWidth = $(clone).width();
-            //let cloneHeight = $(clone).height();        
-            $(clone).css("width", "720px");
-            //$(clone).css("height", cloneHeight);
-            //$(clone).find(".slider").each(slider => {
-            //    $(slider).rangeSlider('resize');
-            //});
-            $(clone).find('.slider').css("width", "300px");
-            //this.setDefaultFilters();
-            $('.get-info-btn-wrapper').css("display", "none");            
-            window.setTimeout(() => {
-                html2canvas(clone, {
-                    allowTaint: true,
-                    useCORS: true,
-                    taintTest: false,
-                    onrendered: function (canvas) {
-                        var base64FilterImg = canvas.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, "");
-                        let filters = { "filters": [] };
-                        thisScope.viewModel.filter_collection.get().forEach(fc => {
-                            if (fc.type !== 'geographic') {
-                                filters.filters.push(
-                                    { "filterDef": fc.filterDef, "layer": fc.layer, "desc": fc.desc }
-                                );
-                            }
-                        });
+        let clone = document.getElementById("scroll-filter-body").cloneNode(true);
+        $("body").append(clone);
+        //let clone = $("#scroll-filter-body");    
+        //let cloneWidth = $(clone).width();
+        //let cloneHeight = $(clone).height();        
+        $(clone).css("width", "720px");
+        //$(clone).css("height", cloneHeight);
 
-                        let workflowArgs: any = {};
-                        workflowArgs.workflowId = "cons_pln_generate_report";
-                        workflowArgs.filterCollection = JSON.stringify(filters);
-                        workflowArgs.layerDef = thisScope.viewModel.active_layer_def;
-                        workflowArgs.filterImg = base64FilterImg;
-                        workflowArgs.aoiGeometry = thisScope.viewModel.aoiGeometry
-                            ? thisScope.viewModel.aoiGeometry
-                            : JSON.parse("{\"rings\":[[[-13561079.235725246,5696991.214135939],[-12959366.9490645,5696991.214135939],[-12959366.9490645,5134414.685957194],[-13561079.235725246,5134414.685957194],[-13561079.235725246,5696991.214135939]]],\"spatialReference\":{\"wkid\":102100}}");
-                        workflowArgs.hexCount = thisScope.viewModel.hexCount.get();
-                        thisScope.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
-                        thisScope.viewModel.show_selected_filters.set(false);
-                        //$(clone).css("width", cloneWidth);
-                        $(clone).remove();
-                        //$('.slider').css("width", "90%");
+        $(clone).find('.slider').css("width", "305px");
+        //$(clone).find(".slider").each(slider => {
+        //    $(slider).rangeSlider('resize');
+        //});
+        //this.setDefaultFilters();
+        $('.get-info-btn-wrapper').css("display", "none");
+        html2canvas(clone, {
+            onrendered: function (canvas) {
+                var base64FilterImg = canvas.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, "");
+                let filters = { "filters": [] };
+                thisScope.viewModel.filter_collection.get().forEach(fc => {
+                    if (fc.type !== 'geographic') {
+                        filters.filters.push(
+                            { "filterDef": fc.filterDef, "layer": fc.layer, "desc": fc.desc }
+                        );
                     }
                 });
-            }, 0);        
-        }, 500);
-        
+
+                let workflowArgs: any = {};
+                workflowArgs.workflowId = "cons_pln_generate_report";
+                workflowArgs.filterCollection = JSON.stringify(filters);
+                workflowArgs.layerDef = thisScope.viewModel.active_layer_def;
+                workflowArgs.filterImg = base64FilterImg;
+                workflowArgs.aoiGeometry = thisScope.viewModel.aoiGeometry
+                    ? thisScope.viewModel.aoiGeometry
+                    : JSON.parse("{\"rings\":[[[-13561079.235725246,5696991.214135939],[-12959366.9490645,5696991.214135939],[-12959366.9490645,5134414.685957194],[-13561079.235725246,5134414.685957194],[-13561079.235725246,5696991.214135939]]],\"spatialReference\":{\"wkid\":102100}}");
+                workflowArgs.hexCount = thisScope.viewModel.hexCount.get();
+                thisScope.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
+                thisScope.viewModel.show_selected_filters.set(false);
+                //$(clone).css("width", cloneWidth);
+                $(clone).remove();
+                //$('.slider').css("width", "90%");
+            }
+        });
+        //window.setTimeout(() => {
+            
+        //    //window.setTimeout(() => {
+                
+        //    //}, 1000);        
+        //}, 500);
     }
 
     createGeoFilterObj() {
@@ -1108,6 +1119,9 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
 
     setLayerDef(layerDef) {
         this.viewModel.active_layer_def = layerDef;
+        //set filter for both fill and border layers
+        //Border
+        
         var mService = this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === 'HexSageCon').length > 0 ? this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === 'HexSageCon')[0] : null;
         let layer = mService.findLayerByName('HexBaseScored');
         this.hex_layer_url = !this.hex_layer_url ? layer.getLayerUrl() : this.hex_layer_url;

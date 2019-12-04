@@ -1,0 +1,343 @@
+﻿
+#aqua-financial-pln-wrapper {
+    /*max-width: 91%;
+    max-height: 95%;
+    min-height:600px;*/
+    max-width: 1200px;
+    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.modal-container {
+    /*min-width: 80% !important;*/
+    /*max-width: 1200px !important;*/
+    /*max-width:900px !important;*/
+}
+
+#info-screen {
+    position: relative;
+    height: 100%;
+}
+
+#info-screen-content-wrapper {
+    position: relative;
+    height: 100%;
+}
+
+#info-screen-toggle-bar {
+    line-height: 24px;
+    height: 24px;
+    vertical-align: middle;
+    background-color: #e6e0e0;
+}
+
+    #info-screen-toggle-bar img {
+        vertical-align: middle;
+        margin-top: -4px;
+    }
+
+#info-screen-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    background-color: whitesmoke;
+    z-index: 20000;
+    padding: 20px;
+}
+
+#close-info-btn-wrapper {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.oe-btn {
+    height: 100%;
+    width: 5em;
+    padding: .5em;
+    background: #F5F5F5;
+    font-weight: 600;
+    color: #1A72C4;
+    text-align: center;
+    line-height: 100%;
+    border-radius: .25rem;
+    border: 1px solid #CCCCCC;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+    .oe-btn:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    .oe-btn.add-location {
+        width: 7em;
+    }
+
+    .oe-btn.clear-filters {
+        width: 8em;
+    }
+
+.panel {
+    display: table;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.panel-row {
+    display: table-row;
+}
+
+.panel-cell {
+    display: table-cell;
+    width: 35%;
+    min-width: 350px;
+    min-height:500px;
+}
+
+    .panel-cell.location {
+        width: 65%;
+        /*max-width: 750px;*/
+    }
+
+#fin-pln-footer {
+    width: 100%;
+    border-top: 1px solid #1A72C4;
+    padding: 10px 0;
+}
+
+#pager-wrapper {
+    width: 100%;
+    display: table;
+}
+
+.oe-btn-wrapper {
+    margin: 0 10px;
+    display: table-cell;
+}
+
+    .oe-btn-wrapper .oe-btn {
+        margin: 0 10px;
+    }
+
+fieldset {
+    border: solid 1px #808080;
+    border-radius: 4px;
+    margin: 20px;
+}
+
+legend {
+    padding: 15px;
+}
+
+#location-map {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    /*max-width:650px;*/
+}
+
+#map-section {
+    position: relative;
+}
+
+#location-wrapper {
+    position: relative;
+}
+
+#add-location {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    vertical-align: middle;
+    z-index: 19000;
+}
+
+#add-location-msg {
+    position: relative;
+    max-width: 350px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto;
+}
+
+.slider-wrapper {
+    position: relative;
+    text-align: center;
+    padding: 10px;
+}
+
+
+.ui-slider-handle.oe-slider-handle.ui-state-default.ui-corner-all {
+    width: 4em;
+    height: 1.6em;
+    top: 50%;
+    margin-top: -1em;
+    text-align: center;
+    line-height: 1.6em;
+    text-indent: 0px;
+    color: red;
+    border-radius: 10px;
+    padding: 2px;
+}
+
+    .ui-slider-handle.oe-slider-handle.ui-state-default.ui-corner-all:hover {
+        cursor: pointer;
+    }
+
+.filter-header-wrapper {
+    padding: 5px;
+    /*margin: 5px;*/
+    background-color: #f0f0f0;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+}
+
+    .filter-header-wrapper img {
+        padding: 0 10px;
+    }
+
+        .filter-header-wrapper img:first-child {
+            padding-left: 2px;
+        }
+
+    .filter-header-wrapper:hover {
+        cursor: pointer;
+        /*text-decoration:underline;*/
+    }
+
+    .filter-header-wrapper div {
+        display: inline-block;
+    }
+
+.show-filters {
+    width: 24px;
+    height: 16px;
+    background-image: url(Resources/Images/Icons/arrow-down-small-24.png);
+    background-repeat: no-repeat;
+}
+
+.hide-filters {
+    width: 24px;
+    height: 16px;
+    background-image: url(Resources/Images/Icons/arrow-up-small-24.png);
+    background-repeat: no-repeat;
+}
+
+#filter-options-wrapper {
+    padding: 10px 0 5px 5px;
+}
+
+#filter-type-header {
+    padding: 2px;
+    border: solid 1px #e6e0e0;
+    border-top: none;
+}
+
+    #filter-type-header div {
+        display: inline-block;
+        width: 48%;
+        text-align: center;
+        font-size: .9em;
+    }
+
+        #filter-type-header div:first-child {
+            border-right: solid 1px #e6e0e0;
+        }
+
+#filters-wrapper div {
+    display: inline-block;
+    width: 49%;
+}
+
+#filters-wrapper select {
+    font-size: .9em;
+}
+
+#search-wrapper, .calcite {
+    position: relative;
+}
+
+#search {
+    display: block;
+    position: absolute;
+    z-index: 2;
+    top: 20px;
+    left: 74px;
+}
+
+#home-button {
+    position: absolute;
+    top: 95px;
+    left: 20px;
+    z-index: 50;
+}
+
+#basemap-toggle {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 50;
+}
+
+#basemap-toggle:hover{
+    cursor:pointer;
+}
+
+.basemapBG {
+    height: 50px;
+    width: 50px;
+    border-radius: 10px 10px 0 0;
+}
+
+.basemapTitle {
+    width: 50px;
+    font-size: .9em;
+    text-align: center;
+    background-color: #e6e0e0;
+    padding: 2px 0;
+}
+
+#location-instruction {
+    padding: 10px 5px;
+    background: whitesmoke;
+}
+
+.arcgisSearch .searchBtn {
+    position: relative;
+    z-index: 2;
+}
+
+#location-status-selected {
+    background-color: #eef7d3;
+    padding: 10px;
+}
+
+#selected-location-remove img{
+    margin:0 0 -4px 5px;
+}
+
+    #selected-location-remove img:hover{
+        cursor:pointer;
+    }
+
+    #selected-location-name {
+        text-decoration: underline;
+    }
+
+    #selected-location-name:hover {
+        cursor: pointer;
+    }
+
+.OE_Chart{
+    min-width:300px;
+}

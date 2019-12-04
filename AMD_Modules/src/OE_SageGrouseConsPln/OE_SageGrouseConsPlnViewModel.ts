@@ -2,7 +2,6 @@
 /// <reference path="./../../_Definitions/Framework.AMD.d.ts" />
 /// <reference path="./../../_Definitions/Framework.UI.AMD.d.ts" />
 /// <reference path="./../../_Definitions/Mapping.Infrastructure.AMD.d.ts" />
-/// <reference path="./../../_Definitions/Framework.AMD.d.ts" />
 
 import { ViewModelBase } from "geocortex/framework/ui/ViewModelBase";
 import { ViewerApplication } from "geocortex/infrastructure/Viewer";
@@ -350,7 +349,7 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
         ////////////////
         $.ajax({
             type: "GET",
-            url: "./Resources/Scripts/oe_added_scripts/html2canvas.js",
+            url: "./Resources/Scripts/oe_added_scripts/html2canvas.min.js",
             dataType: "script",
             success: function () {
                 console.log('success!');

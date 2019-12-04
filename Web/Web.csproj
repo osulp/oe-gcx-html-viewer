@@ -17,8 +17,7 @@
     <AssemblyName>Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
+    <IISExpressSSLPort>44345</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -82,6 +81,7 @@
     <Content Include="favicon_oe.ico" />
     <Content Include="Handheld.html" />
     <Content Include="Index.html" />
+    <Content Include="Libraries\Custom\AMD\OE_Aquaculture.js" />
     <Content Include="Libraries\Custom\AMD\OE_Elevation.js" />
     <Content Include="Libraries\Custom\AMD\OE_AddLayerToLayerList.js" />
     <Content Include="Libraries\Custom\AMD\OE_Graphics.js" />
@@ -105,6 +105,9 @@
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Tablet.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\dev_reg\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\aquaculture\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\aquaculture\Handheld.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\aquaculture\Tablet.json.js" />
     <Content Include="Resources\Images\Custom\broadcasting.png" />
     <Content Include="Resources\Images\Custom\demographics-24.png" />
     <Content Include="Resources\Images\Custom\dlcd_logo.png" />
@@ -586,6 +589,8 @@
     <None Include="packages.config" />
     <Content Include="Resources\Scripts\oe_added_scripts\datepicker.min.js" />
     <Content Include="Resources\ModuleConfig\SageConLandscapePlanningFilters\query_filters_config.json" />
+    <Content Include="Resources\ModuleConfig\AquacultureFinancePlnModule\config.json" />
+    <Content Include="Resources\ModuleConfig\AquacultureFinancePlnModule\tilapia_recirculating.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -618,6 +623,8 @@
           <DevelopmentServerPort>54104</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:44320</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>https://localhost:44345/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

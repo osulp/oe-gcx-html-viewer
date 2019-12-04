@@ -284,6 +284,7 @@ export class OE_LayerActionsModule extends ModuleBase {
             if (downloadLink !== "") {
                 //console.log("Opening download link...");
                 window.open(downloadLink, "_blank");
+                return;
             }
             else {
 
@@ -351,12 +352,13 @@ export class OE_LayerActionsModule extends ModuleBase {
                 function canExecute(context) {
                     if (context === null) {
                         return false;
-                    }                       
-
-                    //hide
-                    if (context.properties.hideDownload != undefined && context.properties.hideDownload === "False") {
-                        return false;
-                    }                        
+                    }    
+                    //hide if the layer property "hideDownload" has a value
+                    if (context.properties.hideDownload !== undefined) {
+                        if (["FALSE","TRUE"].indexOf(context.properties.hideDownload.toUpperCase()) !== -1) {
+                            return false;
+                        }
+                    }                 
 
                     ////hide if download link override and workflow is disabled
                     //if (this.downloadHyperlinkOverride && this.downloadLinkURI == "" && !this.downloadWorkflowEnabled) {

@@ -64,14 +64,15 @@
         
         var viewerConfig = {
             "configurations": {                
-                "default": "Resources/Config/Default/dev_configs/owrt/Desktop.json.js",
+                "default": "Resources/Config/Default/dev_configs/aquaculture/" + shellName + ".json.js",
                 "oitt": "Resources/Config/Default/dev_configs/oitt/Desktop.json.js",
-                "default_original": "Resources/Config/Default/" + shellName + ".json.js",            
+                "default_original": "Resources/Config/Default/" + shellName + ".json.js",
+                "aquaculture": "Resources/Config/Default/dev_configs/aquaculture/" + shellName + ".json.js",
                 "sage_dev_cons_pln": "Resources/Config/Default/dev_configs/sage_dev_cons_pln/Desktop.json.js",
                 "oe_default": "Resources/Config/Default/" + shellName + ".json.js",
                 "add_layer_dev": "Resources/Config/Default/dev_configs/add_layer_dev/Desktop.json.js",
                 "oe_dev": "Resources/Config/Default/dev_configs/owrt/Desktop.json.js",
-                "dev_reg": "Resources/Config/Default/dev_configs/dev_reg/Desktop.json.js",
+                "dev_reg": "https://tools.oregonexplorer.info/Geocortex/Essentials/agol/REST/sites/dev_reg_dev/viewers/dev_reg/VirtualDirectory/Resources/Config/Default/Desktop.json.js",
                 "sage_cons_pln": "Resources/Config/Default/dev_configs/sage_dev_cons_pln/Desktop.json.js",
                 "sage_dev_siting": "Resources/Config/Default/dev_configs/sage_dev_siting/Desktop.json.js",
                 "owrt": "Resources/Config/Default/dev_configs/owrt/Desktop.json.js"
@@ -110,7 +111,7 @@
         new move();
     </script>    
 
-    <script type="text/javascript">
+    <!--<script type="text/javascript">
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-13183466-3']);
@@ -122,7 +123,7 @@
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
 
-    </script>
+    </script>-->
 
 </body>
 </html>

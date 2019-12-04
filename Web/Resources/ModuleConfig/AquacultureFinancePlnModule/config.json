@@ -1,0 +1,20 @@
+{
+  "knowledge_screen": {
+    "config_url": "Resources/ModuleConfig/knowledge_screen.json"
+  },
+  "species_production_configs": [
+    {
+      "title": "Tilapia with Recirculating Production System",
+      "config_url": "Resources/ModuleConfig/tilapia_recirculating.json",
+      "description": "This is the description text for tilapia in recirculating production systems."
+    }
+  ],
+  "initial_parameters": [
+    {
+      "id": "species",
+      "type": "dropdown",
+      "label": "Species",
+      "values": "from species table"
+    }
+  ]
+}
