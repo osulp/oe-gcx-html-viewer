@@ -78,6 +78,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="IndexSignIn.html" />
     <Content Include="bin\Viewer.dll" />
     <Content Include="favicon_oe.ico" />
     <Content Include="Handheld.html" />
@@ -101,6 +102,7 @@
     <Content Include="Libraries\Custom\AMD\OE_AMD-Language.json" />
     <Content Include="gmaf\ViewerPackage.ashx" />
     <None Include="Libraries\Custom\Config\Defaults.json.js.bak" />
+    <Content Include="oegcxviewerloader.js" />
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Tablet.json.js" />

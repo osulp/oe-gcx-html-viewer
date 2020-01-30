@@ -1,0 +1,74 @@
+﻿.oeAquacultureDynamicForm fieldset {
+    border: solid 1px #a7a7a7;
+    border-radius: 4px;
+    margin: 5px 0;
+}
+
+.oeAquacultureDynamicForm p.orangeText span {
+    color: #e69500;
+    font-weight: bold;
+}
+
+.oeAquacultureDynamicForm h2 {
+    color: #999999;
+}
+
+.oeAquacultureDynamicForm .your_location {
+    padding: 12px 0px 0px 4px;
+}
+
+.oeAquacultureDynamicForm .data-hd {
+    padding-left: 4px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.oeAquacultureDynamicForm .data-content {
+    padding-left:10px;
+    color:#666666;
+}
+
+.oeAquacultureDynamicForm .btn-row{
+    display:table;
+    width:100%;
+}
+
+.oeAquacultureDynamicForm .btn-cell{
+    display:table-cell;
+    text-align:center;
+}
+
+.oeAquacultureDynamicForm .btn-cell div:first-child{
+    width: 80%;
+    padding:8px;
+    color:#1a72c4;
+    background-color:rgba(245, 245, 245, 1);
+    border-radius:4px;
+    margin:10px;
+    text-align:center;
+    border: 1px solid #CCCCCC;
+    font-weight:bold;
+}
+
+.oeAquacultureDynamicForm .btn-cell div:hover{
+    cursor:pointer;
+    color: #ffffff;
+    background-color:#1a72c4;
+    text-decoration:underline;
+}
+
+.oeAquacultureDynamicForm .btn-cell-download:hover{
+    cursor:pointer;
+    text-decoration:underline;
+}
+
+.oeAquacultureDynamicForm .data-label{
+    font-weight:bold;
+}
+
+.oeAquacultureDynamicForm .contentBreakImage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding:10px 0px;
+}

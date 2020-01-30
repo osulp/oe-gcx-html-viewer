@@ -128,7 +128,13 @@
                                      "description": "Add layers from OE Layer Catalog",
                                      "iconUri": "Resources/Images/Icons/Toolbar/layers-add-24.png",
                                      "command": "ShowLayerCatalog"                                     
-                                 },
+                                },
+                                {
+                                    "text": "Portal Layer",
+                                    "description": "Add layers from OE Portal",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/layers-add-24.png",
+                                    "command": "OESearchPortalLayers"
+                                },
                                  {
                                      "text": "Upload",
                                      "description": "Upload your own layers.",
@@ -6803,7 +6809,7 @@
                         "moduleName": "Site",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                         "configuration": {
-                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/_sage_grouse_data_viewer",
+                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/z_layer_site",
                             "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                             "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                             "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined"

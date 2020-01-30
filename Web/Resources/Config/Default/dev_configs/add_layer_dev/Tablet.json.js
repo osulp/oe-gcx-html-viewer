@@ -6426,7 +6426,7 @@
         "moduleName": "Site",
         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
         "configuration": {
-            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/_sage_grouse_dev_siting_dev",
+            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/z_layer_site",
           "default_siteUri": "{ViewerConfigUri}../../../../../.."
         },
         "views": [

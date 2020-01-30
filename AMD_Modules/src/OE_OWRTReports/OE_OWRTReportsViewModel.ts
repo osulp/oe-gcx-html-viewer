@@ -172,18 +172,23 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
                                 
         this.queryUrlProjectInfo = mService.serviceUrl + "/";
         this.queryUrlProjectInfo += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PROJECT_INFO"))) ? "28" : this._GetTableIDByName(mService, "PROJECT_INFO").id;
+        console.log("PROJECT_INFO: "+this.queryUrlProjectInfo);
 
         this.queryUrlPartRoles = mService.serviceUrl + "/";
         this.queryUrlPartRoles += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PARTICIPANTS_ROLE_LU"))) ? "25" : this._GetTableIDByName(mService, "PARTICIPANTS_ROLE_LU").id;
+        console.log("PARTICIPANTS_ROLE_LU: "+this.queryUrlPartRoles);
 
         this.queryUrlPartSuperTypes = mService.serviceUrl + "/";
         this.queryUrlPartSuperTypes += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PARTICIPANTS_SUPERTYPE_LU"))) ? "26" : this._GetTableIDByName(mService, "PARTICIPANTS_SUPERTYPE_LU").id;
+        console.log("PARTICIPANTS_SUPERTYPE_LU: " + this.queryUrlPartSuperTypes);
 
         this.queryUrlPartTypes = mService.serviceUrl + "/";
         this.queryUrlPartTypes += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PARTICIPANTS_TYPE_LU"))) ? "27" : this._GetTableIDByName(mService, "PARTICIPANTS_TYPE_LU").id;
+        console.log("PARTICIPANTS_TYPE_LU: "+this.queryUrlPartTypes);
 
         this.queryUrlLandUse = mService.serviceUrl + "/";
         this.queryUrlLandUse += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "LAND_USE"))) ? "22" : this._GetTableIDByName(mService, "LAND_USE").id;
+        console.log("LAND_USE: "+this.queryUrlLandUse);
 
         //create the map symbol
         this.esriMapSymbol = new esri.symbol.SimpleFillSymbol(
@@ -246,6 +251,33 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         return workLayer;
     }
 
+    private _GetTableRelationshipIDByName(mService: MapService, layerName: string, relationshipName: string, searchTables: boolean = false): number {
+        //ALL_POLYS
+        let workingLayer = null;
+
+        let workingList: any = (searchTables == true) ? mService.tables : mService.layers;
+
+        try {
+            workingLayer = workingList.filter((ly: Layer) => ly.name == layerName).length > 0 ?
+                workingList.filter((ly: Layer) => ly.name === layerName)[0] : null;
+        }
+        catch (e) { }
+
+        let workingRelationship = null;
+        relationshipName = relationshipName.toLowerCase();
+
+        try {
+            workingRelationship = workingLayer.relationships.filter((workRelate: any) => workRelate.name.toLowerCase() == relationshipName).length > 0 ?
+                workingLayer.relationships.filter((workRelate: any) => workRelate.name.toLowerCase() === relationshipName)[0] : null;
+        }
+        catch (e) { }
+
+        if (workingRelationship != null)
+            return workingRelationship.id;
+        else
+            return -1;
+    }
+            
     private _GetFieldByTypeID(featureSet: esri.tasks.FeatureSet, idFieldName:string, idTarget:string, valueFieldName:string): string
     {
         for (let i = 0; i < featureSet.features.length; i++) {
@@ -377,12 +409,32 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         this._sequenceQuery(this.queryUrlPartTypes, "1=1", ["participant_type,super_type_lu_id,participant_type_lu_id,active,gov_nongov"], "partTypes", "Participant Type");
                         
         //related records to project
-        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 0, ["*"], "projectInfo", "Project Info");
-        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 3, ["*"], "participants", "Participants");                
-        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 4, ["*"], "project_results", "Project Activity Results");
-        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 6, ["*"], "project_goals", "Project Goals");
-        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 5, ["*"], "project_metrics", "Project Metrics");
-        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, 7, ["*"], "project_species", "Project Species");
+        let mService = this._GetServiceByName(this.reportMapServiceName);
+        let relationshipID = -1;
+
+        relationshipID = this._GetTableRelationshipIDByName(mService, "ALL_POLYS_SDE_WM", "project_info",false);
+        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, relationshipID, ["*"], "projectInfo", "Project Info");
+        console.log("Relationship: project_info :: " + relationshipID);
+
+        relationshipID = this._GetTableRelationshipIDByName(mService, "ALL_POLYS_SDE_WM", "participants", false);
+        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, relationshipID, ["*"], "participants", "Participants");
+        console.log("Relationship: participants :: " + relationshipID);
+
+        relationshipID = this._GetTableRelationshipIDByName(mService, "ALL_POLYS_SDE_WM", "results");
+        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, relationshipID,["*"], "project_results", "Project Activity Results");
+        console.log("Relationship: results :: " + relationshipID);
+
+        relationshipID = this._GetTableRelationshipIDByName(mService, "ALL_POLYS_SDE_WM", "Goals");
+        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, relationshipID,["*"], "project_goals", "Project Goals");
+        console.log("Relationship: Goals :: " + relationshipID);
+
+        relationshipID = this._GetTableRelationshipIDByName(mService, "ALL_POLYS_SDE_WM", "Metrics");
+        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, relationshipID,["*"], "project_metrics", "Project Metrics");
+        console.log("Relationship: Metrics :: " + relationshipID);
+
+        relationshipID = this._GetTableRelationshipIDByName(mService, "ALL_POLYS_SDE_WM", "Species");
+        this._sequenceRelationshipQuery(this.queryUrlOWRT, objectID, relationshipID,["*"], "project_species", "Project Species");
+        console.log("Relationship: Species :: " + relationshipID);
 
         this._MoveCurrentSequenceProgress();
     }
@@ -558,7 +610,11 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
             //clear tasks
             this._NewSequence(this._QuerysThatRequireProjectID);
             //related records to project
-            this._sequenceRelationshipQuery(this.queryUrlProjectInfo, workingAttributes.OBJECTID, 15, ["*"], "project_activites", "Project Activities");
+
+            let mService = this._GetServiceByName(this.reportMapServiceName);
+            let relationshipID = this._GetTableRelationshipIDByName(mService, "PROJECT_INFO", "Activity_Types", true);
+            this._sequenceRelationshipQuery(this.queryUrlProjectInfo, workingAttributes.OBJECTID, relationshipID, ["*"], "project_activites", "Project Activities");
+            
             this._sequenceQuery(this.queryUrlLandUse, "project_id=" + this.projectID, ["land_use"], "project_landuses", "Project Land Uses");
             this._MoveCurrentSequenceProgress();
         }

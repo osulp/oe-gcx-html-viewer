@@ -28,6 +28,9 @@
     <Content Include="package.json" />
     <Content Include="post_build_modules.bat" />
     <Content Include="README.md" />
+    <Content Include="src\OE_Aquaculture\CSS\OE_AquacultureModule.css" />
+    <Content Include="src\OE_Aquaculture\OE_AquacultureDynamicFormView.html" />
+    <Content Include="src\OE_Aquaculture\readme.txt" />
     <Content Include="src\OE_ConvertGeometry\CSS\OE_ConvertGeometryModule.css" />
     <Content Include="src\OE_ConvertGeometry\OE_ConvertGeometryView.html" />
     <Content Include="src\OE_ConvertGeometry\readme.txt" />
@@ -97,6 +100,7 @@
     <Content Include="src\OE_OITT\Language.json" />
     <Content Include="src\OE_AddLayerToLayerList\Language.json" />
     <Content Include="src\OE_ConvertGeometry\Language.json" />
+    <Content Include="src\OE_Aquaculture\Language.json" />
     <None Include="src\Template\Language.json" />
     <None Include="src\Template\TemplateView.html" />
   </ItemGroup>
@@ -104,6 +108,9 @@
     <Content Include="src\OE_ConvertGeometry\OE_ConvertGeometryModule.ts" />
     <Content Include="src\OE_ConvertGeometry\OE_ConvertGeometryView.ts" />
     <Content Include="src\OE_ConvertGeometry\OE_ConvertGeometryViewModel.ts" />
+    <TypeScriptCompile Include="src\OE_Aquaculture\OE_AquacultureDynamicFormView.ts" />
+    <TypeScriptCompile Include="src\OE_Aquaculture\OE_AquacultureDynamicFormViewModel.ts" />
+    <TypeScriptCompile Include="src\OE_Aquaculture\OE_AquacultureModule.ts" />
     <TypeScriptCompile Include="src\OE_Graphics\OE_GraphicsModule.ts" />
     <TypeScriptCompile Include="src\OE_Elevation\OE_ElevationModule.ts" />
     <TypeScriptCompile Include="src\OE_HyperlinkBanner\OE_HyperlinkBannerModule.ts" />

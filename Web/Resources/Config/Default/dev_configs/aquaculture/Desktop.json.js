@@ -102,6 +102,32 @@
             ],
             "modules": [
                 {
+                    "moduleName": "OE_Aquaculture",
+                    "libraryId": "OE_AMD",
+                    "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureModule",
+                    "configuration": {},
+                    "views": [
+                        {
+                            "id": "OE_AquacultureDynamicFormView",
+                            "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureDynamicFormView",
+                            "markup": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureDynamicFormView.html",
+                            "viewModelId": "OE_AquacultureDynamicFormViewModel",
+                            "title": "Aquaculture Site Report: Land-Based",
+                            "visible": false,
+                            "region": "DataRegion",                            
+                            "configuration": {                           
+                            }
+                        }
+                    ],
+                    "viewModels": [
+                        {
+                            "id": "OE_AquacultureDynamicFormViewModel",
+                            "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureDynamicFormViewModel",
+                            "configuration": {}
+                        }
+                    ]
+                },
+                {
                     "moduleName": "OE_ConvertGeometry",
                     "libraryId": "OE_AMD",
                     "require": "geocortex/oe_amd/OE_ConvertGeometry/OE_ConvertGeometryModule",
@@ -4054,7 +4080,7 @@
                                         {
                                             "text": "Route Options",
                                             "command": "RunWorkflowById",
-                                            "commandParameter": "RouteServices"
+                                            "commandParameter": "AquacultureSiteReport"
                                         },
                                         {
                                             "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",
@@ -6907,7 +6933,7 @@
                         "moduleName": "Site",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                         "configuration": {
-                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/aquaculture",
+                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/Aquaculture",
                             "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                             "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                             "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined"

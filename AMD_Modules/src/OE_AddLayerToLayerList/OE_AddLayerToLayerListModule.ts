@@ -36,7 +36,7 @@ export class OE_AddLayerToLayerListModule extends ModuleBase {
             console.log('ViewActivatedEvent args: ', args);
             if (args.id === "LayerListView" && args.hostView) {
                 //this.app.commandRegistry.command("ActivateView").execute("OE_AddLayerToLayerListView"); 
-                if ($(".oe_add_layer_wrapper").length === 0 && this.menuItems.length > 0) {                                     
+                if ($(".oe_add_layer_wrapper").length === 0 && this.menuItems.length > 0) {
                     let menuHMTL = "";
                     this.menuItems.forEach(menu => {
                         let menuItemHTML = "<button onclick =\"geocortex.framework.applications[0].commandRegistry.commands." + menu["command"] + ".execute()\" class=\"toolbar-item tool\" title=\"Add layers to the map\"><img alt=\"" + menu["description"] + "\" src=\"" + menu["iconUri"] + "\" class=\"bound-visible-inline\"><p>" + menu["text"] + "</p></button>";
@@ -48,11 +48,40 @@ export class OE_AddLayerToLayerListModule extends ModuleBase {
                     //    layerAddHTML += "<button onclick=\"geocortex.framework.applications[0].commandRegistry.commands.ShowLayerCatalog.execute()\"  class=\"toolbar-item tool\" tabindex=\"-1\" title=\"Add layers to the map from a layer catalog\"><img alt=\" \" src=\"Resources/Images/Icons/Toolbar/layer-catalog-24.png\" class=\"bound-visible-inline\"><p>Layer Catalog</p></button>";
                     //}
                     $('.layer-list-wrapper').prepend("<div class=\"oe_add_layer_wrapper\">" + menuHMTL + "</div>");
-                    $('.LegendView').prepend("<div class=\"oe_add_layer_wrapper\">" + menuHMTL + "</div>");                     
+                    $('.LegendView').prepend("<div class=\"oe_add_layer_wrapper\">" + menuHMTL + "</div>");
                     $('.layer-list').css("position", "relative !important");
-                    $('.layer-list').css("top", "unset !important");   
+                    $('.layer-list').css("top", "unset !important");
                 }
             }
         });
-    }    
+
+        this.app.commandRegistry.command("OESearchPortalLayers").register(this, this.OESearchPortalLayers);
+    }
+
+    OESearchPortalLayers(site: Site, thisViewModel): void {
+
+        //?q=wildfire+%2B+%22map+service%22&bbox=&sortField=&sortOrder=
+
+        $.get("https://lib-gis1.library.oregonstate.edu/arcgis/sharing/rest/search", { "q": "wildfire+\"map service\"", "f": "json" }, null, "json")
+            .done(function (result) {
+
+                if (result.num < 1) {
+                    console.log("No hits for search term.");
+                }
+                else {
+                    console.log("Results: " + result.results.length);
+
+                    for (var i = 0; i < result.results; i++) {
+                        console.log("Urls: " + result.results[i].url);
+                    }
+                }
+            })
+            .fail(function (xhr, ajaxOptions, thrownError) {
+                console.log("Portal Search Failed.");
+            });
+
+
+    }
+
+
 }

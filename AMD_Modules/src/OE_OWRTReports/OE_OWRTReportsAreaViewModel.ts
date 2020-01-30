@@ -370,9 +370,9 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     reportAreaList: ObservableCollection<object> = new ObservableCollection<object>(null);
 
     yearMin: number = 1995;
-    yearMax: number = 2017;
+    yearMax: number = 2018;
     startYearDefault: number = 1995;
-    endYearDefault: number = 2017;
+    endYearDefault: number = 2018;
 
     startYear: Observable<string> = new Observable<string>(this.startYearDefault.toString());
     endYear: Observable<string> = new Observable<string>(this.endYearDefault.toString());
@@ -576,6 +576,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
         this.queryUrlActivityTypes = mService.serviceUrl + "/";
         this.queryUrlActivityTypes += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "ACTIVITY_TYPES"))) ? "20" : this._GetTableIDByName(mService, "ACTIVITY_TYPES").id;
+        console.log("ACTIVITY_TYPES: " + this.queryUrlActivityTypes);
 
         mService = this._GetServiceByName("Soil and Water Conservation District Boundaries (WM)");
         this.urlSWCDMapService = mService.serviceUrl;
@@ -994,6 +995,8 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                 strYears += "," + i.toString();
         }
 
+        console.log("Years to query: " + strYears);
+
         let strGeoType = this.geoTypeValue.get();
         let strExtent = this.areaNameSelected.get();
 
@@ -1109,9 +1112,17 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         let sYearNum: number = Number(this.startYear.get());
         let eYearNum: number = Number(this.endYear.get());
 
-        if (!this._IsNullOrEmpty(this.owebResults_project_Type_Year_Funding))
+        if (!this._IsNullOrEmpty(this.owebResults_project_Type_Year_Funding) && this.owebResults_project_Type_Year_Funding.length > 0)
         {
-            let projectTypeDetails: any = JSON.parse(this.owebResults_project_Type_Year_Funding);
+            let projectTypeDetails:any = null;
+
+            try {
+                projectTypeDetails = JSON.parse(this.owebResults_project_Type_Year_Funding);
+            }
+            catch (e) {
+                console.log("Error: "+e);
+                console.log("Project Type Year Funding: "+this.owebResults_project_Type_Year_Funding);
+            }
 
             if (!this._IsNullOrEmpty(projectTypeDetails)) {
 
