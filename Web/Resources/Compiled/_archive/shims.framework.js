@@ -1,0 +1,99 @@
+function shim(a,b,c){"string"==typeof a&&(c=b,b=a);if(typeof c === "undefined"){console.warn("Undefined shim for: " + b);return;}for(var d=b.split("."),e=null,f=window,g=0,h=d.length;g<h;g++)e=d[g],g==h-1?f[e]=c:f[e]||(f[e]={}),f=f[e]}
+define(["geocortex/framework/config", "geocortex/framework/FrameworkObject", "geocortex/framework/index", "geocortex/framework/observables", "geocortex/framework/resourceManager", "geocortex/framework/SimplePromise", "geocortex/framework/application/Application", "geocortex/framework/application/ApplicationCommands", "geocortex/framework/application/ModuleBase", "geocortex/framework/application/ModuleManager", "geocortex/framework/application/ResourceManager", "geocortex/framework/behaviors/Behavior", "geocortex/framework/behaviors/BehaviorRegistry", "geocortex/framework/commands/Command", "geocortex/framework/commands/CommandRegistry", "geocortex/framework/config/ConfigurationLoader", "geocortex/framework/config/ConfigurationModel", "geocortex/framework/config/LibraryConfig", "geocortex/framework/config/ModuleConfig", "geocortex/framework/config/ViewConfig", "geocortex/framework/config/ViewModelConfig", "geocortex/framework/config/WidgetConfig", "geocortex/framework/events/CollectionChangedArgs", "geocortex/framework/events/Event", "geocortex/framework/events/EventRegistry", "geocortex/framework/events/ViewDimensionsChangedArgs", "geocortex/framework/storage/FileStorageProvider", "geocortex/framework/storage/HttpStorageProvider", "geocortex/framework/storage/LocalStorageProvider", "geocortex/framework/storage/StorageProviderBase", "geocortex/framework/storage/StorageStats", "geocortex/framework/storage/Store", "geocortex/framework/ui/BindingEngine", "geocortex/framework/ui/BindingExpression", "geocortex/framework/ui/BindingExpressionFactory", "geocortex/framework/ui/BindingNode", "geocortex/framework/ui/DivRegionAdapter", "geocortex/framework/ui/DivStackRegionAdapter", "geocortex/framework/ui/MultiDivRegionAdapter", "geocortex/framework/ui/MultiViewRegionAdapter", "geocortex/framework/ui/PopupModalRegionAdapter", "geocortex/framework/ui/RegionAdapterBase", "geocortex/framework/ui/ViewBase", "geocortex/framework/ui/ViewManager", "geocortex/framework/ui/ViewModelBase", "geocortex/framework/utils/ArrayUtils", "geocortex/framework/utils/DateFormatters", "geocortex/framework/utils/DateUtils", "geocortex/framework/utils/ThrottledOperation", "geocortex/framework/utils/TimeDelayedOperation", "geocortex/framework/utils/Trace", "geocortex/framework/utils/Tuple", "geocortex/framework/utils/utils"], function (config_ts_0, FrameworkObject_ts_1, index_ts_2, observables_ts_3, resourceManager_ts_4, SimplePromise_ts_5, Application_ts_6, ApplicationCommands_ts_7, ModuleBase_ts_8, ModuleManager_ts_9, ResourceManager_ts_10, Behavior_ts_11, BehaviorRegistry_ts_12, Command_ts_13, CommandRegistry_ts_14, ConfigurationLoader_ts_15, ConfigurationModel_ts_16, LibraryConfig_ts_17, ModuleConfig_ts_18, ViewConfig_ts_19, ViewModelConfig_ts_20, WidgetConfig_ts_21, CollectionChangedArgs_ts_22, Event_ts_23, EventRegistry_ts_24, ViewDimensionsChangedArgs_ts_25, FileStorageProvider_ts_26, HttpStorageProvider_ts_27, LocalStorageProvider_ts_28, StorageProviderBase_ts_29, StorageStats_ts_30, Store_ts_31, BindingEngine_ts_32, BindingExpression_ts_33, BindingExpressionFactory_ts_34, BindingNode_ts_35, DivRegionAdapter_ts_36, DivStackRegionAdapter_ts_37, MultiDivRegionAdapter_ts_38, MultiViewRegionAdapter_ts_39, PopupModalRegionAdapter_ts_40, RegionAdapterBase_ts_41, ViewBase_ts_42, ViewManager_ts_43, ViewModelBase_ts_44, ArrayUtils_ts_45, DateFormatters_ts_46, DateUtils_ts_47, ThrottledOperation_ts_48, TimeDelayedOperation_ts_49, Trace_ts_50, Tuple_ts_51, utils_ts_52) {
+    shim("geocortex._nonConfigs", config_ts_0._nonConfigs);
+    shim("geocortex.framework.FrameworkObject", FrameworkObject_ts_1.FrameworkObject);
+    shim("geocortex.framework.applications", index_ts_2.applications);
+    shim("geocortex.framework.libraries", index_ts_2.libraries);
+    shim("geocortex.framework.initialized", index_ts_2.initialized);
+    shim("geocortex.framework.registerApplication", index_ts_2.registerApplication);
+    shim("geocortex.framework.hasLibrary", index_ts_2.hasLibrary);
+    shim("geocortex.framework.notifyLibraryDownload", index_ts_2.notifyLibraryDownload);
+    shim("geocortex.framework.initialize", index_ts_2.initialize);
+    shim("Observable", observables_ts_3.Observable);
+    shim("ObservableCollection", observables_ts_3.ObservableCollection);
+    shim("geocortex.resourceManager", resourceManager_ts_4.resourceManager);
+    shim("geocortex.framework.SimplePromise", SimplePromise_ts_5.SimplePromise);
+    shim("geocortex.framework.application.Application", Application_ts_6.Application);
+    shim("geocortex.framework.application.ApplicationCommands", ApplicationCommands_ts_7.ApplicationCommands);
+    shim("geocortex.framework.application.ModuleBase", ModuleBase_ts_8.ModuleBase);
+    shim("geocortex.framework.application.ModuleManager", ModuleManager_ts_9.ModuleManager);
+    shim("geocortex.framework.application.ResourceManager", ResourceManager_ts_10.ResourceManager);
+    shim("geocortex.framework.behaviors.Behavior", Behavior_ts_11.Behavior);
+    shim("geocortex.framework.behaviors.BehaviorRegistry", BehaviorRegistry_ts_12.BehaviorRegistry);
+    shim("geocortex.framework.commands.Command", Command_ts_13.Command);
+    shim("geocortex.framework.commands.CommandRegistry", CommandRegistry_ts_14.CommandRegistry);
+    shim("geocortex.framework.config.ConfigurationLoader", ConfigurationLoader_ts_15.ConfigurationLoader);
+    shim("geocortex.framework.config.checkList", ConfigurationLoader_ts_15.checkList);
+    shim("geocortex.framework.config.ConfigurationModel", ConfigurationModel_ts_16.ConfigurationModel);
+    shim("geocortex.framework.config.LibraryConfig", LibraryConfig_ts_17.LibraryConfig);
+    shim("geocortex.framework.config.ModuleConfig", ModuleConfig_ts_18.ModuleConfig);
+    shim("geocortex.framework.config.ViewConfig", ViewConfig_ts_19.ViewConfig);
+    shim("geocortex.framework.config.ViewModelConfig", ViewModelConfig_ts_20.ViewModelConfig);
+    shim("geocortex.framework.config.WidgetConfig", WidgetConfig_ts_21.WidgetConfig);
+    shim("geocortex.framework.events.CollectionChangedArgs", CollectionChangedArgs_ts_22.CollectionChangedArgs);
+    shim("geocortex.framework.events.Event", Event_ts_23.Event);
+    shim("geocortex.framework.events.EventRegistry", EventRegistry_ts_24.EventRegistry);
+    shim("geocortex.framework.events.ViewDimensionsChangedArgs", ViewDimensionsChangedArgs_ts_25.ViewDimensionsChangedArgs);
+    shim("geocortex.framework.storage.FileStorageProvider", FileStorageProvider_ts_26.FileStorageProvider);
+    shim("geocortex.framework.storage.HttpStorageProvider", HttpStorageProvider_ts_27.HttpStorageProvider);
+    shim("geocortex.framework.storage.LocalStorageProvider", LocalStorageProvider_ts_28.LocalStorageProvider);
+    shim("geocortex.framework.storage.StorageProviderBase", StorageProviderBase_ts_29.StorageProviderBase);
+    shim("geocortex.framework.storage.StorageStats", StorageStats_ts_30.StorageStats);
+    shim("geocortex.framework.storage.Store", Store_ts_31.Store);
+    shim("geocortex.framework.ui.DefaultBindingEngine", BindingEngine_ts_32.DefaultBindingEngine);
+    shim("geocortex.framework.ui.BindingExpression", BindingExpression_ts_33.BindingExpression);
+    shim("geocortex.framework.ui.BindingExpressionFactory", BindingExpressionFactory_ts_34.BindingExpressionFactory);
+    shim("geocortex.framework.ui.BindingNode", BindingNode_ts_35.BindingNode);
+    shim("geocortex.framework.ui.DivRegionAdapter", DivRegionAdapter_ts_36.DivRegionAdapter);
+    shim("geocortex.framework.ui.DivStackRegionAdapter", DivStackRegionAdapter_ts_37.DivStackRegionAdapter);
+    shim("geocortex.framework.ui.MultiDivRegionAdapter", MultiDivRegionAdapter_ts_38.MultiDivRegionAdapter);
+    shim("geocortex.framework.ui.MultiViewRegionAdapter", MultiViewRegionAdapter_ts_39.MultiViewRegionAdapter);
+    shim("geocortex.framework.ui.PopupModalRegionAdapter", PopupModalRegionAdapter_ts_40.PopupModalRegionAdapter);
+    shim("geocortex.framework.ui.RegionAdapterBase", RegionAdapterBase_ts_41.RegionAdapterBase);
+    shim("geocortex.framework.ui.ViewBase", ViewBase_ts_42.ViewBase);
+    shim("geocortex.framework.ui.ViewManagerRegionEntry", ViewManager_ts_43.ViewManagerRegionEntry);
+    shim("geocortex.framework.ui.ViewManager", ViewManager_ts_43.ViewManager);
+    shim("geocortex.framework.ui.ViewModelBase", ViewModelBase_ts_44.ViewModelBase);
+    shim("geocortex.framework.utils.ArrayUtils.firstOrDefault", ArrayUtils_ts_45.firstOrDefault);
+    shim("geocortex.framework.utils.ArrayUtils.lastOrDefault", ArrayUtils_ts_45.lastOrDefault);
+    shim("geocortex.framework.utils.ArrayUtils.orderBy", ArrayUtils_ts_45.orderBy);
+    shim("geocortex.framework.utils.ArrayUtils.orderByDescending", ArrayUtils_ts_45.orderByDescending);
+    shim("geocortex.framework.utils.ArrayUtils.groupBy", ArrayUtils_ts_45.groupBy);
+    shim("geocortex.framework.utils.ArrayUtils.distinct", ArrayUtils_ts_45.distinct);
+    shim("geocortex.framework.utils.ArrayUtils.difference", ArrayUtils_ts_45.difference);
+    shim("geocortex.framework.utils.ArrayUtils.remove", ArrayUtils_ts_45.remove);
+    shim("geocortex.framework.utils.ArrayUtils.removeItem", ArrayUtils_ts_45.removeItem);
+    shim("geocortex.framework.utils.ArrayUtils.contains", ArrayUtils_ts_45.contains);
+    shim("geocortex.framework.utils.ArrayUtils.pos", ArrayUtils_ts_45.pos);
+    shim("geocortex.framework.utils.ArrayUtils.flatten", ArrayUtils_ts_45.flatten);
+    shim("geocortex.framework.utils.DateFormatters", DateFormatters_ts_46.DateFormatters);
+    shim("geocortex.framework.utils.DateUtils.containsTimezone", DateUtils_ts_47.containsTimezone);
+    shim("geocortex.framework.utils.DateUtils.getTimezoneOffset", DateUtils_ts_47.getTimezoneOffset);
+    shim("geocortex.framework.utils.DateUtils.getTimezoneString", DateUtils_ts_47.getTimezoneString);
+    shim("geocortex.framework.utils.ThrottledOperation", ThrottledOperation_ts_48.ThrottledOperation);
+    shim("geocortex.framework.utils.TimeDelayedAction", TimeDelayedOperation_ts_49.TimeDelayedAction);
+    shim("geocortex.framework.utils.Trace", Trace_ts_50.Trace);
+    shim("geocortex.framework.utils.Tuple", Tuple_ts_51.Tuple);
+    shim("geocortex.framework.utils.base64keyStr", utils_ts_52.base64keyStr);
+    shim("geocortex.framework.utils.isDefined", utils_ts_52.isDefined);
+    shim("geocortex.framework.utils.isNullOrUndefined", utils_ts_52.isNullOrUndefined);
+    shim("geocortex.framework.utils.makeUrlAbsolute", utils_ts_52.makeUrlAbsolute);
+    shim("geocortex.framework.utils.alphaNumericToken", utils_ts_52.alphaNumericToken);
+    shim("geocortex.framework.utils.base64Encode", utils_ts_52.base64Encode);
+    shim("geocortex.framework.utils.base64Decode", utils_ts_52.base64Decode);
+    shim("geocortex.framework.utils.utf8Encode", utils_ts_52.utf8Encode);
+    shim("geocortex.framework.utils.utf8Decode", utils_ts_52.utf8Decode);
+    shim("geocortex.framework.utils.isUrl", utils_ts_52.isUrl);
+    shim("geocortex.framework.utils.isPercentage", utils_ts_52.isPercentage);
+    shim("geocortex.framework.utils.clamp", utils_ts_52.clamp);
+    shim("geocortex.framework.utils.addEventListener", utils_ts_52.addEventListener);
+
+    // Normally the call to register() happens at the end of a bundle file. However in the case of Framework.bundle, it appears as if 
+    // the dojo require cache hasn't yet been primed with the Framework modules.
+    // At this point we know the cache has been primed with the Framework modules, and can safely require in resourceManager.
+    require(["geocortex/framework/resourceManager"], function (imports) {
+        imports.resourceManager.register("Framework", "inv", "Invariant", "json", "e30=");
+    });
+});
+
+

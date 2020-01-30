@@ -280,6 +280,7 @@ export class OE_LayerActionsModule extends ModuleBase {
            
             if (downloadLink !== "") {                
                 window.open(downloadLink, "_blank");
+                return;
             }
             else {
 
@@ -347,12 +348,13 @@ export class OE_LayerActionsModule extends ModuleBase {
                 function canExecute(context) {
                     if (context === null) {
                         return false;
-                    }                       
-
-                    //hide
-                    if (context.properties.hideDownload != undefined && context.properties.hideDownload === "False") {
-                        return false;
-                    }                        
+                    }    
+                    //hide if the layer property "hideDownload" has a value
+                    if (context.properties.hideDownload !== undefined) {
+                        if (["FALSE","TRUE"].indexOf(context.properties.hideDownload.toUpperCase()) !== -1) {
+                            return false;
+                        }
+                    }                 
 
                     //is the map service there?
                     if (context.mapService == null || context.mapService == "")

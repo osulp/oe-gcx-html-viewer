@@ -22,6 +22,16 @@
     margin-top:5px;
 }
 
+    .slider.touch a {
+        margin-right: 0px;
+        -webkit-transition: margin-left .5s, margin-right .5s;
+    }
+
+    .slider.touch a + a {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
 .ul-query-folders {
     list-style-type: none;
     margin-left:-40px;
@@ -171,7 +181,7 @@
 .body-content-inner-wrapper {
     height: 100%;
     position: relative;
-    overflow: auto;
+    /*overflow: auto;*/
 }
 
 .body-content {
