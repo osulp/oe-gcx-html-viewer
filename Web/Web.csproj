@@ -609,6 +609,7 @@
     <Folder Include="Resources\Config\Default\dev_configs\m49\" />
     <Folder Include="Resources\Config\Default\dev_configs\oitt\" />
     <Folder Include="Resources\Config\Default\dev_configs\owrt\" />
+    <Folder Include="Resources\Config\Default\dev_configs\zLayerSite\" />
     <Folder Include="Resources\Config\DevTy\" />
   </ItemGroup>
   <PropertyGroup>

@@ -5,6 +5,12 @@
 import { ModuleBase } from "geocortex/framework/application/ModuleBase";
 import { ViewerApplication } from "geocortex/infrastructure/Viewer";
 import { Site } from "geocortex/essentials/Site";
+import { MapService } from "geocortex/essentials/MapService";
+import { FeatureLayerService } from "geocortex/essentials/FeatureLayerService";
+import { StreamLayerService } from "geocortex/essentials/StreamLayerService";
+import { Layer } from "geocortex/essentials/Layer";
+import { MapServiceType } from "geocortex/essentials/MapServiceConstants";
+import { MapServiceFunction } from "geocortex/essentials/MapServiceConstants";
 
 
 export class OE_AddLayerToLayerListModule extends ModuleBase {
@@ -56,6 +62,40 @@ export class OE_AddLayerToLayerListModule extends ModuleBase {
         });
 
         this.app.commandRegistry.command("OESearchPortalLayers").register(this, this.OESearchPortalLayers);
+        this.app.commandRegistry.command("OEAddMapService").register(this, (args) => {
+            this.OEAddMapService(args, thisViewModel);
+        });  //this.OEAddMapService(site, thisScope));
+    }
+
+    OEAddMapService(site: Site, thisViewModel: OE_AddLayerToLayerListModule) {
+        let url: string = "https://lib-gis2.library.oregonstate.edu/arcgis/rest/services/restoration/OITT/MapServer";
+        let workingService: MapService = new MapService(url);        
+        
+
+        let layerOptions = { "id": "oeDynamicLayerTest123", "opacity":1, "showAttribution": false };
+        let dLayer = new esri.layers.ArcGISDynamicMapServiceLayer(url, layerOptions);
+        dLayer.setVisibleLayers(["8-Digit Hydrologic Unit Code"]);
+        //dLayer.setVisibleLayers([7]);
+
+        workingService.serviceLayer = dLayer;                                
+        workingService.mapServiceType = MapServiceType.DYNAMIC;
+        workingService.isUserCreated = true;
+        workingService.userLayerType = "LayerAddition";
+        workingService.includeInLayerList = true;                               
+        //workingService.essentialsMap = this.app.site.essentialsMap;                
+        workingService.displayName = "Custom Layer";
+        //newMapService.disableClientCaching = true;
+        workingService.mapServiceFunction = MapServiceFunction.OPERATIONAL;
+        workingService.opacity = 1;
+        
+        dLayer.on("load", (args) => {
+            workingService.id = dLayer.id;        
+            thisViewModel.app.commandRegistry.commands.AddMapService.execute(workingService);
+        });
+
+        dLayer.on("error", (args) => {
+            console.log("Error in initializing map service: {0}".format(args.error));
+        });
     }
 
     OESearchPortalLayers(site: Site, thisViewModel): void {
