@@ -64,10 +64,9 @@
         
         var viewerConfig = {
             "configurations": {                
-                "default": "Resources/Config/Default/dev_configs/aquaculture/" + shellName + ".json.js",
+                "default": "Resources/Config/Default/dev_configs/zLayerSite/Desktop.json.js",
                 "oitt": "Resources/Config/Default/dev_configs/oitt/Desktop.json.js",
-                "default_original": "Resources/Config/Default/" + shellName + ".json.js",
-                "aquaculture": "Resources/Config/Default/dev_configs/aquaculture/" + shellName + ".json.js",
+                "default_original": "Resources/Config/Default/" + shellName + ".json.js",            
                 "sage_dev_cons_pln": "Resources/Config/Default/dev_configs/sage_dev_cons_pln/Desktop.json.js",
                 "oe_default": "Resources/Config/Default/" + shellName + ".json.js",
                 "add_layer_dev": "Resources/Config/Default/dev_configs/add_layer_dev/Desktop.json.js",
@@ -79,7 +78,7 @@
             },
             "viewerConfigUri": ""
         };       
-
+                
         new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize({
             onSiteInitialized: function (app, loader) {
                 geocortex.config.io.timeout = 180 * 1000; // 180 seconds
@@ -111,7 +110,7 @@
         new move();
     </script>    
 
-    <!--<script type="text/javascript">
+    <script type="text/javascript">
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-13183466-3']);
@@ -123,7 +122,7 @@
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
 
-    </script>-->
+    </script>
 
 </body>
 </html>

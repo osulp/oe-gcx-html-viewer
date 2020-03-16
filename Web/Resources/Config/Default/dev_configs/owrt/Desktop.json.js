@@ -2042,22 +2042,19 @@
                             "name": "ChartPointMouseHoverBeginBehavior",
                             "event": "ChartPointMouseHoverBeginEvent",
                             "OE_commands_removed": "HighlightChartFeatureSet",
-                            "commands": [
-                                "ClearChartHighlights"                                
+                            "commands": [                                
                             ]
                         },
                         {
                             "name": "ChartPointMouseHoverEndBehavior",
                             "event": "ChartPointMouseHoverEndEvent",
-                            "commands": [
-                                "ClearChartHighlights"
+                            "commands": [                                
                             ]
                         },
                         {
                             "name": "ChartPointMouseDownBehavior",
                             "event": "ChartPointMouseDownEvent",
-                            "commands": [                                
-                                "RunChartFeatureActions"
+                            "commands": [                                                                
                             ]
                         }
                     ]

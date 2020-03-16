@@ -100,65 +100,83 @@
                     ]
                 }
             ],
-            "modules": [
-                {
-                    "moduleName": "OE_Aquaculture",
-                    "libraryId": "OE_AMD",
-                    "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureModule",
-                    "configuration": {},
-                    "views": [
-                        {
-                            "id": "OE_AquacultureDynamicFormView",
-                            "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureDynamicFormView",
-                            "markup": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureDynamicFormView.html",
-                            "viewModelId": "OE_AquacultureDynamicFormViewModel",
-                            "title": "Aquaculture Site Report: Land-Based",
-                            "visible": false,
-                            "region": "DataRegion",                            
-                            "configuration": {                           
-                            }
-                        }
-                    ],
-                    "viewModels": [
-                        {
-                            "id": "OE_AquacultureDynamicFormViewModel",
-                            "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureDynamicFormViewModel",
-                            "configuration": {}
-                        }
-                    ]
-                },
-                {
-                    "moduleName": "OE_ConvertGeometry",
-                    "libraryId": "OE_AMD",
-                    "require": "geocortex/oe_amd/OE_ConvertGeometry/OE_ConvertGeometryModule",
-                    "configuration": {
-                    },
-	                "views": [
-                        {
-                            "id": "OE_ConvertGeometryView",
-                            "require": "geocortex/oe_amd/OE_ConvertGeometry/OE_ConvertGeometryView",
-                            "markup": "geocortex/oe_amd/OE_ConvertGeometry/OE_ConvertGeometryView.html",
-                            "viewModelId": "OE_ConvertGeometryViewModel",
-                            "title": "Convert Geometry",
-                            "visible": false,
-                            "region": "DataRegion",
-                            "configuration": {}
-                        }
-                    ],
-                    "viewModels": [
-                        {
-                            "id": "OE_ConvertGeometryViewModel",
-                            "require": "geocortex/oe_amd/OE_ConvertGeometry/OE_ConvertGeometryViewModel",
-                            "configuration": {}
-                        }
-                    ]
-                },
+                "modules": [                    
                     {
                         "moduleName": "OE_Elevation",
                         "libraryId": "OE_AMD",
                         "require": "geocortex/oe_amd/OE_Elevation/OE_ElevationModule",
-                        "configuration": {
-                        }
+                        "configuration": {}
+                    },
+                    {
+                        "moduleName": "OE_Hopscotch",
+                        "require": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchModule",
+                        "libraryId": "OE_AMD",
+                        "configuration": {},
+                        "views": [{
+                            "id": "OE_HopscotchView",
+                            "require": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchView",
+                            "markup": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchView.html",
+                            "title": "Tour Name",
+                            "viewModelId": "OE_HopscotchViewModel",
+                            "visible": false,
+                            "region": "DataRegion",
+                            "configuration": {                               
+                            }
+                        }],
+                        "viewModels": [
+                            {
+                                "id": "OE_HopscotchViewModel",
+                                "require": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchViewModel",
+                                "configuration": {
+                                    "tours": [
+                                        {
+                                            "key": "layers",
+                                            "requiredView":"LayerDataContainerView",
+                                            "tour": {
+                                                "steps": [
+                                                    {
+                                                        "title": "Layers Panel",
+                                                        "content": "The layer panel is used to enabled/disable different layers of interest.",
+                                                        "target": ".LayerDataContainerView",
+                                                        "yOffset": -20,
+                                                        "placement": "right"
+                                                    },
+                                                    {
+                                                        "title": "Toggle Layer",
+                                                        "content": "Click a checkbox to toggle a layer, or layer group, on and off.",
+                                                        "target": ".layer-item-ctrl",
+                                                        "yOffset": -20,
+                                                        "placement": "right"
+                                                    },
+                                                    {
+                                                        "title": "Expand Layer Group",
+                                                        "content": "Click a +, or -, button to expand or collapse a layer group.",
+                                                        "target": ".layer-item-expander",
+                                                        "yOffset": -20,
+                                                        "placement": "right"
+                                                    },
+                                                    {
+                                                        "title": "Filter Layers",
+                                                        "content": "Begin typing here to filter the layers displayed in the layer planel.",
+                                                        "target": ".filter-control-search",
+                                                        "yOffset": -20,
+                                                        "placement": "right"
+                                                    },
+                                                    {
+                                                        "title": "Layer Theemes",
+                                                        "content": "Here you can view curated layer themes.  Choose \"All Available Layers\" to see all the layers for this site.",
+                                                        "target": ".layer-theme-switcher",
+                                                        "yOffset": -20,
+                                                        "placement": "right"
+                                                    }
+                                                ],
+                                                "showCloseButton": true,
+                                                "showPrevButton": true
+                                            }
+                                        }                                        
+                                    ]                                    
+                                }
+                            }]
                     },
                     {
                         "moduleName": "OE_LayerActions",
@@ -171,7 +189,6 @@
                             "metadataHyperlinkOverride": true,
                             "expandLayerTreeOnVisible": true,
                             "downloadWorkflowEnabled": false,
-                            "downloadHyperlinkOverride": true,
                             "downloadWorkflowOverride_DISABLE": {
                                 "workflowID": "WildfireDataExtract"
                             }
@@ -3058,26 +3075,27 @@
                                     "useBasemapCoordinates": false,
                                     "coordinatesModel": "MapCoordinatesModel",
                                     "numDigits": 3,
-                                    "coordinateSystems": [{
-                                        "displayName": "Lat/Long",
-                                        "wkid": 4326,
-                                        "output": "latLon"
-                                    },
-                                    {
-                                        "displayName": "Degree Minute Second",
-                                        "wkid": 4326,
-                                        "output": "dms"
-                                    },
-                                    {
-                                        "displayName": "Degree Decimal Minutes",
-                                        "wkid": 4326,
-                                        "output": "ddm"
-                                    },
-                                    {
-                                        "displayName": "Oregon State Plane",
-                                        "wkid": 2292,
-                                        "output": "xy"
-                                    }
+                                    "coordinateSystems": [
+                                        {
+                                            "displayName": "Lat/Long",
+                                            "wkid": 4326,
+                                            "output": "latLon"
+                                        },
+                                        {
+                                            "displayName": "Degree Minute Second",
+                                            "wkid": 4326,
+                                            "output": "dms"
+                                        },
+                                        {
+                                            "displayName": "Degree Decimal Minutes",
+                                            "wkid": 4326,
+                                            "output": "ddm"
+                                        },
+                                        {
+                                            "displayName": "Oregon State Plane",
+                                            "wkid": 2292,
+                                            "output": "xy"
+                                        }
                                     ]
                                 }
                             }
@@ -3589,26 +3607,29 @@
                                             "iconUri": "Resources/Images/Icons/Custom/twitter-grey-16.png",
                                             "command": "ShareOn",
                                             "commandParameter": "twitter"
-                                        }, {
+                                        },
+                                        {
                                             "iconUri": "Resources/Images/Icons/Custom/facebook-grey-16.png",
                                             "command": "ShareOn",
                                             "commandParameter": "facebook"
-                                        }, {
+                                        },
+                                        {
                                             "iconUri": "Resources/Images/Icons/Custom/linkedin-grey-16.png",
                                             "command": "ShareOn",
                                             "commandParameter": "linkedin"
-                                        }, {
+                                        },
+                                        {
                                             "iconUri": "Resources/Images/Icons/Custom/google-plus-grey-16.png",
                                             "command": "ShareOn",
                                             "commandParameter": "googleplus"
-                                        }, {
+                                        },
+                                        {
                                             "iconUri": "Resources/Images/Icons/Custom/contact-16.png",
                                             "command": "ShareOn",
                                             "commandParameter": "email"
                                         }
                                     ]
                                 }
-
                             ]
                         },
                         "views": [
@@ -4078,16 +4099,11 @@
                                     "defaultIconUri": "Resources/Images/Icons/check-24.png",
                                     "items": [
                                         {
-                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-initial-24.png",
-                                            "text": "Financial Planning Module",
-                                            "description": "@language-menu-zoom-initial-extent-desc",
-                                            "command": "RunWorkflowById",
-                                            "commandParameter": "Financial_Planning"
-                                        },
-                                        {
-                                            "text": "Route Options",
-                                            "command": "RunWorkflowById",
-                                            "commandParameter": "AquacultureSiteReport"
+                                            "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",
+                                            "text": "Help",
+                                            "description": "",
+                                            "command": "oeStartTour",
+                                            "commandParameter": "layers"
                                         },
                                         {
                                             "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",
@@ -6940,7 +6956,7 @@
                         "moduleName": "Site",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                         "configuration": {
-                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/Aquaculture",
+                            "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined",
                             "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                             "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                             "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined"
@@ -7582,7 +7598,6 @@
                                                 }
                                             ]
                                         }
-
                                     ]
                                 },
                                 {
@@ -7690,8 +7705,7 @@
                                                     ]
                                                 }
                                             ]
-                                        }
-                                        ,
+                                        },
                                         {
                                             "id": "TIPLIQoE",
                                             "type": "toolbarGroup",
@@ -7846,8 +7860,7 @@
                                                     ]
                                                 }
                                             ]
-                                        }
-                                        ,
+                                        },
                                         {
                                             "id": "15IeHye2",
                                             "type": "toolbarGroup",
@@ -8057,8 +8070,7 @@
                                                     ]
                                                 }
                                             ]
-                                        }
-                                        ,
+                                        },
                                         {
                                             "id": "VytV4olt",
                                             "type": "toolbarGroup",
@@ -8388,8 +8400,7 @@
                                                     ]
                                                 }
                                             ]
-                                        }
-                                        ,
+                                        },
                                         {
                                             "id": "9HImRpyR",
                                             "type": "toolbarGroup",
@@ -8428,7 +8439,6 @@
                                                         }
                                                     ]
                                                 }
-
                                             ]
                                         },
                                         {
@@ -8483,8 +8493,6 @@
                                             "type": "region",
                                             "regionName": "EditControlRegion"
                                         }
-
-
                                     ]
                                 }
                             ]
@@ -9354,6 +9362,7 @@
                             "libraryId": "Mapping.Infrastructure",
                             "configuration": {}
                         }
-                    ]
+                    ],
+                        "viewerId": "test1"
     }
 }

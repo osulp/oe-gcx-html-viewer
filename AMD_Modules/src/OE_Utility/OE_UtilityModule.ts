@@ -23,7 +23,7 @@ export class OE_UtilityModule extends ModuleBase {
     initialize(config: any): void {
                 
         var site = (<any>this).app.site;
-
+        
         if (site && site.isInitialized) {
             this._onSiteInitialized(site,this);
         }
@@ -49,6 +49,6 @@ export class OE_UtilityModule extends ModuleBase {
 
             //move the workflow to the next activity
             workflowContext.completeActivity();
-        });
-    }    
+        });           
+    }
 }

@@ -17,7 +17,8 @@
     <AssemblyName>Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>44345</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -77,6 +78,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="IndexSignIn.html" />
     <Content Include="bin\Viewer.dll" />
     <Content Include="favicon_oe.ico" />
     <Content Include="Handheld.html" />
@@ -101,6 +103,7 @@
     <Content Include="Libraries\Custom\AMD\OE_AMD-Language.json" />
     <Content Include="gmaf\ViewerPackage.ashx" />
     <None Include="Libraries\Custom\Config\Defaults.json.js.bak" />
+    <Content Include="oegcxviewerloader.js" />
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Tablet.json.js" />
@@ -608,6 +611,7 @@
     <Folder Include="Resources\Config\Default\dev_configs\m49\" />
     <Folder Include="Resources\Config\Default\dev_configs\oitt\" />
     <Folder Include="Resources\Config\Default\dev_configs\owrt\" />
+    <Folder Include="Resources\Config\Default\dev_configs\zLayerSite\" />
     <Folder Include="Resources\Config\DevTy\" />
   </ItemGroup>
   <PropertyGroup>
@@ -627,8 +631,6 @@
           <DevelopmentServerPort>54104</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:44320</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>https://localhost:44345/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

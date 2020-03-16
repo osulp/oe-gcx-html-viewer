@@ -351,7 +351,8 @@ export class OE_LayerActionsModule extends ModuleBase {
                     }    
                     //hide if the layer property "hideDownload" has a value
                     if (context.properties.hideDownload !== undefined) {
-                        if (["FALSE","TRUE"].indexOf(context.properties.hideDownload.toUpperCase()) !== -1) {
+                        //if (["FALSE","TRUE"].indexOf(context.properties.hideDownload.toUpperCase()) !== -1) {
+                        if (context.properties.hideDownload.length !== -1) {
                             return false;
                         }
                     }                 

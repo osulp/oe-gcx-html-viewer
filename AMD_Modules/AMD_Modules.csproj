@@ -10,10 +10,10 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>2.4</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.4.2</TypeScriptToolsVersion>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>44325</IISExpressSSLPort>
+    <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -47,6 +47,10 @@
     <Content Include="src\OE_ConvertGeometry\CSS\OE_ConvertGeometryModule.css" />
     <Content Include="src\OE_ConvertGeometry\OE_ConvertGeometryView.html" />
     <Content Include="src\OE_ConvertGeometry\readme.txt" />
+    <Content Include="src\OE_Hopscotch\CSS\hopscotch-0.1.1.css" />
+    <Content Include="src\OE_Hopscotch\CSS\OE_HopscotchModule.css" />
+    <Content Include="src\OE_Hopscotch\ModuleJS.txt" />
+    <Content Include="src\OE_Hopscotch\OE_HopscotchView.html" />
     <Content Include="src\OE_OITT\readme.txt" />
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsAreaView.html" />
     <Content Include="src\OE_OWRTReports\readme.txt" />
@@ -113,8 +117,8 @@
     <Content Include="src\OE_OITT\Language.json" />
     <Content Include="src\OE_AddLayerToLayerList\Language.json" />
     <Content Include="src\OE_ConvertGeometry\Language.json" />
-    <Content Include="src\OE_Aquaculture\CSS\calcite.dijit.css.old" />
-    <Content Include="src\OE_Aquaculture\CSS\calcite.esri.css.old" />
+    <Content Include="src\OE_Aquaculture\Language.json" />
+    <Content Include="src\OE_Hopscotch\Language.json" />
     <None Include="src\Template\Language.json" />
     <None Include="src\Template\TemplateView.html" />
   </ItemGroup>
@@ -122,8 +126,14 @@
     <Content Include="src\OE_ConvertGeometry\OE_ConvertGeometryModule.ts" />
     <Content Include="src\OE_ConvertGeometry\OE_ConvertGeometryView.ts" />
     <Content Include="src\OE_ConvertGeometry\OE_ConvertGeometryViewModel.ts" />
+    <TypeScriptCompile Include="src\OE_Aquaculture\OE_AquacultureDynamicFormView.ts" />
+    <TypeScriptCompile Include="src\OE_Aquaculture\OE_AquacultureDynamicFormViewModel.ts" />
+    <TypeScriptCompile Include="src\OE_Aquaculture\OE_AquacultureModule.ts" />
     <TypeScriptCompile Include="src\OE_Graphics\OE_GraphicsModule.ts" />
     <TypeScriptCompile Include="src\OE_Elevation\OE_ElevationModule.ts" />
+    <Content Include="src\OE_Hopscotch\OE_HopscotchViewModel.ts" />
+    <Content Include="src\OE_Hopscotch\OE_HopscotchView.ts" />
+    <Content Include="src\OE_Hopscotch\OE_HopscotchModule.ts" />
     <TypeScriptCompile Include="src\OE_HyperlinkBanner\OE_HyperlinkBannerModule.ts" />
     <TypeScriptCompile Include="src\OE_OITT\OE_JsonAdapter.ts" />
     <TypeScriptCompile Include="src\OE_OWRTReports\OE_JsonAdapter.ts" />
