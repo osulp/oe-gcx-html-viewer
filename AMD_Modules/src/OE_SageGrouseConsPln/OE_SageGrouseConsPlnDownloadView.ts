@@ -38,7 +38,7 @@ export class OE_SageGrouseConsPlnDownloadView extends ViewBase {
         gp.submitJob(gpParams, (results, messages) => {
             console.log('results!', results, messages);
             if (results.jobStatus === 'esriJobSucceeded') {                
-                gp.getResultData(results.jobId, "output_zip", (result) => {
+                gp.getResultData(results.jobId, "SageConHexDownload_zip", (result) => {
                     this.viewModel.isDownloading.set(false);
                     this.viewModel.downloadReady.set(true);
                     this.viewModel.downloadUrl.set(result.value.url);                    

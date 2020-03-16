@@ -4024,12 +4024,12 @@
                                             "text": "Financial Planning Module",
                                             "description": "@language-menu-zoom-initial-extent-desc",
                                             "command": "RunWorkflowById",
-                                            "commandParameter": "Financial_Pldanning"
+                                            "commandParameter": "Financial_Planning"
                                         },
                                         {
                                             "text": "Route Options",
                                             "command": "RunWorkflowById",
-                                            "commandParameter": "RouteServices"
+                                            "commandParameter": "Routing_Services"
                                         },
                                         {
                                             "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",

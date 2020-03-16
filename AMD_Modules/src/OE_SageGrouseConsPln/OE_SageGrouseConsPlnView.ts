@@ -38,6 +38,7 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
     hopscotch;
     canShowTour: boolean = true;
     hasLoaded: boolean = false;
+    activeTour: any;
 
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
@@ -173,8 +174,7 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
             this.hopscotch = window["hopscotch"] ? window["hopscotch"] : null;
             if (this.hopscotch) {
                 // Set the context of the scope for the function callbacks to relate to the right context.  Checks against filterView of viewModel which gets passed on click events.
-                var thisScope = context.filterView ? this : context;
-                var demoFilterID = "#12SageGrouseProbabilityofWinterHabitatUseNonhabitat";
+                var thisScope = example ? context : context.filterView ? this : context;
                 // Define the tour!
                 let tour_id = example ? example.tour_id : 'default';
                 let tour;
@@ -182,6 +182,7 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                     case 'herbicide_vale':
                     case 'herbicide_no_sagebrush':
                     case 'juniper_removal':
+                        this.activeTour = example;
                         tour = {
                             id: example.tour_id,
                             steps: [
@@ -191,13 +192,11 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                                     target: '#' + example.tour_id,
                                     yOffset: -20,
                                     placement: "right",
-                                    //showCTAButton: true,
-                                    //ctaLabel: "Apply Query",
-                                    //onCTA: () => {
-                                    //    thisScope.hopscotch.endTour();
-                                    //    thisScope.hopscotch = null;
-                                    //    thisScope.applyExample(null, null, example);
-                                    //}
+                                    showCTAButton: true,
+                                    ctaLabel: "Apply",
+                                    onCTA: function(evt) {
+                                        thisScope.applyExample(null, null, thisScope.activeTour);
+                                    }
                                 }
                             ],
                             showCloseButton: false,
@@ -545,7 +544,8 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
     onGetInfo(_event, _element, context) {
         let layerInfo = {
             layer: context.layerName,
-            desc: context.layerDesc
+            desc: context.layerDesc,
+            layerLinks: context.layerLinks
         };
         this.viewModel.get_info_layer.set([layerInfo]);
         this.app.commandRegistry.command("ActivateView").execute("OE_SageGrouseConsPlnFilterInfoView");
@@ -578,7 +578,6 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
     }
 
     applyExample(_evt, _elem, cntx) {
-        console.log('applying example', cntx.tour_id);
         this.app.commandRegistry.command("AddStatus").execute(new AddStatusArgs('Applying example query: ' + cntx.label, null, null, null, null, true));
         this.toggleTabFilters(null, null, null, 'Data');
         try {
@@ -660,6 +659,9 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
         this.app.commandRegistry.command("ClearTemporaryMarkup").execute();
         this.geo_filter.enabled = false;
         this.geo_filter.ids = [];
+        this.viewModel.aoiGeometry = null;
+        this.viewModel.geo_history_filter_collection.refresh();
+        this.viewModel.show_recent_geo_filters.set(this.viewModel.geo_filter_collection.getLength() > 0);
         this.setDefaultFilters(true);
         this.updateQuery();
     }
@@ -821,17 +823,8 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
         let thisScope = this;
         let clone = document.getElementById("scroll-filter-body").cloneNode(true);
         $("body").append(clone);
-        //let clone = $("#scroll-filter-body");    
-        //let cloneWidth = $(clone).width();
-        //let cloneHeight = $(clone).height();        
         $(clone).css("width", "720px");
-        //$(clone).css("height", cloneHeight);
-
         $(clone).find('.slider').css("width", "305px");
-        //$(clone).find(".slider").each(slider => {
-        //    $(slider).rangeSlider('resize');
-        //});
-        //this.setDefaultFilters();
         $('.get-info-btn-wrapper').css("display", "none");
         html2canvas(clone, {
             onrendered: function (canvas) {
@@ -856,17 +849,9 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                 workflowArgs.hexCount = thisScope.viewModel.hexCount.get();
                 thisScope.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
                 thisScope.viewModel.show_selected_filters.set(false);
-                //$(clone).css("width", cloneWidth);
                 $(clone).remove();
-                //$('.slider').css("width", "90%");
             }
         });
-        //window.setTimeout(() => {
-            
-        //    //window.setTimeout(() => {
-                
-        //    //}, 1000);        
-        //}, 500);
     }
 
     createGeoFilterObj() {
@@ -930,7 +915,8 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                         uiType: dv.uiType,
                         value: dv.optionValue.get(),
                         min: dv.min,
-                        max: dv.max//,
+                        max: dv.max,
+                        comparator: dv.comparator
                         //categories: dv.categories
                     }
                     qo.filters.push(filter);
@@ -955,7 +941,8 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                     enabled: new Observable<Boolean>(qo['enabled']),
                     filterDef: '',
                     desc: qo["desc"],
-                    type: 'attribute'
+                    type: 'attribute',
+                    comparator: qo['comparator']
                 };
                 let filterDef = '';
                 let filterDefSimple = ''; //for filter summary display more readable
@@ -987,10 +974,13 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                                     //get field type
                                     let query = '';
                                     let simpleQuery = '';
+                                    let fieldComparator = filter.comparator ? (' ' + filter.comparator + ' ') : ' OR ';
+                                    let isMultiField = false;
                                     filter.fields.forEach((fi, idx) => {
                                         if (idx > 0) {
-                                            query += ' OR ';
-                                            simpleQuery += ' OR ';
+                                            query += fieldComparator;
+                                            isMultiField = true;
+                                            //simpleQuery += fieldComparator;
                                         }
                                         let field = fi.field;
                                         //get range or fixed
@@ -998,7 +988,7 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                                             let isNumeric = $.isNumeric(v.value);
                                             let comparator = !isNumeric ? " like '" : v.type === 'min' ? ' > ' : v.type === 'max' ? ' < ' : '=';
                                             query += field + comparator + v.value + (!isNumeric ? "'" : "");
-                                            simpleQuery += ' ' + filter.label;
+                                            simpleQuery += !isMultiField ? (' ' + filter.label) : '';
                                         });
                                     });
                                     if (qo['enabled']) { // filter can be disabled in the filter summary view

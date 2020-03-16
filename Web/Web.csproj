@@ -105,6 +105,7 @@
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Tablet.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\dev_reg\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\dev_reg\Desktop.prod.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\aquaculture\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\aquaculture\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\aquaculture\Tablet.json.js" />
@@ -127,6 +128,7 @@
     <Content Include="Resources\Images\Custom\zoom-next-24.png" />
     <Content Include="Resources\Images\Custom\zoom-previous-24.png" />
     <Content Include="Resources\Scripts\oe_added_scripts\daterangepicker.min.js" />
+    <Content Include="Resources\Scripts\oe_added_scripts\easy-responsive-tabs.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\hopscotch-0.1.1.min.js" />
     <Content Include="Libraries\Custom\Styles\Custom\Desktop.css" />
     <Content Include="Resources\3rdPartyMaps\3rdParty.css" />
@@ -603,7 +605,6 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\Config\Default\dev_configs\aquaculture\" />
     <Folder Include="Resources\Config\Default\dev_configs\m49\" />
     <Folder Include="Resources\Config\Default\dev_configs\oitt\" />
     <Folder Include="Resources\Config\Default\dev_configs\owrt\" />

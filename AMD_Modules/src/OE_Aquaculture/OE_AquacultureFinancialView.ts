@@ -29,6 +29,38 @@ export class OE_AquacultureFinancialView extends ViewBase {
     }
 
     activated() {
+        //adjust scroll window based on modal-container height
+        let modal_height = $('.modal-container').height() - $('.modal-container-inner').height() + "px";
+        $('.panel-scroll-container').css("maxHeight", modal_height);
+        //this.toggleInfoScreen();
+        //set height of aqua-financial-pln-wrapper
+        //$("#aqua-financial-pln-wrapper").height(modal_height);
+        //this.renderVerticalTabs();
+        // Get the element with id="defaultOpen" and click on it
+        this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(0));
+        this.setUIInputs();
+
+    }
+
+    openTab(evt, elem, ctx) {
+        //let screenOrder = !this.viewModel.show_all_tabs.get() && ctx.screen === 'Summary' ? 2 : parseInt(ctx.screenOrder) - 1;
+        let screenOrder = parseInt(ctx.screenOrder) - 1;
+        this.viewModel.active_screen.set(screenOrder);
+        this.viewModel.show_back_btn.set(screenOrder > 0);
+        this.viewModel.show_next_btn.set(screenOrder < this.viewModel.screens_collection_filter.length() -1);
+        
+        this.viewModel.screens_collection.get().forEach(scr => {
+            scr['screenTabClass'].set('tablinks ' + (ctx.id === scr['id'] ? 'activeTab' : 'inactiveTab'));
+            scr['screenContentClass'].set('tabcontent ' + (ctx.id == scr['id'] ? 'activeScreen' : 'inactiveScreen'));
+        });
+        this.setUIInputs();
+        $('#modal-description').stop().animate({
+            'scrollTop': $('#'+ctx.id)
+        }, 800, 'swing');
+        //window.location.hash = "#" + ctx.id;
+    } 
+
+    renderMap() {
         var thisScope = this;
         if (typeof this.viewModel.esriMap == "undefined" || this.viewModel.esriMap == null) {
 
@@ -80,40 +112,49 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 console.log('cannot load search');
             }
 
-            //HOME BUTTON
-            let homeButton = new esri.dijit.HomeButton({
-                map: this.viewModel.esriMap
-            }, "home-button");
+            try {
+                //HOME BUTTON
+                this.viewModel.esriHomeBtn = new esri.dijit.HomeButton({
+                    map: this.viewModel.esriMap
+                }, "home-button");
 
-            homeButton.startup();
+                this.viewModel.esriHomeBtn.startup();
+            } catch (ex) {
+                console.log('cannot load home button');
+            }
 
-            //BASEMAP TOGGLE
-            let basemaps = {
-                "streets": {
-                    "title": "Streets",
-                    "thumbnailUrl": "https://js.arcgis.com/3.15/esri/images/basemap/streets.jpg"
-                },
-                "hybrid": {
-                    "title": "Satellite",
-                    "thumbnailUrl": "https://js.arcgis.com/3.15/esri/images/basemap/satellite.jpg"
-                }
-            };
+            try {
+                //BASEMAP TOGGLE
+                let basemaps = {
+                    "streets": {
+                        "title": "Streets",
+                        "thumbnailUrl": "https://js.arcgis.com/3.15/esri/images/basemap/streets.jpg"
+                    },
+                    "hybrid": {
+                        "title": "Satellite",
+                        "thumbnailUrl": "https://js.arcgis.com/3.15/esri/images/basemap/satellite.jpg"
+                    }
+                };
 
-            var basemapToggle = new esri.dijit.BasemapToggle({
-                theme: "basemapToggle",
-                map: this.viewModel.esriMap,
-                basemaps: basemaps,
-                visible: true,
-                basemap: "hybrid"
-            }, "basemap-toggle");
-            basemapToggle.startup();
+                this.viewModel.esriBasemapToggle = new esri.dijit.BasemapToggle({
+                    theme: "basemapToggle",
+                    map: this.viewModel.esriMap,
+                    basemaps: basemaps,
+                    visible: true,
+                    basemap: "hybrid"
+                }, "basemap-toggle");
+                this.viewModel.esriBasemapToggle.startup();
+            } catch (ex) {
+                console.log('cannot load basemap toggle');
+            }
+
 
             //Event handlers
             this.viewModel.esriMap.on("load", function (event: any) {
                 var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/40");
                 (<esri.Map>event.map).addLayer(featureLayer);
-                thisScope.setInfoScreenHeight();
-                window.setTimeout(thisScope.animateInfoScreen, 1000);
+                //thisScope.setInfoScreenHeight();
+                //window.setTimeout(thisScope.animateInfoScreen, 1000);
                 thisScope.resizeMap();
             });
 
@@ -148,14 +189,18 @@ export class OE_AquacultureFinancialView extends ViewBase {
             this.viewModel.esriLocator.locationToAddress(inputPnt, 100);
             window.setTimeout(() => { thisScope.viewModel.esriMap.centerAndZoom(inputPnt, 13); }, 1000);
         }
-
         $(window).resize(function () {
             thisScope.resizeMap();
+            //thisScope.viewModel.esriMap.reposition();
+            //thisScope.viewModel.esriMap.resize();
+
         });
     }
 
     deactivated() {
         this.removeSelectedLocation();
+        this.viewModel.workflowContext.setValue("outputVal", "finished!");
+        this.viewModel.workflowContext.completeActivity();
         this.viewModel._resetDefaults();
     }
 
@@ -174,21 +219,50 @@ export class OE_AquacultureFinancialView extends ViewBase {
         this.animateInfoScreen();
     }
 
-    gotoNextScreen() {
-        this.viewModel.active_screen.set(this.viewModel.active_screen.get() + 1);
-        if (this.viewModel.active_screen.get() === 2) {
-            this.createLineChart();
-            //get routing on second page if selected place
-            if (this.viewModel.has_location.get()) {
-                this.runRoutingServices();
-            }
-        }
+    updateModel(event, element, context) {
+        console.log('surprise!', event, element, context);
+        this.viewModel.updateViewModel(context);
+    }
 
+    gotoTab(evt, el, cntx) {
+        let screen = this.viewModel.screens_collection.get().filter(s => s['screen'] === cntx.screen)[0];
+        //this.viewModel.show_all_tabs.set(true);
+        this.openTab(null, null, screen);
+    }
+    gotoNextScreen(evt, el, cntx) {
+        let curIndx = this.viewModel.active_screen.get();
+        if (curIndx === 0) {
+            //update title
+            this.app.viewManager.getViewById("OE_AquacultureFinancialView").title.set("Aquaculture Financial Planning for " + this.viewModel.selected_system.get().system);
+            this.viewModel.refreshScreenFilters();
+        } 
+        
+        this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(curIndx + 1));
+        //if (this.viewModel.active_screen.get() === 2) {
+        //    this.createLineChart();
+        //    //get routing on second page if selected place
+        //    if (this.viewModel.has_location.get()) {
+        //        this.runRoutingServices();
+        //    }
+        //}
     }
 
     gotoPrevScreen() {
-        this.viewModel.active_screen.set(this.viewModel.active_screen.get() - 1);
+        let curIndx = this.viewModel.active_screen.get();
+        if (curIndx === 0) {
+            this.viewModel.show_back_btn.set(false);
+        }
+        this.viewModel.active_screen.set(curIndx - 1);
+        this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(curIndx - 1));
     }
+
+    gotoSummary() {
+        //get summary screen and pass to openTab function
+        let summaryScreen = this.viewModel.screens_collection.getItems().filter(s => s['screen'] === "Summary")[0];
+        this.openTab(null, null, summaryScreen);
+    }
+
+    
 
     zoomToSelectedLocation(evt, elem, ctx) {
         this.viewModel.esriMap.centerAndZoom(ctx.point, 13);
@@ -204,28 +278,29 @@ export class OE_AquacultureFinancialView extends ViewBase {
     }
 
     setLocation() {
-        this.viewModel.show_add_location.set(false);
+        this.viewModel.screens_collection.get().forEach(s => {
+            s['sections'].get().forEach(sct => {
+                if (sct.sectionType === 'Map') {
+                    sct.show_add_location.set(false);
+                }
+            });
+        });
     }
 
     removeSelectedLocation() {
         this.viewModel.selected_location.set(null);
-        this.viewModel.show_selected_location.set(false);
-        this.viewModel.esriSearch.clear();
-        this.viewModel.esriMap.graphics.clear();
+        this.setLocation();
+        try {
+            this.viewModel.esriSearch.clear();
+            this.viewModel.esriMap.graphics.clear();
+        } catch (ex) {
+            console.log('clear search exit');
+        }
     }
 
     setSelectedSystem(_event, _element, context) {
-
-        this.viewModel.selected_system.set(this.viewModel.systems_tbl.get().filter((system) => {
-            return system['system'] === context.system;
-        })[0]);
-        this.viewModel.selected_species.set(this.viewModel.species_tbl.get().filter((species) => {
-            return species['species'] === this.viewModel.selected_system.get()['species'];
-        })[0]);
-        this.viewModel.selected_prod_meth.set(this.viewModel.prod_meth_tbl.get().filter((prodmeth) => {
-            return prodmeth['production_method'] === this.viewModel.selected_system.get()['production_method'];
-        })[0]);
-        this._setSliders();
+        this.viewModel.setSelectedSystem(context.system);
+        //this._setSliders();
         return true;
     }
 
@@ -233,30 +308,124 @@ export class OE_AquacultureFinancialView extends ViewBase {
         let mapPoint = this.viewModel.selected_location.get().point;
         var workflowArgs:any = {};
         workflowArgs.workflowId = "Routing_Services";
-        workflowArgs.startPointIn = mapPoint.y.toString() + "," + mapPoint.x.toString();
+        workflowArgs.startPointIn = mapPoint.x.toString() + "," + mapPoint.y.toString();
         workflowArgs.runInBackground = true;
         this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
     }
 
     setInfoScreenHeight() {
-        $("#info-screen-content").height(
-            $("#aqua-financial-pln-wrapper").height()
-            - ($("#info-screen-toggle-bar").height()
-                + (parseInt($("#info-screen-content").css("padding-top").replace("px", "")) * 2))
-        );
+        //modal height - header - toggle
+        let modalContainerHeight = $('.modal-container').height();
+        let modalHeader = $('.panel-header').height();
+        let toggleBar = $('#info-screen-toggle-bar').height();
+        let infoScreenContentHeight = modalContainerHeight - (modalHeader + toggleBar);
+
+        $("#info-screen-content").height(infoScreenContentHeight);
+        
+        //$("#info-screen-content").height(
+        //    $("#aqua-financial-pln-wrapper").height()
+        //    - ($("#info-screen-toggle-bar").height()
+        //        + (parseInt($("#info-screen-content").css("padding-top").replace("px", "")) * 2))
+        //);
+    }
+
+    //gotoNextTab(evt, el, ctx) {
+    //    console.log('goto next', ctx);
+    //    this.viewModel.selected_system.set(ctx.selected_system.get());
+    //    //update title
+    //    this.app.viewManager.getViewById("OE_AquacultureFinancialView").title.set("Aquaculture Financial Planning for " + ctx.selected_system.get().system);
+    //    this.viewModel.refreshScreenFilters();
+    //    //this.viewModel.screens_collection_filter.refresh();
+    //    this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(1));
+    //}
+
+    toggleParameters(evt, el, ctx) {
+        ctx.visible.set(!ctx.visible.get());
+    }
+
+    toggleDesc(evt, el, ctx) {
+        ctx.showDesc.set(!ctx.showDesc.get());
+    }
+
+    showAllTabs() {
+        //this.viewModel.show_all_tabs.set(true);
+        this.viewModel.refreshScreenFilters();
+    }
+
+    hideDetailTabs() {
+        //this.viewModel.show_all_tabs.set(false);
+        this.viewModel.refreshScreenFilters();
     }
 
     toggleSystemFilters() {
-        this.viewModel.show_system_filters.set(!this.viewModel.show_system_filters.get());
-        this.viewModel.show_filter_class.set(this.viewModel.show_filter_class.get() === "hide-filters" ? "show-filters" : "hide-filters");
+        if (this.viewModel.screens_collection.get().length > 0) {
+            this.viewModel.screens_collection.getItems().forEach(s => {
+                s['sections'].get().forEach(sct => {
+                    if (sct.sectionType === 'Select System') {
+                        sct.show_system_filters.set(!sct.show_system_filters.get());
+                        sct.show_filter_class.set(sct.show_filter_class.get() === "hide-filters" ? "show-filters" : "hide-filters");
+                    }
+                });
+            });
+        }
+        //this.viewModel.show_system_filters.set(!this.viewModel.show_system_filters.get());
+        //this.viewModel.show_filter_class.set(this.viewModel.show_filter_class.get() === "hide-filters" ? "show-filters" : "hide-filters");
     }
 
     resetFilters() {
-        this.viewModel.selected_prod_meth_filter.set(this.viewModel.prod_meth_tbl.getAt(0)['production_method']);
-        this.viewModel.selected_species_filter.set(this.viewModel.species_tbl.getAt(0)['species']);
-        this.viewModel.show_other_input_params_1.set(false);
+        this.viewModel.resetSystemFilters();
     }
 
+    setSelectedQuickstartResource(evt,el,cntx) {
+        this.viewModel.setSelectedQuickstartResource(cntx.fieldName);
+        return true;
+    }
+
+    
+
+    setUIInputs(reset?) {
+        var thisScope = this;
+        this.viewModel.screens_collection.get().forEach((s) => {
+            s['sections'].get().forEach(sct => {
+                sct.fields.get().forEach(f => {
+                    switch (f.uiType) {
+                        case 'slider':
+                            let sliderID = f.fieldCalVar;
+                            var sliderTextHandle = $("#" + sliderID + " .oe-slider-handle");
+                            let min = f.min ? parseFloat(f.min) : 0;
+                            let max = f.max ? parseFloat(f.max) : 100;
+
+                            let increment = f.increment ? parseFloat(f.increment) : 1;
+
+                            ////////////////////////////////////////////////
+                            // Traditional JQuery Slider
+                            ////////////////////////////////////////////////
+                            $("#" + sliderID).slider({
+                                step: increment,
+                                min: min,
+                                max: max,
+                                value: parseFloat(f.value.get()),
+                                create: function () {
+                                    sliderTextHandle.text(thisScope.viewModel.formatSliderValue(f.value.get(), f.unit));
+                                },
+                                slide: function (event, ui) {
+                                    sliderTextHandle.text(thisScope.viewModel.formatSliderValue(ui.value.toString(), f.unit));
+                                },
+                                stop: function (event, ui) {
+                                    f.value.set(ui.value.toString());
+                                    thisScope.updateModel(null,null,f);
+                                }
+                            });
+                            if (reset) {
+                                f.value.set(null);
+                            }
+
+                    }
+                })
+            })
+        })
+
+    }
     _setSliders() {
 
         let _species = this.viewModel.selected_species.get();

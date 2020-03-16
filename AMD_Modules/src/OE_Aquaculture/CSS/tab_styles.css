@@ -1,0 +1,79 @@
+﻿* {
+    box-sizing: border-box
+}
+
+/* Style the tab */
+.tab {
+    /*float: left;*/
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    /*width: 30%;*/
+    /*min-height: 500px;*/
+    height:100%;
+    padding:0;
+    width:15em;
+}
+
+    /* Style the buttons that are used to open the tab content */
+    .tab button {
+        display: block;
+        background-color: inherit;
+        color: black;
+        padding: 12px 16px;
+        margin:0;
+        width: 100%;
+        /*border: none;
+        outline: none;*/
+        text-align: left;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        /* Create an active/current "tab button" class */
+        .tab button.activeTab {
+            position: relative;
+            background: #88b7d5;
+            border: 2px solid #c2e1f5;
+            margin:0;
+        }
+
+            .tab button.activeTab:after, .tab button.activeTab:before {
+                left: 100%;
+                top: 50%;
+                border: solid transparent;
+                content: " ";
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
+            }
+
+            .tab button.activeTab:after {
+                border-color: rgba(136, 183, 213, 0);
+                border-left-color: #88b7d5;
+                border-width: 21px;
+                margin-top: -21px;
+            }
+
+            .tab button.activeTab:before {
+                border-color: rgba(194, 225, 245, 0);
+                border-left-color: #c2e1f5;
+                border-width: 25px;
+                margin-top: -25px;
+            }
+
+/* Style the tab content */
+.tabcontent {
+    /*float: left;*/
+    padding: 0px 12px;
+    /*border: 1px solid #ccc;*/
+    /*width: 70%;*/
+    border-left: none;
+    min-height: 500px;
+}
+

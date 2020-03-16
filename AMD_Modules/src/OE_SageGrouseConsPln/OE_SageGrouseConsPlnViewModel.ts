@@ -586,6 +586,7 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
                     _dataValue.min = dv.min;
                     _dataValue.max = dv.max;
                     _dataValue.default = dv.default;
+                    _dataValue.comparator = dv.comparator;
                     _dataValue.increment = dv.increment;
                     _dataValue.fields = dv.fields;
                     _dataValue.optionID = nameForIDs;

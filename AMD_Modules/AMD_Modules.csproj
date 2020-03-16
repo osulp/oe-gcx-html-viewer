@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>2.4.2</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.4</TypeScriptToolsVersion>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>44325</IISExpressSSLPort>
@@ -28,6 +28,22 @@
     <Content Include="package.json" />
     <Content Include="post_build_modules.bat" />
     <Content Include="README.md" />
+    <Content Include="src\OE_Aquaculture\CSS\OE_Aquaculture.css" />
+    <Content Include="src\OE_Aquaculture\CSS\tab_styles.css" />
+    <Content Include="src\OE_Aquaculture\Language.json" />
+    <Content Include="src\OE_Aquaculture\OE_AquacultureFinancialView.html" />
+    <Content Include="src\OE_Aquaculture\OE_AquacultureFinancialView.ts" />
+    <Content Include="src\OE_Aquaculture\OE_AquacultureFinancialViewModel.ts" />
+    <Content Include="src\OE_Aquaculture\OE_AquacultureModule.ts" />
+    <Content Include="src\OE_Aquaculture\Templates\inputsCalculated.html" />
+    <Content Include="src\OE_Aquaculture\Templates\inputNumber.html" />
+    <Content Include="src\OE_Aquaculture\Templates\summary.html" />
+    <Content Include="src\OE_Aquaculture\Templates\slider.html" />
+    <Content Include="src\OE_Aquaculture\Templates\locationMap.html" />
+    <Content Include="src\OE_Aquaculture\Templates\inputs.html" />
+    <Content Include="src\OE_Aquaculture\Templates\parameters.html" />
+    <Content Include="src\OE_Aquaculture\Templates\resources.html" />
+    <Content Include="src\OE_Aquaculture\Templates\selectSystem.html" />
     <Content Include="src\OE_ConvertGeometry\CSS\OE_ConvertGeometryModule.css" />
     <Content Include="src\OE_ConvertGeometry\OE_ConvertGeometryView.html" />
     <Content Include="src\OE_ConvertGeometry\readme.txt" />
@@ -91,16 +107,14 @@
     <Content Include="src\OE_OITT\OE_OITTView.html" />
     <Content Include="src\OE_AddLayerToLayerList\CSS\OE_AddLayerToLayerListModule.css" />
     <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListView.html" />
-    <Content Include="src\OE_Aquaculture\CSS\OE_Aquaculture.css" />
-    <Content Include="src\OE_Aquaculture\OE_AquacultureFinancialView.html" />
     <Content Include="src\Template\CSS\TemplateModule.css" />
     <Content Include="src\OE_OWRTReports\Language.json" />
     <Content Include="src\OE_LayerActions\Language.json" />
     <Content Include="src\OE_OITT\Language.json" />
     <Content Include="src\OE_AddLayerToLayerList\Language.json" />
     <Content Include="src\OE_ConvertGeometry\Language.json" />
-    <Content Include="src\OE_Aquaculture\Language.json" />
-    <None Include="src\OE_Aquaculture\CSS\calcite.dijit.css.old" />
+    <Content Include="src\OE_Aquaculture\CSS\calcite.dijit.css.old" />
+    <Content Include="src\OE_Aquaculture\CSS\calcite.esri.css.old" />
     <None Include="src\Template\Language.json" />
     <None Include="src\Template\TemplateView.html" />
   </ItemGroup>
@@ -157,9 +171,6 @@
     <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListModule.ts" />
     <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListView.ts" />
     <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListViewModel.ts" />
-    <Content Include="src\OE_Aquaculture\OE_AquacultureModule.ts" />
-    <Content Include="src\OE_Aquaculture\OE_AquacultureFinancialView.ts" />
-    <Content Include="src\OE_Aquaculture\OE_AquacultureFinancialViewModel.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\OE_Search\CSS\" />
