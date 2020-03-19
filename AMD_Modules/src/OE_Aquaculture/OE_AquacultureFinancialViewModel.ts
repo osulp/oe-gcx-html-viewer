@@ -23,17 +23,19 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     //SYSTEMS (Species and Production Method)
     systems_tbl: ObservableCollection<string> = new ObservableCollection([]);
     selected_system: Observable<any> = new Observable({});
+    
     //SCREEN CONFIG
     screens_collection: ObservableCollection<string> = new ObservableCollection([]);
     screens_collection_filter: FilterableCollection<any>;
     //OTHER INPUT PARAMS
     show_other_input_params_1: Observable<boolean> = new Observable(false);
-    //selected_annual_harvest: Observable<string> = new Observable('');
-    //selected_product_weight: Observable<string> = new Observable('');
-    //selected_price_target: Observable<string> = new Observable('');
     //SELECTED LOCATION
     has_location: Observable<boolean> = new Observable(false);
     selected_location: Observable<any> = new Observable();
+    //selected_location_desc: Observable<any> = new Observable();
+    //seedLocation: Observable<any> = new Observable();
+    //feedLocation: Observable<any> = new Observable();
+    //marketLocation: Observable<any> = new Observable();
     //MAP COMPONENTS
     esriMap: esri.Map;
     esriSearch: esri.dijit.Search;
@@ -44,23 +46,35 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     info_screen_arrow_src: Observable<string> = new Observable("Resources/Images/Icons/arrow-right-small-24.png");
     show_info_screen: Observable<boolean> = new Observable(false);
     //INPUT SCREENS
-    //show_screen_1: Observable<boolean> = new Observable(true);
-    //show_screen_2: Observable<boolean> = new Observable(false);
-    //show_screen_3: Observable<boolean> = new Observable(false);
-    //show_screen_4: Observable<boolean> = new Observable(false);
     active_screen: Observable<number> = new Observable(0);
     //PAGER_NAV
-    show_next_btn: Observable<boolean> = new Observable(false);
+    show_next_btn: Observable<boolean> = new Observable(true);
     show_back_btn: Observable<boolean> = new Observable(false);
     //ROUTES
     sub_station_routes: ObservableCollection<any> = new ObservableCollection([]);
-    //TAB Display
-    //show_all_tabs: Observable<boolean> = new Observable(false);
+    //Summary Button
+    show_summary_btn: Observable<boolean> = new Observable(false);
 
 
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
         this.screens_collection_filter = new FilterableCollection<any>(this.screens_collection, this._screensFilter.bind(this, this));
+        this.selected_location.bind(this, (selLoc) => {
+            if (selLoc ? selLoc.name !== 'User click' : false) {
+                this.screens_collection.get().forEach(scr => {
+                    scr['sections'].get().forEach(sec => {
+                        sec['fields'].get().forEach(f => {
+                            if (f['fieldCalVar'] === 'facilityLocation') {
+                                f.value.set(selLoc.name + "<br>Lat: " + selLoc.point.y.toFixed(2) + " Long: " + selLoc.point.x.toFixed(2));
+                                if (this.has_location.get()) {
+                                    this.runRoutingServices();
+                                }
+                            }
+                        });
+                    });
+                });
+            }
+        });
         
     }
 
@@ -98,37 +112,50 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             let routes = wc.getValue("RouteEndPoints").features.map((ri: any) => {
                 return {
                     "distance": ri.attributes.distance,
-                    "name": ri.attributes.name
+                    "name": ri.attributes.NAME,
+                    "city": ri.attributes.CITY,
+                    "county": ri.attributes.COUNTY
                 };
             });
-            this.sub_station_routes.set(routes);
+            if (routes.length > 0) {
+                this.screens_collection.get().forEach(scr => {
+                    scr['sections'].get().forEach(sec => {
+                        sec['fields'].get().forEach(function (f) {
+                            if (f['fieldCalVar'] === 'feedLocation') {
+                                f.value.set(routes.length > 0 ? routes[0].name + ': ' + routes[0].distance + ' miles <br> City: ' + routes[0].city : 'None found');
+                            }
+                            if (f['fieldCalVar'] === 'seedLocation') {
+                                f.value.set(routes.length > 1 ? routes[1].name + ': ' + routes[1].distance + ' miles <br> City: ' + routes[1].city : 'None found');
+                            }
+                            if (f['fieldCalVar'] === 'marketLocation') {
+                                f.value.set(routes.length > 2 ? routes[2].name + ': ' + routes[2].distance + ' miles <br> City: ' + routes[2].city : 'None found');
+                            }
+                        });
+                    });
+                });
+            }
+            //this.sub_station_routes.set(routes);
         });
-
-        //this.active_screen.bind(this, (activeScreen) => {
-        //    this.show_screen_1.set(false);
-        //    this.show_screen_2.set(false);
-        //    this.show_screen_3.set(false);
-        //    this.show_screen_4.set(false);
-        //    if (activeScreen > 0) {
-        //        this["show_screen_" + activeScreen].set(true);
-        //        this.show_next_btn.set(activeScreen < 4);
-        //        this.show_back_btn.set(activeScreen > 1);
-        //    }
-        //});
     }
 
     setSystems(wc) {
         //create the object array for summary data
+        let defaultSystem;
         let systems = wc.getValue("systems").features ? wc.getValue("systems").features
             .filter(f => f.attributes.System !== 'All')
             .map((feat) => {
-                return {
+                let sys =
+                {
                     "production_method": feat.attributes.ProductionMethod,
                     "species": feat.attributes.Species,
                     "system": feat.attributes.System,
                     "systemid": feat.attributes.System.replace(/\ /g, "").replace(/\:/g, "_"),
-                    "selected": new Observable<boolean>(false)
+                    "selected": new Observable<boolean>(feat.attributes.Default === "True")
+                };
+                if (feat.attributes.Default === 'True') {
+                    defaultSystem = sys;
                 }
+                return sys;
             }) : [];
 
         this.systems_tbl.set(systems);
@@ -142,6 +169,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                 });
             });
         }
+
+        this.setSelectedSystem(defaultSystem.system);
     }
 
     setSpecies(wc) {
@@ -239,6 +268,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                     let returnObj =
                     {
                         screen: sAttr.Screen,
+                        screenTitle: sAttr.ScreenTitle,
+                        subTitle: sAttr.SubTitle,
                         screenOrder: sAttr.Order,
                         id: 'screen' + sAttr.Order,
                         tabId: sAttr.Order === '1' ? 'defaultOpen' : 'screen' + sAttr.Order,
@@ -270,7 +301,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                             screen: ssAttr.Screen,
                             sectionType: ssAttr.SectionType,
                             sectionDesc: ssAttr.SectionDesc,
-                            displayClass: 'screenSection' + ssAttr.Display + ' panel-cell',
+                            displayClass: 'screenSection' + ssAttr.Display,// + ' panel-cell',
                             fields: new ObservableCollection<any>([]),
                             visible: new Observable<boolean>(true),
                             //show_all_tabs: this.show_all_tabs
@@ -316,8 +347,30 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
                         let _screenSectionFields = scrCnfFeat.filter(f => f.attributes.Section === ssAttr.SectionID)
                             .map(sf => {
+                                let thisScope = this;
                                 const att = sf.attributes;
-                                let fieldValue = new Observable<any>(this.formatValue(att.Default, att.Decimal));
+let value = this.formatValue(att.Default, att.Decimal)
+                                let fieldValue;
+                                fieldValue = new Observable<any>(value);
+                                //switch (att.fieldCalVar) {
+                                //    case 'facilityLocation':
+                                //        fieldValue = this.selected_location_desc;
+                                //        break;
+                                //    case 'seedLocation':
+                                //        fieldValue = this.seedLocation;
+                                //        break;
+                                //    case 'feedLocation':
+                                //        fieldValue = this.feedLocation;
+                                //        break;
+                                //    case 'marketLocation':
+                                //        fieldValue = this.marketLocation;
+                                //        break;
+                                //    default:
+                                //        fieldValue = new Observable<any>(value);
+                                //        break;
+                                //}
+                                let fieldDisplayValue = new Observable<any>(this.formatDisplayValue(value, att.Unit));
+                                
 
                                 let returnVal =
                                 {
@@ -330,6 +383,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                                     defaultVal: att.Default,
                                     increment: att.Increment,
                                     value: fieldValue,
+                                    formattedValue: fieldDisplayValue,
                                     min: att.Min,
                                     max: att.Max,
                                     decimalDisp: att.Decimal,
@@ -337,29 +391,32 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                                     formula: att.Formula,
                                     desc: att.Description,
                                     notes: att.Notes,
-                                    showDesc: new Observable<boolean>(false),
+                                    showDesc: new Observable<boolean>(true),
                                     visible: new Observable<boolean>(att.Field === 'Total Land'),
                                     tableDisplayClass: 'div-table-cell ' + att.FieldCategory
                                 };
+                                fieldValue.bind(returnVal, (val) => {
+                                    returnVal.formattedValue.set(thisScope.formatDisplayValue(val, returnVal.unit));
+                                });
                                 return returnVal;
                             });
 
                         returnSectionInfo.fields.set(_screenSectionFields);
-                        //Quickstart only sort fields for resource vs goal
-                        if (returnSectionInfo.section === 'resourceIntro') {
-                            let categories = _screenSectionFields.map(f => f.fieldCat)
-                                .filter((v, idx, self) => self.indexOf(v) === idx);
-                            var field_categories = [];
-                            categories.forEach(c => {
-                                let catFields = _screenSectionFields.filter(sf => sf.fieldCat === c);
-                                let cat = {
-                                    category: c,
-                                    fields: new ObservableCollection<any>(catFields)
-                                }
-                                field_categories.push(cat);
-                            });
-                            returnSectionInfo['field_categories'].set(field_categories);
-                        }
+                        ////Quickstart only sort fields for resource vs goal
+                        //if (returnSectionInfo.section === 'resourceIntro') {
+                        //    let categories = _screenSectionFields.map(f => f.fieldCat)
+                        //        .filter((v, idx, self) => self.indexOf(v) === idx);
+                        //    var field_categories = [];
+                        //    categories.forEach(c => {
+                        //        let catFields = _screenSectionFields.filter(sf => sf.fieldCat === c);
+                        //        let cat = {
+                        //            category: c,
+                        //            fields: new ObservableCollection<any>(catFields)
+                        //        }
+                        //        field_categories.push(cat);
+                        //    });
+                        //    returnSectionInfo['field_categories'].set(field_categories);
+                        //}
                         return returnSectionInfo;
                     });
                 scr.sections.set(_screenSections);
@@ -376,7 +433,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
 
     formatValue(value, decimalPlaces) {
-        return this.addCommas(parseFloat(value).toFixed(decimalPlaces).toString());
+        let val = value.toString().replace(/\,/g, '');
+        return this.addCommas(parseFloat(val).toFixed(decimalPlaces).toString());
     }
 
     addCommas(nStr) {
@@ -390,6 +448,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         }
         return x1 + x2;
     }
+
     updateViewModel(changedInput) {
         //find all fields that are dependant on this field
         let _fieldCalVar = changedInput.fieldCalVar;
@@ -403,7 +462,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                         if (newVal !== f.value.get()) {
                             if (f.uiType === 'slider') {
                                 $('#' + f.fieldCalVar).slider('value', parseFloat(newVal));
-                                $("#" + f.fieldCalVar + " .oe-slider-handle").text(this.formatSliderValue(newVal, f.unit));
+                                $("#" + f.fieldCalVar + " .oe-slider-handle").text(this.formatDisplayValue(newVal, f.unit));
                             } 
                             f.value.set(newVal);
                             this.updateViewModel(f);
@@ -414,7 +473,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         });
     }
 
-    formatSliderValue(val, unit) {
+    formatDisplayValue(val, unit) {
         let returnVal;
         val = this.addCommas(val);
         switch (unit) {
@@ -496,6 +555,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
         this.show_other_input_params_1.set(selSystem ? true : false);
 
+        this.refreshScreenFilters()
+
         //this.viewModel.selected_system.set(this.viewModel.systems_tbl.get().filter((system) => {
         //    return system['system'] === context.system;
         //})[0]);
@@ -532,6 +593,17 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                 });
             });
         }
+    }
+
+    runRoutingServices() {
+        let mapPoint = this.selected_location.get().point;
+        //convert to 4326
+
+        var workflowArgs: any = {};
+        workflowArgs.workflowId = "Routing_Services";
+        workflowArgs.startPointIn = mapPoint.x.toString() + "," + mapPoint.y.toString() + "," + mapPoint.spatialReference.wkid;
+        workflowArgs.runInBackground = true;
+        this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
     }
 
     _injectScript() {
@@ -630,12 +702,6 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                 });
             }
         });
-
-
-
-
-
-
     }
 
     _systemsFilters(thisViewModel: any, system: any) {
@@ -670,9 +736,9 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     }
 
     _screensFilter(thisViewModel: any, screen: any) {
-        //return true;
-        let hasSystemSelected = this.selected_system.get()['system'] ? true : false;
-        return hasSystemSelected || screen.screenOrder === '1';
+        return true;
+        //let hasSystemSelected = this.selected_system.get()['system'] ? true : false;
+        //return hasSystemSelected || screen.screenOrder === '1';
 
         //if (hasSystemSelected) {
         //    //filter to only show fields that are set to show are set for all or for the selected system

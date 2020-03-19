@@ -5,7 +5,7 @@
     min-height:600px;*/
     /*max-width: 1200px;*/
     /*max-height: 1200px;*/
-    position:relative;
+    position: relative;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1.2em;
 }
@@ -32,7 +32,7 @@
 
 .panel-cell {
     display: table-cell;
-    /*width: 75%;*/
+    width: 75%;
     min-width: 150px;
     vertical-align: top;
     /*min-height: 500px;*/
@@ -48,20 +48,40 @@
     }
 
     .panel-cell.screens {
-        width:75%;
-        min-width: 700px;
-        padding-bottom:40px;
+        /*width:75%;*/
+        /*min-width: 700px;*/
+        padding-bottom: 40px;
+    }
+
+header {
+    background: beige;
+    padding: 0 10px 0;
+    height: 30px;
+    border-bottom: 1px solid #D9D9D9;
+}
+    header div{
+        text-align:right;
+        padding:5px;
+        font-size:.9em;
+        color:#1A72C4;
+    }
+    header div:hover{
+        text-decoration:underline;
+        cursor:pointer;
+    }
+    section{
+        height:100%;
     }
 
 #fin-pln-footer {
-    position:absolute;
-    bottom:0;
-    left:0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    border-top: 1px solid #1A72C4;
+    /*border-top: 1px solid #1A72C4;*/
     padding: 10px 0;
-    background-color:white;
-    min-height:50px;
+    background-color: #ddd;
+    min-height: 50px;
     z-index: 10;
 }
 
@@ -97,7 +117,7 @@
     left: 0;
     top: 0;
     right: 0;
-    bottom:0;
+    bottom: 0;
     background-color: whitesmoke;
     z-index: 20000;
     padding: 20px;
@@ -179,8 +199,42 @@
         margin: 0 10px;
     }
 
+    .oe-btn-wrapper.summary {
+        width: 140px;
+        position: absolute;
+        right: 6px;
+        top: 6px;
+    }
+
+        .oe-btn-wrapper.summary:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .oe-btn-wrapper.summary:before {
+            content: "";
+            width: 30px;
+            height: 30px;
+            background: url("/Resources/Images/Icons/log.png");
+            top: 0px;
+            left: 5px;
+            position: absolute;
+            display: inline-block;
+        }
+
+        .oe-btn-wrapper.summary .oe-btn {
+            background: #c34500;
+            color: white;
+        }
+
+.oe-brand {
+    position: absolute;
+    left: 11px;
+    top: 7px;
+}
+
 fieldset {
-    position:relative;
+    position: relative;
     /*width:100%;*/
     border: solid 1px #808080;
     border-radius: 4px;
@@ -405,8 +459,8 @@ legend {
     display: none;
 }
 
-h2.screen-header{
-    margin-left:15px;
+h2.screen-header {
+    margin-left: 15px;
 }
 
 .activeTab, .activeScreen {
@@ -417,27 +471,39 @@ h2.screen-header{
     display: none;
 }
 
-.div-row{
-    width:90%;
-    margin:auto;
+.div-row {
+    width: 90%;
+    margin: auto;
 }
 
-.div-row div.div-row-cell {
-    display: inline-block;
-    vertical-align: top;
-    width: 47%;
-}
-
-    .div-row div.div-row-cell fieldset {
-        margin: 0 20px;
-        font-size: .8em;
+    .div-row.no-pad {
         width: 100%;
-        background: #e6e0e0;
     }
 
-    .div-row div.div-row-cell legend {
-        margin: 20px;
+        .div-row.no-pad div.div-row-cell:first-child {
+            width: 72%;
+        }
+
+        .div-row.no-pad div.div-row-cell:last-child {
+            width: 25%;
+        }
+
+    .div-row div.div-row-cell {
+        display: inline-block;
+        vertical-align: top;
+        width: 47%;
     }
+
+        .div-row div.div-row-cell fieldset {
+            margin: 0 20px;
+            font-size: .8em;
+            width: 100%;
+            background: #e6e0e0;
+        }
+
+        .div-row div.div-row-cell legend {
+            margin: 20px;
+        }
 
 .div-row-cell .desc {
     margin: 10px 20px 10px 30px;
@@ -455,13 +521,13 @@ h2.screen-header{
     text-indent: each-line 10px;
 }
 
-.table-notes{
-    width:90%;
-    margin:auto;
-    font-size:.9em;
-    color:#302f2f;
-    text-align:right;
-    background-color:white;
+.table-notes {
+    width: 90%;
+    margin: auto;
+    font-size: .9em;
+    color: #302f2f;
+    text-align: right;
+    background-color: white;
 }
 
 .input-header {
@@ -475,9 +541,9 @@ h2.screen-header{
     margin: auto;
 }
 
-.div-table.parameters{
-    background-color:#f0f0f0;
-}
+    .div-table.parameters {
+        background-color: #f0f0f0;
+    }
 
 .div-table-row {
     display: table-row;
@@ -489,6 +555,19 @@ h2.screen-header{
     border: solid 1px #e6e0e0;
 }
 
+    .div-table-cell:nth-child(1) {
+        width: 75%;
+    }
+
+    .div-table-cell:nth-child(2) {
+        width: 25%;
+        /*text-align:center;*/
+    }
+
+    .div-table-cell:nth-child(3) {
+        width: 12%;
+    }
+
     .div-table-cell.InputCalcTotal {
         font-size: 1.1em;
         font-weight: bold;
@@ -496,12 +575,12 @@ h2.screen-header{
         border-bottom: solid 2px black;
     }
 
-    .div-table-cell.units{
-        text-align:center;
+    .div-table-cell.units {
+        text-align: center;
     }
 
     .div-table-cell.values {
-        padding-left:10px;
+        padding-left: 10px;
     }
 
 #system-select-wrapper {
@@ -574,22 +653,26 @@ h2.screen-header{
 }
 
 
-.toggle-detail-inputs div{
-    font-size:.9em;
-    padding:15px;
-    color:#1A72C4;
+.toggle-detail-inputs div {
+    font-size: .9em;
+    padding: 15px;
+    color: #1A72C4;
 }
 
-.toggle-detail-inputs div:hover {
-    text-decoration: underline;
-    cursor:pointer;
-}
+    .toggle-detail-inputs div:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
 
-.rdgroup{
-    padding-left:15px;
+.rdgroup {
+    padding-left: 15px;
 }
 
 .section-desc {
     width: 90%;
     margin: auto;
 }
+
+    .section-desc div {
+        width: 90%;
+    }

@@ -47,7 +47,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
         let screenOrder = parseInt(ctx.screenOrder) - 1;
         this.viewModel.active_screen.set(screenOrder);
         this.viewModel.show_back_btn.set(screenOrder > 0);
-        this.viewModel.show_next_btn.set(screenOrder < this.viewModel.screens_collection_filter.length() -1);
+        this.viewModel.show_next_btn.set(screenOrder < (this.viewModel.screens_collection_filter.length() -1));
         
         this.viewModel.screens_collection.get().forEach(scr => {
             scr['screenTabClass'].set('tablinks ' + (ctx.id === scr['id'] ? 'activeTab' : 'inactiveTab'));
@@ -57,7 +57,12 @@ export class OE_AquacultureFinancialView extends ViewBase {
         $('#modal-description').stop().animate({
             'scrollTop': $('#'+ctx.id)
         }, 800, 'swing');
-        //window.location.hash = "#" + ctx.id;
+
+        //load map if on transportation
+        if (ctx.screen === 'Transportation') {
+            this.renderMap();
+        }
+        
     } 
 
     renderMap() {
@@ -220,7 +225,9 @@ export class OE_AquacultureFinancialView extends ViewBase {
     }
 
     updateModel(event, element, context) {
-        console.log('surprise!', event, element, context);
+        if (context.value.get() !== this.viewModel.formatValue(context.value.get(), context.decimalDisp)) {
+            context.value.set(this.viewModel.formatValue(context.value.get(), context.decimalDisp));
+        }
         this.viewModel.updateViewModel(context);
     }
 
@@ -233,10 +240,10 @@ export class OE_AquacultureFinancialView extends ViewBase {
         let curIndx = this.viewModel.active_screen.get();
         if (curIndx === 0) {
             //update title
-            this.app.viewManager.getViewById("OE_AquacultureFinancialView").title.set("Aquaculture Financial Planning for " + this.viewModel.selected_system.get().system);
+            //this.app.viewManager.getViewById("OE_AquacultureFinancialView").title.set("Aquaculture Financial Planning for " + this.viewModel.selected_system.get().system);
             this.viewModel.refreshScreenFilters();
         } 
-        
+        this.viewModel.show_summary_btn.set(this.viewModel.active_screen.get() < this.viewModel.screens_collection.length() - 1);
         this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(curIndx + 1));
         //if (this.viewModel.active_screen.get() === 2) {
         //    this.createLineChart();
@@ -304,14 +311,14 @@ export class OE_AquacultureFinancialView extends ViewBase {
         return true;
     }
 
-    runRoutingServices() {
-        let mapPoint = this.viewModel.selected_location.get().point;
-        var workflowArgs:any = {};
-        workflowArgs.workflowId = "Routing_Services";
-        workflowArgs.startPointIn = mapPoint.x.toString() + "," + mapPoint.y.toString();
-        workflowArgs.runInBackground = true;
-        this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
-    }
+    //runRoutingServices() {
+    //    let mapPoint = this.viewModel.selected_location.get().point;
+    //    var workflowArgs:any = {};
+    //    workflowArgs.workflowId = "Routing_Services";
+    //    workflowArgs.startPointIn = mapPoint.x.toString() + "," + mapPoint.y.toString();
+    //    workflowArgs.runInBackground = true;
+    //    this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
+    //}
 
     setInfoScreenHeight() {
         //modal height - header - toggle
@@ -381,7 +388,9 @@ export class OE_AquacultureFinancialView extends ViewBase {
         return true;
     }
 
-    
+    closeView() {
+        this.viewModel.app.commandRegistry.command("DeactivateView").execute("OE_AquacultureFinancialView");
+    }
 
     setUIInputs(reset?) {
         var thisScope = this;
@@ -406,10 +415,10 @@ export class OE_AquacultureFinancialView extends ViewBase {
                                 max: max,
                                 value: parseFloat(f.value.get()),
                                 create: function () {
-                                    sliderTextHandle.text(thisScope.viewModel.formatSliderValue(f.value.get(), f.unit));
+                                    sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(f.value.get(), f.unit));
                                 },
                                 slide: function (event, ui) {
-                                    sliderTextHandle.text(thisScope.viewModel.formatSliderValue(ui.value.toString(), f.unit));
+                                    sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(ui.value.toString(), f.unit));
                                 },
                                 stop: function (event, ui) {
                                     f.value.set(ui.value.toString());
@@ -426,74 +435,74 @@ export class OE_AquacultureFinancialView extends ViewBase {
         })
 
     }
-    _setSliders() {
+    //_setSliders() {
 
-        let _species = this.viewModel.selected_species.get();
+    //    let _species = this.viewModel.selected_species.get();
 
-        ////////////
-        //  Product Weight
-        ///////////
+    //    ////////////
+    //    //  Product Weight
+    //    ///////////
 
-        var sliderProductWeightHandle = $("#slider-product-weight .oe-slider-handle");
+    //    var sliderProductWeightHandle = $("#slider-product-weight .oe-slider-handle");
 
-        $("#slider-product-weight").slider({
-            step: Number(_species["weight_increment"]),
-            min: Number(_species["weight_min"]),
-            max: Number(_species["weight_max"]),
-            value: _species["weight_default"],
-            create: function () {
-                sliderProductWeightHandle.text(_species["weight_default"].toString() + " lbs");
-            },
-            slide: function (event, ui) {
-                sliderProductWeightHandle.text(ui.value.toString() + " lbs");
-            }
-        });
+    //    $("#slider-product-weight").slider({
+    //        step: Number(_species["weight_increment"]),
+    //        min: Number(_species["weight_min"]),
+    //        max: Number(_species["weight_max"]),
+    //        value: _species["weight_default"],
+    //        create: function () {
+    //            sliderProductWeightHandle.text(_species["weight_default"].toString() + " lbs");
+    //        },
+    //        slide: function (event, ui) {
+    //            sliderProductWeightHandle.text(ui.value.toString() + " lbs");
+    //        }
+    //    });
 
-        sliderProductWeightHandle.text(_species["weight_default"] + " lbs");
+    //    sliderProductWeightHandle.text(_species["weight_default"] + " lbs");
 
-        ////////////
-        //  Price Target
-        ///////////
+    //    ////////////
+    //    //  Price Target
+    //    ///////////
 
-        var sliderPriceTargetHandle = $("#slider-price-target .oe-slider-handle");
+    //    var sliderPriceTargetHandle = $("#slider-price-target .oe-slider-handle");
 
-        $("#slider-price-target").slider({
-            step: Number(_species["price_increment"]),
-            min: Number(_species["price_min"]),
-            max: Number(_species["price_max"]),
-            value: _species["price_default"],
-            create: function () {
-                sliderPriceTargetHandle.text("$" + parseFloat(_species["price_default"]).toFixed(2));
-            },
-            slide: function (event, ui) {
-                sliderPriceTargetHandle.text("$" + parseFloat(ui.value.toString()).toFixed(2));
-            }
-        });
+    //    $("#slider-price-target").slider({
+    //        step: Number(_species["price_increment"]),
+    //        min: Number(_species["price_min"]),
+    //        max: Number(_species["price_max"]),
+    //        value: _species["price_default"],
+    //        create: function () {
+    //            sliderPriceTargetHandle.text("$" + parseFloat(_species["price_default"]).toFixed(2));
+    //        },
+    //        slide: function (event, ui) {
+    //            sliderPriceTargetHandle.text("$" + parseFloat(ui.value.toString()).toFixed(2));
+    //        }
+    //    });
 
-        sliderPriceTargetHandle.text("$" + parseFloat(_species["price_default"]).toFixed(2));
+    //    sliderPriceTargetHandle.text("$" + parseFloat(_species["price_default"]).toFixed(2));
 
-        ////////////
-        //  Annual Harvest
-        ///////////
+    //    ////////////
+    //    //  Annual Harvest
+    //    ///////////
 
-        var sliderAnnualHarvestHandle = $("#slider-annual-harvest .oe-slider-handle");
+    //    var sliderAnnualHarvestHandle = $("#slider-annual-harvest .oe-slider-handle");
 
-        $("#slider-annual-harvest").slider({
-            step: 10,
-            min: 10,
-            max: 100000,
-            value: 1000,
-            create: function () {
-                sliderAnnualHarvestHandle.text("1,000 lbs");
-            },
-            slide: function (event, ui) {
-                sliderAnnualHarvestHandle.text(ui.value.toString() + " lbs");
-            }
-        });
+    //    $("#slider-annual-harvest").slider({
+    //        step: 10,
+    //        min: 10,
+    //        max: 100000,
+    //        value: 1000,
+    //        create: function () {
+    //            sliderAnnualHarvestHandle.text("1,000 lbs");
+    //        },
+    //        slide: function (event, ui) {
+    //            sliderAnnualHarvestHandle.text(ui.value.toString() + " lbs");
+    //        }
+    //    });
 
-        sliderAnnualHarvestHandle.text(_species["price_default"] + " lbs");
+    //    sliderAnnualHarvestHandle.text(_species["price_default"] + " lbs");
 
-    }
+    //}
 
     //TEMP example
     createLineChart(): void {

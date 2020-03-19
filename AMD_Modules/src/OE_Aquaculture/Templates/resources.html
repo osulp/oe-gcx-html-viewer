@@ -1,60 +1,39 @@
 ﻿<div data-binding="{@template-for:sections}{@visible:visible}">
     <fieldset>
         <legend data-binding="{@text:displayName}"></legend>
-
         <br />
-        <div class="div-table" data-binding="{@source:fields_filter}">
-            <!--<thead><td>Parameter</td><td>Unit</td><td>Value</td></thead>-->
-            <div class="div-table-row" data-binding="{@template-for:fields_filter}">
-                <div data-binding="{class:tableDisplayClass}">
-                    <span class="input-header" data-binding="{@text:fieldLabel}"></span>
-                </div>
-                <div class="div-table-cell units"><span data-binding="{@text:unit}"></span></div>
-                <div class="div-table-cell values"><span data-binding="{@text:value}"></span></div>
-            </div>
-        </div>
-        <div class="table-notes">Initial values are defaults.  Values can be changed below.</div>
-
-        <br />
-
         <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
         <br />
 
         <div class="div-row">
             <h3>Select a resource you can use for this system</h3>
             <hr />
-            <div class="div-row-cell" data-binding="{@source:field_categories}{@template-selector:category}">
-                <br />
-                <!--Existing Resource-->
-                <div data-binding="{@template-select:ExistingResource}">
-                    <div class="rdgroup" data-binding="{@source:fields}">
-                        <div data-binding="{@template-for: fields}">
-                            <label class="container">
-                                <span data-binding="{@text:fieldName}"></span>
-                                <input type="radio" name="qstart" data-binding="{checked:selected}{@event-onclick:setSelectedQuickstartResource}">
-                                <span class="checkmark"></span>
-                            </label>
+            <div class="div-row-cell">
+                <div class="rdgroup" data-binding="{@source:fields}">
+                    <div data-binding="{@template-for:fields}">
+                        <div data-binding="{@source:@context}{@template-selector:uiType}">
+                            <div data-binding="{@template-select:none}">
+                                <label class="container">
+                                    <span data-binding="{@text:fieldName}"></span>
+                                    <input type="radio" checked name="qstart" data-binding="{@event-onclick:setSelectedQuickstartResource}">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div data-binding="{@template-select:radiobutton}">
+                                <label class="container">
+                                    <span data-binding="{@text:fieldName}"></span>
+                                    <input type="radio" name="qstart" data-binding="{checked:selected}{@event-onclick:setSelectedQuickstartResource}">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!--<div data-binding="{@template-select:Goal}" class="div-row-cell">
-                <h3>Goals</h3>
-                <hr />
-                <div class="rdgroup" data-binding="{@source:fields}">
-                    <div data-binding="{@template-for: fields}">
-                        <label class="container">
-                            <span data-binding="{@text:fieldName}"></span>
-                            <input type="radio" name="qstart" data-binding="{checked:selected}{@event-onclick:setSelectedQuickstartResource}">
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>-->
             </div>
             <div class="div-row-cell" data-binding="{@source:fields_filter}">
                 <div data-binding="{@template-for:fields_filter}{@visible:visible}">
                     <br />
-                    <div class="div-row">
+                    <div class="div-row no-pad">
                         <div class="div-row-cell">
                             <span class="input-header" data-binding="{@text:fieldLabel}"></span>
                             <span>&nbsp;(</span>
@@ -65,32 +44,25 @@
                             <span><input type="text" data-binding="{@value:value}{placeholder:value}{@event-change:updateModel}" /></span>
                         </div>
                     </div>
-                    <div>
-                        <small>
-                            Enter your values.  Existing values are defaults that update related inputs.
-                        </small>
-                    </div>
-                    <hr />
-                    <fieldset>
-                        <legend data-binding="{@text:fieldName}"></legend>
+                    <div class="desc">
+                        <div class="input-header" data-binding="{@text:fieldName}"></div>
+                        <hr />
                         <div class="notes" data-binding="{@text:desc}"></div>
-                    </fieldset>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <br />
+        <div class="div-table" data-binding="{@source:fields_filter}">
+
+            <div class="div-table-row" data-binding="{@template-for:fields_filter}">
+                <div data-binding="{class:tableDisplayClass}">
+                    <span class="input-header" data-binding="{@text:fieldName}"></span>
+                </div>
+                <div class="div-table-cell values"><span data-binding="{@text:formattedValue}"></span></div>
+            </div>
+        </div>
+        <div class="table-notes">Initial values are defaults.  Values can be changed above.</div>
     </fieldset>
-    <!--<br />
-    <div id="pager-wrapper">
-        <center>
-            <div class="oe-btn-wrapper">
-                <div class="oe-btn wide" data-binding="{@event-onclick:gotoSummary}"}>Show Summary</div>
-            </div>
-            <div class="oe-btn-wrapper" data-binding="{@event-onclick:showAllTabs}{@hidden:show_all_tabs}">
-                <div class="oe-btn wide">View Detailed Inputs</div>
-            </div>
-            <div class="oe-btn-wrapper" data-binding="{@event-onclick:hideDetailTabs}{@visible:show_all_tabs}">
-                <div class="oe-btn wide">Hide Detailed Inputs</div>
-            </div>
-        </center>
-    </div>-->
 </div>

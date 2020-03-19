@@ -1,4 +1,4 @@
-﻿/// <reference path="./../../_Definitions/Essentials.AMD.d.ts" />
+/// <reference path="./../../_Definitions/Essentials.AMD.d.ts" />
 /// <reference path="./../../_Definitions/Framework.AMD.d.ts" />
 /// <reference path="./../../_Definitions/Framework.UI.AMD.d.ts" />
 /// <reference path="./../../_Definitions/Mapping.Infrastructure.AMD.d.ts" />
@@ -14,7 +14,7 @@ export class OE_AquacultureModule extends ModuleBase {
     }
 
     initialize(config: any): void {
-                
+
         var site = (<any>this).app.site;
-    }    
+    }
 }

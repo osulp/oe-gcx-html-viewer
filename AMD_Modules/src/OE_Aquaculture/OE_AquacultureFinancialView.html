@@ -1,26 +1,13 @@
 ﻿<div id="aqua-financial-pln-wrapper">
 
-    <div id="info-screen">
+    <!--<div id="info-screen">
         <div id="info-screen-toggle-bar" data-binding="{@event-onclick: toggleInfoScreen}">
             <img data-binding="{src: info_screen_arrow_src}" />
             <span>Knowledge Screen</span>
         </div>
         <div id="info-screen-content-wrapper">
             <div id="info-screen-content" data-binding="{@visible: show_info_screen}">
-                <div>
-                    <p>
-                        Fugit cupiditate ducimus suscipit aperiam accusantium. Voluptatem mollitia et molestias autem saepe occaecati. Magnam quidem numquam voluptas suscipit.
-                    </p>
-                    <p>
-                        In voluptates consequatur incidunt quia temporibus. Qui eum esse distinctio nesciunt quas placeat dolores. Ipsum asperiores magnam similique eius perferendis. Numquam aliquid est et.
-                    </p>
-                    <p>
-                        Sint dolore amet mollitia natus voluptate dolores vero molestias. Eos assumenda laborum voluptatibus iusto. Quae soluta rem aliquid et nulla accusantium.
-                    </p>
-                    <p>
-                        Amet quia dicta labore magni quis nihil rerum sint. Iste aut et sint aut. Consectetur nobis dolores quis incidunt.
-                    </p>
-                </div>
+
                 <div id="close-info-btn-wrapper">
                     <center>
                         <div class="oe-btn" data-binding="{@event-onclick:  toggleInfoScreen}">Close</div>
@@ -28,7 +15,13 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
+    <header>
+       <div data-binding="{@event-onclick: closeView}">
+           Aquaculture Map Viewer
+       </div>
+    </header>
+
 
     <div class="panel">
         <div class="panel-row">
@@ -49,9 +42,11 @@
             </div>
 
             <div class="panel-cell screens">
-                <div data-binding="{@source:screens_collection_filter}">   
+                <div data-binding="{@source:screens_collection_filter}">
                     <div data-binding="{class:screenContentClass}{@template-for:screens_collection_filter}">
-                        <h2 class="screen-header" data-binding="{@text:screen}{id:id}"></h2>
+                        <br />
+                        <h2 class="screen-header" data-binding="{@text:screenTitle}{id:id}"></h2>
+                        <h3 data-binding="{@text:selected_system}"></h3>
                         <div data-binding="{@source:sections}{@template-selector: sectionType}">
                             <!-- System Selection -->
                             <div data-binding="{@template-select:Select System}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/selectSystem.html}">
@@ -66,7 +61,7 @@
                             <div data-binding="{@template-select:Map}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/locationMap.html}">
                             </div>
                             <!-- Calculated Inputs -->
-                            <div data-binding="{@template-select:InputsCalculated}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputsCalculated.html}">
+                            <div data-binding="{@template-select:InputsCalculated}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputsCalculated.html}{class:displayClass}">
                             </div>
                             <!-- Input Sections -->
                             <div data-binding="{@template-select:Input}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputs.html}">
@@ -94,128 +89,12 @@
         </div>
     </div>
 
-
-    <!--<div id="input-screen-2" data-binding="{@visible: show_screen_2}" class="panel">
-        <div class="panel-row">
-            <div class="panel-cell">
-                <fieldset>
-                    <legend>Initial outputs</legend>
-                    <div class="OE_Chart" id="OE_Chart1"></div>
-                </fieldset>
-            </div>
-            <div class="panel-cell">
-                <fieldset>
-                    <legend>Screen 2!</legend>
-                    Adjustments #1
-                    <ul>
-                        <li>Extra oxygenation</li>
-                        <li>
-                            Heating equipment
-                        </li>
-                        <li>
-                            Cooling equipment
-                        </li>
-                        <li>
-                            Extra filtration
-                        </li>
-                        <li>
-                            Pump ashore
-                        </li>
-                        <li>
-                            +/- Recirculation %
-                        </li>
-                        <li>
-                            Land cost
-                        </li>
-                        <li>
-                            Renewable energy system
-                        </li>
-                        <li>
-                            Other
-                        </li>
-                    </ul>
-                </fieldset>
-
-            </div>
-        </div>
-    </div>
-    <div id="input-screen-3" data-binding="{@visible: show_screen_3}" class="panel">
-        <div class="panel-row">
-            <div class="panel-cell">
-                <fieldset>
-                    <legend>Adjusted outputs</legend>
-                </fieldset>
-            </div>
-            <div class="panel-cell">
-                <fieldset>
-                    <legend>Screen 3!</legend>
-
-                    Variable Cost Paramaters
-                    <ul>
-                        <li>
-                            Feed cost (per unit)
-                        </li>
-                        <li>
-                            Fingerlings (Seed) cost (per unit)
-
-                        </li>
-                        <li>
-                            Water cost (per unit)
-                        </li>
-                        <li>
-                            Electricity cost (per unit)
-                        </li>
-                        <li>
-                            Feed location
-                        </li>
-                        <li>
-                            Seed location
-                        </li>
-                    </ul>
-                    <div data-binding="{@source:sub_station_routes}">
-                        Sub station distances
-                        <ul data-binding="{@template-for:sub_station_routes}">
-                            <li data-binding="{@text:distance}"></li>
-                        </ul>
-                    </div>
-                </fieldset>
-            </div>
-        </div>
-    </div>
-    <div id="input-screen-4" data-binding="{@visible: show_screen_4}" class="panel">
-        <div class="panel-row">
-            <div class="panel-cell">
-                <fieldset>
-                    <legend>With variable cost outputs</legend>
-                </fieldset>
-
-            </div>
-            <div class="panel-cell">
-                <fieldset>
-                    <legend>Screen 4!</legend>
-                    Adjustments #2
-                    <ul>
-                        <li>
-                            Feed cost + transportation costs
-                        </li>
-                        <li>
-                            Fingerlings (Seed) cost + transportation costs
-                        </li>
-                        <li>
-                            Water cost
-                        </li>
-                        <li>
-                            Electricity cost
-                        </li>
-                    </ul>
-                </fieldset>
-            </div>
-        </div>
-    </div>-->
-    
 </div>
 <div id="fin-pln-footer">
     <div id="pager-wrapper">
+        <div class="oe-brand">
+            <a href="https://oregonexplorer.info" target="_blank"><img src="Resources/Images/Custom/oe_logo_text.png" /></a>
+        </div>
         <center>
             <div class="oe-btn-wrapper">
                 <div data-binding="{@visible: show_back_btn}{@event-onclick: gotoPrevScreen}" class="oe-btn"> Back</div>
@@ -224,5 +103,11 @@
                 <div data-binding="{@event-onclick: gotoNextScreen}{@visible: show_next_btn}" class="oe-btn">Next -></div>
             </div>
         </center>
+        <div data-binding="{@event-onclick: gotoSummary}{@visible: show_summary_btn}" class="oe-btn-wrapper summary">
+            <div class="oe-btn">
+                <div>System</div>
+                <div>Summary</div>
+            </div>
+        </div>
     </div>
 </div>
