@@ -45,9 +45,19 @@
                 <div data-binding="{@source:screens_collection_filter}">
                     <div data-binding="{class:screenContentClass}{@template-for:screens_collection_filter}">
                         <br />
-                        <h2 class="screen-header" data-binding="{@text:screenTitle}{id:id}"></h2>
-                        <h3 data-binding="{@text:selected_system}"></h3>
+                        <div class="screen-title">
+                            <div>
+                                <h2 class="screen-header" data-binding="{@text:screenTitle}{id:id}"></h2>
+                            </div>
+                            <div>
+                                <h3 data-binding="{@text:selectedSystem}{@visible:show_select_system}"></h3>
+                            </div>
+                        </div>
+                       
                         <div data-binding="{@source:sections}{@template-selector: sectionType}">
+                            <!-- System Selection -->
+                            <div data-binding="{@template-select:HtmlOverview}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/overview.html}">
+                            </div>
                             <!-- System Selection -->
                             <div data-binding="{@template-select:Select System}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/selectSystem.html}">
                             </div>

@@ -16,14 +16,25 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     moduleJsonConfig: any;
     //History cache
     selection_cache: ObservableCollection<string> = new ObservableCollection([]);
+
     //SPECIES
+    species_tbl: ObservableCollection<any> = new ObservableCollection([]);
+    species_tbl_filter: FilterableCollection<any>;
     selected_species: Observable<any> = new Observable({});
+    selected_species_label: Observable<string> = new Observable('');
+    selected_species_filter: Observable<string> = new Observable('<--');
     //PRODUCTION METHODS
+    prod_meth_tbl: ObservableCollection<any> = new ObservableCollection([]);
+    selected_prod_meth_filter: Observable<string> = new Observable('<--');
     selected_prod_meth: Observable<any> = new Observable({});
+    selected_prod_meth_label: Observable<string> = new Observable('');
+    prod_meth_tbl_filter: FilterableCollection<any>;
     //SYSTEMS (Species and Production Method)
     systems_tbl: ObservableCollection<string> = new ObservableCollection([]);
     selected_system: Observable<any> = new Observable({});
-    
+    selected_system_text: Observable<string> = new Observable('');
+    systems_tbl_filter: FilterableCollection<any>;
+    show_no_systems_in_filtered_view: Observable<boolean> = new Observable(false);
     //SCREEN CONFIG
     screens_collection: ObservableCollection<string> = new ObservableCollection([]);
     screens_collection_filter: FilterableCollection<any>;
@@ -32,10 +43,6 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     //SELECTED LOCATION
     has_location: Observable<boolean> = new Observable(false);
     selected_location: Observable<any> = new Observable();
-    //selected_location_desc: Observable<any> = new Observable();
-    //seedLocation: Observable<any> = new Observable();
-    //feedLocation: Observable<any> = new Observable();
-    //marketLocation: Observable<any> = new Observable();
     //MAP COMPONENTS
     esriMap: esri.Map;
     esriSearch: esri.dijit.Search;
@@ -54,7 +61,6 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     sub_station_routes: ObservableCollection<any> = new ObservableCollection([]);
     //Summary Button
     show_summary_btn: Observable<boolean> = new Observable(false);
-
 
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
@@ -75,7 +81,37 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                 });
             }
         });
-        
+
+        this.selected_system.bind(this, (sys) => {
+            this.selected_system_text.set(sys.system ? sys.system : sys);
+            let _species = [];
+            this.species_tbl.get().forEach(species => {
+                let isSelected = sys.species === species.species;
+                species.selected = isSelected; //.set(isSelected);
+                _species.push(species);
+            });
+            this.species_tbl.set(_species);
+            //this.species_tbl_filter.refresh();
+            let _prod = [];
+            this.prod_meth_tbl.get().forEach(prod_meth => {
+                prod_meth.selected = sys.production_method === prod_meth.production_method;
+                _prod.push(prod_meth);
+            })
+            this.prod_meth_tbl.set(_prod);
+        });
+
+        this.species_tbl_filter = new FilterableCollection<any>(this.species_tbl, this._selectedFilter.bind(this, this));
+        this.prod_meth_tbl_filter = new FilterableCollection<any>(this.prod_meth_tbl, this._selectedFilter.bind(this, this));
+
+        this.selected_prod_meth_filter.bind(this, (selProdMeth) => {
+            this._refreshSystemsDisplay();
+        });
+
+        this.selected_species_filter.bind(this, (selSpecies) => {
+            this._refreshSystemsDisplay();
+        });
+
+        this.systems_tbl_filter = new FilterableCollection<any>(this.systems_tbl, this._systemsFilters.bind(this, this));
     }
 
     initialize(config: any): void {
@@ -160,21 +196,13 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
         this.systems_tbl.set(systems);
 
-        if (this.screens_collection.get().length > 0) {
-            this.screens_collection.getItems().forEach(s => {
-                s['sections'].get().forEach(sct => {
-                    if (sct.sectionType === 'Select System') {
-                        sct.systems_tbl.set(systems);
-                    }
-                });
-            });
-        }
-
-        this.setSelectedSystem(defaultSystem.system);
+        this.setSelectedSystem(defaultSystem);
     }
 
     setSpecies(wc) {
         let defaultSelect = "<-- All -->";
+
+        let speciesSelected = false; // new Observable<boolean>(false);
 
         let species = wc.getValue("species").features ?
             wc.getValue("species").features
@@ -197,30 +225,37 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                         "price_min": feat.attributes.PriceMin,
                         "price_max": feat.attributes.PriceMax,
                         "price_default": feat.attributes.PriceDefault,
-                        "price_increment": feat.attributes.PriceIncrement
+                        "price_increment": feat.attributes.PriceIncrement,
+                        "selected": speciesSelected,
+                        "overview": feat.attributes.Overview,
+                        "img_src": feat.attributes.ImagePath
                     }
                 })
             : [];
 
-        species.splice(0, 0, { "species": defaultSelect, "type": "placeholder", "show": true, "production_methods": "*" });
+        species.splice(0, 0, { "species": defaultSelect, "type": "placeholder", "show": true, "production_methods": "*", "selected": speciesSelected });
 
-        if (this.screens_collection.get().length > 0) {
-            this.screens_collection.getItems().forEach(s => {
-                s['sections'].get().forEach(sct => {
-                    if (sct.sectionType === 'Select System') {
-                        sct.species_tbl.set(species);
-                        sct.selected_species.set(defaultSelect);
-                        sct.selected_species_filter.bind(this, (selSpecies) => {
-                            this._refreshSystemsDisplay();
-                        });
-                    }
-                });
-            });
-        }
+        this.species_tbl.set(species);
+        //this.selected_species_filter
+
+        //if (this.screens_collection.get().length > 0) {
+        //    this.screens_collection.getItems().forEach(s => {
+        //        s['sections'].get().forEach(sct => {
+        //            if (sct.sectionType === 'Select System') {
+        //                sct.species_tbl.set(species);
+        //                sct.selected_species.set(defaultSelect);
+        //                sct.selected_species_filter.bind(this, (selSpecies) => {
+        //                    this._refreshSystemsDisplay();
+        //                });
+        //            }
+        //        });
+        //    });
+        //}
     }
 
     setProdMethods(wc) {
         let defaultSelect = "<-- All -->";
+        let prodSelected = false; // new Observable<boolean>(false);
         let prod_meths = wc.getValue("prodMethods").features
             ? wc.getValue("prodMethods").features
                 .filter(f => f.attributes.ProductionMethod !== 'All')
@@ -233,25 +268,32 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                                     return sxs.species
                                 }
                             }).toString(),
-                        "show": true
+                        "show": true,
+                        "selected": prodSelected,
+                        "overview": feat.attributes.Overview,
+                        "img_src": feat.attributes.ImagePath
                     }
                 })
             : [];
 
-        prod_meths.splice(0, 0, { "production_method": defaultSelect, "type": "placeholder", "species": "*", "show": true });
-        if (this.screens_collection.get().length > 0) {
-            this.screens_collection.getItems().forEach(s => {
-                s['sections'].get().forEach(sct => {
-                    if (sct.sectionType === 'Select System') {
-                        sct.prod_meth_tbl.set(prod_meths);
-                        sct.selected_prod_meth.set(defaultSelect);
-                        sct.selected_prod_meth_filter.bind(this, (selProdMeth) => {
-                            this._refreshSystemsDisplay();
-                        });
-                    }
-                });
-            });
-        }
+        prod_meths.splice(0, 0, { "production_method": defaultSelect, "type": "placeholder", "species": "*", "show": true, "selected":prodSelected });
+
+        this.prod_meth_tbl.set(prod_meths);
+        //this.selected_prod_meth.set(defautlSelect);
+
+        //if (this.screens_collection.get().length > 0) {
+        //    this.screens_collection.getItems().forEach(s => {
+        //        s['sections'].get().forEach(sct => {
+        //            if (sct.sectionType === 'Select System') {
+        //                sct.prod_meth_tbl.set(prod_meths);
+        //                sct.selected_prod_meth.set(defaultSelect);
+        //                sct.selected_prod_meth_filter.bind(this, (selProdMeth) => {
+        //                    this._refreshSystemsDisplay();
+        //                });
+        //            }
+        //        });
+        //    });
+        //}
     }
 
     setScreens(wc) {
@@ -270,6 +312,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                         screen: sAttr.Screen,
                         screenTitle: sAttr.ScreenTitle,
                         subTitle: sAttr.SubTitle,
+                        selectedSystem: this.selected_system_text,
+                        show_select_system: parseInt(sAttr.Order) > 2,
                         screenOrder: sAttr.Order,
                         id: 'screen' + sAttr.Order,
                         tabId: sAttr.Order === '1' ? 'defaultOpen' : 'screen' + sAttr.Order,
@@ -326,17 +370,20 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                             case 'Select System':
                                 returnSectionInfo['show_filter_class'] = new Observable<any>('show-filters');
                                 returnSectionInfo['show_system_filters'] = new Observable<boolean>(false);
-                                returnSectionInfo['species_tbl'] = new ObservableCollection<any>([]);
-                                returnSectionInfo['selected_species'] = new Observable<any>('');
-                                returnSectionInfo['selected_species_filter'] = new Observable<any>('<--');
-                                returnSectionInfo['prod_meth_tbl'] = new ObservableCollection<any>([]);
-                                returnSectionInfo['selected_prod_meth'] = new Observable<any>('');
-                                returnSectionInfo['selected_prod_meth_filter'] = new Observable<any>('<--');
-                                returnSectionInfo['selected_system'] = new Observable<any>('');
-                                returnSectionInfo['systems_tbl'] = new ObservableCollection<any>([]);
-                                returnSectionInfo['systems_tbl_filter'] = new FilterableCollection<any>(returnSectionInfo['systems_tbl'], this._systemsFilters.bind(this, this));
+                                returnSectionInfo['species_tbl'] = this.species_tbl; 
+                                returnSectionInfo['species_tbl_filter'] = this.species_tbl_filter;
+                                returnSectionInfo['selected_species'] = this.selected_species;
+                                //returnSectionInfo['selected_species_label'] = this.selected_species_label;
+                                returnSectionInfo['selected_species_filter'] = this.selected_species_filter;
+                                returnSectionInfo['prod_meth_tbl'] = this.prod_meth_tbl; 
+                                returnSectionInfo['prod_meth_tbl_filter'] = this.prod_meth_tbl_filter;
+                                returnSectionInfo['selected_prod_meth'] = this.selected_prod_meth;
+                                //returnSectionInfo['selected_prod_meth_label'] = this.selected_prod_meth_label;
+                                returnSectionInfo['selected_prod_meth_filter'] = this.selected_prod_meth_filter; 
+                                returnSectionInfo['selected_system'] = this.selected_system;
+                                returnSectionInfo['systems_tbl'] = this.systems_tbl;
+                                returnSectionInfo['systems_tbl_filter'] = this.systems_tbl_filter;
                                 returnSectionInfo['show_no_systems_in_filtered_view'] = new Observable<boolean>(false);
-                                returnSectionInfo['next_enabled_class'] = new Observable<any>('oe-btn next-disabled');
                                 returnSectionInfo['show_other_input_params_1'] = this.show_other_input_params_1;
                                 break;
                             case 'Summary Table':
@@ -356,7 +403,7 @@ let value = this.formatValue(att.Default, att.Decimal)
                                 //    case 'facilityLocation':
                                 //        fieldValue = this.selected_location_desc;
                                 //        break;
-                                //    case 'seedLocation':
+                                //    case '_speciedLocation':
                                 //        fieldValue = this.seedLocation;
                                 //        break;
                                 //    case 'feedLocation':
@@ -529,31 +576,41 @@ let value = this.formatValue(att.Default, att.Decimal)
     setSelectedSystem(selSystem) {
         this.selected_system.set(selSystem);
         this.show_next_btn.set(true);
-        if (this.screens_collection.get().length > 0) {
-            this.screens_collection.getItems().forEach(s => {
-                s['sections'].get().forEach(sct => {
-                    if (sct.sectionType === 'Select System') {
-                        sct.selected_system.set(sct.systems_tbl.get().filter((sys) => {
-                            return sys['system'] === selSystem;
-                        })[0]);
+        //this.selected_species.set(this.species_tbl.get().filter(spec => {
+        //    let selected = spec.species === selSystem.system;
+        //    spec.selected.set(selected);
+        //    return selected;
+        //})[0]);
+        //this.selected_prod_meth.set(this.prod_meth_tbl.get().filter(prod => {
+        //    let selected =  prod.production_method === selSystem.production_method;
+        //    prod.selected.set(selected);
+        //    return selected;
+        //})[0]);
+        //if (this.screens_collection.get().length > 0) {
+        //    this.screens_collection.getItems().forEach(s => {
+        //        s['sections'].get().forEach(sct => {
+        //            if (sct.sectionType === 'Select System') {
+        //                sct.selected_system.set(sct.systems_tbl.get().filter((sys) => {
+        //                    return sys['system'] === selSystem.system;
+        //                })[0]);
                         
-                        sct.selected_species.set(sct.species_tbl.get().filter((sys) => {
-                            return sys['species'] === sct.selected_system.get()['species'];
-                        })[0]);
-                        sct.selected_prod_meth.set(sct.prod_meth_tbl.get().filter((sys) => {
-                            return sys['production_method'] === sct.selected_system.get()['production_method'];
-                        })[0]);
-                    }
-                });
-            });
-        }
+        //                sct.selected_species.set(sct.species_tbl.get().filter((sys) => {
+        //                    return sys['species'] === sct.selected_system.get()['species'];
+        //                })[0]);
+        //                sct.selected_prod_meth.set(sct.prod_meth_tbl.get().filter((sys) => {
+        //                    return sys['production_method'] === sct.selected_system.get()['production_method'];
+        //                })[0]);
+        //            }
+        //        });
+        //    });
+        //}
 
         this.systems_tbl.get()
             .forEach(s => {
-                s['selected'].set(selSystem === s['system']);
+                s['selected'].set(selSystem.system === s['system']);
                 });
 
-        this.show_other_input_params_1.set(selSystem ? true : false);
+        this.show_other_input_params_1.set(selSystem.system ? true : false);
 
         this.refreshScreenFilters()
 
@@ -663,24 +720,26 @@ let value = this.formatValue(att.Default, att.Decimal)
 
     _setScreenSectionBindings() {
 
-        if (this.screens_collection.get().length > 0) {
-            this.screens_collection.getItems().forEach(s => {
-                s['sections'].get().forEach(sct => {
-                    if (sct.sectionType === 'Select System') {
-                        sct.selected_system.bind(this, (selSys) => {
-                            this.selected_system.set(selSys);
-                        });
-                        sct.selected_species.bind(this, (selSpecies) => {
-                            this.selected_species.set(selSpecies);
-                        });
-                        sct.selected_prod_meth.bind(this, (selProdMeth) => {
-                            this.selected_prod_meth.set(selProdMeth);
-                        });
+        //if (this.screens_collection.get().length > 0) {
+        //    this.screens_collection.getItems().forEach(s => {
+        //        s['sections'].get().forEach(sct => {
+        //            if (sct.sectionType === 'Select System') {
+        //                sct.selected_system.bind(this, (selSys) => {
+        //                    this.selected_system.set(selSys);
+        //                    this.selected_species_label.set(selSys.species);
+        //                    this.selected_prod_meth_label.set(selSys.production_method);
+        //                });
+        //                sct.selected_species.bind(this, (selSpecies) => {
+        //                    this.selected_species.set(selSpecies);
+        //                });
+        //                sct.selected_prod_meth.bind(this, (selProdMeth) => {
+        //                    this.selected_prod_meth.set(selProdMeth);
+        //                });
 
-                    }
-                });
-            });
-        }
+        //            }
+        //        });
+        //    });
+        //}
 
         this.selected_location.bind(this, (selLoc) => {
             if (this.screens_collection.get().length > 0) {
@@ -752,6 +811,10 @@ let value = this.formatValue(att.Default, att.Decimal)
         //return this.show_all_tabs.get() || screen.showAdvOnly === "False";
     }
 
+    _selectedFilter(thisViewModel: any, obj:any) {
+        //return true;
+        return obj.selected;
+    }
 
     _fieldsFilter(thisViewModel: any, field: any) {
         return field.uiType !== 'none'

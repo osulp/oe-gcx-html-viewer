@@ -4,11 +4,12 @@
         <em>For this application an aqualculture system is considered a species and a production method.</em>
         <br />
         <br />
-        <!--<div class="filter-header-wrapper" data-binding="{@event-onclick: toggleSystemFilters}">
+        <!--
+        <div class="filter-header-wrapper" data-binding="{@event-onclick: toggleSystemFilters}">
             <div> <img alt=" " width="14" src="Resources/Images/Icons/filter-24.png" class="bound-visible-inline"><b>Filter by</b></div>
             <div data-binding="{class: show_filter_class}"></div>
-        </div>-->
-        <!--<div id="system-filters-wrapper" data-binding="{@visible:show_system_filters}">
+        </div>
+        <div id="system-filters-wrapper" data-binding="{@visible:show_system_filters}">
             <div id="filter-type-header">
                 <div>Species</div>
                 <div>Production Method</div>
@@ -25,8 +26,8 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <br />-->
+        </div>-->
+        <br />
 
         <div id="system-select-wrapper" data-binding="{@source: systems_tbl_filter}">
             <div data-binding="{@template-for: systems_tbl_filter}">
@@ -50,37 +51,22 @@
         </div>-->
     </fieldset>
     <br />
-    <!--<div data-binding="{@visible: show_other_input_params_1}">-->
-        <!--<center>
-            <div class="oe-btn-wrapper">
-                <div data-binding="{@event-onclick: gotoQuickstart}{class: next_enabled_class}">Next -></div>
-            </div>
-        </center>-->
-    <!--</div>-->
-    <!--<fieldset>
-        <legend>Set Annual Harvest</legend>
-        <span data-binding="{@text:selected_annual_harvest}"></span>
-        <div class="slider-wrapper">
-            <div id="slider-annual-harvest" class="balSlider">
-                <div class="ui-slider-handle oe-slider-handle"></div>
-            </div>
+    <div class="div-row overview">
+        <div class="div-row-cell" data-binding="{@source: species_tbl_filter}">
+            <fieldset data-binding="{@template-for: species_tbl_filter}">
+                <legend data-binding="{@text:species}"></legend>
+                <img data-binding="{src:img_src}" />
+                <div data-binding="{innerHTML:overview}"></div>
+            </fieldset>
         </div>
-    </fieldset>
-    <fieldset>
-        <legend>Set Product Weight</legend>
-        <div class="slider-wrapper">
-            <div id="slider-product-weight">
-                <div class="ui-slider-handle oe-slider-handle"></div>
-            </div>
+        <div class="div-row-cell" data-binding="{@source: prod_meth_tbl_filter}">
+            <fieldset data-binding="{@template-for: prod_meth_tbl_filter}">
+                <legend data-binding="{@text:production_method}"></legend>
+                <img data-binding="{src:img_src}" />
+                <div data-binding="{innerHTML:overview}"></div>
+            </fieldset>
         </div>
-    </fieldset>
-    <fieldset>
-        <legend>Set Price Target</legend>
-        <div class="slider-wrapper">
-            <div id="slider-price-target" class="balSlider">
-                <div class="ui-slider-handle oe-slider-handle"></div>
-            </div>
-        </div>
-    </fieldset>-->
-
+    </div>
+    <br />
+    <br />
 </div>

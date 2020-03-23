@@ -1,7 +1,7 @@
 ﻿<div data-binding="{@template-for:sections}">
     <fieldset>
         <legend data-binding="{@text:displayName}"></legend>
-        <div data-binding="{innerHTML:sectionDesc}"></div>
+        <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
         <div data-binding="{@source:fields_filter}">
             <br />
             <div data-binding="{@template-for:fields_filter}">

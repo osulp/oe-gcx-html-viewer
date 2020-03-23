@@ -47,7 +47,8 @@ export class OE_AquacultureFinancialView extends ViewBase {
         let screenOrder = parseInt(ctx.screenOrder) - 1;
         this.viewModel.active_screen.set(screenOrder);
         this.viewModel.show_back_btn.set(screenOrder > 0);
-        this.viewModel.show_next_btn.set(screenOrder < (this.viewModel.screens_collection_filter.length() -1));
+        this.viewModel.show_next_btn.set(screenOrder < (this.viewModel.screens_collection_filter.length() - 1));
+        
         
         this.viewModel.screens_collection.get().forEach(scr => {
             scr['screenTabClass'].set('tablinks ' + (ctx.id === scr['id'] ? 'activeTab' : 'inactiveTab'));
@@ -62,7 +63,6 @@ export class OE_AquacultureFinancialView extends ViewBase {
         if (ctx.screen === 'Transportation') {
             this.renderMap();
         }
-        
     } 
 
     renderMap() {
@@ -306,7 +306,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
     }
 
     setSelectedSystem(_event, _element, context) {
-        this.viewModel.setSelectedSystem(context.system);
+        this.viewModel.setSelectedSystem(context);
         //this._setSliders();
         return true;
     }
