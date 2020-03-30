@@ -117,6 +117,16 @@
                             "region": "DataRegion",                            
                             "configuration": {                           
                             }
+                        },
+                        {
+                            "id": "OE_AquacultureFinancialView",
+                            "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureFinancialView",
+                            "markup": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureFinancialView.html",
+                            "title": "Oregon Aquaculture Financial Planning Tool",
+                            "viewModelId": "OE_AquacultureFinancialViewModel",
+                            "visible": false,
+                            "region": "ModalWindowRegion",
+                            "configuration": {}
                         }
                     ],
                     "viewModels": [
@@ -124,6 +134,13 @@
                             "id": "OE_AquacultureDynamicFormViewModel",
                             "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureDynamicFormViewModel",
                             "configuration": {}
+                        },
+                        {
+                            "id": "OE_AquacultureFinancialViewModel",
+                            "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureFinancialViewModel",
+                            "configuration": {
+                                "configUri": "./Resources/ModuleConfig/AquacultureFinancePlnModule/config.json"
+                            }
                         }
                     ]
                 },
@@ -1509,6 +1526,16 @@
                                             "commandParameter": "{{context}}"
                                         },
                                         {
+                                            "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
+                                            "text": "Run Financial Model",
+                                            "description": "From this location run aquaculture financial planning module",
+                                            "command": "RunWorkflowWithArguments",
+                                            "commandParameter": {
+                                                "workflowId": "Financial_Planning",
+                                                "inputPoint": "{{context}}"
+                                            }
+                                        },
+                                        {
                                             "iconUri": "Resources/Images/Icons/Toolbar/draw-point-24.png",
                                             "text": "@language-menu-draw-point",
                                             "command": "AddMarkup",
@@ -1867,7 +1894,7 @@
                                 "id": "BannerViewModel",
                                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.banner.BannerViewModel",
                                 "configuration": {
-                                    "applicationTitle": "Map Viewer",
+                                    "applicationTitle": "Oregon Aquaculture Map Viewer",
                                     "applicationSubtitle": "Search, identify, analyze and share!",
                                     "titleColor": "#615042",
                                     "subtitleColor": "#959398",
@@ -4077,6 +4104,13 @@
                                     "description": "@language-menu-menus-description",
                                     "defaultIconUri": "Resources/Images/Icons/check-24.png",
                                     "items": [
+                                        {
+                                            "iconUri": "Resources/Images/Icons/Toolbar/zoom-initial-24.png",
+                                            "text": "Financial Planning Module",
+                                            "description": "@language-menu-zoom-initial-extent-desc",
+                                            "command": "RunWorkflowById",
+                                            "commandParameter": "Financial_Planning"
+                                        },
                                         {
                                             "text": "Route Options",
                                             "command": "RunWorkflowById",
@@ -6933,7 +6967,7 @@
                         "moduleName": "Site",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                         "configuration": {
-                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/Aquaculture",
+                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/Aquaculture_DEV",
                             "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                             "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                             "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined"

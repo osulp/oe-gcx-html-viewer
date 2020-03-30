@@ -6,7 +6,7 @@
                 <div>
                     <input id="toggle-hex-layer" type="checkbox" data-binding="{@value: show_hex_layer}" /><label for="toggle-hex-layer"><b>SHOW OR HIDE HEXAGON LAYER</b></label>
                 </div>
-                <div class="help-tour" data-binding="{@event-onclick: showTour}"><img src="Resources/Images/Icons/info-12.png" alt="Info Button" />Help Tutorial</div>
+                <div class="help-tour" data-binding="{@event-onclick: showTour}"><img src="Resources/Images/Icons/info-12.png" alt="Info Button" />Query Tutorial</div>
             </div>
             <div class="active-filter-header-wrapper dashboard-headers example-queries" data-binding="{@event-onclick: toggleExampleFilters}">
                 <div><b>EXAMPLE QUERIES</b></div>
@@ -179,7 +179,7 @@
                                             </div>
                                         </div>
                                         <div class="clone-filter-desc" data-binding="{@visible:show_selected_filters}">
-                                            <span data-binding="{@text:layerDesc}"></span>
+                                            <div data-binding="{innerHTML:layerDesc}"></div>
                                         </div>
                                     </li>
                                 </ul>

@@ -3,15 +3,100 @@
     /*max-width: 91%;
     max-height: 95%;
     min-height:600px;*/
-    max-width: 1200px;
+    /*max-width: 1200px;*/
+    /*max-height: 1200px;*/
     position: relative;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.2em;
 }
 
 .modal-container {
-    /*min-width: 80% !important;*/
-    /*max-width: 1200px !important;*/
+    min-width: 90% !important;
+    max-width: 1400px !important;
+    min-height: 90% !important;
+    max-height: 1400px !important;
     /*max-width:900px !important;*/
+}
+
+.panel {
+    /*clear:both;*/
+    display: table;
+    width: 100%;
+    /*height:80vh;*/
+    /*max-width: 1200px;*/
+}
+
+.panel-row {
+    display: table-row;
+}
+
+.panel-cell {
+    display: table-cell;
+    width: 80%;
+    min-width: 150px;
+    vertical-align: top;
+    max-width:800px;
+    /*min-height: 500px;*/
+}
+
+    .panel-cell.location {
+        width: 65%;
+        /*max-width: 750px;*/
+    }
+
+    .panel-cell.tabs {
+        width: 16em;
+    }
+
+    .panel-cell.screens {
+        /*width:75%;*/
+        /*min-width: 700px;*/
+        padding-bottom: 40px;
+    }
+
+    .screen-title div{
+        display:inline-block;
+    }
+    .screen-title h3{
+        color:#aca7a7;
+        margin-left:20px;
+    }
+
+header {
+    background: beige;
+    padding: 0 10px 0;
+    height: 30px;
+    border-bottom: 1px solid #D9D9D9;
+}
+    header div{
+        text-align:right;
+        padding:5px;
+        font-size:.9em;
+        color:#1A72C4;
+    }
+    header div:hover{
+        text-decoration:underline;
+        cursor:pointer;
+    }
+    section{
+        height:100%;
+    }
+
+#fin-pln-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /*border-top: 1px solid #1A72C4;*/
+    padding: 10px 0;
+    background-color: #ddd;
+    min-height: 50px;
+    z-index: 10;
+}
+
+#pager-wrapper {
+    width: 100%;
+    display: table;
 }
 
 #info-screen {
@@ -41,6 +126,7 @@
     left: 0;
     top: 0;
     right: 0;
+    bottom: 0;
     background-color: whitesmoke;
     z-index: 20000;
     padding: 20px;
@@ -56,8 +142,9 @@
 
 .oe-btn {
     height: 100%;
-    width: 5em;
-    padding: .5em;
+    /*width: 5em;*/
+    min-width: 5em;
+    padding: .5em 1em;
     background: #F5F5F5;
     font-weight: 600;
     color: #1A72C4;
@@ -69,6 +156,7 @@
     overflow: hidden;
     white-space: nowrap;
 }
+
 
     .oe-btn:hover {
         cursor: pointer;
@@ -83,38 +171,33 @@
         width: 8em;
     }
 
-.panel {
-    display: table;
-    width: 100%;
-    max-width: 1200px;
+/*.get-info-btn {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABOklEQVQ4jaWTvU4CURCFr4X89DyF4pPwU/IIk+2MxJ5z7uRSIhs2Gqrb3wfYGCwQbYUEeSGbVZflErNx2nPmm5/MGFMJa+0NgBTAFsABwIHkB8m5c65b9f9EnudNko8A1iR7eZ43vzXvfUtV+wA2JLMQQuMkGcCLqt6erfDb4Zjk6ggC4CmWLCITEZmcgWTlmdexakmSjJIkGcU0ABvnXNcASEn2YiYR6YhIJ6aRHAB4MCR35YVVAAsRWcQ0732L5M4A2McMfwGKLj7/BQCwNyR33vtWXUAIoQ1ga0jOVbVfF6CqQ5Iz45zrknytCbgg+TadTq+MMcaQzFT1LgI4d0j3ANLyPA2SK2vtONZJNZnk83K5vDwSCkhWPMygvNgQQltVhwDeAaQnz1SOYiez8jsD2JKcWWuvq/4v7NLPK7X88YEAAAAASUVORK5CYII=);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 3em;
+    min-height: 3em;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: #FFFFFF;
+}*/
+
+.input-header-wrapper:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
-.panel-row {
-    display: table-row;
+.info-btn {
+    vertical-align: middle;
 }
 
-.panel-cell {
-    display: table-cell;
-    width: 35%;
-    min-width: 350px;
-    min-height:500px;
-}
-
-    .panel-cell.location {
-        width: 65%;
-        /*max-width: 750px;*/
+    .info-btn:hover {
+        cursor: pointer;
     }
 
-#fin-pln-footer {
-    width: 100%;
-    border-top: 1px solid #1A72C4;
-    padding: 10px 0;
-}
 
-#pager-wrapper {
-    width: 100%;
-    display: table;
-}
 
 .oe-btn-wrapper {
     margin: 0 10px;
@@ -125,10 +208,46 @@
         margin: 0 10px;
     }
 
+    .oe-btn-wrapper.summary {
+        width: 140px;
+        position: absolute;
+        right: 6px;
+        top: 6px;
+    }
+
+        .oe-btn-wrapper.summary:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .oe-btn-wrapper.summary:before {
+            content: "";
+            width: 30px;
+            height: 30px;
+            background: url("/Resources/Images/Icons/log.png");
+            top: 0px;
+            left: 5px;
+            position: absolute;
+            display: inline-block;
+        }
+
+        .oe-btn-wrapper.summary .oe-btn {
+            background: #c34500;
+            color: white;
+        }
+
+.oe-brand {
+    position: absolute;
+    left: 11px;
+    top: 7px;
+}
+
 fieldset {
+    position: relative;
+    /*width:100%;*/
     border: solid 1px #808080;
     border-radius: 4px;
-    margin: 20px;
+    margin: 20px 20px 0 20px;
 }
 
 legend {
@@ -174,20 +293,23 @@ legend {
     position: relative;
     text-align: center;
     padding: 10px;
+    max-width: 245px;
+    margin: 10px 0;
 }
 
 
 .ui-slider-handle.oe-slider-handle.ui-state-default.ui-corner-all {
-    width: 4em;
-    height: 1.6em;
-    top: 50%;
-    margin-top: -1em;
+    width: 5.5em;
+    height: 2em;
+    top: 43%;
+    margin-top: -.9em;
     text-align: center;
     line-height: 1.6em;
     text-indent: 0px;
-    color: red;
+    color: #5E737F;
     border-radius: 10px;
     padding: 2px;
+    background-color: #A5C9DF;
 }
 
     .ui-slider-handle.oe-slider-handle.ui-state-default.ui-corner-all:hover {
@@ -289,9 +411,9 @@ legend {
     z-index: 50;
 }
 
-#basemap-toggle:hover{
-    cursor:pointer;
-}
+    #basemap-toggle:hover {
+        cursor: pointer;
+    }
 
 .basemapBG {
     height: 50px;
@@ -322,22 +444,250 @@ legend {
     padding: 10px;
 }
 
-#selected-location-remove img{
-    margin:0 0 -4px 5px;
+#selected-location-remove img {
+    margin: 0 0 -4px 5px;
 }
 
-    #selected-location-remove img:hover{
-        cursor:pointer;
+    #selected-location-remove img:hover {
+        cursor: pointer;
     }
 
-    #selected-location-name {
-        text-decoration: underline;
-    }
+#selected-location-name {
+    text-decoration: underline;
+}
 
     #selected-location-name:hover {
         cursor: pointer;
     }
 
-.OE_Chart{
-    min-width:300px;
+.OE_Chart {
+    min-width: 300px;
 }
+
+.screenSectionnone {
+    display: none;
+}
+
+h2.screen-header {
+    margin-left: 15px;
+}
+
+.activeTab, .activeScreen {
+    display: block;
+}
+
+.inactiveTab, .inactiveScreen {
+    display: none;
+}
+
+.div-row {
+    width: 90%;
+    margin: auto;
+}
+
+.div-row.overview img{
+    width:80%;
+    margin:10px auto;
+}
+    .div-row.no-pad {
+        width: 100%;
+    }
+
+        .div-row.no-pad div.div-row-cell:first-child {
+            width: 72%;
+        }
+
+        .div-row.no-pad div.div-row-cell:last-child {
+            width: 25%;
+        }
+
+    .div-row div.div-row-cell {
+        display: inline-block;
+        vertical-align: top;
+        width: 47%;
+        margin:auto;
+    }
+
+        .div-row div.div-row-cell fieldset {
+            height:100%;
+            /*font-size: .9em;*/
+            width: 100%;
+            background: #f0f0f0;
+            margin:auto;
+        }
+
+        .div-row div.div-row-cell legend {
+            margin: 20px;
+        }
+
+.div-row-cell .desc {
+    margin: 10px 20px 10px 30px;
+    width: 100%;
+    font-size: .9em;
+    background: #f0f0f0;
+    border: solid 1px #CCCCCC;
+    border-radius: 4px;
+    padding: 20px;
+}
+
+.notes {
+    /*font-size:1em;*/
+    color: #302f2f;
+    text-indent: each-line 10px;
+}
+
+.table-notes {
+    width: 90%;
+    margin: auto;
+    font-size: .9em;
+    color: #302f2f;
+    text-align: right;
+    background-color: white;
+}
+
+.input-header {
+    font-weight: bold;
+}
+
+.div-table {
+    display: table;
+    width: 90%;
+    background-color: beige;
+    margin: auto;
+}
+
+    .div-table.parameters {
+        background-color: #f0f0f0;
+    }
+
+.div-table-row {
+    display: table-row;
+}
+
+.div-table-cell {
+    display: table-cell;
+    padding: 4px;
+    border: solid 1px #e6e0e0;
+}
+
+    .div-table-cell:nth-child(1) {
+        width: 75%;
+    }
+
+    .div-table-cell:nth-child(2) {
+        width: 25%;
+        /*text-align:center;*/
+    }
+
+    .div-table-cell:nth-child(3) {
+        width: 12%;
+    }
+
+    .div-table-cell.InputCalcTotal {
+        font-size: 1.1em;
+        font-weight: bold;
+        border-top: solid 2px black;
+        border-bottom: solid 2px black;
+    }
+
+    .div-table-cell.units {
+        text-align: center;
+    }
+
+    .div-table-cell.values {
+        padding-left: 10px;
+    }
+
+#system-select-wrapper {
+    width: 300px;
+    margin: auto;
+}
+
+/* The container */
+.container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+    /* Hide the browser's default radio button */
+    .container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+/* Create a custom radio button */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+    background-color: #A5C9DF;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+}
+
+
+.toggle-detail-inputs div {
+    font-size: .9em;
+    padding: 15px;
+    color: #1A72C4;
+}
+
+    .toggle-detail-inputs div:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+.rdgroup {
+    padding-left: 15px;
+}
+
+.section-desc {
+    width: 90%;
+    margin: auto;
+}
+
+    .section-desc div {
+        width: 90%;
+    }

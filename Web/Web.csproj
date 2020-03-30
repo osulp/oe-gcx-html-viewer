@@ -17,8 +17,7 @@
     <AssemblyName>Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
+    <IISExpressSSLPort>44345</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -108,6 +107,7 @@
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Tablet.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\dev_reg\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\dev_reg\Desktop.prod.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\aquaculture\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\aquaculture\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\aquaculture\Tablet.json.js" />
@@ -118,9 +118,12 @@
     <Content Include="Resources\Images\Custom\drivetimes-24.png" />
     <Content Include="Resources\Images\Custom\GotoLayers.png" />
     <Content Include="Resources\Images\Custom\identify-24.png" />
+    <Content Include="Resources\Images\Custom\logo.png" />
     <Content Include="Resources\Images\Custom\oe-default-banner-logo-only.png" />
     <Content Include="Resources\Images\Custom\oe-default-banner-mid.png" />
     <Content Include="Resources\Images\Custom\oe-default-banner.png" />
+    <Content Include="Resources\Images\Custom\oe_logo.png" />
+    <Content Include="Resources\Images\Custom\oe_logo_text.png" />
     <Content Include="Resources\Images\Custom\profile-tool-24.png" />
     <Content Include="Resources\Images\Custom\README.txt" />
     <Content Include="Resources\Images\Custom\schools-search-24.png" />
@@ -130,6 +133,7 @@
     <Content Include="Resources\Images\Custom\zoom-next-24.png" />
     <Content Include="Resources\Images\Custom\zoom-previous-24.png" />
     <Content Include="Resources\Scripts\oe_added_scripts\daterangepicker.min.js" />
+    <Content Include="Resources\Scripts\oe_added_scripts\easy-responsive-tabs.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\hopscotch-0.1.1.min.js" />
     <Content Include="Libraries\Custom\Styles\Custom\Desktop.css" />
     <Content Include="Resources\3rdPartyMaps\3rdParty.css" />

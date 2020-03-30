@@ -1,25 +1,13 @@
 ﻿<div id="aqua-financial-pln-wrapper">
-    <div id="info-screen">
+
+    <!--<div id="info-screen">
         <div id="info-screen-toggle-bar" data-binding="{@event-onclick: toggleInfoScreen}">
             <img data-binding="{src: info_screen_arrow_src}" />
             <span>Knowledge Screen</span>
         </div>
         <div id="info-screen-content-wrapper">
             <div id="info-screen-content" data-binding="{@visible: show_info_screen}">
-                <div>
-                    <p>
-                        Fugit cupiditate ducimus suscipit aperiam accusantium. Voluptatem mollitia et molestias autem saepe occaecati. Magnam quidem numquam voluptas suscipit.
-                    </p>
-                    <p>
-                        In voluptates consequatur incidunt quia temporibus. Qui eum esse distinctio nesciunt quas placeat dolores. Ipsum asperiores magnam similique eius perferendis. Numquam aliquid est et.
-                    </p>
-                    <p>
-                        Sint dolore amet mollitia natus voluptate dolores vero molestias. Eos assumenda laborum voluptatibus iusto. Quae soluta rem aliquid et nulla accusantium.
-                    </p>
-                    <p>
-                        Amet quia dicta labore magni quis nihil rerum sint. Iste aut et sint aut. Consectetur nobis dolores quis incidunt.
-                    </p>
-                </div>
+
                 <div id="close-info-btn-wrapper">
                     <center>
                         <div class="oe-btn" data-binding="{@event-onclick:  toggleInfoScreen}">Close</div>
@@ -27,259 +15,109 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div id="input-screen-1" data-binding="{@visible: show_screen_1}" class="panel">
+    </div>-->
+    <header>
+       <div data-binding="{@event-onclick: closeView}">
+           Aquaculture Map Viewer
+       </div>
+    </header>
+
+
+    <div class="panel">
         <div class="panel-row">
-            <div class="panel-cell">
-                <fieldset>
-                    <legend>Select Aquaculture System</legend>
-                    <!--<em>For this application an aqualculture system is considered a species and a production method.</em>
-                    <br />
-                    <br />-->
-                    <div class="filter-header-wrapper" data-binding="{@event-onclick: toggleSystemFilters}">
-                        <div> <img alt=" " width="14" src="Resources/Images/Icons/filter-24.png" class="bound-visible-inline"><b>Filter by</b></div>
-                        <div data-binding="{class: show_filter_class}"></div>
-                    </div>
-                    <div id="system-filters-wrapper" data-binding="{@visible:show_system_filters}">
-                        <div id="filter-type-header">
-                            <div>Species</div>
-                            <div>Production Method</div>
-                        </div>
-                        <div id="filters-wrapper">
-                            <div>
-                                <select data-binding="{@source: species_tbl}{@value: selected_species_filter}">
-                                    <option data-binding="{@template-for: species_tbl}{value: species}{disabled: disabled}{@text: species}" />
-                                </select>
-                            </div>
-                            <div>
-                                <select data-binding="{@source: prod_meth_tbl}{@value: selected_prod_meth_filter}">
-                                    <option data-binding="{@template-for: prod_meth_tbl}{value: production_method}{@text: production_method}{disabled: disabled}" />
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <br />
-                    <div data-binding="{@source: systems_tbl_filter}">
-                        <div data-binding="{@template-for: systems_tbl_filter}">
-                            <input type="radio" name="aquasystem" data-binding="{id:systemid}{@event-onclick:setSelectedSystem}" />
-                            <label data-binding="{for: systemid} {@text: system}">
-                            </label>
-                        </div>
-                    </div>
-                    <div data-binding="{@visible:show_no_systems_in_filtered_view}">
-                        <center>
-                            <div>
-                                <em>No aquaculture systems match your selected filters.</em>
-                            </div>
-                            <br />
-                            <div class="oe-btn-wrapper">
+            <div class="panel-cell tabs">
+                <div data-binding="{@source:screens_collection_filter}" class="tab">
 
-                                <div data-binding="{@event-onclick: resetFilters}" class="oe-btn clear-filters">Clear Filters</div>
-                            </div>
-                        </center>
-                    </div>
-                </fieldset>
-                <div data-binding="{@visible: show_other_input_params_1}">
-                    <fieldset>
-                        <legend>Set Annual Harvest</legend>
-                        <span data-binding="{@text:selected_annual_harvest}"></span>
-                        <div class="slider-wrapper">
-                            <div id="slider-annual-harvest" class="balSlider">
-                                <div class="ui-slider-handle oe-slider-handle"></div>
-                            </div>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <legend>Set Product Weight</legend>
-                        <div class="slider-wrapper">
-                            <div id="slider-product-weight">
-                                <div class="ui-slider-handle oe-slider-handle"></div>
-                            </div>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <legend>Set Price Target</legend>
-                        <div class="slider-wrapper">
-                            <div id="slider-price-target" class="balSlider">
-                                <div class="ui-slider-handle oe-slider-handle"></div>
-                            </div>
-                        </div>
-                    </fieldset>
+                    <button class="tablinks" data-binding="{@template-for:screens_collection_filter}{@text:screen}{@event-onclick:openTab}{id:tabId}{class:screenTabClass}"></button>
+
                 </div>
+                <!--<div class="toggle-detail-inputs" data-binding="{@visible:show_back_btn}">
+                    <div data-binding="{@event-onclick:showAllTabs}{@hidden:show_all_tabs}">
+                        View detailed inputs
+                    </div>
+                    <div data-binding="{@event-onclick:hideDetailTabs}{@visible:show_all_tabs}">
+                        Hide detailed inputs
+                    </div>
+                </div>-->
             </div>
-            <div class="panel-cell location">
-                <fieldset id="map-section">
-                    <legend>Location</legend>
-                    <div id="location-wrapper">
-                        <div id="location-status" data-binding="{@visible: show_selected_location}">
-                            <div id="location-status-selected" data-binding="{@source:selected_location}">
-                                <div data-binding="{@template-for:selected_location}">
-                                    <span> SELECTED:  </span>
-                                    <span id="selected-location-name" data-binding="{@event-onclick: zoomToSelectedLocation}{@text:name}"></span>
-                                    <span id="selected-location-remove" title="Remove selected location" data-binding="{@event-onclick: removeSelectedLocation}"><img src="Resources/Images/Icons/delete-16.png" /></span>
-                                </div>
+
+            <div class="panel-cell screens">
+                <div data-binding="{@source:screens_collection_filter}">
+                    <div data-binding="{class:screenContentClass}{@template-for:screens_collection_filter}">
+                        <br />
+                        <div class="screen-title">
+                            <div>
+                                <h2 class="screen-header" data-binding="{@text:screenTitle}{id:id}"></h2>
+                            </div>
+                            <div>
+                                <h3 data-binding="{@text:selectedSystem}{@visible:show_select_system}"></h3>
                             </div>
                         </div>
-                        <div id="location-instruction" data-binding="{@hidden: show_selected_location}">
-                            No location selected.  Select a location by searching or clicking on the map.
-                        </div>
-
-                        <div data-binding="{@visible: show_add_location}">
-                            <div id="add-location">
-                                <div id="add-location-msg">
-                                    <div>
-                                        <p>No location set.</p>
-                                        <p>  Would you like to add a location or run the model without location information?</p>
-                                        <div id="pager-wrapper">
-                                            <center>
-                                                <div class="oe-btn-wrapper">
-                                                    <div data-binding="{@event-onclick: setLocation}" class="oe-btn add-location">+ Add location</div>
-                                                </div>
-                                            </center>
-                                        </div>
-                                        <hr />
-                                        <div>
-                                            <em>** If no location is added, the model will run with generic values for location specific parameters.</em>
+                       
+                        <div data-binding="{@source:sections}{@template-selector: sectionType}">
+                            <!-- System Selection -->
+                            <div data-binding="{@template-select:HtmlOverview}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/overview.html}">
+                            </div>
+                            <!-- System Selection -->
+                            <div data-binding="{@template-select:Select System}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/selectSystem.html}">
+                            </div>
+                            <!-- Resource -->
+                            <div data-binding="{@template-select:Resources}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/resources.html}">
+                            </div>
+                            <!-- Summary -->
+                            <div data-binding="{@template-select:Summary Table}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/summary.html}">
+                            </div>
+                            <!-- Map Section -->
+                            <div data-binding="{@template-select:Map}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/locationMap.html}">
+                            </div>
+                            <!-- Calculated Inputs -->
+                            <div data-binding="{@template-select:InputsCalculated}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputsCalculated.html}{class:displayClass}">
+                            </div>
+                            <!-- Input Sections -->
+                            <div data-binding="{@template-select:Input}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputs.html}">
+                            </div>
+                            <!-- Default Parameter Sections -->
+                            <div data-binding="{@template-select:Parameter}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/parameters.html}">
+                            </div>
+                            <!--all else-->
+                            <div data-binding="{@template-for:sections}{@visible:visible}{class:displayClass}">
+                                <fieldset>
+                                    <legend data-binding="{@text:displayName}"></legend>
+                                    <div data-binding="{@text:sectionDesc}"></div>
+                                    <div data-binding="{@source:fields_filter}">
+                                        <div data-binding="{@template-for:fields_filter}">
+                                            <span data-binding="{@text:fieldName}"></span>
+                                            <input type="text" data-binding="{@value:value}{placeholder:value}{@event-change:updateModel}" />
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="calcite">
-                            <div id="search-wrapper">
-                                <div id="search"></div>
-                            </div>
-                            <div id="location-map">
-                                <div id="home-button"></div>
-                                <div id="basemap-toggle"></div>
+                                </fieldset>
                             </div>
                         </div>
                     </div>
-                </fieldset>
-            </div>
-        </div>
-    </div>
-    <div id="input-screen-2" data-binding="{@visible: show_screen_2}" class="panel">
-        <div class="panel-row">
-            <div class="panel-cell">
-                <fieldset>
-                    <legend>Initial outputs</legend>
-                    <div class="OE_Chart" id="OE_Chart1"></div>
-                </fieldset>
-            </div>
-            <div class="panel-cell">
-                <fieldset>
-                    <legend>Screen 2!</legend>
-                    Adjustments #1
-                    <ul>
-                        <li>Extra oxygenation</li>
-                        <li>
-                            Heating equipment
-                        </li>
-                        <li>
-                            Cooling equipment
-                        </li>
-                        <li>
-                            Extra filtration
-                        </li>
-                        <li>
-                            Pump ashore
-                        </li>
-                        <li>
-                            +/- Recirculation %
-                        </li>
-                        <li>
-                            Land cost
-                        </li>
-                        <li>
-                            Renewable energy system
-                        </li>
-                        <li>
-                            Other
-                        </li>
-                    </ul>
-                </fieldset>
-
-            </div>
-        </div>
-    </div>
-    <div id="input-screen-3" data-binding="{@visible: show_screen_3}" class="panel">
-        <div class="panel-row">
-            <div class="panel-cell">
-                <fieldset>
-                    <legend>Adjusted outputs</legend>
-                </fieldset>
-            </div>
-            <div class="panel-cell">
-                <fieldset>
-                    <legend>Screen 3!</legend>
-
-                    Variable Cost Paramaters
-                    <ul>
-                        <li>
-                            Feed cost (per unit)
-                        </li>
-                        <li>
-                            Fingerlings (Seed) cost (per unit)
-
-                        </li>
-                        <li>
-                            Water cost (per unit)
-                        </li>
-                        <li>
-                            Electricity cost (per unit)
-                        </li>
-                        <li>
-                            Feed location
-                        </li>
-                        <li>
-                            Seed location
-                        </li>
-                    </ul>
-                </fieldset>
-            </div>
-        </div>
-    </div>
-    <div id="input-screen-4" data-binding="{@visible: show_screen_4}" class="panel">
-        <div class="panel-row">
-            <div class="panel-cell">
-                <fieldset>
-                    <legend>With variable cost outputs</legend>
-                </fieldset>
-
-            </div>
-            <div class="panel-cell">
-                <fieldset>
-                    <legend>Screen 4!</legend>
-                    Adjustments #2
-                    <ul>
-                        <li>
-                            Feed cost + transportation costs
-                        </li>
-                        <li>
-                            Fingerlings (Seed) cost + transportation costs
-                        </li>
-                        <li>
-                            Water cost
-                        </li>
-                        <li>
-                            Electricity cost
-                        </li>
-                    </ul>
-                </fieldset>
-            </div>
-        </div>
-    </div>
-    <div id="fin-pln-footer">
-        <div id="pager-wrapper">
-            <center>
-                <div class="oe-btn-wrapper">
-                    <div data-binding="{@visible: show_back_btn}{@event-onclick: gotoPrevScreen}" class="oe-btn"><- Back</div>
                 </div>
-                <div class="oe-btn-wrapper">
-                    <div data-binding="{@event-onclick: gotoNextScreen}{@visible: show_next_btn}" class="oe-btn">Next -></div>
-                </div>
-            </center>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="fin-pln-footer">
+    <div id="pager-wrapper">
+        <div class="oe-brand">
+            <a href="https://oregonexplorer.info" target="_blank"><img src="Resources/Images/Custom/oe_logo_text.png" /></a>
+        </div>
+        <center>
+            <div class="oe-btn-wrapper">
+                <div data-binding="{@visible: show_back_btn}{@event-onclick: gotoPrevScreen}" class="oe-btn"> Back</div>
+            </div>
+            <div class="oe-btn-wrapper">
+                <div data-binding="{@event-onclick: gotoNextScreen}{@visible: show_next_btn}" class="oe-btn">Next -></div>
+            </div>
+        </center>
+        <div data-binding="{@event-onclick: gotoSummary}{@visible: show_summary_btn}" class="oe-btn-wrapper summary">
+            <div class="oe-btn">
+                <div>System</div>
+                <div>Summary</div>
+            </div>
         </div>
     </div>
 </div>

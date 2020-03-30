@@ -1,0 +1,68 @@
+﻿<div data-binding="{@template-for:sections}{@visible:visible}">
+    <fieldset>
+        <legend data-binding="{@text:displayName}"></legend>
+        <br />
+        <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
+        <br />
+
+        <div class="div-row">
+            <h3>Select a resource you can use for this system</h3>
+            <hr />
+            <div class="div-row-cell">
+                <div class="rdgroup" data-binding="{@source:fields}">
+                    <div data-binding="{@template-for:fields}">
+                        <div data-binding="{@source:@context}{@template-selector:uiType}">
+                            <div data-binding="{@template-select:none}">
+                                <label class="container">
+                                    <span data-binding="{@text:fieldName}"></span>
+                                    <input type="radio" checked name="qstart" data-binding="{@event-onclick:setSelectedQuickstartResource}">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div data-binding="{@template-select:radiobutton}">
+                                <label class="container">
+                                    <span data-binding="{@text:fieldName}"></span>
+                                    <input type="radio" name="qstart" data-binding="{checked:selected}{@event-onclick:setSelectedQuickstartResource}">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="div-row-cell" data-binding="{@source:fields_filter}">
+                <div data-binding="{@template-for:fields_filter}{@visible:visible}">
+                    <br />
+                    <div class="div-row no-pad">
+                        <div class="div-row-cell">
+                            <span class="input-header" data-binding="{@text:fieldLabel}"></span>
+                            <span>&nbsp;(</span>
+                            <span data-binding="{@text:unit}"></span>
+                            <span>)</span>
+                        </div>
+                        <div class="div-row-cell">
+                            <span><input type="text" data-binding="{@value:value}{placeholder:value}{@event-change:updateModel}" /></span>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <div class="input-header" data-binding="{@text:fieldName}"></div>
+                        <hr />
+                        <div class="notes" data-binding="{@text:desc}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <div class="div-table" data-binding="{@source:fields_filter}">
+
+            <div class="div-table-row" data-binding="{@template-for:fields_filter}">
+                <div data-binding="{class:tableDisplayClass}">
+                    <span class="input-header" data-binding="{@text:fieldName}"></span>
+                </div>
+                <div class="div-table-cell values"><span data-binding="{@text:formattedValue}"></span></div>
+            </div>
+        </div>
+        <div class="table-notes">Initial values are defaults.  Values can be changed above.</div>
+    </fieldset>
+</div>

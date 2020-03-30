@@ -419,6 +419,27 @@ export class OE_SageGrouseDevRegistryModule extends ModuleBase {
                     }
                 });
 
+                this.app.commandRegistry.command("showFeatureEditFormSDARTT").register(this, function (objectid?: any) {
+                    var collection = this.app.featureSetManager.getCollectionById("selected_sdartt");
+                    if (collection) {
+                        var feature = null;
+                        if (collection.featureSets.length() > 0) {
+                            collection.featureSets.value.forEach((fs: any) => {
+                                fs.features.value.forEach((f: any) => {
+                                    let objid = f.attributes.value.filter((a: any) =>
+                                        a.name.value === "report_id");
+                                    feature = objid[0].value.value.toString() === objectid ? f : feature;
+
+                                });
+                            });
+                            if (!feature && collection.featureSets.getAt(0).features.length() > 0) {
+                                feature = collection.featureSets.getAt(0).features.getAt(0);
+                            }
+                            this.app.commandRegistry.command("StartEditingFeature").execute(feature);
+                        }
+                    }
+                });
+
                 //Add project impact report to map tip links if Oregon Development Projects
                 this.app.commandRegistry.command("oe_project_report").register(this, (graphic) => {
                     let dev_reg_id = "";
@@ -550,17 +571,19 @@ export class OE_SageGrouseDevRegistryModule extends ModuleBase {
                             if (editView.length > 0) {
                                 this._activeFeature = editView[0].viewModel.currentFeatureEsri;
                                 if (this._activeFeature) {
-                                    const attr = editView[0].viewModel.form.value.fields.getItems();
-                                    if (attr.length > 0) {
-                                        if (!editView[0].viewModel.form.value["all_fields"]) {
-                                            editView[0].viewModel.form.value["all_fields"] = [];
-                                            editView[0].viewModel.form.value.fields.value.forEach(f => {
-                                                editView[0].viewModel.form.value["all_fields"].push(f);
-                                            });
-                                        }
-                                        let filteredFields = this._processAttributeFilter(attr);
-                                        if (filteredFields.length > 0) {
-                                            editView[0].viewModel.form.value.fields.set(filteredFields);
+                                    if (this._activeFeature.getLayer()._name === "All Developments") {
+                                        const attr = editView[0].viewModel.form.value.fields.getItems();
+                                        if (attr.length > 0) {
+                                            if (!editView[0].viewModel.form.value["all_fields"]) {
+                                                editView[0].viewModel.form.value["all_fields"] = [];
+                                                editView[0].viewModel.form.value.fields.value.forEach(f => {
+                                                    editView[0].viewModel.form.value["all_fields"].push(f);
+                                                });
+                                            }
+                                            let filteredFields = this._processAttributeFilter(attr);
+                                            if (filteredFields.length > 0) {
+                                                editView[0].viewModel.form.value.fields.set(filteredFields);
+                                            }
                                         }
                                     }
                                 }
@@ -605,33 +628,41 @@ export class OE_SageGrouseDevRegistryModule extends ModuleBase {
 
                 this.app.eventRegistry.event("FeatureEditedEvent").subscribe(this, (feature) => {
                     //check if any changes beside edit time
-                    let hasUpdate = JSON.stringify(feature.editedFeature.toJson()) !== JSON.stringify(feature.originalFeature.toJson());
-                    if (this._projNameUpdated) {
-                        //look up and add new name if necessary
-                        var workflowArgs = {};
-                        workflowArgs["workflowId"] = "update_proj_name";
-                        workflowArgs["projName"] = feature.editedFeature.attributes["or_dev_reg_proj_id"];
-                        workflowArgs["srvc_url"] = this.devRegProjectsSrvcUrl;
-                        workflowArgs["srvc_token"] = this.devRegToken;
-                        this.app.commandRegistry.commands["RunWorkflowWithArguments"].execute(workflowArgs);
-                    }
-                    this._projNameUpdated = false;
-                    //this.app.commandRegistry.commands["MeasureArea"].execute(feature.editedFeature);
-                    if (hasUpdate) {
-                        var workflowArgs = {};
-                        workflowArgs["workflowId"] = "add_feature_version";
-                        workflowArgs["featureGraphic"] = feature.editedFeature;
-                        workflowArgs["srvc_url"] = this.devRegVersionSrvcUrl;
-                        workflowArgs["srvc_token"] = this.devRegToken;
-                        this.app.commandRegistry.commands["RunWorkflowWithArguments"].execute(workflowArgs);
-                    }
+                    if (feature.editedFeature.getLayer()._name === "All Developments") {
+                        let hasUpdate = JSON.stringify(feature.editedFeature.toJson()) !== JSON.stringify(feature.originalFeature.toJson());
+                        if (this._projNameUpdated) {
+                            //look up and add new name if necessary
+                            var workflowArgs = {};
+                            workflowArgs["workflowId"] = "update_proj_name";
+                            workflowArgs["projName"] = feature.editedFeature.attributes["or_dev_reg_proj_id"];
+                            workflowArgs["srvc_url"] = this.devRegProjectsSrvcUrl;
+                            workflowArgs["srvc_token"] = this.devRegToken;
+                            this.app.commandRegistry.commands["RunWorkflowWithArguments"].execute(workflowArgs);
+                        }
+                        this._projNameUpdated = false;
+                        //this.app.commandRegistry.commands["MeasureArea"].execute(feature.editedFeature);
+                        if (hasUpdate) {
+                            var workflowArgs = {};
+                            workflowArgs["workflowId"] = "add_feature_version";
+                            workflowArgs["featureGraphic"] = feature.editedFeature;
+                            workflowArgs["srvc_url"] = this.devRegVersionSrvcUrl;
+                            workflowArgs["srvc_token"] = this.devRegToken;
+                            this.app.commandRegistry.commands["RunWorkflowWithArguments"].execute(workflowArgs);
+                        }
 
+                    } else {
+                        //this.app.featureSetManager.getCollectionById("selected_sdartt").clear();
+                        //return true;
+                    }
+                    
                 });
                 //workaround to get the authenticated layer list to process svg formatting event
                 var thisScope = this;
                 window.setTimeout(() => {
                     thisScope.app.commandRegistry.commands["SwitchToLayerView"].execute();
                 }, 50);
+            
+                    
             } catch (ex) {
                 alert(ex.message);
             }

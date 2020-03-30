@@ -3,7 +3,13 @@
         <h2 data-binding="{@text: layer}">
         </h2>
         <hr />
-        <div data-binding="{@text: desc}">
+        <div data-binding="{innerHTML: desc}">
+        </div>
+        <div data-binding="{@source:layerLinks}">
+            <div data-binding="{@template-for:layerLinks}">
+                <span data-binding="{@text:label}"></span>
+                <a data-binding="{href:url}" target="_blank"><span data-binding="{@text:label}"></span></a>
+            </div>
         </div>
     </div>    
 </div>

@@ -1,0 +1,50 @@
+﻿<div class="panel-cell location">
+    <fieldset id="map-section">
+        <legend>Location</legend>
+        <div id="location-wrapper">
+            <div id="location-status" data-binding="{@visible: show_selected_location}">
+                <div id="location-status-selected" data-binding="{@source:selected_location}">
+                    <div data-binding="{@template-for:selected_location}">
+                        <span> SELECTED:  </span>
+                        <span id="selected-location-name" data-binding="{@event-onclick: zoomToSelectedLocation}{@text:name}"></span>
+                        <span id="selected-location-remove" title="Remove selected location" data-binding="{@event-onclick: removeSelectedLocation}"><img src="Resources/Images/Icons/delete-16.png" /></span>
+                    </div>
+                </div>
+            </div>
+            <div id="location-instruction" data-binding="{@hidden: show_selected_location}">
+                No location selected.  Select a location by searching or clicking on the map.
+            </div>
+
+            <div data-binding="{@visible: show_add_location}">
+                <div id="add-location">
+                    <div id="add-location-msg">
+                        <div>
+                            <p>No location set.</p>
+                            <p>  Would you like to add a location or run the model without location information?</p>
+                            <div id="pager-wrapper">
+                                <center>
+                                    <div class="oe-btn-wrapper">
+                                        <div data-binding="{@event-onclick: setLocation}" class="oe-btn add-location">+ Add location</div>
+                                    </div>
+                                </center>
+                            </div>
+                            <hr />
+                            <div>
+                                <em>** If no location is added, the model will run with generic values for location specific parameters.</em>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="calcite">
+                <div id="search-wrapper">
+                    <div id="search"></div>
+                </div>
+                <div id="location-map">
+                    <div id="home-button"></div>
+                    <div id="basemap-toggle"></div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>

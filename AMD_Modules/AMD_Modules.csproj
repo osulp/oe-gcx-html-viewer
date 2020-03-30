@@ -10,15 +10,15 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>2.4.2</TypeScriptToolsVersion>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44325</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <Use64BitIISExpress />
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
   </PropertyGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -28,9 +28,24 @@
     <Content Include="package.json" />
     <Content Include="post_build_modules.bat" />
     <Content Include="README.md" />
-    <Content Include="src\OE_Aquaculture\CSS\OE_AquacultureModule.css" />
+    <Content Include="src\OE_Aquaculture\CSS\OE_Aquaculture.css" />
+    <Content Include="src\OE_Aquaculture\CSS\tab_styles.css" />
     <Content Include="src\OE_Aquaculture\OE_AquacultureDynamicFormView.html" />
-    <Content Include="src\OE_Aquaculture\readme.txt" />
+    <Content Include="src\OE_Aquaculture\OE_AquacultureFinancialView.html" />
+    <Content Include="src\OE_Aquaculture\OE_AquacultureFinancialView.ts" />
+    <Content Include="src\OE_Aquaculture\OE_AquacultureFinancialViewModel.ts" />
+    <Content Include="src\OE_Aquaculture\OE_AquacultureModule.ts" />
+    <Content Include="src\OE_Aquaculture\Templates\latlong.html" />
+    <Content Include="src\OE_Aquaculture\Templates\inputsCalculated.html" />
+    <Content Include="src\OE_Aquaculture\Templates\inputNumber.html" />
+    <Content Include="src\OE_Aquaculture\Templates\overview.html" />
+    <Content Include="src\OE_Aquaculture\Templates\summary.html" />
+    <Content Include="src\OE_Aquaculture\Templates\slider.html" />
+    <Content Include="src\OE_Aquaculture\Templates\locationMap.html" />
+    <Content Include="src\OE_Aquaculture\Templates\inputs.html" />
+    <Content Include="src\OE_Aquaculture\Templates\parameters.html" />
+    <Content Include="src\OE_Aquaculture\Templates\resources.html" />
+    <Content Include="src\OE_Aquaculture\Templates\selectSystem.html" />
     <Content Include="src\OE_ConvertGeometry\CSS\OE_ConvertGeometryModule.css" />
     <Content Include="src\OE_ConvertGeometry\OE_ConvertGeometryView.html" />
     <Content Include="src\OE_ConvertGeometry\readme.txt" />
@@ -115,7 +130,6 @@
     <Content Include="src\OE_ConvertGeometry\OE_ConvertGeometryViewModel.ts" />
     <TypeScriptCompile Include="src\OE_Aquaculture\OE_AquacultureDynamicFormView.ts" />
     <TypeScriptCompile Include="src\OE_Aquaculture\OE_AquacultureDynamicFormViewModel.ts" />
-    <TypeScriptCompile Include="src\OE_Aquaculture\OE_AquacultureModule.ts" />
     <TypeScriptCompile Include="src\OE_Graphics\OE_GraphicsModule.ts" />
     <TypeScriptCompile Include="src\OE_Elevation\OE_ElevationModule.ts" />
     <Content Include="src\OE_Hopscotch\OE_HopscotchViewModel.ts" />

@@ -1,0 +1,50 @@
+﻿<div data-binding="{@template-for:sections}">
+    <fieldset>
+        <legend data-binding="{@text:displayName}"></legend>
+        <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
+        <div data-binding="{@source:fields_filter}">
+            <br />
+            <div data-binding="{@template-for:fields_filter}">
+                <div class="div-row">
+                    <hr />
+                    <div class="div-row-cell">
+                        <div class="input-header-wrapper" data-binding="{@event-onclick:toggleDesc}">
+                            <span class="input-header" data-binding="{@text:fieldLabel}"></span>
+                            <span>&nbsp;(</span>
+                            <span data-binding="{@text:unit}"></span>
+                            <span>)</span>
+                        </div>
+                        <div class="input_wrapper" data-binding="{@source:@context}{@template-selector: uiType}">
+                            <!-- SLIDERS -->
+                            <div data-binding="{@template-select:slider}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/slider.html}"></div>
+                            <!--  Input NUMBERS -->
+                            <div data-binding="{@template-select:inputNumber}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputNumber.html}"></div>
+                            <div data-binding="{@template-select:inputLocation}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/latlong.html}"></div>
+                            <!-- Default All Else -->
+                            <!--<div data-binding="{@template-for:@context}">
+        <span><input type="text" data-binding="{@value:value}{placeholder:value}{@event-change:updateModel}" /></span>
+    </div>-->
+                        </div>
+                    </div>
+                    <!--<div class="div-row-cell" data-binding="{@event-onclick:toggleDesc}">
+                <div class="info-btn" data-binding="{@hidden:showDesc}">
+                    <img src="Resources/Images/Icons/chevron-down-24.png">
+                </div>
+                <div class="info-btn" data-binding="{@visible:showDesc}">
+                    <img src="Resources/Images/Icons/chevron-up-24.png">
+                </div>
+            </div>-->
+                    <div class="div-row-cell">
+                        <div class="desc" data-binding="{@visible:showDesc}">
+                            <div class="input-header" data-binding="{@text:fieldName}"></div>
+                            <hr />
+                            <div class="notes" data-binding="{@text:desc}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class"notes">Enter your values.  Existing values are defaults that update related inputs.</div>
+    </fieldset>
+</div>

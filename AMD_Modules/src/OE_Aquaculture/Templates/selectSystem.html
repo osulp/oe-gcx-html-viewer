@@ -1,0 +1,72 @@
+﻿<div class="panel-cell">
+    <fieldset>
+        <legend>Select Aquaculture System</legend>
+        <em>For this application an aqualculture system is considered a species and a production method.</em>
+        <br />
+        <br />
+        <!--
+        <div class="filter-header-wrapper" data-binding="{@event-onclick: toggleSystemFilters}">
+            <div> <img alt=" " width="14" src="Resources/Images/Icons/filter-24.png" class="bound-visible-inline"><b>Filter by</b></div>
+            <div data-binding="{class: show_filter_class}"></div>
+        </div>
+        <div id="system-filters-wrapper" data-binding="{@visible:show_system_filters}">
+            <div id="filter-type-header">
+                <div>Species</div>
+                <div>Production Method</div>
+            </div>
+            <div id="filters-wrapper">
+                <div>
+                    <select data-binding="{@source: species_tbl}{@value: selected_species_filter}">
+                        <option data-binding="{@template-for: species_tbl}{value: species}{disabled: disabled}{@text: species}" />
+                    </select>
+                </div>
+                <div>
+                    <select data-binding="{@source: prod_meth_tbl}{@value: selected_prod_meth_filter}">
+                        <option data-binding="{@template-for: prod_meth_tbl}{value: production_method}{@text: production_method}{disabled: disabled}" />
+                    </select>
+                </div>
+            </div>
+        </div>-->
+        <br />
+
+        <div id="system-select-wrapper" data-binding="{@source: systems_tbl_filter}">
+            <div data-binding="{@template-for: systems_tbl_filter}">
+                <label class="container">
+                    <span data-binding="{@text:system}"></span>
+                    <input type="radio" name="aquasystem" data-binding="{checked:selected}{@event-onclick:setSelectedSystem}">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+        <!--<div data-binding="{@visible:show_no_systems_in_filtered_view}">
+            <center>
+                <div>
+                    <em>No aquaculture systems match your selected filters.</em>
+                </div>
+                <br />
+                <div class="oe-btn-wrapper">
+                    <div data-binding="{@event-onclick: resetFilters}" class="oe-btn clear-filters">Clear Filters</div>
+                </div>
+            </center>
+        </div>-->
+    </fieldset>
+    <br />
+    <div class="div-row overview">
+        <div class="div-row-cell" data-binding="{@source: species_tbl_filter}">
+            <fieldset data-binding="{@template-for: species_tbl_filter}">
+                <legend data-binding="{@text:species}"></legend>
+                <img data-binding="{src:img_src}" />
+                <div data-binding="{innerHTML:overview}"></div>
+            </fieldset>
+        </div>
+        <div class="div-row-cell" data-binding="{@source: prod_meth_tbl_filter}">
+            <fieldset data-binding="{@template-for: prod_meth_tbl_filter}">
+                <legend data-binding="{@text:production_method}"></legend>
+                <img data-binding="{src:img_src}" />
+                <div data-binding="{innerHTML:overview}"></div>
+            </fieldset>
+        </div>
+    </div>
+    <br />
+    <br />
+</div>
