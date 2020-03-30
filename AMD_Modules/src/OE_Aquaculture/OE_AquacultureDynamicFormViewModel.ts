@@ -93,7 +93,7 @@ export class OE_AquacultureDynamicFormViewModel extends ViewModelBase {
 
             thisViewModel.mainContent.set(thisViewModel.myWorkflowContext.getValue("mainContent"));
             
-            thisViewModel.fieldZoning.set(thisViewModel.myWorkflowContext.getValue("fieldZoning")+" Report");
+            thisViewModel.fieldZoning.set(thisViewModel.myWorkflowContext.getValue("fieldZoning"));
             thisViewModel.fieldLandOwnership.set(thisViewModel.myWorkflowContext.getValue("fieldLandOwnership"));
             thisViewModel.fieldCounty.set(thisViewModel.myWorkflowContext.getValue("fieldCounty"));
             thisViewModel.fieldCityOrTown.set(thisViewModel.myWorkflowContext.getValue("fieldCityOrTown"));
