@@ -17,7 +17,7 @@ export class OE_HopscotchViewModel extends ViewModelBase {
     site: any;
     thisViewModel: OE_HopscotchViewModel
 
-    hopscotch;    
+    hopscotch;        
     toursKeyValObject: any;
     
     //searchFieldText: Observable<string> = new Observable<string>("");    
@@ -35,6 +35,7 @@ export class OE_HopscotchViewModel extends ViewModelBase {
 
         //this.tourJson = config.tourLayers;
         this.toursKeyValObject = {};
+        
 
         //load tours into string reference object
         if (config.hasOwnProperty("tours")) {
@@ -65,19 +66,71 @@ export class OE_HopscotchViewModel extends ViewModelBase {
     _startTour(args:any) {
 
         this.hopscotch = window["hopscotch"] ? window["hopscotch"] : null;
+
+        var currentScope:any = this;
+
         if (this.hopscotch && this.toursKeyValObject.hasOwnProperty(args)) {            
 
-            if (this.toursKeyValObject[args].hasOwnProperty("requiredView"))
+            if (this.toursKeyValObject[args].hasOwnProperty("requiredView") && this.toursKeyValObject[args].requiredView)
                 this.app.command("ActivateView").execute(this.toursKeyValObject[args].requiredView);
 
+            if (this.toursKeyValObject[args].hasOwnProperty("commandOnTourStart") && this.toursKeyValObject[args].commandOnTourStart)
+                this.app.command(this.toursKeyValObject[args].commandOnTourStart).execute(this.toursKeyValObject[args].commandOnTourStartParam);
+
+            if (this.toursKeyValObject[args].hasOwnProperty("commandOnTourEnd") && this.toursKeyValObject[args].commandOnTourEnd) {
+                this.toursKeyValObject[args].tour.onEnd = () => { currentScope.CheckOnEventCommand(currentScope, "commandOnTourEnd", "commandOnTourEndParam") }                
+            }
+
+            if (this.toursKeyValObject[args].hasOwnProperty("commandOnTourClose") && this.toursKeyValObject[args].commandOnTourClose) {
+                this.toursKeyValObject[args].tour.onClose = () => { currentScope.CheckOnEventCommand(currentScope, "commandOnTourClose", "commandOnTourCloseParam") }                
+            }
+
+            for (var i = 0; i < this.toursKeyValObject[args].tour.steps.length; i++) {
+
+                if (this.toursKeyValObject[args].tour.steps[i].hasOwnProperty("commandOnShow") && this.toursKeyValObject[args].tour.steps[i].commandOnShow) {
+                    this.toursKeyValObject[args].tour.steps[i].onShow = () => { currentScope.CheckOnEventCommand(currentScope, "commandOnShow", "commandOnShowParam") }
+                }
+
+                if (this.toursKeyValObject[args].tour.steps[i].hasOwnProperty("runWorkflowById") ) {
+                    this.toursKeyValObject[args].tour.steps[i].onShow = () => { currentScope.CheckOnEventWorkflow(currentScope) }
+                }
+            }
+            
             this.hopscotch.startTour(this.toursKeyValObject[args].tour);
         }        
     }
-    
+
+    private CheckOnEventCommand(currentScope:any, commandName:string, commandParamName:string) {
+                
+        var cTour: any = currentScope.hopscotch.getCurrTour();
+        var currStepNum:any = currentScope.hopscotch.getCurrStepNum();
+        var cStep:any = cTour.steps[currStepNum];
+                
+        if (cStep[commandParamName])
+            currentScope.app.command(cStep[commandName]).execute(cStep[commandParamName]);
+        else
+            currentScope.app.command(cStep[commandName]).execute();
+    }
+
+    private CheckOnEventWorkflow(currentScope: any, commandName: string, commandParamName: string) {
+
+        var cTour: any = currentScope.hopscotch.getCurrTour();
+        var currStepNum: any = currentScope.hopscotch.getCurrStepNum();
+        var cStep: any = cTour.steps[currStepNum];
+
+        if (cStep["runWorkflowById"]) {
+            let workflowArgs: any = {};
+            workflowArgs.workflowId = cStep["runWorkflowById"];
+            //workflowArgs.mapPointIn = contextIn.mapPointIn;
+            this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
+        }
+    }
+        
     private _injectScript() {
 
         //jQuery plugin for displaying tour/guide
         //http://linkedin.github.io/hopscotch/
+        //https://github.com/LinkedInAttic/hopscotch
         //////////////////////////////////
         $.ajax({
             type: "GET",
