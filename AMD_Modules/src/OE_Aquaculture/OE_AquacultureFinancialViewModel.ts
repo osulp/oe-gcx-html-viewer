@@ -59,6 +59,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     show_back_btn: Observable<boolean> = new Observable(false);
     //ROUTES
     sub_station_routes: ObservableCollection<any> = new ObservableCollection([]);
+    //AMORTIZATION
+    amortization_tbl: ObservableCollection<any> = new ObservableCollection([]);
     //Summary Button
     show_summary_btn: Observable<boolean> = new Observable(false);
 
@@ -156,7 +158,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             if (routes.length > 0) {
                 this.screens_collection.get().forEach(scr => {
                     scr['sections'].get().forEach(sec => {
-                        sec['fields'].get().forEach(function (f) {
+                        sec['fields'].get().forEach(f => {
                             if (f['fieldCalVar'] === 'feedLocation') {
                                 f.value.set(routes.length > 0 ? routes[0].name + ': ' + routes[0].distance + ' miles <br> City: ' + routes[0].city : 'None found');
                             }
@@ -166,12 +168,26 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                             if (f['fieldCalVar'] === 'marketLocation') {
                                 f.value.set(routes.length > 2 ? routes[2].name + ': ' + routes[2].distance + ' miles <br> City: ' + routes[2].city : 'None found');
                             }
+                            if (f['fieldCalVar'] === 'feedDistance') {
+                                f.value.set(routes.length > 0 ? routes[0].distance.toString() : 0);
+                                this.updateViewModel(f);
+                            }
+                            if (f['fieldCalVar'] === 'seedDistance') {
+                                f.value.set(routes.length > 0 ? routes[1].distance.toString() : 0);
+                                this.updateViewModel(f);
+                            }
+                            if (f['fieldCalVar'] === 'marketDistance') {
+                                f.value.set(routes.length > 0 ? routes[2].distance.toString() : 0);
+                                this.updateViewModel(f);
+                            }
                         });
                     });
                 });
             }
             //this.sub_station_routes.set(routes);
         });
+
+        //$(document).bind("kendo:skinChange", this.renderCharts());
     }
 
     setSystems(wc) {
@@ -186,7 +202,10 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                     "species": feat.attributes.Species,
                     "system": feat.attributes.System,
                     "systemid": feat.attributes.System.replace(/\ /g, "").replace(/\:/g, "_"),
-                    "selected": new Observable<boolean>(feat.attributes.Default === "True")
+                    "selected": new Observable<boolean>(feat.attributes.Default === "True"),
+                    "overview": feat.attributes.Overview,
+                    "img_src": feat.attributes.ImagePath,
+                    "img_credit": feat.attributes.ImageCredit
                 };
                 if (feat.attributes.Default === 'True') {
                     defaultSystem = sys;
@@ -228,7 +247,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                         "price_increment": feat.attributes.PriceIncrement,
                         "selected": speciesSelected,
                         "overview": feat.attributes.Overview,
-                        "img_src": feat.attributes.ImagePath
+                        "img_src": feat.attributes.ImagePath,
+                        "img_credit": feat.attributes.ImageCredit
                     }
                 })
             : [];
@@ -271,7 +291,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                         "show": true,
                         "selected": prodSelected,
                         "overview": feat.attributes.Overview,
-                        "img_src": feat.attributes.ImagePath
+                        "img_src": feat.attributes.ImagePath,
+                        "img_credit": feat.attributes.ImageCredit
                     }
                 })
             : [];
@@ -330,6 +351,10 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
         var _screenSectionsInput = wc.getValue('screenSections').features ? wc.getValue('screenSections').features : [];
 
+        let _chartConfigs = wc.getValue('charts').features ? wc.getValue('charts').features : [];
+
+        let _growthRates = wc.getValue('growthRates').features ? wc.getValue('growthRates').features : [];
+
         let _screenConfig = [];
 
         if (wc.getValue("screenConfig").features) {
@@ -345,10 +370,9 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                             screen: ssAttr.Screen,
                             sectionType: ssAttr.SectionType,
                             sectionDesc: ssAttr.SectionDesc,
-                            displayClass: 'screenSection' + ssAttr.Display,// + ' panel-cell',
+                            displayClass: 'screenSection' + ssAttr.Display,
                             fields: new ObservableCollection<any>([]),
-                            visible: new Observable<boolean>(true),
-                            //show_all_tabs: this.show_all_tabs
+                            visible: new Observable<boolean>(true)
                         };
                         returnSectionInfo['fields_filter'] = new FilterableCollection<any>(returnSectionInfo['fields'], this._fieldsFilter.bind(this, this));
 
@@ -387,7 +411,11 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                                 returnSectionInfo['show_other_input_params_1'] = this.show_other_input_params_1;
                                 break;
                             case 'Summary Table':
-                                returnSectionInfo['summary_table'] = this.screens_collection
+                                returnSectionInfo['summary_table'] = this.screens_collection;
+                                break;
+                            case 'AmortizationTable':
+                                returnSectionInfo['amortization_table'] = this.amortization_tbl;
+                                break;
                             default:
                                 break;
                         }
@@ -442,6 +470,39 @@ let value = this.formatValue(att.Default, att.Decimal)
                                     visible: new Observable<boolean>(att.Field === 'Total Land'),
                                     tableDisplayClass: 'div-table-cell ' + att.FieldCategory
                                 };
+                                //add chart config if applicable
+                                if (att.ChartConfig !== '') {
+                                    //lookup chart config values and render?
+                                    let _chartConfig = _chartConfigs.filter(f => f.attributes.ChartID === att.ChartConfig)[0];
+                                    returnVal['chartConfig'] = {
+                                        chartID: _chartConfig.attributes.ChartID,
+                                        chartName: _chartConfig.attributes.ChartName,
+                                        chartType: _chartConfig.attributes.Type,
+                                        chartSeries: JSON.parse(_chartConfig.attributes.Series)
+                                    };
+                                }
+                                if (att.FieldCategory === 'LookupTable') {
+                                    let lutName = att.Formula.split('lut:')[1].split('>')[0];
+                                    let lutField = att.Formula.split('>')[1].split('{')[0];
+                                    let lutFieldLookup = att.Formula.indexOf('{') !== -1 ? att.Formula.split('{')[1].split('}')[0] : null;
+                                    let lut;
+                                    switch (lutName) {
+                                        case 'growthRate':
+                                            lut = _growthRates;
+                                            let harvestWeights = _growthRates.filter(gr =>
+                                                this.selected_species.get() === gr.attributes.Species
+                                            ).map(gr => {
+                                                return {
+                                                    option: gr.attributes['Market Weight'],
+                                                    value: gr.attributes['Months to Harvest']
+                                                }
+                                            });
+                                            returnVal['ddOptions'] = harvestWeights;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
                                 fieldValue.bind(returnVal, (val) => {
                                     returnVal.formattedValue.set(thisScope.formatDisplayValue(val, returnVal.unit));
                                 });
@@ -476,8 +537,149 @@ let value = this.formatValue(att.Default, att.Decimal)
         }
 
         this._setScreenSectionBindings();
+        this.calculateAmortization();
+        //this.renderCharts();
     }
 
+    renderCharts() {
+        this.screens_collection.get().forEach(scr => {
+            scr['sections'].get().forEach(sct => {
+                sct['fields'].get().forEach(f => {
+                    if (f.chartConfig) {
+                        //update with model values
+                        f.chartConfig.chartSeries[0].data.forEach(d => {
+                            let value = this.getValue(d.fieldCalVar);
+                            d.value = parseInt(value.replace(/\,/g,''));
+                        });
+                        let opts = {
+                            legend: {
+                                visible: true
+                            },
+                            chartArea: {
+                                background: ""
+                            },
+                            seriesDefaults: {
+                                labels: {
+                                    visible: true,
+                                    background: "transparent",
+                                    template: "#= category #: #= kendo.format('{0:P0}', percentage)# \n #= kendo.format('{0:c0}',value)#"
+                                }
+                            },
+                            series: f.chartConfig.chartSeries,
+                            tooltip: {
+                                visible: true,
+                                format: "{0:c0}"
+                            }
+                        };
+                        $("#"+f.chartConfig.chartID).kendoChart(opts);
+                    }
+                });
+            });
+        });
+    }
+
+    getValue(fieldCalVar) {
+        let returnVal = null;
+        this.screens_collection.get().forEach(scr => {
+            scr['sections'].get().forEach(sct => {
+                sct['fields'].get().forEach(f => {
+                    if (f.fieldCalVar === fieldCalVar) {
+                        returnVal = f.value.get();
+                    }
+                });
+            });
+        });
+        return returnVal;
+    }
+
+    calculateAmortization() {
+        //pull out loan amount, interest rate, term
+
+
+        //Calculate your monthly payment(p) using your principal balance or total loan amount(a), periodic interest rate(r), which is your annual rate divided by the number of payment periods, and your total number of payment periods(n): 3
+
+        //Formula: a / { [(1 + r) ^ n]-1 } / [r(1 + r) ^ n]=p
+
+        //Assume you borrow $100, 000 at 6 % for 30 years to be repaid monthly.To calculate the monthly payment, convert percentages to decimal format, then follow the formula:
+
+        //a: 100, 000, the amount of the loan
+        //r: 0.005(6 % annual rate—expressed as 0.06—divided by 12 monthly payments per year)
+        //n: 360(12 monthly payments per year times 30 years)
+        //Calculation: 100, 000 / { [(1 + 0.005) ^ 360]-1 } / [0.005(1 + 0.005) ^ 360]=599.55, or 100, 000 / 166.7916=599.55
+
+
+        let loanAmt; 
+        let intRate; 
+        let term;
+        let frequency = 1; //monthly vs yearly
+        let totInterest = 0;
+        let amortTbl = [{
+            paymentNumber: "Number",
+            prevBalance: "Prev Balance",
+            payment: "Payment",
+            interest: "Payment (Interest)",
+            principal: "Payment (Principal)",
+            newBalance: "Balance",
+            totInterest: "Total Interest Paid",
+            class: "div-table-row heading"
+        }];
+        this.screens_collection.get().forEach(scr => {
+            scr['sections'].get().forEach(sct => {
+                sct['fields'].get().forEach(f => {
+                    switch (f.fieldCalVar) {
+                        case 'loanAmountReq':
+                            loanAmt = parseFloat(f.value.get().replace(/\,/g, ''));
+                            break;
+                        case 'loanIntRate':
+                            intRate = parseFloat(f.value.get());
+                            break;
+                        case 'termOfLoan':
+                            term = parseInt(f.value.get());
+                            break;
+                    }
+                });
+            });
+        });
+        let freqRate = intRate / frequency;
+        let numPayments = frequency * term;
+        let formulaDenom = Math.pow((1+freqRate), numPayments);
+        let regularPayment = loanAmt / ((formulaDenom - 1) / (freqRate * (formulaDenom)));
+        this.setAnnualLoanPayment(regularPayment, frequency);
+
+        for (var x = 0; x < numPayments; x++) {
+            let paymentInterest = loanAmt * freqRate;
+            let paymentPrincipal = regularPayment - paymentInterest;
+            totInterest += paymentInterest;
+            let paymentInfo = {
+                paymentNumber: (x + 1).toString(),
+                prevBalance: this.formatDisplayValue(this.formatValue(loanAmt,0),'$'),
+                payment: this.formatDisplayValue(this.formatValue(regularPayment, 0), '$'),
+                interest: this.formatDisplayValue(this.formatValue(paymentInterest, 0), '$'),
+                principal: this.formatDisplayValue(this.formatValue(paymentPrincipal, 0), '$'),
+                newBalance: this.formatDisplayValue(this.formatValue(loanAmt - paymentPrincipal, 0), '$'),
+                totInterest: this.formatDisplayValue(this.formatValue(totInterest, 0), '$'),
+                class: 'div-table-row'
+            };
+            
+            amortTbl.push(paymentInfo);
+            loanAmt = loanAmt - paymentPrincipal;
+        }
+        this.amortization_tbl.set(amortTbl);
+        this.amortization_tbl.pulse();
+    }
+
+    setAnnualLoanPayment(regPayment,freq) {
+        this.screens_collection.get().forEach(scr => {
+            scr['sections'].get().forEach(sct => {
+                sct['fields'].get().forEach(f => {
+                    if (f.fieldCalVar === 'annualLoanPayment') {
+                        f.value.set(this.formatValue((regPayment * freq), 0));
+                        this.updateViewModel(f);
+                    }
+                });
+            });
+        });
+    }
 
     formatValue(value, decimalPlaces) {
         let val = value.toString().replace(/\,/g, '');
@@ -505,13 +707,18 @@ let value = this.formatValue(att.Default, att.Decimal)
                     if (f.formula.indexOf(_fieldCalVar) !== -1 && f.fieldCalVar !== _fieldCalVar) {
                         //need to update value
                         //get formula
-                        let newVal = this.formatValue(this.processFieldFormula(f, parseFloat(changedInput)), f.decimalDisp);
+                        let newVal = this.formatValue(this.processFieldFormula(f), f.decimalDisp);
                         if (newVal !== f.value.get()) {
                             if (f.uiType === 'slider') {
                                 $('#' + f.fieldCalVar).slider('value', parseFloat(newVal));
                                 $("#" + f.fieldCalVar + " .oe-slider-handle").text(this.formatDisplayValue(newVal, f.unit));
                             } 
                             f.value.set(newVal);
+                            //check if related to amortization and update table if so
+                            if (['_termOfLoan', '_loanIntRate', 'loanAmountReq'].indexOf(f.fieldCalVar) !== -1) {
+                                this.calculateAmortization();
+                            }
+                            //recurssivley search for other dependent variables
                             this.updateViewModel(f);
                         }
                     }
@@ -540,7 +747,7 @@ let value = this.formatValue(att.Default, att.Decimal)
         return returnVal;
     }
 
-    processFieldFormula(field, changedVal) {
+    processFieldFormula(field) {
         //parse fomula
         let formula = field.formula;
         let formulaVals = formula;

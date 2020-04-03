@@ -74,14 +74,34 @@ header {
         font-size:.9em;
         color:#1A72C4;
     }
+    
     header div:hover{
         text-decoration:underline;
         cursor:pointer;
     }
-    section{
-        height:100%;
-    }
 
+.header-bar-wrapper{
+    position:relative;
+    width:100%;
+}    
+
+.header-bar-right{
+    position:absolute;
+    right:10px;
+    top:-2px;
+}
+
+.header-bar-right div{
+    display:inline-block;
+    padding:0 10px;
+    vertical-align:middle;
+}
+
+
+.clear{
+    float:none;
+    clear:both;
+}
 #fin-pln-footer {
     position: absolute;
     bottom: 0;
@@ -97,47 +117,6 @@ header {
 #pager-wrapper {
     width: 100%;
     display: table;
-}
-
-#info-screen {
-    position: relative;
-    height: 100%;
-}
-
-#info-screen-content-wrapper {
-    position: relative;
-    height: 100%;
-}
-
-#info-screen-toggle-bar {
-    line-height: 24px;
-    height: 24px;
-    vertical-align: middle;
-    background-color: #e6e0e0;
-}
-
-    #info-screen-toggle-bar img {
-        vertical-align: middle;
-        margin-top: -4px;
-    }
-
-#info-screen-content {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background-color: whitesmoke;
-    z-index: 20000;
-    padding: 20px;
-}
-
-#close-info-btn-wrapper {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    right: 0;
-    text-align: center;
 }
 
 .oe-btn {
@@ -170,19 +149,6 @@ header {
     .oe-btn.clear-filters {
         width: 8em;
     }
-
-/*.get-info-btn {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABOklEQVQ4jaWTvU4CURCFr4X89DyF4pPwU/IIk+2MxJ5z7uRSIhs2Gqrb3wfYGCwQbYUEeSGbVZflErNx2nPmm5/MGFMJa+0NgBTAFsABwIHkB8m5c65b9f9EnudNko8A1iR7eZ43vzXvfUtV+wA2JLMQQuMkGcCLqt6erfDb4Zjk6ggC4CmWLCITEZmcgWTlmdexakmSjJIkGcU0ABvnXNcASEn2YiYR6YhIJ6aRHAB4MCR35YVVAAsRWcQ0732L5M4A2McMfwGKLj7/BQCwNyR33vtWXUAIoQ1ga0jOVbVfF6CqQ5Iz45zrknytCbgg+TadTq+MMcaQzFT1LgI4d0j3ANLyPA2SK2vtONZJNZnk83K5vDwSCkhWPMygvNgQQltVhwDeAaQnz1SOYiez8jsD2JKcWWuvq/4v7NLPK7X88YEAAAAASUVORK5CYII=);
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    width: 3em;
-    min-height: 3em;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-color: #FFFFFF;
-}*/
 
 .input-header-wrapper:hover {
     cursor: pointer;
@@ -244,7 +210,6 @@ header {
 
 fieldset {
     position: relative;
-    /*width:100%;*/
     border: solid 1px #808080;
     border-radius: 4px;
     margin: 20px 20px 0 20px;
@@ -258,7 +223,6 @@ legend {
     position: relative;
     width: 100%;
     height: 100%;
-    /*max-width:650px;*/
 }
 
 #map-section {
@@ -485,10 +449,47 @@ h2.screen-header {
     margin: auto;
 }
 
-.div-row.overview img{
-    width:80%;
-    margin:10px auto;
+.div-row.overview{
+    width:100%;
+    margin-left:-10px;
 }
+
+.div-row.overview div.div-row-cell{
+    width:49%;
+    padding: 0 30px 0 0 ;
+  
+}
+
+    .div-row.overview .desc {
+        height: 550px;
+        overflow: auto;
+    }
+
+.overview .input-header{
+    font-weight:normal;
+    font-size:1.2em;
+}
+.system-overview {
+    padding:10px;
+    border:1px solid #a7a7a7;
+    width:95%;
+}
+
+.img-wrapper-center{
+    width:100%;
+    text-align:center;
+    margin-bottom:10px;
+}
+.img-wrapper-center img{
+    /*height:200px;*/
+    max-width: 95%;
+    max-height: 200px;
+
+    border:solid 1px #a7a7a7;
+    padding:10px;
+    border-radius:10px;
+}
+
     .div-row.no-pad {
         width: 100%;
     }
@@ -556,12 +557,16 @@ h2.screen-header {
     margin: auto;
 }
 
-    .div-table.parameters {
+    .div-table.parameters, .div-table.amortization {
         background-color: #f0f0f0;
     }
 
 .div-table-row {
     display: table-row;
+}
+
+.div-table-row.heading{
+    font-weight:bold;
 }
 
 .div-table-cell {
@@ -581,6 +586,11 @@ h2.screen-header {
 
     .div-table-cell:nth-child(3) {
         width: 12%;
+    }
+
+    .div-table.amortization .div-table-cell{
+        width:14.2%;
+        text-align:center;
     }
 
     .div-table-cell.InputCalcTotal {

@@ -1,0 +1,19 @@
+﻿<div data-binding="{@template-for:sections}">
+    <fieldset>
+        <legend data-binding="{@text:displayName}"></legend>
+        <!--<div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>-->
+        <br />
+        
+        <div data-binding="{@source:fields}">
+            <div data-binding="{@template-for:fields}">
+                <div data-binding="{@source:chartConfig}">
+                    <div class="demo-section k-content wide" data-binding="{@template-for:chartConfig}">
+                        <div data-binding="{id:chartID}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+<br />
+

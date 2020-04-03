@@ -17,9 +17,14 @@
         </div>
     </div>-->
     <header>
-       <div data-binding="{@event-onclick: closeView}">
-           Aquaculture Map Viewer
-       </div>
+        <div class="header-bar-wrapper">
+            <div class="header-bar-right">
+                <div class="print" data-binding="{@event-onclick:print}"><img width="20" src="Resources/Images/Icons/print-24.png" /></div>
+                <div data-binding="{@event-onclick: closeView}">
+                    Aquaculture Map Viewer
+                </div>
+            </div>
+        </div>
     </header>
 
 
@@ -41,7 +46,7 @@
                 </div>-->
             </div>
 
-            <div class="panel-cell screens">
+            <div id="printarea" class="panel-cell screens">
                 <div data-binding="{@source:screens_collection_filter}">
                     <div data-binding="{class:screenContentClass}{@template-for:screens_collection_filter}">
                         <br />
@@ -76,6 +81,12 @@
                             <!-- Input Sections -->
                             <div data-binding="{@template-select:Input}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputs.html}">
                             </div>
+                            <!-- Amortization Section -->
+                            <div data-binding="{@template-select:AmortizationTable}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/amortization.html}">
+                            </div>
+                            <!-- Operating Charts -->
+                            <div data-binding="{@template-select:OutputChart}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/operatingCharts.html}">
+                            </div>
                             <!-- Default Parameter Sections -->
                             <div data-binding="{@template-select:Parameter}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/parameters.html}">
                             </div>
@@ -107,7 +118,7 @@
         </div>
         <center>
             <div class="oe-btn-wrapper">
-                <div data-binding="{@visible: show_back_btn}{@event-onclick: gotoPrevScreen}" class="oe-btn"> Back</div>
+                <div data-binding="{@visible: show_back_btn}{@event-onclick: gotoPrevScreen}" class="oe-btn"><- Back</div>
             </div>
             <div class="oe-btn-wrapper">
                 <div data-binding="{@event-onclick: gotoNextScreen}{@visible: show_next_btn}" class="oe-btn">Next -></div>

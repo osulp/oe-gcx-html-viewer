@@ -51,21 +51,46 @@
         </div>-->
     </fieldset>
     <br />
+    <div class="div-row system-overview" data-binding="{@source: selected_system}">
+        <div class="desc" data-binding="{@template-for: selected_system}">
+            <div class="input-header" data-binding="{@text:system}"></div>
+            <hr />
+            <!--<div class="img-wrapper-left">
+                <img data-binding="{src:img_src}" />
+            </div>-->
+            <div data-binding="{innerHTML:overview}"></div>
+        </div>
+    </div>
+    <br />
     <div class="div-row overview">
+        <!--<div class="div-row-column">-->
         <div class="div-row-cell" data-binding="{@source: species_tbl_filter}">
-            <fieldset data-binding="{@template-for: species_tbl_filter}">
-                <legend data-binding="{@text:species}"></legend>
-                <img data-binding="{src:img_src}" />
+            <div class="desc" data-binding="{@template-for: species_tbl_filter}">
+                <div class="input-header" data-binding="{@text:species}"></div>
+                <hr />
+                <div class="img-wrapper-center">
+                    <img data-binding="{src:img_src}" />
+                    <div class="img-caption" data-binding="{@text:img_credit}"></div>
+                </div>
+                
                 <div data-binding="{innerHTML:overview}"></div>
-            </fieldset>
+            </div>
         </div>
+        <!--</div>
+        <div class="div-row-column">-->
         <div class="div-row-cell" data-binding="{@source: prod_meth_tbl_filter}">
-            <fieldset data-binding="{@template-for: prod_meth_tbl_filter}">
-                <legend data-binding="{@text:production_method}"></legend>
-                <img data-binding="{src:img_src}" />
+            <div class="desc" data-binding="{@template-for: prod_meth_tbl_filter}">
+                <div class="input-header" data-binding="{@text:production_method}"></div>
+                <hr />
+                <div class="img-wrapper-center">
+                    <img data-binding="{src:img_src}" />
+                    <div class="img-caption" data-binding="{@text:img_credit}"></div>
+                </div>
+                
                 <div data-binding="{innerHTML:overview}"></div>
-            </fieldset>
+            </div>
         </div>
+        <!--</div>-->
     </div>
     <br />
     <br />

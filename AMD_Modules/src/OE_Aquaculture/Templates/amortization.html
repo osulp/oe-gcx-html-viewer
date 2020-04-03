@@ -1,0 +1,34 @@
+﻿<div data-binding="{@template-for:sections}">
+    <fieldset>
+        <legend>Amortization Table</legend>
+        <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
+        <br />
+        <div class="div-table amortization" data-binding="{@source:amortization_table}">
+            <div class="div-table-row" data-binding="{@template-for:amortization_table}{class:class}">
+                <div class="div-table-cell">
+                    <span data-binding="{@text:paymentNumber}"></span>
+                </div>
+                <div class="div-table-cell">
+                    <span data-binding="{@text:prevBalance}"></span>
+                </div>
+                <div class="div-table-cell">
+                    <span data-binding="{@text:payment}"></span>
+                </div>
+                <div class="div-table-cell">
+                    <span data-binding="{@text:interest}"></span>
+                </div>
+                <div class="div-table-cell">
+                    <span data-binding="{@text:principal}"></span>
+                </div>
+                <div class="div-table-cell">
+                    <span data-binding="{@text:newBalance}"></span>
+                </div>
+                <div class="div-table-cell">
+                    <span data-binding="{@text:totInterest}"></span>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+<br />
+

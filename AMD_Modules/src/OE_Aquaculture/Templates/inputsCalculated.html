@@ -1,26 +1,19 @@
 ﻿<div data-binding="{@template-for:sections}">
-
-    <!--<div data-binding="{@hidden:visible}{class:displayClass}{@event-onclick:toggleParameters}">
-        Show / hide assumptions and calculations
-    </div>-->
-
-    <!--<div data-binding="{class:displayClass}">-->
         <fieldset>
             <legend data-binding="{@text:displayName}"></legend>
             <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
             <br />
 
             <div class="div-table" data-binding="{@source:fields_filter}">
-                <!--<thead><td>Parameter</td><td>Unit</td><td>Value</td></thead>-->
                 <div class="div-table-row" data-binding="{@template-for:fields_filter}">
                     <div data-binding="{class:tableDisplayClass}">
                         <span class="input-header" data-binding="{@text:fieldLabel}"></span>
                     </div>  
-                    <!--<div data-binding ="{class:tableDisplayClass}"><span data-binding="{@text:unit}"></span></div>-->
+                   
                     <div data-binding="{class:tableDisplayClass}"><span data-binding="{@text:formattedValue}"></span></div>
                 </div>
             </div>
         </fieldset>
-    <!--</div>-->
+    <br />
 </div>
 

@@ -35,10 +35,12 @@
     <Content Include="src\OE_Aquaculture\OE_AquacultureFinancialView.ts" />
     <Content Include="src\OE_Aquaculture\OE_AquacultureFinancialViewModel.ts" />
     <Content Include="src\OE_Aquaculture\OE_AquacultureModule.ts" />
+    <Content Include="src\OE_Aquaculture\Templates\operatingCharts.html" />
     <Content Include="src\OE_Aquaculture\Templates\latlong.html" />
     <Content Include="src\OE_Aquaculture\Templates\inputsCalculated.html" />
     <Content Include="src\OE_Aquaculture\Templates\inputNumber.html" />
     <Content Include="src\OE_Aquaculture\Templates\overview.html" />
+    <Content Include="src\OE_Aquaculture\Templates\amortization.html" />
     <Content Include="src\OE_Aquaculture\Templates\summary.html" />
     <Content Include="src\OE_Aquaculture\Templates\slider.html" />
     <Content Include="src\OE_Aquaculture\Templates\locationMap.html" />
