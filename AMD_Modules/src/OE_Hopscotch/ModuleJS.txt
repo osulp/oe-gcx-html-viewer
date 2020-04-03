@@ -1,71 +1,88 @@
-﻿{
-                        "moduleName": "OE_Hopscotch",
-                        "require": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchModule",
-                        "libraryId": "OE_AMD",
-                        "configuration": {},
-                        "views": [{
-                            "id": "OE_HopscotchView",
-                            "require": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchView",
-                            "markup": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchView.html",
-                            "title": "Tour Name",
-                            "viewModelId": "OE_HopscotchViewModel",
-                            "visible": false,
-                            "region": "DataRegion",
-                            "configuration": {                               
-                            }
-                        }],
-                        "viewModels": [
-                            {
-                                "id": "OE_HopscotchViewModel",
-                                "require": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchViewModel",
-                                "configuration": {
-                                    "tours": [
-                                        {
-                                            "key": "layers",
-                                            "requiredView":"LayerDataContainerView",
-                                            "tour": {
-                                                "steps": [
-                                                    {
-                                                        "title": "Layers Panel",
-                                                        "content": "The layer panel is used to enabled/disable different layers of interest.",
-                                                        "target": ".LayerDataContainerView",
-                                                        "yOffset": -20,
-                                                        "placement": "right"
-                                                    },
-                                                    {
-                                                        "title": "Toggle Layer",
-                                                        "content": "Click a checkbox to toggle a layer, or layer group, on and off.",
-                                                        "target": ".layer-item-ctrl",
-                                                        "yOffset": -20,
-                                                        "placement": "right"
-                                                    },
-                                                    {
-                                                        "title": "Expand Layer Group",
-                                                        "content": "Click a +, or -, button to expand or collapse a layer group.",
-                                                        "target": ".layer-item-expander",
-                                                        "yOffset": -20,
-                                                        "placement": "right"
-                                                    },
-                                                    {
-                                                        "title": "Filter Layers",
-                                                        "content": "Begin typing here to filter the layers displayed in the layer planel.",
-                                                        "target": ".filter-control-search",
-                                                        "yOffset": -20,
-                                                        "placement": "right"
-                                                    },
-                                                    {
-                                                        "title": "Layer Theemes",
-                                                        "content": "Here you can view curated layer themes.  Choose \"All Available Layers\" to see all the layers for this site.",
-                                                        "target": ".layer-theme-switcher",
-                                                        "yOffset": -20,
-                                                        "placement": "right"
-                                                    }
-                                                ],
-                                                "showCloseButton": true,
-                                                "showPrevButton": true
-                                            }
-                                        }                                        
-                                    ]                                    
+﻿
+Viewer Command: oeStartTour
+Command Parameter: key value from json (example below would be "layers")
+
+
+Config JSON
+
+
+{
+    "moduleName": "OE_Hopscotch",
+    "require": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchModule",
+    "libraryId": "OE_AMD",
+    "configuration": {},
+    "views": [{
+        "id": "OE_HopscotchView",
+        "require": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchView",
+        "markup": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchView.html",
+        "title": "Tour Name",
+        "viewModelId": "OE_HopscotchViewModel",
+        "visible": false,
+        "region": "DataRegion",
+        "configuration": {                               
+        }
+    }],
+    "viewModels": [
+        {
+            "id": "OE_HopscotchViewModel",
+            "require": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchViewModel",
+            "configuration": {
+                "tours": [
+                    {
+                        "key": "layers",
+                        "requiredView":"LayerDataContainerView",
+						"commandOnTourStart":"OpenToolbar",
+						"commandOnTourStartParam":"",
+						"commandOnTourEnd":"",
+						"commandOnTourEndParam":"",
+						"commandOnTourClose":"",
+						"commandOnTourCloseParam":"",
+                        "tour": {
+                            "steps": [
+                                {
+                                    "title": "Layers Panel",
+                                    "content": "The layer panel is used to enabled/disable different layers of interest.",
+                                    "target": ".LayerDataContainerView",
+                                    "yOffset": -20,
+                                    "placement": "right",
+									"commandOnShow":"",
+									"commandOnShowParam":"",
+									"runWorkflowById":""
+                                },
+                                {
+                                    "title": "Toggle Layer",
+                                    "content": "Click a checkbox to toggle a layer, or layer group, on and off.",
+                                    "target": ".layer-item-ctrl",
+                                    "yOffset": -20,
+                                    "placement": "right"
+                                },
+                                {
+                                    "title": "Expand Layer Group",
+                                    "content": "Click a +, or -, button to expand or collapse a layer group.",
+                                    "target": ".layer-item-expander",
+                                    "yOffset": -20,
+                                    "placement": "right"
+                                },
+                                {
+                                    "title": "Filter Layers",
+                                    "content": "Begin typing here to filter the layers displayed in the layer planel.",
+                                    "target": ".filter-control-search",
+                                    "yOffset": -20,
+                                    "placement": "right"
+                                },
+                                {
+                                    "title": "Layer Theemes",
+                                    "content": "Here you can view curated layer themes.  Choose \"All Available Layers\" to see all the layers for this site.",
+                                    "target": ".layer-theme-switcher",
+                                    "yOffset": -20,
+                                    "placement": "right"
                                 }
-                            }]
-                    }
+                            ],
+                            "showCloseButton": true,
+                            "showPrevButton": true							
+                        }
+                    }                                        
+                ]                                    
+            }
+        }]
+}
