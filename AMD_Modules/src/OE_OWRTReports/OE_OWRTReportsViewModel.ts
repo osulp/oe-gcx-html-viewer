@@ -698,6 +698,11 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
             else if (i>=4)
                 imageNodes[i].style.display = "none";
         }
+                
+        //Force the print version to hide any layers that rendered too large.  This forces county borders to the locator div.
+        PW.document.getElementById("oe_owrtPR_divMap_container").style.width = "280px";
+        PW.document.getElementById("oe_owrtPR_divMap_container").style.height = "250px";
+        PW.document.getElementById("oe_owrtPR_divMap_container").style.overflow = "hidden";        
 
         this.printAreaVisible.set(false);
 
