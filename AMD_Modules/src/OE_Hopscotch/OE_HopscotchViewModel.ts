@@ -67,6 +67,8 @@ export class OE_HopscotchViewModel extends ViewModelBase {
 
         this.hopscotch = window["hopscotch"] ? window["hopscotch"] : null;
 
+        this.hopscotch.endTour();
+
         var currentScope:any = this;
 
         if (this.hopscotch && this.toursKeyValObject.hasOwnProperty(args)) {            
@@ -95,7 +97,7 @@ export class OE_HopscotchViewModel extends ViewModelBase {
                     this.toursKeyValObject[args].tour.steps[i].onShow = () => { currentScope.CheckOnEventWorkflow(currentScope) }
                 }
             }
-            
+                        
             this.hopscotch.startTour(this.toursKeyValObject[args].tour);
         }        
     }
@@ -104,7 +106,11 @@ export class OE_HopscotchViewModel extends ViewModelBase {
                 
         var cTour: any = currentScope.hopscotch.getCurrTour();
         var currStepNum:any = currentScope.hopscotch.getCurrStepNum();
-        var cStep:any = cTour.steps[currStepNum];
+        var cStep: any = cTour.steps[currStepNum];
+
+        if (cStep.commandDoIfHidden && currentScope.IsClassVisisble(cStep.commandDoIfHidden)) {
+            return;
+        }
                 
         if (cStep[commandParamName])
             currentScope.app.command(cStep[commandName]).execute(cStep[commandParamName]);
@@ -124,6 +130,12 @@ export class OE_HopscotchViewModel extends ViewModelBase {
             //workflowArgs.mapPointIn = contextIn.mapPointIn;
             this.app.commandRegistry.commands.RunWorkflowWithArguments.execute(workflowArgs);
         }
+    }
+
+    private IsClassVisisble(classPath:string): boolean {
+
+        console.log(classPath+" visible: " + $(classPath).is(":visible"));
+        return $(classPath).is(":visible");
     }
         
     private _injectScript() {

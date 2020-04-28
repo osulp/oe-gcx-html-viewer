@@ -1196,7 +1196,7 @@ export class OE_OITTViewModel extends ViewModelBase {
 
             this.esriMap.on("load", function (event: any) {
 
-                var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/40");
+                var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/27");
                 (<esri.Map>event.map).addLayer(featureLayer);
 
                 var modelRef = viewThis;
