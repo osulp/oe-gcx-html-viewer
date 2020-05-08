@@ -698,6 +698,11 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
             else if (i>=4)
                 imageNodes[i].style.display = "none";
         }
+                
+        //Force the print version to hide any layers that rendered too large.  This forces county borders to the locator div.
+        PW.document.getElementById("oe_owrtPR_divMap_container").style.width = "280px";
+        PW.document.getElementById("oe_owrtPR_divMap_container").style.height = "250px";
+        PW.document.getElementById("oe_owrtPR_divMap_container").style.overflow = "hidden";        
 
         this.printAreaVisible.set(false);
 
@@ -1283,7 +1288,8 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
                 //this.esriProjectLayer = new esri.layers.FeatureLayer(this._MakeFeatureCollection(featureSetIn));
                 //(<esri.Map>event.map).addLayer(this.esriProjectLayer);
 
-                var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/40");
+                //var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/40");
+                var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/27");
                 (<esri.Map>event.map).addLayer(featureLayer);
                                 
                 (<esri.Map>event.map).setExtent(esri.graphicsExtent(featureSetIn.features).expand(2));                

@@ -47,6 +47,7 @@ Config JSON
                                     "placement": "right",
 									"commandOnShow":"",
 									"commandOnShowParam":"",
+									"commandDoIfHidden":".outer > .inner",
 									"runWorkflowById":""
                                 },
                                 {
