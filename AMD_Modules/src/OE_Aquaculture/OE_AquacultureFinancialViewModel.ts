@@ -32,6 +32,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     //SYSTEMS (Species and Production Method)
     systems_tbl: ObservableCollection<string> = new ObservableCollection([]);
     selected_system: Observable<any> = new Observable({});
+    selected_system_binding_token: string = '';
     selected_system_text: Observable<string> = new Observable('');
     systems_tbl_filter: FilterableCollection<any>;
     show_no_systems_in_filtered_view: Observable<boolean> = new Observable(false);
@@ -63,6 +64,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     amortization_tbl: ObservableCollection<any> = new ObservableCollection([]);
     //Summary Button
     show_summary_btn: Observable<boolean> = new Observable(false);
+    //UPDATE State
+    is_model_updating: Observable<boolean> = new Observable(false);
 
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
@@ -83,23 +86,25 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                 });
             }
         });
-
-        this.selected_system.bind(this, (sys) => {
-            this.selected_system_text.set(sys.system ? sys.system : sys);
-            let _species = [];
-            this.species_tbl.get().forEach(species => {
-                let isSelected = sys.species === species.species;
-                species.selected = isSelected; //.set(isSelected);
-                _species.push(species);
-            });
-            this.species_tbl.set(_species);
-            //this.species_tbl_filter.refresh();
-            let _prod = [];
-            this.prod_meth_tbl.get().forEach(prod_meth => {
-                prod_meth.selected = sys.production_method === prod_meth.production_method;
-                _prod.push(prod_meth);
-            })
-            this.prod_meth_tbl.set(_prod);
+        
+        this.selected_system_binding_token = this.selected_system.bind(this, (sys) => {
+            if (sys) {
+                this.selected_system_text.set(sys.system ? sys.system : sys);
+                let _species = [];
+                this.species_tbl.get().forEach(species => {
+                    let isSelected = sys.species === species.species;
+                    species.selected = isSelected; //.set(isSelected);
+                    _species.push(species);
+                });
+                this.species_tbl.set(_species);
+                //this.species_tbl_filter.refresh();
+                let _prod = [];
+                this.prod_meth_tbl.get().forEach(prod_meth => {
+                    prod_meth.selected = sys.production_method === prod_meth.production_method;
+                    _prod.push(prod_meth);
+                })
+                this.prod_meth_tbl.set(_prod);
+            }
         });
 
         this.species_tbl_filter = new FilterableCollection<any>(this.species_tbl, this._selectedFilter.bind(this, this));
@@ -131,8 +136,10 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
         this.app.registerActivityIdHandler("runFinancialPlnModule", (wc, cf) => {
             this.has_location.set(wc.getValue("location") ? true : false);
-
+           
             this.workflowContext = $.extend({}, wc);
+
+            this.setSystems(wc);
 
             this.setScreens(wc);
 
@@ -140,7 +147,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
             this.setProdMethods(wc);
 
-            this.setSystems(wc);
+            //rerun to set the resources system selection screen val...  TODO: figure out a better way
+            //this.setSystems(wc);
 
             this.app.commandRegistry.command("ActivateView").execute("OE_AquacultureFinancialView");
         });
@@ -372,20 +380,13 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                             sectionDesc: ssAttr.SectionDesc,
                             displayClass: 'screenSection' + ssAttr.Display,
                             fields: new ObservableCollection<any>([]),
+                            field_categories: new ObservableCollection<any>([]),
+                            field_ui_categories: new ObservableCollection<any>([]),
                             visible: new Observable<boolean>(true)
                         };
                         returnSectionInfo['fields_filter'] = new FilterableCollection<any>(returnSectionInfo['fields'], this._fieldsFilter.bind(this, this));
 
-                        switch (ssAttr.SectionType) {
-                            case 'Resources':
-                                let selected_qs_resource = new Observable<any>('');
-                                selected_qs_resource.bind(this, (val) => {
-                                    this.setSelectedQuickstartResource(val);
-                                });
-                                returnSectionInfo['selected_qs_resource'] = selected_qs_resource;
-                                if (ssAttr.SectionID === 'resourceIntro') {
-                                    returnSectionInfo['field_categories'] = new ObservableCollection<any>([]);
-                                }
+                        switch (ssAttr.SectionType) {  
                             case 'Map':
                                 returnSectionInfo['selected_location'] = new Observable<any>('');
                                 returnSectionInfo['show_add_location'] = new Observable<boolean>(true);
@@ -424,7 +425,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                             .map(sf => {
                                 let thisScope = this;
                                 const att = sf.attributes;
-let value = this.formatValue(att.Default, att.Decimal)
+let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att.Default, att.Decimal)
                                 let fieldValue;
                                 fieldValue = new Observable<any>(value);
                                 //switch (att.fieldCalVar) {
@@ -451,6 +452,7 @@ let value = this.formatValue(att.Default, att.Decimal)
                                 {
                                     fieldName: att.Field,
                                     fieldCalVar: att.FieldCalVar,
+                                    fieldHandle: att.FieldCalVar+"Handle",
                                     fieldCat: att.FieldCategory,
                                     fieldLabel: att.FieldLabel,
                                     uiType: att.UiType,
@@ -459,6 +461,7 @@ let value = this.formatValue(att.Default, att.Decimal)
                                     increment: att.Increment,
                                     value: fieldValue,
                                     formattedValue: fieldDisplayValue,
+                                    previousValue: fieldValue,
                                     min: att.Min,
                                     max: att.Max,
                                     decimalDisp: att.Decimal,
@@ -468,7 +471,8 @@ let value = this.formatValue(att.Default, att.Decimal)
                                     notes: att.Notes,
                                     showDesc: new Observable<boolean>(true),
                                     visible: new Observable<boolean>(att.Field === 'Total Land'),
-                                    tableDisplayClass: 'div-table-cell ' + att.FieldCategory
+                                    tableDisplayClass: 'div-table-cell ' + att.FieldCategory,
+                                    class: new Observable<string>('div-table-cell values')
                                 };
                                 //add chart config if applicable
                                 if (att.ChartConfig !== '') {
@@ -486,22 +490,57 @@ let value = this.formatValue(att.Default, att.Decimal)
                                     let lutField = att.Formula.split('>')[1].split('{')[0];
                                     let lutFieldLookup = att.Formula.indexOf('{') !== -1 ? att.Formula.split('{')[1].split('}')[0] : null;
                                     let lut;
+                                    let selectedDDoption = new Observable<any>();
+                                    let ddOptions = new ObservableCollection<any>();
                                     switch (lutName) {
                                         case 'growthRate':
                                             lut = _growthRates;
                                             let harvestWeights = _growthRates.filter(gr =>
-                                                this.selected_species.get() === gr.attributes.Species
+                                                this.selected_system.get().species === gr.attributes.Species
                                             ).map(gr => {
+                                                if (gr.attributes['Default'] === 'True') {
+                                                    selectedDDoption.set(gr.attributes['Market Weight']);
+                                                }
                                                 return {
                                                     option: gr.attributes['Market Weight'],
-                                                    value: gr.attributes['Months to Harvest']
+                                                    value: gr.attributes['Months to Harvest'],
+                                                    updateField: 'monthsToHarvest',
+                                                    //selected: new Observable<boolean>( gr.attributes['Default'] === 'True')                        
                                                 }
                                             });
-                                            returnVal['ddOptions'] = harvestWeights;
+                                            ddOptions.set(harvestWeights);
+                                            returnVal['ddOptions'] = ddOptions;
                                             break;
                                         default:
                                             break;
                                     }
+                                    returnVal['selDDoption'] = selectedDDoption;
+                                    selectedDDoption.bind(returnVal, (val) => {
+                                        //update original value
+                                        returnVal.value.set(val);
+                                        this.updateViewModel(returnVal);
+                                        //update dependent field if any
+                                        let hasDependentField = returnVal['ddOptions'].get().filter(dd => dd.updateField !== undefined).length > 0;
+                                        if (hasDependentField) {
+                                            //get update field based on new input val
+                                            returnVal['ddOptions'].get().forEach(dd => {
+                                                if (dd.option === val) {
+
+                                                    //update dependent field
+                                                    this.screens_collection.get().forEach(scr => {
+                                                        scr['sections'].get().forEach(sct => {
+                                                            sct['fields'].get().forEach(f => {
+                                                                if (f.fieldCalVar === dd.updateField) {
+                                                                    f.value.set(dd.value);
+                                                                    this.updateViewModel(f);
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
                                 }
                                 fieldValue.bind(returnVal, (val) => {
                                     returnVal.formattedValue.set(thisScope.formatDisplayValue(val, returnVal.unit));
@@ -511,19 +550,31 @@ let value = this.formatValue(att.Default, att.Decimal)
 
                         returnSectionInfo.fields.set(_screenSectionFields);
                         ////Quickstart only sort fields for resource vs goal
-                        //if (returnSectionInfo.section === 'resourceIntro') {
-                        //    let categories = _screenSectionFields.map(f => f.fieldCat)
-                        //        .filter((v, idx, self) => self.indexOf(v) === idx);
-                        //    var field_categories = [];
-                        //    categories.forEach(c => {
-                        //        let catFields = _screenSectionFields.filter(sf => sf.fieldCat === c);
-                        //        let cat = {
-                        //            category: c,
-                        //            fields: new ObservableCollection<any>(catFields)
-                        //        }
-                        //        field_categories.push(cat);
-                        //    });
-                        //    returnSectionInfo['field_categories'].set(field_categories);
+                        //if (returnSectionInfo.section === 'productionRequired') {
+                            let categories = _screenSectionFields.map(f => f.fieldCat)
+                                .filter((v, idx, self) => self.indexOf(v) === idx);
+                            var field_categories = [];
+                            categories.forEach(c => {
+                                let catFields = _screenSectionFields.filter(sf => sf.fieldCat === c);
+                                let cat = {
+                                    category: c,
+                                    fields: new ObservableCollection<any>(catFields)
+                                }
+                                field_categories.push(cat);
+                            });
+                        returnSectionInfo['field_categories'].set(field_categories);
+                        let ui_categories = _screenSectionFields.map(f => f.uiType)
+                            .filter((v, idx, self) => self.indexOf(v) === idx);
+                        var field_ui_cat = [];
+                        ui_categories.forEach(c => {
+                            let catFields = _screenSectionFields.filter(sf => sf.uiType === c);
+                            let cat = {
+                                category: c,
+                                fields: new ObservableCollection<any>(catFields)
+                            }
+                            ui_categories.push(cat);
+                        });
+                        returnSectionInfo['field_ui_categories'].set(ui_categories);
                         //}
                         return returnSectionInfo;
                     });
@@ -538,7 +589,7 @@ let value = this.formatValue(att.Default, att.Decimal)
 
         this._setScreenSectionBindings();
         this.calculateAmortization();
-        //this.renderCharts();
+        this.renderCharts();
     }
 
     renderCharts() {
@@ -611,7 +662,7 @@ let value = this.formatValue(att.Default, att.Decimal)
         let loanAmt; 
         let intRate; 
         let term;
-        let frequency = 1; //monthly vs yearly
+        let frequency = 12; //monthly vs yearly
         let totInterest = 0;
         let amortTbl = [{
             paymentNumber: "Number",
@@ -701,83 +752,163 @@ let value = this.formatValue(att.Default, att.Decimal)
     updateViewModel(changedInput) {
         //find all fields that are dependant on this field
         let _fieldCalVar = changedInput.fieldCalVar;
-        this.screens_collection.get().forEach(s => {
-            s['sections'].get().forEach(sct => {
-                sct.fields.get().forEach(f => {
-                    if (f.formula.indexOf(_fieldCalVar) !== -1 && f.fieldCalVar !== _fieldCalVar) {
-                        //need to update value
-                        //get formula
-                        let newVal = this.formatValue(this.processFieldFormula(f), f.decimalDisp);
-                        if (newVal !== f.value.get()) {
-                            if (f.uiType === 'slider') {
-                                $('#' + f.fieldCalVar).slider('value', parseFloat(newVal));
-                                $("#" + f.fieldCalVar + " .oe-slider-handle").text(this.formatDisplayValue(newVal, f.unit));
-                            } 
-                            f.value.set(newVal);
-                            //check if related to amortization and update table if so
-                            if (['_termOfLoan', '_loanIntRate', 'loanAmountReq'].indexOf(f.fieldCalVar) !== -1) {
-                                this.calculateAmortization();
-                            }
-                            //recurssivley search for other dependent variables
-                            this.updateViewModel(f);
-                        }
-                    }
-                });
-            });
-        });
-    }
-
-    formatDisplayValue(val, unit) {
-        let returnVal;
-        val = this.addCommas(val);
-        switch (unit) {
-            case '$':
-                returnVal = unit + val;
-                break;
-            case '#':
-                returnVal = val;
-                break;
-            case '%':
-                returnVal = parseFloat(val) * 100 + unit;
-                break;
-            default:
-                returnVal = val + ' ' + unit;
-                break;
-        }
-        return returnVal;
-    }
-
-    processFieldFormula(field) {
-        //parse fomula
-        let formula = field.formula;
-        let formulaVals = formula;
-        let formulaFields = formula
-            .replace(/\*/g, ',')
-            .replace(/\+/g, ',')
-            .replace(/\-/g, ',')
-            .replace(new RegExp('/', 'g'), ',')
-            .replace(/\(/g, '')
-            .replace(/\)/g, '')
-            .split(',');
-
-        formulaFields.forEach(ff => {
+        //let _fieldToValidate = changedInput.formula.indexOf('[validate:') !== -1 ? changedInput.formula.split('validate:')[1].split(']')[0] : '';
+        if (changedInput.formula.indexOf('[validate:') !== -1) {
+            this.validateConstraints(changedInput);
+        } else {
             this.screens_collection.get().forEach(s => {
                 s['sections'].get().forEach(sct => {
                     sct.fields.get().forEach(f => {
-                        if (f.fieldCalVar === ff && ff !== '') {
-                            let value = f.value.get().replace(/\,/g,'');
-                            formulaVals = formulaVals.replace(ff,value);
+                        if (f.formula.indexOf(_fieldCalVar) !== -1 && f.fieldCalVar !== _fieldCalVar) {
+                            //need to update value
+                            //get formula
+                            let newVal = this.formatValue(this.processFieldFormula(f), f.decimalDisp);
+                            if (newVal !== f.value.get()) {
+                                if (f.uiType === 'slider') {
+                                    this.setKendoSlider(f, newVal);
+                                }
+                                f.value.set(newVal);
+                                //check if related to amortization and update table if so
+                                if (['_termOfLoan', '_loanIntRate', 'loanAmountReq'].indexOf(f.fieldCalVar) !== -1) {
+                                    this.calculateAmortization();
+                                }
+                                //recurssivley search for other dependent variables
+                                this.updateViewModel(f);
+                            }
                         }
                     });
                 });
             });
         }
-        );
+    }
 
-        //should have updated formula as a string
-        console.log('formula with values', formulaVals);
+    setKendoSlider(f, newVal?) {
+        let thisScope = this;
+        let sliderID = f.fieldCalVar;
+        //var sliderTextHandle = $("#" + sliderID + " .oe-slider-handle");
+        var sliderTextHandle = $("#" + f.fieldHandle);
+        newVal = newVal ? newVal : f.value.get();
+        sliderTextHandle.text(thisScope.formatDisplayValue(newVal.toString(), f.unit));
+        let min = f.min ? parseFloat(f.min) : 0;
+        let max = f.max ? parseFloat(f.max) : 100;
 
-        return eval(formulaVals);
+        let increment = f.increment ? parseFloat(f.increment) : 1;
+
+        let value = newVal.replace(/\,/g,'');//this.formatValue(newVal, f.decimalDisp);
+
+        ////////////////////////////////////////////////
+        // Kendo Slider
+        ////////////////////////////////////////////////
+        let opts = {
+            increaseButtonTitle: "+",
+            decreaseButtonTitle: "-",
+            dragHandleTitle: "",
+            min: min,
+            max: max,
+            value: value,
+            smallStep: increment,
+            largeStep: increment,
+            tooltip: {
+                enabled: false
+            },
+            tickPlacement: "none",
+            showButtons: true,
+            slide: function (slideEvt) {
+                sliderTextHandle.text(thisScope.formatDisplayValue(slideEvt.value.toString(), f.unit));
+            },
+            change: function (changeEvt) {
+                let newVal = changeEvt.value.toString();
+                sliderTextHandle.text(thisScope.formatDisplayValue(newVal, f.unit));
+                f.value.set(newVal);
+                thisScope.updateViewModel(f);
+            }
+        };
+
+        //Check if slider already added and update reference or else create
+        if ($("#" + sliderID).data("kendoSlider")) {
+            var slider = $("#" + sliderID).data("kendoSlider");
+            slider.value(value);            
+        } else {
+            $("#" + sliderID).kendoSlider(opts);
+        }
+    }
+
+    formatDisplayValue(val, unit) {
+        let returnVal;
+        if (val === '<enter value>') {
+            return val;
+        } else {
+            val = this.addCommas(val);
+            switch (unit) {
+                case '$':
+                    returnVal = unit + val;
+                    break;
+                case '#':
+                    returnVal = val;
+                    break;
+                case '%':
+                    returnVal = Math.round(parseFloat(val) * 100) + unit;
+                    break;
+                default:
+                    returnVal = val + ' ' + unit;
+                    break;
+            }
+            return returnVal;
+        }
+    }
+
+    processFieldFormula(field) {
+        //parse fomula
+        let formula = field.formula;
+        if (formula.indexOf('[validate') !== -1) {
+            this.validateConstraints(field);
+            return field.value.get();
+        } else {
+            let formulaVals = formula;
+            let formulaFields = formula
+                .replace(/\*/g, ',')
+                .replace(/\+/g, ',')
+                .replace(/\-/g, ',')
+                .replace(new RegExp('/', 'g'), ',')
+                .replace(/\(/g, '')
+                .replace(/\)/g, '')
+                .split(',');
+
+            formulaFields.forEach(ff => {
+                this.screens_collection.get().forEach(s => {
+                    s['sections'].get().forEach(sct => {
+                        sct.fields.get().forEach(f => {
+                            if (f.fieldCalVar === ff && ff !== '') {
+                                let value = f.value.get().split(/\ /g)[0].replace(/\,/g, '');
+                                formulaVals = formulaVals.replace(ff, value);
+                            }
+                        });
+                    });
+                });
+            }
+            );
+
+            //should have updated formula as a string
+            console.log('formula with values', formulaVals);
+
+            return eval(formulaVals);
+        }
+    }
+
+    validateConstraints(field) {
+        let _fieldToValidate = field.formula.indexOf('[validate:') !== -1 ? field.formula.split('validate:')[1].split(']')[0] : '';
+        this.screens_collection.get().forEach(s => {
+            s['sections'].get().forEach(sct => {
+                sct.fields.get().forEach(f => {
+                    //validate constraints
+                    if (_fieldToValidate !== '' && f.fieldCalVar === _fieldToValidate) {
+                        if (field.value.get() !== '<enter value>') {
+                            f.class.set(parseFloat(field.value.get().replace(/\,/g,'')) < parseFloat(f.value.get().replace(/\,/g,'')) ? 'div-table-cell values warning' : 'div-table-cell values');
+                        }
+                    }
+                });
+            });
+        });
     }
 
     setSelectedSystem(selSystem) {
@@ -1043,35 +1174,49 @@ let value = this.formatValue(att.Default, att.Decimal)
 
     }
 
-    _resetDefaults() {
-        this.has_location.set(false);
-        this.screens_collection.set(null);
-        //if (this.screens_collection.get().length > 0) {
-        //    this.screens_collection.getItems().forEach(s => {
-        //        s['sections'].get().forEach(sct => {
-        //            if (sct.sectionType === 'Select System') {
-        //                sct.selected_system.set(null);
-        //                sct.selected_species.set(null);
-        //                sct.selected_prod_meth.set(null);
-        //            }
-        //        });
-        //    });
-        //}
-        this.selected_location.set(null);
-        //this.selected_species.set(null);
-        //this.selected_price_target.set(null);
-        //this.selected_product_weight.set(null);
-        //this.selected_prod_meth.set(null);
-        //this.selected_prod_meth_filter.set(null);
-        //this.selected_species_filter.set(null);
-        //this.selected_system.set(null);
-        //this.selected_annual_harvest.set(null);
-        //this.show_add_location.set(null);
-        //this.show_other_input_params_1.set(null);
-        this.active_screen.set(1);
+    _resetDefaults() {        
+        //this.workflowContext.completeActivity();
         this.esriMap = null;
         //this.esriBasemapToggle.destroy();
         //this.esriHomeBtn.destroy();
-        //this.esriSearch.destroy();
+        //this.esriSearch.destroy();        
+        this.selection_cache.set(null);
+        this.species_tbl.set(null);
+        //this.species_tbl_filter.set(null);
+        this.selected_species.set(null);
+        this.selected_species_label.set(null);
+        //this.selected_species_filter.set(null);
+        this.prod_meth_tbl.set(null);
+        //this.selected_prod_meth_filter.set(null);
+        this.selected_prod_meth.set(null);
+        this.selected_prod_meth_label.set(null);
+        //this.prod_meth_tbl_filter.set(null);
+        this.systems_tbl.set(null);
+        this.selected_system.unbind(this.selected_system_binding_token);
+        this.selected_system.set(null);
+        //this.selected_system_text();
+        //this.systems_tbl_filter.set(null);
+        this.show_no_systems_in_filtered_view.set(null);
+        //this.screens_collection_filter.set(null);
+        
+        if (this.screens_collection.get().length > 0) {
+            this.screens_collection.getItems().forEach(s => {
+                s['sections'].set(null);
+            });
+        }
+        this.screens_collection.set([]);
+        this.show_other_input_params_1.set(null);
+        this.has_location.set(null);
+       
+        this.info_screen_arrow_src.set(null);
+        this.show_info_screen.set(null);
+        this.active_screen.set(null);
+        this.show_next_btn.set(null);
+        this.show_back_btn.set(null);
+        this.sub_station_routes.set(null);
+        this.amortization_tbl.set(null);
+        this.show_summary_btn.set(null);
+        this.is_model_updating.set(null);
+       
     }
 }

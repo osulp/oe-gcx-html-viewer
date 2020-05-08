@@ -26,8 +26,6 @@
             </div>
         </div>
     </header>
-
-
     <div class="panel">
         <div class="panel-row">
             <div class="panel-cell tabs">
@@ -58,50 +56,54 @@
                                 <h3 data-binding="{@text:selectedSystem}{@visible:show_select_system}"></h3>
                             </div>
                         </div>
-                       
-                        <div data-binding="{@source:sections}{@template-selector: sectionType}">
-                            <!-- System Selection -->
-                            <div data-binding="{@template-select:HtmlOverview}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/overview.html}">
-                            </div>
-                            <!-- System Selection -->
-                            <div data-binding="{@template-select:Select System}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/selectSystem.html}">
-                            </div>
-                            <!-- Resource -->
-                            <div data-binding="{@template-select:Resources}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/resources.html}">
-                            </div>
-                            <!-- Summary -->
-                            <div data-binding="{@template-select:Summary Table}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/summary.html}">
-                            </div>
-                            <!-- Map Section -->
-                            <div data-binding="{@template-select:Map}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/locationMap.html}">
-                            </div>
-                            <!-- Calculated Inputs -->
-                            <div data-binding="{@template-select:InputsCalculated}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputsCalculated.html}{class:displayClass}">
-                            </div>
-                            <!-- Input Sections -->
-                            <div data-binding="{@template-select:Input}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputs.html}">
-                            </div>
-                            <!-- Amortization Section -->
-                            <div data-binding="{@template-select:AmortizationTable}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/amortization.html}">
-                            </div>
-                            <!-- Operating Charts -->
-                            <div data-binding="{@template-select:OutputChart}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/operatingCharts.html}">
-                            </div>
-                            <!-- Default Parameter Sections -->
-                            <div data-binding="{@template-select:Parameter}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/parameters.html}">
-                            </div>
-                            <!--all else-->
-                            <div data-binding="{@template-for:sections}{@visible:visible}{class:displayClass}">
-                                <fieldset>
-                                    <legend data-binding="{@text:displayName}"></legend>
-                                    <div data-binding="{@text:sectionDesc}"></div>
-                                    <div data-binding="{@source:fields_filter}">
-                                        <div data-binding="{@template-for:fields_filter}">
-                                            <span data-binding="{@text:fieldName}"></span>
-                                            <input type="text" data-binding="{@value:value}{placeholder:value}{@event-change:updateModel}" />
-                                        </div>
+                        <div data-binding="{@source: @context}{@template-selector: screen}">
+                            <div data-binding="{@template-select: Production}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/production.html}"></div>
+                            <div data-binding="{@template-for: @context}">
+                                <div data-binding="{@source:sections}{@template-selector: sectionType}">
+                                    <!-- System Selection -->
+                                    <div data-binding="{@template-select:HtmlOverview}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/overview.html}">
                                     </div>
-                                </fieldset>
+                                    <!-- System Selection -->
+                                    <div data-binding="{@template-select:Select System}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/selectSystem.html}">
+                                    </div>
+                                    <!-- Production -->
+                                    <!--<div data-binding="{@template-select:Production}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/production.html}">
+                                    </div>-->
+                                    <!-- Summary -->
+                                    <div data-binding="{@template-select:Summary Table}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/summary.html}">
+                                    </div>
+                                    <!-- Map Section -->
+                                    <div data-binding="{@template-select:Map}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/locationMap.html}">
+                                    </div>
+                                    <!-- Calculated Inputs -->
+                                    <div data-binding="{@template-select:InputsCalculated}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputsCalculated.html}{class:displayClass}">
+                                    </div>
+                                    <!-- Input Sections -->
+                                    <div data-binding="{@template-select:Input}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputs.html}">
+                                    </div>
+                                    <!-- Amortization Section -->
+                                    <div data-binding="{@template-select:AmortizationTable}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/amortization.html}">
+                                    </div>
+                                    <!-- Operating Charts -->
+                                    <div data-binding="{@template-select:OutputChart}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/operatingCharts.html}">
+                                    </div>
+                                    <!-- Default Parameter Sections -->
+                                    <div data-binding="{@template-select:Parameter}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/parameters.html}">
+                                    </div>
+                                    <!--all else-->
+                                    <div data-binding="{@template-for:sections}{@visible:visible}{class:displayClass}">
+                                        <fieldset>
+                                            <legend data-binding="{@text:displayName}"></legend>
+                                            <div data-binding="{@text:sectionDesc}"></div>
+                                            <div data-binding="{@source:fields_filter}">
+                                                <div data-binding="{@template-for:fields_filter}">
+                                                    <span data-binding="{@text:fieldName}"></span>
+                                                    <input type="text" data-binding="{@value:value}{placeholder:value}{@event-change:updateModel}" />
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -109,7 +111,6 @@
             </div>
         </div>
     </div>
-
 </div>
 <div id="fin-pln-footer">
     <div id="pager-wrapper">

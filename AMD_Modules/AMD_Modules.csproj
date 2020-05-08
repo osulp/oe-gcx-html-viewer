@@ -41,6 +41,9 @@
     <Content Include="src\OE_Aquaculture\Templates\inputNumber.html" />
     <Content Include="src\OE_Aquaculture\Templates\overview.html" />
     <Content Include="src\OE_Aquaculture\Templates\amortization.html" />
+    <Content Include="src\OE_Aquaculture\Templates\dropdown.html" />
+    <Content Include="src\OE_Aquaculture\Templates\production.html" />
+    <Content Include="src\OE_Aquaculture\Templates\sliderKendo.html" />
     <Content Include="src\OE_Aquaculture\Templates\summary.html" />
     <Content Include="src\OE_Aquaculture\Templates\slider.html" />
     <Content Include="src\OE_Aquaculture\Templates\locationMap.html" />

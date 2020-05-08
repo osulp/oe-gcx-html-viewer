@@ -102,6 +102,7 @@ header {
     float:none;
     clear:both;
 }
+
 #fin-pln-footer {
     position: absolute;
     bottom: 0;
@@ -219,6 +220,10 @@ legend {
     padding: 15px;
 }
 
+#production-targets{
+    margin-top: 10px;
+}
+
 #location-map {
     position: relative;
     width: 100%;
@@ -261,6 +266,13 @@ legend {
     margin: 10px 0;
 }
 
+.slider-wrapper.div-row{
+    margin: -10px auto -15px;
+}
+
+.slider-value{
+    font-weight:bold;
+}
 
 .ui-slider-handle.oe-slider-handle.ui-state-default.ui-corner-all {
     width: 5.5em;
@@ -490,7 +502,7 @@ h2.screen-header {
     border-radius:10px;
 }
 
-    .div-row.no-pad {
+    .div-row.no-pad, .div-row.production {
         width: 100%;
     }
 
@@ -509,12 +521,17 @@ h2.screen-header {
         margin:auto;
     }
 
+        .div-row.production div.div-row-cell{
+            width:50%;
+            padding:10px;
+        }
+
         .div-row div.div-row-cell fieldset {
-            height:100%;
+            height: 100%;
             /*font-size: .9em;*/
             width: 100%;
             background: #f0f0f0;
-            margin:auto;
+            margin: auto;
         }
 
         .div-row div.div-row-cell legend {
@@ -537,6 +554,11 @@ h2.screen-header {
     text-indent: each-line 10px;
 }
 
+.notes.production{
+    font-size:.9em;
+    padding:10px 7px;
+}
+
 .table-notes {
     width: 90%;
     margin: auto;
@@ -555,6 +577,12 @@ h2.screen-header {
     width: 90%;
     background-color: beige;
     margin: auto;
+}
+
+.div-table.production{
+    width:100%;
+    margin-right:10px;
+    font-size:.9em;
 }
 
     .div-table.parameters, .div-table.amortization {
@@ -576,11 +604,15 @@ h2.screen-header {
 }
 
     .div-table-cell:nth-child(1) {
-        width: 75%;
+        width: 55%;
+        vertical-align:middle;
+        padding-left:10px;
+           
     }
 
     .div-table-cell:nth-child(2) {
-        width: 25%;
+        width: 45%;
+        padding-left:10px;
         /*text-align:center;*/
     }
 
@@ -606,6 +638,10 @@ h2.screen-header {
 
     .div-table-cell.values {
         padding-left: 10px;
+    }
+
+    .div-table-cell.warning {
+        background-color:rgba(217, 103, 103, 0.64);
     }
 
 #system-select-wrapper {
@@ -700,4 +736,73 @@ h2.screen-header {
 
     .section-desc div {
         width: 90%;
+    }
+
+
+.oe_select {
+    font-size: 13px;
+    padding: 10px 8px 10px 14px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    width: 50%;
+}
+
+    .oe_select .select {
+        width: 100%;
+        background: url('arrow.png') no-repeat;
+        background-position: 80% center;
+    }
+
+        .oe_select .select select {
+            background: transparent;
+            line-height: 1;
+            border: 0;
+            padding: 0;
+            border-radius: 0;
+            width: 120%;
+            position: relative;
+            z-index: 10;
+            font-size: 1em;
+        }
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
     }

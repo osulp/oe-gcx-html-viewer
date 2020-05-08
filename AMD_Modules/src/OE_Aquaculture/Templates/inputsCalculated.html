@@ -1,19 +1,81 @@
 ﻿<div data-binding="{@template-for:sections}">
-        <fieldset>
-            <legend data-binding="{@text:displayName}"></legend>
-            <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
-            <br />
-
-            <div class="div-table" data-binding="{@source:fields_filter}">
-                <div class="div-table-row" data-binding="{@template-for:fields_filter}">
-                    <div data-binding="{class:tableDisplayClass}">
-                        <span class="input-header" data-binding="{@text:fieldLabel}"></span>
-                    </div>  
-                   
-                    <div data-binding="{class:tableDisplayClass}"><span data-binding="{@text:formattedValue}"></span></div>
+    <fieldset>
+        <legend data-binding="{@text:displayName}"></legend>
+        <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>        
+        <div data-binding="{@source:field_ui_categories}" class="div-row production">
+            <div data-binding="{@template-for:field_ui_categories}" class="div-row-cell">
+                <div data-binding="{@source:@context}{@template-selector:category}">
+                    <div data-binding="{@template-select:slider}">
+                        <h3>Inputs</h3>
+                        <!--<div class="production notes">(Enter any known constraints)</div>-->
+                        <div class="div-table production" data-binding="{@source:fields}">                           
+                            <div class="div-table-row" data-binding="{@template-for:fields}">
+                                <div data-binding="{class:tableDisplayClass}">
+                                    <div class="tooltip">
+                                        <span class="input-header" data-binding="{@text:fieldLabel}"> </span>
+                                        <span data-binding="{@text:desc}" class="tooltiptext"></span>
+                                    </div>
+                                </div>
+                                <div data-binding="{@source:@context}{@template-selector: uiType}{class:tableDisplayClass}">
+                                    <div data-binding="{@template-select:inputNumber}">
+                                        <span><input type="text" data-binding="{placeholder:unit}{@value:value}{@event-change:updateModel}{@event-keyup:checkReset}" /></span>
+                                    </div>
+                                    <!-- SLIDERS -->
+                                    <div data-binding="{@template-select:slider}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/sliderKendo.html}"></div>
+                                    <!-- DROPDOWN -->
+                                    <div data-binding="{@template-select:dropdown}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/dropdown.html}"></div>
+                                    <!--  Input NUMBERS -->
+                                    <!--<div data-binding="{@template-select:inputNumber}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputNumber.html}"></div>-->
+                                    <div data-binding="{@template-select:inputLocation}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/latlong.html}"></div>
+                                    <!-- Default All Else -->
+                                    <div data-binding="{@template-for:@context}">
+                                        <span data-binding="{@text:formattedValue}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-binding="{@template-select:calculated}">
+                        <h3>Calculated</h3>
+                        <!--<div class="production notes">(Based on the production targets above)</div>-->
+                        <div class="div-table production" data-binding="{@source:fields}">
+                            <div class="div-table-row" data-binding="{@template-for:fields}">
+                                <div data-binding="{class:tableDisplayClass}">
+                                    <span class="input-header" data-binding="{@text:fieldName}"></span>
+                                </div>
+                                <div data-binding="{class:tableDisplayClass}"><span data-binding="{@text:formattedValue}"></span></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </fieldset>
+        </div>
+        <!--<div class="div-table" data-binding="{@source:fields_filter}">
+            <div class="div-table-row" data-binding="{@template-for:fields_filter}">
+                <div data-binding="{class:tableDisplayClass}">
+                    <div class="tooltip">
+                        <span class="input-header" data-binding="{@text:fieldName}"> </span>
+                        <span data-binding="{@text:desc}" class="tooltiptext"></span>
+                    </div>
+                </div>
+                <div data-binding="{@source:@context}{@template-selector: uiType}{class:tableDisplayClass}">
+                    <div data-binding="{@template-select:inputNumber}">
+                        <span><input type="text" data-binding="{placeholder:unit}{@value:value}{@event-change:updateModel}{@event-keyup:checkReset}" /></span>
+                    </div>
+                    
+                    <div data-binding="{@template-select:slider}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/sliderKendo.html}"></div>
+                    
+                    <div data-binding="{@template-select:dropdown}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/dropdown.html}"></div>
+                                       
+                    <div data-binding="{@template-select:inputLocation}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/latlong.html}"></div>
+                    
+                    <div data-binding="{@template-for:@context}">
+                        <span data-binding="{@text:formattedValue}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+    </fieldset>
     <br />
 </div>
 

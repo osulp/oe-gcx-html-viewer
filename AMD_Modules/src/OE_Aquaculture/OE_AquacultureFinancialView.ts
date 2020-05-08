@@ -39,31 +39,36 @@ export class OE_AquacultureFinancialView extends ViewBase {
         // Get the element with id="defaultOpen" and click on it
         this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(0));
         this.setUIInputs();
+    }
+
+    onDestroy() {
 
     }
 
     openTab(evt, elem, ctx) {
         //let screenOrder = !this.viewModel.show_all_tabs.get() && ctx.screen === 'Summary' ? 2 : parseInt(ctx.screenOrder) - 1;
-        let screenOrder = parseInt(ctx.screenOrder) - 1;
-        this.viewModel.active_screen.set(screenOrder);
-        this.viewModel.show_back_btn.set(screenOrder > 0);
-        this.viewModel.show_next_btn.set(screenOrder < (this.viewModel.screens_collection_filter.length() - 1));
-        
-        
-        this.viewModel.screens_collection.get().forEach(scr => {
-            scr['screenTabClass'].set('tablinks ' + (ctx.id === scr['id'] ? 'activeTab' : 'inactiveTab'));
-            scr['screenContentClass'].set('tabcontent ' + (ctx.id == scr['id'] ? 'activeScreen' : 'inactiveScreen'));
-        });
-        this.setUIInputs();
-        $('#modal-description').stop().animate({
-            'scrollTop': $('#'+ctx.id)
-        }, 800, 'swing');
+        if (ctx) {
+            let screenOrder = parseInt(ctx.screenOrder) - 1;
+            this.viewModel.active_screen.set(screenOrder);
+            this.viewModel.show_back_btn.set(screenOrder > 0);
+            this.viewModel.show_next_btn.set(screenOrder < (this.viewModel.screens_collection_filter.length() - 1));
 
-        //load map if on transportation
-        if (ctx.screen === 'Transportation') {
-            this.renderMap();
-        } 
-        this.viewModel.renderCharts();
+
+            this.viewModel.screens_collection.get().forEach(scr => {
+                scr['screenTabClass'].set('tablinks ' + (ctx.id === scr['id'] ? 'activeTab' : 'inactiveTab'));
+                scr['screenContentClass'].set('tabcontent ' + (ctx.id == scr['id'] ? 'activeScreen' : 'inactiveScreen'));
+            });
+            this.setUIInputs();
+            $('#modal-description').stop().animate({
+                'scrollTop': $('#' + ctx.id)
+            }, 800, 'swing');
+
+            //load map if on transportation
+            if (ctx.screen === 'Transportation') {
+                this.renderMap();
+            }
+            this.viewModel.renderCharts();
+        }
     } 
 
     renderMap() {
@@ -157,7 +162,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
 
             //Event handlers
             this.viewModel.esriMap.on("load", function (event: any) {
-                var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/40");
+                var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/42");
                 (<esri.Map>event.map).addLayer(featureLayer);
                 //thisScope.setInfoScreenHeight();
                 //window.setTimeout(thisScope.animateInfoScreen, 1000);
@@ -205,13 +210,13 @@ export class OE_AquacultureFinancialView extends ViewBase {
 
     deactivated() {
         this.removeSelectedLocation();
-        this.viewModel.workflowContext.setValue("outputVal", "finished!");
+        //this.viewModel.workflowContext.setValue("outputVal", "finished!");
         this.viewModel.workflowContext.completeActivity();
         this.viewModel._resetDefaults();
     }
 
     print(event, element, context) {
-        //event.preventDefault();
+        event.preventDefault();
         var html = '<!DOCTYPE html><html><head><title>FinancialPlanningPrint</title></head><body onload="window.print();window.close();">';
         html += '<style type="text/css">' +
             'body { font-family: "Segoe UI","Helvetica Neue","Droid Sans",Arial,sans-serif; font-size:.8em;}.inactiveScreen {display:none;}fieldset{position:relative;border:solid 1px grey;border-radius:4px;margin:20px 20px 0 20px}legend{padding:15px}#location-map{position:relative;width:100%;height:100%}#map-section{position:relative}#location-wrapper{position:relative}#add-location{position:absolute;top:0;left:0;right:0;bottom:0;background-color:rgba(255,255,255,.9);text-align:center;vertical-align:middle;z-index:19000}#add-location-msg{position:relative;max-width:350px;top:50%;transform:translateY(-50%);margin:auto}.slider-wrapper{position:relative;text-align:center;padding:10px;max-width:245px;margin:10px 0}.ui-slider-handle.oe-slider-handle.ui-state-default.ui-corner-all{width:5.5em;height:2em;top:43%;margin-top:-.9em;text-align:center;line-height:1.6em;text-indent:0;color:#5e737f;border-radius:10px;padding:2px;background-color:#a5c9df}.ui-slider-handle.oe-slider-handle.ui-state-default.ui-corner-all:hover{cursor:pointer}.filter-header-wrapper{padding:5px;background-color:#f0f0f0;border-radius:4px 4px 0 0;position:relative}.filter-header-wrapper img{padding:0 10px}.filter-header-wrapper img:first-child{padding-left:2px}.filter-header-wrapper:hover{cursor:pointer}.filter-header-wrapper div{display:inline-block}.show-filters{width:24px;height:16px;background-image:url(Resources/Images/Icons/arrow-down-small-24.png);background-repeat:no-repeat}.hide-filters{width:24px;height:16px;background-image:url(Resources/Images/Icons/arrow-up-small-24.png);background-repeat:no-repeat}#filter-options-wrapper{padding:10px 0 5px 5px}#filter-type-header{padding:2px;border:solid 1px #e6e0e0;border-top:none}#filter-type-header div{display:inline-block;width:48%;text-align:center;font-size:.9em}#filter-type-header div:first-child{border-right:solid 1px #e6e0e0}#filters-wrapper div{display:inline-block;width:49%}#filters-wrapper select{font-size:.9em}#search-wrapper,.calcite{position:relative}#search{display:block;position:absolute;z-index:2;top:20px;left:74px}#home-button{position:absolute;top:95px;left:20px;z-index:50}#basemap-toggle{position:absolute;bottom:20px;right:20px;z-index:50}#basemap-toggle:hover{cursor:pointer}.basemapBG{height:50px;width:50px;border-radius:10px 10px 0 0}.basemapTitle{width:50px;font-size:.9em;text-align:center;background-color:#e6e0e0;padding:2px 0}#location-instruction{padding:10px 5px;background:#f5f5f5}.arcgisSearch .searchBtn{position:relative;z-index:2}#location-status-selected{background-color:#eef7d3;padding:10px}#selected-location-remove img{margin:0 0 -4px 5px}#selected-location-remove img:hover{cursor:pointer}#selected-location-name{text-decoration:underline}#selected-location-name:hover{cursor:pointer}.OE_Chart{min-width:300px}.screenSectionnone{display:none}h2.screen-header{margin-left:15px}.activeScreen,.activeTab{display:block}.inactiveScreen,.inactiveTab{display:none}.div-row{width:90%;margin:auto}.div-row.overview{width:100%;margin-left:-10px}.div-row.overview div.div-row-cell{width:49%;padding:0 30px 0 0}.div-row.overview .desc{height:550px;overflow:auto}.overview .input-header{font-weight:400;font-size:1.2em}.system-overview{padding:10px;border:1px solid #a7a7a7;width:95%}.img-wrapper-center{width:100%;text-align:center;margin-bottom:10px}.img-wrapper-center img{max-width:95%;max-height:200px;border:solid 1px #a7a7a7;padding:10px;border-radius:10px}.div-row.no-pad{width:100%}.div-row.no-pad div.div-row-cell:first-child{width:72%}.div-row.no-pad div.div-row-cell:last-child{width:25%}.div-row div.div-row-cell{display:inline-block;vertical-align:top;width:47%;margin:auto}.div-row div.div-row-cell fieldset{height:100%;width:100%;background:#f0f0f0;margin:auto}.div-row div.div-row-cell legend{margin:20px}.div-row-cell .desc{margin:10px 20px 10px 30px;width:100%;font-size:.9em;background:#f0f0f0;border:solid 1px #ccc;border-radius:4px;padding:20px}.notes{color:#302f2f;text-indent:each-line 10px}.table-notes{width:90%;margin:auto;font-size:.9em;color:#302f2f;text-align:right;background-color:#fff}.input-header{font-weight:700}.div-table{display:table;width:90%;background-color:beige;margin:auto}.div-table.amortization,.div-table.parameters{background-color:#f0f0f0}.div-table-row{display:table-row}.div-table-row.heading{font-weight:700}.div-table-cell{display:table-cell;padding:4px;border:solid 1px #e6e0e0}.div-table-cell:nth-child(1){width:75%}.div-table-cell:nth-child(2){width:25%}.div-table-cell:nth-child(3){width:12%}.div-table.amortization .div-table-cell{width:14.2%;text-align:center}.div-table-cell.InputCalcTotal{font-size:1.1em;font-weight:700;border-top:solid 2px #000;border-bottom:solid 2px #000}.div-table-cell.units{text-align:center}.div-table-cell.values{padding-left:10px}#system-select-wrapper{width:300px;margin:auto}.container{display:block;position:relative;padding-left:35px;margin-bottom:12px;cursor:pointer;font-size:18px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.container input{position:absolute;opacity:0;cursor:pointer}.checkmark{position:absolute;top:0;left:0;height:25px;width:25px;background-color:#eee;border-radius:50%}.container:hover input~.checkmark{background-color:#ccc}.container input:checked~.checkmark{background-color:#a5c9df}.checkmark:after{content:"";position:absolute;display:none}.container input:checked~.checkmark:after{display:block}.container .checkmark:after{top:9px;left:9px;width:8px;height:8px;border-radius:50%;background:#fff}.toggle-detail-inputs div{font-size:.9em;padding:15px;color:#1a72c4}.toggle-detail-inputs div:hover{text-decoration:underline;cursor:pointer}.rdgroup{padding-left:15px}.section-desc{width:90%;margin:auto}.section-desc div{width:90%}</style>';
@@ -219,9 +224,35 @@ export class OE_AquacultureFinancialView extends ViewBase {
         html += '</body></html>';
         let printWindow = window.open("");
         printWindow.document.write(html);
-        printWindow.location.reload();
+        let browser = this.detectBrowser()
+        if (browser === 'IE') {
+            printWindow.location.reload();
+        } else {
+            printWindow.print();
+            printWindow.close();
+        }
     }
 
+    detectBrowser() {
+        if ((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1) {
+            return 'Opera';
+        }
+        else if (navigator.userAgent.indexOf("Chrome") != -1) {
+            return 'Chrome';
+        }
+        else if (navigator.userAgent.indexOf("Safari") != -1) {
+            return 'Safari';
+        }
+        else if (navigator.userAgent.indexOf("Firefox") != -1) {
+            return 'Firefox';
+        }
+        else if ((navigator.userAgent.indexOf("MSIE") != -1) || (!!document['documentMode'] == true)) {
+            return 'IE';
+        }
+        else {
+            return 'unknown';
+        }
+    }
     resizeMap() {
         //Chrome fix for auto-expanding map issue
         $("#location-map").css("width", $(".calcite").width() + "px");
@@ -238,10 +269,34 @@ export class OE_AquacultureFinancialView extends ViewBase {
     }
 
     updateModel(event, element, context) {
-        if (context.value.get() !== this.viewModel.formatValue(context.value.get(), context.decimalDisp)) {
-            context.value.set(this.viewModel.formatValue(context.value.get(), context.decimalDisp));
-        }
+        let updatedValue = element
+            ? element.value !== context.value.get()
+                ? element.value
+                : context.value.get()
+            : context.value.get();
+        context.value.set(updatedValue);
+        if (updatedValue !== this.viewModel.formatValue(updatedValue, context.decimalDisp) && updatedValue !== '<enter value>') {
+            let formattedVal = this.viewModel.formatValue(updatedValue, context.decimalDisp);
+            context.value.set(formattedVal);
+            if (element) {
+                element.value = formattedVal;
+            }
+        }        
         this.viewModel.updateViewModel(context);
+    }
+
+    clearVal(evt, el, context) {
+        el.value = '';
+        //context.value.set();
+    }
+
+    checkReset(evt, el, context) {
+        console.log('test', evt, el, context);
+        if (evt.key === 'Esc') {
+            context.value.set(context.defaultVal);
+            el.value = '';
+            this.updateModel(null, el, context);
+        }
     }
 
     gotoTab(evt, el, cntx) {
@@ -406,47 +461,83 @@ export class OE_AquacultureFinancialView extends ViewBase {
     }
 
     setUIInputs(reset?) {
-        var thisScope = this;
+        var thisScope = this;        
         this.viewModel.screens_collection.get().forEach((s) => {
             s['sections'].get().forEach(sct => {
                 sct.fields.get().forEach(f => {
                     switch (f.uiType) {
                         case 'slider':
-                            let sliderID = f.fieldCalVar;
-                            var sliderTextHandle = $("#" + sliderID + " .oe-slider-handle");
-                            let min = f.min ? parseFloat(f.min) : 0;
-                            let max = f.max ? parseFloat(f.max) : 100;
+                            thisScope.viewModel.setKendoSlider(f);
+                            //let sliderID = f.fieldCalVar;
+                            ////var sliderTextHandle = $("#" + sliderID + " .oe-slider-handle");
+                            //var sliderTextHandle = $("#" + f.fieldHandle);
 
-                            let increment = f.increment ? parseFloat(f.increment) : 1;
+                            //sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(f.value.get().toString(), f.unit));
+                            //let min = f.min ? parseFloat(f.min) : 0;
+                            //let max = f.max ? parseFloat(f.max) : 100;
+
+                            //let increment = f.increment ? parseFloat(f.increment) : 1;
+
+                            //let value = parseFloat(f.value.get().replace(/\,/g,''));
+
+                            //////////////////////////////////////////////////
+                            //// Kendo Slider
+                            //////////////////////////////////////////////////
+                            //var slider = $("#" + sliderID).kendoSlider({
+                            //    increaseButtonTitle: "+",
+                            //    decreaseButtonTitle: "-",
+                            //    min: min,
+                            //    max: max,      
+                            //    value: value,
+                            //    smallStep: increment,
+                            //    largeStep: increment * 2,
+                            //    tooltip: {
+                            //        enabled:false
+                            //    },
+                            //    tickPlacement:"none",
+                            //    showButtons: true,
+                            //    slide: function (slideEvt) {
+                            //        sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(slideEvt.value.toString(), f.unit));
+                            //    },
+                            //    change: function (changeEvt) {
+                            //        let newVal = changeEvt.value.toString();
+                            //        sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(newVal, f.unit));
+                            //        window.setTimeout(() => {
+                            //            f.value.set(newVal);
+                            //            thisScope.updateModel(null, null, f);
+                            //        }, 50);
+                            //    }
+                            //}).data("kendoSlider");
+
+                            //slider.value(parseFloat(f.value.get()));
 
                             ////////////////////////////////////////////////
                             // Traditional JQuery Slider
                             ////////////////////////////////////////////////
-                            $("#" + sliderID).slider({
-                                step: increment,
-                                min: min,
-                                max: max,
-                                value: parseFloat(f.value.get()),
-                                create: function () {
-                                    sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(f.value.get(), f.unit));
-                                },
-                                slide: function (event, ui) {
-                                    sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(ui.value.toString(), f.unit));
-                                },
-                                stop: function (event, ui) {
-                                    f.value.set(ui.value.toString());
-                                    thisScope.updateModel(null,null,f);
-                                }
-                            });
+                            //$("#" + sliderID).slider({
+                            //    step: increment,
+                            //    min: min,
+                            //    max: max,
+                            //    value: parseFloat(f.value.get()),
+                            //    create: function () {
+                            //        sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(f.value.get(), f.unit));
+                            //    },
+                            //    slide: function (event, ui) {
+                            //        sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(ui.value.toString(), f.unit));
+                            //    },
+                            //    stop: function (event, ui) {
+                            //        f.value.set(ui.value.toString());
+                            //        thisScope.updateModel(null,null,f);
+                            //    }
+                            //});
                             if (reset) {
                                 f.value.set(null);
                             }
 
                     }
-                })
-            })
-        })
-
+                });
+            });
+        });
     }
     //_setSliders() {
 
@@ -518,60 +609,6 @@ export class OE_AquacultureFinancialView extends ViewBase {
     //}
 
     //TEMP example
-    createLineChart(): void {
-        let opts:any = {
-            title: {
-                text: "Growth Rate \n annual %"
-            },
-            legend: {
-                position: "bottom"
-            },
-            chartArea: {
-                background: ""
-            },
-            seriesDefaults: {
-                type: "line",
-                style: "smooth"
-            },
-            series: [{
-                name: "Species 1",
-                data: [3.907, 7.943, 7.848, 9.284, 9.263, 9.801, 3.890, 8.238, 9.552, 6.855]
-            }, {
-                name: "Species 2",
-                data: [1.988, 2.733, 3.994, 3.464, 4.001, 3.939, 1.333, -2.245, 4.339, 2.727]
-            }, {
-                name: "Species 3",
-                data: [4.743, 7.295, 7.175, 6.376, 8.153, 8.535, 5.247, -7.832, 4.3, 4.3]
-            }, {
-                name: "Species 4",
-                data: [-0.253, 0.362, -3.519, 1.799, 2.252, 3.343, 0.843, 2.877, -5.416, 5.590]
-            }],
-            valueAxis: {
-                labels: {
-                    format: "{0}%"
-                },
-                line: {
-                    visible: false
-                },
-                axisCrossingValue: -10
-            },
-            categoryAxis: {
-                categories: [2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011],
-                majorGridLines: {
-                    visible: false
-                },
-                labels: {
-                    rotation: "auto"
-                }
-            },
-            tooltip: {
-                visible: true,
-                format: "{0}%",
-                template: "#= series.name #: #= value #"
-            }
-        };
-
-        $("#OE_Chart1").kendoChart(opts);
-    }
+    
 
 }
