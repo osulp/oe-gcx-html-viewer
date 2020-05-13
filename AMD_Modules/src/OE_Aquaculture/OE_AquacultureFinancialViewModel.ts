@@ -6,6 +6,7 @@ import { ViewModelBase } from "geocortex/framework/ui/ViewModelBase";
 import { ViewerApplication } from "geocortex/infrastructure/Viewer";
 import { Observable, ObservableCollection } from "geocortex/framework/observables";
 import { FilterableCollection } from "geocortex/framework-ui/FilterableCollection";
+import { OrderedCollection } from "geocortex/framework-ui/OrderedCollection";
 import { Site } from "geocortex/essentials/Site";
 //import { OE_Charts } from "../OE_Aquaculture/OE_Charts";
 
@@ -32,7 +33,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     //SYSTEMS (Species and Production Method)
     systems_tbl: ObservableCollection<string> = new ObservableCollection([]);
     selected_system: Observable<any> = new Observable({});
-    selected_system_binding_token: string = '';
+    //selected_system_binding_token: string = '';
     selected_system_text: Observable<string> = new Observable('');
     systems_tbl_filter: FilterableCollection<any>;
     show_no_systems_in_filtered_view: Observable<boolean> = new Observable(false);
@@ -87,7 +88,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             }
         });
         
-        this.selected_system_binding_token = this.selected_system.bind(this, (sys) => {
+        //this.selected_system_binding_token =
+        this.selected_system.bind(this, (sys) => {
             if (sys) {
                 this.selected_system_text.set(sys.system ? sys.system : sys);
                 let _species = [];
@@ -97,7 +99,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                     _species.push(species);
                 });
                 this.species_tbl.set(_species);
-                //this.species_tbl_filter.refresh();
+                this.species_tbl_filter.refresh();
                 let _prod = [];
                 this.prod_meth_tbl.get().forEach(prod_meth => {
                     prod_meth.selected = sys.production_method === prod_meth.production_method;
@@ -121,6 +123,52 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         this.systems_tbl_filter = new FilterableCollection<any>(this.systems_tbl, this._systemsFilters.bind(this, this));
     }
 
+    setViewModelObservables() {
+        //SPECIES
+        this.species_tbl = new ObservableCollection([]);
+        //this.species_tbl_filter = new FilterableCollection<any>;
+        this.selected_species = new Observable({});
+        this.selected_species_label = new Observable('');
+        this.selected_species_filter = new Observable('<--');
+        //PRODUCTION METHODS
+        this.prod_meth_tbl = new ObservableCollection([]);
+        this.selected_prod_meth_filter = new Observable('<--');
+        this.selected_prod_meth = new Observable({});
+        this.selected_prod_meth_label = new Observable('');
+        //this.prod_meth_tbl_filter = new FilterableCollection<any>;
+        //SYSTEMS (Species and Production Method)
+        this.systems_tbl = new ObservableCollection([]);
+        this.selected_system = new Observable({});
+        //this.selected_system_binding_token = '';
+        this.selected_system_text = new Observable('');
+        //this.systems_tbl_filter = FilterableCollection<any>;
+        this.show_no_systems_in_filtered_view = new Observable(false);
+        //SCREEN CONFIG
+        this.screens_collection = new ObservableCollection([]);
+        //this.screens_collection_filter = FilterableCollection<any>;
+        //OTHER INPUT PARAMS
+        this.show_other_input_params_1 = new Observable(false);
+        //SELECTED LOCATION
+        this.has_location = new Observable(false);
+        this.selected_location = new Observable();
+        //INFO SCREEN
+        this.info_screen_arrow_src = new Observable("Resources/Images/Icons/arrow-right-small-24.png");
+        this.show_info_screen = new Observable(false);
+        //INPUT SCREENS
+        this.active_screen = new Observable(0);
+        //PAGER_NAV
+        this.show_next_btn = new Observable(true);
+        this.show_back_btn = new Observable(false);
+        //ROUTES
+        this.sub_station_routes = new ObservableCollection([]);
+        //AMORTIZATION
+        this.amortization_tbl = new ObservableCollection([]);
+        //Summary Button
+        this.show_summary_btn = new Observable(false);
+        //UPDATE State
+        this.is_model_updating = new Observable(false);
+    }
+
     initialize(config: any): void {
         var site: Site = (<any>this).app.site;
 
@@ -135,6 +183,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         }
 
         this.app.registerActivityIdHandler("runFinancialPlnModule", (wc, cf) => {
+            this.resetSystemFilters();
+
             this.has_location.set(wc.getValue("location") ? true : false);
            
             this.workflowContext = $.extend({}, wc);
@@ -478,12 +528,27 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                                 if (att.ChartConfig !== '') {
                                     //lookup chart config values and render?
                                     let _chartConfig = _chartConfigs.filter(f => f.attributes.ChartID === att.ChartConfig)[0];
+                                    let chartSeries = JSON.parse(_chartConfig.attributes.Series);
+                                    let chartData = new ObservableCollection<any>(chartSeries.data.map(d => {
+                                        return {
+                                            value: new Observable<any>(d.value),
+                                            percent: new Observable<any>(d.value),
+                                            category: d.category,
+                                            fieldCalVar: d.fieldCalVar
+                                        }
+                                    }));//.sort(this.sortChartDataTable));
+                                    //let chartDataSorted = new OrderedCollection<any>();                                    
                                     returnVal['chartConfig'] = {
                                         chartID: _chartConfig.attributes.ChartID,
                                         chartName: _chartConfig.attributes.ChartName,
                                         chartType: _chartConfig.attributes.Type,
-                                        chartSeries: JSON.parse(_chartConfig.attributes.Series)
+                                        chartSeries: chartSeries,
+                                        chartData: chartData
+                                        //chartDataSorted: chartDataSorted
                                     };
+
+                                    //returnVal['chartConfig'].chartDataSorted.sync(returnVal['chartConfig'].chartData);
+                                    //returnVal['chartConfig'].chartDataSorted.setSortFunction(this.sortChartDataTable);
                                 }
                                 if (att.FieldCategory === 'LookupTable') {
                                     let lutName = att.Formula.split('lut:')[1].split('>')[0];
@@ -592,34 +657,66 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
         this.renderCharts();
     }
 
+    sortChartDataTable(left, right) {
+        let leftPercent = parseFloat(left.percent.get().replace('%', ''));
+        let rightPercent = parseFloat(right.percent.get().replace('%', ''));
+        if (leftPercent < rightPercent) {
+            return 1;
+        }
+        if (leftPercent > rightPercent) {
+            return -1;
+        }
+        return 0;
+    }
+
     renderCharts() {
         this.screens_collection.get().forEach(scr => {
             scr['sections'].get().forEach(sct => {
                 sct['fields'].get().forEach(f => {
                     if (f.chartConfig) {
+                        let totalChartValues = 0;
                         //update with model values
-                        f.chartConfig.chartSeries[0].data.forEach(d => {
+                        f.chartConfig.chartSeries.data.forEach(d => {
                             let value = this.getValue(d.fieldCalVar);
-                            d.value = parseInt(value.replace(/\,/g,''));
+                            d.value = parseInt(value.replace(/\,/g, ''));
+                            totalChartValues += d.value;
                         });
+                        //update chartData for table display
+                        let sortedData = [];
+                        f.chartConfig.chartData.get().forEach(cd => {
+                            let value = this.getValue(cd.fieldCalVar);
+                            cd.value.set(this.formatDisplayValue(parseInt(value.replace(/\,/g, '')), "$"));
+                            cd.percent.set((parseInt(value.replace(/\,/g, '')) / totalChartValues * 100).toFixed(1) + "%");
+                            sortedData.push(cd);
+                        });
+                        sortedData = sortedData.sort(this.sortChartDataTable);
+                        f.chartConfig.chartData.set(sortedData);
+                        //f.chartConfig.chartDataSorted.sync();
                         let opts = {
+                            plotArea: {
+                                margin: {
+                                    top:-10
+                                }
+                            },
                             legend: {
-                                visible: true
+                                visible: true,
+                                position: "bottom"
                             },
                             chartArea: {
                                 background: ""
                             },
                             seriesDefaults: {
                                 labels: {
-                                    visible: true,
+                                    visible: false,
                                     background: "transparent",
                                     template: "#= category #: #= kendo.format('{0:P0}', percentage)# \n #= kendo.format('{0:c0}',value)#"
                                 }
                             },
-                            series: f.chartConfig.chartSeries,
+                            series: [f.chartConfig.chartSeries],
                             tooltip: {
                                 visible: true,
-                                format: "{0:c0}"
+                                template: "#= category #: #= kendo.format('{0:c0}', value)# \n #= kendo.format('{0:P0}',percentage)#"
+                                //format: "{0:c0}"
                             }
                         };
                         $("#"+f.chartConfig.chartID).kendoChart(opts);
@@ -763,7 +860,7 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                             //need to update value
                             //get formula
                             let newVal = this.formatValue(this.processFieldFormula(f), f.decimalDisp);
-                            if (newVal !== f.value.get()) {
+                            if (newVal !== f.value.get() && newVal.indexOf('NaN') == -1) {
                                 if (f.uiType === 'slider') {
                                     this.setKendoSlider(f, newVal);
                                 }
@@ -1089,12 +1186,7 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                             sct.selected_location.set(selLoc);
                             sct.show_selected_location.set(selLoc ? true : false);
                             sct.show_add_location.set(selLoc ? false : true);
-                        } else if (sct.sectionType === 'Select System') {
-                            sct.selected_system.bind(this, (selSys) => {
-                                this.selected_system.set(selSys);
-                            })
-                        }
-
+                        } 
                     });
                 });
             }
@@ -1133,7 +1225,19 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
     }
 
     _screensFilter(thisViewModel: any, screen: any) {
-        return true;
+        //TODO Go through each screen/section and determine if fields for selected system exist and if so, then return true.
+        //Also 
+        let hasFieldsForSystem = true;
+        this.screens_collection.get().forEach(scr => {
+            if (scr === screen && !hasFieldsForSystem) {
+                scr['sections'].get().forEach(sct => {
+                    sct.fields.get().forEach(f => {
+                        hasFieldsForSystem = f.show.indexOf(this.selected_system_text) !== -1 ? true : hasFieldsForSystem;
+                    });
+                });
+            }
+        });
+        return hasFieldsForSystem;
         //let hasSystemSelected = this.selected_system.get()['system'] ? true : false;
         //return hasSystemSelected || screen.screenOrder === '1';
 
@@ -1177,46 +1281,47 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
     _resetDefaults() {        
         //this.workflowContext.completeActivity();
         this.esriMap = null;
+        //this.setViewModelObservables();
         //this.esriBasemapToggle.destroy();
         //this.esriHomeBtn.destroy();
         //this.esriSearch.destroy();        
-        this.selection_cache.set(null);
-        this.species_tbl.set(null);
-        //this.species_tbl_filter.set(null);
-        this.selected_species.set(null);
-        this.selected_species_label.set(null);
-        //this.selected_species_filter.set(null);
-        this.prod_meth_tbl.set(null);
-        //this.selected_prod_meth_filter.set(null);
-        this.selected_prod_meth.set(null);
-        this.selected_prod_meth_label.set(null);
-        //this.prod_meth_tbl_filter.set(null);
-        this.systems_tbl.set(null);
-        this.selected_system.unbind(this.selected_system_binding_token);
-        this.selected_system.set(null);
-        //this.selected_system_text();
-        //this.systems_tbl_filter.set(null);
-        this.show_no_systems_in_filtered_view.set(null);
-        //this.screens_collection_filter.set(null);
+        //this.selection_cache.set(null);
+        //this.species_tbl.set(null);
+        ////this.species_tbl_filter.set(null);
+        //this.selected_species.set(null);
+        //this.selected_species_label.set(null);
+        ////this.selected_species_filter.set(null);
+        //this.prod_meth_tbl.set(null);
+        ////this.selected_prod_meth_filter.set(null);
+        //this.selected_prod_meth.set(null);
+        //this.selected_prod_meth_label.set(null);
+        ////this.prod_meth_tbl_filter.set(null);
+        //this.systems_tbl.set(null);
+        //this.selected_system.unbind(this.selected_system_binding_token);
+        //this.selected_system.set(null);
+        ////this.selected_system_text();
+        ////this.systems_tbl_filter.set(null);
+        //this.show_no_systems_in_filtered_view.set(null);
+        ////this.screens_collection_filter.set(null);
         
-        if (this.screens_collection.get().length > 0) {
-            this.screens_collection.getItems().forEach(s => {
-                s['sections'].set(null);
-            });
-        }
-        this.screens_collection.set([]);
-        this.show_other_input_params_1.set(null);
-        this.has_location.set(null);
+        //if (this.screens_collection.get().length > 0) {
+        //    this.screens_collection.getItems().forEach(s => {
+        //        s['sections'].set(null);
+        //    });
+        //}
+        //this.screens_collection.set([]);
+        //this.show_other_input_params_1.set(null);
+        //this.has_location.set(null);
        
-        this.info_screen_arrow_src.set(null);
-        this.show_info_screen.set(null);
-        this.active_screen.set(null);
-        this.show_next_btn.set(null);
-        this.show_back_btn.set(null);
-        this.sub_station_routes.set(null);
-        this.amortization_tbl.set(null);
-        this.show_summary_btn.set(null);
-        this.is_model_updating.set(null);
+        //this.info_screen_arrow_src.set(null);
+        //this.show_info_screen.set(null);
+        //this.active_screen.set(null);
+        //this.show_next_btn.set(null);
+        //this.show_back_btn.set(null);
+        //this.sub_station_routes.set(null);
+        //this.amortization_tbl.set(null);
+        //this.show_summary_btn.set(null);
+        //this.is_model_updating.set(null);
        
     }
 }

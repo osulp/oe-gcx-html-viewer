@@ -37,6 +37,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
         //$("#aqua-financial-pln-wrapper").height(modal_height);
         //this.renderVerticalTabs();
         // Get the element with id="defaultOpen" and click on it
+        this.setSelectedSystem(null,null,this.viewModel.selected_system.get());
         this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(0));
         this.setUIInputs();
     }
@@ -58,7 +59,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 scr['screenTabClass'].set('tablinks ' + (ctx.id === scr['id'] ? 'activeTab' : 'inactiveTab'));
                 scr['screenContentClass'].set('tabcontent ' + (ctx.id == scr['id'] ? 'activeScreen' : 'inactiveScreen'));
             });
-            this.setUIInputs();
+            //this.setUIInputs();
             $('#modal-description').stop().animate({
                 'scrollTop': $('#' + ctx.id)
             }, 800, 'swing');
