@@ -21,29 +21,23 @@ export class OE_AquacultureFinancialView extends ViewBase {
     marker: esri.symbol.PictureMarkerSymbol = new esri.symbol.PictureMarkerSymbol({
         "height": 28,
         "width": 28,
-        "url": "//js.arcgis.com/3.27/esri/dijit/Search/images/search-pointer.png"
+        "url": "./Resources/Images/Custom/search-pointer.png"
+        //"url": "//js.arcgis.com/3.27/esri/dijit/Search/images/search-pointer.png"
     });
 
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
     }
 
-    activated() {
-        //adjust scroll window based on modal-container height
-        let modal_height = $('.modal-container').height() - $('.modal-container-inner').height() + "px";
-        $('.panel-scroll-container').css("maxHeight", modal_height);
-        //this.toggleInfoScreen();
-        //set height of aqua-financial-pln-wrapper
-        //$("#aqua-financial-pln-wrapper").height(modal_height);
-        //this.renderVerticalTabs();
-        // Get the element with id="defaultOpen" and click on it
+    activated() {        
+        let thisScope = this;
+        this.fitScreenHeight();        
         this.setSelectedSystem(null,null,this.viewModel.selected_system.get());
-        this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(0));
-        this.setUIInputs();
-    }
-
-    onDestroy() {
-
+        this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(0));     
+        $(window).resize(function () {
+            thisScope.fitScreenHeight();
+            thisScope.resizeMap();
+        });
     }
 
     openTab(evt, elem, ctx) {
@@ -59,7 +53,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 scr['screenTabClass'].set('tablinks ' + (ctx.id === scr['id'] ? 'activeTab' : 'inactiveTab'));
                 scr['screenContentClass'].set('tabcontent ' + (ctx.id == scr['id'] ? 'activeScreen' : 'inactiveScreen'));
             });
-            //this.setUIInputs();
+            this.setUIInputs();
             $('#modal-description').stop().animate({
                 'scrollTop': $('#' + ctx.id)
             }, 800, 'swing');
@@ -67,8 +61,13 @@ export class OE_AquacultureFinancialView extends ViewBase {
             //load map if on transportation
             if (ctx.screen === 'Transportation') {
                 this.renderMap();
+                //if (this.viewModel.has_location.get()) {
+                //    this.viewModel.runRoutingServices();
+                //}
             }
-            this.viewModel.renderCharts();
+            if (ctx.screen === 'Financial Summary') {
+                this.viewModel.renderCharts();
+            }
         }
     } 
 
@@ -82,7 +81,9 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 zoom: 6,
                 basemap: "streets",
                 minZoom: 6,
-                slider: true
+                slider: true,
+                showAttribution: true,
+                logo:false
             });
 
 
@@ -168,6 +169,14 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 //thisScope.setInfoScreenHeight();
                 //window.setTimeout(thisScope.animateInfoScreen, 1000);
                 thisScope.resizeMap();
+                thisScope.resizeWindow();
+                if (thisScope.viewModel.has_location.get()) {    
+                    window.setTimeout(() => {
+                        let inputPnt = thisScope.viewModel.selected_location.get().point;
+                        thisScope.viewModel.esriLocator.locationToAddress(inputPnt, 100);
+                        thisScope.viewModel.esriMap.centerAndZoom(inputPnt, 13);
+                    }, 500);
+                }
             });
 
             this.viewModel.esriLocator = new esri.tasks.Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
@@ -177,7 +186,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
             this.viewModel.esriLocator.on("location-to-address-complete", function (evt) {
                 if (evt.address.address) {
                     var address = evt.address.address;
-                    var location = esri.geometry.webMercatorUtils.geographicToWebMercator(evt.address.location);
+                    var location = esri.geometry.geographicToWebMercator(evt.address.location);
 
                     thisScope.viewModel.selected_location.set({
                         "point": new esri.geometry.Point(evt.address.location),
@@ -196,41 +205,35 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 thisScope.viewModel.esriMap.centerAndZoom(evt.mapPoint, 13);
             });
         }
-        if (this.viewModel.has_location.get()) {
-            let inputPnt = thisScope.viewModel.selected_location.get().point;
-            this.viewModel.esriLocator.locationToAddress(inputPnt, 100);
-            window.setTimeout(() => { thisScope.viewModel.esriMap.centerAndZoom(inputPnt, 13); }, 1000);
-        }
-        $(window).resize(function () {
-            thisScope.resizeMap();
-            //thisScope.viewModel.esriMap.reposition();
-            //thisScope.viewModel.esriMap.resize();
-
-        });
     }
 
     deactivated() {
-        this.removeSelectedLocation();
-        //this.viewModel.workflowContext.setValue("outputVal", "finished!");
-        this.viewModel.workflowContext.completeActivity();
-        this.viewModel._resetDefaults();
+        try {
+            this.removeSelectedLocation();
+            //this.viewModel.workflowContext.setValue("outputVal", "finished!");
+            this.viewModel.workflowContext.completeActivity();
+            this.viewModel._resetDefaults();
+        } catch (ex) {
+            console.log('deactivated warning');
+        }
+        
     }
 
     print(event, element, context) {
         event.preventDefault();
         var html = '<!DOCTYPE html><html><head><title>FinancialPlanningPrint</title></head><body onload="window.print();window.close();">';
         html += '<style type="text/css">' +
-            'body { font-family: "Segoe UI","Helvetica Neue","Droid Sans",Arial,sans-serif; font-size:.8em;}.inactiveScreen {display:none;}fieldset{position:relative;border:solid 1px grey;border-radius:4px;margin:20px 20px 0 20px}legend{padding:15px}#location-map{position:relative;width:100%;height:100%}#map-section{position:relative}#location-wrapper{position:relative}#add-location{position:absolute;top:0;left:0;right:0;bottom:0;background-color:rgba(255,255,255,.9);text-align:center;vertical-align:middle;z-index:19000}#add-location-msg{position:relative;max-width:350px;top:50%;transform:translateY(-50%);margin:auto}.slider-wrapper{position:relative;text-align:center;padding:10px;max-width:245px;margin:10px 0}.ui-slider-handle.oe-slider-handle.ui-state-default.ui-corner-all{width:5.5em;height:2em;top:43%;margin-top:-.9em;text-align:center;line-height:1.6em;text-indent:0;color:#5e737f;border-radius:10px;padding:2px;background-color:#a5c9df}.ui-slider-handle.oe-slider-handle.ui-state-default.ui-corner-all:hover{cursor:pointer}.filter-header-wrapper{padding:5px;background-color:#f0f0f0;border-radius:4px 4px 0 0;position:relative}.filter-header-wrapper img{padding:0 10px}.filter-header-wrapper img:first-child{padding-left:2px}.filter-header-wrapper:hover{cursor:pointer}.filter-header-wrapper div{display:inline-block}.show-filters{width:24px;height:16px;background-image:url(Resources/Images/Icons/arrow-down-small-24.png);background-repeat:no-repeat}.hide-filters{width:24px;height:16px;background-image:url(Resources/Images/Icons/arrow-up-small-24.png);background-repeat:no-repeat}#filter-options-wrapper{padding:10px 0 5px 5px}#filter-type-header{padding:2px;border:solid 1px #e6e0e0;border-top:none}#filter-type-header div{display:inline-block;width:48%;text-align:center;font-size:.9em}#filter-type-header div:first-child{border-right:solid 1px #e6e0e0}#filters-wrapper div{display:inline-block;width:49%}#filters-wrapper select{font-size:.9em}#search-wrapper,.calcite{position:relative}#search{display:block;position:absolute;z-index:2;top:20px;left:74px}#home-button{position:absolute;top:95px;left:20px;z-index:50}#basemap-toggle{position:absolute;bottom:20px;right:20px;z-index:50}#basemap-toggle:hover{cursor:pointer}.basemapBG{height:50px;width:50px;border-radius:10px 10px 0 0}.basemapTitle{width:50px;font-size:.9em;text-align:center;background-color:#e6e0e0;padding:2px 0}#location-instruction{padding:10px 5px;background:#f5f5f5}.arcgisSearch .searchBtn{position:relative;z-index:2}#location-status-selected{background-color:#eef7d3;padding:10px}#selected-location-remove img{margin:0 0 -4px 5px}#selected-location-remove img:hover{cursor:pointer}#selected-location-name{text-decoration:underline}#selected-location-name:hover{cursor:pointer}.OE_Chart{min-width:300px}.screenSectionnone{display:none}h2.screen-header{margin-left:15px}.activeScreen,.activeTab{display:block}.inactiveScreen,.inactiveTab{display:none}.div-row{width:90%;margin:auto}.div-row.overview{width:100%;margin-left:-10px}.div-row.overview div.div-row-cell{width:49%;padding:0 30px 0 0}.div-row.overview .desc{height:550px;overflow:auto}.overview .input-header{font-weight:400;font-size:1.2em}.system-overview{padding:10px;border:1px solid #a7a7a7;width:95%}.img-wrapper-center{width:100%;text-align:center;margin-bottom:10px}.img-wrapper-center img{max-width:95%;max-height:200px;border:solid 1px #a7a7a7;padding:10px;border-radius:10px}.div-row.no-pad{width:100%}.div-row.no-pad div.div-row-cell:first-child{width:72%}.div-row.no-pad div.div-row-cell:last-child{width:25%}.div-row div.div-row-cell{display:inline-block;vertical-align:top;width:47%;margin:auto}.div-row div.div-row-cell fieldset{height:100%;width:100%;background:#f0f0f0;margin:auto}.div-row div.div-row-cell legend{margin:20px}.div-row-cell .desc{margin:10px 20px 10px 30px;width:100%;font-size:.9em;background:#f0f0f0;border:solid 1px #ccc;border-radius:4px;padding:20px}.notes{color:#302f2f;text-indent:each-line 10px}.table-notes{width:90%;margin:auto;font-size:.9em;color:#302f2f;text-align:right;background-color:#fff}.input-header{font-weight:700}.div-table{display:table;width:90%;background-color:beige;margin:auto}.div-table.amortization,.div-table.parameters{background-color:#f0f0f0}.div-table-row{display:table-row}.div-table-row.heading{font-weight:700}.div-table-cell{display:table-cell;padding:4px;border:solid 1px #e6e0e0}.div-table-cell:nth-child(1){width:75%}.div-table-cell:nth-child(2){width:25%}.div-table-cell:nth-child(3){width:12%}.div-table.amortization .div-table-cell{width:14.2%;text-align:center}.div-table-cell.InputCalcTotal{font-size:1.1em;font-weight:700;border-top:solid 2px #000;border-bottom:solid 2px #000}.div-table-cell.units{text-align:center}.div-table-cell.values{padding-left:10px}#system-select-wrapper{width:300px;margin:auto}.container{display:block;position:relative;padding-left:35px;margin-bottom:12px;cursor:pointer;font-size:18px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.container input{position:absolute;opacity:0;cursor:pointer}.checkmark{position:absolute;top:0;left:0;height:25px;width:25px;background-color:#eee;border-radius:50%}.container:hover input~.checkmark{background-color:#ccc}.container input:checked~.checkmark{background-color:#a5c9df}.checkmark:after{content:"";position:absolute;display:none}.container input:checked~.checkmark:after{display:block}.container .checkmark:after{top:9px;left:9px;width:8px;height:8px;border-radius:50%;background:#fff}.toggle-detail-inputs div{font-size:.9em;padding:15px;color:#1a72c4}.toggle-detail-inputs div:hover{text-decoration:underline;cursor:pointer}.rdgroup{padding-left:15px}.section-desc{width:90%;margin:auto}.section-desc div{width:90%}</style>';
+            'body { font-family: "Segoe UI","Helvetica Neue","Droid Sans",Arial,sans-serif; font-size:.8em;}.inactiveScreen {display:none;}.oe_slider{display:none} fieldset{position:relative;border:solid 1px grey;border-radius:4px;margin:20px 20px 0 20px}legend{padding:15px}#location-map{position:relative;width:100%;height:100%}#map-section{position:relative}#location-wrapper{position:relative}#add-location{position:absolute;top:0;left:0;right:0;bottom:0;background-color:rgba(255,255,255,.9);text-align:center;vertical-align:middle;z-index:19000}#add-location-msg{position:relative;max-width:350px;top:50%;transform:translateY(-50%);margin:auto}.slider-wrapper{position:relative;text-align:center;padding:10px;max-width:245px;margin:10px 0}.ui-slider-handle.oe-slider-handle.ui-state-default.ui-corner-all{width:5.5em;height:2em;top:43%;margin-top:-.9em;text-align:center;line-height:1.6em;text-indent:0;color:#5e737f;border-radius:10px;padding:2px;background-color:#a5c9df}.ui-slider-handle.oe-slider-handle.ui-state-default.ui-corner-all:hover{cursor:pointer}.filter-header-wrapper{padding:5px;background-color:#f0f0f0;border-radius:4px 4px 0 0;position:relative}.filter-header-wrapper img{padding:0 10px}.filter-header-wrapper img:first-child{padding-left:2px}.filter-header-wrapper:hover{cursor:pointer}.filter-header-wrapper div{display:inline-block}.show-filters{width:24px;height:16px;background-image:url(Resources/Images/Icons/arrow-down-small-24.png);background-repeat:no-repeat}.hide-filters{width:24px;height:16px;background-image:url(Resources/Images/Icons/arrow-up-small-24.png);background-repeat:no-repeat}#filter-options-wrapper{padding:10px 0 5px 5px}#filter-type-header{padding:2px;border:solid 1px #e6e0e0;border-top:none}#filter-type-header div{display:inline-block;width:48%;text-align:center;font-size:.9em}#filter-type-header div:first-child{border-right:solid 1px #e6e0e0}#filters-wrapper div{display:inline-block;width:49%}#filters-wrapper select{font-size:.9em}#search-wrapper,.calcite{position:relative}#search{display:block;position:absolute;z-index:2;top:20px;left:74px}#home-button{position:absolute;top:95px;left:20px;z-index:50}#basemap-toggle{position:absolute;bottom:20px;right:20px;z-index:50}#basemap-toggle:hover{cursor:pointer}.basemapBG{height:50px;width:50px;border-radius:10px 10px 0 0}.basemapTitle{width:50px;font-size:.9em;text-align:center;background-color:#e6e0e0;padding:2px 0}#location-instruction{padding:10px 5px;background:#f5f5f5}.arcgisSearch .searchBtn{position:relative;z-index:2}#location-status-selected{background-color:#eef7d3;padding:10px}#selected-location-remove img{margin:0 0 -4px 5px}#selected-location-remove img:hover{cursor:pointer}#selected-location-name{text-decoration:underline}#selected-location-name:hover{cursor:pointer}.OE_Chart{min-width:300px}.screenSectionnone{display:none}h2.screen-header{margin-left:15px}.activeScreen,.activeTab{display:block}.inactiveScreen,.inactiveTab{display:none}.div-row{width:90%;margin:auto}.div-row.overview{width:100%;margin-left:-10px}.div-row.overview div.div-row-cell{width:49%;padding:0 30px 0 0}.div-row.overview .desc{height:550px;overflow:auto}.overview .input-header{font-weight:400;font-size:1.2em}.system-overview{padding:10px;border:1px solid #a7a7a7;width:95%}.img-wrapper-center{width:100%;text-align:center;margin-bottom:10px}.img-wrapper-center img{max-width:95%;max-height:200px;border:solid 1px #a7a7a7;padding:10px;border-radius:10px}.div-row.no-pad{width:100%}.div-row.no-pad div.div-row-cell:first-child{width:72%}.div-row.no-pad div.div-row-cell:last-child{width:25%}.div-row div.div-row-cell{display:inline-block;vertical-align:top;width:47%;margin:auto}.div-row div.div-row-cell fieldset{height:100%;width:100%;background:#f0f0f0;margin:auto}.div-row div.div-row-cell legend{margin:20px}.div-row-cell .desc{margin:10px 20px 10px 30px;width:100%;font-size:.9em;background:#f0f0f0;border:solid 1px #ccc;border-radius:4px;padding:20px}.notes{color:#302f2f;text-indent:each-line 10px}.table-notes{width:90%;margin:auto;font-size:.9em;color:#302f2f;text-align:right;background-color:#fff}.input-header{font-weight:700}.div-table{display:table;width:90%;background-color:beige;margin:auto}.div-table.amortization,.div-table.parameters{background-color:#f0f0f0}.div-table-row{display:table-row}.div-table-row.heading{font-weight:700}.div-table-cell{display:table-cell;padding:4px;border:solid 1px #e6e0e0}.div-table-cell:nth-child(1){width:75%}.div-table-cell:nth-child(2){width:25%}.div-table-cell:nth-child(3){width:12%}.div-table.amortization .div-table-cell{width:14.2%;text-align:center}.div-table-cell.InputCalcTotal{font-size:1.1em;font-weight:700;border-top:solid 2px #000;border-bottom:solid 2px #000}.div-table-cell.units{text-align:center}.div-table-cell.values{padding-left:10px}#system-select-wrapper{width:300px;margin:auto}.container{display:block;position:relative;padding-left:35px;margin-bottom:12px;cursor:pointer;font-size:18px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.container input{position:absolute;opacity:0;cursor:pointer}.checkmark{position:absolute;top:0;left:0;height:25px;width:25px;background-color:#eee;border-radius:50%}.container:hover input~.checkmark{background-color:#ccc}.container input:checked~.checkmark{background-color:#a5c9df}.checkmark:after{content:"";position:absolute;display:none}.container input:checked~.checkmark:after{display:block}.container .checkmark:after{top:9px;left:9px;width:8px;height:8px;border-radius:50%;background:#fff}.toggle-detail-inputs div{font-size:.9em;padding:15px;color:#1a72c4}.toggle-detail-inputs div:hover{text-decoration:underline;cursor:pointer}.rdgroup{padding-left:15px}.section-desc{width:90%;margin:auto}.section-desc div{width:90%}</style>';
         html += document.getElementById('printarea').outerHTML;
         html += '</body></html>';
         let printWindow = window.open("");
         printWindow.document.write(html);
         let browser = this.detectBrowser()
         if (browser === 'IE') {
-            printWindow.location.reload();
+            //printWindow.location.reload();
         } else {
-            printWindow.print();
-            printWindow.close();
+            //printWindow.print();
+            //printWindow.close();
         }
     }
 
@@ -254,9 +257,32 @@ export class OE_AquacultureFinancialView extends ViewBase {
             return 'unknown';
         }
     }
+
+    fitScreenHeight() {
+        //adjust scroll window based on modal-container height
+        let modal_height = $('.modal-container').height() - $('.modal-container-inner').height() + "px";
+        $('.panel-scroll-container').css("maxHeight", modal_height);
+        console.log('panel height: ', modal_height);
+    }
+
     resizeMap() {
         //Chrome fix for auto-expanding map issue
         $("#location-map").css("width", $(".calcite").width() + "px");
+    }
+
+    resizeWindow() {
+        if (typeof (Event) === 'function') {
+            // modern browsers
+            window.dispatchEvent(new Event('resize'));
+        } else {
+            // for IE and other old browsers
+            // causes deprecation warning on modern browsers
+            var evt = window.document.createEvent('UIEvents');
+            evt['initUIEvent']('resize', true, false, window, 0);
+            window.dispatchEvent(evt);
+        }
+
+        this.fitScreenHeight();
     }
 
     toggleInfoScreen(event, element, context) {

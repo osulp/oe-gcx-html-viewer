@@ -16,7 +16,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     workflowContext: any;
     moduleJsonConfig: any;
     //History cache
-    selection_cache: ObservableCollection<string> = new ObservableCollection([]);
+    scenario_cache: ObservableCollection<any> = new ObservableCollection([]);
 
     //SPECIES
     species_tbl: ObservableCollection<any> = new ObservableCollection([]);
@@ -73,14 +73,13 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         this.screens_collection_filter = new FilterableCollection<any>(this.screens_collection, this._screensFilter.bind(this, this));
         this.selected_location.bind(this, (selLoc) => {
             if (selLoc ? selLoc.name !== 'User click' : false) {
+                this.has_location.set(true);
                 this.screens_collection.get().forEach(scr => {
                     scr['sections'].get().forEach(sec => {
                         sec['fields'].get().forEach(f => {
                             if (f['fieldCalVar'] === 'facilityLocation') {
                                 f.value.set(selLoc.name + "<br>Lat: " + selLoc.point.y.toFixed(2) + " Long: " + selLoc.point.x.toFixed(2));
-                                if (this.has_location.get()) {
-                                    this.runRoutingServices();
-                                }
+                                this.runRoutingServices();
                             }
                         });
                     });
@@ -121,52 +120,6 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         });
 
         this.systems_tbl_filter = new FilterableCollection<any>(this.systems_tbl, this._systemsFilters.bind(this, this));
-    }
-
-    setViewModelObservables() {
-        //SPECIES
-        this.species_tbl = new ObservableCollection([]);
-        //this.species_tbl_filter = new FilterableCollection<any>;
-        this.selected_species = new Observable({});
-        this.selected_species_label = new Observable('');
-        this.selected_species_filter = new Observable('<--');
-        //PRODUCTION METHODS
-        this.prod_meth_tbl = new ObservableCollection([]);
-        this.selected_prod_meth_filter = new Observable('<--');
-        this.selected_prod_meth = new Observable({});
-        this.selected_prod_meth_label = new Observable('');
-        //this.prod_meth_tbl_filter = new FilterableCollection<any>;
-        //SYSTEMS (Species and Production Method)
-        this.systems_tbl = new ObservableCollection([]);
-        this.selected_system = new Observable({});
-        //this.selected_system_binding_token = '';
-        this.selected_system_text = new Observable('');
-        //this.systems_tbl_filter = FilterableCollection<any>;
-        this.show_no_systems_in_filtered_view = new Observable(false);
-        //SCREEN CONFIG
-        this.screens_collection = new ObservableCollection([]);
-        //this.screens_collection_filter = FilterableCollection<any>;
-        //OTHER INPUT PARAMS
-        this.show_other_input_params_1 = new Observable(false);
-        //SELECTED LOCATION
-        this.has_location = new Observable(false);
-        this.selected_location = new Observable();
-        //INFO SCREEN
-        this.info_screen_arrow_src = new Observable("Resources/Images/Icons/arrow-right-small-24.png");
-        this.show_info_screen = new Observable(false);
-        //INPUT SCREENS
-        this.active_screen = new Observable(0);
-        //PAGER_NAV
-        this.show_next_btn = new Observable(true);
-        this.show_back_btn = new Observable(false);
-        //ROUTES
-        this.sub_station_routes = new ObservableCollection([]);
-        //AMORTIZATION
-        this.amortization_tbl = new ObservableCollection([]);
-        //Summary Button
-        this.show_summary_btn = new Observable(false);
-        //UPDATE State
-        this.is_model_updating = new Observable(false);
     }
 
     initialize(config: any): void {
@@ -244,8 +197,6 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             }
             //this.sub_station_routes.set(routes);
         });
-
-        //$(document).bind("kendo:skinChange", this.renderCharts());
     }
 
     setSystems(wc) {
@@ -478,26 +429,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att.Default, att.Decimal)
                                 let fieldValue;
                                 fieldValue = new Observable<any>(value);
-                                //switch (att.fieldCalVar) {
-                                //    case 'facilityLocation':
-                                //        fieldValue = this.selected_location_desc;
-                                //        break;
-                                //    case '_speciedLocation':
-                                //        fieldValue = this.seedLocation;
-                                //        break;
-                                //    case 'feedLocation':
-                                //        fieldValue = this.feedLocation;
-                                //        break;
-                                //    case 'marketLocation':
-                                //        fieldValue = this.marketLocation;
-                                //        break;
-                                //    default:
-                                //        fieldValue = new Observable<any>(value);
-                                //        break;
-                                //}
-                                let fieldDisplayValue = new Observable<any>(this.formatDisplayValue(value, att.Unit));
-                                
-
+                                let fieldDisplayValue = new Observable<any>(this.formatDisplayValue(value, att.Unit, att.Decimal));
                                 let returnVal =
                                 {
                                     fieldName: att.Field,
@@ -536,19 +468,15 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                                             category: d.category,
                                             fieldCalVar: d.fieldCalVar
                                         }
-                                    }));//.sort(this.sortChartDataTable));
-                                    //let chartDataSorted = new OrderedCollection<any>();                                    
+                                    }));
+                                    
                                     returnVal['chartConfig'] = {
                                         chartID: _chartConfig.attributes.ChartID,
                                         chartName: _chartConfig.attributes.ChartName,
                                         chartType: _chartConfig.attributes.Type,
                                         chartSeries: chartSeries,
                                         chartData: chartData
-                                        //chartDataSorted: chartDataSorted
                                     };
-
-                                    //returnVal['chartConfig'].chartDataSorted.sync(returnVal['chartConfig'].chartData);
-                                    //returnVal['chartConfig'].chartDataSorted.setSortFunction(this.sortChartDataTable);
                                 }
                                 if (att.FieldCategory === 'LookupTable') {
                                     let lutName = att.Formula.split('lut:')[1].split('>')[0];
@@ -608,7 +536,7 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                                     });
                                 }
                                 fieldValue.bind(returnVal, (val) => {
-                                    returnVal.formattedValue.set(thisScope.formatDisplayValue(val, returnVal.unit));
+                                    returnVal.formattedValue.set(thisScope.formatDisplayValue(val, returnVal.unit,returnVal.decimalDisp));
                                 });
                                 return returnVal;
                             });
@@ -625,6 +553,7 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                                     category: c,
                                     fields: new ObservableCollection<any>(catFields)
                                 }
+                                cat['fields_filter'] = new FilterableCollection<any>(cat['fields'], this._fieldsFilter.bind(this, this));
                                 field_categories.push(cat);
                             });
                         returnSectionInfo['field_categories'].set(field_categories);
@@ -637,6 +566,7 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                                 category: c,
                                 fields: new ObservableCollection<any>(catFields)
                             }
+                            cat['fields_filter'] = new FilterableCollection<any>(cat['fields'], this._fieldsFilter.bind(this, this));
                             ui_categories.push(cat);
                         });
                         returnSectionInfo['field_ui_categories'].set(ui_categories);
@@ -646,6 +576,7 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                 scr.sections.set(_screenSections);
             });
             this.screens_collection.set(_screens);
+            
         }
 
         if (this.has_location.get()) {
@@ -655,6 +586,19 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
         this._setScreenSectionBindings();
         this.calculateAmortization();
         this.renderCharts();
+        this.saveScenarioToCache();
+    }
+
+    saveScenarioToCache() {
+        //create scenario object
+        let scenario = {
+            scenario_name: "Scenario 1",
+            screens: this.screens_collection.get(),
+            selected: new Observable<boolean>(true)
+        }
+        let scenarios = this.scenario_cache.get();
+        scenarios.push(scenario);
+        this.scenario_cache.set(scenarios);
     }
 
     sortChartDataTable(left, right) {
@@ -885,7 +829,7 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
         //var sliderTextHandle = $("#" + sliderID + " .oe-slider-handle");
         var sliderTextHandle = $("#" + f.fieldHandle);
         newVal = newVal ? newVal : f.value.get();
-        sliderTextHandle.text(thisScope.formatDisplayValue(newVal.toString(), f.unit));
+        sliderTextHandle.text(thisScope.formatDisplayValue(newVal.toString(), f.unit, f.decimalDisp));
         let min = f.min ? parseFloat(f.min) : 0;
         let max = f.max ? parseFloat(f.max) : 100;
 
@@ -911,11 +855,11 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
             tickPlacement: "none",
             showButtons: true,
             slide: function (slideEvt) {
-                sliderTextHandle.text(thisScope.formatDisplayValue(slideEvt.value.toString(), f.unit));
+                sliderTextHandle.text(thisScope.formatDisplayValue(slideEvt.value.toString(), f.unit,f.decimalDisp));
             },
             change: function (changeEvt) {
                 let newVal = changeEvt.value.toString();
-                sliderTextHandle.text(thisScope.formatDisplayValue(newVal, f.unit));
+                sliderTextHandle.text(thisScope.formatDisplayValue(newVal, f.unit, f.decimalDisp));
                 f.value.set(newVal);
                 thisScope.updateViewModel(f);
             }
@@ -930,7 +874,7 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
         }
     }
 
-    formatDisplayValue(val, unit) {
+    formatDisplayValue(val, unit, decimalDisp?) {
         let returnVal;
         if (val === '<enter value>') {
             return val;
@@ -944,7 +888,11 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                     returnVal = val;
                     break;
                 case '%':
-                    returnVal = Math.round(parseFloat(val) * 100) + unit;
+                    returnVal = decimalDisp
+                        ? decimalDisp > 2
+                            ? ((parseFloat(val) * 100).toFixed(decimalDisp - 2) + unit)
+                            : Math.round(parseFloat(val) * 100) + unit
+                        : Math.round(parseFloat(val) * 100) + unit;
                     break;
                 default:
                     returnVal = val + ' ' + unit;
@@ -1227,12 +1175,14 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
     _screensFilter(thisViewModel: any, screen: any) {
         //TODO Go through each screen/section and determine if fields for selected system exist and if so, then return true.
         //Also 
-        let hasFieldsForSystem = true;
+        let hasFieldsForSystem = false;
         this.screens_collection.get().forEach(scr => {
-            if (scr === screen && !hasFieldsForSystem) {
+            if (scr["id"] === screen.id && !hasFieldsForSystem) {
                 scr['sections'].get().forEach(sct => {
                     sct.fields.get().forEach(f => {
-                        hasFieldsForSystem = f.show.indexOf(this.selected_system_text) !== -1 ? true : hasFieldsForSystem;
+                        hasFieldsForSystem = f.show.indexOf(this.selected_system_text.get()) !== -1 || f.show.indexOf('All') !== -1
+                            ? true
+                            : hasFieldsForSystem;
                     });
                 });
             }
@@ -1278,50 +1228,10 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
 
     }
 
-    _resetDefaults() {        
-        //this.workflowContext.completeActivity();
+    _resetDefaults() {                
         this.esriMap = null;
-        //this.setViewModelObservables();
-        //this.esriBasemapToggle.destroy();
-        //this.esriHomeBtn.destroy();
-        //this.esriSearch.destroy();        
-        //this.selection_cache.set(null);
-        //this.species_tbl.set(null);
-        ////this.species_tbl_filter.set(null);
-        //this.selected_species.set(null);
-        //this.selected_species_label.set(null);
-        ////this.selected_species_filter.set(null);
-        //this.prod_meth_tbl.set(null);
-        ////this.selected_prod_meth_filter.set(null);
-        //this.selected_prod_meth.set(null);
-        //this.selected_prod_meth_label.set(null);
-        ////this.prod_meth_tbl_filter.set(null);
-        //this.systems_tbl.set(null);
-        //this.selected_system.unbind(this.selected_system_binding_token);
-        //this.selected_system.set(null);
-        ////this.selected_system_text();
-        ////this.systems_tbl_filter.set(null);
-        //this.show_no_systems_in_filtered_view.set(null);
-        ////this.screens_collection_filter.set(null);
-        
-        //if (this.screens_collection.get().length > 0) {
-        //    this.screens_collection.getItems().forEach(s => {
-        //        s['sections'].set(null);
-        //    });
-        //}
-        //this.screens_collection.set([]);
-        //this.show_other_input_params_1.set(null);
-        //this.has_location.set(null);
-       
-        //this.info_screen_arrow_src.set(null);
-        //this.show_info_screen.set(null);
-        //this.active_screen.set(null);
-        //this.show_next_btn.set(null);
-        //this.show_back_btn.set(null);
-        //this.sub_station_routes.set(null);
-        //this.amortization_tbl.set(null);
-        //this.show_summary_btn.set(null);
-        //this.is_model_updating.set(null);
-       
+        this.esriBasemapToggle.destroy();
+        this.esriHomeBtn.destroy();
+        this.esriSearch.destroy();        
     }
 }

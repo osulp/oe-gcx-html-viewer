@@ -1,23 +1,13 @@
 ﻿<div id="aqua-financial-pln-wrapper">
-
-    <!--<div id="info-screen">
-        <div id="info-screen-toggle-bar" data-binding="{@event-onclick: toggleInfoScreen}">
-            <img data-binding="{src: info_screen_arrow_src}" />
-            <span>Knowledge Screen</span>
-        </div>
-        <div id="info-screen-content-wrapper">
-            <div id="info-screen-content" data-binding="{@visible: show_info_screen}">
-
-                <div id="close-info-btn-wrapper">
-                    <center>
-                        <div class="oe-btn" data-binding="{@event-onclick:  toggleInfoScreen}">Close</div>
-                    </center>
-                </div>
-            </div>
-        </div>
-    </div>-->
     <header>
         <div class="header-bar-wrapper">
+            <div class="header-bar-left">
+                <div data-binding="{@source:scenario_cache}">
+                    <div data-binding="{@template-for:scenario_cache}">
+                        <span data-binding="{@text:scenario_name}"></span>
+                    </div>
+                </div>
+            </div>
             <div class="header-bar-right">
                 <div class="print" data-binding="{@event-onclick:print}"><img width="20" src="Resources/Images/Icons/print-24.png" /></div>
                 <div data-binding="{@event-onclick: closeView}">
@@ -34,14 +24,6 @@
                     <button class="tablinks" data-binding="{@template-for:screens_collection_filter}{@text:screen}{@event-onclick:openTab}{id:tabId}{class:screenTabClass}"></button>
 
                 </div>
-                <!--<div class="toggle-detail-inputs" data-binding="{@visible:show_back_btn}">
-                    <div data-binding="{@event-onclick:showAllTabs}{@hidden:show_all_tabs}">
-                        View detailed inputs
-                    </div>
-                    <div data-binding="{@event-onclick:hideDetailTabs}{@visible:show_all_tabs}">
-                        Hide detailed inputs
-                    </div>
-                </div>-->
             </div>
 
             <div id="printarea" class="panel-cell screens">
@@ -66,9 +48,6 @@
                                     <!-- System Selection -->
                                     <div data-binding="{@template-select:Select System}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/selectSystem.html}">
                                     </div>
-                                    <!-- Production -->
-                                    <!--<div data-binding="{@template-select:Production}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/production.html}">
-                                    </div>-->
                                     <!-- Summary -->
                                     <div data-binding="{@template-select:Summary Table}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/summary.html}">
                                     </div>

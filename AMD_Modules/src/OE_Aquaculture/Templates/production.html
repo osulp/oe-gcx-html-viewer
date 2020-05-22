@@ -6,8 +6,8 @@
                     <legend data-binding="{@text:displayName}"></legend>                   
                     <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
                     <!--<br />-->
-                    <div id="production-targets" data-binding="{@source:fields}" class="div-row">
-                        <div data-binding="{@template-for:fields}" class="div-row-cell">
+                    <div id="production-targets" data-binding="{@source:fields_filter}" class="div-row">
+                        <div data-binding="{@template-for:fields_filter}" class="div-row-cell">
                             <div data-binding="{@source:@context}{@template-selector:uiType}">
                                 <div data-binding="{@template-select:dropdown}">
                                     <center>
@@ -36,12 +36,12 @@
                                 <div data-binding="{@template-select:ExistingResource}">
                                     <h3>Resource constraints</h3>
                                     <div class="production notes">(Enter any known constraints)</div>
-                                    <div class="div-table production" data-binding="{@source:fields}">
+                                    <div class="div-table production" data-binding="{@source:fields_filter}">
                                         <!--<div class="div-table-row">
                                             <div class="div-table-cell">Existing Resource</div>
                                             <div class="div-table-cell">Value</div>
                                         </div>-->
-                                        <div class="div-table-row" data-binding="{@template-for:fields}">
+                                        <div class="div-table-row" data-binding="{@template-for:fields_filter}">
                                             <div data-binding="{class:tableDisplayClass}">
                                                 <div class="tooltip">
                                                     <span class="input-header" data-binding="{@text:fieldName}"> </span>
@@ -70,12 +70,12 @@
                                 <div data-binding="{@template-select:RequiredResource}">
                                     <h3>Required resources</h3>
                                     <div class="production notes">(Based on the production targets above)</div>
-                                    <div class="div-table production" data-binding="{@source:fields}">
+                                    <div class="div-table production" data-binding="{@source:fields_filter}">
                                         <!--<div class="div-table-row">
                                             <div class="div-table-cell">Required Resource</div>
                                             <div class="div-table-cell">Value</div>
                                         </div>-->
-                                        <div class="div-table-row" data-binding="{@template-for:fields}">
+                                        <div class="div-table-row" data-binding="{@template-for:fields_filter}">
                                             <div data-binding="{class:tableDisplayClass}">
                                                 <span class="input-header" data-binding="{@text:fieldName}"></span>
                                             </div>

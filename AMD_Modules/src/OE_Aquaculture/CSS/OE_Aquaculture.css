@@ -112,7 +112,7 @@ header {
     padding: 10px 0;
     background-color: #ddd;
     min-height: 50px;
-    z-index: 10;
+    z-index: 100;
 }
 
 #pager-wrapper {
@@ -144,7 +144,7 @@ header {
     }
 
     .oe-btn.add-location {
-        width: 7em;
+        width: 17em;
     }
 
     .oe-btn.clear-filters {
@@ -383,7 +383,7 @@ legend {
 #basemap-toggle {
     position: absolute;
     bottom: 20px;
-    right: 20px;
+    left: 20px;
     z-index: 50;
 }
 
@@ -470,6 +470,10 @@ h2.screen-header {
     width:49%;
     padding: 0 30px 0 0 ;
   
+}
+
+.div-row-cell h3{
+    padding:10px;
 }
 
     .div-row.overview .desc {
@@ -806,3 +810,23 @@ h2.screen-header {
         visibility: visible;
         opacity: 1;
     }
+
+@media only screen and (max-width:1100px) {
+    /* styles for browsers larger than 960 */
+
+    .div-row.overview div.div-row-cell {
+        width: 100%;
+    }
+
+    .div-row div.div-row-cell {        
+        width: 100%;
+    }
+
+    .div-row.production div.div-row-cell {
+        width: 100%;
+    }
+
+    .div-table.amortization{
+        font-size:.8em;
+    }
+}
