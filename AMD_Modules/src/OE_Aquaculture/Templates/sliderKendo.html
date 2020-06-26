@@ -1,8 +1,14 @@
-﻿<div class="slider-wrapper div-row">
-    <div>
-        <div class="slider-value" data-binding="{id:fieldHandle}"></div>
-        <input class="oe_slider" data-binding="{id:fieldCalVar}" />
+﻿<div class="slider-wrapper">
+    <div class="slider-handle-wrapper">
+        <!--<div class="slider-value" data-binding="{id:fieldHandle}"></div>-->
+        <div data-binding="{id:fieldValidateMsgID}{class:fieldValidateMsgClass}">
+            <span data-binding="{innerHTML:fieldValidateMsg}" class="tooltiptext"></span>
+        </div>
+        <div class="slider-text-input-div" data-binding="{data-value:unit}">
+            <input type="text" class="slider-value" data-binding="{id:fieldHandle}{@event-change:updateSlider}{@event-keyup:validateTextInput}{@event-onclick:checkClearTextInput}" />
+        </div>
     </div>
+    <input class="oe_slider" data-binding="{id:fieldCalVar}" />
 </div>
 
 

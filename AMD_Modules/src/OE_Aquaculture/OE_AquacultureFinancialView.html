@@ -1,18 +1,22 @@
-﻿<div id="aqua-financial-pln-wrapper">
+﻿<div id="aqua-financial-pln-wrapper">  
     <header>
         <div class="header-bar-wrapper">
             <div class="header-bar-left">
-                <div data-binding="{@source:scenario_cache}">
+                <!--<div data-binding="{@source:scenario_cache}">
                     <div data-binding="{@template-for:scenario_cache}">
                         <span data-binding="{@text:scenario_name}"></span>
                     </div>
+                </div>-->
+                <div class="header-warning-wrapper" data-binding="{@visible:show_warning}">
+                    <div><img alt="Get a pdf of your Oregon Aquaculture Financial Planning scenario" src="Resources/Images/Icons/Toolbar/alert-24.png" class="bound-visible-inline"></div>
+                    <div id="warning-message" data-binding="{@event-onclick:gotoProductionTab}">Resource constraints less than required resources.  Results may not be realistic.</div>
                 </div>
             </div>
+            
             <div class="header-bar-right">
-                <div class="print" data-binding="{@event-onclick:print}"><img width="20" src="Resources/Images/Icons/print-24.png" /></div>
-                <div data-binding="{@event-onclick: closeView}">
-                    Aquaculture Map Viewer
-                </div>
+                <button data-binding="{@event-onclick:getPDFReport}" class="toolbar-item tool aqua" title="Add layers to the map"><img alt="Get a pdf of your Oregon Aquaculture Financial Planning scenario" src="Resources/Images/Icons/Toolbar/reports-24.png" class="bound-visible-inline"><p>Full PDF Report</p></button>
+                <button data-binding="{@event-onclick:print}" class="toolbar-item tool aqua" title="Add layers to the map"><img alt="Print the current page" src="Resources/Images/Icons/Toolbar/print-24.png" class="bound-visible-inline"><p>Print Page</p></button>
+                <button data-binding="{@event-onclick:closeView}" class="toolbar-item tool aqua" title="Add layers to the map"><img alt="Print the current page" src="Resources/Images/Icons/Toolbar/share-map-24.png" class="bound-visible-inline"><p>Map Viewer</p></button>                
             </div>
         </div>
     </header>
@@ -53,6 +57,9 @@
                                     </div>
                                     <!-- Map Section -->
                                     <div data-binding="{@template-select:Map}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/locationMap.html}">
+                                    </div>
+                                    <!-- Transportation Locations -->
+                                    <div data-binding="{@template-select:transportationLocations}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/transportationLocations.html}{class:displayClass}">
                                     </div>
                                     <!-- Calculated Inputs -->
                                     <div data-binding="{@template-select:InputsCalculated}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputsCalculated.html}{class:displayClass}">
@@ -109,6 +116,14 @@
                 <div>System</div>
                 <div>Summary</div>
             </div>
+        </div>
+    </div>
+</div>
+<div id="loading-wrapper" data-binding="{@visible:show_loading}">
+    <div id="loading">
+        <div>
+            Generating PDF report....
+            Please wait
         </div>
     </div>
 </div>

@@ -6,6 +6,8 @@ import { ViewBase } from "geocortex/framework/ui/ViewBase";
 import { ViewerApplication } from "geocortex/infrastructure/Viewer";
 import { OE_AquacultureFinancialViewModel } from './OE_AquacultureFinancialViewModel';
 
+declare var html2canvas: any;
+
 
 export class OE_AquacultureFinancialView extends ViewBase {
 
@@ -17,7 +19,11 @@ export class OE_AquacultureFinancialView extends ViewBase {
     kChartActive: kendo.dataviz.ui.Chart;
 
 
-    OregonGeolocator: esri.tasks.Locator = new esri.tasks.Locator("http://navigator.state.or.us/arcgis/rest/services/Locators/gc_Composite/GeocodeServer");
+    OregonGeolocator: esri.tasks.Locator = new esri.tasks.Locator("https://navigator.state.or.us/arcgis/rest/services/Locators/gc_Composite/GeocodeServer");
+
+    esriLocator: esri.tasks.Locator = new esri.tasks.Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
+
+
     marker: esri.symbol.PictureMarkerSymbol = new esri.symbol.PictureMarkerSymbol({
         "height": 28,
         "width": 28,
@@ -33,7 +39,9 @@ export class OE_AquacultureFinancialView extends ViewBase {
         let thisScope = this;
         this.fitScreenHeight();        
         this.setSelectedSystem(null,null,this.viewModel.selected_system.get());
-        this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(0));     
+        this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(0)); 
+        //this.renderMap();
+
         $(window).resize(function () {
             thisScope.fitScreenHeight();
             thisScope.resizeMap();
@@ -58,8 +66,8 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 'scrollTop': $('#' + ctx.id)
             }, 800, 'swing');
 
-            //load map if on transportation
-            if (ctx.screen === 'Transportation') {
+            //load map if on location screen
+            if (ctx.screen === 'Location') {
                 this.renderMap();
                 //if (this.viewModel.has_location.get()) {
                 //    this.viewModel.runRoutingServices();
@@ -91,12 +99,14 @@ export class OE_AquacultureFinancialView extends ViewBase {
             try {
 
                 var sources = [{
-                    locator: this.OregonGeolocator,
+                    locator: this.esriLocator,// this.OregonGeolocator,
                     locationType: "street",
                     singleLineFieldName: "SingleLine",
                     name: "Oregon GC_Composite",
                     placeholder: "Search",
                     highlightSymbol: this.marker,
+                    countryCode: "US",
+                    suffix: " OR",
                     maxResults: 3,
                     maxSuggestions: 6,
                     enableSuggestions: true,
@@ -179,7 +189,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 }
             });
 
-            this.viewModel.esriLocator = new esri.tasks.Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
+            this.viewModel.esriLocator = this.esriLocator;
 
             //this.viewModel.esriLocator = this.OregonGeolocator;
 
@@ -230,10 +240,10 @@ export class OE_AquacultureFinancialView extends ViewBase {
         printWindow.document.write(html);
         let browser = this.detectBrowser()
         if (browser === 'IE') {
-            //printWindow.location.reload();
+            printWindow.location.reload();
         } else {
-            //printWindow.print();
-            //printWindow.close();
+            printWindow.print();
+            printWindow.close();
         }
     }
 
@@ -263,6 +273,127 @@ export class OE_AquacultureFinancialView extends ViewBase {
         let modal_height = $('.modal-container').height() - $('.modal-container-inner').height() + "px";
         $('.panel-scroll-container').css("maxHeight", modal_height);
         console.log('panel height: ', modal_height);
+    }
+
+    getPDFReport() {
+        this.viewModel.show_loading.set(true);
+        let currentScreen = this.viewModel.screens_collection.get()[this.viewModel.active_screen.get()];
+        //clear global variable to store the chart images
+        window['oe_report_charts'] = [];
+        this.gotoTab(null, null, this.viewModel.screens_collection.get().filter(s => s['screen'] === "Financial Summary")[0]);
+        this.showHideLabelsOnCharts(true);
+        let thisScope = this;
+        //To pass json to workflow, you have to double quote each attribute...
+        let report_data = {
+            "system": this.viewModel.systems_tbl.get()
+                .filter(sys => sys["selected"].get())
+                .map((sys: any) => {
+                    return {
+                        "system": sys.system,
+                        "system_img": sys.img_credit,
+                        "system_img_credit": sys.img_credit,
+                        "system_overview": sys.overview.replace(/\<\/p>/g, '').replace(/\<p>/g, '')
+                    }
+                })[0],
+            "species": this.viewModel.species_tbl.get().filter(species => species.selected)[0],
+            "prodMeth": this.viewModel.prod_meth_tbl.get().filter(prod => prod.selected)[0],
+            "screen_data": [],
+            "charts": []
+        }
+
+        window.setTimeout(() => {
+            thisScope.viewModel.screens_collection.get()
+                .filter((screen, idx, arr) => {                   
+                    return thisScope.viewModel._screenSystemFilter(screen, true)
+                })
+                .forEach((scr: any) => {
+                scr.sections.get().forEach((sct: any) => {
+                    sct.fields.get().filter(f => {
+                        return thisScope.viewModel._fieldsFilter(null, f);
+                    }).forEach((f: any) => {
+                        if (f.uiType === "chart") {
+                            thisScope.getChartAndTableAsBase64(f);
+                        } else if (f.uiType !== "inputLocation") {
+                            let sd: any = {
+                                screen: scr.screenTitle.toUpperCase(),
+                                section: sct.displayName,
+                                sectionType: sct.sectionType,
+                                field: f.fieldLabel,
+                                fieldVal: f.formattedValue.get() === '<enter value>' ? '' : f.formattedValue.get()
+                            };
+                            if (sd.screen !== 'FINANCIAL SUMMARY') {
+                                //hide financial summary since the data is processed as charts and table images
+                                report_data.screen_data.push(sd);
+                            }                            
+                        }
+                    });
+                });
+            });
+            window.setTimeout(() => {
+                report_data.charts = window['oe_report_charts'];
+                var workflowArgs: any = {};
+                workflowArgs.workflowId = "Get_Financial_Planning_Report";
+                workflowArgs.report_data = JSON.stringify(report_data); // JSON.stringify(screens);
+                thisScope.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
+                thisScope.gotoTab(null, null, currentScreen);
+                thisScope.viewModel.show_loading.set(false);
+                thisScope.showHideLabelsOnCharts(true);
+            }, 100);
+        }, 750);
+    }
+
+    getChartAndTableAsBase64(f) {
+        let chartTable = document.querySelectorAll("[data-table='" + f.chartID + "']");
+        var clone = chartTable[0].cloneNode(true);
+        $("body").append(clone);
+        $(clone).css("width", "450px");
+        html2canvas(clone, {
+            onrendered: function (canvas) {
+                let chart_info = {
+                    chartName: f.chartConfig.chartName,
+                    //chartConfig: f.chartConfig,
+                    chartDataURI: '',
+                    chartTableURI: ''
+                };
+
+                var base64FilterImg = canvas.toDataURL('image/png');//.replace(/^data:image\/(png|jpg);base64,/, "");
+                chart_info.chartTableURI = base64FilterImg;
+                window['oe_report_charts'].push(chart_info);
+                $(clone).remove();
+                //add chart data img
+                let chart = $("#" + f.chartID).getKendoChart();
+                chart.exportImage().done((data) => {
+                    window['oe_report_charts'][window['oe_report_charts'].length - 1]['chartDataURI'] = data;//.replace(/^data:image\/(png|jpg);base64,/, "");
+                    //console.log(data);
+                });               
+            }
+        });
+    }
+
+    showHideLabelsOnCharts(show: boolean) {
+        this.viewModel.screens_collection.get().forEach((scr: any) => {
+            scr.sections.get().forEach((sct: any) => {
+                sct.fields.get().filter(f => {
+                    return this.viewModel._fieldsFilter(null, f);
+                }).forEach((f: any) => {
+                    if (f.uiType === "chart") {
+                        let chart = $("#" + f.chartID).getKendoChart();
+                        //add labels
+                        chart.setOptions({
+                            seriesDefaults: {
+                                labels: {
+                                    visible: show
+                                }
+                            },
+                            legend: {
+                                visible: show ? false : true
+                            }
+                        });
+                        chart.refresh();
+                    }
+                });
+            });
+        });
     }
 
     resizeMap() {
@@ -331,6 +462,11 @@ export class OE_AquacultureFinancialView extends ViewBase {
         //this.viewModel.show_all_tabs.set(true);
         this.openTab(null, null, screen);
     }
+
+    gotoProductionTab(evt, el, cntx) {
+        let screen = this.viewModel.screens_collection.get().filter(s => s['screen'] === 'Production')[0];
+        this.openTab(null, null, screen);
+    }
     gotoNextScreen(evt, el, cntx) {
         let curIndx = this.viewModel.active_screen.get();
         if (curIndx === 0) {
@@ -363,8 +499,6 @@ export class OE_AquacultureFinancialView extends ViewBase {
         let summaryScreen = this.viewModel.screens_collection.getItems().filter(s => s['screen'] === "Summary")[0];
         this.openTab(null, null, summaryScreen);
     }
-
-    
 
     zoomToSelectedLocation(evt, elem, ctx) {
         this.viewModel.esriMap.centerAndZoom(ctx.point, 13);
@@ -405,15 +539,6 @@ export class OE_AquacultureFinancialView extends ViewBase {
         //this._setSliders();
         return true;
     }
-
-    //runRoutingServices() {
-    //    let mapPoint = this.viewModel.selected_location.get().point;
-    //    var workflowArgs:any = {};
-    //    workflowArgs.workflowId = "Routing_Services";
-    //    workflowArgs.startPointIn = mapPoint.x.toString() + "," + mapPoint.y.toString();
-    //    workflowArgs.runInBackground = true;
-    //    this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
-    //}
 
     setInfoScreenHeight() {
         //modal height - header - toggle
@@ -478,6 +603,18 @@ export class OE_AquacultureFinancialView extends ViewBase {
         this.viewModel.resetSystemFilters();
     }
 
+    updateSlider(evt, elem, ctx) {
+        this.viewModel.updateSlider(ctx);
+    }
+
+    validateTextInput(evt, elem, ctx) {
+        this.viewModel.validateTextInput(evt, elem, ctx);        
+    }
+
+    checkClearTextInput(evt, elem, ctx) {
+        this.viewModel.checkClearTextInput(evt, elem, ctx);        
+        //return false;
+    }
     setSelectedQuickstartResource(evt,el,cntx) {
         this.viewModel.setSelectedQuickstartResource(cntx.fieldName);
         return true;
@@ -495,68 +632,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
                     switch (f.uiType) {
                         case 'slider':
                             thisScope.viewModel.setKendoSlider(f);
-                            //let sliderID = f.fieldCalVar;
-                            ////var sliderTextHandle = $("#" + sliderID + " .oe-slider-handle");
-                            //var sliderTextHandle = $("#" + f.fieldHandle);
-
-                            //sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(f.value.get().toString(), f.unit));
-                            //let min = f.min ? parseFloat(f.min) : 0;
-                            //let max = f.max ? parseFloat(f.max) : 100;
-
-                            //let increment = f.increment ? parseFloat(f.increment) : 1;
-
-                            //let value = parseFloat(f.value.get().replace(/\,/g,''));
-
-                            //////////////////////////////////////////////////
-                            //// Kendo Slider
-                            //////////////////////////////////////////////////
-                            //var slider = $("#" + sliderID).kendoSlider({
-                            //    increaseButtonTitle: "+",
-                            //    decreaseButtonTitle: "-",
-                            //    min: min,
-                            //    max: max,      
-                            //    value: value,
-                            //    smallStep: increment,
-                            //    largeStep: increment * 2,
-                            //    tooltip: {
-                            //        enabled:false
-                            //    },
-                            //    tickPlacement:"none",
-                            //    showButtons: true,
-                            //    slide: function (slideEvt) {
-                            //        sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(slideEvt.value.toString(), f.unit));
-                            //    },
-                            //    change: function (changeEvt) {
-                            //        let newVal = changeEvt.value.toString();
-                            //        sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(newVal, f.unit));
-                            //        window.setTimeout(() => {
-                            //            f.value.set(newVal);
-                            //            thisScope.updateModel(null, null, f);
-                            //        }, 50);
-                            //    }
-                            //}).data("kendoSlider");
-
-                            //slider.value(parseFloat(f.value.get()));
-
-                            ////////////////////////////////////////////////
-                            // Traditional JQuery Slider
-                            ////////////////////////////////////////////////
-                            //$("#" + sliderID).slider({
-                            //    step: increment,
-                            //    min: min,
-                            //    max: max,
-                            //    value: parseFloat(f.value.get()),
-                            //    create: function () {
-                            //        sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(f.value.get(), f.unit));
-                            //    },
-                            //    slide: function (event, ui) {
-                            //        sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(ui.value.toString(), f.unit));
-                            //    },
-                            //    stop: function (event, ui) {
-                            //        f.value.set(ui.value.toString());
-                            //        thisScope.updateModel(null,null,f);
-                            //    }
-                            //});
+                            
                             if (reset) {
                                 f.value.set(null);
                             }
@@ -566,76 +642,6 @@ export class OE_AquacultureFinancialView extends ViewBase {
             });
         });
     }
-    //_setSliders() {
-
-    //    let _species = this.viewModel.selected_species.get();
-
-    //    ////////////
-    //    //  Product Weight
-    //    ///////////
-
-    //    var sliderProductWeightHandle = $("#slider-product-weight .oe-slider-handle");
-
-    //    $("#slider-product-weight").slider({
-    //        step: Number(_species["weight_increment"]),
-    //        min: Number(_species["weight_min"]),
-    //        max: Number(_species["weight_max"]),
-    //        value: _species["weight_default"],
-    //        create: function () {
-    //            sliderProductWeightHandle.text(_species["weight_default"].toString() + " lbs");
-    //        },
-    //        slide: function (event, ui) {
-    //            sliderProductWeightHandle.text(ui.value.toString() + " lbs");
-    //        }
-    //    });
-
-    //    sliderProductWeightHandle.text(_species["weight_default"] + " lbs");
-
-    //    ////////////
-    //    //  Price Target
-    //    ///////////
-
-    //    var sliderPriceTargetHandle = $("#slider-price-target .oe-slider-handle");
-
-    //    $("#slider-price-target").slider({
-    //        step: Number(_species["price_increment"]),
-    //        min: Number(_species["price_min"]),
-    //        max: Number(_species["price_max"]),
-    //        value: _species["price_default"],
-    //        create: function () {
-    //            sliderPriceTargetHandle.text("$" + parseFloat(_species["price_default"]).toFixed(2));
-    //        },
-    //        slide: function (event, ui) {
-    //            sliderPriceTargetHandle.text("$" + parseFloat(ui.value.toString()).toFixed(2));
-    //        }
-    //    });
-
-    //    sliderPriceTargetHandle.text("$" + parseFloat(_species["price_default"]).toFixed(2));
-
-    //    ////////////
-    //    //  Annual Harvest
-    //    ///////////
-
-    //    var sliderAnnualHarvestHandle = $("#slider-annual-harvest .oe-slider-handle");
-
-    //    $("#slider-annual-harvest").slider({
-    //        step: 10,
-    //        min: 10,
-    //        max: 100000,
-    //        value: 1000,
-    //        create: function () {
-    //            sliderAnnualHarvestHandle.text("1,000 lbs");
-    //        },
-    //        slide: function (event, ui) {
-    //            sliderAnnualHarvestHandle.text(ui.value.toString() + " lbs");
-    //        }
-    //    });
-
-    //    sliderAnnualHarvestHandle.text(_species["price_default"] + " lbs");
-
-    //}
-
-    //TEMP example
     
 
 }

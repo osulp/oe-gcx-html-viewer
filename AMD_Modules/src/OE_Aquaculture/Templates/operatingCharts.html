@@ -1,4 +1,4 @@
-﻿<div data-binding="{@template-for:sections}">
+﻿<div data-binding="{@template-for:sections}" class="oe_chart_aquaculture">
     <fieldset>
         <legend data-binding="{@text:displayName}"></legend>
         <!--<div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>-->
@@ -7,7 +7,7 @@
             <div data-binding="{@template-for:fields}">
                 <div data-binding="{@source:chartConfig}">
                     <div class="div-row" data-binding="{@template-for:chartConfig}">
-                        <div class="div-row-cell">
+                        <div class="div-row-cell" data-binding="{data-table:chartID}">
                             <div class="div-table" data-binding="{@source:chartData}">
                                 <div class="div-table-row" data-binding="{@template-for:chartData}">
                                     <div class="div-table-cell" data-binding="{@text:category}"></div>

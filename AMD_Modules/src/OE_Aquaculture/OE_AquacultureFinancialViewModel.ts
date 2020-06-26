@@ -59,6 +59,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     //PAGER_NAV
     show_next_btn: Observable<boolean> = new Observable(true);
     show_back_btn: Observable<boolean> = new Observable(false);
+    //TRANSPORTATION DATA
+    transportation_lut: any;
     //ROUTES
     sub_station_routes: ObservableCollection<any> = new ObservableCollection([]);
     //AMORTIZATION
@@ -66,8 +68,12 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     //Summary Button
     show_summary_btn: Observable<boolean> = new Observable(false);
     //UPDATE State
-    is_model_updating: Observable<boolean> = new Observable(false);
-
+    show_loading: Observable<boolean> = new Observable(false);
+    show_all_for_report: Observable<boolean> = new Observable(false);
+    //Validation Monitoring
+    show_warning: Observable<boolean> = new Observable(false);
+    invalid_array = [];
+        
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
         this.screens_collection_filter = new FilterableCollection<any>(this.screens_collection, this._screensFilter.bind(this, this));
@@ -120,6 +126,10 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         });
 
         this.systems_tbl_filter = new FilterableCollection<any>(this.systems_tbl, this._systemsFilters.bind(this, this));
+
+        this.show_all_for_report.bind(this, () => {
+            this.screens_collection_filter.refresh();
+        });
     }
 
     initialize(config: any): void {
@@ -136,12 +146,12 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         }
 
         this.app.registerActivityIdHandler("runFinancialPlnModule", (wc, cf) => {
+            this.workflowContext = $.extend({}, wc);
+
             this.resetSystemFilters();
 
             this.has_location.set(wc.getValue("location") ? true : false);
-           
-            this.workflowContext = $.extend({}, wc);
-
+                      
             this.setSystems(wc);
 
             this.setScreens(wc);
@@ -149,6 +159,14 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             this.setSpecies(wc);
 
             this.setProdMethods(wc);
+
+            this.transportation_lut = wc.getValue('transportation').features ? wc.getValue('transportation').features.map(f => {
+                return {
+                    pounds: f.attributes.pounds,
+                    miles: f.attributes.miles,
+                    shipCostLbMile: f.attributes.shipCostLbMile
+                }
+            }) : [];
 
             //rerun to set the resources system selection screen val...  TODO: figure out a better way
             //this.setSystems(wc);
@@ -210,6 +228,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                     "production_method": feat.attributes.ProductionMethod,
                     "species": feat.attributes.Species,
                     "system": feat.attributes.System,
+                    "systemTitle": feat.attributes.SystemTitle,
                     "systemid": feat.attributes.System.replace(/\ /g, "").replace(/\:/g, "_"),
                     "selected": new Observable<boolean>(feat.attributes.Default === "True"),
                     "overview": feat.attributes.Overview,
@@ -350,6 +369,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                         sections: new ObservableCollection<any>(),
                         selected: new Observable<boolean>(false),
                         showAdvOnly: sAttr.AdvancedOnly,
+                        showInReport: sAttr.IncludeInReport,
                         screenContentClass: new Observable<any>('tabcontent'),
                         screenTabClass: new Observable<any>('tablinks')
                     };
@@ -426,15 +446,20 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                             .map(sf => {
                                 let thisScope = this;
                                 const att = sf.attributes;
-let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att.Default, att.Decimal)
+let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default, att.Decimal)
                                 let fieldValue;
                                 fieldValue = new Observable<any>(value);
-                                let fieldDisplayValue = new Observable<any>(this.formatDisplayValue(value, att.Unit, att.Decimal));
+                                let fieldValidateMsg = new Observable<any>('Invalid input: Please enter a number between ' + this.formatValue(att.Min,att.Decimal) + ' and ' + this.formatValue(att.Max,att.Decimal) + '. <br>  ESC to reset to default value.');
+                                let fieldValidateMsgClass = new Observable<any>('validate-msg hide');
+                                let fieldDisplayValue = new Observable<any>(this.formatDisplayValue(value, att.Unit, att.Decimal, true));
                                 let returnVal =
                                 {
                                     fieldName: att.Field,
                                     fieldCalVar: att.FieldCalVar,
-                                    fieldHandle: att.FieldCalVar+"Handle",
+                                    fieldHandle: att.FieldCalVar + "Handle",
+                                    fieldValidateMsgID: att.FieldCalVar + "Validate",
+                                    fieldValidateMsgClass: fieldValidateMsgClass,
+                                    fieldValidateMsg: fieldValidateMsg,
                                     fieldCat: att.FieldCategory,
                                     fieldLabel: att.FieldLabel,
                                     uiType: att.UiType,
@@ -451,6 +476,7 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                                     formula: att.Formula,
                                     desc: att.Description,
                                     notes: att.Notes,
+                                    chartID: att.ChartConfig,
                                     showDesc: new Observable<boolean>(true),
                                     visible: new Observable<boolean>(att.Field === 'Total Land'),
                                     tableDisplayClass: 'div-table-cell ' + att.FieldCategory,
@@ -536,7 +562,7 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                                     });
                                 }
                                 fieldValue.bind(returnVal, (val) => {
-                                    returnVal.formattedValue.set(thisScope.formatDisplayValue(val, returnVal.unit,returnVal.decimalDisp));
+                                    returnVal.formattedValue.set(thisScope.formatDisplayValue(val, returnVal.unit,returnVal.decimalDisp,true));
                                 });
                                 return returnVal;
                             });
@@ -596,9 +622,7 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
             screens: this.screens_collection.get(),
             selected: new Observable<boolean>(true)
         }
-        let scenarios = this.scenario_cache.get();
-        scenarios.push(scenario);
-        this.scenario_cache.set(scenarios);
+        this.scenario_cache.addItem(scenario);
     }
 
     sortChartDataTable(left, right) {
@@ -629,7 +653,7 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                         let sortedData = [];
                         f.chartConfig.chartData.get().forEach(cd => {
                             let value = this.getValue(cd.fieldCalVar);
-                            cd.value.set(this.formatDisplayValue(parseInt(value.replace(/\,/g, '')), "$"));
+                            cd.value.set(this.formatDisplayValue(parseInt(value.replace(/\,/g, '')), "$",null,true));
                             cd.percent.set((parseInt(value.replace(/\,/g, '')) / totalChartValues * 100).toFixed(1) + "%");
                             sortedData.push(cd);
                         });
@@ -649,11 +673,13 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                             chartArea: {
                                 background: ""
                             },
+                            seriesColors: ["#b64242", "#cc8830", "#d0b809", "#07873b", "#39a0a1", "#24769f", "#82295c", "#1a1128", "#77747f","#cecad1"],
                             seriesDefaults: {
                                 labels: {
                                     visible: false,
                                     background: "transparent",
-                                    template: "#= category #: #= kendo.format('{0:P0}', percentage)# \n #= kendo.format('{0:c0}',value)#"
+                                    template: "#= category #: #= kendo.format('{0:P0}', percentage)#"
+                                    //template: "#= category #: #= kendo.format('{0:P0}', percentage)# \n #= kendo.format('{0:c0}',value)#"
                                 }
                             },
                             series: [f.chartConfig.chartSeries],
@@ -744,12 +770,12 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
             totInterest += paymentInterest;
             let paymentInfo = {
                 paymentNumber: (x + 1).toString(),
-                prevBalance: this.formatDisplayValue(this.formatValue(loanAmt,0),'$'),
-                payment: this.formatDisplayValue(this.formatValue(regularPayment, 0), '$'),
-                interest: this.formatDisplayValue(this.formatValue(paymentInterest, 0), '$'),
-                principal: this.formatDisplayValue(this.formatValue(paymentPrincipal, 0), '$'),
-                newBalance: this.formatDisplayValue(this.formatValue(loanAmt - paymentPrincipal, 0), '$'),
-                totInterest: this.formatDisplayValue(this.formatValue(totInterest, 0), '$'),
+                prevBalance: this.formatDisplayValue(this.formatValue(loanAmt, 0), '$', null, true),
+                payment: this.formatDisplayValue(this.formatValue(regularPayment, 0), '$', null, true),
+                interest: this.formatDisplayValue(this.formatValue(paymentInterest, 0), '$', null, true),
+                principal: this.formatDisplayValue(this.formatValue(paymentPrincipal, 0), '$', null, true),
+                newBalance: this.formatDisplayValue(this.formatValue(loanAmt - paymentPrincipal, 0), '$', null, true),
+                totInterest: this.formatDisplayValue(this.formatValue(totInterest, 0), '$', null, true),
                 class: 'div-table-row'
             };
             
@@ -774,14 +800,18 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
     }
 
     formatValue(value, decimalPlaces) {
-        let val = value.toString().replace(/\,/g, '');
-        return this.addCommas(parseFloat(val).toFixed(decimalPlaces).toString());
+        try {
+            let val = value.toString().replace(/\,/g, '');
+            return this.addCommas(parseFloat(val).toFixed(decimalPlaces).toString());
+        } catch (ex) {
+            return value;
+        }       
     }
 
-    addCommas(nStr) {
+    addCommas(nStr) {        
         nStr += '';
         let x = nStr.split('.');
-        let x1 = x[0];
+        let x1 = x[0].length > 1 ? x[0].replace(/^0+/, '') : x[0];
         let x2 = x.length > 1 ? '.' + x[1] : '';
         var rgx = /(\d+)(\d{3})/;
         while (rgx.test(x1)) {
@@ -796,7 +826,12 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
         //let _fieldToValidate = changedInput.formula.indexOf('[validate:') !== -1 ? changedInput.formula.split('validate:')[1].split(']')[0] : '';
         if (changedInput.formula.indexOf('[validate:') !== -1) {
             this.validateConstraints(changedInput);
-        } else {
+        } else if (changedInput.formula.indexOf('[interpolate:') !== -1) {
+            console.log('interpolate:', changedInput);
+            let interpolatedValue = Number(this.interpolateValues(changedInput)).toFixed(15);            
+            changedInput.value.set(interpolatedValue);
+        }
+        else {
             this.screens_collection.get().forEach(s => {
                 s['sections'].get().forEach(sct => {
                     sct.fields.get().forEach(f => {
@@ -804,7 +839,7 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                             //need to update value
                             //get formula
                             let newVal = this.formatValue(this.processFieldFormula(f), f.decimalDisp);
-                            if (newVal !== f.value.get() && newVal.indexOf('NaN') == -1) {
+                            if (newVal  ? newVal !== f.value.get() && newVal.indexOf('NaN') == -1 : false) {
                                 if (f.uiType === 'slider') {
                                     this.setKendoSlider(f, newVal);
                                 }
@@ -829,7 +864,7 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
         //var sliderTextHandle = $("#" + sliderID + " .oe-slider-handle");
         var sliderTextHandle = $("#" + f.fieldHandle);
         newVal = newVal ? newVal : f.value.get();
-        sliderTextHandle.text(thisScope.formatDisplayValue(newVal.toString(), f.unit, f.decimalDisp));
+        sliderTextHandle.val(thisScope.formatDisplayValue(newVal.toString(), f.unit, f.decimalDisp, false));
         let min = f.min ? parseFloat(f.min) : 0;
         let max = f.max ? parseFloat(f.max) : 100;
 
@@ -855,11 +890,11 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
             tickPlacement: "none",
             showButtons: true,
             slide: function (slideEvt) {
-                sliderTextHandle.text(thisScope.formatDisplayValue(slideEvt.value.toString(), f.unit,f.decimalDisp));
+                sliderTextHandle.val(thisScope.formatDisplayValue(slideEvt.value.toString(), f.unit,f.decimalDisp, false));
             },
             change: function (changeEvt) {
                 let newVal = changeEvt.value.toString();
-                sliderTextHandle.text(thisScope.formatDisplayValue(newVal, f.unit, f.decimalDisp));
+                sliderTextHandle.val(thisScope.formatDisplayValue(newVal, f.unit, f.decimalDisp, false));
                 f.value.set(newVal);
                 thisScope.updateViewModel(f);
             }
@@ -874,15 +909,74 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
         }
     }
 
-    formatDisplayValue(val, unit, decimalDisp?) {
+    updateSlider(field) {
+        //if (this.checkIsValidTextInput(field)) {
+        let sliderTextHandle = $("#" + field.fieldHandle);
+        let newValue = sliderTextHandle.val().split(' ')[0].replace(/\,/g, '');
+        sliderTextHandle.val(this.formatDisplayValue(newValue, field.unit, field.decimalDisp, false));
+        var slider = $("#" + field.fieldCalVar).data("kendoSlider");
+        if (!isNaN(newValue)) {
+            slider.value(newValue);
+        } else {
+            slider.value(0);
+        }
+        field.value.set(newValue);
+        this.updateViewModel(field);
+        //} else {
+        //    console.log('not valid for slider update');
+        //}             
+    }
+
+    validateTextInput(evt, elem, field) {
+        if (elem.value === '<-->') {
+            elem.value = '';
+        }    
+        if (evt.keyCode === 27) {
+            //reset to default value
+            console.log('reset!', field);
+            //get default
+            elem.value = field.defaultVal;
+            this.updateSlider(field);
+        }
+        if (evt.keyCode === 13) {
+            //submit changes
+            this.updateSlider(field);
+        }
+         
+        let isValid = this.checkIsValidTextInput(field); 
+        if (isValid) {
+            //elem.value = this.formatDisplayValue(elem.value.split(' ')[0].replace(/\,/g, ''), field.unit, field.decimalDisp);
+        }
+    }
+
+    checkIsValidTextInput(field) {
+        let inputValue = $("#" + field.fieldHandle).val().split(' ')[0].replace(/\,/g, '');
+        if (inputValue !== field.defaultVal) {
+            let isValid = !isNaN(inputValue) ? parseFloat(inputValue) > parseFloat(field.min) && parseFloat(inputValue) < parseFloat(field.max) : false;
+            field.fieldValidateMsgClass.set(!isValid ? 'validate-msg' : 'validate-msg hide');
+            return isValid;
+        } else {
+            return true;
+        }
+    }
+
+    checkClearTextInput(evt, elem, ctx) {                
+        if (elem.value === '<-->') {
+            elem.value = '';
+        }        
+        //return true;
+    }
+
+    formatDisplayValue(val, unit, decimalDisp?,showUnits?) {
         let returnVal;
-        if (val === '<enter value>') {
+        //showUnits = showUnits ? false : true;
+        if (val === '<-->') {
             return val;
         } else {
             val = this.addCommas(val);
             switch (unit) {
                 case '$':
-                    returnVal = unit + val;
+                    returnVal = (showUnits ? unit : '') + val;
                     break;
                 case '#':
                     returnVal = val;
@@ -890,12 +984,12 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                 case '%':
                     returnVal = decimalDisp
                         ? decimalDisp > 2
-                            ? ((parseFloat(val) * 100).toFixed(decimalDisp - 2) + unit)
-                            : Math.round(parseFloat(val) * 100) + unit
-                        : Math.round(parseFloat(val) * 100) + unit;
+                            ? ((parseFloat(val) * 100).toFixed(decimalDisp - 2) + (showUnits ? unit : ''))
+                            : Math.round(parseFloat(val) * 100) + (showUnits ? unit : '')
+                        : Math.round(parseFloat(val) * 100) + (showUnits ? unit : '');
                     break;
                 default:
-                    returnVal = val + ' ' + unit;
+                    returnVal = val + ' ' + (showUnits ? unit : '');
                     break;
             }
             return returnVal;
@@ -908,15 +1002,20 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
         if (formula.indexOf('[validate') !== -1) {
             this.validateConstraints(field);
             return field.value.get();
-        } else {
+        } else if (formula.indexOf('[interpolate') !== -1) {
+            console.log('interpolate!!!', field, formula);
+            return this.interpolateValues(field).toString();            
+        }
+        else {
             let formulaVals = formula;
             let formulaFields = formula
                 .replace(/\*/g, ',')
                 .replace(/\+/g, ',')
                 .replace(/\-/g, ',')
-                .replace(new RegExp('/', 'g'), ',')
+                .replace(new RegExp('/', 'g'), ',')                
                 .replace(/\(/g, '')
                 .replace(/\)/g, '')
+                .replace(/\Math.log/g,'')
                 .split(',');
 
             formulaFields.forEach(ff => {
@@ -947,13 +1046,84 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                 sct.fields.get().forEach(f => {
                     //validate constraints
                     if (_fieldToValidate !== '' && f.fieldCalVar === _fieldToValidate) {
-                        if (field.value.get() !== '<enter value>') {
-                            f.class.set(parseFloat(field.value.get().replace(/\,/g,'')) < parseFloat(f.value.get().replace(/\,/g,'')) ? 'div-table-cell values warning' : 'div-table-cell values');
+                        if (field.value.get() !== '<-->') {
+                            let isNotValid = parseFloat(field.value.get().replace(/\,/g, '')) < parseFloat(f.value.get().replace(/\,/g, ''));
+                            f.class.set(isNotValid ? 'div-table-cell values warning' : 'div-table-cell values');
+                            this.invalid_array = this.invalid_array.filter(iv => iv !== f.fieldCalVar)
+                            if (isNotValid) {
+                                this.invalid_array.push(f.fieldCalVar);
+                            }
+                            this.show_warning.set(this.invalid_array.length > 0);
+
                         }
                     }
                 });
             });
         });
+    }
+
+    interpolateValues(field) {
+        //get values to base lookup and interpolation
+        let formula = field.formula;
+        let interpolateType = formula.split(':')[1].split('{')[0];        
+        let fields = formula.split('{')[1].split('}')[0].split('>');
+        const distinct = (value, index, self) => {
+            return self.indexOf(value) === index;
+        }
+        let returnVal;
+        switch (interpolateType)
+        {
+            case "Transporation":
+            default:
+                //get lookup values based on formula fields
+                //weight
+                let weight = parseInt(this.getValue(fields[0]).replace(/\,/,''));
+                let distance = parseInt(this.getValue(fields[1]).replace(/\,/, ''));
+                //market distance under
+                let x_1 = this.transportation_lut
+                    .map(td => parseInt(td.miles))
+                    .filter(distinct)
+                    .filter(td => td <= distance)
+                    .sort((a, b) => b - a)[0];
+                //market distance over
+                let x_2 = this.transportation_lut
+                    .map(td => parseInt(td.miles))
+                    .filter(distinct)
+                    .filter(td => td >= distance)
+                    .sort((a, b) => a - b)[0];
+                //harvest weight under
+                let y_1 = this.transportation_lut
+                    .map(td => parseInt(td.pounds))
+                    .filter(distinct)
+                    .filter(td => td <= weight)
+                    .sort((a, b) => b - a)[0];
+                //havest weight over
+                let y_2 = this.transportation_lut
+                    .map(td => parseInt(td.pounds))
+                    .filter(distinct)
+                    .filter(td => td >= weight)
+                    .sort((a, b) => a - b)[0];
+                //get value lookups
+                //market distance under by harvest weight under
+                let Q_11 = parseFloat(this.transportation_lut.filter(hw => parseInt(hw.miles) === x_1 && parseInt(hw.pounds) === y_1)[0].shipCostLbMile);
+                let Q_12 = parseFloat(this.transportation_lut.filter(hw => parseInt(hw.miles) === x_1 && parseInt(hw.pounds) === y_2)[0].shipCostLbMile);
+                let Q_21 = parseFloat(this.transportation_lut.filter(hw => parseInt(hw.miles) === x_2 && parseInt(hw.pounds) === y_1)[0].shipCostLbMile);
+                let Q_22 = parseFloat(this.transportation_lut.filter(hw => parseInt(hw.miles) === x_2 && parseInt(hw.pounds) === y_2)[0].shipCostLbMile);                
+                
+                //bilinear interpolation calculation: 
+                //=1/((x_2-x_1)*(y_2-y_1))*(Q_11*(x_2-x)*(y_2-y)+Q_21*(x-x_1)*(y_2-y)+Q_12*(x_2-x)*(y-y_1)+Q_22*(x-x_1)*(y-y_1))
+                // help https://engineerexcel.com/bilinear-interpolation-excel/                
+                let x = distance;
+                let y = weight;
+
+                let interpolatedShipCostLbMile = 1 / ((x_2 - x_1) * (y_2 - y_1)) * (Q_11 * (x_2 - x) * (y_2 - y) + Q_21 * (x - x_1) * (y_2 - y) + Q_12 * (x_2 - x) * (y - y_1) + Q_22 * (x - x_1) * (y - y_1));
+
+                //set field value
+                returnVal = interpolatedShipCostLbMile;
+
+                break;
+        }
+        return returnVal;
     }
 
     setSelectedSystem(selSystem) {
@@ -1046,14 +1216,13 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
         this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
     }
 
-    _injectScript() {
-
-        //jQuery plugin for displaying tour/guide
-        //http://linkedin.github.io/hopscotch/
-        //////////////////////////////////
+    _injectScript() {        
+        //html2canvas
+        // http://html2canvas.hertzen.com/
+        ////////////////
         $.ajax({
             type: "GET",
-            url: "./Resources/Scripts/oe_added_scripts/easy-responsive-tabs.js",
+            url: "./Resources/Scripts/oe_added_scripts/html2canvas.min.js",
             dataType: "script",
             success: function () {
                 console.log('success!');
@@ -1062,7 +1231,6 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
                 console.log('fail', err);
             }
         });
-
     }
 
     _refreshSystemsDisplay() {
@@ -1080,7 +1248,7 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
 
     _onSiteInitialized(site: Site, thisViewModel, config) {
 
-        //this._injectScript();
+       this._injectScript();
 
         //if (config) {
         //    let configUri = config["configUri"];
@@ -1175,32 +1343,46 @@ let value = att.Default === '<enter value>' ? att.Default : this.formatValue(att
     _screensFilter(thisViewModel: any, screen: any) {
         //TODO Go through each screen/section and determine if fields for selected system exist and if so, then return true.
         //Also 
+        if (this.show_all_for_report.get()) {
+            return true;
+        } else {
+            return this._screenSystemFilter(screen);
+            //let hasFieldsForSystem = false;
+            //this.screens_collection.get().forEach(scr => {
+            //    return this._screenSystemFilter(scr)
+            //    //if (scr["id"] === screen.id && !hasFieldsForSystem) {
+            //    //    scr['sections'].get().forEach(sct => {
+            //    //        sct.fields.get().forEach(f => {
+            //    //            hasFieldsForSystem = f.show.indexOf(this.selected_system_text.get()) !== -1 || f.show.indexOf('All') !== -1
+            //    //                ? true
+            //    //                : hasFieldsForSystem;
+            //    //        });
+            //    //    });
+            //    //}
+            //});
+            //return hasFieldsForSystem;
+        }        
+    }
+
+    _screenSystemFilter(screen, forReport?) {
         let hasFieldsForSystem = false;
+        let forReportView = forReport;
         this.screens_collection.get().forEach(scr => {
             if (scr["id"] === screen.id && !hasFieldsForSystem) {
-                scr['sections'].get().forEach(sct => {
-                    sct.fields.get().forEach(f => {
-                        hasFieldsForSystem = f.show.indexOf(this.selected_system_text.get()) !== -1 || f.show.indexOf('All') !== -1
-                            ? true
-                            : hasFieldsForSystem;
+                if (forReport && scr['showInReport'] === 'False') {
+                    return false;
+                } else {
+                    scr['sections'].get().forEach(sct => {
+                        sct.fields.get().forEach(f => {
+                            hasFieldsForSystem = f.show.indexOf(this.selected_system_text.get()) !== -1 || f.show.indexOf('All') !== -1
+                                ? true
+                                : hasFieldsForSystem;
+                        });
                     });
-                });
+                }
             }
         });
         return hasFieldsForSystem;
-        //let hasSystemSelected = this.selected_system.get()['system'] ? true : false;
-        //return hasSystemSelected || screen.screenOrder === '1';
-
-        //if (hasSystemSelected) {
-        //    //filter to only show fields that are set to show are set for all or for the selected system
-        //    return this.show_all_tabs.get() || screen.showAdvOnly === "False";
-        //}
-        //else {
-        //        return screen.screenOrder === '1'
-        //    }
-        
-        //return this.show_all_tabs.get() || (screen.showAdvOnly === "False" && this.selected_system.get()['system'] || screen.screenOrder === "1");
-        //return this.show_all_tabs.get() || screen.showAdvOnly === "False";
     }
 
     _selectedFilter(thisViewModel: any, obj:any) {

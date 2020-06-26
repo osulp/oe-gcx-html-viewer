@@ -255,7 +255,7 @@
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_cons_pln\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_cons_pln\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\sage_dev_cons_pln\Tablet.json.js" />
-    <Content Include="Resources\Config\Default\dev_configs\sfam\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\sfam_orwap_combined\Desktop.json.js" />
     <Content Include="Resources\Config\Default\Handheld.json.js" />
     <Content Include="Resources\Config\Default\Tablet.json.js" />
     <Content Include="Resources\Config\Default\_archive\Desktop.json.js" />
