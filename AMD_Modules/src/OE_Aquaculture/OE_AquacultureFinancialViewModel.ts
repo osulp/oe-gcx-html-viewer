@@ -910,7 +910,7 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
     }
 
     updateSlider(field) {
-        //if (this.checkIsValidTextInput(field)) {
+        if (this.checkIsValidTextInput(field)) {
         let sliderTextHandle = $("#" + field.fieldHandle);
         let newValue = sliderTextHandle.val().split(' ')[0].replace(/\,/g, '');
         sliderTextHandle.val(this.formatDisplayValue(newValue, field.unit, field.decimalDisp, false));
@@ -922,9 +922,9 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
         }
         field.value.set(newValue);
         this.updateViewModel(field);
-        //} else {
-        //    console.log('not valid for slider update');
-        //}             
+        } else {
+            console.log('not valid for slider update');
+        }             
     }
 
     validateTextInput(evt, elem, field) {
@@ -951,7 +951,7 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
 
     checkIsValidTextInput(field) {
         let inputValue = $("#" + field.fieldHandle).val().split(' ')[0].replace(/\,/g, '');
-        if (inputValue !== field.defaultVal) {
+        if (inputValue !== field.defaultVal || !isNaN(field.defaultVal)) {
             let isValid = !isNaN(inputValue) ? parseFloat(inputValue) > parseFloat(field.min) && parseFloat(inputValue) < parseFloat(field.max) : false;
             field.fieldValidateMsgClass.set(!isValid ? 'validate-msg' : 'validate-msg hide');
             return isValid;
