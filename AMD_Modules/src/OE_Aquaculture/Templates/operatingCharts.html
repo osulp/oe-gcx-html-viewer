@@ -1,14 +1,26 @@
-﻿<div data-binding="{@template-for:sections}">
+﻿<div data-binding="{@template-for:sections}" class="oe_chart_aquaculture">
     <fieldset>
         <legend data-binding="{@text:displayName}"></legend>
         <!--<div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>-->
         <br />
-        
         <div data-binding="{@source:fields}">
             <div data-binding="{@template-for:fields}">
                 <div data-binding="{@source:chartConfig}">
-                    <div class="demo-section k-content wide" data-binding="{@template-for:chartConfig}">
-                        <div data-binding="{id:chartID}"></div>
+                    <div class="div-row" data-binding="{@template-for:chartConfig}">
+                        <div class="div-row-cell" data-binding="{data-table:chartID}">
+                            <div class="div-table" data-binding="{@source:chartData}">
+                                <div class="div-table-row" data-binding="{@template-for:chartData}">
+                                    <div class="div-table-cell" data-binding="{@text:category}"></div>
+                                    <div class="div-table-cell" data-binding="{@text:value}"></div>
+                                    <div class="div-table-cell" data-binding="{@text:percent}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="div-row-cell">
+                            <div class="demo-section k-content wide" >
+                                <div data-binding="{id:chartID}"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

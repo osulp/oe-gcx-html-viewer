@@ -6,6 +6,8 @@ import { ViewBase } from "geocortex/framework/ui/ViewBase";
 import { ViewerApplication } from "geocortex/infrastructure/Viewer";
 import { OE_AquacultureFinancialViewModel } from './OE_AquacultureFinancialViewModel';
 
+declare var html2canvas: any;
+
 
 export class OE_AquacultureFinancialView extends ViewBase {
 
@@ -17,53 +19,64 @@ export class OE_AquacultureFinancialView extends ViewBase {
     kChartActive: kendo.dataviz.ui.Chart;
 
 
-    OregonGeolocator: esri.tasks.Locator = new esri.tasks.Locator("http://navigator.state.or.us/arcgis/rest/services/Locators/gc_Composite/GeocodeServer");
+    OregonGeolocator: esri.tasks.Locator = new esri.tasks.Locator("https://navigator.state.or.us/arcgis/rest/services/Locators/gc_Composite/GeocodeServer");
+
+    esriLocator: esri.tasks.Locator = new esri.tasks.Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
+
+
     marker: esri.symbol.PictureMarkerSymbol = new esri.symbol.PictureMarkerSymbol({
         "height": 28,
         "width": 28,
-        "url": "//js.arcgis.com/3.27/esri/dijit/Search/images/search-pointer.png"
+        "url": "./Resources/Images/Custom/search-pointer.png"
+        //"url": "//js.arcgis.com/3.27/esri/dijit/Search/images/search-pointer.png"
     });
 
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
     }
 
-    activated() {
-        //adjust scroll window based on modal-container height
-        let modal_height = $('.modal-container').height() - $('.modal-container-inner').height() + "px";
-        $('.panel-scroll-container').css("maxHeight", modal_height);
-        //this.toggleInfoScreen();
-        //set height of aqua-financial-pln-wrapper
-        //$("#aqua-financial-pln-wrapper").height(modal_height);
-        //this.renderVerticalTabs();
-        // Get the element with id="defaultOpen" and click on it
-        this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(0));
-        this.setUIInputs();
+    activated() {        
+        let thisScope = this;
+        this.fitScreenHeight();        
+        this.setSelectedSystem(null,null,this.viewModel.selected_system.get());
+        this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(0)); 
+        //this.renderMap();
 
+        $(window).resize(function () {
+            thisScope.fitScreenHeight();
+            thisScope.resizeMap();
+        });
     }
 
     openTab(evt, elem, ctx) {
         //let screenOrder = !this.viewModel.show_all_tabs.get() && ctx.screen === 'Summary' ? 2 : parseInt(ctx.screenOrder) - 1;
-        let screenOrder = parseInt(ctx.screenOrder) - 1;
-        this.viewModel.active_screen.set(screenOrder);
-        this.viewModel.show_back_btn.set(screenOrder > 0);
-        this.viewModel.show_next_btn.set(screenOrder < (this.viewModel.screens_collection_filter.length() - 1));
-        
-        
-        this.viewModel.screens_collection.get().forEach(scr => {
-            scr['screenTabClass'].set('tablinks ' + (ctx.id === scr['id'] ? 'activeTab' : 'inactiveTab'));
-            scr['screenContentClass'].set('tabcontent ' + (ctx.id == scr['id'] ? 'activeScreen' : 'inactiveScreen'));
-        });
-        this.setUIInputs();
-        $('#modal-description').stop().animate({
-            'scrollTop': $('#'+ctx.id)
-        }, 800, 'swing');
+        if (ctx) {
+            let screenOrder = parseInt(ctx.screenOrder) - 1;
+            this.viewModel.active_screen.set(screenOrder);
+            this.viewModel.show_back_btn.set(screenOrder > 0);
+            this.viewModel.show_next_btn.set(screenOrder < (this.viewModel.screens_collection_filter.length() - 1));
 
-        //load map if on transportation
-        if (ctx.screen === 'Transportation') {
-            this.renderMap();
-        } 
-        this.viewModel.renderCharts();
+
+            this.viewModel.screens_collection.get().forEach(scr => {
+                scr['screenTabClass'].set('tablinks ' + (ctx.id === scr['id'] ? 'activeTab' : 'inactiveTab'));
+                scr['screenContentClass'].set('tabcontent ' + (ctx.id == scr['id'] ? 'activeScreen' : 'inactiveScreen'));
+            });
+            this.setUIInputs();
+            $('#modal-description').stop().animate({
+                'scrollTop': $('#' + ctx.id)
+            }, 800, 'swing');
+
+            //load map if on location screen
+            if (ctx.screen === 'Location') {
+                this.renderMap();
+                //if (this.viewModel.has_location.get()) {
+                //    this.viewModel.runRoutingServices();
+                //}
+            }
+            if (ctx.screen === 'Financial Summary') {
+                this.viewModel.renderCharts();
+            }
+        }
     } 
 
     renderMap() {
@@ -76,7 +89,9 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 zoom: 6,
                 basemap: "streets",
                 minZoom: 6,
-                slider: true
+                slider: true,
+                showAttribution: true,
+                logo:false
             });
 
 
@@ -84,12 +99,14 @@ export class OE_AquacultureFinancialView extends ViewBase {
             try {
 
                 var sources = [{
-                    locator: this.OregonGeolocator,
+                    locator: this.esriLocator,// this.OregonGeolocator,
                     locationType: "street",
                     singleLineFieldName: "SingleLine",
                     name: "Oregon GC_Composite",
                     placeholder: "Search",
                     highlightSymbol: this.marker,
+                    countryCode: "US",
+                    suffix: " OR",
                     maxResults: 3,
                     maxSuggestions: 6,
                     enableSuggestions: true,
@@ -157,21 +174,29 @@ export class OE_AquacultureFinancialView extends ViewBase {
 
             //Event handlers
             this.viewModel.esriMap.on("load", function (event: any) {
-                var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/40");
+                var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/42");
                 (<esri.Map>event.map).addLayer(featureLayer);
                 //thisScope.setInfoScreenHeight();
                 //window.setTimeout(thisScope.animateInfoScreen, 1000);
                 thisScope.resizeMap();
+                thisScope.resizeWindow();
+                if (thisScope.viewModel.has_location.get()) {    
+                    window.setTimeout(() => {
+                        let inputPnt = thisScope.viewModel.selected_location.get().point;
+                        thisScope.viewModel.esriLocator.locationToAddress(inputPnt, 100);
+                        thisScope.viewModel.esriMap.centerAndZoom(inputPnt, 13);
+                    }, 500);
+                }
             });
 
-            this.viewModel.esriLocator = new esri.tasks.Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
+            this.viewModel.esriLocator = this.esriLocator;
 
             //this.viewModel.esriLocator = this.OregonGeolocator;
 
             this.viewModel.esriLocator.on("location-to-address-complete", function (evt) {
                 if (evt.address.address) {
                     var address = evt.address.address;
-                    var location = esri.geometry.webMercatorUtils.geographicToWebMercator(evt.address.location);
+                    var location = esri.geometry.geographicToWebMercator(evt.address.location);
 
                     thisScope.viewModel.selected_location.set({
                         "point": new esri.geometry.Point(evt.address.location),
@@ -190,41 +215,205 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 thisScope.viewModel.esriMap.centerAndZoom(evt.mapPoint, 13);
             });
         }
-        if (this.viewModel.has_location.get()) {
-            let inputPnt = thisScope.viewModel.selected_location.get().point;
-            this.viewModel.esriLocator.locationToAddress(inputPnt, 100);
-            window.setTimeout(() => { thisScope.viewModel.esriMap.centerAndZoom(inputPnt, 13); }, 1000);
-        }
-        $(window).resize(function () {
-            thisScope.resizeMap();
-            //thisScope.viewModel.esriMap.reposition();
-            //thisScope.viewModel.esriMap.resize();
-
-        });
     }
 
     deactivated() {
-        this.removeSelectedLocation();
-        this.viewModel.workflowContext.setValue("outputVal", "finished!");
-        this.viewModel.workflowContext.completeActivity();
-        this.viewModel._resetDefaults();
+        try {
+            this.removeSelectedLocation();
+            //this.viewModel.workflowContext.setValue("outputVal", "finished!");
+            this.viewModel.workflowContext.completeActivity();
+            this.viewModel._resetDefaults();
+        } catch (ex) {
+            console.log('deactivated warning');
+        }
+        
     }
 
     print(event, element, context) {
-        //event.preventDefault();
+        event.preventDefault();
         var html = '<!DOCTYPE html><html><head><title>FinancialPlanningPrint</title></head><body onload="window.print();window.close();">';
         html += '<style type="text/css">' +
-            'body { font-family: "Segoe UI","Helvetica Neue","Droid Sans",Arial,sans-serif; font-size:.8em;}.inactiveScreen {display:none;}fieldset{position:relative;border:solid 1px grey;border-radius:4px;margin:20px 20px 0 20px}legend{padding:15px}#location-map{position:relative;width:100%;height:100%}#map-section{position:relative}#location-wrapper{position:relative}#add-location{position:absolute;top:0;left:0;right:0;bottom:0;background-color:rgba(255,255,255,.9);text-align:center;vertical-align:middle;z-index:19000}#add-location-msg{position:relative;max-width:350px;top:50%;transform:translateY(-50%);margin:auto}.slider-wrapper{position:relative;text-align:center;padding:10px;max-width:245px;margin:10px 0}.ui-slider-handle.oe-slider-handle.ui-state-default.ui-corner-all{width:5.5em;height:2em;top:43%;margin-top:-.9em;text-align:center;line-height:1.6em;text-indent:0;color:#5e737f;border-radius:10px;padding:2px;background-color:#a5c9df}.ui-slider-handle.oe-slider-handle.ui-state-default.ui-corner-all:hover{cursor:pointer}.filter-header-wrapper{padding:5px;background-color:#f0f0f0;border-radius:4px 4px 0 0;position:relative}.filter-header-wrapper img{padding:0 10px}.filter-header-wrapper img:first-child{padding-left:2px}.filter-header-wrapper:hover{cursor:pointer}.filter-header-wrapper div{display:inline-block}.show-filters{width:24px;height:16px;background-image:url(Resources/Images/Icons/arrow-down-small-24.png);background-repeat:no-repeat}.hide-filters{width:24px;height:16px;background-image:url(Resources/Images/Icons/arrow-up-small-24.png);background-repeat:no-repeat}#filter-options-wrapper{padding:10px 0 5px 5px}#filter-type-header{padding:2px;border:solid 1px #e6e0e0;border-top:none}#filter-type-header div{display:inline-block;width:48%;text-align:center;font-size:.9em}#filter-type-header div:first-child{border-right:solid 1px #e6e0e0}#filters-wrapper div{display:inline-block;width:49%}#filters-wrapper select{font-size:.9em}#search-wrapper,.calcite{position:relative}#search{display:block;position:absolute;z-index:2;top:20px;left:74px}#home-button{position:absolute;top:95px;left:20px;z-index:50}#basemap-toggle{position:absolute;bottom:20px;right:20px;z-index:50}#basemap-toggle:hover{cursor:pointer}.basemapBG{height:50px;width:50px;border-radius:10px 10px 0 0}.basemapTitle{width:50px;font-size:.9em;text-align:center;background-color:#e6e0e0;padding:2px 0}#location-instruction{padding:10px 5px;background:#f5f5f5}.arcgisSearch .searchBtn{position:relative;z-index:2}#location-status-selected{background-color:#eef7d3;padding:10px}#selected-location-remove img{margin:0 0 -4px 5px}#selected-location-remove img:hover{cursor:pointer}#selected-location-name{text-decoration:underline}#selected-location-name:hover{cursor:pointer}.OE_Chart{min-width:300px}.screenSectionnone{display:none}h2.screen-header{margin-left:15px}.activeScreen,.activeTab{display:block}.inactiveScreen,.inactiveTab{display:none}.div-row{width:90%;margin:auto}.div-row.overview{width:100%;margin-left:-10px}.div-row.overview div.div-row-cell{width:49%;padding:0 30px 0 0}.div-row.overview .desc{height:550px;overflow:auto}.overview .input-header{font-weight:400;font-size:1.2em}.system-overview{padding:10px;border:1px solid #a7a7a7;width:95%}.img-wrapper-center{width:100%;text-align:center;margin-bottom:10px}.img-wrapper-center img{max-width:95%;max-height:200px;border:solid 1px #a7a7a7;padding:10px;border-radius:10px}.div-row.no-pad{width:100%}.div-row.no-pad div.div-row-cell:first-child{width:72%}.div-row.no-pad div.div-row-cell:last-child{width:25%}.div-row div.div-row-cell{display:inline-block;vertical-align:top;width:47%;margin:auto}.div-row div.div-row-cell fieldset{height:100%;width:100%;background:#f0f0f0;margin:auto}.div-row div.div-row-cell legend{margin:20px}.div-row-cell .desc{margin:10px 20px 10px 30px;width:100%;font-size:.9em;background:#f0f0f0;border:solid 1px #ccc;border-radius:4px;padding:20px}.notes{color:#302f2f;text-indent:each-line 10px}.table-notes{width:90%;margin:auto;font-size:.9em;color:#302f2f;text-align:right;background-color:#fff}.input-header{font-weight:700}.div-table{display:table;width:90%;background-color:beige;margin:auto}.div-table.amortization,.div-table.parameters{background-color:#f0f0f0}.div-table-row{display:table-row}.div-table-row.heading{font-weight:700}.div-table-cell{display:table-cell;padding:4px;border:solid 1px #e6e0e0}.div-table-cell:nth-child(1){width:75%}.div-table-cell:nth-child(2){width:25%}.div-table-cell:nth-child(3){width:12%}.div-table.amortization .div-table-cell{width:14.2%;text-align:center}.div-table-cell.InputCalcTotal{font-size:1.1em;font-weight:700;border-top:solid 2px #000;border-bottom:solid 2px #000}.div-table-cell.units{text-align:center}.div-table-cell.values{padding-left:10px}#system-select-wrapper{width:300px;margin:auto}.container{display:block;position:relative;padding-left:35px;margin-bottom:12px;cursor:pointer;font-size:18px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.container input{position:absolute;opacity:0;cursor:pointer}.checkmark{position:absolute;top:0;left:0;height:25px;width:25px;background-color:#eee;border-radius:50%}.container:hover input~.checkmark{background-color:#ccc}.container input:checked~.checkmark{background-color:#a5c9df}.checkmark:after{content:"";position:absolute;display:none}.container input:checked~.checkmark:after{display:block}.container .checkmark:after{top:9px;left:9px;width:8px;height:8px;border-radius:50%;background:#fff}.toggle-detail-inputs div{font-size:.9em;padding:15px;color:#1a72c4}.toggle-detail-inputs div:hover{text-decoration:underline;cursor:pointer}.rdgroup{padding-left:15px}.section-desc{width:90%;margin:auto}.section-desc div{width:90%}</style>';
+            'body { font-family: "Segoe UI","Helvetica Neue","Droid Sans",Arial,sans-serif; font-size:.8em;}.inactiveScreen {display:none;}.oe_slider{display:none} fieldset{position:relative;border:solid 1px grey;border-radius:4px;margin:20px 20px 0 20px}legend{padding:15px}#location-map{position:relative;width:100%;height:100%}#map-section{position:relative}#location-wrapper{position:relative}#add-location{position:absolute;top:0;left:0;right:0;bottom:0;background-color:rgba(255,255,255,.9);text-align:center;vertical-align:middle;z-index:19000}#add-location-msg{position:relative;max-width:350px;top:50%;transform:translateY(-50%);margin:auto}.slider-wrapper{position:relative;text-align:center;padding:10px;max-width:245px;margin:10px 0}.ui-slider-handle.oe-slider-handle.ui-state-default.ui-corner-all{width:5.5em;height:2em;top:43%;margin-top:-.9em;text-align:center;line-height:1.6em;text-indent:0;color:#5e737f;border-radius:10px;padding:2px;background-color:#a5c9df}.ui-slider-handle.oe-slider-handle.ui-state-default.ui-corner-all:hover{cursor:pointer}.filter-header-wrapper{padding:5px;background-color:#f0f0f0;border-radius:4px 4px 0 0;position:relative}.filter-header-wrapper img{padding:0 10px}.filter-header-wrapper img:first-child{padding-left:2px}.filter-header-wrapper:hover{cursor:pointer}.filter-header-wrapper div{display:inline-block}.show-filters{width:24px;height:16px;background-image:url(Resources/Images/Icons/arrow-down-small-24.png);background-repeat:no-repeat}.hide-filters{width:24px;height:16px;background-image:url(Resources/Images/Icons/arrow-up-small-24.png);background-repeat:no-repeat}#filter-options-wrapper{padding:10px 0 5px 5px}#filter-type-header{padding:2px;border:solid 1px #e6e0e0;border-top:none}#filter-type-header div{display:inline-block;width:48%;text-align:center;font-size:.9em}#filter-type-header div:first-child{border-right:solid 1px #e6e0e0}#filters-wrapper div{display:inline-block;width:49%}#filters-wrapper select{font-size:.9em}#search-wrapper,.calcite{position:relative}#search{display:block;position:absolute;z-index:2;top:20px;left:74px}#home-button{position:absolute;top:95px;left:20px;z-index:50}#basemap-toggle{position:absolute;bottom:20px;right:20px;z-index:50}#basemap-toggle:hover{cursor:pointer}.basemapBG{height:50px;width:50px;border-radius:10px 10px 0 0}.basemapTitle{width:50px;font-size:.9em;text-align:center;background-color:#e6e0e0;padding:2px 0}#location-instruction{padding:10px 5px;background:#f5f5f5}.arcgisSearch .searchBtn{position:relative;z-index:2}#location-status-selected{background-color:#eef7d3;padding:10px}#selected-location-remove img{margin:0 0 -4px 5px}#selected-location-remove img:hover{cursor:pointer}#selected-location-name{text-decoration:underline}#selected-location-name:hover{cursor:pointer}.OE_Chart{min-width:300px}.screenSectionnone{display:none}h2.screen-header{margin-left:15px}.activeScreen,.activeTab{display:block}.inactiveScreen,.inactiveTab{display:none}.div-row{width:90%;margin:auto}.div-row.overview{width:100%;margin-left:-10px}.div-row.overview div.div-row-cell{width:49%;padding:0 30px 0 0}.div-row.overview .desc{height:550px;overflow:auto}.overview .input-header{font-weight:400;font-size:1.2em}.system-overview{padding:10px;border:1px solid #a7a7a7;width:95%}.img-wrapper-center{width:100%;text-align:center;margin-bottom:10px}.img-wrapper-center img{max-width:95%;max-height:200px;border:solid 1px #a7a7a7;padding:10px;border-radius:10px}.div-row.no-pad{width:100%}.div-row.no-pad div.div-row-cell:first-child{width:72%}.div-row.no-pad div.div-row-cell:last-child{width:25%}.div-row div.div-row-cell{display:inline-block;vertical-align:top;width:47%;margin:auto}.div-row div.div-row-cell fieldset{height:100%;width:100%;background:#f0f0f0;margin:auto}.div-row div.div-row-cell legend{margin:20px}.div-row-cell .desc{margin:10px 20px 10px 30px;width:100%;font-size:.9em;background:#f0f0f0;border:solid 1px #ccc;border-radius:4px;padding:20px}.notes{color:#302f2f;text-indent:each-line 10px}.table-notes{width:90%;margin:auto;font-size:.9em;color:#302f2f;text-align:right;background-color:#fff}.input-header{font-weight:700}.div-table{display:table;width:90%;background-color:beige;margin:auto}.div-table.amortization,.div-table.parameters{background-color:#f0f0f0}.div-table-row{display:table-row}.div-table-row.heading{font-weight:700}.div-table-cell{display:table-cell;padding:4px;border:solid 1px #e6e0e0}.div-table-cell:nth-child(1){width:75%}.div-table-cell:nth-child(2){width:25%}.div-table-cell:nth-child(3){width:12%}.div-table.amortization .div-table-cell{width:14.2%;text-align:center}.div-table-cell.InputCalcTotal{font-size:1.1em;font-weight:700;border-top:solid 2px #000;border-bottom:solid 2px #000}.div-table-cell.units{text-align:center}.div-table-cell.values{padding-left:10px}#system-select-wrapper{width:300px;margin:auto}.container{display:block;position:relative;padding-left:35px;margin-bottom:12px;cursor:pointer;font-size:18px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.container input{position:absolute;opacity:0;cursor:pointer}.checkmark{position:absolute;top:0;left:0;height:25px;width:25px;background-color:#eee;border-radius:50%}.container:hover input~.checkmark{background-color:#ccc}.container input:checked~.checkmark{background-color:#a5c9df}.checkmark:after{content:"";position:absolute;display:none}.container input:checked~.checkmark:after{display:block}.container .checkmark:after{top:9px;left:9px;width:8px;height:8px;border-radius:50%;background:#fff}.toggle-detail-inputs div{font-size:.9em;padding:15px;color:#1a72c4}.toggle-detail-inputs div:hover{text-decoration:underline;cursor:pointer}.rdgroup{padding-left:15px}.section-desc{width:90%;margin:auto}.section-desc div{width:90%}</style>';
         html += document.getElementById('printarea').outerHTML;
         html += '</body></html>';
         let printWindow = window.open("");
         printWindow.document.write(html);
-        printWindow.location.reload();
+        let browser = this.detectBrowser()
+        if (browser === 'IE') {
+            printWindow.location.reload();
+        } else {
+            printWindow.print();
+            printWindow.close();
+        }
+    }
+
+    detectBrowser() {
+        if ((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1) {
+            return 'Opera';
+        }
+        else if (navigator.userAgent.indexOf("Chrome") != -1) {
+            return 'Chrome';
+        }
+        else if (navigator.userAgent.indexOf("Safari") != -1) {
+            return 'Safari';
+        }
+        else if (navigator.userAgent.indexOf("Firefox") != -1) {
+            return 'Firefox';
+        }
+        else if ((navigator.userAgent.indexOf("MSIE") != -1) || (!!document['documentMode'] == true)) {
+            return 'IE';
+        }
+        else {
+            return 'unknown';
+        }
+    }
+
+    fitScreenHeight() {
+        //adjust scroll window based on modal-container height
+        let modal_height = $('.modal-container').height() - $('.modal-container-inner').height() + "px";
+        $('.panel-scroll-container').css("maxHeight", modal_height);
+        console.log('panel height: ', modal_height);
+    }
+
+    getPDFReport() {
+        this.viewModel.show_loading.set(true);
+        let currentScreen = this.viewModel.screens_collection.get()[this.viewModel.active_screen.get()];
+        //clear global variable to store the chart images
+        window['oe_report_charts'] = [];
+        this.gotoTab(null, null, this.viewModel.screens_collection.get().filter(s => s['screen'] === "Financial Summary")[0]);
+        this.showHideLabelsOnCharts(true);
+        let thisScope = this;
+        //To pass json to workflow, you have to double quote each attribute...
+        let report_data = {
+            "system": this.viewModel.systems_tbl.get()
+                .filter(sys => sys["selected"].get())
+                .map((sys: any) => {
+                    return {
+                        "system": sys.system,
+                        "system_img": sys.img_credit,
+                        "system_img_credit": sys.img_credit,
+                        "system_overview": sys.overview.replace(/\<\/p>/g, '').replace(/\<p>/g, '')
+                    }
+                })[0],
+            "species": this.viewModel.species_tbl.get().filter(species => species.selected)[0],
+            "prodMeth": this.viewModel.prod_meth_tbl.get().filter(prod => prod.selected)[0],
+            "screen_data": [],
+            "charts": []
+        }
+
+        window.setTimeout(() => {
+            thisScope.viewModel.screens_collection.get()
+                .filter((screen, idx, arr) => {                   
+                    return thisScope.viewModel._screenSystemFilter(screen, true)
+                })
+                .forEach((scr: any) => {
+                scr.sections.get().forEach((sct: any) => {
+                    sct.fields.get().filter(f => {
+                        return thisScope.viewModel._fieldsFilter(null, f);
+                    }).forEach((f: any) => {
+                        if (f.uiType === "chart") {
+                            thisScope.getChartAndTableAsBase64(f);
+                        } else if (f.uiType !== "inputLocation") {
+                            let sd: any = {
+                                screen: scr.screenTitle.toUpperCase(),
+                                section: sct.displayName,
+                                sectionType: sct.sectionType,
+                                field: f.fieldLabel,
+                                fieldVal: f.formattedValue.get() === '<enter value>' ? '' : f.formattedValue.get()
+                            };
+                            if (sd.screen !== 'FINANCIAL SUMMARY') {
+                                //hide financial summary since the data is processed as charts and table images
+                                report_data.screen_data.push(sd);
+                            }                            
+                        }
+                    });
+                });
+            });
+            window.setTimeout(() => {
+                report_data.charts = window['oe_report_charts'];
+                var workflowArgs: any = {};
+                workflowArgs.workflowId = "Get_Financial_Planning_Report";
+                workflowArgs.report_data = JSON.stringify(report_data); // JSON.stringify(screens);
+                thisScope.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
+                thisScope.gotoTab(null, null, currentScreen);
+                thisScope.viewModel.show_loading.set(false);
+                thisScope.showHideLabelsOnCharts(true);
+            }, 100);
+        }, 750);
+    }
+
+    getChartAndTableAsBase64(f) {
+        let chartTable = document.querySelectorAll("[data-table='" + f.chartID + "']");
+        var clone = chartTable[0].cloneNode(true);
+        $("body").append(clone);
+        $(clone).css("width", "450px");
+        html2canvas(clone, {
+            onrendered: function (canvas) {
+                let chart_info = {
+                    chartName: f.chartConfig.chartName,
+                    //chartConfig: f.chartConfig,
+                    chartDataURI: '',
+                    chartTableURI: ''
+                };
+
+                var base64FilterImg = canvas.toDataURL('image/png');//.replace(/^data:image\/(png|jpg);base64,/, "");
+                chart_info.chartTableURI = base64FilterImg;
+                window['oe_report_charts'].push(chart_info);
+                $(clone).remove();
+                //add chart data img
+                let chart = $("#" + f.chartID).getKendoChart();
+                chart.exportImage().done((data) => {
+                    window['oe_report_charts'][window['oe_report_charts'].length - 1]['chartDataURI'] = data;//.replace(/^data:image\/(png|jpg);base64,/, "");
+                    //console.log(data);
+                });               
+            }
+        });
+    }
+
+    showHideLabelsOnCharts(show: boolean) {
+        this.viewModel.screens_collection.get().forEach((scr: any) => {
+            scr.sections.get().forEach((sct: any) => {
+                sct.fields.get().filter(f => {
+                    return this.viewModel._fieldsFilter(null, f);
+                }).forEach((f: any) => {
+                    if (f.uiType === "chart") {
+                        let chart = $("#" + f.chartID).getKendoChart();
+                        //add labels
+                        chart.setOptions({
+                            seriesDefaults: {
+                                labels: {
+                                    visible: show
+                                }
+                            },
+                            legend: {
+                                visible: show ? false : true
+                            }
+                        });
+                        chart.refresh();
+                    }
+                });
+            });
+        });
     }
 
     resizeMap() {
         //Chrome fix for auto-expanding map issue
         $("#location-map").css("width", $(".calcite").width() + "px");
+    }
+
+    resizeWindow() {
+        if (typeof (Event) === 'function') {
+            // modern browsers
+            window.dispatchEvent(new Event('resize'));
+        } else {
+            // for IE and other old browsers
+            // causes deprecation warning on modern browsers
+            var evt = window.document.createEvent('UIEvents');
+            evt['initUIEvent']('resize', true, false, window, 0);
+            window.dispatchEvent(evt);
+        }
+
+        this.fitScreenHeight();
     }
 
     toggleInfoScreen(event, element, context) {
@@ -238,15 +427,44 @@ export class OE_AquacultureFinancialView extends ViewBase {
     }
 
     updateModel(event, element, context) {
-        if (context.value.get() !== this.viewModel.formatValue(context.value.get(), context.decimalDisp)) {
-            context.value.set(this.viewModel.formatValue(context.value.get(), context.decimalDisp));
-        }
+        let updatedValue = element
+            ? element.value !== context.value.get()
+                ? element.value
+                : context.value.get()
+            : context.value.get();
+        context.value.set(updatedValue);
+        if (updatedValue !== this.viewModel.formatValue(updatedValue, context.decimalDisp) && updatedValue !== '<enter value>') {
+            let formattedVal = this.viewModel.formatValue(updatedValue, context.decimalDisp);
+            context.value.set(formattedVal);
+            if (element) {
+                element.value = formattedVal;
+            }
+        }        
         this.viewModel.updateViewModel(context);
+    }
+
+    clearVal(evt, el, context) {
+        el.value = '';
+        //context.value.set();
+    }
+
+    checkReset(evt, el, context) {
+        console.log('test', evt, el, context);
+        if (evt.key === 'Esc') {
+            context.value.set(context.defaultVal);
+            el.value = '';
+            this.updateModel(null, el, context);
+        }
     }
 
     gotoTab(evt, el, cntx) {
         let screen = this.viewModel.screens_collection.get().filter(s => s['screen'] === cntx.screen)[0];
         //this.viewModel.show_all_tabs.set(true);
+        this.openTab(null, null, screen);
+    }
+
+    gotoProductionTab(evt, el, cntx) {
+        let screen = this.viewModel.screens_collection.get().filter(s => s['screen'] === 'Production')[0];
         this.openTab(null, null, screen);
     }
     gotoNextScreen(evt, el, cntx) {
@@ -281,8 +499,6 @@ export class OE_AquacultureFinancialView extends ViewBase {
         let summaryScreen = this.viewModel.screens_collection.getItems().filter(s => s['screen'] === "Summary")[0];
         this.openTab(null, null, summaryScreen);
     }
-
-    
 
     zoomToSelectedLocation(evt, elem, ctx) {
         this.viewModel.esriMap.centerAndZoom(ctx.point, 13);
@@ -323,15 +539,6 @@ export class OE_AquacultureFinancialView extends ViewBase {
         //this._setSliders();
         return true;
     }
-
-    //runRoutingServices() {
-    //    let mapPoint = this.viewModel.selected_location.get().point;
-    //    var workflowArgs:any = {};
-    //    workflowArgs.workflowId = "Routing_Services";
-    //    workflowArgs.startPointIn = mapPoint.x.toString() + "," + mapPoint.y.toString();
-    //    workflowArgs.runInBackground = true;
-    //    this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
-    //}
 
     setInfoScreenHeight() {
         //modal height - header - toggle
@@ -396,6 +603,18 @@ export class OE_AquacultureFinancialView extends ViewBase {
         this.viewModel.resetSystemFilters();
     }
 
+    updateSlider(evt, elem, ctx) {
+        this.viewModel.updateSlider(ctx);
+    }
+
+    validateTextInput(evt, elem, ctx) {
+        this.viewModel.validateTextInput(evt, elem, ctx);        
+    }
+
+    checkClearTextInput(evt, elem, ctx) {
+        this.viewModel.checkClearTextInput(evt, elem, ctx);        
+        //return false;
+    }
     setSelectedQuickstartResource(evt,el,cntx) {
         this.viewModel.setSelectedQuickstartResource(cntx.fieldName);
         return true;
@@ -406,172 +625,23 @@ export class OE_AquacultureFinancialView extends ViewBase {
     }
 
     setUIInputs(reset?) {
-        var thisScope = this;
+        var thisScope = this;        
         this.viewModel.screens_collection.get().forEach((s) => {
             s['sections'].get().forEach(sct => {
                 sct.fields.get().forEach(f => {
                     switch (f.uiType) {
                         case 'slider':
-                            let sliderID = f.fieldCalVar;
-                            var sliderTextHandle = $("#" + sliderID + " .oe-slider-handle");
-                            let min = f.min ? parseFloat(f.min) : 0;
-                            let max = f.max ? parseFloat(f.max) : 100;
-
-                            let increment = f.increment ? parseFloat(f.increment) : 1;
-
-                            ////////////////////////////////////////////////
-                            // Traditional JQuery Slider
-                            ////////////////////////////////////////////////
-                            $("#" + sliderID).slider({
-                                step: increment,
-                                min: min,
-                                max: max,
-                                value: parseFloat(f.value.get()),
-                                create: function () {
-                                    sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(f.value.get(), f.unit));
-                                },
-                                slide: function (event, ui) {
-                                    sliderTextHandle.text(thisScope.viewModel.formatDisplayValue(ui.value.toString(), f.unit));
-                                },
-                                stop: function (event, ui) {
-                                    f.value.set(ui.value.toString());
-                                    thisScope.updateModel(null,null,f);
-                                }
-                            });
+                            thisScope.viewModel.setKendoSlider(f);
+                            
                             if (reset) {
                                 f.value.set(null);
                             }
 
                     }
-                })
-            })
-        })
-
+                });
+            });
+        });
     }
-    //_setSliders() {
-
-    //    let _species = this.viewModel.selected_species.get();
-
-    //    ////////////
-    //    //  Product Weight
-    //    ///////////
-
-    //    var sliderProductWeightHandle = $("#slider-product-weight .oe-slider-handle");
-
-    //    $("#slider-product-weight").slider({
-    //        step: Number(_species["weight_increment"]),
-    //        min: Number(_species["weight_min"]),
-    //        max: Number(_species["weight_max"]),
-    //        value: _species["weight_default"],
-    //        create: function () {
-    //            sliderProductWeightHandle.text(_species["weight_default"].toString() + " lbs");
-    //        },
-    //        slide: function (event, ui) {
-    //            sliderProductWeightHandle.text(ui.value.toString() + " lbs");
-    //        }
-    //    });
-
-    //    sliderProductWeightHandle.text(_species["weight_default"] + " lbs");
-
-    //    ////////////
-    //    //  Price Target
-    //    ///////////
-
-    //    var sliderPriceTargetHandle = $("#slider-price-target .oe-slider-handle");
-
-    //    $("#slider-price-target").slider({
-    //        step: Number(_species["price_increment"]),
-    //        min: Number(_species["price_min"]),
-    //        max: Number(_species["price_max"]),
-    //        value: _species["price_default"],
-    //        create: function () {
-    //            sliderPriceTargetHandle.text("$" + parseFloat(_species["price_default"]).toFixed(2));
-    //        },
-    //        slide: function (event, ui) {
-    //            sliderPriceTargetHandle.text("$" + parseFloat(ui.value.toString()).toFixed(2));
-    //        }
-    //    });
-
-    //    sliderPriceTargetHandle.text("$" + parseFloat(_species["price_default"]).toFixed(2));
-
-    //    ////////////
-    //    //  Annual Harvest
-    //    ///////////
-
-    //    var sliderAnnualHarvestHandle = $("#slider-annual-harvest .oe-slider-handle");
-
-    //    $("#slider-annual-harvest").slider({
-    //        step: 10,
-    //        min: 10,
-    //        max: 100000,
-    //        value: 1000,
-    //        create: function () {
-    //            sliderAnnualHarvestHandle.text("1,000 lbs");
-    //        },
-    //        slide: function (event, ui) {
-    //            sliderAnnualHarvestHandle.text(ui.value.toString() + " lbs");
-    //        }
-    //    });
-
-    //    sliderAnnualHarvestHandle.text(_species["price_default"] + " lbs");
-
-    //}
-
-    //TEMP example
-    createLineChart(): void {
-        let opts:any = {
-            title: {
-                text: "Growth Rate \n annual %"
-            },
-            legend: {
-                position: "bottom"
-            },
-            chartArea: {
-                background: ""
-            },
-            seriesDefaults: {
-                type: "line",
-                style: "smooth"
-            },
-            series: [{
-                name: "Species 1",
-                data: [3.907, 7.943, 7.848, 9.284, 9.263, 9.801, 3.890, 8.238, 9.552, 6.855]
-            }, {
-                name: "Species 2",
-                data: [1.988, 2.733, 3.994, 3.464, 4.001, 3.939, 1.333, -2.245, 4.339, 2.727]
-            }, {
-                name: "Species 3",
-                data: [4.743, 7.295, 7.175, 6.376, 8.153, 8.535, 5.247, -7.832, 4.3, 4.3]
-            }, {
-                name: "Species 4",
-                data: [-0.253, 0.362, -3.519, 1.799, 2.252, 3.343, 0.843, 2.877, -5.416, 5.590]
-            }],
-            valueAxis: {
-                labels: {
-                    format: "{0}%"
-                },
-                line: {
-                    visible: false
-                },
-                axisCrossingValue: -10
-            },
-            categoryAxis: {
-                categories: [2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011],
-                majorGridLines: {
-                    visible: false
-                },
-                labels: {
-                    rotation: "auto"
-                }
-            },
-            tooltip: {
-                visible: true,
-                format: "{0}%",
-                template: "#= series.name #: #= value #"
-            }
-        };
-
-        $("#OE_Chart1").kendoChart(opts);
-    }
+    
 
 }

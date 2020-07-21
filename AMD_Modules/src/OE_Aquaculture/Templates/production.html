@@ -1,0 +1,117 @@
+﻿<div data-binding="{@source:sections}">
+    <div data-binding="{@template-for:sections}{@visible:visible}">
+        <div data-binding="{@source:@context}{@template-selector:sectionType}">
+            <div data-binding="{@template-select:Production}">
+                <fieldset>
+                    <legend data-binding="{@text:displayName}"></legend>                   
+                    <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
+                    <!--<br />-->
+                    <div id="production-targets" data-binding="{@source:fields_filter}" class="div-row">
+                        <div data-binding="{@template-for:fields_filter}" class="div-row-cell">
+                            <div data-binding="{@source:@context}{@template-selector:uiType}">
+                                <div data-binding="{@template-select:dropdown}">
+                                    <center>
+                                        <h3>Market Size (lbs)</h3>
+                                        <div data-binding="{@source:@context}{@template:geocortex/oe_amd/OE_Aquaculture/Templates/dropdown.html}"></div>
+                                    </center>
+                                </div>
+                                <div data-binding="{@template-select:slider}">
+                                    <center><h3>Annual Harvest (lbs)</h3>
+                                        </center>
+                                    <div data-binding="{@source:@context}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/sliderKendo.html}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div data-binding="{@source:@context}{@template-selector:sectionType}">
+            <div data-binding="{@template-select:ReqResources}">
+                <fieldset>
+                    <legend data-binding="{@text:displayName}"></legend>                    
+                    <div data-binding="{@source:field_categories}" class="div-row production">
+                        <div data-binding="{@template-for:field_categories}" class="div-row-cell">
+                            <div data-binding="{@source:@context}{@template-selector:category}">
+                                <div data-binding="{@template-select:ExistingResource}">
+                                    <h3>Resource constraints</h3>
+                                    <div class="production notes">(Enter any known constraints)</div>
+                                    <div class="div-table production" data-binding="{@source:fields_filter}">
+                                        <!--<div class="div-table-row">
+                                            <div class="div-table-cell">Existing Resource</div>
+                                            <div class="div-table-cell">Value</div>
+                                        </div>-->
+                                        <div class="div-table-row" data-binding="{@template-for:fields_filter}">
+                                            <div data-binding="{class:tableDisplayClass}">
+                                                <div class="tooltip">
+                                                    <span class="input-header" data-binding="{@text:fieldName}"> </span>
+                                                    <span data-binding="{@text:desc}" class="tooltiptext"></span>
+                                                </div>
+                                            </div>
+                                            <div data-binding="{@source:@context}{@template-selector: uiType}{class:tableDisplayClass}">
+                                                <div data-binding="{@template-select:inputNumber}">
+                                                    <span><input type="text" data-binding="{placeholder:unit}{@value:value}{@event-change:updateModel}{@event-keyup:checkReset}" /></span>
+                                                </div>
+                                                <!-- SLIDERS -->
+                                                <div data-binding="{@template-select:slider}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/sliderKendo.html}"></div>
+                                                <!-- DROPDOWN -->
+                                                <div data-binding="{@template-select:dropdown}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/dropdown.html}"></div>
+                                                <!--  Input NUMBERS -->
+                                                <!--<div data-binding="{@template-select:inputNumber}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputNumber.html}"></div>-->
+                                                <div data-binding="{@template-select:inputLocation}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/latlong.html}"></div>
+                                                <!-- Default All Else -->
+                                                <div data-binding="{@template-for:@context}">
+                                                    <span data-binding="{@text:formattedValue}"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-binding="{@template-select:RequiredResource}">
+                                    <h3>Required resources</h3>
+                                    <div class="production notes">(Based on the production targets above)</div>
+                                    <div class="div-table production" data-binding="{@source:fields_filter}">
+                                        <!--<div class="div-table-row">
+                                            <div class="div-table-cell">Required Resource</div>
+                                            <div class="div-table-cell">Value</div>
+                                        </div>-->
+                                        <div class="div-table-row" data-binding="{@template-for:fields_filter}">
+                                            <div data-binding="{class:tableDisplayClass}">
+                                                <span class="input-header" data-binding="{@text:fieldName}"></span>
+                                            </div>
+                                            <div data-binding="{class:class}"><span data-binding="{@text:formattedValue}"></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="required-notes">
+                                        <span>Values in </span><span style="color:rgba(217, 103, 103, 0.64);font-weight:bolder">RED</span><span> indicate you have exceeded your available resource. Adjust the Annual Harvest slider until there are no RED values. </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                    <br />
+                </fieldset>
+            </div>
+        </div>
+        <div data-binding="{@source:@context}{@template-selector:sectionType}">
+            <div data-binding="{@template-select:Parameter}">
+                <fieldset>
+                    <legend data-binding="{@text:displayName}"></legend>
+                    <br />
+                    <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
+                    <br />
+                    <div class="div-table parameters" data-binding="{@source:fields_filter}">
+
+                        <div class="div-table-row" data-binding="{@template-for:fields_filter}">
+                            <div data-binding="{class:tableDisplayClass}">
+                                <span class="input-header" data-binding="{@text:fieldName}"></span>
+                            </div>
+                            <div class="div-table-cell values"><span data-binding="{@text:formattedValue}"></span></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+<br />

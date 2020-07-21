@@ -6,8 +6,8 @@ import { ViewModelBase } from "geocortex/framework/ui/ViewModelBase";
 import { ViewerApplication } from "geocortex/infrastructure/Viewer";
 import { Observable, ObservableCollection } from "geocortex/framework/observables";
 import { FilterableCollection } from "geocortex/framework-ui/FilterableCollection";
+import { OrderedCollection } from "geocortex/framework-ui/OrderedCollection";
 import { Site } from "geocortex/essentials/Site";
-import { Chart } from "geocortex/charting/Chart";
 //import { OE_Charts } from "../OE_Aquaculture/OE_Charts";
 
 export class OE_AquacultureFinancialViewModel extends ViewModelBase {
@@ -16,7 +16,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     workflowContext: any;
     moduleJsonConfig: any;
     //History cache
-    selection_cache: ObservableCollection<string> = new ObservableCollection([]);
+    scenario_cache: ObservableCollection<any> = new ObservableCollection([]);
 
     //SPECIES
     species_tbl: ObservableCollection<any> = new ObservableCollection([]);
@@ -33,6 +33,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     //SYSTEMS (Species and Production Method)
     systems_tbl: ObservableCollection<string> = new ObservableCollection([]);
     selected_system: Observable<any> = new Observable({});
+    //selected_system_binding_token: string = '';
     selected_system_text: Observable<string> = new Observable('');
     systems_tbl_filter: FilterableCollection<any>;
     show_no_systems_in_filtered_view: Observable<boolean> = new Observable(false);
@@ -58,49 +59,59 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     //PAGER_NAV
     show_next_btn: Observable<boolean> = new Observable(true);
     show_back_btn: Observable<boolean> = new Observable(false);
+    //TRANSPORTATION DATA
+    transportation_lut: any;
     //ROUTES
     sub_station_routes: ObservableCollection<any> = new ObservableCollection([]);
     //AMORTIZATION
     amortization_tbl: ObservableCollection<any> = new ObservableCollection([]);
     //Summary Button
     show_summary_btn: Observable<boolean> = new Observable(false);
-
+    //UPDATE State
+    show_loading: Observable<boolean> = new Observable(false);
+    show_all_for_report: Observable<boolean> = new Observable(false);
+    //Validation Monitoring
+    show_warning: Observable<boolean> = new Observable(false);
+    invalid_array = [];
+        
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
         this.screens_collection_filter = new FilterableCollection<any>(this.screens_collection, this._screensFilter.bind(this, this));
         this.selected_location.bind(this, (selLoc) => {
             if (selLoc ? selLoc.name !== 'User click' : false) {
+                this.has_location.set(true);
                 this.screens_collection.get().forEach(scr => {
                     scr['sections'].get().forEach(sec => {
                         sec['fields'].get().forEach(f => {
                             if (f['fieldCalVar'] === 'facilityLocation') {
                                 f.value.set(selLoc.name + "<br>Lat: " + selLoc.point.y.toFixed(2) + " Long: " + selLoc.point.x.toFixed(2));
-                                if (this.has_location.get()) {
-                                    this.runRoutingServices();
-                                }
+                                this.runRoutingServices();
                             }
                         });
                     });
                 });
             }
         });
-
+        
+        //this.selected_system_binding_token =
         this.selected_system.bind(this, (sys) => {
-            this.selected_system_text.set(sys.system ? sys.system : sys);
-            let _species = [];
-            this.species_tbl.get().forEach(species => {
-                let isSelected = sys.species === species.species;
-                species.selected = isSelected; //.set(isSelected);
-                _species.push(species);
-            });
-            this.species_tbl.set(_species);
-            //this.species_tbl_filter.refresh();
-            let _prod = [];
-            this.prod_meth_tbl.get().forEach(prod_meth => {
-                prod_meth.selected = sys.production_method === prod_meth.production_method;
-                _prod.push(prod_meth);
-            })
-            this.prod_meth_tbl.set(_prod);
+            if (sys) {
+                this.selected_system_text.set(sys.system ? sys.system : sys);
+                let _species = [];
+                this.species_tbl.get().forEach(species => {
+                    let isSelected = sys.species === species.species;
+                    species.selected = isSelected; //.set(isSelected);
+                    _species.push(species);
+                });
+                this.species_tbl.set(_species);
+                this.species_tbl_filter.refresh();
+                let _prod = [];
+                this.prod_meth_tbl.get().forEach(prod_meth => {
+                    prod_meth.selected = sys.production_method === prod_meth.production_method;
+                    _prod.push(prod_meth);
+                })
+                this.prod_meth_tbl.set(_prod);
+            }
         });
 
         this.species_tbl_filter = new FilterableCollection<any>(this.species_tbl, this._selectedFilter.bind(this, this));
@@ -115,6 +126,10 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         });
 
         this.systems_tbl_filter = new FilterableCollection<any>(this.systems_tbl, this._systemsFilters.bind(this, this));
+
+        this.show_all_for_report.bind(this, () => {
+            this.screens_collection_filter.refresh();
+        });
     }
 
     initialize(config: any): void {
@@ -131,9 +146,13 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         }
 
         this.app.registerActivityIdHandler("runFinancialPlnModule", (wc, cf) => {
-            this.has_location.set(wc.getValue("location") ? true : false);
-
             this.workflowContext = $.extend({}, wc);
+
+            this.resetSystemFilters();
+
+            this.has_location.set(wc.getValue("location") ? true : false);
+                      
+            this.setSystems(wc);
 
             this.setScreens(wc);
 
@@ -141,7 +160,16 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
             this.setProdMethods(wc);
 
-            this.setSystems(wc);
+            this.transportation_lut = wc.getValue('transportation').features ? wc.getValue('transportation').features.map(f => {
+                return {
+                    pounds: f.attributes.pounds,
+                    miles: f.attributes.miles,
+                    shipCostLbMile: f.attributes.shipCostLbMile
+                }
+            }) : [];
+
+            //rerun to set the resources system selection screen val...  TODO: figure out a better way
+            //this.setSystems(wc);
 
             this.app.commandRegistry.command("ActivateView").execute("OE_AquacultureFinancialView");
         });
@@ -187,8 +215,6 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             }
             //this.sub_station_routes.set(routes);
         });
-
-        //$(document).bind("kendo:skinChange", this.renderCharts());
     }
 
     setSystems(wc) {
@@ -202,6 +228,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                     "production_method": feat.attributes.ProductionMethod,
                     "species": feat.attributes.Species,
                     "system": feat.attributes.System,
+                    "systemTitle": feat.attributes.SystemTitle,
                     "systemid": feat.attributes.System.replace(/\ /g, "").replace(/\:/g, "_"),
                     "selected": new Observable<boolean>(feat.attributes.Default === "True"),
                     "overview": feat.attributes.Overview,
@@ -342,6 +369,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                         sections: new ObservableCollection<any>(),
                         selected: new Observable<boolean>(false),
                         showAdvOnly: sAttr.AdvancedOnly,
+                        showInReport: sAttr.IncludeInReport,
                         screenContentClass: new Observable<any>('tabcontent'),
                         screenTabClass: new Observable<any>('tablinks')
                     };
@@ -373,20 +401,13 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                             sectionDesc: ssAttr.SectionDesc,
                             displayClass: 'screenSection' + ssAttr.Display,
                             fields: new ObservableCollection<any>([]),
+                            field_categories: new ObservableCollection<any>([]),
+                            field_ui_categories: new ObservableCollection<any>([]),
                             visible: new Observable<boolean>(true)
                         };
                         returnSectionInfo['fields_filter'] = new FilterableCollection<any>(returnSectionInfo['fields'], this._fieldsFilter.bind(this, this));
 
-                        switch (ssAttr.SectionType) {
-                            case 'Resources':
-                                let selected_qs_resource = new Observable<any>('');
-                                selected_qs_resource.bind(this, (val) => {
-                                    this.setSelectedQuickstartResource(val);
-                                });
-                                returnSectionInfo['selected_qs_resource'] = selected_qs_resource;
-                                if (ssAttr.SectionID === 'resourceIntro') {
-                                    returnSectionInfo['field_categories'] = new ObservableCollection<any>([]);
-                                }
+                        switch (ssAttr.SectionType) {  
                             case 'Map':
                                 returnSectionInfo['selected_location'] = new Observable<any>('');
                                 returnSectionInfo['show_add_location'] = new Observable<boolean>(true);
@@ -425,33 +446,20 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                             .map(sf => {
                                 let thisScope = this;
                                 const att = sf.attributes;
-let value = this.formatValue(att.Default, att.Decimal)
+let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default, att.Decimal)
                                 let fieldValue;
                                 fieldValue = new Observable<any>(value);
-                                //switch (att.fieldCalVar) {
-                                //    case 'facilityLocation':
-                                //        fieldValue = this.selected_location_desc;
-                                //        break;
-                                //    case '_speciedLocation':
-                                //        fieldValue = this.seedLocation;
-                                //        break;
-                                //    case 'feedLocation':
-                                //        fieldValue = this.feedLocation;
-                                //        break;
-                                //    case 'marketLocation':
-                                //        fieldValue = this.marketLocation;
-                                //        break;
-                                //    default:
-                                //        fieldValue = new Observable<any>(value);
-                                //        break;
-                                //}
-                                let fieldDisplayValue = new Observable<any>(this.formatDisplayValue(value, att.Unit));
-                                
-
+                                let fieldValidateMsg = new Observable<any>('Invalid input: Please enter a number between ' + this.formatValue(att.Min,att.Decimal) + ' and ' + this.formatValue(att.Max,att.Decimal) + '. <br>  ESC to reset to default value.');
+                                let fieldValidateMsgClass = new Observable<any>('validate-msg hide');
+                                let fieldDisplayValue = new Observable<any>(this.formatDisplayValue(value, att.Unit, att.Decimal, true));
                                 let returnVal =
                                 {
                                     fieldName: att.Field,
                                     fieldCalVar: att.FieldCalVar,
+                                    fieldHandle: att.FieldCalVar + "Handle",
+                                    fieldValidateMsgID: att.FieldCalVar + "Validate",
+                                    fieldValidateMsgClass: fieldValidateMsgClass,
+                                    fieldValidateMsg: fieldValidateMsg,
                                     fieldCat: att.FieldCategory,
                                     fieldLabel: att.FieldLabel,
                                     uiType: att.UiType,
@@ -460,6 +468,7 @@ let value = this.formatValue(att.Default, att.Decimal)
                                     increment: att.Increment,
                                     value: fieldValue,
                                     formattedValue: fieldDisplayValue,
+                                    previousValue: fieldValue,
                                     min: att.Min,
                                     max: att.Max,
                                     decimalDisp: att.Decimal,
@@ -467,19 +476,32 @@ let value = this.formatValue(att.Default, att.Decimal)
                                     formula: att.Formula,
                                     desc: att.Description,
                                     notes: att.Notes,
+                                    chartID: att.ChartConfig,
                                     showDesc: new Observable<boolean>(true),
                                     visible: new Observable<boolean>(att.Field === 'Total Land'),
-                                    tableDisplayClass: 'div-table-cell ' + att.FieldCategory
+                                    tableDisplayClass: 'div-table-cell ' + att.FieldCategory,
+                                    class: new Observable<string>('div-table-cell values')
                                 };
                                 //add chart config if applicable
                                 if (att.ChartConfig !== '') {
                                     //lookup chart config values and render?
                                     let _chartConfig = _chartConfigs.filter(f => f.attributes.ChartID === att.ChartConfig)[0];
+                                    let chartSeries = JSON.parse(_chartConfig.attributes.Series);
+                                    let chartData = new ObservableCollection<any>(chartSeries.data.map(d => {
+                                        return {
+                                            value: new Observable<any>(d.value),
+                                            percent: new Observable<any>(d.value),
+                                            category: d.category,
+                                            fieldCalVar: d.fieldCalVar
+                                        }
+                                    }));
+                                    
                                     returnVal['chartConfig'] = {
                                         chartID: _chartConfig.attributes.ChartID,
                                         chartName: _chartConfig.attributes.ChartName,
                                         chartType: _chartConfig.attributes.Type,
-                                        chartSeries: JSON.parse(_chartConfig.attributes.Series)
+                                        chartSeries: chartSeries,
+                                        chartData: chartData
                                     };
                                 }
                                 if (att.FieldCategory === 'LookupTable') {
@@ -487,50 +509,100 @@ let value = this.formatValue(att.Default, att.Decimal)
                                     let lutField = att.Formula.split('>')[1].split('{')[0];
                                     let lutFieldLookup = att.Formula.indexOf('{') !== -1 ? att.Formula.split('{')[1].split('}')[0] : null;
                                     let lut;
+                                    let selectedDDoption = new Observable<any>();
+                                    let ddOptions = new ObservableCollection<any>();
                                     switch (lutName) {
                                         case 'growthRate':
                                             lut = _growthRates;
                                             let harvestWeights = _growthRates.filter(gr =>
-                                                this.selected_species.get() === gr.attributes.Species
+                                                this.selected_system.get().species === gr.attributes.Species
                                             ).map(gr => {
+                                                if (gr.attributes['Default'] === 'True') {
+                                                    selectedDDoption.set(gr.attributes['Market Weight']);
+                                                }
                                                 return {
                                                     option: gr.attributes['Market Weight'],
-                                                    value: gr.attributes['Months to Harvest']
+                                                    value: gr.attributes['Months to Harvest'],
+                                                    updateField: 'monthsToHarvest',
+                                                    //selected: new Observable<boolean>( gr.attributes['Default'] === 'True')                        
                                                 }
                                             });
-                                            returnVal['ddOptions'] = harvestWeights;
+                                            ddOptions.set(harvestWeights);
+                                            returnVal['ddOptions'] = ddOptions;
                                             break;
                                         default:
                                             break;
                                     }
+                                    returnVal['selDDoption'] = selectedDDoption;
+                                    selectedDDoption.bind(returnVal, (val) => {
+                                        //update original value
+                                        returnVal.value.set(val);
+                                        this.updateViewModel(returnVal);
+                                        //update dependent field if any
+                                        let hasDependentField = returnVal['ddOptions'].get().filter(dd => dd.updateField !== undefined).length > 0;
+                                        if (hasDependentField) {
+                                            //get update field based on new input val
+                                            returnVal['ddOptions'].get().forEach(dd => {
+                                                if (dd.option === val) {
+
+                                                    //update dependent field
+                                                    this.screens_collection.get().forEach(scr => {
+                                                        scr['sections'].get().forEach(sct => {
+                                                            sct['fields'].get().forEach(f => {
+                                                                if (f.fieldCalVar === dd.updateField) {
+                                                                    f.value.set(dd.value);
+                                                                    this.updateViewModel(f);
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
                                 }
                                 fieldValue.bind(returnVal, (val) => {
-                                    returnVal.formattedValue.set(thisScope.formatDisplayValue(val, returnVal.unit));
+                                    returnVal.formattedValue.set(thisScope.formatDisplayValue(val, returnVal.unit,returnVal.decimalDisp,true));
                                 });
                                 return returnVal;
                             });
 
                         returnSectionInfo.fields.set(_screenSectionFields);
                         ////Quickstart only sort fields for resource vs goal
-                        //if (returnSectionInfo.section === 'resourceIntro') {
-                        //    let categories = _screenSectionFields.map(f => f.fieldCat)
-                        //        .filter((v, idx, self) => self.indexOf(v) === idx);
-                        //    var field_categories = [];
-                        //    categories.forEach(c => {
-                        //        let catFields = _screenSectionFields.filter(sf => sf.fieldCat === c);
-                        //        let cat = {
-                        //            category: c,
-                        //            fields: new ObservableCollection<any>(catFields)
-                        //        }
-                        //        field_categories.push(cat);
-                        //    });
-                        //    returnSectionInfo['field_categories'].set(field_categories);
+                        //if (returnSectionInfo.section === 'productionRequired') {
+                            let categories = _screenSectionFields.map(f => f.fieldCat)
+                                .filter((v, idx, self) => self.indexOf(v) === idx);
+                            var field_categories = [];
+                            categories.forEach(c => {
+                                let catFields = _screenSectionFields.filter(sf => sf.fieldCat === c);
+                                let cat = {
+                                    category: c,
+                                    fields: new ObservableCollection<any>(catFields)
+                                }
+                                cat['fields_filter'] = new FilterableCollection<any>(cat['fields'], this._fieldsFilter.bind(this, this));
+                                field_categories.push(cat);
+                            });
+                        returnSectionInfo['field_categories'].set(field_categories);
+                        let ui_categories = _screenSectionFields.map(f => f.uiType)
+                            .filter((v, idx, self) => self.indexOf(v) === idx);
+                        var field_ui_cat = [];
+                        ui_categories.forEach(c => {
+                            let catFields = _screenSectionFields.filter(sf => sf.uiType === c);
+                            let cat = {
+                                category: c,
+                                fields: new ObservableCollection<any>(catFields)
+                            }
+                            cat['fields_filter'] = new FilterableCollection<any>(cat['fields'], this._fieldsFilter.bind(this, this));
+                            ui_categories.push(cat);
+                        });
+                        returnSectionInfo['field_ui_categories'].set(ui_categories);
                         //}
                         return returnSectionInfo;
                     });
                 scr.sections.set(_screenSections);
             });
             this.screens_collection.set(_screens);
+            
         }
 
         if (this.has_location.get()) {
@@ -539,7 +611,30 @@ let value = this.formatValue(att.Default, att.Decimal)
 
         this._setScreenSectionBindings();
         this.calculateAmortization();
-        //this.renderCharts();
+        this.renderCharts();
+        this.saveScenarioToCache();
+    }
+
+    saveScenarioToCache() {
+        //create scenario object
+        let scenario = {
+            scenario_name: "Scenario 1",
+            screens: this.screens_collection.get(),
+            selected: new Observable<boolean>(true)
+        }
+        this.scenario_cache.addItem(scenario);
+    }
+
+    sortChartDataTable(left, right) {
+        let leftPercent = parseFloat(left.percent.get().replace('%', ''));
+        let rightPercent = parseFloat(right.percent.get().replace('%', ''));
+        if (leftPercent < rightPercent) {
+            return 1;
+        }
+        if (leftPercent > rightPercent) {
+            return -1;
+        }
+        return 0;
     }
 
     renderCharts() {
@@ -547,29 +642,51 @@ let value = this.formatValue(att.Default, att.Decimal)
             scr['sections'].get().forEach(sct => {
                 sct['fields'].get().forEach(f => {
                     if (f.chartConfig) {
+                        let totalChartValues = 0;
                         //update with model values
-                        f.chartConfig.chartSeries[0].data.forEach(d => {
+                        f.chartConfig.chartSeries.data.forEach(d => {
                             let value = this.getValue(d.fieldCalVar);
-                            d.value = parseInt(value.replace(/\,/g,''));
+                            d.value = parseInt(value.replace(/\,/g, ''));
+                            totalChartValues += d.value;
                         });
+                        //update chartData for table display
+                        let sortedData = [];
+                        f.chartConfig.chartData.get().forEach(cd => {
+                            let value = this.getValue(cd.fieldCalVar);
+                            cd.value.set(this.formatDisplayValue(parseInt(value.replace(/\,/g, '')), "$",null,true));
+                            cd.percent.set((parseInt(value.replace(/\,/g, '')) / totalChartValues * 100).toFixed(1) + "%");
+                            sortedData.push(cd);
+                        });
+                        sortedData = sortedData.sort(this.sortChartDataTable);
+                        f.chartConfig.chartData.set(sortedData);
+                        //f.chartConfig.chartDataSorted.sync();
                         let opts = {
+                            plotArea: {
+                                margin: {
+                                    top:-10
+                                }
+                            },
                             legend: {
-                                visible: true
+                                visible: true,
+                                position: "bottom"
                             },
                             chartArea: {
                                 background: ""
                             },
+                            seriesColors: ["#b64242", "#cc8830", "#d0b809", "#07873b", "#39a0a1", "#24769f", "#82295c", "#1a1128", "#77747f","#cecad1"],
                             seriesDefaults: {
                                 labels: {
-                                    visible: true,
+                                    visible: false,
                                     background: "transparent",
-                                    template: "#= category #: #= kendo.format('{0:P0}', percentage)# \n #= kendo.format('{0:c0}',value)#"
+                                    template: "#= category #: #= kendo.format('{0:P0}', percentage)#"
+                                    //template: "#= category #: #= kendo.format('{0:P0}', percentage)# \n #= kendo.format('{0:c0}',value)#"
                                 }
                             },
-                            series: f.chartConfig.chartSeries,
+                            series: [f.chartConfig.chartSeries],
                             tooltip: {
                                 visible: true,
-                                format: "{0:c0}"
+                                template: "#= category #: #= kendo.format('{0:c0}', value)# \n #= kendo.format('{0:P0}',percentage)#"
+                                //format: "{0:c0}"
                             }
                         };
                         $("#"+f.chartConfig.chartID).kendoChart(opts);
@@ -612,7 +729,7 @@ let value = this.formatValue(att.Default, att.Decimal)
         let loanAmt; 
         let intRate; 
         let term;
-        let frequency = 1; //monthly vs yearly
+        let frequency = 12; //monthly vs yearly
         let totInterest = 0;
         let amortTbl = [{
             paymentNumber: "Number",
@@ -653,12 +770,12 @@ let value = this.formatValue(att.Default, att.Decimal)
             totInterest += paymentInterest;
             let paymentInfo = {
                 paymentNumber: (x + 1).toString(),
-                prevBalance: this.formatDisplayValue(this.formatValue(loanAmt,0),'$'),
-                payment: this.formatDisplayValue(this.formatValue(regularPayment, 0), '$'),
-                interest: this.formatDisplayValue(this.formatValue(paymentInterest, 0), '$'),
-                principal: this.formatDisplayValue(this.formatValue(paymentPrincipal, 0), '$'),
-                newBalance: this.formatDisplayValue(this.formatValue(loanAmt - paymentPrincipal, 0), '$'),
-                totInterest: this.formatDisplayValue(this.formatValue(totInterest, 0), '$'),
+                prevBalance: this.formatDisplayValue(this.formatValue(loanAmt, 0), '$', null, true),
+                payment: this.formatDisplayValue(this.formatValue(regularPayment, 0), '$', null, true),
+                interest: this.formatDisplayValue(this.formatValue(paymentInterest, 0), '$', null, true),
+                principal: this.formatDisplayValue(this.formatValue(paymentPrincipal, 0), '$', null, true),
+                newBalance: this.formatDisplayValue(this.formatValue(loanAmt - paymentPrincipal, 0), '$', null, true),
+                totInterest: this.formatDisplayValue(this.formatValue(totInterest, 0), '$', null, true),
                 class: 'div-table-row'
             };
             
@@ -683,14 +800,18 @@ let value = this.formatValue(att.Default, att.Decimal)
     }
 
     formatValue(value, decimalPlaces) {
-        let val = value.toString().replace(/\,/g, '');
-        return this.addCommas(parseFloat(val).toFixed(decimalPlaces).toString());
+        try {
+            let val = value.toString().replace(/\,/g, '');
+            return this.addCommas(parseFloat(val).toFixed(decimalPlaces).toString());
+        } catch (ex) {
+            return value;
+        }       
     }
 
-    addCommas(nStr) {
+    addCommas(nStr) {        
         nStr += '';
         let x = nStr.split('.');
-        let x1 = x[0];
+        let x1 = x[0].length > 1 ? x[0].replace(/^0+/, '') : x[0];
         let x2 = x.length > 1 ? '.' + x[1] : '';
         var rgx = /(\d+)(\d{3})/;
         while (rgx.test(x1)) {
@@ -702,25 +823,238 @@ let value = this.formatValue(att.Default, att.Decimal)
     updateViewModel(changedInput) {
         //find all fields that are dependant on this field
         let _fieldCalVar = changedInput.fieldCalVar;
+        //let _fieldToValidate = changedInput.formula.indexOf('[validate:') !== -1 ? changedInput.formula.split('validate:')[1].split(']')[0] : '';
+        if (changedInput.formula.indexOf('[validate:') !== -1) {
+            this.validateConstraints(changedInput);
+        } else if (changedInput.formula.indexOf('[interpolate:') !== -1) {
+            console.log('interpolate:', changedInput);
+            let interpolatedValue = Number(this.interpolateValues(changedInput)).toFixed(15);            
+            changedInput.value.set(interpolatedValue);
+        }
+        else {
+            this.screens_collection.get().forEach(s => {
+                s['sections'].get().forEach(sct => {
+                    sct.fields.get().forEach(f => {
+                        if (f.formula.indexOf(_fieldCalVar) !== -1 && f.fieldCalVar !== _fieldCalVar) {
+                            //need to update value
+                            //get formula
+                            let newVal = this.formatValue(this.processFieldFormula(f), f.decimalDisp);
+                            if (newVal  ? newVal !== f.value.get() && newVal.indexOf('NaN') == -1 : false) {
+                                if (f.uiType === 'slider') {
+                                    this.setKendoSlider(f, newVal);
+                                }
+                                f.value.set(newVal);
+                                //check if related to amortization and update table if so
+                                if (['_termOfLoan', '_loanIntRate', 'loanAmountReq'].indexOf(f.fieldCalVar) !== -1) {
+                                    this.calculateAmortization();
+                                }
+                                //recurssivley search for other dependent variables
+                                this.updateViewModel(f);
+                            }
+                        }
+                    });
+                });
+            });
+        }
+    }
+
+    setKendoSlider(f, newVal?) {
+        let thisScope = this;
+        let sliderID = f.fieldCalVar;
+        //var sliderTextHandle = $("#" + sliderID + " .oe-slider-handle");
+        var sliderTextHandle = $("#" + f.fieldHandle);
+        newVal = newVal ? newVal : f.value.get();
+        sliderTextHandle.val(thisScope.formatDisplayValue(newVal.toString(), f.unit, f.decimalDisp, false));
+        let min = f.min ? parseFloat(f.min) : 0;
+        let max = f.max ? parseFloat(f.max) : 100;
+
+        let increment = f.increment ? parseFloat(f.increment) : 1;
+
+        let value = newVal.replace(/\,/g,'');//this.formatValue(newVal, f.decimalDisp);
+
+        ////////////////////////////////////////////////
+        // Kendo Slider
+        ////////////////////////////////////////////////
+        let opts = {
+            increaseButtonTitle: "+",
+            decreaseButtonTitle: "-",
+            dragHandleTitle: "",
+            min: min,
+            max: max,
+            value: value,
+            smallStep: increment,
+            largeStep: increment,
+            tooltip: {
+                enabled: false
+            },
+            tickPlacement: "none",
+            showButtons: true,
+            slide: function (slideEvt) {
+                sliderTextHandle.val(thisScope.formatDisplayValue(slideEvt.value.toString(), f.unit,f.decimalDisp, false));
+            },
+            change: function (changeEvt) {
+                let newVal = changeEvt.value.toString();
+                sliderTextHandle.val(thisScope.formatDisplayValue(newVal, f.unit, f.decimalDisp, false));
+                f.value.set(newVal);
+                thisScope.updateViewModel(f);
+            }
+        };
+
+        //Check if slider already added and update reference or else create
+        if ($("#" + sliderID).data("kendoSlider")) {
+            var slider = $("#" + sliderID).data("kendoSlider");
+            slider.value(value);            
+        } else {
+            $("#" + sliderID).kendoSlider(opts);
+        }
+    }
+
+    updateSlider(field) {
+        //if (this.checkIsValidTextInput(field)) {
+        let sliderTextHandle = $("#" + field.fieldHandle);
+        let newValue = sliderTextHandle.val().split(' ')[0].replace(/\,/g, '');
+        sliderTextHandle.val(this.formatDisplayValue(newValue, field.unit, field.decimalDisp, false));
+        var slider = $("#" + field.fieldCalVar).data("kendoSlider");
+        if (!isNaN(newValue)) {
+            slider.value(newValue);
+        } else {
+            slider.value(0);
+        }
+        field.value.set(newValue);
+        this.updateViewModel(field);
+        //} else {
+        //    console.log('not valid for slider update');
+        //}             
+    }
+
+    validateTextInput(evt, elem, field) {
+        if (elem.value === '<-->') {
+            elem.value = '';
+        }    
+        if (evt.keyCode === 27) {
+            //reset to default value
+            console.log('reset!', field);
+            //get default
+            elem.value = field.defaultVal;
+            this.updateSlider(field);
+        }
+        if (evt.keyCode === 13) {
+            //submit changes
+            this.updateSlider(field);
+        }
+         
+        let isValid = this.checkIsValidTextInput(field); 
+        if (isValid) {
+            //elem.value = this.formatDisplayValue(elem.value.split(' ')[0].replace(/\,/g, ''), field.unit, field.decimalDisp);
+        }
+    }
+
+    checkIsValidTextInput(field) {
+        let inputValue = $("#" + field.fieldHandle).val().split(' ')[0].replace(/\,/g, '');
+        if (inputValue !== field.defaultVal) {
+            let isValid = !isNaN(inputValue) ? parseFloat(inputValue) > parseFloat(field.min) && parseFloat(inputValue) < parseFloat(field.max) : false;
+            field.fieldValidateMsgClass.set(!isValid ? 'validate-msg' : 'validate-msg hide');
+            return isValid;
+        } else {
+            return true;
+        }
+    }
+
+    checkClearTextInput(evt, elem, ctx) {                
+        if (elem.value === '<-->') {
+            elem.value = '';
+        }        
+        //return true;
+    }
+
+    formatDisplayValue(val, unit, decimalDisp?,showUnits?) {
+        let returnVal;
+        //showUnits = showUnits ? false : true;
+        if (val === '<-->') {
+            return val;
+        } else {
+            val = this.addCommas(val);
+            switch (unit) {
+                case '$':
+                    returnVal = (showUnits ? unit : '') + val;
+                    break;
+                case '#':
+                    returnVal = val;
+                    break;
+                case '%':
+                    returnVal = decimalDisp
+                        ? decimalDisp > 2
+                            ? ((parseFloat(val) * 100).toFixed(decimalDisp - 2) + (showUnits ? unit : ''))
+                            : Math.round(parseFloat(val) * 100) + (showUnits ? unit : '')
+                        : Math.round(parseFloat(val) * 100) + (showUnits ? unit : '');
+                    break;
+                default:
+                    returnVal = val + ' ' + (showUnits ? unit : '');
+                    break;
+            }
+            return returnVal;
+        }
+    }
+
+    processFieldFormula(field) {
+        //parse fomula
+        let formula = field.formula;
+        if (formula.indexOf('[validate') !== -1) {
+            this.validateConstraints(field);
+            return field.value.get();
+        } else if (formula.indexOf('[interpolate') !== -1) {
+            console.log('interpolate!!!', field, formula);
+            return this.interpolateValues(field).toString();            
+        }
+        else {
+            let formulaVals = formula;
+            let formulaFields = formula
+                .replace(/\*/g, ',')
+                .replace(/\+/g, ',')
+                .replace(/\-/g, ',')
+                .replace(new RegExp('/', 'g'), ',')                
+                .replace(/\(/g, '')
+                .replace(/\)/g, '')
+                .replace(/\Math.log/g,'')
+                .split(',');
+
+            formulaFields.forEach(ff => {
+                this.screens_collection.get().forEach(s => {
+                    s['sections'].get().forEach(sct => {
+                        sct.fields.get().forEach(f => {
+                            if (f.fieldCalVar === ff && ff !== '') {
+                                let value = f.value.get().split(/\ /g)[0].replace(/\,/g, '');
+                                formulaVals = formulaVals.replace(ff, value);
+                            }
+                        });
+                    });
+                });
+            }
+            );
+
+            //should have updated formula as a string
+            console.log('formula with values', formulaVals);
+
+            return eval(formulaVals);
+        }
+    }
+
+    validateConstraints(field) {
+        let _fieldToValidate = field.formula.indexOf('[validate:') !== -1 ? field.formula.split('validate:')[1].split(']')[0] : '';
         this.screens_collection.get().forEach(s => {
             s['sections'].get().forEach(sct => {
                 sct.fields.get().forEach(f => {
-                    if (f.formula.indexOf(_fieldCalVar) !== -1 && f.fieldCalVar !== _fieldCalVar) {
-                        //need to update value
-                        //get formula
-                        let newVal = this.formatValue(this.processFieldFormula(f), f.decimalDisp);
-                        if (newVal !== f.value.get()) {
-                            if (f.uiType === 'slider') {
-                                $('#' + f.fieldCalVar).slider('value', parseFloat(newVal));
-                                $("#" + f.fieldCalVar + " .oe-slider-handle").text(this.formatDisplayValue(newVal, f.unit));
-                            } 
-                            f.value.set(newVal);
-                            //check if related to amortization and update table if so
-                            if (['_termOfLoan', '_loanIntRate', 'loanAmountReq'].indexOf(f.fieldCalVar) !== -1) {
-                                this.calculateAmortization();
+                    //validate constraints
+                    if (_fieldToValidate !== '' && f.fieldCalVar === _fieldToValidate) {
+                        if (field.value.get() !== '<-->') {
+                            let isNotValid = parseFloat(field.value.get().replace(/\,/g, '')) < parseFloat(f.value.get().replace(/\,/g, ''));
+                            f.class.set(isNotValid ? 'div-table-cell values warning' : 'div-table-cell values');
+                            this.invalid_array = this.invalid_array.filter(iv => iv !== f.fieldCalVar)
+                            if (isNotValid) {
+                                this.invalid_array.push(f.fieldCalVar);
                             }
-                            //recurssivley search for other dependent variables
-                            this.updateViewModel(f);
+                            this.show_warning.set(this.invalid_array.length > 0);
+
                         }
                     }
                 });
@@ -728,57 +1062,68 @@ let value = this.formatValue(att.Default, att.Decimal)
         });
     }
 
-    formatDisplayValue(val, unit) {
+    interpolateValues(field) {
+        //get values to base lookup and interpolation
+        let formula = field.formula;
+        let interpolateType = formula.split(':')[1].split('{')[0];        
+        let fields = formula.split('{')[1].split('}')[0].split('>');
+        const distinct = (value, index, self) => {
+            return self.indexOf(value) === index;
+        }
         let returnVal;
-        val = this.addCommas(val);
-        switch (unit) {
-            case '$':
-                returnVal = unit + val;
-                break;
-            case '#':
-                returnVal = val;
-                break;
-            case '%':
-                returnVal = parseFloat(val) * 100 + unit;
-                break;
+        switch (interpolateType)
+        {
+            case "Transporation":
             default:
-                returnVal = val + ' ' + unit;
+                //get lookup values based on formula fields
+                //weight
+                let weight = parseInt(this.getValue(fields[0]).replace(/\,/,''));
+                let distance = parseInt(this.getValue(fields[1]).replace(/\,/, ''));
+                //market distance under
+                let x_1 = this.transportation_lut
+                    .map(td => parseInt(td.miles))
+                    .filter(distinct)
+                    .filter(td => td <= distance)
+                    .sort((a, b) => b - a)[0];
+                //market distance over
+                let x_2 = this.transportation_lut
+                    .map(td => parseInt(td.miles))
+                    .filter(distinct)
+                    .filter(td => td >= distance)
+                    .sort((a, b) => a - b)[0];
+                //harvest weight under
+                let y_1 = this.transportation_lut
+                    .map(td => parseInt(td.pounds))
+                    .filter(distinct)
+                    .filter(td => td <= weight)
+                    .sort((a, b) => b - a)[0];
+                //havest weight over
+                let y_2 = this.transportation_lut
+                    .map(td => parseInt(td.pounds))
+                    .filter(distinct)
+                    .filter(td => td >= weight)
+                    .sort((a, b) => a - b)[0];
+                //get value lookups
+                //market distance under by harvest weight under
+                let Q_11 = parseFloat(this.transportation_lut.filter(hw => parseInt(hw.miles) === x_1 && parseInt(hw.pounds) === y_1)[0].shipCostLbMile);
+                let Q_12 = parseFloat(this.transportation_lut.filter(hw => parseInt(hw.miles) === x_1 && parseInt(hw.pounds) === y_2)[0].shipCostLbMile);
+                let Q_21 = parseFloat(this.transportation_lut.filter(hw => parseInt(hw.miles) === x_2 && parseInt(hw.pounds) === y_1)[0].shipCostLbMile);
+                let Q_22 = parseFloat(this.transportation_lut.filter(hw => parseInt(hw.miles) === x_2 && parseInt(hw.pounds) === y_2)[0].shipCostLbMile);                
+                
+                //bilinear interpolation calculation: 
+                //=1/((x_2-x_1)*(y_2-y_1))*(Q_11*(x_2-x)*(y_2-y)+Q_21*(x-x_1)*(y_2-y)+Q_12*(x_2-x)*(y-y_1)+Q_22*(x-x_1)*(y-y_1))
+                // help https://engineerexcel.com/bilinear-interpolation-excel/                
+                let x = distance;
+                let y = weight;
+
+                let interpolatedShipCostLbMile = 1 / ((x_2 - x_1) * (y_2 - y_1)) * (Q_11 * (x_2 - x) * (y_2 - y) + Q_21 * (x - x_1) * (y_2 - y) + Q_12 * (x_2 - x) * (y - y_1) + Q_22 * (x - x_1) * (y - y_1));
+
+                //set field value
+                returnVal = interpolatedShipCostLbMile;
+
                 break;
         }
         return returnVal;
-    }
-
-    processFieldFormula(field) {
-        //parse fomula
-        let formula = field.formula;
-        let formulaVals = formula;
-        let formulaFields = formula
-            .replace(/\*/g, ',')
-            .replace(/\+/g, ',')
-            .replace(/\-/g, ',')
-            .replace(new RegExp('/', 'g'), ',')
-            .replace(/\(/g, '')
-            .replace(/\)/g, '')
-            .split(',');
-
-        formulaFields.forEach(ff => {
-            this.screens_collection.get().forEach(s => {
-                s['sections'].get().forEach(sct => {
-                    sct.fields.get().forEach(f => {
-                        if (f.fieldCalVar === ff && ff !== '') {
-                            let value = f.value.get().replace(/\,/g,'');
-                            formulaVals = formulaVals.replace(ff,value);
-                        }
-                    });
-                });
-            });
-        }
-        );
-
-        //should have updated formula as a string
-        console.log('formula with values', formulaVals);
-
-        return eval(formulaVals);
     }
 
     setSelectedSystem(selSystem) {
@@ -871,14 +1216,13 @@ let value = this.formatValue(att.Default, att.Decimal)
         this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
     }
 
-    _injectScript() {
-
-        //jQuery plugin for displaying tour/guide
-        //http://linkedin.github.io/hopscotch/
-        //////////////////////////////////
+    _injectScript() {        
+        //html2canvas
+        // http://html2canvas.hertzen.com/
+        ////////////////
         $.ajax({
             type: "GET",
-            url: "./Resources/Scripts/oe_added_scripts/easy-responsive-tabs.js",
+            url: "./Resources/Scripts/oe_added_scripts/html2canvas.min.js",
             dataType: "script",
             success: function () {
                 console.log('success!');
@@ -887,7 +1231,6 @@ let value = this.formatValue(att.Default, att.Decimal)
                 console.log('fail', err);
             }
         });
-
     }
 
     _refreshSystemsDisplay() {
@@ -905,9 +1248,7 @@ let value = this.formatValue(att.Default, att.Decimal)
 
     _onSiteInitialized(site: Site, thisViewModel, config) {
 
-        Chart.prototype.initialize();
-
-        //this._injectScript();
+       this._injectScript();
 
         //if (config) {
         //    let configUri = config["configUri"];
@@ -961,12 +1302,7 @@ let value = this.formatValue(att.Default, att.Decimal)
                             sct.selected_location.set(selLoc);
                             sct.show_selected_location.set(selLoc ? true : false);
                             sct.show_add_location.set(selLoc ? false : true);
-                        } else if (sct.sectionType === 'Select System') {
-                            sct.selected_system.bind(this, (selSys) => {
-                                this.selected_system.set(selSys);
-                            })
-                        }
-
+                        } 
                     });
                 });
             }
@@ -1005,20 +1341,48 @@ let value = this.formatValue(att.Default, att.Decimal)
     }
 
     _screensFilter(thisViewModel: any, screen: any) {
-        return true;
-        //let hasSystemSelected = this.selected_system.get()['system'] ? true : false;
-        //return hasSystemSelected || screen.screenOrder === '1';
+        //TODO Go through each screen/section and determine if fields for selected system exist and if so, then return true.
+        //Also 
+        if (this.show_all_for_report.get()) {
+            return true;
+        } else {
+            return this._screenSystemFilter(screen);
+            //let hasFieldsForSystem = false;
+            //this.screens_collection.get().forEach(scr => {
+            //    return this._screenSystemFilter(scr)
+            //    //if (scr["id"] === screen.id && !hasFieldsForSystem) {
+            //    //    scr['sections'].get().forEach(sct => {
+            //    //        sct.fields.get().forEach(f => {
+            //    //            hasFieldsForSystem = f.show.indexOf(this.selected_system_text.get()) !== -1 || f.show.indexOf('All') !== -1
+            //    //                ? true
+            //    //                : hasFieldsForSystem;
+            //    //        });
+            //    //    });
+            //    //}
+            //});
+            //return hasFieldsForSystem;
+        }        
+    }
 
-        //if (hasSystemSelected) {
-        //    //filter to only show fields that are set to show are set for all or for the selected system
-        //    return this.show_all_tabs.get() || screen.showAdvOnly === "False";
-        //}
-        //else {
-        //        return screen.screenOrder === '1'
-        //    }
-        
-        //return this.show_all_tabs.get() || (screen.showAdvOnly === "False" && this.selected_system.get()['system'] || screen.screenOrder === "1");
-        //return this.show_all_tabs.get() || screen.showAdvOnly === "False";
+    _screenSystemFilter(screen, forReport?) {
+        let hasFieldsForSystem = false;
+        let forReportView = forReport;
+        this.screens_collection.get().forEach(scr => {
+            if (scr["id"] === screen.id && !hasFieldsForSystem) {
+                if (forReport && scr['showInReport'] === 'False') {
+                    return false;
+                } else {
+                    scr['sections'].get().forEach(sct => {
+                        sct.fields.get().forEach(f => {
+                            hasFieldsForSystem = f.show.indexOf(this.selected_system_text.get()) !== -1 || f.show.indexOf('All') !== -1
+                                ? true
+                                : hasFieldsForSystem;
+                        });
+                    });
+                }
+            }
+        });
+        return hasFieldsForSystem;
     }
 
     _selectedFilter(thisViewModel: any, obj:any) {
@@ -1046,35 +1410,10 @@ let value = this.formatValue(att.Default, att.Decimal)
 
     }
 
-    _resetDefaults() {
-        this.has_location.set(false);
-        this.screens_collection.set(null);
-        //if (this.screens_collection.get().length > 0) {
-        //    this.screens_collection.getItems().forEach(s => {
-        //        s['sections'].get().forEach(sct => {
-        //            if (sct.sectionType === 'Select System') {
-        //                sct.selected_system.set(null);
-        //                sct.selected_species.set(null);
-        //                sct.selected_prod_meth.set(null);
-        //            }
-        //        });
-        //    });
-        //}
-        this.selected_location.set(null);
-        //this.selected_species.set(null);
-        //this.selected_price_target.set(null);
-        //this.selected_product_weight.set(null);
-        //this.selected_prod_meth.set(null);
-        //this.selected_prod_meth_filter.set(null);
-        //this.selected_species_filter.set(null);
-        //this.selected_system.set(null);
-        //this.selected_annual_harvest.set(null);
-        //this.show_add_location.set(null);
-        //this.show_other_input_params_1.set(null);
-        this.active_screen.set(1);
+    _resetDefaults() {                
         this.esriMap = null;
-        //this.esriBasemapToggle.destroy();
-        //this.esriHomeBtn.destroy();
-        //this.esriSearch.destroy();
+        this.esriBasemapToggle.destroy();
+        this.esriHomeBtn.destroy();
+        this.esriSearch.destroy();        
     }
 }
