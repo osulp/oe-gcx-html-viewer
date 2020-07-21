@@ -1,4 +1,4 @@
-﻿var esriBase = "//js.arcgis.com/3.27/dojo/";
+﻿var esriBase = "//js.arcgis.com/3.31/dojo/";
 if ("geocortexUseLocalEsriApi" in window && geocortexUseLocalEsriApi === true) {
     esriBase = "Resources/Scripts/dojo/";
 }

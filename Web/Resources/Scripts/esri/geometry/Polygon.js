@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/geometry/Polygon","dojo/_base/declare dojo/_base/array dojo/_base/lang dojo/has ../kernel ../lang ../SpatialReference ./Geometry ./Point ./Extent ./mathUtils ../srUtils".split(" "),function(D,p,t,E,q,y,z,F,r,A,u,G){function B(){}function v(){}z={type:"polygon",rings:null};var k=D(F,{declaredClass:"esri.geometry.Polygon",type:"polygon",rings:null,constructor:function(a){this.rings=[];this._ring=0;a&&(t.isArray(a)?this.rings=t.isArray(a[0][0])?a:[a]:a.rings?y.mixin(this,a):this.spatialReference=
 a,this.spatialReference&&(this.spatialReference=G.createSpatialReference(this.spatialReference)));this.verifySR()},addRing:function(a){this.clearCache();this._ring=this.rings.length;this.rings[this._ring]=[];t.isArray(a[0])?p.forEach(a,this._addPointArr,this):p.forEach(a,this._addPoint,this);return this},_addPointArr:function(a){this.rings[this._ring].push(a)},_addPoint:function(a){this.rings[this._ring].push([a.x,a.y])},_insertPoints:function(a,b){this.clearCache();this._ring=b;this.rings[this._ring]||

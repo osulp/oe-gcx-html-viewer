@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/layers/rasterFormats/TiffDecoder",["./Jpg","./Zlib"],function(Pa,ka){var Qa=function(){var a=new ArrayBuffer(4),g=new Uint8Array(a),a=new Uint32Array(a);g[0]=1;g[1]=2;g[2]=3;g[3]=4;return 67305985===a[0]},fb=function(){var a=[];a[254]="NEWSUBFILETYPE";a[255]="SUBFILETYPE";a[256]="IMAGEWIDTH";a[257]="IMAGELENGTH";a[258]="BITSPERSAMPLE";a[259]="COMPRESSION";a[262]="PHOTOMETRICINTERPRETATION";a[263]="THRESHHOLDING";a[264]="CELLWIDTH";a[265]="CELLLENGTH";a[266]="FILLORDER";a[269]="DOCUMENTNAME";
 a[270]="IMAGEDESCRIPTION";a[271]="MAKE";a[272]="MODEL";a[273]="STRIPOFFSETS";a[274]="ORIENTATION";a[277]="SAMPLESPERPIXEL";a[278]="ROWSPERSTRIP";a[279]="STRIPBYTECOUNTS";a[280]="MINSAMPLEVALUE";a[281]="MAXSAMPLEVALUE";a[282]="XRESOLUTION";a[283]="YRESOLUTION";a[284]="PLANARCONFIGURATION";a[285]="PAGENAME";a[286]="XPOSITION";a[287]="YPOSITION";a[288]="FREEOFFSETS";a[289]="FREEBYTECOUNTS";a[290]="GRAYRESPONSEUNIT";a[291]="GRAYRESPONSECURVE";a[292]="T4OPTIONS";a[293]="T6OPTIONS";a[296]="RESOLUTIONUNIT";

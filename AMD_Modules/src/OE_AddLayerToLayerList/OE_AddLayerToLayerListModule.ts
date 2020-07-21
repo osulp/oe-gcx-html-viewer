@@ -37,6 +37,8 @@ export class OE_AddLayerToLayerListModule extends ModuleBase {
     }
 
     _onSiteInitialized(site: Site, thisViewModel) {
+
+        /*
         let thisScope = thisViewModel;
         this.app.eventRegistry.event("ViewActivatedEvent").subscribe(this, (args) => {
             console.log('ViewActivatedEvent args: ', args);
@@ -60,14 +62,15 @@ export class OE_AddLayerToLayerListModule extends ModuleBase {
                 }
             }
         });
+        */
 
-        this.app.commandRegistry.command("OESearchPortalLayers").register(this, this.OESearchPortalLayers);
+        /*this.app.commandRegistry.command("OESearchPortalLayers").register(this, this.OESearchPortalLayers);
         this.app.commandRegistry.command("OEAddMapService").register(this, (args) => {
             this.OEAddMapService(args, thisViewModel);
-        });  //this.OEAddMapService(site, thisScope));
+        });  //this.OEAddMapService(site, thisScope));*/
     }
 
-    OEAddMapService(site: Site, thisViewModel: OE_AddLayerToLayerListModule) {
+    /*OEAddMapService(site: Site, thisViewModel: OE_AddLayerToLayerListModule) {
         let url: string = "https://lib-gis2.library.oregonstate.edu/arcgis/rest/services/restoration/OITT/MapServer";
         let workingService: MapService = new MapService(url);        
         
@@ -121,7 +124,7 @@ export class OE_AddLayerToLayerListModule extends ModuleBase {
             });
 
 
-    }
+    }*/
 
 
 }

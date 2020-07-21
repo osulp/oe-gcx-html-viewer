@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/config",["dojo/_base/config","dojo/topic","dojo/has","./kernel"],function(c,d,e,f){var a=function(){return this}(),b={defaults:{screenDPI:96,geometryService:null,kmlService:null,map:{width:400,height:400,layerNamePrefix:"layer",graphicsLayerNamePrefix:"graphicsLayer",slider:{left:"30px",top:"30px",width:null,height:"200px"},sliderLabel:{tick:5,labels:null,style:"width:2em; font-family:Verdana; font-size:75%;"},sliderChangeImmediate:!0,zoomSymbol:{color:[0,0,0,64],outline:{color:[255,
 0,0,255],width:1.25,style:"esriSLSSolid"},style:"esriSFSSolid"},zoomDuration:500,zoomRate:25,zoomAnimationThrottled:!1,panDuration:350,panRate:25,logoLink:"http://www.esri.com"},autoSpatialIndexing:a.Worker&&!1,io:{errorHandler:function(a,b){d.publish("esri.Error",[a])},proxyUrl:null,alwaysUseProxy:!1,useCors:"with-credentials",corsEnabledServers:[/^https?:\/\/.+\.arcgis\.com(\/|$)/i,"server.arcgisonline.com","services.arcgisonline.com","www.arcgis.com","js.arcgis.com","jsdev.arcgis.com","jsqa.arcgis.com",

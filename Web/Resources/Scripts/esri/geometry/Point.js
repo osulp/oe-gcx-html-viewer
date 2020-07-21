@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/geometry/Point","dojo/_base/declare dojo/_base/lang dojo/has ../kernel ../lang ../SpatialReference ./Geometry ../srUtils".split(" "),function(c,l,q,m,n,f,r,t){function g(a,b){89.99999<b?b=89.99999:-89.99999>b&&(b=-89.99999);b*=.017453292519943;return[111319.49079327169*a,3189068.5*Math.log((1+Math.sin(b))/(1-Math.sin(b)))]}function h(a,b,d){a=a/6378137*57.29577951308232;return d?[a,57.29577951308232*(1.5707963267948966-2*Math.atan(Math.exp(-1*b/6378137)))]:[a-360*Math.floor((a+180)/360),
 57.29577951308232*(1.5707963267948966-2*Math.atan(Math.exp(-1*b/6378137)))]}function k(){}function e(){}function p(a){var b=a._json;a._unquantizeFn?(b=a._unquantizeFn({x:b.x,y:b.y}),a._xVal=b.x,a._yVal=b.y,a._unquantizeFn=null):(a._xVal=b.x,a._yVal=b.y);a._json=null}f={type:"point",x:0,y:0};c=c(r,{declaredClass:"esri.geometry.Point",type:"point",x:0,y:0,constructor:function(a,b,d){l.isArray(a)?(this.x=a[0],this.y=a[1],this.spatialReference=b):n.isObject(a)?(n.mixin(this,a),null!=this.latitude&&(this.y=

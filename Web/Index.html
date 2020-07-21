@@ -18,22 +18,19 @@
 
     <link rel="stylesheet" href="Resources/Styles/splash.css" />
     <style>
-        #myProgress {
+		#oeLoginNotice, #myProgress {
+			display:block;
             width: 95%;
-            background-color: #ddd;
-            margin-top =100px;
-            margin-bottom =100px;
-        }
+            background-color: #fff;
+			text-align: center;
+			font-weight: bold;
+			height:30px;
+			color: #4273b7;
+			font-family: "Segoe UI", "Helvetica Neue", "Droid Sans", Helvetica, Arial, sans-serif;
+		}
 
-        #myBar {
-            width: 1%;
-            height: 100%;
-            padding: 10px;
-            background-color: #4273b7;
-            text-align: center;
-            line-height: 10px;
-            color: white;
-            vertical-align: middle;
+        #myProgress {
+            display:none;
         }
     </style>
 
@@ -45,10 +42,12 @@
             <img class="splash-image" src="Resources/Images/Custom/splash-logo.png" alt="" />
             <br />
             <div id="myProgress">
-                <div id="myBar">10%</div>
-                <div><span id="elem.innerHTML"></span></div>
-                <div id="total_download_time"></div>
+                Spinning up the tool.
             </div>
+            <div id="oeLoginNotice">
+                Please wait a moment.
+            </div>
+            <img src="Resources/Images/Custom/loader-activity12.gif" />
             <br>
             <p class="splash-paragraph">This application uses licensed Geocortex Essentials technology for the Esri<sup>&reg;</sup> ArcGIS platform. All rights reserved.</p>
             <!--<p class="splash-paragraph">Notice! The maps and data used in this tool are temporarily unavailable due to an unforeseen technical difficulty. We apologize for any inconvenience, and are working to bring these services back online as quickly as possible.</p>-->
@@ -58,60 +57,25 @@
 
     <!-- Standard GVH Embed with custom Defaults.json.js configuration -->
     <script src="Resources/Compiled/loader.js"></script>
+    
     <script>
         // Uncomment the below line to only use local copies of Esri API files. This is done automatically in the Geocortex Mobile App Framework.
         //var geocortexUseLocalEsriApi = true;
-        
+
         var viewerConfig = {
-            "configurations": {                
-                "default": "Resources/Config/Default/dev_configs/owrt/Desktop.json.js",
-                "aquaculture": "Resources/Config/Default/dev_configs/aquaculture/Desktop.json.js",
-                "zLayerSite": "Resources/Config/Default/dev_configs/zLayerSite/Desktop.json.js",
-                "oitt": "Resources/Config/Default/dev_configs/oitt/Desktop.json.js",
-                "default_original": "Resources/Config/Default/" + shellName + ".json.js",            
-                "sage_dev_cons_pln": "Resources/Config/Default/dev_configs/sage_dev_cons_pln/Desktop.json.js",
-                "oe_default": "Resources/Config/Default/" + shellName + ".json.js",
-                "add_layer_dev": "Resources/Config/Default/dev_configs/add_layer_dev/Desktop.json.js",
-                "oe_dev": "Resources/Config/Default/dev_configs/owrt/Desktop.json.js",
-                "dev_reg": "Resources/Config/Default/dev_configs/dev_reg/Desktop.json.js",
-                "sage_cons_pln": "Resources/Config/Default/dev_configs/sage_dev_cons_pln/Desktop.json.js",
-                "sage_dev_siting": "Resources/Config/Default/dev_configs/sage_dev_siting/Desktop.json.js",
-                "owrt": "Resources/Config/Default/dev_configs/owrt/Desktop.json.js"
+            "configurations": {
+                "default": "Resources/Config/Default/dev_configs/wildfire/Desktop.json.js",                
+                "default_original": "Resources/Config/Default/" + shellName + ".json.js"                
             },
             "viewerConfigUri": ""
-        };       
-                
-        new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize({
-            onSiteInitialized: function (app, loader) {
-                geocortex.config.io.timeout = 180 * 1000; // 180 seconds
-            }
-        });
-
-        //"default": "Resources/Config/Default/" + shellName + ".json.js"
-
-        //// To load external css or javascript files in your project add the URL for each resource to this array
-        
+        };
+       
+        var oeGCXViewerLoaderSkipLogin = true; 
 
     </script>
 
-    <script>
-        function move() {
-            var elem = document.getElementById("myBar");
-            var width = 1;
-            var id = setInterval(frame, 100);
-            function frame() {
-                if (width >= 100) {
-                    clearInterval(id);
-                } else {
-                    width++;
-                    elem.style.width = width + '%';
-                    elem.innerHTML = width * 1 + '%';
-                }
-            }
-        }
-        new move();
-    </script>    
-
+    <script src="oegcxviewerloader.js"></script>
+    
     <script type="text/javascript">
 
         var _gaq = _gaq || [];
@@ -127,4 +91,4 @@
     </script>
 
 </body>
-</html>
+    </html>

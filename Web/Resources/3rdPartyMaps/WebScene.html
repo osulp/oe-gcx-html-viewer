@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8" />
+	<title>ESRI WebScene</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link href="3rdParty.css" rel="stylesheet" type="text/css" />
+    <style>
+      html,
+      body,
+      #map-container {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.13/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.13/"></script>
+	<script src="../Scripts/Bridge.js"></script>
+    <script src="ThirdPartyMap.js"></script>
+    <script>
+		require(["esri/WebScene", "esri/views/SceneView", "esri/identity/IdentityManager", "esri/config"], function(WebScene, SceneView, esriId, esriConfig) {
+
+			/**
+			 * Fill this out with the ID of the web scene to use in this control.
+			 * It may be secured as long as the AGOL or portal user logged in to Essentials can also view this item.
+			 */
+			var webSceneId = "";
+
+			var isReady = false;
+			var allowExtentChanges = true;
+			var webscene;
+			var view;
+			var lastPosition;
+			
+			var thirdPartyMap = new geocortex.essentialsHtmlViewer.integration.ThirdPartyMap({
+				id: "webScene",
+				initializeMap: initializeMap,
+				getMapViewpointParams: getMapViewpointParams,
+				handleViewerPositionUpdatedEvent: handleViewerPositionUpdatedEvent,
+				handleViewpointIndicatorUpdatedEvent: handleViewpointIndicatorUpdatedEvent,
+				handleSharedArcGISTokenUpdate: handleSharedArcGISTokenUpdate,
+				sharedArcGISToken: true,
+				updateOnDrag: false
+			});
+			
+			/**
+			 * Gets the current xy position of the WebScene.
+			 */
+			function getMapViewpointParams() {
+				if (!view || !view.center) {
+					return;
+				}
+			
+				var pos = view.center;
+
+				return {
+					center: {
+						x: pos.longitude,
+						y: pos.latitude
+					},
+					heading: view.camera.heading
+				};
+			}
+			
+			/**
+			 * Updates the 4.x WebScene xy location to match the viewer.
+			 */
+			function handleViewerPositionUpdatedEvent(arg) {
+				if (!view) {
+					return;
+				}
+				
+				if (lastPosition && arg.position.x === lastPosition.x && arg.position.y === lastPosition.y) {
+					return;
+				}
+				
+				allowExtentChanges = false;
+			
+				if (!isReady) {
+			
+					view.goTo({
+						center: [arg.position.x, arg.position.y],
+
+					}).then(function() {
+		
+						// Add handlers after we have received and set our first position
+						view.watch("extent", function (ext) {
+							if (allowExtentChanges) {
+								thirdPartyMap.handleViewpointChanged();
+							}
+						});	
+						
+						allowExtentChanges = true;
+					});
+		
+					isReady = true;
+
+				} else {
+					allowExtentChanges = false;
+					view.goTo({
+						center: [arg.position.x, arg.position.y],
+						heading: view.camera.heading
+					}).then(function() {
+						allowExtentChanges = true;
+					});
+				}
+				
+				lastPosition = arg.position;
+			}
+			
+			/**
+			 * Updates the 4.x WebScene map to match the viewpoint indicator position.
+			 */
+			function handleViewpointIndicatorUpdatedEvent(arg) {
+				if (!view || !arg) {
+					return;
+				}
+				
+				if (lastPosition && arg.x === lastPosition.x && arg.y === lastPosition.y) {
+					return;
+				}
+				
+				allowExtentChanges = false;
+			
+				view.goTo({
+					center: [arg.x, arg.y],
+					heading: view.camera.heading
+				}).then(function () {
+					allowExtentChanges = true;
+				});
+				
+				lastPosition = arg;
+			}
+
+			function handleSharedArcGISTokenUpdate(token) {
+				esriId.registerToken({
+					server: esriConfig.portalUrl,
+					token: token
+				});
+			}
+			
+			/**
+			 * Initializes the WebScene.
+			 */
+			function initializeMap(message) {
+				if (message.portalUrl) {
+					esriConfig.portalUrl = message.portalUrl;
+				}
+
+				if (message.token) {
+					handleSharedArcGISTokenUpdate(message.token);
+				}
+
+				webscene = new WebScene({
+					portalItem: {
+						id: webSceneId
+					}
+				});
+
+				view = new SceneView({
+					container: "map-container",
+					map: webscene
+				});		
+
+				if (message.indicatorUrl) {
+					var indicator = document.getElementsByClassName("viewpoint-indicator")[0];
+					if (indicator) {
+						indicator.style.backgroundImage = "url('../../" + message.indicatorUrl + "')";
+					}
+				}
+			}
+		});
+		
+    </script>
+  </head>
+  <body>
+	<ul class="integration-panel-actions">
+        <li class="panel-action-button">
+            <button class="viewpoint-indicator" title="Viewpoint Indicator"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="centerButton" class="center-map" title="Center this map to the viewer"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="syncButton" class="sync-toggle-off" title="Synchronize Maps"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="dockButton" class="window-popout" title="Open in new window"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="closeButton" class="window-close" title="Close this map view"></button>
+        </li>
+    </ul>
+    <div id="map-container" class="map-container"></div>
+  </body>
+</html>

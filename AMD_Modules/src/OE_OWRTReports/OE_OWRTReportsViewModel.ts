@@ -1352,7 +1352,7 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         
         // Create the chart.
         let chart = <any>this.app.viewManager.createView({
-            markupResource: "Charting/charting/Chart.html",
+            markupResource: "geocortex/charting/Chart.html",
             typeName: "geocortex.charting.Chart",
             isVisible: true,
             libraryId: "Charting",

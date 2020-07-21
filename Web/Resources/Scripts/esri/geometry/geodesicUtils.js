@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/geometry/geodesicUtils","dojo/_base/array dojo/_base/lang dojo/has ../kernel ../SpatialReference ./Point ./Polyline ./Polygon".split(" "),function(u,H,N,O,C,w,D,I){function J(a){return!!(a&&a.wkid&&E[a.wkid])}function B(a){return J(a)?E[a.wkid]:E[4326]}function x(a){var m=a.spatialReference,b=B(m),e=b.a,b=b.eSq,k=Math.sqrt(b),d=Math.sin(a.y*r);return new w(e*a.x*r,0<b?e*(1-b)*(d/(1-b*d*d)-1/(2*k)*Math.log((1-k*d)/(1+k*d)))*.5:e*d,m)}function y(a,m,b,e,k){var d=B(k),f=d.a,g=d.b,d=d.f,
 n=Math.sin(b);b=Math.cos(b);var c=(1-d)*Math.tan(a);a=1/Math.sqrt(1+c*c);for(var h=c*a,z=Math.atan2(c,b),c=a*n,t=c*c,v=1-t,f=v*(f*f-g*g)/(g*g),K=1+f/16384*(4096+f*(-768+f*(320-175*f))),u=f/1024*(256+f*(-128+f*(74-47*f))),f=e/(g*K),A=2*Math.PI,q,l,p,L;1E-12<Math.abs(f-A);)p=Math.cos(2*z+f),q=Math.sin(f),l=Math.cos(f),L=u*q*(p+u/4*(l*(-1+2*p*p)-u/6*p*(-3+4*q*q)*(-3+4*p*p))),A=f,f=e/(g*K)+L;e=h*q-a*l*b;g=d/16*v*(4+d*(4-3*v));return new w((m+(Math.atan2(q*n,a*l-h*q*b)-(1-g)*d*c*(f+g*q*(p+g*l*(-1+2*p*

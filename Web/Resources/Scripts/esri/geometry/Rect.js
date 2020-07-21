@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/geometry/Rect","dojo/_base/declare dojo/_base/lang dojo/has ../kernel ../lang ./Geometry ./Point ./Extent ../srUtils".split(" "),function(k,l,m,c,g,n,p,q,r){function h(a){return new q(parseFloat(a.x),parseFloat(a.y)-parseFloat(a.height),parseFloat(a.x)+parseFloat(a.width),parseFloat(a.y),a.spatialReference)}var b=k(n,{declaredClass:"esri.geometry.Rect",type:"rect",x:0,y:0,width:100,height:100,constructor:function(a,d,b,e,f){g.isObject(a)&&"extent"===a.type&&(d=a.ymax,b=a.getWidth(),e=
 a.getHeight(),f=a.spatialReference,a=a.xmin);g.isObject(a)?(g.mixin(this,a),this.spatialReference&&(this.spatialReference=r.createSpatialReference(this.spatialReference))):(this.x=a,this.y=d,this.width=b,this.height=e,this.spatialReference=f);this.verifySR()},getCenter:function(){return new p(this.x+this.width/2,this.y+this.height/2,this.spatialReference)},offset:function(a,d){return new b(this.x+a,this.y+d,this.width,this.height,this.spatialReference)},intersects:function(a){return a.x+a.width<=

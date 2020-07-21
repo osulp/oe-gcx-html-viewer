@@ -1,6 +1,6 @@
 {
     "configuration": {
-        "version": "2.12",
+        "version": "4.13",
         "application": {
             "proxyUri": "proxy.ashx?",
                 "contentPolicy": {
@@ -57,22 +57,7 @@
                 ]
             },
             {
-                "id": "Mapping.Charting",
-                "uri": "Resources/Compiled/Mapping.Charting.js",
-                "locales": [
-                    {
-                        "locale": "en-US",
-                        "uri": "Resources/Locales/Mapping.Charting.en-US.json.js"
-                    },
-                    {
-                        "locale": "inv",
-                        "uri": "Resources/Locales/Mapping.Charting.en-US.json.js"
-                    }
-                ]
-            },
-            {
                 "id": "Charting",
-                "uri": "Resources/Compiled/Charting.js",
                 "locales": [
                     {
                         "locale": "en-US",
@@ -129,35 +114,7 @@
                        "expandLayerTreeOnVisible": true,
                        "downloadWorkflowEnabled": true
                    }
-               }, 
-                {
-                    "moduleName": "InitialExtent",
-                    "moduleType": "oe.initial_extent.InitialExtentModule",
-                    "libraryId": "Custom",
-                    "configuration": {}
-                },
-                {
-                    "moduleName": "Elevation",
-                    "moduleType": "oe.elevation.ElevationModule",
-                    "libraryId": "Custom",
-                    "configuration": {},
-                    "views": [{
-                        "id": "ElevationModuleView",
-                        "viewModelId": "ElevationModuleViewModel",
-                        "visible": false,
-                        "markup": "Modules/Elevation/ElevationModuleView.html",
-                        "type": "oe.elevation.ElevationModuleView",
-                        "region": "LeftFooterRegion",
-                        "configuration": {}
-                    }
-                    ],
-                    "viewModels": [{
-                        "id": "ElevationModuleViewModel",
-                        "type": "oe.elevation.ElevationModuleViewModel",
-
-                        "configuration": {}
-                    }]
-                },
+               },               
             {
                 "moduleName": "Menu",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.Menu.MenuModule",
@@ -658,6 +615,21 @@
                                     "commandParameter": "{{context}}"
                                 },
                                 {
+                                    "text": "@language-menu-show-charting-view",
+                                    "description": "@language-menu-show-charting-view-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/charting-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "ShowChartingView"
+                                },
+                                {
+                                    "text": "@language-menu-run-report",
+                                    "description": "@language-menu-run-report-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
+                                    "command": "ListReports",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
                                     "text": "@language-menu-identify-buffered-feature-set-collection",
                                     "description": "@language-menu-identify-buffered-feature-set-collection-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/buffer-shape-24.png",
@@ -666,11 +638,20 @@
                                     "commandParameter": "{{context}}"
                                 },
                                 {
-                                    "text": "@language-menu-show-charting-view",
-                                    "description": "@language-menu-show-charting-view-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/charting-24.png",
-                                    "hideOnDisable": true,
-                                    "command": "ShowChartingView"
+                                    "text": "@language-menu-save-results",
+                                    "description": "@language-menu-save-results-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
+                                    "command": "ShowSaveSelectionDialog",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-menu-combine-results",
+                                    "description": "@language-menu-combine-results-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
+                                    "command": "ShowSearchOptions",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
                                 },
                                 {
                                     "text": "@language-menu-export-results-to-csv",
@@ -706,35 +687,11 @@
                                     }
                                 },
                                 {
-                                    "text": "@language-menu-run-report",
-                                    "description": "@language-menu-run-report-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
-                                    "command": "ListReports",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": true
-                                },
-                                {
                                     "text": "@language-menu-browse-saved-results",
                                     "description": "@language-menu-browse-saved-results-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/open-24.png",
                                     "command": "ListSelections",
-                                    "hideOnDisable": false
-                                },
-                                {
-                                    "text": "@language-menu-save-results",
-                                    "description": "@language-menu-save-results-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
-                                    "command": "ShowSaveSelectionDialog",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": false
-                                },
-                                {
-                                    "text": "@language-menu-combine-results",
-                                    "description": "@language-menu-combine-results-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
-                                    "command": "ShowSearchOptions",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": false
+                                    "hideOnDisable": true
                                 }
                             ]
                         },
@@ -760,6 +717,21 @@
                                     "commandParameter": "{{context}}"
                                 },
                                 {
+                                    "text": "@language-menu-show-charting-view",
+                                    "description": "@language-menu-show-charting-view-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/charting-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "ShowChartingView"
+                                },
+                                {
+                                    "text": "@language-menu-run-report",
+                                    "description": "@language-menu-run-report-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
+                                    "command": "ListReports",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
                                     "text": "@language-menu-identify-buffered-feature-set-collection",
                                     "description": "@language-menu-identify-buffered-feature-set-collection-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/buffer-shape-24.png",
@@ -768,11 +740,20 @@
                                     "commandParameter": "{{context}}"
                                 },
                                 {
-                                    "text": "@language-menu-show-charting-view",
-                                    "description": "@language-menu-show-charting-view-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/charting-24.png",
-                                    "hideOnDisable": true,
-                                    "command": "ShowChartingView"
+                                    "text": "@language-menu-save-results",
+                                    "description": "@language-menu-save-results-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
+                                    "command": "ShowSaveSelectionDialog",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-menu-combine-results",
+                                    "description": "@language-menu-combine-results-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
+                                    "command": "ShowSearchOptions",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
                                 },
                                 {
                                     "text": "@language-menu-export-results-to-csv",
@@ -808,35 +789,11 @@
                                     }
                                 },
                                 {
-                                    "text": "@language-menu-run-report",
-                                    "description": "@language-menu-run-report-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
-                                    "command": "ListReports",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": true
-                                },
-                                {
                                     "text": "@language-menu-browse-saved-results",
                                     "description": "@language-menu-browse-saved-results-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/open-24.png",
                                     "command": "ListSelections",
-                                    "hideOnDisable": false
-                                },
-                                {
-                                    "text": "@language-menu-save-results",
-                                    "description": "@language-menu-save-results-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
-                                    "command": "ShowSaveSelectionDialog",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": false
-                                },
-                                {
-                                    "text": "@language-menu-combine-results",
-                                    "description": "@language-menu-combine-results-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
-                                    "command": "ShowSearchOptions",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": false
+                                    "hideOnDisable": true
                                 }
                             ]
                         },
@@ -1041,24 +998,9 @@
                                     "commandParameter": "{{context}}"
                                 },
                                 {
-                                    "text": "@language-feature-editing-union-text",
-                                    "description": "@language-feature-editing-union-desc",
-                                    "iconUri": "Resources/Images/Icons/polygon-add-24.png",
-                                    "hideOnDisable": true,
-                                    "command": "UnionFeaturesInteractive",
-                                    "commandParameter": "{{context}}"
-                                },
-                                {
-                                    "text": "@language-menu-identify-buffered-feature-set-collection",
-                                    "description": "@language-menu-identify-buffered-feature-set-collection-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/buffer-shape-24.png",
-                                    "hideOnDisable": true,
-                                    "command": "IdentifyBufferedFeatureSet",
-                                    "commandParameter": "{{context}}"
-                                },
-                                {
                                     "text": "@language-menu-select-all",
                                     "description": "@language-menu-select-all-desc",
+                                    "libraryId": "Mapping.Infrastructure",
                                     "iconUri": "Resources/Images/Icons/Toolbar/star-add-all-24.png",
                                     "hideOnDisable": true,
                                     "command": "AddFeatureSetToStarredSelection",
@@ -1067,6 +1009,7 @@
                                 {
                                     "text": "@language-menu-deselect-all",
                                     "description": "@language-menu-deselect-all-desc",
+                                    "libraryId": "Mapping.Infrastructure",
                                     "iconUri": "Resources/Images/Icons/Toolbar/star-remove-all-24.png",
                                     "hideOnDisable": true,
                                     "command": "RemoveFeatureSetFromStarredSelection",
@@ -1078,6 +1021,38 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/charting-24.png",
                                     "hideOnDisable": true,
                                     "command": "ShowChartingView"
+                                },
+                                {
+                                    "text": "@language-menu-run-report",
+                                    "description": "@language-menu-run-report-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
+                                    "command": "ListReports",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-menu-results-remove-feature-set",
+                                    "description": "@language-menu-results-remove-feature-set-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/trash-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "RemoveFeatureSetFromResults",
+                                    "commandParameter": "{{context}}"
+                                },
+                                {
+                                    "text": "@language-menu-identify-buffered-feature-set-collection",
+                                    "description": "@language-menu-identify-buffered-feature-set-collection-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/buffer-shape-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "IdentifyBufferedFeatureSet",
+                                    "commandParameter": "{{context}}"
+                                },
+                                {
+                                    "text": "@language-feature-editing-union-text",
+                                    "description": "@language-feature-editing-union-desc",
+                                    "iconUri": "Resources/Images/Icons/polygon-add-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "UnionFeaturesInteractive",
+                                    "commandParameter": "{{context}}"
                                 },
                                 {
                                     "text": "@language-menu-export-results-to-csv",
@@ -1113,10 +1088,18 @@
                                     }
                                 },
                                 {
-                                    "text": "@language-menu-run-report",
-                                    "description": "@language-menu-run-report-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
-                                    "command": "ListReports",
+                                    "text": "@language-menu-save-results",
+                                    "description": "@language-menu-save-results-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
+                                    "command": "ShowSaveSelectionDialog",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-menu-combine-results",
+                                    "description": "@language-menu-combine-results-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
+                                    "command": "ShowSearchOptions",
                                     "commandParameter": "{{context}}",
                                     "hideOnDisable": true
                                 },
@@ -1125,31 +1108,7 @@
                                     "description": "@language-menu-browse-saved-results-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/open-24.png",
                                     "command": "ListSelections",
-                                    "hideOnDisable": false
-                                },
-                                {
-                                    "text": "@language-menu-save-results",
-                                    "description": "@language-menu-save-results-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
-                                    "command": "ShowSaveSelectionDialog",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": false
-                                },
-                                {
-                                    "text": "@language-menu-combine-results",
-                                    "description": "@language-menu-combine-results-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
-                                    "command": "ShowSearchOptions",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": false
-                                },
-                                {
-                                    "text": "@language-menu-results-remove-feature-set",
-                                    "description": "@language-menu-results-remove-feature-set-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/trash-24.png",
-                                    "hideOnDisable": true,
-                                    "command": "RemoveFeatureSetFromResults",
-                                    "commandParameter": "{{context}}"
+                                    "hideOnDisable": true
                                 }
                             ]
                         },
@@ -1193,22 +1152,6 @@
                                     "commandParameter": "{{context}}"
                                 },
                                 {
-                                    "text": "@language-feature-editing-union-text",
-                                    "description": "@language-feature-editing-union-desc",
-                                    "iconUri": "Resources/Images/Icons/polygon-add-24.png",
-                                    "hideOnDisable": true,
-                                    "command": "UnionFeaturesInteractive",
-                                    "commandParameter": "{{context}}"
-                                },
-                                {
-                                    "text": "@language-menu-identify-buffered-feature-set-collection",
-                                    "description": "@language-menu-identify-buffered-feature-set-collection-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/buffer-shape-24.png",
-                                    "hideOnDisable": true,
-                                    "command": "IdentifyBufferedFeatureSet",
-                                    "commandParameter": "{{context}}"
-                                },
-                                {
                                     "text": "@language-menu-select-all",
                                     "description": "@language-menu-select-all-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/star-add-all-24.png",
@@ -1230,6 +1173,62 @@
                                     "iconUri": "Resources/Images/Icons/Toolbar/charting-24.png",
                                     "hideOnDisable": true,
                                     "command": "ShowChartingView"
+                                },
+                                {
+                                    "text": "@language-menu-run-report",
+                                    "description": "@language-menu-run-report-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
+                                    "command": "ListReports",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-menu-identify-buffered-feature-set-collection",
+                                    "description": "@language-menu-identify-buffered-feature-set-collection-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/buffer-shape-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "IdentifyBufferedFeatureSet",
+                                    "commandParameter": "{{context}}"
+                                },
+                                {
+                                    "text": "@language-menu-save-results",
+                                    "description": "@language-menu-save-results-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
+                                    "command": "ShowSaveSelectionDialog",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-menu-results-remove-feature-set",
+                                    "description": "@language-menu-results-remove-feature-set-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/trash-24.png",
+                                    "hideOnDisable": true,
+                                    "batch": [
+                                        {
+                                            "command": "HideFeatureSetResultsView"
+                                        },
+                                        {
+                                            "command": "RemoveFeatureSetFromResults",
+                                            "commandParameter": "{{context}}",
+                                            "abortBatchOnFailure": true
+                                        }
+                                    ]
+                                },
+                                {
+                                    "text": "@language-menu-combine-results",
+                                    "description": "@language-menu-combine-results-desc",
+                                    "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
+                                    "command": "ShowSearchOptions",
+                                    "commandParameter": "{{context}}",
+                                    "hideOnDisable": true
+                                },
+                                {
+                                    "text": "@language-feature-editing-union-text",
+                                    "description": "@language-feature-editing-union-desc",
+                                    "iconUri": "Resources/Images/Icons/polygon-add-24.png",
+                                    "hideOnDisable": true,
+                                    "command": "UnionFeaturesInteractive",
+                                    "commandParameter": "{{context}}"
                                 },
                                 {
                                     "text": "@language-menu-export-results-to-csv",
@@ -1265,51 +1264,11 @@
                                     }
                                 },
                                 {
-                                    "text": "@language-menu-run-report",
-                                    "description": "@language-menu-run-report-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
-                                    "command": "ListReports",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": true
-                                },
-                                {
                                     "text": "@language-menu-browse-saved-results",
                                     "description": "@language-menu-browse-saved-results-desc",
                                     "iconUri": "Resources/Images/Icons/Toolbar/open-24.png",
                                     "command": "ListSelections",
-                                    "hideOnDisable": false
-                                },
-                                {
-                                    "text": "@language-menu-save-results",
-                                    "description": "@language-menu-save-results-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
-                                    "command": "ShowSaveSelectionDialog",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": false
-                                },
-                                {
-                                    "text": "@language-menu-combine-results",
-                                    "description": "@language-menu-combine-results-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
-                                    "command": "ShowSearchOptions",
-                                    "commandParameter": "{{context}}",
-                                    "hideOnDisable": false
-                                },
-                                {
-                                    "text": "@language-menu-results-remove-feature-set",
-                                    "description": "@language-menu-results-remove-feature-set-desc",
-                                    "iconUri": "Resources/Images/Icons/Toolbar/trash-24.png",
-                                    "hideOnDisable": true,
-                                    "batch": [
-                                        {
-                                            "command": "HideFeatureSetResultsView"
-                                        },
-                                        {
-                                            "command": "RemoveFeatureSetFromResults",
-                                            "commandParameter": "{{context}}",
-                                            "abortBatchOnFailure": true
-                                        }
-                                    ]
+                                    "hideOnDisable": true
                                 }
                             ]
                         },
@@ -1545,7 +1504,8 @@
                             "disableMapKeyboardNavigation": false,
                             "extentBroadcastFrequency": 20,
                             "fitTiledMapsToExtent": false,
-                            "showAttribution": true
+                            "showAttribution": true,
+                            "showLabels": true
                         }
                     },
                     {
@@ -1656,7 +1616,7 @@
                     "keyboardFocusIndicatorColor": "#550055",
                     "expandedMapKeyboardAccessibility": true,
                     "automaticElementFocusing": true,
-                    "includeProviders": true,
+                    "includeProviders": false,
                     "providers": [
                         {
                             "id": "MapTextProvider",
@@ -1742,7 +1702,7 @@
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.accessibility.AccessibilityIconViewModel",
                         "configuration": {
                             "included": true,
-                            "content": "%3Cp%3E%0AThis%20application%20provides%20enhanced%20access%20to%20end-users%20with%20disabilities%3A%20it%20enables%20full%20keyboard%20control%2C%20is%20screen%20reader%20friendly%2C%20and%20contains%20other%20features%20to%20make%20mapping%20technology%20more%20accessible%20to%20the%20largest%20possible%20audience%20of%20potential%20users%2C%20regardless%20of%20their%20level%20of%20ability.%20%3Cbr%3E%3Cbr%3E%20Geocortex%20Viewer%20for%20HTML5%20conforms%20to%20%3Ca%20href%3D%22http%3A%2F%2Fwww.w3.org%2FTR%2FWCAG20%2F%22%20target%3D%22_blank%22%3EWCAG%202.0%3C%2Fa%3E%20level%20AA%20(international%20%26amp%3B%20United%20States)%2C%20as%20part%20of%20Latitude%20Geographics'%20Geocortex%20Essentials%20technology%20for%20Esri's%20ArcGIS%20platform.%0A%3C%2Fp%3E",
+                            "content": "%3Cp%3E%0AThis%20application%20provides%20enhanced%20access%20to%20end-users%20with%20disabilities%3A%20it%20enables%20full%20keyboard%20control%2C%20is%20screen%20reader%20friendly%2C%20and%20contains%20other%20features%20to%20make%20mapping%20technology%20more%20accessible%20to%20the%20largest%20possible%20audience%20of%20potential%20users%2C%20regardless%20of%20their%20level%20of%20ability.%20%3Cbr%3E%3Cbr%3E%20Geocortex%20Viewer%20for%20HTML5%20conforms%20to%20%3Cstrong%3E%3Ca%20href%3D%22http%3A%2F%2Fwww.w3.org%2FTR%2FWCAG20%2F%22%20target%3D%22_blank%22%3EWCAG%202.0%3C%2Fa%3E%3C%2Fstrong%3E%20level%20AA%20(international%20%26amp%3B%20United%20States)%2C%20as%20part%20of%20Latitude%20Geographics'%20Geocortex%20Essentials%20technology%20for%20Esri's%20ArcGIS%20platform.%0A%3C%2Fp%3E",
                             "title": "@language-accessibility-map-title"
                         }
                     }
@@ -2028,7 +1988,7 @@
             {
                 "moduleName": "Charting",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.charting.ChartingModule",
-                "libraryId": "Mapping.Charting",
+                "deferLoading": true,
                 "configuration": {
                     "infrastructureLibraryId": "Charting",
                     "adapters": [
@@ -2074,8 +2034,8 @@
                         "id": "ChartingView",
                         "viewModelId": "ChartingViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.charting.ChartingView",
-                        "markup": "Mapping.Charting/modules/Charting/ChartingView.html",
-                        "libraryId": "Mapping.Charting",
+                        "markup": "Mapping/modules/Charting/ChartingView.html",
+                        "libraryId": "Mapping",
                         "region": "BottomPanelRegion",
                         "visible": false,
                         "configuration": {}
@@ -2085,7 +2045,7 @@
                     {
                         "id": "ChartingViewModel",
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.charting.ChartingViewModel",
-                        "libraryId": "Mapping.Charting",
+                        "libraryId": "Mapping",
                         "configuration": {
                             "chartingEnabled": true,
                             "chartConfiguration": {
@@ -2204,11 +2164,7 @@
                         "type": "geocortex.essentialsHtmlViewer.mapping.modules.collaboration.events.EventEditViewModel",
                         "require": "Mapping/modules/Collaboration/Events/EventEditViewModel",
                         "configuration": {
-                            "characterLimit": 1000,
-                            "editableTypes": [
-                                "ShareMarkupEvent",
-                                "ShareImageEvent"
-                            ]
+                            "characterLimit": 1000
                         }
                     },
                     {
@@ -3065,18 +3021,12 @@
                         {
                             "name": "EditorFeatureSelectedBehavior",
                             "commands": [
-                                "ZoomToFeature",
-                                "SetActiveHighlightLayerDefault",
-                                "ClearHighlights",
-                                "HighlightFeature"
+                                "ZoomToFeature"
                             ]
                         },
                         {
                             "name": "EditorRemoveFeatureSelectedBehavior",
-                            "commands": [
-                                "SetActiveHighlightLayerDefault",
-                                "ClearHighlights"
-                            ]
+                            "commands": []
                         }
                     ]
                 },
@@ -3311,6 +3261,7 @@
             {
                 "moduleName": "FeatureDetails",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.FeatureDetails.FeatureDetailsModule",
+                "moduleDependencies": [ "Charting" ],
                 "deferLoading": true,
                 "configuration": {
                     "defaultViewMode": "compact",
@@ -3371,9 +3322,9 @@
                             "type": "geocortex.essentialsHtmlViewer.mapping.modules.charting.SingleFeatureChartViewModel",
                             "viewId": "FeatureChartsProviderView",
                             "viewType": "geocortex.essentialsHtmlViewer.mapping.modules.charting.SingleFeatureChartView",
-                            "libraryId": "Mapping.Charting",
+                            "libraryId": "Mapping",
                             "iconUri": "Resources/Images/Icons/charting-24.png",
-                            "markup": "Mapping.Charting/modules/Charting/SingleFeatureChartView.html",
+                            "markup": "Mapping/modules/Charting/SingleFeatureChartView.html",
                             "title": "@language-feature-charts",
                             "config": {
                                 "infrastructureLibraryId": "Charting",
@@ -3996,9 +3947,9 @@
             {
                 "moduleName": "InsightIntegration",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.insightIntegration.InsightIntegrationModule",
-                "isEnabled": false,
+                "isEnabled": true,
                 "configuration": {
-                    "dataRelayUri": "http://localhost/Geocortex/Analytics/ClientRelay",
+                    "dataRelayUri": "https://lib-geocortex.library.oregonstate.edu/Geocortex/Analytics/ClientRelay",
                     "dataRelayIntervalInSeconds": 30
                 }
             },
@@ -8987,6 +8938,7 @@
                 "configuration": {
                     "maxRenderClasses": 12,
                     "maxSamples": 1000,
+                    "useAdvancedQueries": true,
                     "defaultPointColor": [
                         150,
                         150,

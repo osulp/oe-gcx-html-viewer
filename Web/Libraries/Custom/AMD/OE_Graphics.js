@@ -56,12 +56,6 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase", "geo
                 this.app.commandRegistry.command("OETagNextMarkup").register(this, this._oeTagNextMarkup);
                 //custom clear commmand
                 this.app.commandRegistry.command("OEClearTaggedMarkup").register(this, this._oeClearOEMarkup);
-                //this.app.commandRegistry.command("OENextMarkupColor").register(this, this._oeSetNextMarkUpColor);            
-                //ViewInitializedEvent
-                //ViewActivatedEvent
-                /*this.app.eventRegistry.event("ViewInitializedEvent").subscribe(this, (args) => {
-                    this._OEMapTipView(args);
-                });               */
                 this.app.eventRegistry.event("MarkupAddedEvent").subscribe(this, function (args) {
                     _this._markupAddedEvent(args);
                 });
@@ -74,18 +68,6 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase", "geo
                 });
             }
         };
-        /*_OEMapTipView(args) {
-    
-            //if (args.markupResource !== "Mapping/infrastructure/ui/components/FeatureSelector/FeatureSelectorView.html")
-              //  return;
-    
-            if (args.id != "MapTipView")
-                return;
-    
-            //$(".map-tip-title").text("test name test");
-            if (this.customFeaturesIn != null && this.customFeaturesIn.name != "")
-                setTimeout(function () { $(".map-tip-title").text(this.customFeaturesIn.name); }, 200);
-        }*/
         OE_GraphicsModule.prototype._oeIsOEMarkup = function (graphic) {
             if (typeof graphic == "undefined" || graphic == null)
                 return false;
@@ -118,7 +100,6 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase", "geo
                 this.app.command("DeleteMarkup").raiseCanExecuteChanged(),
                 this.app.command("ExportMarkupLayer").raiseCanExecuteChanged(),
                 this.app.event("MarkupClearedEvent").publish();
-            //this.app.command("LogOptimizerEvent").execute("ClearMarkupTool", "ClearAllMarkup")
         };
         OE_GraphicsModule.prototype._oeTagNextMarkup = function (featuresIn) {
             this.tagNextMarkup = true;
@@ -129,9 +110,7 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase", "geo
         };
         OE_GraphicsModule.prototype._markupAddedEvent = function (graphic) {
             if (this.tagNextMarkup == true) {
-                //graphic.setAttributes({ "oe_markup": "oe", "name": "Custom Name", "title": "Custom Title" });
                 graphic["oe_markup"] = true;
-                //graphic.attributes = { "Extra Info": "extra Extra EXTRA!" };
                 if (this.customFeaturesIn != undefined && this.customFeaturesIn != "") {
                     //feature group (for clearing specific groups)
                     if (this.customFeaturesIn.group != undefined && this.customFeaturesIn.group != "") {
@@ -145,20 +124,17 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase", "geo
                     }
                     //feature color
                     if (this.customFeaturesIn.color != "") {
-                        /*var fillSymbol = new esri.symbol.FillSymbol();
-                        var outlineSymbol = new esri.symbol.SimpleLineSymbol();
-    
-                        outlineSymbol.setColor(esri.Color.fromString(this.customFeaturesIn.color));
-                        outlineSymbol.color.a = 1;
-    
-                        fillSymbol.setColor(esri.Color.fromString(this.customFeaturesIn.color))
-                        fillSymbol.color.a = .30;
-                        fillSymbol.setOutline(outlineSymbol);
-    
-                        this.app.commandRegistry.commands["ChangeMarkupStyle"].execute();*/
-                        graphic.symbol.setColor(esri.Color.fromString(this.customFeaturesIn.color));
-                        //graphic.symbol.color.a = .30;
-                        graphic.symbol["outline"].setColor(esri.Color.fromString(this.customFeaturesIn.color));
+                        graphic.symbol.setColor(esri.Color.fromHex("#000000"));
+                        var workingRBGString = this.customFeaturesIn.color.replace(/[rgb()" \s]/g, "");
+                        var rgbArray = workingRBGString.split(",");
+                        graphic.symbol.color.r = parseInt(rgbArray[0]);
+                        graphic.symbol.color.g = parseInt(rgbArray[1]);
+                        graphic.symbol.color.b = parseInt(rgbArray[2]);
+                        graphic.symbol.color.a = Number(rgbArray[3]);
+                        graphic.symbol["outline"].color = esri.Color.fromHex("#000000");
+                        graphic.symbol["outline"].color.r = graphic.symbol.color.r;
+                        graphic.symbol["outline"].color.g = graphic.symbol.color.g;
+                        graphic.symbol["outline"].color.b = graphic.symbol.color.b;
                         graphic.symbol["outline"].color.a = 1;
                         if (this.app.markupLayer["value"] != undefined && this.app.markupLayer["value"] != "")
                             this.app.markupLayer["value"].refresh();
@@ -178,8 +154,7 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase", "geo
                 }
                 else if (pointIn.graphic.getSourceLayer().id === 'Drawings') {
                     if (this._oeIsOEMarkup(pointIn.graphic)) {
-                        //oe graphic, edit and mark that OE was the last graphic edited
-                        //this.app.commandRegistry.commands['EditMarkup'].execute(pointIn.graphic.geometry);
+                        //oe graphic, edit and mark that OE was the last graphic edited                    
                         this.lastGraphicWasOE = true;
                         if (!this.hideMapTipOnEdit) {
                             //document.getElementById("map_graphics_layer").className["baseVal"] = "";
@@ -209,21 +184,7 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase", "geo
                 }
             }
         };
-        /*_checkChildCount(selectedGraphic) {
-    
-            //redraw the square selection outline around the graphic
-    
-            var svgElement = document.getElementById("map_graphics_layer");
-            var elements = svgElement.getElementsByTagName("path");
-    
-            let str: String = elements[0].getAttribute("d");
-            let pathParts: String[] = str.split(" ");
-            pathParts.splice(pathParts.length - 2, 1);
-            elements[0].setAttribute("d", pathParts.join(" "));
-        
-        }*/
         OE_GraphicsModule.prototype._markupEditingStarted = function (selectedGraphic) {
-            //if (this.hideMapTipOnEdit && selectedGraphic["oe_markup"] == true)        
             if (this._oeIsOEMarkup(selectedGraphic)) {
                 if (this.hideMapTipOnEdit)
                     this.app.commandRegistry.commands["HideMapTips"].execute();
@@ -247,7 +208,6 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase", "geo
             //change color        
             if (this._oeIsOEMarkup(selectedGraphic)) {
                 selectedGraphic.symbol.setColor(this.lastColor);
-                //selectedGraphic.symbol.setColor(new esri.Color([76, 160, 216, .5]));
                 if (selectedGraphic.symbol["outline"] != undefined && selectedGraphic.symbol["outline"] != "") {
                     selectedGraphic.symbol["outline"].setColor(this.lastColorOutline);
                 }

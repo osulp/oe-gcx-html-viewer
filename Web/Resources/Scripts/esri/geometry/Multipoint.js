@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/geometry/Multipoint","dojo/_base/declare dojo/_base/lang dojo/has ../kernel ../lang ../SpatialReference ./Geometry ./Point ./Extent ../srUtils".split(" "),function(b,g,r,h,d,e,t,n,p,u){function f(){}function c(){}e={type:"multipoint",points:null};b=b(t,{declaredClass:"esri.geometry.Multipoint",type:"multipoint",points:null,constructor:function(a){this.points=[];a&&(a.points?d.mixin(this,a):this.spatialReference=a,this.spatialReference&&(this.spatialReference=u.createSpatialReference(this.spatialReference)));
 this.verifySR()},addPoint:function(a){this.clearCache();g.isArray(a)?this.points.push(a):this.points.push([a.x,a.y]);return this},removePoint:function(a){if(this._validateInputs(a))return this.clearCache(),new n(this.points.splice(a,1)[0],this.spatialReference)},getExtent:function(){var a=this.getCacheValue("_extent");if(a)return new p(a);var a=this.points,q=a.length;if(q){var b=a[0],c,k,d=c=b[0],e=k=b[1],f=Math.min,g=Math.max,h=this.spatialReference,m,l;for(l=0;l<q;l++)b=a[l],m=b[0],b=b[1],d=f(d,

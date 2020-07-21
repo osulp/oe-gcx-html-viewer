@@ -7,6 +7,7 @@ import { ViewerApplication } from "geocortex/infrastructure/Viewer";
 import { Observable, ObservableCollection } from "geocortex/framework/observables";
 import { FilterableCollection } from "geocortex/framework-ui/FilterableCollection";
 import { Site } from "geocortex/essentials/Site";
+import { Chart } from "geocortex/charting/Chart";
 //import { OE_Charts } from "../OE_Aquaculture/OE_Charts";
 
 export class OE_AquacultureFinancialViewModel extends ViewModelBase {
@@ -903,6 +904,8 @@ let value = this.formatValue(att.Default, att.Decimal)
     }
 
     _onSiteInitialized(site: Site, thisViewModel, config) {
+
+        Chart.prototype.initialize();
 
         //this._injectScript();
 

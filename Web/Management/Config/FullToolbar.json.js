@@ -256,6 +256,34 @@
               "layout": "Large"
           },
           {
+            "id": "ArcGISGroup",
+            "type": "toolbarGroup",
+            "name": "@language-toolbar-group-arcgis",
+            "layout": "Large",
+            "items": [
+                {
+                    "id": "ExportWebMapButton",
+                    "type": "button",
+                    "iconUri": "Resources/Images/Icons/Toolbar/arcgis-save-24.png",
+                    "command": "ShowExportWebMapDialog",
+                    "commandParameter": null,
+                    "hideOnDisable": false,
+                    "name": "@language-toolbar-arcgis-export-web-map",
+                    "tooltip": "@language-toolbar-arcgis-export-web-map-tooltip"
+                },
+                {
+                    "id": "OpenArcGisMyContentButton",
+                    "type": "button",
+                    "iconUri": "Resources/Images/Icons/Toolbar/arcgis-shortcut-24.png",
+                    "command": "OpenPortalMyContentWindow",
+                    "commandParameter": null,
+                    "hideOnDisable": false,
+                    "name": "@language-toolbar-arcgis-view-my-content",
+                    "tooltip": "@language-toolbar-arcgis-view-my-content-tooltip"
+                }
+            ]
+          },
+          {
               "id": "ExternalMapsGroup",
               "type": "toolbarGroup",
               "name": "@language-toolbar-group-3rd-party-maps",
@@ -277,18 +305,25 @@
               "id": "TimeSliderGroup",
               "type": "toolbarGroup",
               "name": "@language-toolbar-group-time-slider",
+              "layout": "Large",
               "items": [
-                 {
-                     "id": "ShowTimeSliderButton",
-                     "type": "button",
-                     "iconUri": "Resources/Images/Icons/settings-24.png",
-                     "command": "ActivateTimeSlider",
-                     "hideOnDisable": false,
-                     "name": "@language-toolbar-timeslider-showtimeslider",
-                     "tooltip": "@language-toolbar-timeslider-showtimeslider-tooltip"
-                 }
-              ],
-              "layout": "Large"
+                  {
+                      "id": "iQwMSDXQ",
+                      "type": "toggleButton",
+                      "name": "@language-toolbar-timeslider-showtimeslider",
+                      "tooltip": "@language-toolbar-timeslider-showtimeslider-tooltip",
+                      "iconUri": "Resources/Images/Icons/settings-24.png",
+                      "hideOnDisable": false,
+                      "toggleOn": {
+                          "command": "ActivateTimeSlider",
+                            "commandParameter": null
+                      },
+                      "toggleOff": {
+                          "command": "DeactivateTimeSlider",
+                          "commandParameter": null
+                      }
+                  }
+              ]
           }
        ],
        "layout": "Large"

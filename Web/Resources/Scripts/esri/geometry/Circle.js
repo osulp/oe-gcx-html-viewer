@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/geometry/Circle","dojo/_base/declare dojo/_base/lang dojo/has ../kernel ./Point ./Polygon ./geodesicUtils ./webMercatorUtils ../WKIDUnitConversion ../units".split(" "),function(c,m,p,q,r,k,t,n,h,u){c=c(k,{declaredClass:"esri.geometry.Circle",_unitToMeters:{esriCentimeters:.01,esriDecimeters:.1,esriFeet:.3048,esriInches:.0254,esriKilometers:1E3,esriMeters:1,esriMiles:1609.344,esriMillimeters:.001,esriNauticalMiles:1852,esriYards:.9144,esriDecimalDegrees:111320},constructor:function(b,
 a){b.center?a=b:(a=a||{},a.center=b);this.center=m.isArray(a.center)?new r(a.center[0],a.center[1]):a.center;this.radius=a.radius||1E3;this.radiusUnit=a.radiusUnit||u.METERS;this.geodesic=!0===a.geodesic?!0:!1;this.numberOfPoints=a.numberOfPoints||60;this._init()},toJson:function(){return this.inherited(arguments)},_init:function(){this.rings=[];this._ring=0;var b=this.radius*this._unitToMeters[this.radiusUnit],a=this._srType(this.center.spatialReference);if(this.geodesic){var e;switch(a){case "webMercator":e=

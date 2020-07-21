@@ -2,7 +2,6 @@
 /// <reference path="Charting.Infrastructure.d.ts" />
 /// <reference path="kendo.dataviz.d.ts" />
 /// <reference path="Framework.UI.d.ts" />
-/// <reference path="JQuery.d.ts" />
 /// <reference path="dojo.d.ts" />
 declare module geocortex.charting {
     class SeriesViewModel extends geocortex.framework.ui.ViewModelBase implements SeriesViewModelInterface {

@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/geometry/Extent","dojo/_base/declare dojo/_base/array dojo/_base/lang dojo/has ../kernel ../lang ../SpatialReference ./Geometry ./Point ./webMercatorUtils ./mathUtils ../srUtils".split(" "),function(B,w,x,C,y,u,t,D,k,v,E,F){function z(){}var A={type:"extent",xmin:0,ymin:0,xmax:0,ymax:0},g=B(D,{declaredClass:"esri.geometry.Extent",type:"extent",xmin:0,ymin:0,xmax:0,ymax:0,constructor:function(a,b,c,d,e){u.isObject(a)?(u.mixin(this,a),this.spatialReference&&(this.spatialReference=F.createSpatialReference(this.spatialReference))):
 this.update(a,b,c,d,e);this.verifySR()},getWidth:function(){return Math.abs(this.xmax-this.xmin)},getHeight:function(){return Math.abs(this.ymax-this.ymin)},getCenter:function(){return new k((this.xmin+this.xmax)/2,(this.ymin+this.ymax)/2,this.spatialReference)},getTopLeft:function(){return new k(this.xmin,this.ymax,this.spatialReference)},getTopRight:function(){return new k(this.xmax,this.ymax,this.spatialReference)},getBottomLeft:function(){return new k(this.xmin,this.ymin,this.spatialReference)},

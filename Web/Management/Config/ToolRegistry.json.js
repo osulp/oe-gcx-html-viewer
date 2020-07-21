@@ -680,12 +680,19 @@
                 },
                 {
                     "id": "ShowTimeSliderButton",
-                    "type": "button",
-                    "iconUri": "Resources/Images/Icons/settings-24.png",
-                    "command": "ActivateTimeSlider",
-                    "hideOnDisable": false,
+                    "type": "toggleButton",
                     "name": "@language-toolbar-timeslider-showtimeslider",
-                    "tooltip": "@language-toolbar-timeslider-showtimeslider-tooltip"
+                    "tooltip": "@language-toolbar-timeslider-showtimeslider-tooltip",
+                    "iconUri": "Resources/Images/Icons/settings-24.png",
+                    "hideOnDisable": false,
+                    "toggleOn": {
+                        "command": "ActivateTimeSlider",
+                        "commandParameter": null
+                    },
+                    "toggleOff": {
+                        "command": "DeactivateTimeSlider",
+                        "commandParameter": null
+                    }
 
                 }
             ]

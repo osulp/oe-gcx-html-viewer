@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 (function(f,w){"function"===typeof define&&define.amd?define("esri/workers/heatmapCalculator",[],w):f.HeatmapCalculator=w();if(f.importScripts&&"function"===typeof f.importScripts){var v;f.addEventListener("message",function(r){var a=r.data,d=a.action;r=a.msgId;d&&r&&("initialize"==d?(v=new f.HeatmapCalculator(a),postMessage({msgId:r})):"calculate"==d&&(a=v.calculateImageData(a),postMessage({msgId:r,imageData:a},a)))},!1)}})(this,function(){function f(a){a=a||{};this.radius=a.blurRadius||10;this.maxVal=
 a.maxPixelIntensity;this.minVal=a.minPixelIntensity;this.field=a.field;this.fieldOffset=a.fieldOffset;this.width=a.width;this.height=a.height;this.gradient=a.gradient;this.stats=null}function w(a,d){for(var k=Array(a),b=0;b<a;b++)for(var c=k[b]=Array(d),e=0;e<d;e++)c[e]=0;return k}function v(a,d){return a-d}var r=window.ArrayBuffer?!0:!1;f.prototype.calculateImageData=function(a){var d=this.radius=a.blurRadius||this.blurRadius;this.maxVal=null!=a.maxPixelIntensity?a.maxPixelIntensity:this.maxPixelIntensity;

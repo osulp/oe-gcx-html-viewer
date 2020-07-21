@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/geometry/jsonUtils","dojo/_base/lang dojo/has ../kernel ../lang ./Point ./Polyline ./Polygon ./Multipoint ./Extent".split(" "),function(u,w,x,y,m,p,q,r,t){function v(a,b,c){var f=a.rings||a.paths,e,k,d,h,g,n,l,m;e=0;for(k=f.length;e<k;e++)for(g=f[e],d=0,h=g.length;d<h;d++)n=g[d],0<d?(l+=n[0],m+=n[1]):(l=n[0],m=n[1]),n[0]=b(l),n[1]=c(m);return a}var z={esriGeometryPoint:function(a,b,c){a.x=b(a.x);a.y=c(a.y);return a},esriGeometryPolyline:v,esriGeometryPolygon:v,esriGeometryEnvelope:function(a,
 b,c){a.xmin=b(a.xmin);a.ymin=c(a.ymin);a.xmax=b(a.xmax);a.ymax=c(a.ymax);return a},esriGeometryMultipoint:function(a,b,c){var f=a.points,e,k,d,h,g;e=0;for(k=f.length;e<k;e++)d=f[e],0<e?(h+=d[0],g+=d[1]):(h=d[0],g=d[1]),d[0]=b(h),d[1]=c(g);return a}},A={esriGeometryPoint:function(a,b,c){a.x=b(a.x);a.y=c(a.y);return a}},l={createInstance:function(a,b){a=new a;b&&y.mixin(a,b);return a},fromJson:function(a){if(void 0!==a.x&&void 0!==a.y)return new m(a);if(void 0!==a.paths)return new p(a);if(void 0!==

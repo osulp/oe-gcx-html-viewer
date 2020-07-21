@@ -73,12 +73,12 @@ export class OE_AquacultureDynamicFormViewModel extends ViewModelBase {
             }
         )};*/
 
-        this.app.eventRegistry.event("ViewContainerViewClosedEvent").subscribe(this, (args) => {
+        /*this.app.eventRegistry.event("ViewContainerViewClosedEvent").subscribe(this, (args) => {
             console.log('view container closing', args);
             if (args.viewId === "OE_AquacultureDynamicFormView") {
                 this.cleanOnClose();
             }
-        });
+        });*/
                 
         //dynamic external workflow form
         this.app.registerActivityIdHandler("displayAquacultureForm", function CustomEventHandler(workflowContext, contextFunctions) {
@@ -124,10 +124,10 @@ export class OE_AquacultureDynamicFormViewModel extends ViewModelBase {
     }
 
     cleanOnClose() {
-        this.app.commandRegistry.command("ClearMarkupQuiet").execute();
+        //this.app.commandRegistry.command("ClearMarkupQuiet").execute();
     }
 
     closeView() {
-        this.app.commandRegistry.command("DeactivateView").execute("OE_AquacultureDynamicFormView");
+        //this.app.commandRegistry.command("DeactivateView").execute("OE_AquacultureDynamicFormView");
     }
 }

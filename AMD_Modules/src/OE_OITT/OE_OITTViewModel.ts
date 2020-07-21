@@ -9,6 +9,7 @@ import { Observable } from "geocortex/framework/observables";
 import { ObservableCollection } from "geocortex/framework/observables";
 import { MapService } from "geocortex/essentials/MapService";
 import { Layer } from "geocortex/essentials/Layer";
+import { Chart } from "geocortex/charting/Chart";
 
 import { ChartPointAdapterRegistry } from "geocortex/charting/infrastructure/ChartPointAdapterRegistry"
 import { ChartPointCollectionAggregator } from "geocortex/charting/infrastructure/aggregation/ChartPointCollectionAggregator";
@@ -425,6 +426,8 @@ export class OE_OITTViewModel extends ViewModelBase {
 
         //register tagging command
         this.app.commandRegistry.command("oeOITTAreaReport").register(this, this.OpenAreaReport);
+
+        Chart.prototype.initialize();
 
         //set default year selection
         let dateTmp = new Date();

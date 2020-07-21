@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Apple Maps</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <link href="3rdParty.css" rel="stylesheet" type="text/css" />
+	    <style>
+        /* Apple's map type switcher is on the right side and covers up the GVH linked maps controls */
+        .integration-panel-actions {
+            left: 0;
+            right: auto;
+        }
+    </style>
+
+    <script src="../Scripts/Bridge.js"></script>
+    <script src="ThirdPartyMap.js"></script>
+	<script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
+    <script type="text/javascript">
+	
+		/**
+         * Configure this component by adding your MapKit JS token here. To obtain a token follow the instructions on these pages:
+		 * https://developer.apple.com/documentation/mapkitjs/creating_a_maps_identifier_and_a_private_key
+		 * https://developer.apple.com/documentation/mapkitjs/creating_and_using_tokens_with_mapkit_js
+		 * And then use the service on this page to create the token:
+		 * https://maps.developer.apple.com/token-maker
+         */
+		var appleMapsToken = "";
+		
+		/**
+		 * Set this to true to have the Apple maps view attempt to synchronize map scales.
+		 * Otherwise only xy position is synced and zoom can be controlled independently.
+		 */
+        var syncZoomLevels = true;
+		
+		var map;
+        var currentZoom = 16;
+        var isReady = false;
+		
+		var thirdPartyMap = new geocortex.essentialsHtmlViewer.integration.ThirdPartyMap({
+            id: "appleMaps",
+            initializeMap: initializeMap,
+            getMapViewpointParams: getMapViewpointParams,
+            handleViewerPositionUpdatedEvent: handleViewerPositionUpdatedEvent,
+            handleViewpointIndicatorUpdatedEvent: handleViewpointIndicatorUpdatedEvent,
+            updateOnDrag: true
+        });
+		
+		/**
+         * Initializes the third party map control.
+         */
+        function initializeMap(message) {
+		
+            mapkit.init({
+				authorizationCallback: function(done) {
+					done(appleMapsToken);
+				}
+			});
+
+			map = new mapkit.Map("map-container");
+			map._allowWheelToZoom = true
+			map.setCameraDistanceAnimated(zoom2Distance[currentZoom] * 100);
+			
+            if (message && message.indicatorUrl) {
+                var indicator = document.getElementsByClassName("viewpoint-indicator")[0];
+                if (indicator) {
+                    indicator.style.backgroundImage = "url('../../" + message.indicatorUrl + "')";
+                }
+            }
+        }
+
+        /**
+         * Gets the current position of the Apple map.
+         */
+        function getMapViewpointParams() {
+            var pos = map.center;
+			var distance = map.cameraDistance;
+			var zoom = distanceToZoomLevel(distance);
+			var scale = thirdPartyMap.zoomLevelToScale(zoom < 23 ? zoom + 1 : 0);
+			var heading = map.rotation;
+
+			return {
+				center: {
+					x: pos.longitude,
+					y: pos.latitude
+				},
+				scale: syncZoomLevels ? scale : null,
+				heading: heading
+			};
+        }
+
+        /**
+         * Updates the Apple map to match the viewer.
+         */
+        function handleViewerPositionUpdatedEvent(arg) {
+
+			currentZoom = thirdPartyMap.scaleToZoomLevel(arg.scale);
+			var location = new mapkit.Coordinate(arg.position.y, arg.position.x);
+			
+			if (syncZoomLevels) {
+				var distance = zoom2Distance[currentZoom > 0 ? currentZoom - 1 : 0] * 100;
+				map.setCenterAnimated(location, false).setCameraDistanceAnimated(distance);
+			} else {
+				map.setCenterAnimated(location);
+			}
+
+			if (!isReady) {
+
+				// Add handlers after we have received our first position
+				map.addEventListener("region-change-end", function(event) {
+					thirdPartyMap.handleViewpointChanged();
+				});
+				isReady = true;
+			}
+        }
+
+        /**
+         * Updates the Apple map to match the viewpoint indicator position.
+         */
+        function handleViewpointIndicatorUpdatedEvent(arg) {		
+			var location = new mapkit.Coordinate(arg.y, arg.x);
+			map.setCenterAnimated(location);
+        }
+		
+		function distanceToZoomLevel(distance) {
+			var closestPow2 = Math.pow(2, Math.round( Math.log(distance / 100) / Math.log(2)));
+			return distance2Zoom[closestPow2];
+		}
+		
+		var distance2Zoom = {.125:23, .25:22, .5:21, 1:20, 2:19, 4:18, 8:17, 16:16, 32:15, 64:14, 128:13, 256:12, 512:11, 1024:10, 2048:9, 4096:8, 8192:7, 16384:6, 32768:5, 65536:4, 131072:3, 262144:2, 524288:1, 1048576:0};
+		var zoom2Distance = {23:.125, 22:.25, 21:.5, 20:1, 19:2, 18:4, 17:8, 16:16, 15:32, 14:64, 13:128, 12:256, 11:512, 10:1024, 9:2048, 8:4096, 7:8192, 6:16384, 5:32768, 4:65536, 3:131072, 2:262144, 1:524288, 0:1048576};
+		
+    </script>
+</head>
+
+<body>
+    <ul class="integration-panel-actions">
+        <li class="panel-action-button">
+            <button class="viewpoint-indicator" title="Viewpoint Indicator"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="centerButton" class="center-map" title="Center this map to the viewer"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="syncButton" class="sync-toggle-off" title="Synchronize Maps"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="dockButton" class="window-popout" title="Open in new window"></button>
+        </li>
+        <li class="panel-action-button">
+            <button id="closeButton" class="window-close" title="Close this map view"></button>
+        </li>
+    </ul>
+    <div id="map-container" class="map-container"></div>
+</body>
+
+</html>

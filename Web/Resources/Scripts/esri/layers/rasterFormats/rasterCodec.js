@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/layers/rasterFormats/rasterCodec","require dojo/_base/declare dojo/_base/lang dojo/_base/Deferred ../PixelBlock ./LercCodec ./Lerc2Codec ./JpgPlus ./Png ./Raw ./TiffDecoder".split(" "),function(B,C,w,x,m,y,z,u,v,t,A){return{validPixelTypes:"U1 U2 U4 U8 U16 U32 S8 S16 S32 F32".split(" "),supportedFormats:"lerc jpeg jpg jpgpng png png8 png24 png32 bip bsq tiff".split(" "),_isPlatformLittleEndian:function(){var a=new ArrayBuffer(4),b=new Uint8Array(a);(new Uint32Array(a))[0]=1;return 1===
 b[0]}(),decode:function(a,b){if(void 0===b||null===b)throw"missing decode options";var e,c;b.format&&(e=b.format.toUpperCase());"BSQ"!==e&&"BIP"!==e&&(e=this._getFormat(a));c=b.decodeFunc;if(void 0===c||null===c)c=this._getFormatDecoderDfd(e);return c(a,b)},_getFormatDecoderDfd:function(a){var b=null;switch(a){case "LERC":b=this._decodeLerc;break;case "LERC2":b=this._decodeLerc2;break;case "JPEG":b=this._decodeJpeg;break;case "PNG":b=this._decodePng;break;case "BSQ":b=this._decodeBsq;break;case "BIP":b=

@@ -269,7 +269,6 @@ var geocortex;
                                     loaderResourcePrefix + "Resources/Scripts/bluebird.min.js",
                                     loaderResourcePrefix + "Resources/Scripts/iso8601.min.js",
                                     loaderResourcePrefix + "Resources/Scripts/remarkable.min.js",
-                                    loaderResourcePrefix + "Resources/Scripts/fastclick.js",
                                     loaderResourcePrefix + "Resources/Scripts/globalize/cldr.min.js",
                                     loaderResourcePrefix + "Resources/Scripts/globalize/globalize.min.js",
                                     loaderResourcePrefix + "Resources/Scripts/caja-html-sanitizer-minified.js",
@@ -328,6 +327,9 @@ var geocortex;
                 if (typeof WeakMap !== "function") {
                     _this.resourceSet.find("tools").append([loaderResourcePrefix + "Resources/Scripts/weakmap.js"]);
                 }
+                if (typeof window.fetch !== "function") {
+                    _this.resourceSet.find("tools").append([loaderResourcePrefix + "Resources/Scripts/fetch.min.js"])
+                }
                 var documentMode = document.documentMode;
                 if (documentMode && documentMode <= 8) {
                     _this.resourceSet.find("css").prepend([loaderResourcePrefix + "Resources/Styles/IE.css"]);
@@ -383,10 +385,15 @@ var geocortex;
                 if (options === void 0) { options = {}; }
                 try {
                     dojo.contentHandlers["json"] = function (data) {
-                        return JSON.parse(data.responseText);
+                        var json;
+                        try {
+                            json = JSON.parse(data.responseText);
+                        } catch (e) {
+                            json = JSON.parse(data.responseText.replace(/:NaN/g, ":null"));
+                        }
+                        return json;                      
                     };
                     var query = new geocortex.framework.application.loading.CaselessMap(options.query || this.loadQueryParams(options));
-                    new window["FastClick"](document.body);
                     var hostElement = options.hostElement || document.body;
                     var debug = query.has("debug") ? query.get("debug") || "gvh" : options.debug || false;
                     var offline = query.has("offline") ? query.getAsBoolean("offline") : options.offline || false;
@@ -588,7 +595,12 @@ var geocortex;
                         }
                         require(["dojo/ready"], function (ready) {
                             ready(function () {
-                                var resourceNames = ["framework", "framework-shim", "infrastructure", "infrastructure-shim"];
+                                var resourceNames = [
+                                    "framework",
+                                    "framework-shim",
+                                    "infrastructure",
+                                    "infrastructure-shim"
+                                ];
                                 var index = 0;
                                 var loadResource = function (resourceName) {
                                     var resource = _this.resourceSet.find(resourceName);
