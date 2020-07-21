@@ -51,7 +51,7 @@ iframe {
     padding: 0.25em;
 }
 
-.viewpoint-indicator {
+.panel-action-button button.viewpoint-indicator {
     width: 24px;
     height: 26px;
     cursor: default;
@@ -98,14 +98,6 @@ iframe {
 
 .center-map {
     background-image: url("../Images/Icons/center-map-24.png");
-}
-
-.viewpoint-indicator-bing {
-    background-image: url("../Images/Icons/location-direction-red-32.png");
-}
-
-.viewpoint-indicator-pictometry {
-    background-image: url("../Images/Icons/location-direction-purple-32.png");
 }
 
 .status-region {

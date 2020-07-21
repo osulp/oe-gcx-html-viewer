@@ -61,16 +61,18 @@
             "W": 270
         };
 
-        var thirdPartyMap = new geocortex.essentialsHtmlViewer.integration.ThirdPartyMap("pictometry",
-            initializeMap,
-            getMapViewpointParams,
-            handleViewerPositionUpdatedEvent,
-            handleViewpointIndicatorUpdatedEvent);
+        var thirdPartyMap = new geocortex.essentialsHtmlViewer.integration.ThirdPartyMap({
+            id: "pictometry",
+            initializeMap: initializeMap,
+            getMapViewpointParams: getMapViewpointParams,
+            handleViewerPositionUpdatedEvent: handleViewerPositionUpdatedEvent,
+            handleViewpointIndicatorUpdatedEvent: handleViewpointIndicatorUpdatedEvent
+        });
 
         /**
          * Initializes the Pictometry IPA.
          */
-        function initializeMap() {
+        function initializeMap(message) {
             ipa.ready = function () {
                 ipa.setPreferences({
                     enableSynchronization: true,
@@ -91,6 +93,13 @@
                 ipa.setLocation(currentView.x, currentView.y);
                 isReady = true;
             };
+
+            if (message.indicatorUrl) {
+                var indicator = document.getElementsByClassName("viewpoint-indicator")[0];
+                if (indicator) {
+                    indicator.style.backgroundImage = "url('../../" + message.indicatorUrl + "')";
+                }
+            }
         }
 
         /**

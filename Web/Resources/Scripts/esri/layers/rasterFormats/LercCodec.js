@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/layers/rasterFormats/LercCodec",[],function(){var L={defaultNoDataValue:-3.4027999387901484E38,decode:function(e,l){var z;l=l||{};var c=l.inputOffset||0,g=l.encodedMaskData||null===l.encodedMaskData,a={},b=new Uint8Array(e,c,10);a.fileIdentifierString=String.fromCharCode.apply(null,b);if("CntZImage"!=a.fileIdentifierString.trim())throw"Unexpected file identifier string: "+a.fileIdentifierString;c+=10;b=new DataView(e,c,24);a.fileVersion=b.getInt32(0,!0);a.imageType=b.getInt32(4,!0);a.height=
 b.getUint32(8,!0);a.width=b.getUint32(12,!0);a.maxZError=b.getFloat64(16,!0);c+=24;if(!g)if(b=new DataView(e,c,16),a.mask={},a.mask.numBlocksY=b.getUint32(0,!0),a.mask.numBlocksX=b.getUint32(4,!0),a.mask.numBytes=b.getUint32(8,!0),a.mask.maxValue=b.getFloat32(12,!0),c+=16,0<a.mask.numBytes){var g=new Uint8Array(Math.ceil(a.width*a.height/8)),b=new DataView(e,c,a.mask.numBytes),p=b.getInt16(0,!0),r=2,w=0;do{if(0<p)for(;p--;)g[w++]=b.getUint8(r++);else for(var B=b.getUint8(r++),p=-p;p--;)g[w++]=B;p=

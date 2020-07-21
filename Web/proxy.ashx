@@ -29,6 +29,7 @@ public class proxy : IHttpHandler
     {
 
         HttpResponse response = context.Response;
+		ProxyConfig config = ProxyConfig.GetCurrentConfig();
 
         // Are we dealing with a JSONP request? If so, we can forward the actual response and handle the JSONP part ourself.
         string callbackName = context.Request.QueryString["callback"];
@@ -112,9 +113,43 @@ public class proxy : IHttpHandler
         req.Method = context.Request.HttpMethod;
         req.ContentType = context.Request.ContentType;
 
+        var dnt = context.Request.Headers.Get("DNT");
+        if(dnt != null)
+        {
+            req.Headers.Add("DNT", dnt);
+        }
+
         if (context.Request.UrlReferrer != null)
         {
             req.Referer = context.Request.UrlReferrer.ToString();
+        }
+
+        // Set 'Forwarded' header if requested and not present
+        if (config != null && config.SetForwarded)
+        {
+            var forwarded = context.Request.Headers.Get("Forwarded");
+            if (forwarded == null)
+            {
+                IPAddress address;
+                if (IPAddress.TryParse(context.Request.UserHostAddress, out address))
+                {
+                    switch (address.AddressFamily)
+                    {
+                        case System.Net.Sockets.AddressFamily.InterNetwork:
+                            // This is an IPv4 address
+                            req.Headers.Add("Forwarded", string.Format("for={0};", context.Request.UserHostAddress));
+                            break;
+
+                        case System.Net.Sockets.AddressFamily.InterNetworkV6:
+                            // This is an IPv6 address
+                            req.Headers.Add("Forwarded", string.Format("for=\"[{0}]\"", context.Request.UserHostAddress));
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
         }
 
         // Set body of request for POST requests
@@ -317,8 +352,6 @@ public class ProxyConfig
     #endregion
 
     ServerUrl[] serverUrls;
-    bool mustMatch;
-
     [XmlArray("serverUrls")]
     [XmlArrayItem("serverUrl")]
     public ServerUrl[] ServerUrls
@@ -327,11 +360,20 @@ public class ProxyConfig
         set { this.serverUrls = value; }
     }
 
+    bool mustMatch;
     [XmlAttribute("mustMatch")]
     public bool MustMatch
     {
         get { return mustMatch; }
         set { mustMatch = value; }
+    }
+
+    bool setForwarded;
+    [XmlAttribute("setForwarded")]
+    public bool SetForwarded
+    {
+        get { return setForwarded; }
+        set { setForwarded = value; }
     }
 
     public ServerUrl GetServerConfig(string uri)

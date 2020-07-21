@@ -1,6 +1,5 @@
 /// <reference path="Framework.d.ts" />
 /// <reference path="Mapping.Infrastructure.d.ts" />
-/// <reference path="jquery.d.ts" />
 /// <reference path="jquery.cleditor.d.ts" />
 /// <reference path="arcgis-js-api.d.ts" />
 declare module geocortex.essentialsHtmlViewer.management.infrastructure.CLEditorUtils {

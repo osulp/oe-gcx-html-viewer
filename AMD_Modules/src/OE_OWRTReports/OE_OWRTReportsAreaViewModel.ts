@@ -15,12 +15,8 @@ import { Layer } from "geocortex/essentials/Layer";
 
 import { ChartViewModelFactory } from "geocortex/charting/ChartViewModelFactory";
 import { Chart } from "geocortex/charting/Chart";
-import { SeriesViewModel } from "geocortex/charting/SeriesViewModel";
-import { KendoFormatProvider } from "geocortex/charting/globalization/KendoFormatProvider";
-import { ChartSeriesProvider } from "geocortex/charting/ChartSeriesProvider";
 import { ChartPointAdapterRegistry } from "geocortex/charting/infrastructure/ChartPointAdapterRegistry"
-import { ChartPointCollectionAggregator } from "geocortex/charting/infrastructure/aggregation/ChartPointCollectionAggregator";
-import { ChartDefinition } from "geocortex/charting/infrastructure/configuration/ChartDefinition";
+
 import { ChartColorPalette, ChartFeatureType, ChartFieldSourceType } from "geocortex/charting/infrastructure/Enums";
 
 import { OE_ChartPointJsonAdapter } from "../OE_OWRTReports/OE_JsonAdapter";
@@ -300,6 +296,8 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     chartFundingPart: RestChartDefinition = null;
     chartFundingPartData: any = {};
 
+    chartProjectsByYear: any;
+
     queryUrlOWRT: string;    
     queryCentroidsSimple: string;
     
@@ -547,6 +545,8 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         
         //register tagging command
         this.app.commandRegistry.command("oeOWRTareaReport").register(this, this.OpenAreaReport);
+                
+        Chart.prototype.initialize();
         
         //set default year selection
         let dateTmp = new Date();
@@ -1395,6 +1395,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                     }
                 };
 
+                //$(".oeOWRTAreaResultsChart").kendoChart(opts);
                 this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaResultsChart")[0], opts);
             }
         }         
@@ -2104,8 +2105,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                         template: 'Year: #= category # <br /> #= series.name #: #= kendo.toString(value,"n0") #'
                     }
                 };
-
-
+                                
                 this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaProjectChart")[0], opts);
             }
         }                        
@@ -2168,8 +2168,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                         template: 'Activity: #= category # <br /> Projects: #= kendo.toString(value,"n0") #'
                     }
                 };
-
-
+                                
                 this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaProjectChart")[0], opts);
             }
         }                        
@@ -2241,8 +2240,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                         template: '#= category #: #= kendo.format("{0:P0}",value)# <br /> #= kendo.format("{0:C0}",dataItem.val) #'
                     }
                 };
-
-
+                                
                 this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaFundingChart")[0], opts);
             }
         }
@@ -2320,8 +2318,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                         template: 'Year: #= category # <br /> #=series.name#:  #= kendo.format("{0:C0}",value) #'
                     }
                 };
-
-
+                                
                 this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaFundingChart")[0], opts);
             }
         }        
@@ -2384,7 +2381,6 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                         template: 'Activity: #= category # <br /> Total Investment: #= kendo.format("{0:C0}",value) #'
                     }
                 };
-
 
                 this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaFundingChart")[0], opts);
             }
@@ -2479,7 +2475,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                         template: 'Year: #= category # <br /> #= series.name #: #= kendo.format("{0:C0}",value) #'
                     }
                 };
-                
+                                
                 this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaFundingChart")[0], opts);
             }
         }              
@@ -2572,8 +2568,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
                         template: '#= category #: #= kendo.format("{0:P1}",value)# <br /> #= kendo.format("{0:C0}",dataItem.val) #'
                     }
                 };
-
-
+                                
                 this.kChartActive = new kendo.dataviz.ui.Chart($(".oeOWRTAreaFundingChart")[0], opts);
             }
         }        
@@ -3361,4 +3356,5 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
         return colorsOut;
     }    
+    
 }

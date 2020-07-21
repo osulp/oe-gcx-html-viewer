@@ -5,4 +5,4 @@
 */
 
 //>>built
-define("dojo/cldr/nls/es-mx/number",{percentFormat:"#,##0%"});
+define("dojo/cldr/nls/es-mx/number",{decimal:".",group:",",list:";",percentSign:"%",plusSign:"+",minusSign:"-",exponential:"E",superscriptingExponent:"\u00d7",perMille:"\u2030",infinity:"\u221e",nan:"NaN",timeSeparator:":",percentFormat:"#,##0%"});

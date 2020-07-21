@@ -26,6 +26,14 @@
     z-index: 1000;
 }
 
+.oeLayerSearchLoading button {
+    margin-top: 12px;
+    border: 1px solid #1A72C4;
+    border-radius: 5px;
+    color: #1A72C4;
+    padding: 8px;
+}
+
 .oeLayerSearchWarningMessage {
     padding-top: 10px;
     font-size: 1.4em;
@@ -40,3 +48,119 @@
     font-size: 1.2em;
     padding-bottom: 16px;
 }
+
+.oe_add_layer_wrapper
+{
+    height:48px;
+}
+
+.oeLayerSearchToggleTrees {
+    padding: 8px 0px;
+    text-align: center;
+}
+
+.oeLayerSearchToggleTrees div {
+    display: inline-block;
+    width: 22%;
+    text-align: center;
+}
+
+.oeSearchLayerOptions {
+    position: absolute;
+    display: block;
+    right: 0px;        
+    background-color: white;
+    border: 1px solid black;
+    padding:4px;
+    width:150px;
+    z-index: 2;
+}
+
+.oe-lc-entries {
+    position: absolute;
+    top: 7em;
+    right: 0;
+    bottom: 4em;
+    left: 0;
+    overflow-y: auto;
+}
+
+.oeLayerSearchToggleTrees hr
+{
+    width: 98%;
+    height: 1px;
+    background-color: #cecdcd;
+    border: none;
+}
+
+div.oeHasParentLayer
+{
+    padding-left:24px;
+}
+
+.oeLayerSearchAboveTreeMessage
+{
+    padding-left:12px;
+}
+
+.oeLayerSearch-module-view .layer-item img {
+    height: 16px;
+    vertical-align: top;
+    padding-right: 8px;
+}
+
+span.oeLayerSearchLayerGroup {
+    background-image: url(Resources/Images/Icons/Toolbar/layers-24.png);
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-left: 24px;
+}
+
+.oeSearchLayerRightButtons
+{
+    position:absolute;
+    right:20px;
+    top:16px;    
+}
+/*
+.oeSLSToolTip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    border-top: 1px dotted black;
+}
+
+.oeSLSToolTip .oeSLSToolTipText {
+        visibility: hidden;
+        width: 500px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        
+        position: absolute;
+        z-index: 1;
+        top: 135%;
+        
+        margin-left: -20px;
+        
+        opacity: 0;
+        transition: opacity 0.3s;
+}
+
+.oeSLSToolTip .oeSLSToolTipText::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #555 transparent;
+}
+
+.oeSLSToolTip:hover .oeSLSToolTipText {
+    visibility: visible;
+    opacity: 1;
+}*/

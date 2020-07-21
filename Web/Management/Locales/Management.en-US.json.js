@@ -1,4 +1,19 @@
 ﻿{
+     "compilerOptions": {
+          "declaration": true,
+          "lib": [
+               "es5",
+               "es2015",
+               "es2015.iterable",
+               "scripthost",
+               "dom"
+          ],
+          "module": "amd",
+          "outFile": "Management_ts_out.js",
+          "preserveConstEnums": true,
+          "target": "es5"
+     },
+     "include": ["./modules/**/*.ts"],
      "language-accessibility-heading": "Accessibility Features",
      "language-accessibility-include-enhanced-screen-reader-notifications": "Include Enhanced Screen Reader Notifications:",
      "language-accessibility-included": "Include Accessibility Button:",

@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/geometry/mathUtils",["dojo/_base/lang","dojo/has","../kernel","./Point"],function(q,v,w,n){function r(a,b,c){return a instanceof n?new n(a.x+c*(b.x-a.x),a.y+c*(b.y-a.y)):[a[0]+c*(b[0]-a[0]),a[1]+c*(b[1]-a[1])]}function k(a,b){return 1E-8>Math.abs(a-b)}function t(a,b,c,e){var d,f=k(a[0],b[0])?1E10:(a[1]-b[1])/(a[0]-b[0]),g=k(c[0],e[0])?1E10:(c[1]-e[1])/(c[0]-e[0]),h=a[1]-f*a[0],p=c[1]-g*c[0];if(k(f,g)){if(k(h,p)){if(k(a[0],b[0]))if(Math.min(a[1],b[1])<Math.max(c[1],e[1])||Math.max(a[1],
 b[1])>Math.min(c[1],e[1]))a=(a[1]+b[1]+c[1]+e[1]-Math.min(a[1],b[1],c[1],e[1])-Math.max(a[1],b[1],c[1],e[1]))/2,d=(a-h)/f;else return null;else if(Math.min(a[0],b[0])<Math.max(c[0],e[0])||Math.max(a[0],b[0])>Math.min(c[0],e[0]))d=(a[0]+b[0]+c[0]+e[0]-Math.min(a[0],b[0],c[0],e[0])-Math.max(a[0],b[0],c[0],e[0]))/2,a=f*d+h;else return null;return[d,a]}return null}k(f,1E10)?(d=a[0],a=g*d+p):k(g,1E10)?(d=c[0],a=f*d+h):(d=-(h-p)/(f-g),a=a[1]===b[1]?a[1]:c[1]===e[1]?c[1]:f*d+h);return[d,a]}var u={getLength:function(a,

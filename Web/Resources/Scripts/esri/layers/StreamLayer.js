@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 require({cache:{"esri/layers/StreamTrackManager":function(){define("dojo/_base/declare dojo/_base/lang dojo/_base/array dojo/has ../kernel ../graphic ../geometry/Point ../geometry/Polyline ./TrackManager".split(" "),function(n,y,k,v,r,z,A,B,C){n=n([C],{declaredClass:"esri.layers._StreamTrackManager",constructor:function(h){this.inherited(arguments);var g=h.getMap().spatialReference;this.isWebMercator=g.isWebMercator();this.canWrap=g._isWrappable();this.wrapThreshold=this.isWebMercator?2.0037508342788905E7:
 180},initialize:function(h){this.inherited(arguments)},addFeatures:function(h,g){function f(f,e){var g,a,b;t[f]||(t[f]=[]);f=t[f];0<q&&(e.length>q&&e.splice(0,e.length-q),a=e.length+f.length,a>q&&(g=f.splice(0,a-q)));a=e.length;for(b=0;b<a;b+=1)f.push(e[b]);return{deletes:g,adds:e}}var t,e,w,q,m={},p={},u;if(g)return this.inherited(arguments),m;t=this.trackMap;e=this.layer;w=e._trackIdField;q=e.maximumTrackPoints||0;k.forEach(h,function(f){var e=f.attributes[w];f.visible&&(p[e]||(p[e]=[]),p[e].push(f))});

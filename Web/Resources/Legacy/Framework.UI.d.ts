@@ -1,6 +1,5 @@
 /// <reference path="framework.d.ts" />
 /// <reference path="dojo.d.ts" />
-/// <reference path="jquery.d.ts" />
 /**
  * Offers support for smooth, efficient animations on mobile devices and in modern browsers.
  */

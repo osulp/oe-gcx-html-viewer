@@ -13,83 +13,187 @@
             left: 0;
             right: auto;
         }
+		.no-image-message {
+			position: relative;
+			width: 100%;
+			height: 100%;
+			line-height: 20em;
+			color: white;
+			background: black;
+			text-align: center;
+		}
     </style>
 
     <script src="../Scripts/Bridge.js"></script>
     <script src="ThirdPartyMap.js"></script>
     <script type="text/javascript">
-        var map;
-        var currentZoom = 10;
+	
+		/**
+         * Configure this component by adding your API key for Bing Maps here.
+         */
+		var bingApiKey = "";
+		
+		/**
+         * Set the initial type of map to display in the control.
+         * Some possible values:
+         * road
+         * aerial
+         * birdseye (oblique aerial photography)
+         * streetside ('street view' type imagery)
+         * See https://docs.microsoft.com/en-us/bingmaps/v8-web-control/map-control-api/maptypeid-enumeration for more info
+         */
+        var mapTypeId = "birdseye";
+		
+		/**
+		 * Set this to true to have the Bing maps view attempt to synchronize map scales.
+		 * Otherwise only xy position is synced and zoom can be controlled independently.
+		 */
+        var syncZoomLevels = mapTypeId === "streetside" || mapTypeId === "birdseye" ? false : true;
+		
+		var map;
+        var currentZoom = 16;
+		var panoramaLookupRadius = 500; // in meters
         var isReady = false;
+		
+		var thirdPartyMap = new geocortex.essentialsHtmlViewer.integration.ThirdPartyMap({
+            id: "bingMaps",
+            initializeMap: initializeMap.bind(null, mapTypeId),
+            getMapViewpointParams: getMapViewpointParams,
+            handleViewerPositionUpdatedEvent: handleViewerPositionUpdatedEvent,
+            handleViewpointIndicatorUpdatedEvent: handleViewpointIndicatorUpdatedEvent,
+            updateOnDrag: mapTypeId === "streetside" ? false : true
+        });
+		
+		/**
+         * Initializes the third party map control.
+         */
+        function initializeMap(mapTypeId, message) {
+		
+            var location = new Microsoft.Maps.Location(0, 0);
+            var mapOptions = {
+                credentials: bingApiKey,
+                center: location,
+                mapTypeId: mapTypeId === "streetside" ? Microsoft.Maps.MapTypeId.road : Microsoft.Maps.MapTypeId[mapTypeId],
+				streetsideOptions: mapTypeId === "streetside" ? { 
+					overviewMapMode: Microsoft.Maps.OverviewMapMode.hidden,
+					panoramaLookupRadius: panoramaLookupRadius,
+					showExitButton: false,
+					showProblemReporting: false 
+				} : null,
+                zoom: currentZoom
+            };
+
+            map = new Microsoft.Maps.Map(document.getElementById("map-container"), mapOptions);
+			
+            if (message && message.indicatorUrl) {
+                var indicator = document.getElementsByClassName("viewpoint-indicator")[0];
+                if (indicator) {
+                    indicator.style.backgroundImage = "url('../../" + message.indicatorUrl + "')";
+                }
+            }
+        }
 
         /**
          * Gets the current position of the Bing map.
          */
         function getMapViewpointParams() {
             var pos = map.getCenter();
-            var scale = thirdPartyMap.zoomLevelToScale(map.getZoom());
+			var scale = thirdPartyMap.zoomLevelToScale(map.getZoom());
+			var heading = map.getHeading();
 
-            return {
-                center: {
-                    x: pos.longitude,
-                    y: pos.latitude
-                },
-                scale: scale,
-                heading: map.getHeading()
-            };
+			return {
+				center: {
+					x: pos.longitude,
+					y: pos.latitude
+				},
+				scale: syncZoomLevels ? scale : null,
+				heading: !heading && mapTypeId === "streetside" ? null : heading
+			};
         }
 
         /**
          * Updates the Bing map to match the viewer.
          */
         function handleViewerPositionUpdatedEvent(arg) {
-            if (!isReady) {
-                // Add handlers after we have received our first position
-                Microsoft.Maps.Events.addHandler(map, 'viewchangeend', function () {
-                    thirdPartyMap.handleViewpointChanged();
-                });
-                isReady = true;
-            }
-
-            currentZoom = thirdPartyMap.scaleToZoomLevel(arg.scale);
-            map.setView({
-                center: new Microsoft.Maps.Location(arg.position.y, arg.position.x),
-                zoom: currentZoom
-            });
+			showNoImageMessage(false);
+	
+			currentZoom = thirdPartyMap.scaleToZoomLevel(arg.scale);
+			var location = new Microsoft.Maps.Location(arg.position.y, arg.position.x);
+			
+			// In streetside mode we first query for the closest panorama, then move to the location.
+			if (mapTypeId === "streetside" && isReady) {
+				var result = thirdPartyMap.getGeographicDistance(arg.position.y, panoramaLookupRadius);
+				var searchRect = new Microsoft.Maps.LocationRect(location, Math.abs(result.latDist), Math.abs(result.longDist));			
+				Microsoft.Maps.Map.getClosestPanorama(searchRect, handlePanoramaFound, showNoImageMessage.bind(null, true));
+				
+			} else {
+			    map.setView({
+					center: new Microsoft.Maps.Location(arg.position.y, arg.position.x),
+					zoom: syncZoomLevels ? currentZoom : null,
+					mapTypeId: !isReady ? Microsoft.Maps.MapTypeId[mapTypeId] : null
+				});
+				
+				if (!isReady) {
+					// Add handlers after we have received our first position
+					Microsoft.Maps.Events.addHandler(map, 'viewchangeend', function () { 
+						thirdPartyMap.handleViewpointChanged();
+					});
+					isReady = true;
+				}
+			}
         }
 
         /**
          * Updates the Bing map to match the viewpoint indicator position.
          */
         function handleViewpointIndicatorUpdatedEvent(arg) {
-            map.setView({
-                animate: false,
-                center: new Microsoft.Maps.Location(arg.y, arg.x)
-            });
+			showNoImageMessage(false);
+	
+			var location = new Microsoft.Maps.Location(arg.y, arg.x);
+			
+			// In streetside mode we first query for the closest panorama, then move to the location.
+			if (mapTypeId === "streetside") {
+				var result = thirdPartyMap.getGeographicDistance(arg.y, panoramaLookupRadius);
+				var searchRect = new Microsoft.Maps.LocationRect(location, Math.abs(result.latDist), Math.abs(result.longDist));
+				
+				Microsoft.Maps.Map.getClosestPanorama(searchRect, handlePanoramaFound, showNoImageMessage.bind(null, true));
+				
+			} else {
+			     map.setView({
+					animate: false,
+					center: location
+				});
+			}
         }
-
-        var thirdPartyMap = new geocortex.essentialsHtmlViewer.integration.ThirdPartyMap("bingMaps",
-            initializeMap,
-            getMapViewpointParams,
-            handleViewerPositionUpdatedEvent,
-            handleViewpointIndicatorUpdatedEvent);
-
-        /**
-         * Initializes the Bing map.
-         */
-        function initializeMap() {
-            var bingApiKey = "";
-
-            var location = new Microsoft.Maps.Location(0, 0);
-            var mapOptions = {
-                credentials: bingApiKey,
-                center: location,
-                mapTypeId: Microsoft.Maps.MapTypeId.birdseye,
-                zoom: currentZoom
-            };
-
-            map = new Microsoft.Maps.Map(document.getElementById("map-container"), mapOptions);
-        }
+		
+		/**
+		 * Callback to handle the request to find the closest panorama to our location
+		 */
+		function handlePanoramaFound(panoramaInfo) {
+			var location = new Microsoft.Maps.Location(panoramaInfo.la, panoramaInfo.lo);
+			map.setView({
+				animate: false,
+				center: location,
+				mapTypeId: Microsoft.Maps.MapTypeId.streetside
+			});
+		}
+		
+		/**
+		 * Show or hide a 'no imagery' message in streetside mode, rather than just not updating,
+		 */
+		function showNoImageMessage(show) {
+			var noImageMessage = document.getElementById("bing-no-image-message");
+            if (noImageMessage) {
+                noImageMessage.style.display = show ? "block" : "none";
+            }
+			var bingUI = document.getElementById("map-container");
+			if (bingUI) {
+				bingUI.style.display = show ? "none" : "block";
+			}
+		}
+		
+		initializeMap = initializeMap.bind(null, mapTypeId);
+		
     </script>
 
     <script type="text/javascript" src="//www.bing.com/api/maps/mapcontrol?callback=initializeMap" async defer></script>
@@ -98,7 +202,7 @@
 <body>
     <ul class="integration-panel-actions">
         <li class="panel-action-button">
-            <button class="viewpoint-indicator viewpoint-indicator-bing" title="Viewpoint Indicator"></button>
+            <button class="viewpoint-indicator" title="Viewpoint Indicator"></button>
         </li>
         <li class="panel-action-button">
             <button id="centerButton" class="center-map" title="Center this map to the viewer"></button>
@@ -114,6 +218,7 @@
         </li>
     </ul>
     <div id="map-container" class="map-container"></div>
+	<span id="bing-no-image-message" class="no-image-message" style="display: none">No imagery found for this location</span>
 </body>
 
 </html>

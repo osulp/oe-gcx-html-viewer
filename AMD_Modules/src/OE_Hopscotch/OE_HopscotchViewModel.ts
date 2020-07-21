@@ -10,6 +10,7 @@ import { Site } from "geocortex/essentials/Site";
 import { MapService } from "geocortex/essentials/MapService";
 import { MapServiceType } from "geocortex/essentials/MapServiceConstants";
 import { MapServiceFunction } from "geocortex/essentials/MapServiceConstants";
+import { DOMElement } from "react";
 
 export class OE_HopscotchViewModel extends ViewModelBase {
 
@@ -19,7 +20,7 @@ export class OE_HopscotchViewModel extends ViewModelBase {
 
     hopscotch;        
     toursKeyValObject: any;
-    
+        
     //searchFieldText: Observable<string> = new Observable<string>("");    
     //resultsObject: ObservableCollection<object> = new ObservableCollection<object>(null);    
     
@@ -69,15 +70,36 @@ export class OE_HopscotchViewModel extends ViewModelBase {
 
         this.hopscotch.endTour();
 
-        var currentScope:any = this;
-
-        if (this.hopscotch && this.toursKeyValObject.hasOwnProperty(args)) {            
+        var currentScope: any = this;
+        
+        if (this.hopscotch && this.toursKeyValObject.hasOwnProperty(args)) {
 
             if (this.toursKeyValObject[args].hasOwnProperty("requiredView") && this.toursKeyValObject[args].requiredView)
                 this.app.command("ActivateView").execute(this.toursKeyValObject[args].requiredView);
 
-            if (this.toursKeyValObject[args].hasOwnProperty("commandOnTourStart") && this.toursKeyValObject[args].commandOnTourStart)
-                this.app.command(this.toursKeyValObject[args].commandOnTourStart).execute(this.toursKeyValObject[args].commandOnTourStartParam);
+            if (this.toursKeyValObject[args].hasOwnProperty("commandOnTourStart") && this.toursKeyValObject[args].commandOnTourStart) {         
+
+                var commands = this.toursKeyValObject[args].commandOnTourStart.split(",");
+                var commandParams = null;
+
+                if (this.toursKeyValObject[args].hasOwnProperty("commandOnTourStartParam") && this.toursKeyValObject[args].commandOnTourStartParam)
+                    commandParams = this.toursKeyValObject[args].commandOnTourStartParam.split(",");
+
+                for (var i = 0; i < commands.length; i++) {
+
+                    if (commandParams != null && i < commandParams.length)
+                        this.app.command(commands[i]).execute(commandParams[i]);
+                    else
+                        this.app.command(commands[i]).execute("");
+                    
+                    if (commands[i] == "OpenAndFocusIWantToMenu") {
+                        var elements: any = document.getElementsByClassName("IWantToMenuView");
+                        elements[0].firstChild.scrollTop = 0;
+                    }
+                }
+
+                //this.app.command(this.toursKeyValObject[args].commandOnTourStart).execute(this.toursKeyValObject[args].commandOnTourStartParam);
+            }
 
             if (this.toursKeyValObject[args].hasOwnProperty("commandOnTourEnd") && this.toursKeyValObject[args].commandOnTourEnd) {
                 this.toursKeyValObject[args].tour.onEnd = () => { currentScope.CheckOnEventCommand(currentScope, "commandOnTourEnd", "commandOnTourEndParam") }                
@@ -97,8 +119,15 @@ export class OE_HopscotchViewModel extends ViewModelBase {
                     this.toursKeyValObject[args].tour.steps[i].onShow = () => { currentScope.CheckOnEventWorkflow(currentScope) }
                 }
             }
-                        
-            this.hopscotch.startTour(this.toursKeyValObject[args].tour);
+
+            if (this.toursKeyValObject[args].hasOwnProperty("startTourDelay") && this.toursKeyValObject[args].startTourDelay) {
+                setTimeout(function () {
+                    this.hopscotch.startTour(currentScope.toursKeyValObject[args].tour);
+                }, currentScope.toursKeyValObject[args].startTourDelay);
+            }
+            else {
+                this.hopscotch.startTour(this.toursKeyValObject[args].tour);
+            }
         }        
     }
 

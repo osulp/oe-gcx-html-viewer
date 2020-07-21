@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/geometry/Polyline","dojo/_base/declare dojo/_base/array dojo/_base/lang dojo/has ../kernel ../lang ../SpatialReference ./Geometry ./Point ./Extent ../srUtils".split(" "),function(c,l,e,C,B,h,k,D,y,z,E){function A(){}function f(){}k={type:"polyline",paths:null};c=c(D,{declaredClass:"esri.geometry.Polyline",type:"polyline",paths:null,constructor:function(a){this.paths=[];this._path=0;a&&(e.isArray(a)?this.paths=e.isArray(a[0][0])?a:[a]:a.paths?h.mixin(this,a):this.spatialReference=a,this.spatialReference&&
 (this.spatialReference=E.createSpatialReference(this.spatialReference)));this.verifySR()},addPath:function(a){this.clearCache();this._path=this.paths.length;this.paths[this._path]=[];e.isArray(a[0])?l.forEach(a,this._addPointArr,this):l.forEach(a,this._addPoint,this);return this},_addPointArr:function(a){this.paths[this._path].push(a)},_addPoint:function(a){this.paths[this._path].push([a.x,a.y])},_insertPoints:function(a,b){this.clearCache();this._path=b;this.paths[this._path]||(this.paths[this._path]=

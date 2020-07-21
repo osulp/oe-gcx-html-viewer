@@ -1,6 +1,6 @@
 {
     "configuration": {
-        "version": "2.12",
+        "version": "4.13",
             "application": {
             "proxyUri": "proxy.ashx?",
                 "contentPolicy": {
@@ -57,22 +57,7 @@
                     ]
                 },
                 {
-                    "id": "Mapping.Charting",
-                    "uri": "Resources/Compiled/Mapping.Charting.js",
-                    "locales": [
-                        {
-                            "locale": "en-US",
-                            "uri": "Resources/Locales/Mapping.Charting.en-US.json.js"
-                        },
-                        {
-                            "locale": "inv",
-                            "uri": "Resources/Locales/Mapping.Charting.en-US.json.js"
-                        }
-                    ]
-                },
-                {
                     "id": "Charting",
-                    "uri": "Resources/Compiled/Charting.js",
                     "locales": [
                         {
                             "locale": "en-US",
@@ -100,7 +85,341 @@
                     ]
                 }
             ],
-                "modules": [
+            "modules": [
+                {
+                    "moduleName": "OE_AddLayerToLayerList",
+                    "libraryId": "OE_AMD",
+                    "require": "geocortex/oe_amd/OE_AddLayerToLayerList/OE_AddLayerToLayerListModule",
+                    "configuration": {
+                        "menuItems": [
+                            {
+                                "text": "Add Layers",
+                                "description": "Add layers from OE Layer Catalog",
+                                "iconUri": "Resources/Images/Icons/Toolbar/layers-add-24.png",
+                                "command": "AddMapLayerInteractive"
+                            },
+                            {
+                                "text": "Upload",
+                                "description": "Upload your own layers.",
+                                "iconUri": "Resources/Images/Icons/Toolbar/upload-24.png",
+                                "command": "UploadData"
+                            },
+                            {
+                                "text": "Re-Order",
+                                "description": "Change the layer drawing order",
+                                "iconUri": "Resources/Images/Icons/Toolbar/layers-reorder-24.png",
+                                "command": "OpenLayerDrawingOrderGroups"
+                            },
+                            {
+                                "text": "Show Legend",
+                                "description": "View the Legend",
+                                "iconUri": "Resources/Images/Icons/legend-16.png",
+                                "command": "SwitchToLegendView"
+                            },
+                            {
+                                "text": "Show Layers",
+                                "description": "View the Layer List",
+                                "iconUri": "Resources/Images/Icons/Toolbar/layers-24.png",
+                                "command": "ShowLayerList"
+                            }
+                        ]
+                    },
+                    "views": [
+                        {
+                            "id": "OE_AddLayerToLayerListView",
+                            "require": "geocortex/oe_amd/OE_AddLayerToLayerList/OE_AddLayerToLayerListView",
+                            "markup": "geocortex/oe_amd/OE_AddLayerToLayerList/OE_AddLayerToLayerListView.html",
+                            "viewModelId": "OE_AddLayerToLayerListViewModel",
+                            "title": "Layer Search",
+                            "visible": false,
+                            "region": "ModalWindowRegion",
+                            "configuration": {
+                            }
+                        }
+                    ],
+                    "viewModels": [
+                        {
+                            "id": "OE_AddLayerToLayerListViewModel",
+                            "require": "geocortex/oe_amd/OE_AddLayerToLayerList/OE_AddLayerToLayerListViewModel",
+                            "configuration": {
+                                "remoteServiceURLs": [
+                                    "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/rest/sites/__root_oreall"                                    
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "moduleName": "OE_Hopscotch",
+                    "require": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchModule",
+                    "libraryId": "OE_AMD",
+                    "configuration": {},
+                    "views": [
+                        {
+                            "id": "OE_HopscotchView",
+                            "require": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchView",
+                            "markup": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchView.html",
+                            "title": "Tour Name",
+                            "viewModelId": "OE_HopscotchViewModel",
+                            "visible": false,
+                            "region": "DataRegion",
+                            "configuration": {}
+                        }
+                    ],
+                    "viewModels": [
+                        {
+                            "id": "OE_HopscotchViewModel",
+                            "require": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchViewModel",
+                            "configuration": {
+                                "tours": [
+                                    {
+                                        "key": "layers",
+                                        "requiredView": "LayerDataContainerView",
+                                        "commandOnTourStart": "",
+                                        "tour": {
+                                            "steps": [
+                                                {
+                                                    "title": "Layers Panel",
+                                                    "content": "The Layers panel is used to enable or disable different map layers of interest within a layer group (folder).",
+                                                    "target": ".LayerDataContainerView",
+                                                    "yOffset": -20,
+                                                    "placement": "right"
+                                                },
+                                                {
+                                                    "title": "Toggle Layer",
+                                                    "content": "Click the checkbox next to each map layer to toggle a layer, or layer group, on and off. A check turns the layer on.",
+                                                    "target": ".layer-item-ctrl",
+                                                    "yOffset": -20,
+                                                    "placement": "right",
+                                                    "commandOnShow": "",
+                                                    "commandOnShowParam": ""
+                                                },
+                                                {
+                                                    "title": "Expand Layer Group",
+                                                    "content": "Click a +, or -, button to expand or collapse a layer group. In each layer group are individual layers that you can turn on or off.",
+                                                    "target": ".layer-item-expander",
+                                                    "yOffset": -20,
+                                                    "placement": "right",
+                                                    "commandOnShow": ""
+                                                },
+                                                {
+                                                    "title": "Filter Layers",
+                                                    "content": "Begin typing here to filter the layers displayed in the layer panel (e.g.,type the word wildfire to get a listing of all wildfire layers)",
+                                                    "target": ".filter-control-search",
+                                                    "yOffset": -20,
+                                                    "placement": "right"
+                                                }
+                                            ],
+                                            "showCloseButton": true,
+                                            "showPrevButton": true
+                                        }
+                                    },
+                                    {
+                                        "key": "fireTimeline",
+                                        "requiredView": "LayerDataContainerView",
+                                        "commandOnTourStart": "OpenToolbar",
+                                        "tour": {
+                                            "steps": [
+                                                {
+                                                    "title": "Fire History Time Slider",
+                                                    "content": "This button opens the fire history time slider.",
+                                                    "target": ".flyout-menu-collapsible-area",
+                                                    "yOffset": 0,
+                                                    "xOffset": -430,
+                                                    "placement": "left"
+                                                },
+                                                {
+                                                    "title": "Opening Fire History Controls",
+                                                    "content": "Fire history controls will open at the top center of the map view, this may take a moment.  When the controls are shown press next.",
+                                                    "target": ".map-top-center",
+                                                    "yOffset": 50,
+                                                    "xOffset": "center",
+                                                    "placement": "bottom",
+                                                    "runWorkflowById": "Toggle_Fire_History_Slider"
+                                                },
+                                                {
+                                                    "title": "Fire History Controls",
+                                                    "content": "Use the slider bar to choose a time range.",
+                                                    "target": ".timeslider-container",
+                                                    "yOffset": 0,
+                                                    "xOffset": 0,
+                                                    "placement": "left"
+                                                },
+                                                {
+                                                    "title": "Toggle Control Buttons",
+                                                    "content": "This arrow toggles the control buttons below.",
+                                                    "target": ".slider-actions-toggle",
+                                                    "yOffset": 0,
+                                                    "placement": "right"
+                                                },
+                                                {
+                                                    "title": "Hide Controls",
+                                                    "content": "This button hides the entire control box. Map points will still be filtered by the timeline.",
+                                                    "target": ".slider-actions",
+                                                    "yOffset": 0,
+                                                    "placement": "right",
+                                                    "delay": 500,
+                                                    "commandOnShow": "ToggleTimeSliderActions",
+                                                    "commandDoIfHidden": ".timeslider-container > .actions-container"
+                                                },
+                                                {
+                                                    "title": "Close and Clear Fire History",
+                                                    "content": "To clear the fire history point filtering and close the control box, click the fire history button again.",
+                                                    "target": ".CompactToolbarView",
+                                                    "yOffset": 0,
+                                                    "xOffset": -440,
+                                                    "placement": "right",
+                                                    "commandOnShow": "OpenToolbar"
+                                                }
+                                            ],
+                                            "showCloseButton": true,
+                                            "showPrevButton": true
+                                        }
+                                    },
+                                    {
+                                        "key": "homeownersReportByAddress",
+                                        "commandOnTourStart": "OpenAndFocusIWantToMenu",
+                                        "tour": {
+                                            "steps": [                                               
+                                                {
+                                                    "title": "Create Homeowner's Report",
+                                                    "content": "Use this menu item to search for an address that will be used to create  the report.  Click next to open the search panel.",
+                                                    "target": ".IWantToMenuView",
+                                                    "yOffset": 45,
+                                                    "xOffset": -12,
+                                                    "placement": "right"
+                                                },
+                                                {
+                                                    "title": "Search For Address",
+                                                    "content": "Follow the four steps to create a homeowner's report for a location of interest.  Separate address and city with a comma. Once you choose your location, and you get your Wildfire Risk Report in the summary panel, you can click on the homeowner's report, the watershed report and/or the county report boxes for a report in pdf format.",
+                                                    "target": ".data-region",
+                                                    "yOffset": 50,
+                                                    "xOffset": -12,
+                                                    "placement": "right",
+                                                    "runWorkflowById": "Address_Search"
+                                                }
+                                            ],
+                                            "showCloseButton": true,
+                                            "showPrevButton": true
+                                        }
+                                    },
+                                    {
+                                        "key": "homeownersReportByPoint",
+                                        "tour": {
+                                            "steps": [
+                                                {
+                                                    "title": "Create Homeowner's Report",
+                                                    "content": "Click anywhere on the map to view a wildfire risk summary for that location.  The summary will display in a panel on the left.  Click the \"Homeowners's Report\" button in the summary panel to generate the report.",
+                                                    "target": ".MapView",
+                                                    "yOffset": "center",
+                                                    "xOffset": "center",
+                                                    "placement": "center"
+                                                },
+                                                {
+                                                    "title": "Click on the Map",
+                                                    "content": "Click on the map to open the wildfire risk summary for a location of interest.  Zoom to the area first to get a specific point location.",
+                                                    "target": ".MapView",
+                                                    "yOffset": "center",
+                                                    "xOffset": "center",
+                                                    "placement": "center"
+                                                }
+                                            ],
+                                            "showCloseButton": true,
+                                            "showPrevButton": true
+                                        }
+                                    },
+                                    {
+                                        "key": "summaryReport",
+                                        "commandOnTourStart": "OpenAndFocusIWantToMenu",
+                                        "tour": {
+                                            "steps": [
+                                                {
+                                                    "title": "Create Summary Report",
+                                                    "content": "Use this menu to open the summary report panel.  Click next to open the panel.",
+                                                    "target": ".IWantToMenuView",
+                                                    "yOffset": 120,
+                                                    "xOffset": -12,
+                                                    "placement": "right"
+                                                },
+                                                {
+                                                    "title": "Summary Report Selection",
+                                                    "content": "Choose a geography of interest for the summary report. If \"point on map\" is selected, reports for both a county and a 5th field watershed will be generated.",
+                                                    "target": ".data-region",
+                                                    "yOffset": 50,
+                                                    "xOffset": -12,
+                                                    "placement": "right",
+                                                    "runWorkflowById": "Area_of_Interest"
+                                                }
+                                            ],
+                                            "showCloseButton": true,
+                                            "showPrevButton": true
+                                        }
+                                    },
+                                    {
+                                        "key": "summaryReportByPoint",
+                                        "tour": {
+                                            "steps": [
+                                                {
+                                                    "title": "Create Summary Report",
+                                                    "content": "Click anywhere on the map to view the wildfire risk summary in the left panel.   Use the buttons under \"Watershed\" or \"County\" to view a full wildfire risk ummary report in pdf format.",
+                                                    "target": ".MapView",
+                                                    "yOffset": "center",
+                                                    "xOffset": "center",
+                                                    "placement": "center"
+                                                },
+                                                {
+                                                    "title": "Click on the Map",
+                                                    "content": "Click on the map to open the wildfire risk summary in the left panel.",
+                                                    "target": ".MapView",
+                                                    "yOffset": "center",
+                                                    "xOffset": "center",
+                                                    "placement": "center"
+                                                }
+                                            ],
+                                            "showCloseButton": true,
+                                            "showPrevButton": true
+                                        }
+                                    },
+                                    {
+                                        "key": "printMap",
+                                        "commandOnTourStart": "OpenToolbar",
+                                        "tour": {
+                                            "steps": [
+                                                {
+                                                    "title": "Print Map",
+                                                    "content": "Use this button to make a map and open the print map panel.  Click next to open the print map panel.",
+                                                    "target": ".flyout-menu-collapsible-area",
+                                                    "yOffset": 0,
+                                                    "xOffset": -220,
+                                                    "placement": "left"
+                                                },
+                                                {
+                                                    "title": "Print Map Panel",
+                                                    "content": "The default options will print the current view of the map you see on the right within the red shaded box.  There are many options to customize your map (e.g., map title, scale, and notes). Use the drop downs associated with each print map parameter to customize your map.  If you want to change the location of the default red box, click off the \"Lock print preview with map\" and move the underlying map until it is where you want it. When ready click the print button at the bottom of the panel.",
+                                                    "target": ".data-region",
+                                                    "yOffset": 50,
+                                                    "xOffset": -12,
+                                                    "placement": "right",
+                                                    "commandOnShow": "PrintMap"
+                                                }
+                                            ],
+                                            "showCloseButton": true,
+                                            "showPrevButton": true
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                    {
+                        "moduleName": "OE_HyperlinkBanner",
+                        "libraryId": "OE_AMD",
+                        "require": "geocortex/oe_amd/OE_HyperlinkBanner/OE_HyperlinkBannerModule",
+                        "configuration": {
+                            "linkUri": "http://oregonexplorer.info"
+                        }
+                    },
                     {
                         "moduleName": "OE_Elevation",
                         "libraryId": "OE_AMD",
@@ -113,25 +432,84 @@
                         "libraryId": "OE_AMD",
                         "require": "geocortex/oe_amd/OE_LayerActions/OE_LayerActionsModule",
                         "configuration": {
-                            "showLayerDescription": false,
-                            "showLayerDescViewHide": true,
-                            "allowAllLayerTypes:": false,
+                            "showLayerDescription": true,
+                            "showLayerDescViewHide": false,
+                            "allowAllLayerTypes:": true,
                             "metadataHyperlinkOverride": true,
-                            "expandLayerTreeOnVisible": true,
-                            "downloadWorkflowEnabled": true,
                             "downloadHyperlinkOverride": true,
-                            "downloadWorkflowOverride": {
-                                "workflowID": "WildfireDataExtract"
-                            }
+                            "expandLayerTreeOnVisible": true,
+                            "downloadWorkflowEnabled": true
                         }
                     },
                     {
-                        "moduleName": "OE_HyperlinkBanner",
-                        "libraryId": "OE_AMD",
-                        "require": "geocortex/oe_amd/OE_HyperlinkBanner/OE_HyperlinkBannerModule",
-                        "configuration": {
-                            "linkUri": "http://oregonexplorer.info"
+                        "moduleName": "InitialExtent",
+                        "moduleType": "oe.initial_extent.InitialExtentModule",
+                        "libraryId": "Custom",
+                        "configuration": {}
+                    },
+                    {
+                        "moduleName": "Elevation",
+                        "moduleType": "oe.elevation.ElevationModule",
+                        "libraryId": "Custom",
+                        "configuration": {},
+                        "views": [{
+                            "id": "ElevationModuleView",
+                            "viewModelId": "ElevationModuleViewModel",
+                            "visible": false,
+                            "markup": "Modules/Elevation/ElevationModuleView.html",
+                            "type": "oe.elevation.ElevationModuleView",
+                            "region": "LeftFooterRegion",
+                            "configuration": {}
                         }
+                        ],
+                        "viewModels": [{
+                            "id": "ElevationModuleViewModel",
+                            "type": "oe.elevation.ElevationModuleViewModel",
+
+                            "configuration": {}
+                        }]
+                    },
+                    {
+                        "moduleName": "OE_Wildfire",
+                        "libraryId": "OE_AMD",
+                        "require": "geocortex/oe_amd/OE_Wildfire/OE_WildfireModule",
+                        "configuration": {},
+                        "views": [
+                            {
+                                "id": "OE_WildfireView",
+                                "require": "geocortex/oe_amd/OE_Wildfire/OE_WildfireView",
+                                "markup": "geocortex/oe_amd/OE_Wildfire/OE_WildfireView.html",
+                                "viewModelId": "OE_WildfireViewModel",
+                                "title": "Wildfire Risk Popup",
+                                "visible": false,
+                                "region": "NavigationMapRegion",
+                                "configuration": {}
+                            },
+                            {
+                                "id": "OE_Wildfire_DynamicFormView",
+                                "require": "geocortex/oe_amd/OE_Wildfire/OE_Wildfire_DynamicFormView",
+                                "markup": "geocortex/oe_amd/OE_Wildfire/OE_Wildfire_DynamicFormView.html",
+                                "viewModelId": "OE_Wildfire_DynamicFormViewModel",
+                                "title": "Wildfire Risk Report",
+                                "visible": false,
+                                "region": "DataRegion",
+                                "configuration": {}
+                            }
+                        ],
+                        "viewModels": [
+                            {
+                                "id": "OE_WildfireViewModel",
+                                "require": "geocortex/oe_amd/OE_Wildfire/OE_WildfireViewModel",
+                                "configuration": {
+                                    "mapClickEnabled": false
+                                }
+                            },
+                            {
+                                "id": "OE_Wildfire_DynamicFormViewModel",
+                                "require": "geocortex/oe_amd/OE_Wildfire/OE_Wildfire_DynamicFormViewModel",
+                                "configuration": {}
+                            }
+                        ]
                     },
                     {
                         "moduleName": "Menu",
@@ -633,6 +1011,21 @@
                                             "commandParameter": "{{context}}"
                                         },
                                         {
+                                            "text": "@language-menu-show-charting-view",
+                                            "description": "@language-menu-show-charting-view-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/charting-24.png",
+                                            "hideOnDisable": true,
+                                            "command": "ShowChartingView"
+                                        },
+                                        {
+                                            "text": "@language-menu-run-report",
+                                            "description": "@language-menu-run-report-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
+                                            "command": "ListReports",
+                                            "commandParameter": "{{context}}",
+                                            "hideOnDisable": true
+                                        },
+                                        {
                                             "text": "@language-menu-identify-buffered-feature-set-collection",
                                             "description": "@language-menu-identify-buffered-feature-set-collection-desc",
                                             "iconUri": "Resources/Images/Icons/Toolbar/buffer-shape-24.png",
@@ -641,11 +1034,20 @@
                                             "commandParameter": "{{context}}"
                                         },
                                         {
-                                            "text": "@language-menu-show-charting-view",
-                                            "description": "@language-menu-show-charting-view-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/charting-24.png",
-                                            "hideOnDisable": true,
-                                            "command": "ShowChartingView"
+                                            "text": "@language-menu-save-results",
+                                            "description": "@language-menu-save-results-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
+                                            "command": "ShowSaveSelectionDialog",
+                                            "commandParameter": "{{context}}",
+                                            "hideOnDisable": true
+                                        },
+                                        {
+                                            "text": "@language-menu-combine-results",
+                                            "description": "@language-menu-combine-results-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
+                                            "command": "ShowSearchOptions",
+                                            "commandParameter": "{{context}}",
+                                            "hideOnDisable": true
                                         },
                                         {
                                             "text": "@language-menu-export-results-to-csv",
@@ -681,35 +1083,11 @@
                                             }
                                         },
                                         {
-                                            "text": "@language-menu-run-report",
-                                            "description": "@language-menu-run-report-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
-                                            "command": "ListReports",
-                                            "commandParameter": "{{context}}",
-                                            "hideOnDisable": true
-                                        },
-                                        {
                                             "text": "@language-menu-browse-saved-results",
                                             "description": "@language-menu-browse-saved-results-desc",
                                             "iconUri": "Resources/Images/Icons/Toolbar/open-24.png",
                                             "command": "ListSelections",
-                                            "hideOnDisable": false
-                                        },
-                                        {
-                                            "text": "@language-menu-save-results",
-                                            "description": "@language-menu-save-results-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
-                                            "command": "ShowSaveSelectionDialog",
-                                            "commandParameter": "{{context}}",
-                                            "hideOnDisable": false
-                                        },
-                                        {
-                                            "text": "@language-menu-combine-results",
-                                            "description": "@language-menu-combine-results-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
-                                            "command": "ShowSearchOptions",
-                                            "commandParameter": "{{context}}",
-                                            "hideOnDisable": false
+                                            "hideOnDisable": true
                                         }
                                     ]
                                 },
@@ -735,6 +1113,21 @@
                                             "commandParameter": "{{context}}"
                                         },
                                         {
+                                            "text": "@language-menu-show-charting-view",
+                                            "description": "@language-menu-show-charting-view-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/charting-24.png",
+                                            "hideOnDisable": true,
+                                            "command": "ShowChartingView"
+                                        },
+                                        {
+                                            "text": "@language-menu-run-report",
+                                            "description": "@language-menu-run-report-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
+                                            "command": "ListReports",
+                                            "commandParameter": "{{context}}",
+                                            "hideOnDisable": true
+                                        },
+                                        {
                                             "text": "@language-menu-identify-buffered-feature-set-collection",
                                             "description": "@language-menu-identify-buffered-feature-set-collection-desc",
                                             "iconUri": "Resources/Images/Icons/Toolbar/buffer-shape-24.png",
@@ -743,11 +1136,20 @@
                                             "commandParameter": "{{context}}"
                                         },
                                         {
-                                            "text": "@language-menu-show-charting-view",
-                                            "description": "@language-menu-show-charting-view-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/charting-24.png",
-                                            "hideOnDisable": true,
-                                            "command": "ShowChartingView"
+                                            "text": "@language-menu-save-results",
+                                            "description": "@language-menu-save-results-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
+                                            "command": "ShowSaveSelectionDialog",
+                                            "commandParameter": "{{context}}",
+                                            "hideOnDisable": true
+                                        },
+                                        {
+                                            "text": "@language-menu-combine-results",
+                                            "description": "@language-menu-combine-results-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
+                                            "command": "ShowSearchOptions",
+                                            "commandParameter": "{{context}}",
+                                            "hideOnDisable": true
                                         },
                                         {
                                             "text": "@language-menu-export-results-to-csv",
@@ -783,35 +1185,11 @@
                                             }
                                         },
                                         {
-                                            "text": "@language-menu-run-report",
-                                            "description": "@language-menu-run-report-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
-                                            "command": "ListReports",
-                                            "commandParameter": "{{context}}",
-                                            "hideOnDisable": true
-                                        },
-                                        {
                                             "text": "@language-menu-browse-saved-results",
                                             "description": "@language-menu-browse-saved-results-desc",
                                             "iconUri": "Resources/Images/Icons/Toolbar/open-24.png",
                                             "command": "ListSelections",
-                                            "hideOnDisable": false
-                                        },
-                                        {
-                                            "text": "@language-menu-save-results",
-                                            "description": "@language-menu-save-results-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
-                                            "command": "ShowSaveSelectionDialog",
-                                            "commandParameter": "{{context}}",
-                                            "hideOnDisable": false
-                                        },
-                                        {
-                                            "text": "@language-menu-combine-results",
-                                            "description": "@language-menu-combine-results-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
-                                            "command": "ShowSearchOptions",
-                                            "commandParameter": "{{context}}",
-                                            "hideOnDisable": false
+                                            "hideOnDisable": true
                                         }
                                     ]
                                 },
@@ -1016,24 +1394,9 @@
                                             "commandParameter": "{{context}}"
                                         },
                                         {
-                                            "text": "@language-feature-editing-union-text",
-                                            "description": "@language-feature-editing-union-desc",
-                                            "iconUri": "Resources/Images/Icons/polygon-add-24.png",
-                                            "hideOnDisable": true,
-                                            "command": "UnionFeaturesInteractive",
-                                            "commandParameter": "{{context}}"
-                                        },
-                                        {
-                                            "text": "@language-menu-identify-buffered-feature-set-collection",
-                                            "description": "@language-menu-identify-buffered-feature-set-collection-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/buffer-shape-24.png",
-                                            "hideOnDisable": true,
-                                            "command": "IdentifyBufferedFeatureSet",
-                                            "commandParameter": "{{context}}"
-                                        },
-                                        {
                                             "text": "@language-menu-select-all",
                                             "description": "@language-menu-select-all-desc",
+                                            "libraryId": "Mapping.Infrastructure",
                                             "iconUri": "Resources/Images/Icons/Toolbar/star-add-all-24.png",
                                             "hideOnDisable": true,
                                             "command": "AddFeatureSetToStarredSelection",
@@ -1042,6 +1405,7 @@
                                         {
                                             "text": "@language-menu-deselect-all",
                                             "description": "@language-menu-deselect-all-desc",
+                                            "libraryId": "Mapping.Infrastructure",
                                             "iconUri": "Resources/Images/Icons/Toolbar/star-remove-all-24.png",
                                             "hideOnDisable": true,
                                             "command": "RemoveFeatureSetFromStarredSelection",
@@ -1053,6 +1417,38 @@
                                             "iconUri": "Resources/Images/Icons/Toolbar/charting-24.png",
                                             "hideOnDisable": true,
                                             "command": "ShowChartingView"
+                                        },
+                                        {
+                                            "text": "@language-menu-run-report",
+                                            "description": "@language-menu-run-report-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
+                                            "command": "ListReports",
+                                            "commandParameter": "{{context}}",
+                                            "hideOnDisable": true
+                                        },
+                                        {
+                                            "text": "@language-menu-results-remove-feature-set",
+                                            "description": "@language-menu-results-remove-feature-set-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/trash-24.png",
+                                            "hideOnDisable": true,
+                                            "command": "RemoveFeatureSetFromResults",
+                                            "commandParameter": "{{context}}"
+                                        },
+                                        {
+                                            "text": "@language-menu-identify-buffered-feature-set-collection",
+                                            "description": "@language-menu-identify-buffered-feature-set-collection-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/buffer-shape-24.png",
+                                            "hideOnDisable": true,
+                                            "command": "IdentifyBufferedFeatureSet",
+                                            "commandParameter": "{{context}}"
+                                        },
+                                        {
+                                            "text": "@language-feature-editing-union-text",
+                                            "description": "@language-feature-editing-union-desc",
+                                            "iconUri": "Resources/Images/Icons/polygon-add-24.png",
+                                            "hideOnDisable": true,
+                                            "command": "UnionFeaturesInteractive",
+                                            "commandParameter": "{{context}}"
                                         },
                                         {
                                             "text": "@language-menu-export-results-to-csv",
@@ -1088,10 +1484,18 @@
                                             }
                                         },
                                         {
-                                            "text": "@language-menu-run-report",
-                                            "description": "@language-menu-run-report-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
-                                            "command": "ListReports",
+                                            "text": "@language-menu-save-results",
+                                            "description": "@language-menu-save-results-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
+                                            "command": "ShowSaveSelectionDialog",
+                                            "commandParameter": "{{context}}",
+                                            "hideOnDisable": true
+                                        },
+                                        {
+                                            "text": "@language-menu-combine-results",
+                                            "description": "@language-menu-combine-results-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
+                                            "command": "ShowSearchOptions",
                                             "commandParameter": "{{context}}",
                                             "hideOnDisable": true
                                         },
@@ -1100,31 +1504,7 @@
                                             "description": "@language-menu-browse-saved-results-desc",
                                             "iconUri": "Resources/Images/Icons/Toolbar/open-24.png",
                                             "command": "ListSelections",
-                                            "hideOnDisable": false
-                                        },
-                                        {
-                                            "text": "@language-menu-save-results",
-                                            "description": "@language-menu-save-results-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
-                                            "command": "ShowSaveSelectionDialog",
-                                            "commandParameter": "{{context}}",
-                                            "hideOnDisable": false
-                                        },
-                                        {
-                                            "text": "@language-menu-combine-results",
-                                            "description": "@language-menu-combine-results-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
-                                            "command": "ShowSearchOptions",
-                                            "commandParameter": "{{context}}",
-                                            "hideOnDisable": false
-                                        },
-                                        {
-                                            "text": "@language-menu-results-remove-feature-set",
-                                            "description": "@language-menu-results-remove-feature-set-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/trash-24.png",
-                                            "hideOnDisable": true,
-                                            "command": "RemoveFeatureSetFromResults",
-                                            "commandParameter": "{{context}}"
+                                            "hideOnDisable": true
                                         }
                                     ]
                                 },
@@ -1168,22 +1548,6 @@
                                             "commandParameter": "{{context}}"
                                         },
                                         {
-                                            "text": "@language-feature-editing-union-text",
-                                            "description": "@language-feature-editing-union-desc",
-                                            "iconUri": "Resources/Images/Icons/polygon-add-24.png",
-                                            "hideOnDisable": true,
-                                            "command": "UnionFeaturesInteractive",
-                                            "commandParameter": "{{context}}"
-                                        },
-                                        {
-                                            "text": "@language-menu-identify-buffered-feature-set-collection",
-                                            "description": "@language-menu-identify-buffered-feature-set-collection-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/buffer-shape-24.png",
-                                            "hideOnDisable": true,
-                                            "command": "IdentifyBufferedFeatureSet",
-                                            "commandParameter": "{{context}}"
-                                        },
-                                        {
                                             "text": "@language-menu-select-all",
                                             "description": "@language-menu-select-all-desc",
                                             "iconUri": "Resources/Images/Icons/Toolbar/star-add-all-24.png",
@@ -1205,6 +1569,62 @@
                                             "iconUri": "Resources/Images/Icons/Toolbar/charting-24.png",
                                             "hideOnDisable": true,
                                             "command": "ShowChartingView"
+                                        },
+                                        {
+                                            "text": "@language-menu-run-report",
+                                            "description": "@language-menu-run-report-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
+                                            "command": "ListReports",
+                                            "commandParameter": "{{context}}",
+                                            "hideOnDisable": true
+                                        },
+                                        {
+                                            "text": "@language-menu-identify-buffered-feature-set-collection",
+                                            "description": "@language-menu-identify-buffered-feature-set-collection-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/buffer-shape-24.png",
+                                            "hideOnDisable": true,
+                                            "command": "IdentifyBufferedFeatureSet",
+                                            "commandParameter": "{{context}}"
+                                        },
+                                        {
+                                            "text": "@language-menu-save-results",
+                                            "description": "@language-menu-save-results-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
+                                            "command": "ShowSaveSelectionDialog",
+                                            "commandParameter": "{{context}}",
+                                            "hideOnDisable": true
+                                        },
+                                        {
+                                            "text": "@language-menu-results-remove-feature-set",
+                                            "description": "@language-menu-results-remove-feature-set-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/trash-24.png",
+                                            "hideOnDisable": true,
+                                            "batch": [
+                                                {
+                                                    "command": "HideFeatureSetResultsView"
+                                                },
+                                                {
+                                                    "command": "RemoveFeatureSetFromResults",
+                                                    "commandParameter": "{{context}}",
+                                                    "abortBatchOnFailure": true
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "text": "@language-menu-combine-results",
+                                            "description": "@language-menu-combine-results-desc",
+                                            "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
+                                            "command": "ShowSearchOptions",
+                                            "commandParameter": "{{context}}",
+                                            "hideOnDisable": true
+                                        },
+                                        {
+                                            "text": "@language-feature-editing-union-text",
+                                            "description": "@language-feature-editing-union-desc",
+                                            "iconUri": "Resources/Images/Icons/polygon-add-24.png",
+                                            "hideOnDisable": true,
+                                            "command": "UnionFeaturesInteractive",
+                                            "commandParameter": "{{context}}"
                                         },
                                         {
                                             "text": "@language-menu-export-results-to-csv",
@@ -1240,51 +1660,11 @@
                                             }
                                         },
                                         {
-                                            "text": "@language-menu-run-report",
-                                            "description": "@language-menu-run-report-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
-                                            "command": "ListReports",
-                                            "commandParameter": "{{context}}",
-                                            "hideOnDisable": true
-                                        },
-                                        {
                                             "text": "@language-menu-browse-saved-results",
                                             "description": "@language-menu-browse-saved-results-desc",
                                             "iconUri": "Resources/Images/Icons/Toolbar/open-24.png",
                                             "command": "ListSelections",
-                                            "hideOnDisable": false
-                                        },
-                                        {
-                                            "text": "@language-menu-save-results",
-                                            "description": "@language-menu-save-results-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/save-24.png",
-                                            "command": "ShowSaveSelectionDialog",
-                                            "commandParameter": "{{context}}",
-                                            "hideOnDisable": false
-                                        },
-                                        {
-                                            "text": "@language-menu-combine-results",
-                                            "description": "@language-menu-combine-results-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/refine-results-24.png",
-                                            "command": "ShowSearchOptions",
-                                            "commandParameter": "{{context}}",
-                                            "hideOnDisable": false
-                                        },
-                                        {
-                                            "text": "@language-menu-results-remove-feature-set",
-                                            "description": "@language-menu-results-remove-feature-set-desc",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/trash-24.png",
-                                            "hideOnDisable": true,
-                                            "batch": [
-                                                {
-                                                    "command": "HideFeatureSetResultsView"
-                                                },
-                                                {
-                                                    "command": "RemoveFeatureSetFromResults",
-                                                    "commandParameter": "{{context}}",
-                                                    "abortBatchOnFailure": true
-                                                }
-                                            ]
+                                            "hideOnDisable": true
                                         }
                                     ]
                                 },
@@ -1451,6 +1831,42 @@
                                     "defaultIconUri": "Resources/Images/Icons/Toolbar/edit-24.png",
                                     "items": [
                                         {
+                                            "text": "Create Advanced County Report",
+                                            "command": "RunWorkflowWithArguments",
+                                            "commandParameter": {
+                                                "workflowId": "Wildfire_Advanced_Report",
+                                                "entryType": "county",
+                                                "mapPointEntry": "{{context}}"
+                                            }
+                                        },
+                                        {
+                                            "text": "Create Advanced Watershed Report",
+                                            "command": "RunWorkflowWithArguments",
+                                            "commandParameter": {
+                                                "workflowId": "Wildfire_Advanced_Report",
+                                                "entryType": "watershed",
+                                                "mapPointEntry": "{{context}}"
+                                            }
+                                        },
+                                        {
+                                            "text": "Create Advanced Sub-Watershed Report",
+                                            "command": "RunWorkflowWithArguments",
+                                            "commandParameter": {
+                                                "workflowId": "Wildfire_Advanced_Report",
+                                                "entryType": "subwatershed",
+                                                "mapPointEntry": "{{context}}"
+                                            }
+                                        },
+                                        {
+                                            "text": "Create Homeowner's Report",
+                                            "description": "",
+                                            "command": "RunWorkflowWithArguments",
+                                            "commandParameter": {
+                                                "workflowId": "Summary_Standalone",
+                                                "mapPointIn": "{{context}}"
+                                            }
+                                        },
+                                        {
                                             "iconUri": "Resources/Images/Icons/Toolbar/identify-24.png",
                                             "text": "@language-menu-identify",
                                             "command": "Identify",
@@ -1520,7 +1936,8 @@
                                     "disableMapKeyboardNavigation": false,
                                     "extentBroadcastFrequency": 20,
                                     "fitTiledMapsToExtent": false,
-                                    "showAttribution": true
+                                    "showAttribution": true,
+                                    "showLabels": true
                                 }
                             },
                             {
@@ -1631,7 +2048,7 @@
                             "keyboardFocusIndicatorColor": "#550055",
                             "expandedMapKeyboardAccessibility": true,
                             "automaticElementFocusing": true,
-                            "includeProviders": true,
+                            "includeProviders": false,
                             "providers": [
                                 {
                                     "id": "MapTextProvider",
@@ -1717,7 +2134,7 @@
                                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.accessibility.AccessibilityIconViewModel",
                                 "configuration": {
                                     "included": true,
-                                    "content": "%3Cp%3E%0AThis%20application%20provides%20enhanced%20access%20to%20end-users%20with%20disabilities%3A%20it%20enables%20full%20keyboard%20control%2C%20is%20screen%20reader%20friendly%2C%20and%20contains%20other%20features%20to%20make%20mapping%20technology%20more%20accessible%20to%20the%20largest%20possible%20audience%20of%20potential%20users%2C%20regardless%20of%20their%20level%20of%20ability.%20%3Cbr%3E%3Cbr%3E%20Geocortex%20Viewer%20for%20HTML5%20conforms%20to%20%3Ca%20href%3D%22http%3A%2F%2Fwww.w3.org%2FTR%2FWCAG20%2F%22%20target%3D%22_blank%22%3EWCAG%202.0%3C%2Fa%3E%20level%20AA%20(international%20%26amp%3B%20United%20States)%2C%20as%20part%20of%20Latitude%20Geographics'%20Geocortex%20Essentials%20technology%20for%20Esri's%20ArcGIS%20platform.%0A%3C%2Fp%3E",
+                                    "content": "%3Cp%3E%0AThis%20application%20provides%20enhanced%20access%20to%20end-users%20with%20disabilities%3A%20it%20enables%20full%20keyboard%20control%2C%20is%20screen%20reader%20friendly%2C%20and%20contains%20other%20features%20to%20make%20mapping%20technology%20more%20accessible%20to%20the%20largest%20possible%20audience%20of%20potential%20users%2C%20regardless%20of%20their%20level%20of%20ability.%20%3Cbr%3E%3Cbr%3E%20Geocortex%20Viewer%20for%20HTML5%20conforms%20to%20%3Cstrong%3E%3Ca%20href%3D%22http%3A%2F%2Fwww.w3.org%2FTR%2FWCAG20%2F%22%20target%3D%22_blank%22%3EWCAG%202.0%3C%2Fa%3E%3C%2Fstrong%3E%20level%20AA%20(international%20%26amp%3B%20United%20States)%2C%20as%20part%20of%20Latitude%20Geographics'%20Geocortex%20Essentials%20technology%20for%20Esri's%20ArcGIS%20platform.%0A%3C%2Fp%3E",
                                     "title": "@language-accessibility-map-title"
                                 }
                             }
@@ -2003,7 +2420,7 @@
                     {
                         "moduleName": "Charting",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.charting.ChartingModule",
-                        "libraryId": "Mapping.Charting",
+                        "deferLoading": true,
                         "configuration": {
                             "infrastructureLibraryId": "Charting",
                             "adapters": [
@@ -2049,8 +2466,8 @@
                                 "id": "ChartingView",
                                 "viewModelId": "ChartingViewModel",
                                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.charting.ChartingView",
-                                "markup": "Mapping.Charting/modules/Charting/ChartingView.html",
-                                "libraryId": "Mapping.Charting",
+                                "markup": "Mapping/modules/Charting/ChartingView.html",
+                                "libraryId": "Mapping",
                                 "region": "BottomPanelRegion",
                                 "visible": false,
                                 "configuration": {}
@@ -2060,7 +2477,7 @@
                             {
                                 "id": "ChartingViewModel",
                                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.charting.ChartingViewModel",
-                                "libraryId": "Mapping.Charting",
+                                "libraryId": "Mapping",
                                 "configuration": {
                                     "chartingEnabled": true,
                                     "chartConfiguration": {
@@ -2179,11 +2596,7 @@
                                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.collaboration.events.EventEditViewModel",
                                 "require": "Mapping/modules/Collaboration/Events/EventEditViewModel",
                                 "configuration": {
-                                    "characterLimit": 1000,
-                                    "editableTypes": [
-                                        "ShareMarkupEvent",
-                                        "ShareImageEvent"
-                                    ]
+                                    "characterLimit": 1000
                                 }
                             },
                             {
@@ -2575,8 +2988,8 @@
                         "moduleName": "CompactToolbar",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.toolbar.CompactToolbarModule",
                         "require": "Mapping/modules/Toolbar/CompactToolbarModule",
+                        "isEnabled": false,
                         "configuration": {
-                            "isEnabled": false,
                             "transientElements": [
                                 {
                                     "stateName": "MeasureState",
@@ -3040,18 +3453,12 @@
                                 {
                                     "name": "EditorFeatureSelectedBehavior",
                                     "commands": [
-                                        "ZoomToFeature",
-                                        "SetActiveHighlightLayerDefault",
-                                        "ClearHighlights",
-                                        "HighlightFeature"
+                                        "ZoomToFeature"
                                     ]
                                 },
                                 {
                                     "name": "EditorRemoveFeatureSelectedBehavior",
-                                    "commands": [
-                                        "SetActiveHighlightLayerDefault",
-                                        "ClearHighlights"
-                                    ]
+                                    "commands": []
                                 }
                             ]
                         },
@@ -3286,6 +3693,7 @@
                     {
                         "moduleName": "FeatureDetails",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.FeatureDetails.FeatureDetailsModule",
+                        "moduleDependencies": ["Charting"],
                         "deferLoading": true,
                         "configuration": {
                             "defaultViewMode": "compact",
@@ -3346,9 +3754,9 @@
                                     "type": "geocortex.essentialsHtmlViewer.mapping.modules.charting.SingleFeatureChartViewModel",
                                     "viewId": "FeatureChartsProviderView",
                                     "viewType": "geocortex.essentialsHtmlViewer.mapping.modules.charting.SingleFeatureChartView",
-                                    "libraryId": "Mapping.Charting",
+                                    "libraryId": "Mapping",
                                     "iconUri": "Resources/Images/Icons/charting-24.png",
-                                    "markup": "Mapping.Charting/modules/Charting/SingleFeatureChartView.html",
+                                    "markup": "Mapping/modules/Charting/SingleFeatureChartView.html",
                                     "title": "@language-feature-charts",
                                     "config": {
                                         "infrastructureLibraryId": "Charting",
@@ -3961,7 +4369,7 @@
                                 "id": "InfoViewModel",
                                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.Info.InfoViewModel",
                                 "configuration": {
-                                    "content": "%3Cdiv%20style%3D%22font-family%3ASegoe%20UI%20Light%2C%20Segoe%20UI%2C%20Arial%3B%20padding%3A20px%22%3E%20%3Cp%20style%3D%22color%3A%20%23000000%3B%20%20font-size%3A%2018px%3B%22%3E%0D%0A%20%20%20%20%20%20%20%20Welcome%20to%20the%20Oregon%20Explorer%0D%0A%20%20%20%20%20%20%20%20%3Cbr%3E%20Map%20Viewer%21%0D%0A%20%20%20%20%3C%2Fp%3E%0D%0A%20%20%20%20%3Cbr%3E%0D%0A%0D%0A%20%20%20%20%3Cp%3EWith%20hundreds%20of%20map%20layers%20available%20to%20draw%20from%2C%20you%20can%20use%20the%20Oregon%20Explorer%20Map%20Viewer%20to%20make%20your%20own%20custom%20map%20and%20share%20it%20with%20others.%20%3C%2Fp%3E%0D%0A%20%20%20%20%3Cbr%3E%0D%0A%0D%0A%20%20%20%20%3Cp%3EClick%20button%20below%20to%20directly%20access%20the%20map%20layers%20or%20click%20on%20the%20%E2%80%9Clayers%E2%80%9D%20icon%20in%20the%20bottom%20left%20hand%20corner%20of%20this%20window.%20%20The%20home%20button%20gets%20you%20back%20to%20this%20introduction.%3C%2Fp%3E%0D%0A%20%20%20%20%3Cbr%3E%0D%0A%20%20%20%20%3Cp%20style%3D%22text-align%3Acenter%22%3E%3Ca%20href%3D%22command%3ASwitchToLayerView%22%3E%3Cimg%20src%3D%22Resources%2FImages%2FCustom%2FGotoLayers.png%22%3E%3C%2Fa%3E%3C%2Fp%3E%0D%0A%20%20%20%20%0D%0A%20%20%20%20%3Cbr%3E%0D%0A%20%20%20%20%3Cp%3E%0D%0A%20%20%20%20%20%20%20%20We%20hope%20you%20enjoy%20using%20the%20tool.%26nbsp%3B%20Send%20questions%20or%20feedback%20to%3A%20%3Ca%20href%3D%22mailto%3Avirtualoregon.support%40oregonstate.edu%22%3E%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20virtualoregon.support%40oregonstate.edu%0D%0A%20%20%20%20%20%20%20%20%3C%2Fa%3E%0D%0A%20%20%20%20%3C%2Fp%3E%0D%0A%20%20%20%20%3Cbr%3E%3Cbr%3E%0D%0A%20%20%20%20%3Cp%20style%3D%22text-align%3Acenter%22%3E%0D%0A%20%20%20%20%20%20%20%20%3Ca%20href%3D%22http%3A%2F%2Foregonexplorer.info%22%20target%3D%22_blank%22%3E%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cimg%20style%3D%22width%3A%20294px%3B%22%20src%3D%22Resources%2FImages%2FCustom%2Fsplash-logo.png%22%3E%0D%0A%20%20%20%20%20%20%20%20%3C%2Fa%3E%0D%0A%20%20%20%20%3C%2Fp%3E%20%20%20%20%0D%0A%3C%2Fdiv%3E",
+                                    "content": "%3Cdiv%20style%3D%22padding%3A15px%22%3EThe%20Oregon%20Wildfire%20Risk%20Explorer%20is%20designed%20to%20increase%20wildfire%20%0Aawareness%2C%20give%20a%20comprehensive%20view%20of%20wildfire%20risk%20and%20local%20fire%20%0Ahistory%2C%20and%20educate%20users%20about%20wildfire%20prevention%20and%20mitigation%20%0Aresources.%20This%20viewer%20directly%20serves%20homeowners%20and%20community%20leaders.%20The%20%3Ca%20href%3D%22https%3A%2F%2Ftools.oregonexplorer.info%2FOE_HtmlViewer%2Findex.html%3Fviewer%3Dwildfireplanning%22%20target%3D%22_blank%22%3EAdvanced%20Wildfire%20Risk%20Explorer%3C%2Fa%3E%0A%20serves%20professional%20planners%20to%20inform%20updates%20to%20Community%20Wildfire%20%0AProtection%20Plans%20(CWPP)%20and%20Natural%20Hazard%20Mitigation%20Plans%20(NHMP)%2C%20with%0A%20extensive%20data%20resources%2C%20detailed%20summaries%2C%20and%20full%20wildfire%20risk%20%0Ainventory%20report.%3Cbr%3E%3Cbr%3E%3Cfont%20size%3D%223%22%3EClick%20on%20the%20map%20to%20view%20risk%20information%20%3C%2Ffont%3E%3Cimg%20src%3D%22https%3A%2F%2Foe.oregonexplorer.info%2Fexternalcontent%2Fwildfire%2Farrow-up-small-24.png%22%20style%3D%22width%3A%2014px%3B%20height%3A%2014px%3B%22%3E%3Cbr%3E%3Cbr%3E%3Ctable%3E%3Ctbody%3E%3Ctr%3E%3Ctd%20style%3D%22text-align%3A%20center%3B%20padding%3A%2010px%2040px%3B%20%22%3E%3Ca%20href%3D%22command%3ARunWorkflowById%3FAddress_Search%22%3E%3Cimg%20src%3D%22https%3A%2F%2Foe.oregonexplorer.info%2Fexternalcontent%2Fwildfire%2FHomeowners.png%22%20style%3D%22height%3A%20100px%3B%22%3E%3C%2Fa%3E%3C%2Ftd%3E%3Ctd%20style%3D%22text-align%3A%20center%3B%20padding%3A%2010px%2040px%3B%20%22%3E%3Ca%20href%3D%22command%3ARunWorkflowById%3FArea_of_Interest%22%3E%3Cimg%20src%3D%22https%3A%2F%2Foe.oregonexplorer.info%2Fexternalcontent%2Fwildfire%2FAOI.png%22%20style%3D%22height%3A%20100px%3B%22%3E%3C%2Fa%3E%3C%2Ftd%3E%3C%2Ftr%3E%3Ctr%3E%3Ctd%20style%3D%22text-align%3A%20center%3B%22%3E%3Ca%20href%3D%22command%3ARunWorkflowById%3FAddress_Search%22%3E%3Cfont%20size%3D%222%22%3ECreate%20%3Cbr%3EHomeowner's%20Report%3C%2Ffont%3E%3C%2Fa%3E%3Cbr%3E%3C%2Ftd%3E%3Ctd%20style%3D%22text-align%3A%20center%3B%22%3E%3Ca%20href%3D%22command%3ARunWorkflowById%3FArea_of_Interest%22%3E%3Cfont%20size%3D%222%22%3ECreate%3Cbr%3ESummary%20Report%3C%2Ffont%3E%3C%2Fa%3E%3Cbr%3E%3C%2Ftd%3E%3C%2Ftr%3E%3C%2Ftbody%3E%3C%2Ftable%3E%3Cbr%3E%0A%0A%3Cp%20style%3D%22text-align%3A%20center%22%3E%3Ca%20href%3D%22command%3ASwitchToLayerView%22%3E%3Cimg%20src%3D%22Resources%2FImages%2FCustom%2FGotoLayers.png%22%3E%3Cbr%3E%3C%2Fa%3E%3C%2Fp%3E%0A%0A%3Cp%3E%3Cfont%20size%3D%223%22%3EShow%20help%20for%3A%3C%2Ffont%3E%3C%2Fp%3E%3Cul%3E%3Cli%3E%3Ca%20href%3D%22command%3ARunWorkflowWithArguments%3FworkflowId%3DRunExternalCommand%26amp%3BcommandName%3DoeStartTour%26amp%3BcommandParam%3DhomeownersReportByAddress%22%3E%3Cfont%20size%3D%222%22%3EHomeowner's%20Report%20-%20Address%20Search%3Cspan%20style%3D%22font-weight%3A%20bold%3B%22%3E%3C%2Fspan%3E%3C%2Ffont%3E%3C%2Fa%3E%3C%2Fli%3E%0A%3Cli%3E%3Ca%20href%3D%22command%3ARunWorkflowWithArguments%3FworkflowId%3DRunExternalCommand%26amp%3BcommandName%3DoeStartTour%26amp%3BcommandParam%3DhomeownersReportByPoint%22%3E%3Cfont%20size%3D%222%22%3EHomeowner's%20Report%20-%20Click%20Map%3Cspan%20style%3D%22font-weight%3A%20bold%3B%22%3E%3C%2Fspan%3E%3C%2Ffont%3E%3C%2Fa%3E%3C%2Fli%3E%0A%3Cli%3E%3Ca%20href%3D%22command%3ARunWorkflowWithArguments%3FworkflowId%3DRunExternalCommand%26amp%3BcommandName%3DoeStartTour%26amp%3BcommandParam%3DsummaryReport%22%3E%3Cfont%20size%3D%222%22%3ESummary%20Report%3Cspan%20style%3D%22font-weight%3A%20bold%3B%22%3E%3C%2Fspan%3E%3C%2Ffont%3E%3C%2Fa%3E%3C%2Fli%3E%0A%3Cli%3E%3Ca%20href%3D%22command%3ARunWorkflowWithArguments%3FworkflowId%3DRunExternalCommand%26amp%3BcommandName%3DoeStartTour%26amp%3BcommandParam%3DsummaryReportByPoint%22%3E%3Cfont%20size%3D%222%22%3ESummary%20Report%20-%20Click%20Map%3Cspan%20style%3D%22font-weight%3A%20bold%3B%22%3E%3C%2Fspan%3E%3C%2Ffont%3E%3C%2Fa%3E%3C%2Fli%3E%0A%3Cli%3E%3Ca%20href%3D%22command%3ARunWorkflowWithArguments%3FworkflowId%3DRunExternalCommand%26amp%3BcommandName%3DoeStartTour%26amp%3BcommandParam%3DprintMap%22%3E%3Cfont%20size%3D%222%22%3EPrint%20Map%3Cspan%20style%3D%22font-weight%3A%20bold%3B%22%3E%3C%2Fspan%3E%3C%2Ffont%3E%3C%2Fa%3E%3C%2Fli%3E%3Cli%3E%3Ca%20href%3D%22command%3ARunWorkflowWithArguments%3FworkflowId%3DRunExternalCommand%26amp%3BcommandName%3DoeStartTour%26amp%3BcommandParam%3DfireTimeline%22%3E%3Cfont%20size%3D%222%22%3EFire%20History%3C%2Ffont%3E%3C%2Fa%3E%3Cspan%20style%3D%22%20font-weight%3A%20bold%3B%22%3E%3Cfont%20size%3D%223%22%3E%3Cbr%3E%3C%2Ffont%3E%3C%2Fspan%3E%3C%2Fli%3E%3C%2Ful%3E%0A%0A%3Cp%20style%3D%22text-align%3A%20left%3B%22%3E%3Cfont%20size%3D%221%22%3EDISCLAIMER%3A%26nbsp%3B%20THE%20INFORMATION%20IS%20BEING%20PROVIDED%20AS%20IS%20AND%20WITHOUT%20%0AWARRANTY%20OF%20ANY%20KIND%20EITHER%20EXPRESS%2C%20IMPLIED%20OR%20STATUTORY.%20THE%20USER%20%0AASSUMES%20THE%20ENTIRE%20RESPONSIBILITY%20AND%20LIABILITY%20RELATED%20TO%20THEIR%20USE%20OF%20%0ATHIS%20INFORMATION.%20BY%20ACCESSING%20THIS%20WEBSITE%20AND%2FOR%20DATA%20CONTAINED%20%0AWITHIN%2C%20YOU%20HEREBY%20RELEASE%20THE%20OREGON%20DEPARTMENT%20OF%20FORESTRY%2C%20OREGON%20%0ASTATE%20UNIVERSITY%2C%20OREGON%20STATE%20UNIVERSITY%20LIBRARIES%20AND%20PRESS%20AND%20ALL%20%0ADATA%20PROVIDERS%20FROM%20LIABILITY.%20%3C%2Ffont%3E%3Cfont%20size%3D%221%22%3E%3Cfont%20size%3D%221%22%3ETHIS%20INSTITUTION%20IS%20AN%20EQUAL%20OPPORTUNITY%20PROVIDER.%20THIS%20%0APUBLICATION%20WAS%20MADE%20POSSIBLE%20THROUGH%20GRANTS%20FROM%20THE%20USDA%20FOREST%20%0ASERVICE.%3C%2Ffont%3E%3C%2Ffont%3E%3C%2Fp%3E%3Cp%20style%3D%22text-align%3A%20left%3B%22%3EThe%20Oregon%20Wildfire%20Risk%20Explorer%20is%20a%20partnership%20among%20Oregon%20%0ADepartment%20of%20Forestry%2C%20Oregon%20State%20University%20Institute%20for%20Natural%20%0AResources%2C%20the%20US%20Forest%20Service%2C%20and%20a%20wide%20variety%20of%20stakeholders%20%0Athroughout%20Oregon.%3C%2Fp%3E%3C%2Fdiv%3E",
                                     "included": true,
                                     "title": "@language-common-welcome"
                                 }
@@ -4025,6 +4433,114 @@
                                     "description": "@language-menu-menus-description",
                                     "defaultIconUri": "Resources/Images/Icons/check-24.png",
                                     "items": [
+                                        {
+                                            "text": "Search For Layer",
+                                            "description": "",
+                                            "command": "oeLayerSearch",
+                                            "commandParameter": null
+                                        },
+                                        {
+                                            "iconUri": "{ViewerConfigUri}../../../Resources/Images/Custom/profile-tool-24.png",
+                                            "text": "Create Advanced Report",
+                                            "description": "Create a custom advanced wildfire report",
+                                            "command": "RunWorkflowById",
+                                            "commandParameter": "Wildfire_Advanced_Report"
+                                        },
+                                        {
+                                            "iconUri": "Resources/Images/Icons/Toolbar/charting-24.png",
+                                            "text": "Create a Summary Report",
+                                            "description": "Create a county or watershed report",
+                                            "command": "RunWorkflowById",
+                                            "commandParameter": "Area_of_Interest"
+                                        },
+                                        {
+                                            "iconUri": "Resources/Images/Icons/Custom/clipboard_24px.png",
+                                            "text": "Create a Homeowner’s Report",
+                                            "description": "Search for your address and create a report",
+                                            "command": "RunWorkflowById",
+                                            "commandParameter": "Address_Search"
+                                        },
+                                        {
+                                            "iconUri": "Resources/Images/Icons/settings-24.png",
+                                            "text": "Show/Hide Fire History Slider",
+                                            "description": "Animate fire history points through time",
+                                            "command": "RunWorkflowById",
+                                            "commandParameter": "Toggle_Fire_History_Slider"
+                                        },
+                                        {
+                                            "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/download-24.png",
+                                            "text": "Download Data",
+                                            "command": "RunWorkflowById",
+                                            "commandParameter": "WildfireDataExtract"
+                                        },
+                                        {
+                                            "iconUri": "Resources/Images/Icons/Toolbar/print-24.png",
+                                            "text": "Make a PDF Map",
+                                            "description": "Make and print a PDF map",
+                                            "command": "PrintMap",
+                                            "commandParameter": null
+                                        },
+                                        {
+                                            "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/query-24.png",
+                                            "text": "Help :: Homeowner's Report - Address Search",
+                                            "command": "RunWorkflowWithArguments",
+                                            "commandParameter": {
+                                                "workflowId": "RunExternalCommand",
+                                                "commandName": "oeStartTour",
+                                                "commandParam": "homeownersReportByAddress"
+                                            }
+                                        },
+                                        {
+                                            "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/query-24.png",
+                                            "text": "Help :: Homeowner's Report - Click Map",
+                                            "command": "RunWorkflowWithArguments",
+                                            "commandParameter": {
+                                                "workflowId": "RunExternalCommand",
+                                                "commandName": "oeStartTour",
+                                                "commandParam": "homeownersReportByPoint"
+                                            }
+                                        },
+                                        {
+                                            "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/query-24.png",
+                                            "text": "Help :: Summary Report",
+                                            "command": "RunWorkflowWithArguments",
+                                            "commandParameter": {
+                                                "workflowId": "RunExternalCommand",
+                                                "commandName": "oeStartTour",
+                                                "commandParam": "summaryReport"
+                                            }
+                                        },
+                                        {
+                                            "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/query-24.png",
+                                            "text": "Help :: Summary Report - Click Map",
+                                            "description": "",
+                                            "command": "RunWorkflowWithArguments",
+                                            "commandParameter": {
+                                                "workflowId": "RunExternalCommand",
+                                                "commandName": "oeStartTour",
+                                                "commandParam": "summaryReportByPoint"
+                                            }
+                                        },
+                                        {
+                                            "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/query-24.png",
+                                            "text": "Help :: Print Map",
+                                            "command": "RunWorkflowWithArguments",
+                                            "commandParameter": {
+                                                "workflowId": "RunExternalCommand",
+                                                "commandName": "oeStartTour",
+                                                "commandParam": "printMap"
+                                            }
+                                        },
+                                        {
+                                            "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/query-24.png",
+                                            "text": "Help :: Fire History",
+                                            "command": "RunWorkflowWithArguments",
+                                            "commandParameter": {
+                                                "workflowId": "RunExternalCommand",
+                                                "commandName": "oeStartTour",
+                                                "commandParam": "fireTimeline"
+                                            }
+                                        },
                                         {
                                             "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",
                                             "text": "@language-menu-home-panel",
@@ -4339,9 +4855,9 @@
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.layerList.LayerListModule",
                         "configuration": {
                             "enableLegendIntegration": true,
-                            "onlyShowSwatchesOnVisibleLayers": false,
+                            "onlyShowSwatchesOnVisibleLayers": true,
                             "autoActivateAncestorVisibilities": true,
-                            "enableLayerIcons": false
+                            "enableLayerIcons": true
                         },
                         "views": [
                             {
@@ -6303,10 +6819,7 @@
                                 "Resources/Styles/Custom/common.css",
                                 "Resources/Styles/Custom/Desktop.css",
                                 "Resources/Styles/Custom/sites.css",
-                                "Resources/Styles/Custom/sites_desktop.css",
-                                "{ViewerConfigUri}../../Styles/Custom/common.css",
-                                "{ViewerConfigUri}../../Styles/Custom/Desktop.css",
-                                "{ViewerConfigUri}../../Styles/Custom/Desktop_OE.css"
+                                "Resources/Styles/Custom/sites_desktop.css"
                             ],
                             "homePanelVisible": true
                         },
@@ -6876,10 +7389,7 @@
                         "moduleName": "Site",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                         "configuration": {
-                            "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/wildfire_risk_PNRA_professional",
-                            "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
-                            "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
-                            "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined"
+                            "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/wildfire_risk_PNRA_public"
                         },
                         "views": [
                             {
@@ -7069,8 +7579,8 @@
                         "moduleName": "TabbedToolbar",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.toolbar.TabbedToolbarModule",
                         "require": "Mapping/modules/Toolbar/TabbedToolbarModule",
+                        "isEnabled": true,
                         "configuration": {
-                            "isEnabled": true,
                             "transientElements": [
                                 {
                                     "stateName": "MeasureState",
@@ -8966,6 +9476,7 @@
                             "configuration": {
                                 "maxRenderClasses": 12,
                                 "maxSamples": 1000,
+                                "useAdvancedQueries": true,
                                 "defaultPointColor": [
                                     150,
                                     150,

@@ -5,50 +5,73 @@ var geocortex;
         var integration;
         (function (integration) {
             var ThirdPartyMap = (function () {
-                function ThirdPartyMap(id, initializeMap, getMapViewpointParams, handleViewerPositionUpdatedEvent, handleViewpointIndicatorUpdatedEvent, sync, addViewpointIndicator, handleCustomViewpointIndicatorUpdatedEvent) {
+                function ThirdPartyMap(paramsOrId, initializeMap, getMapViewpointParams, handleViewerPositionUpdatedEvent, handleViewpointIndicatorUpdatedEvent, sync, addViewpointIndicator, handleCustomViewpointIndicatorUpdatedEvent) {
                     if (sync === void 0) { sync = false; }
                     if (addViewpointIndicator === void 0) { addViewpointIndicator = true; }
                     var _this = this;
-                    this.initializeMap = initializeMap;
-                    this.getMapViewpointParams = getMapViewpointParams;
-                    this.handleViewerPositionUpdatedEvent = handleViewerPositionUpdatedEvent;
-                    this.handleViewpointIndicatorUpdatedEvent = handleViewpointIndicatorUpdatedEvent;
-                    this.handleCustomViewpointIndicatorUpdatedEvent = handleCustomViewpointIndicatorUpdatedEvent;
                     this.allowedOrigins = [];
+                    this.updateOnDrag = true;
                     this.isDocked = true;
                     this.debounceTimer = null;
                     this.debounceInterval = 500;
                     this.ignoreNextPositionChange = false;
                     this.scales = [
-                        null,
-                        591657550.500000,
-                        295828775.300000,
-                        147914387.600000,
-                        73957193.820000,
-                        36978596.910000,
-                        18489298.450000,
-                        9244649.227000,
-                        4622324.614000,
-                        2311162.307000,
-                        1155581.153000,
-                        577790.576700,
-                        288895.288400,
-                        144447.644200,
-                        72223.822090,
-                        36111.911040,
-                        18055.955520,
-                        9027.977761,
-                        4513.988880,
-                        2256.994440,
-                        1128.497220
+                        591657527.591555,
+                        295828763.795777,
+                        147914381.897889,
+                        73957190.948944,
+                        36978595.474472,
+                        18489297.737236,
+                        9244648.868618,
+                        4622324.434309,
+                        2311162.217155,
+                        1155581.108577,
+                        577790.554289,
+                        288895.277144,
+                        144447.638572,
+                        72223.819286,
+                        36111.909643,
+                        18055.954822,
+                        9027.977411,
+                        4513.988705,
+                        2256.994353,
+                        1128.497176,
+                        564.248588,
+                        282.124294,
+                        141.062147,
+                        70.5310735
                     ];
+                    var args;
+                    if (typeof paramsOrId === "string") {
+                        args = {
+                            id: paramsOrId,
+                            initializeMap: initializeMap,
+                            getMapViewpointParams: getMapViewpointParams,
+                            handleViewerPositionUpdatedEvent: handleViewerPositionUpdatedEvent,
+                            handleViewpointIndicatorUpdatedEvent: handleViewpointIndicatorUpdatedEvent,
+                            sync: sync,
+                            addViewpointIndicator: addViewpointIndicator,
+                            handleCustomViewpointIndicatorUpdatedEvent: handleCustomViewpointIndicatorUpdatedEvent
+                        };
+                    }
+                    else {
+                        args = paramsOrId;
+                    }
                     this.bridge = new integration.RemotePostMessageComponent();
-                    this.id = id;
-                    this.sync = sync;
-                    this._shouldAddViewpointIndicator = addViewpointIndicator;
+                    this.id = args.id;
+                    this.sync = !!args.sync;
+                    this._shouldAddViewpointIndicator = !!args.addViewpointIndicator;
+                    this.initializeMap = args.initializeMap;
+                    this.getMapViewpointParams = args.getMapViewpointParams;
+                    this.handleViewerPositionUpdatedEvent = args.handleViewerPositionUpdatedEvent;
+                    this.handleViewpointIndicatorUpdatedEvent = args.handleViewpointIndicatorUpdatedEvent;
+                    this.handleCustomViewpointIndicatorUpdatedEvent = args.handleCustomViewpointIndicatorUpdatedEvent;
+                    this.handleSharedArcGISTokenUpdate = args.handleSharedArcGISTokenUpdate;
+                    this.sharedArcGISToken = !!args.sharedArcGISToken;
+                    this.updateOnDrag = !!args.updateOnDrag;
                     this.actionButtons = [
                         { id: "centerButton", clickHandler: function () { _this.handleClickCenter(); }, show: true, elem: null },
-                        { id: "syncButton", clickHandler: function () { _this.handleClickSync(); }, show: false, elem: null },
+                        { id: "syncButton", clickHandler: function () { _this.handleClickSync(); }, show: true, elem: null },
                         { id: "dockButton", clickHandler: function () { _this.handleClickDock(); }, show: true, elem: null },
                         { id: "closeButton", clickHandler: function () { _this.handleClickClose(); }, show: true, elem: null }
                     ];
@@ -70,7 +93,9 @@ var geocortex;
                         return;
                     }
                     this._isInitialized = true;
-                    this.initializeMap();
+                    this.bridge.onReady = function (message) {
+                        _this.initializeMap(message);
+                    };
                     this.initializeViewerBridge();
                     this.statusOverlayElement = document.getElementById("status");
                     this.actionButtons.forEach(function (button) {
@@ -115,6 +140,9 @@ var geocortex;
                         else if (_this.sync !== arg.sync) {
                             _this.bridge.publish("ToggleExternalComponentSyncById", _this.id);
                         }
+                        if (_this.updateOnDrag !== true) {
+                            _this.bridge.publish("DisableUpdateOnDragById", _this.id);
+                        }
                     });
                     this.bridge.on("ViewerPositionUpdatedEvent", function (arg) {
                         if (arg.updaterName === _this.bridge.getComponentId()) {
@@ -132,7 +160,15 @@ var geocortex;
                             _this.handleCustomViewpointIndicatorUpdatedEvent(args);
                         }
                     });
-                    this.bridge.connect({ id: this.id, addViewpointIndicator: this._shouldAddViewpointIndicator });
+                    if (this.sharedArcGISToken && this.handleSharedArcGISTokenUpdate) {
+                        this.bridge.on("SitePrincipalUpdatedEvent", function (principal) {
+                            if (principal && principal.tokens && principal.tokens.arcgis && Object.keys(principal.tokens.arcgis).length > 0) {
+                                var token = principal.tokens.arcgis[Object.keys(principal.tokens.arcgis)[0]];
+                                _this.handleSharedArcGISTokenUpdate(token);
+                            }
+                        });
+                    }
+                    this.bridge.connect({ id: this.id, addViewpointIndicator: this._shouldAddViewpointIndicator, sharedArcGISToken: this.sharedArcGISToken });
                 };
                 ThirdPartyMap.prototype.getSavedState = function () {
                     return null;
@@ -204,7 +240,6 @@ var geocortex;
                     return this.scales[Math.floor(zoom)];
                 };
                 ThirdPartyMap.prototype.scaleToZoomLevel = function (scale) {
-                    var zoomLevel = 0;
                     for (var i = this.scales.length - 1; i > 0; --i) {
                         if (scale <= this.scales[i]) {
                             return i;
@@ -212,10 +247,26 @@ var geocortex;
                     }
                     return null;
                 };
+                ThirdPartyMap.prototype.getGeographicDistance = function (lat, distance) {
+                    var rad = lat * (360 / (2.0 * Math.PI));
+                    var m1 = 111132.92;
+                    var m2 = -559.82;
+                    var m3 = 1.175;
+                    var m4 = -0.0023;
+                    var p1 = 111412.84;
+                    var p2 = -93.5;
+                    var p3 = 0.118;
+                    var latlen = m1 + (m2 * Math.cos(2 * rad)) + (m3 * Math.cos(4 * rad)) + (m4 * Math.cos(6 * rad));
+                    var longlen = (p1 * Math.cos(rad)) + (p2 * Math.cos(3 * rad)) + (p3 * Math.cos(5 * rad));
+                    var latDist = distance / latlen;
+                    var longDist = distance / longlen;
+                    return { latDist: latDist, longDist: longDist };
+                };
                 ThirdPartyMap.prototype.getActionButtonById = function (id) {
-                    for (var i = 0; i < this.actionButtons.length; i++) {
-                        if (this.actionButtons[i].id === id) {
-                            return this.actionButtons[i];
+                    for (var _i = 0, _a = this.actionButtons; _i < _a.length; _i++) {
+                        var actionButton = _a[_i];
+                        if (actionButton.id === id) {
+                            return actionButton;
                         }
                     }
                     return null;

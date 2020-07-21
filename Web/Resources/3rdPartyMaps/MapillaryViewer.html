@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Mapillary</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <link rel='stylesheet' href='https://unpkg.com/mapillary-js@2.13.1/dist/mapillary.min.css' />
+    <link href='https://unpkg.com/leaflet@1.0.1/dist/leaflet.css' rel='stylesheet' />
+    <script src='https://unpkg.com/mapillary-js@2.13.1/dist/mapillary.min.js'></script>
+    <script src='https://unpkg.com/leaflet@1.0.1/dist/leaflet.js'></script>
+
+    <script src="../Scripts/Bridge.js"></script>
+    <script src="ThirdPartyMap.js"></script>
+    <script src="../Scripts/jquery.min.js"></script>
+    <link href="3rdParty.css" rel="stylesheet" type="text/css" />
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        #mly {
+            height: 100%;
+        }
+		
+		.mapillary-message {
+			position: relative;
+			width: 100%;
+			height: 100%;
+			line-height: 20em;
+			color: white;
+			text-align: center;
+		}
+    </style>
+    <script type="text/javascript">
+
+        /**
+         * Configure this component by adding your client ID from mapillary.com here.
+         */
+        var CLIENT_ID = "";
+    
+        var IMAGE_QUERY_URL = "https://a.mapillary.com/v3/images";
+
+        var searchRadius = 500; // in meters
+
+        var mapillary;
+        var currentNode;
+        var isReady = false;
+
+        var thirdPartyMap = new geocortex.essentialsHtmlViewer.integration.ThirdPartyMap({
+            id: "mapillary",
+            initializeMap: initializeMap,
+            getMapViewpointParams: getMapViewpointParams,
+            handleViewerPositionUpdatedEvent: handleViewerPositionUpdatedEvent,
+            handleViewpointIndicatorUpdatedEvent: handleViewpointIndicatorUpdatedEvent,
+            updateOnDrag: false
+        });
+
+        /**
+         * Initializes the Mapillary WebGL imagery viewer.
+         */
+        function initializeMap(message) {
+
+            mapillary = new Mapillary.Viewer(
+                'mly',
+                CLIENT_ID,
+                null,
+                {
+                    component: {
+                        cover: false,
+                        marker: {
+                            visibleBBoxSize: 100,
+                        },
+                        mouse: {
+                            doubleClickZoom: false,
+                        }
+                    },
+                    transitionMode: Mapillary.TransitionMode.Instantaneous
+                }
+            );
+
+            // Resize should be called every time the window size changes
+            window.addEventListener("resize", function () { mapillary.resize(); });
+
+            if (message.indicatorUrl) {
+                var indicator = document.getElementsByClassName("viewpoint-indicator")[0];
+                if (indicator) {
+                    indicator.style.backgroundImage = "url('../../" + message.indicatorUrl + "')";
+                }
+            }
+        }
+
+        /**
+         * Gets the current position of the mapillary.
+         */
+        function getMapViewpointParams() {
+
+            if (!currentNode) {
+                return;
+            }
+
+            return {
+                center: {
+                    x: currentNode.latLon.lon,
+                    y: currentNode.latLon.lat
+                },
+                heading: currentNode.ca
+            };
+        }
+
+        /**
+         * Updates Mapillary to the current position of the HTML5 Viewer
+         */
+         function handleViewerPositionUpdatedEvent(arg) {
+            if (!isReady) {
+                mapillary.on(
+                    Mapillary.Viewer.nodechanged,
+                    function (node) {
+                        handleNodeChanged(node);
+                    }
+                );
+
+                isReady = true;
+            }
+
+            setMapillaryPosition(arg.position.x, arg.position.y);
+        }
+
+        /**
+         * Updates Mapillary to the position of viewpoint indicator
+         */
+        function handleViewpointIndicatorUpdatedEvent(arg) {
+            setMapillaryPosition(arg.x, arg.y)
+        }
+
+        /**
+         * Handles navigation within the mapillary viewer and updates the main map.
+         */
+        function handleNodeChanged(node) {
+
+			showNoImageMessage(false);
+
+            currentNode = node;
+
+            var arg = {
+                viewerId: thirdPartyMap.id,
+                position: {
+                    x: node.latLon.lon,
+                    y: node.latLon.lat,
+                },
+                heading: node.ca
+            };
+
+            thirdPartyMap.handleViewpointChanged();
+        }
+
+        /**
+         * Attempt to set the Mapillary viewer to the position of the closest node to the given xy.
+         */
+        function setMapillaryPosition(x, y) {
+
+            if (mapillary.isNavigable) {
+                try {
+                    moveCloseToPosition(y, x);
+                }
+                catch(error) {
+                    mapillary.on(
+                        Mapillary.Viewer.loadingchanged,
+                        function(loading) {
+                            if (!loading) {
+                                moveCloseToPosition(y, x);
+                            }
+                        }
+                    );
+                }
+
+            } else {
+
+                mapillary.on(Mapillary.Viewer.navigablechanged, function () {
+                    if (mapillary.isNavigable) {
+                        setTimeout(function () {
+                            moveCloseToPosition(y, x);
+                        }, 300);
+                    }
+                });
+            }
+        }
+
+        /**
+         * Moves as close to the position as possible. If no nearby imagery is found the position will not change.
+         */
+        function moveCloseToPosition(lat, long) {
+
+            var url = IMAGE_QUERY_URL + "?client_id=" + CLIENT_ID + "&closeto=" + long + "," + lat + "&radius=" + searchRadius;
+
+            $.ajax({
+                dataType: "json",
+                url: url,
+                success: function (data) {
+                    if (data.features && data.features[0] && data.features[0]["properties"] && data.features[0]["properties"]["key"]) {
+                        var imgkey = data.features[0]["properties"]["key"];
+
+                        mapillary.moveToKey(imgkey).then(
+                            function(n) {
+                                if (n) {
+                                    currentNode = n;
+                                    thirdPartyMap.handleViewpointChanged();
+                                }
+                            }
+                        );
+
+                    } else {  
+						showNoImageMessage(true);
+                    }
+                },
+                error: function (error) {
+					showNoImageMessage(true);
+                }
+            });
+        }
+		
+		function showNoImageMessage(show) {
+			var noImageMessage = document.getElementById("mapillary-no-image-message");
+            if (noImageMessage) {
+                noImageMessage.style.display = show ? "block" : "none";
+            }
+			var mapillaryUI = document.getElementsByClassName("mapillary-js-dom");
+			if (mapillaryUI && mapillaryUI[0]) {
+				mapillaryUI[0].style.display = show ? "none" : "block";
+			}
+		}
+    </script>
+</head>
+
+<body>
+    <div id='mly'>
+        <ul class="integration-panel-actions">
+            <li class="panel-action-button">
+                <button class="viewpoint-indicator" title="Viewpoint Indicator"></button>
+            </li>
+            <li class="panel-action-button">
+                <button id="centerButton" class="center-map" title="Center this map to the viewer"></button>
+            </li>
+            <li class="panel-action-button">
+                <button id="syncButton" class="sync-toggle-off" title="Synchronize Maps"></button>
+            </li>
+            <li class="panel-action-button">
+                <button id="dockButton" class="window-popout" title="Open in new window"></button>
+            </li>
+            <li class="panel-action-button">
+                <button id="closeButton" class="window-close" title="Close this map view"></button>
+            </li>
+        </ul>
+        <span id="mapillary-no-image-message" class="mapillary-message" style="display: none">No imagery found for this location</span>
+    </div>
+</body>
+</html>

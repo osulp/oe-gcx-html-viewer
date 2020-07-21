@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/geometry/screenUtils","dojo/_base/array dojo/_base/lang dojo/sniff ../kernel ./Point ./ScreenPoint ./Polyline ./Polygon ./Multipoint ./Extent".split(" "),function(C,D,E,G,u,H,y,z,A,B){var I=function(){return 9>E("ie")?function(b,p,q,a,g,d,f,c,h){var e=[],k=Math.round,t,r=f.length,l,m,v,n,w,x;for(t=0;t<r;t++)if(l=f[t],n=c?c(l[0][0],l[0][1],h):l[0],1<(v=l.length))for(w=k((n[0]-b)*q+g),x=k((p-n[1])*a+d),n=c?c(l[1][0],l[1][1],h):l[1],m=k((n[0]-b)*q+g),n=k((p-n[1])*a+d),e.push("M",w+","+x,
 "L",m+","+n),m=2;m<v;m++)n=c?c(l[m][0],l[m][1],h):l[m],w=k((n[0]-b)*q+g),x=k((p-n[1])*a+d),e.push(w+","+x);else w=k((n[0]-b)*q+g),x=k((p-n[1])*a+d),e.push("M",w+","+x);return e}:function(b,p,q,a,g,d,f,c,h,e){var k=[],t,r,l,m,v,n,w=Math.round;t=0;for(l=f?f.length:0;t<l;t++){v=f[t];k.push("M");r=0;for(m=v?v.length:0;r<m;r++)n=c?c(v[r][0],v[r][1],h):v[r],k.push(w((n[0]-b)*q+g)+","+w((p-n[1])*a+d));e||k.push("Z")}return k}}(),F={toScreenPoint:function(b,p,q,a,g){var d=b.spatialReference,f=a.spatialReference,

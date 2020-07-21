@@ -41,6 +41,7 @@ export class OE_Wildfire_DynamicFormViewModel extends ViewModelBase {
     aoiCWPPA: Observable<string> = new Observable<string>("");
     aoiFirewiseCom: Observable<string> = new Observable<string>("");
     aoiSB360: Observable<string> = new Observable<string>("");
+    aoiWUI: Observable<string> = new Observable<string>("");
 
     //sitePath: Observable<string> = new Observable<string>("");
     //viewerImagePath: Observable<string> = new Observable<string>("");
@@ -116,6 +117,8 @@ export class OE_Wildfire_DynamicFormViewModel extends ViewModelBase {
             thisViewModel.aoiFirewiseCom.set(thisViewModel.myWorkflowContext.getValue("aoiFirewiseCom"));
             thisViewModel.aoiSB360.set(thisViewModel.myWorkflowContext.getValue("aoiSB360"));
             thisViewModel.aoiSFPDName.set(thisViewModel.myWorkflowContext.getValue("aoiSFPDName"));
+
+            thisViewModel.aoiWUI.set(thisViewModel.myWorkflowContext.getValue("aoiWUI"));
 
             /*if (thisViewModel.myWorkflowContext.getValue("isSFPD")) {
                 $(".wildfire_sfpd_content").css("display", "block");

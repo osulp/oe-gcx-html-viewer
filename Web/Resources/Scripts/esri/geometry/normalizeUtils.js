@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/geometry/normalizeUtils","dojo/_base/array dojo/_base/lang dojo/_base/Deferred dojo/has ../kernel ../config ../deferredUtils ./Extent ./Polyline ./Polygon ./webMercatorUtils ./jsonUtils".split(" "),function(n,q,E,N,O,P,y,Q,t,A,z,R){function x(a,e){return Math.ceil((a-e)/(2*e))}function B(a,e){var b=a.paths||a.rings,c,f,d=b.length,m;for(c=0;c<d;c++)for(m=b[c].length,f=0;f<m;f++){var l=a.getPoint(c,f);a.setPoint(c,f,l.offset(e,0))}return a}function F(a,e){if(!(a instanceof t||a instanceof
 A))throw console.error("_straightLineDensify: the input geometry is neither polyline nor polygon"),Error("_straightLineDensify: the input geometry is neither polyline nor polygon");var b=a instanceof t,c=[],f;n.forEach(b?a.paths:a.rings,function(a){c.push(f=[]);f.push([a[0][0],a[0][1]]);var d,b,k,g,h,p,n,q,t,r,v,u;for(h=0;h<a.length-1;h++){d=a[h][0];b=a[h][1];k=a[h+1][0];g=a[h+1][1];n=Math.sqrt((k-d)*(k-d)+(g-b)*(g-b));q=(g-b)/n;t=(k-d)/n;r=n/e;if(1<r){for(p=1;p<=r-1;p++)u=p*e,v=t*u+d,u=q*u+b,f.push([v,
