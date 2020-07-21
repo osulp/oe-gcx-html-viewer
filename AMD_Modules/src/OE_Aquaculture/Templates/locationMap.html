@@ -47,4 +47,75 @@
             </div>
         </div>
     </fieldset>
+    <fieldset>
+        <legend>More resources</legend>
+        <div class="div-row">
+            <div class="div-row-cell site-report">
+                <h3>Site Report</h3>
+                <div>
+                    <div class="float-left">
+                        <img src="Resources/Images/Custom/AquacultureSiteReportThumb.png" width="100" alt="Site Report Thumbnail" />
+                    </div>
+                    <p> Get a Site Report for your selected location.  A Site Report pulls together spatial information about your location including:</p>
+                    <br />
+                </div>                
+                <div class="clear">
+                    <ul>
+                        <li>Zoning and Ownership</li>
+                        <li>Geophysical (precipitation, elevation, and temperature)</li>
+                        <li>Markets and Suppliers</li>
+                        <li>Water and Energy</li>
+                        <li>Habitat and Floodplain</li>
+                    </ul>
+                </div>
+                <div data-binding="{@hidden:show_site_report_url}">
+                    <center>
+                        <div class="oe-btn-wrapper">
+                            <div data-binding="{@event-onclick: runSiteReport}" class="oe-btn">Generate Site Report</div>
+                        </div>
+                    </center>
+                </div>
+                <div id="site-report-generating" data-binding="{@visible: site_report_loading}">
+                    <div>
+                        Generating site report for your selected location.  Please be patient.  This may take a minute...
+                        <p>
+                            <img src="Resources/Images/loader-small.gif" alt="generating site report" />
+                        </p>
+                    </div>
+                </div>
+                <div data-binding="{@visible: show_site_report_url}">
+                    <a data-binding="{href:site_report_url}" href="" target="_blank" download="Site Report"><img src="Resources/Images/Icons/download-16.png" alt="Download site report" />&nbsp; Download Site Report (PDF)</a>
+                </div>
+            </div>
+            <div class="div-row-cell map-viewer">
+                <h3>Aquaculture Map Viewer</h3>
+                <div>
+                    <div class="float-left">
+                        <!--<button data-binding="{@event-onclick:closeView}" class="toolbar-item tool aqua" title="Goto map viewer"><p>Map Viewer</p></button>-->
+                        <img width="150" alt="Go to map viewer" src="Resources/Images/Custom/AquacultureViewer.png" class="bound-visible-inline">
+                    </div>
+                    <p>
+                        The Oregon Aquaculture Map Viewer brings together dozens of layers to view interactively on the map.
+                        <!--<a href="https://tools.oregonexplorer.info/OE_HtmlViewer/index.html?viewer=aquaculture" target="_blank">Open in new tab.</a>-->
+                    </p>
+                    <br />
+                </div>
+                <div class="clear">                    
+                    <ul>
+                        <li>View and query layers</li>
+                        <li>Print a map</li>
+                        <li>Measure distances</li>
+                        <li>Run the Financial Planning and Site Report tools interactively based on site selectins</li>
+                    </ul>
+                </div>
+                <center>
+                    <div class="oe-btn-wrapper">
+                        <div data-binding="{@event-onclick: gotoMapViewer}" class="oe-btn">Open map viewer in new tab</div>
+                    </div>
+                </center>
+            </div>
+        </div>
+    </fieldset>
+    <br /><br />
+
 </div>

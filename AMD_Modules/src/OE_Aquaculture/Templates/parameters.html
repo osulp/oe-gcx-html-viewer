@@ -6,10 +6,12 @@
 
     <!--<div data-binding="{class:displayClass}">-->
         <fieldset>
-            <legend>Assumptions & Calculations</legend>
-            <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
+            <legend class="tooltip">      
+                <span class="input-header">Assumptions & Calculations</span>
+                    <span data-binding="{innerHTML:sectionDesc}" class="tooltiptext"></span>
+            </legend>           
             <br />
-
+            <br />
             <div class="div-table parameters" data-binding="{@source:fields_filter}">
                 <!--<thead><td>Parameter</td><td>Unit</td><td>Value</td></thead>-->
                 <div class="div-table-row" data-binding="{@template-for:fields_filter}">

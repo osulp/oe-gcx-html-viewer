@@ -3,20 +3,30 @@
         <div data-binding="{@source:summary_sections}">
             <div data-binding="{@template-for:summary_sections}">
                 <!--<div data-binding="{class:displayClass}">-->
-                    <fieldset>
-                        <legend data-binding="{@text:screen}{@event-onclick:gotoTab}"></legend>
-                        <br />
-                        <div class="div-table" data-binding="{@source:fields_filter}">
-                            <!--<thead><td>Parameter</td><td>Unit</td><td>Value</td></thead>-->
-                            <div class="div-table-row" data-binding="{@template-for:fields_filter}">
-                                <div class="div-table-cell">
-                                    <span class="input-header" data-binding="{@text:fieldLabel}"></span>
-                                </div>
-                                <!--<div class="div-table-cell units"><span data-binding="{@text:unit}"></span></div>-->
-                                <div class="div-table-cell values"> <span data-binding="{@text:formattedValue}"></span></div>
+                <fieldset>
+                    <legend data-binding="{@text:screen}{@event-onclick:gotoTab}"></legend>
+                    <br />
+
+                    <div class="div-table production" data-binding="{@source:fields_filter}">
+                        <div class="div-table-row" data-binding="{@template-for:fields_filter}">
+                            <div data-binding="{class:tableDisplayClass}">
+                                <span class="input-header" data-binding="{@text:fieldName}"></span>
                             </div>
+                            <div data-binding="{class:tableDisplayClass}"><span data-binding="{@text:formattedValue}"></span></div>
                         </div>
-                    </fieldset>
+                    </div>
+
+
+
+                    <!--<div class="div-table" data-binding="{@source:fields_filter}">
+                        <div class="div-table-row" data-binding="{@template-for:fields_filter}">
+                            <div class="div-table-cell">
+                                <span class="input-header" data-binding="{@text:fieldLabel}"></span>
+                            </div>
+                            <div class="div-table-cell values"> <span data-binding="{@text:formattedValue}"></span></div>
+                        </div>
+                    </div>-->
+                </fieldset>
                 </div>
             </div>
     </div>

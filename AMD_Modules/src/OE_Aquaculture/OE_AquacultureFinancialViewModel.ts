@@ -45,6 +45,12 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     //SELECTED LOCATION
     has_location: Observable<boolean> = new Observable(false);
     selected_location: Observable<any> = new Observable();
+    site_report_loading: Observable<boolean> = new Observable(false);
+    site_report_url: Observable<string> = new Observable('');
+    show_site_report_url: Observable<boolean> = new Observable(false);
+    //Markets and Feed Suppliers
+    closest_markets: ObservableCollection<any> = new ObservableCollection([]);
+    feed_suppliers: ObservableCollection<any> = new ObservableCollection([]);
     //MAP COMPONENTS
     esriMap: esri.Map;
     esriSearch: esri.dijit.Search;
@@ -78,19 +84,10 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         super(app, lib);
         this.screens_collection_filter = new FilterableCollection<any>(this.screens_collection, this._screensFilter.bind(this, this));
         this.selected_location.bind(this, (selLoc) => {
-            if (selLoc ? selLoc.name !== 'User click' : false) {
-                this.has_location.set(true);
-                this.screens_collection.get().forEach(scr => {
-                    scr['sections'].get().forEach(sec => {
-                        sec['fields'].get().forEach(f => {
-                            if (f['fieldCalVar'] === 'facilityLocation') {
-                                f.value.set(selLoc.name + "<br>Lat: " + selLoc.point.y.toFixed(2) + " Long: " + selLoc.point.x.toFixed(2));
-                                this.runRoutingServices();
-                            }
-                        });
-                    });
-                });
-            }
+            if (selLoc) {
+                this.getClosestMarkets();   
+                this.getClosestFeedSuppliers();               
+            }            
         });
         
         //this.selected_system_binding_token =
@@ -111,6 +108,9 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                     _prod.push(prod_meth);
                 })
                 this.prod_meth_tbl.set(_prod);
+                this._refreshSystemsDisplay();
+                this.show_warning.set(!sys.constraintsValid.get());
+                //this._resetMap();
             }
         });
 
@@ -130,6 +130,48 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         this.show_all_for_report.bind(this, () => {
             this.screens_collection_filter.refresh();
         });
+
+        this.closest_markets.set([]);
+
+        this.feed_suppliers.set([]);
+
+        this.closest_markets.bind(this, (cm) => {
+            //set ddoptions for marketDistanc
+            this.screens_collection.get().forEach(sc => {
+                sc['sections'].get().forEach(sct => {
+                    sct['field_categories'].get().forEach(fc => {
+                        fc.fields.get().forEach(ff => {
+                            if (ff.fieldCalVar === 'marketDistanceOpts') {
+                                ff.ddOptions.set(cm.sender.value);
+                                ff.selDDoption.set(cm.sender.value[0].value);
+                                this.getSetValue(ff.formula, cm.sender.value[0].distance.split(' Miles')[0]);
+                            }
+                        });
+                    });
+                });
+            });
+        });
+
+        this.feed_suppliers.bind(this, (cm) => {
+            //set ddoptions for feed suppliers
+            this.screens_collection.get().forEach(sc => {
+                sc['sections'].get().forEach(sct => {
+                    sct['field_categories'].get().forEach(fc => {
+                        fc.fields.get().forEach(ff => {
+                            if (ff.fieldCalVar === 'feedDistanceOpts') {
+                                ff.ddOptions.set(cm.sender.value);
+                                ff.selDDoption.set(cm.sender.value[0].value);
+                                this.getSetValue(ff.formula, cm.sender.value[0].distance.split(' Miles')[0]);
+                            }
+                        });
+                    });
+                });
+            });
+        });
+
+        this.site_report_loading.bind(this, (loading) => {
+
+        });
     }
 
     initialize(config: any): void {
@@ -148,9 +190,10 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         this.app.registerActivityIdHandler("runFinancialPlnModule", (wc, cf) => {
             this.workflowContext = $.extend({}, wc);
 
-            this.resetSystemFilters();
+            //this.resetSystemFilters();
+            let hasLocation = wc.getValue("location") ? true : false;
 
-            this.has_location.set(wc.getValue("location") ? true : false);
+            this.has_location.set(hasLocation);
                       
             this.setSystems(wc);
 
@@ -168,10 +211,64 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                 }
             }) : [];
 
+            if (this.has_location.get()) {
+                this.selected_location.set({ "point": wc.getValue("location"), "name": "User click" });
+            } else {
+                let defaultLocation = new esri.geometry.Point(-123.29560542046448, 44.56679003060179);
+                this.selected_location.set({ "point": defaultLocation, "name": "OSU Agriculuture Fields" });
+            }            
+
             //rerun to set the resources system selection screen val...  TODO: figure out a better way
             //this.setSystems(wc);
 
             this.app.commandRegistry.command("ActivateView").execute("OE_AquacultureFinancialView");
+        });
+
+        this.app.registerActivityIdHandler("onClosestCitiesGTE50k", (wc) => {
+            //console.log('on closest cities!', wc);
+            let closestMarkets = wc.getValue("citiesTable").features.map((m => {
+                return {
+                    "option": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(2) + " Miles" + ")",
+                    "value": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(2) + " Miles" + ")",
+                    "market": m.attributes.NAME,
+                    "distance": (m.attributes.NEAR_DIST / 1609).toFixed(2) + " Miles",
+                    "rank": m.attributes.NEAR_RANK
+                }
+            }));
+            closestMarkets.push({
+                "option": 'Other distance',
+                "value": 'Other distance'
+            })
+            this.closest_markets.set(closestMarkets);
+        });
+
+        this.app.registerActivityIdHandler("onSiteReportHandler", (wc) => {
+            this.site_report_loading.set(false);
+            console.log('on site report!', wc);
+            let siteReportURL = wc.getValue("reportURL");
+            if (siteReportURL.toLowerCase().indexOf('error') === -1) {
+                this.show_site_report_url.set(true);
+                this.site_report_url.set(siteReportURL);
+                console.log('url', siteReportURL);
+            }
+        });
+
+        this.app.registerActivityIdHandler("onClosestFeedSupplier", (wc) => {
+            //console.log('on closest cities!', wc);
+            let feedSuppliers = wc.getValue("feedSuppliersTable").features.map((m => {
+                return {
+                    "option": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(2) + " Miles" + ")",
+                    "value": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(2) + " Miles" + ")",
+                    "market": m.attributes.NAME,
+                    "distance": (m.attributes.NEAR_DIST / 1609).toFixed(2) + " Miles",
+                    "rank": m.attributes.NEAR_RANK
+                }
+            }));
+            feedSuppliers.push({
+                "option": 'Other distance',
+                "value": 'Other distance'
+            })
+            this.feed_suppliers.set(feedSuppliers);
         });
 
         this.app.registerActivityIdHandler("onRoutingServicesComplete", (wc, df) => {
@@ -223,6 +320,11 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         let systems = wc.getValue("systems").features ? wc.getValue("systems").features
             .filter(f => f.attributes.System !== 'All')
             .map((feat) => {
+                let constraintsValid = new Observable<boolean>(true);
+                constraintsValid.bind(this, (isValid) => {
+                    //if selected system then set warning to match
+                    this.show_warning.set(!isValid);
+                });
                 let sys =
                 {
                     "production_method": feat.attributes.ProductionMethod,
@@ -233,7 +335,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                     "selected": new Observable<boolean>(feat.attributes.Default === "True"),
                     "overview": feat.attributes.Overview,
                     "img_src": feat.attributes.ImagePath,
-                    "img_credit": feat.attributes.ImageCredit
+                    "img_credit": feat.attributes.ImageCredit,
+                    "constraintsValid": constraintsValid
                 };
                 if (feat.attributes.Default === 'True') {
                     defaultSystem = sys;
@@ -372,7 +475,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                         showInReport: sAttr.IncludeInReport,
                         screenContentClass: new Observable<any>('tabcontent'),
                         screenTabClass: new Observable<any>('tablinks')
-                    };
+                    };                    
                     returnObj['summary_sections'] = new FilterableCollection<any>(returnObj.sections, this._summarySectionsFilter.bind(this, this));
                     return returnObj;
                 })
@@ -384,7 +487,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
         let _growthRates = wc.getValue('growthRates').features ? wc.getValue('growthRates').features : [];
 
-        let _screenConfig = [];
+        //let _screenConfig = [];
 
         if (wc.getValue("screenConfig").features) {
             let scrCnfFeat = wc.getValue("screenConfig").features;
@@ -402,30 +505,33 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                             displayClass: 'screenSection' + ssAttr.Display,
                             fields: new ObservableCollection<any>([]),
                             field_categories: new ObservableCollection<any>([]),
-                            field_ui_categories: new ObservableCollection<any>([]),
+                            //field_ui_categories: new ObservableCollection<any>([]),
                             visible: new Observable<boolean>(true)
                         };
                         returnSectionInfo['fields_filter'] = new FilterableCollection<any>(returnSectionInfo['fields'], this._fieldsFilter.bind(this, this));
 
-                        switch (ssAttr.SectionType) {  
+                        switch (ssAttr.SectionType) {
                             case 'Map':
                                 returnSectionInfo['selected_location'] = new Observable<any>('');
                                 returnSectionInfo['show_add_location'] = new Observable<boolean>(true);
                                 returnSectionInfo['show_selected_location'] = new Observable<boolean>(false);
+                                returnSectionInfo['site_report_loading'] = this.site_report_loading;
+                                returnSectionInfo['site_report_url'] = this.site_report_url;
+                                returnSectionInfo['show_site_report_url'] = this.show_site_report_url;
                                 break;
                             case 'Select System':
                                 returnSectionInfo['show_filter_class'] = new Observable<any>('show-filters');
                                 returnSectionInfo['show_system_filters'] = new Observable<boolean>(false);
-                                returnSectionInfo['species_tbl'] = this.species_tbl; 
+                                returnSectionInfo['species_tbl'] = this.species_tbl;
                                 returnSectionInfo['species_tbl_filter'] = this.species_tbl_filter;
                                 returnSectionInfo['selected_species'] = this.selected_species;
                                 //returnSectionInfo['selected_species_label'] = this.selected_species_label;
                                 returnSectionInfo['selected_species_filter'] = this.selected_species_filter;
-                                returnSectionInfo['prod_meth_tbl'] = this.prod_meth_tbl; 
+                                returnSectionInfo['prod_meth_tbl'] = this.prod_meth_tbl;
                                 returnSectionInfo['prod_meth_tbl_filter'] = this.prod_meth_tbl_filter;
                                 returnSectionInfo['selected_prod_meth'] = this.selected_prod_meth;
                                 //returnSectionInfo['selected_prod_meth_label'] = this.selected_prod_meth_label;
-                                returnSectionInfo['selected_prod_meth_filter'] = this.selected_prod_meth_filter; 
+                                returnSectionInfo['selected_prod_meth_filter'] = this.selected_prod_meth_filter;
                                 returnSectionInfo['selected_system'] = this.selected_system;
                                 returnSectionInfo['systems_tbl'] = this.systems_tbl;
                                 returnSectionInfo['systems_tbl_filter'] = this.systems_tbl_filter;
@@ -433,7 +539,22 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                                 returnSectionInfo['show_other_input_params_1'] = this.show_other_input_params_1;
                                 break;
                             case 'Summary Table':
-                                returnSectionInfo['summary_table'] = this.screens_collection;
+                                let orderedCollection = new OrderedCollection<string>();
+                                orderedCollection.sync(this.screens_collection);
+                                orderedCollection.setSortFunction((left:any, right:any) => {
+                                    if (left.screen.toLowerCase() === 'Summary' || right.screen.toLowerCase() === 'Summary') {
+                                        return -1
+                                    } else {
+                                        if (left.screenOrder < right.screenOrder) {
+                                            return -1
+                                        }
+                                        if (left.screenOrder > right.screenOrder) {
+                                            return 1;
+                                        }
+                                    }
+                                    return 0;
+                                });
+                                returnSectionInfo['summary_table'] = orderedCollection;
                                 break;
                             case 'AmortizationTable':
                                 returnSectionInfo['amortization_table'] = this.amortization_tbl;
@@ -446,18 +567,29 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                             .map(sf => {
                                 let thisScope = this;
                                 const att = sf.attributes;
-let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default, att.Decimal)
+                                let value = att.Default === '________' ? att.Default : this.formatValue(att.Default, att.Decimal)
                                 let fieldValue;
                                 fieldValue = new Observable<any>(value);
-                                let fieldValidateMsg = new Observable<any>('Invalid input: Please enter a number between ' + this.formatValue(att.Min,att.Decimal) + ' and ' + this.formatValue(att.Max,att.Decimal) + '. <br>  ESC to reset to default value.');
-                                let fieldValidateMsgClass = new Observable<any>('validate-msg hide');
+                                let fieldValidateMsg = new Observable<any>('Invalid input: Please enter a number between ' + this.formatValue(att.Min, att.Decimal) + ' and ' + this.formatValue(att.Max, att.Decimal) + '. <br>  ESC to reset to default value.');
+                                let fieldValidateMsgClass = new Observable<any>(att.UiType === 'dropdownLocations' ? 'validate-msg-nested hide' : 'validate-msg hide');
                                 let fieldDisplayValue = new Observable<any>(this.formatDisplayValue(value, att.Unit, att.Decimal, true));
+                                let species = att.Show.split(';').indexOf('All') === -1
+                                    ? this.systems_tbl.get().filter(s => s['system'] === att.Show)[0]['species']
+                                    : 'All';
+                                let prodMeth = att.Show.split(';').indexOf('All') === -1
+                                    ? this.systems_tbl.get().filter(s => s['system'] === att.Show)[0]['procMeth']
+                                    : 'All';
+                                let system = att.Show.split(';').indexOf('All') === -1
+                                    ? this.systems_tbl.get().filter(s => s['system'] === att.Show)[0]['system']
+                                    : 'All';
+                                let systemNoSpace = system.replace(/\ /g, '');
                                 let returnVal =
                                 {
                                     fieldName: att.Field,
+                                    fieldID: att.FieldCalVar + systemNoSpace,
                                     fieldCalVar: att.FieldCalVar,
-                                    fieldHandle: att.FieldCalVar + "Handle",
-                                    fieldValidateMsgID: att.FieldCalVar + "Validate",
+                                    fieldHandle: att.FieldCalVar + systemNoSpace + "Handle",
+                                    fieldValidateMsgID: att.FieldCalVar + systemNoSpace + "Validate",
                                     fieldValidateMsgClass: fieldValidateMsgClass,
                                     fieldValidateMsg: fieldValidateMsg,
                                     fieldCat: att.FieldCategory,
@@ -473,13 +605,16 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
                                     max: att.Max,
                                     decimalDisp: att.Decimal,
                                     show: att.Show.split(';'),
+                                    species: species,
+                                    prodMeth: prodMeth,
+                                    system: system,
                                     formula: att.Formula,
                                     desc: att.Description,
                                     notes: att.Notes,
                                     chartID: att.ChartConfig,
                                     showDesc: new Observable<boolean>(true),
                                     visible: new Observable<boolean>(att.Field === 'Total Land'),
-                                    tableDisplayClass: 'div-table-cell ' + att.FieldCategory,
+                                    tableDisplayClass: new Observable<string>('div-table-cell ' + att.FieldClass),
                                     class: new Observable<string>('div-table-cell values')
                                 };
                                 //add chart config if applicable
@@ -495,7 +630,7 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
                                             fieldCalVar: d.fieldCalVar
                                         }
                                     }));
-                                    
+
                                     returnVal['chartConfig'] = {
                                         chartID: _chartConfig.attributes.ChartID,
                                         chartName: _chartConfig.attributes.ChartName,
@@ -504,6 +639,26 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
                                         chartData: chartData
                                     };
                                 }
+                                if (att.UiType === 'dropdownLocations') {
+                                    let selectedDDoption = new Observable<any>();
+                                    let ddOptions = new ObservableCollection<any>();
+                                    ddOptions.set([{
+                                        option: 'Waiting for results from service',
+                                        value: 'Waiting for results from service',
+                                        updateField: returnVal.formula
+                                    }]);
+                                    returnVal['ddOptions'] = ddOptions;
+                                    returnVal['selDDoption'] = selectedDDoption;
+                                    returnVal['showOtherInput'] = new Observable<boolean>(false);
+                                    selectedDDoption.set('Waiting for results from service');
+                                    selectedDDoption.bind(returnVal, (val) => {
+                                        console.log('change the location distance', val);
+                                        returnVal['showOtherInput'].set(val === 'Other distance');
+                                        if (val !== 'Other distance') {
+                                            this.getSetValue(returnVal.formula, val.split('(')[1].split(' ')[0]);
+                                        }
+                                    });
+                                }
                                 if (att.FieldCategory === 'LookupTable') {
                                     let lutName = att.Formula.split('lut:')[1].split('>')[0];
                                     let lutField = att.Formula.split('>')[1].split('{')[0];
@@ -511,11 +666,13 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
                                     let lut;
                                     let selectedDDoption = new Observable<any>();
                                     let ddOptions = new ObservableCollection<any>();
+
                                     switch (lutName) {
                                         case 'growthRate':
                                             lut = _growthRates;
+
                                             let harvestWeights = _growthRates.filter(gr =>
-                                                this.selected_system.get().species === gr.attributes.Species
+                                                returnVal.species === gr.attributes.Species
                                             ).map(gr => {
                                                 if (gr.attributes['Default'] === 'True') {
                                                     selectedDDoption.set(gr.attributes['Market Weight']);
@@ -544,7 +701,6 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
                                             //get update field based on new input val
                                             returnVal['ddOptions'].get().forEach(dd => {
                                                 if (dd.option === val) {
-
                                                     //update dependent field
                                                     this.screens_collection.get().forEach(scr => {
                                                         scr['sections'].get().forEach(sct => {
@@ -562,7 +718,7 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
                                     });
                                 }
                                 fieldValue.bind(returnVal, (val) => {
-                                    returnVal.formattedValue.set(thisScope.formatDisplayValue(val, returnVal.unit,returnVal.decimalDisp,true));
+                                    returnVal.formattedValue.set(thisScope.formatDisplayValue(val, returnVal.unit, returnVal.decimalDisp, true));
                                 });
                                 return returnVal;
                             });
@@ -570,43 +726,42 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
                         returnSectionInfo.fields.set(_screenSectionFields);
                         ////Quickstart only sort fields for resource vs goal
                         //if (returnSectionInfo.section === 'productionRequired') {
-                            let categories = _screenSectionFields.map(f => f.fieldCat)
-                                .filter((v, idx, self) => self.indexOf(v) === idx);
-                            var field_categories = [];
-                            categories.forEach(c => {
-                                let catFields = _screenSectionFields.filter(sf => sf.fieldCat === c);
-                                let cat = {
-                                    category: c,
-                                    fields: new ObservableCollection<any>(catFields)
-                                }
-                                cat['fields_filter'] = new FilterableCollection<any>(cat['fields'], this._fieldsFilter.bind(this, this));
-                                field_categories.push(cat);
-                            });
-                        returnSectionInfo['field_categories'].set(field_categories);
-                        let ui_categories = _screenSectionFields.map(f => f.uiType)
+                        let categories = _screenSectionFields.map(f => f.fieldCat)
                             .filter((v, idx, self) => self.indexOf(v) === idx);
-                        var field_ui_cat = [];
-                        ui_categories.forEach(c => {
-                            let catFields = _screenSectionFields.filter(sf => sf.uiType === c);
+                        var field_categories = [];
+                        categories.forEach(c => {
+                            let catFields = _screenSectionFields.filter(sf => sf.fieldCat === c);
                             let cat = {
                                 category: c,
                                 fields: new ObservableCollection<any>(catFields)
                             }
                             cat['fields_filter'] = new FilterableCollection<any>(cat['fields'], this._fieldsFilter.bind(this, this));
-                            ui_categories.push(cat);
+                            field_categories.push(cat);
                         });
-                        returnSectionInfo['field_ui_categories'].set(ui_categories);
+                        returnSectionInfo['field_categories'].set(field_categories);
+                        //let ui_categories = _screenSectionFields.map(f => f.uiType)
+                        //    .filter((v, idx, self) => self.indexOf(v) === idx);
+                        //var field_ui_cat = [];
+                        //ui_categories.forEach(c => {
+                        //    let catFields = _screenSectionFields.filter(sf => sf.uiType === c);
+                        //    let cat = {
+                        //        category: c,
+                        //        fields: new ObservableCollection<any>(catFields)
+                        //    }
+                        //    cat['fields_filter'] = new FilterableCollection<any>(cat['fields'], this._fieldsFilter.bind(this, this));
+                        //    field_ui_cat.push(cat);
+                        //});
+                        //returnSectionInfo['field_ui_categories'].set(field_ui_cat);
                         //}
                         return returnSectionInfo;
                     });
+                
                 scr.sections.set(_screenSections);
+
             });
+
             this.screens_collection.set(_screens);
             
-        }
-
-        if (this.has_location.get()) {
-            this.selected_location.set({ "point": wc.getValue("location"), "name": "User click" });
         }
 
         this._setScreenSectionBindings();
@@ -645,14 +800,14 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
                         let totalChartValues = 0;
                         //update with model values
                         f.chartConfig.chartSeries.data.forEach(d => {
-                            let value = this.getValue(d.fieldCalVar);
+                            let value = this.getSetValue(d.fieldCalVar);
                             d.value = parseInt(value.replace(/\,/g, ''));
                             totalChartValues += d.value;
                         });
                         //update chartData for table display
                         let sortedData = [];
                         f.chartConfig.chartData.get().forEach(cd => {
-                            let value = this.getValue(cd.fieldCalVar);
+                            let value = this.getSetValue(cd.fieldCalVar);
                             cd.value.set(this.formatDisplayValue(parseInt(value.replace(/\,/g, '')), "$",null,true));
                             cd.percent.set((parseInt(value.replace(/\,/g, '')) / totalChartValues * 100).toFixed(1) + "%");
                             sortedData.push(cd);
@@ -696,13 +851,17 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
         });
     }
 
-    getValue(fieldCalVar) {
+    getSetValue(fieldCalVar, value?) {
         let returnVal = null;
         this.screens_collection.get().forEach(scr => {
             scr['sections'].get().forEach(sct => {
                 sct['fields'].get().forEach(f => {
-                    if (f.fieldCalVar === fieldCalVar) {
+                    if (f.fieldCalVar === fieldCalVar && (f.show.indexOf('All') !== -1 || f.show.indexOf(this.selected_system_text.get()) !== -1)) {
                         returnVal = f.value.get();
+                        if (value) {
+                            f.value.set(value);
+                            this.updateViewModel(f);
+                        }
                     }
                 });
             });
@@ -744,16 +903,18 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
         this.screens_collection.get().forEach(scr => {
             scr['sections'].get().forEach(sct => {
                 sct['fields'].get().forEach(f => {
-                    switch (f.fieldCalVar) {
-                        case 'loanAmountReq':
-                            loanAmt = parseFloat(f.value.get().replace(/\,/g, ''));
-                            break;
-                        case 'loanIntRate':
-                            intRate = parseFloat(f.value.get());
-                            break;
-                        case 'termOfLoan':
-                            term = parseInt(f.value.get());
-                            break;
+                    if ((f.show.indexOf('All') !== -1 || f.show.indexOf(this.selected_system_text.get()) !== -1)) {
+                        switch (f.fieldCalVar) {
+                            case 'loanAmountReq':
+                                loanAmt = parseFloat(f.value.get().replace(/\,/g, ''));
+                                break;
+                            case 'loanIntRate':
+                                intRate = parseFloat(f.value.get());
+                                break;
+                            case 'termOfLoan':
+                                term = parseInt(f.value.get());
+                                break;
+                        }
                     }
                 });
             });
@@ -790,7 +951,7 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
         this.screens_collection.get().forEach(scr => {
             scr['sections'].get().forEach(sct => {
                 sct['fields'].get().forEach(f => {
-                    if (f.fieldCalVar === 'annualLoanPayment') {
+                    if (f.fieldCalVar === 'annualLoanPayment' && (f.show.indexOf('All') !== -1 || f.show.indexOf(this.selected_system_text.get()) !== -1)) {
                         f.value.set(this.formatValue((regPayment * freq), 0));
                         this.updateViewModel(f);
                     }
@@ -821,25 +982,25 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
     }
 
     updateViewModel(changedInput) {
-        //find all fields that are dependant on this field
+        //find all fields that are dependant on this field for selected system        
         let _fieldCalVar = changedInput.fieldCalVar;
         //let _fieldToValidate = changedInput.formula.indexOf('[validate:') !== -1 ? changedInput.formula.split('validate:')[1].split(']')[0] : '';
         if (changedInput.formula.indexOf('[validate:') !== -1) {
             this.validateConstraints(changedInput);
         } else if (changedInput.formula.indexOf('[interpolate:') !== -1) {
-            console.log('interpolate:', changedInput);
-            let interpolatedValue = Number(this.interpolateValues(changedInput)).toFixed(15);            
+            //console.log('interpolate:', changedInput);
+            let interpolatedValue = Number(this.interpolateValues(changedInput)).toFixed(15);
             changedInput.value.set(interpolatedValue);
         }
         else {
             this.screens_collection.get().forEach(s => {
                 s['sections'].get().forEach(sct => {
                     sct.fields.get().forEach(f => {
-                        if (f.formula.indexOf(_fieldCalVar) !== -1 && f.fieldCalVar !== _fieldCalVar) {
+                        if (f.formula.indexOf(_fieldCalVar) !== -1 && f.fieldCalVar !== _fieldCalVar && (f.show.indexOf('All') !== -1 || f.show.indexOf(this.selected_system_text.get()) !== -1)) {
                             //need to update value
                             //get formula
                             let newVal = this.formatValue(this.processFieldFormula(f), f.decimalDisp);
-                            if (newVal  ? newVal !== f.value.get() && newVal.indexOf('NaN') == -1 : false) {
+                            if (newVal ? newVal !== f.value.get() && newVal.indexOf('NaN') == -1 : false) {
                                 if (f.uiType === 'slider') {
                                     this.setKendoSlider(f, newVal);
                                 }
@@ -847,6 +1008,10 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
                                 //check if related to amortization and update table if so
                                 if (['_termOfLoan', '_loanIntRate', 'loanAmountReq'].indexOf(f.fieldCalVar) !== -1) {
                                     this.calculateAmortization();
+                                }
+                                //check if net gain/loss or profitability and change display class to color accordingly.
+                                if (['annualNetGainLoss', 'grossProfitMarginRatio', 'annualNetGainLossLoan'].indexOf(f.fieldCalVar) !== -1) {
+                                    f.tableDisplayClass.set(parseFloat(f.value.get().replace(/\,/g,'')) > 0 ? 'div-table-cell InputCalcRevenue' : 'div-table-cell InputCalcExpense');
                                 }
                                 //recurssivley search for other dependent variables
                                 this.updateViewModel(f);
@@ -860,7 +1025,7 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
 
     setKendoSlider(f, newVal?) {
         let thisScope = this;
-        let sliderID = f.fieldCalVar;
+        let sliderID = f.fieldID;
         //var sliderTextHandle = $("#" + sliderID + " .oe-slider-handle");
         var sliderTextHandle = $("#" + f.fieldHandle);
         newVal = newVal ? newVal : f.value.get();
@@ -914,7 +1079,7 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
         let sliderTextHandle = $("#" + field.fieldHandle);
         let newValue = sliderTextHandle.val().split(' ')[0].replace(/\,/g, '');
         sliderTextHandle.val(this.formatDisplayValue(newValue, field.unit, field.decimalDisp, false));
-        var slider = $("#" + field.fieldCalVar).data("kendoSlider");
+        var slider = $("#" + field.fieldID).data("kendoSlider");
         if (!isNaN(newValue)) {
             slider.value(newValue);
         } else {
@@ -923,17 +1088,17 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
         field.value.set(newValue);
         this.updateViewModel(field);
         } else {
-            console.log('not valid for slider update');
+            //console.log('not valid for slider update');
         }             
     }
 
     validateTextInput(evt, elem, field) {
-        if (elem.value === '<-->') {
+        if (elem.value === '________') {
             elem.value = '';
         }    
         if (evt.keyCode === 27) {
             //reset to default value
-            console.log('reset!', field);
+            //console.log('reset!', field);
             //get default
             elem.value = field.defaultVal;
             this.updateSlider(field);
@@ -952,8 +1117,10 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
     checkIsValidTextInput(field) {
         let inputValue = $("#" + field.fieldHandle).val().split(' ')[0].replace(/\,/g, '');
         if (inputValue !== field.defaultVal || !isNaN(field.defaultVal)) {
-            let isValid = !isNaN(inputValue) ? parseFloat(inputValue) > parseFloat(field.min) && parseFloat(inputValue) < parseFloat(field.max) : false;
-            field.fieldValidateMsgClass.set(!isValid ? 'validate-msg' : 'validate-msg hide');
+            let isValid = !isNaN(inputValue) ? parseFloat(inputValue) >= parseFloat(field.min) && parseFloat(inputValue) <= parseFloat(field.max) : false;
+            let baseClass = field.uiType === 'dropdownLocations' ? 'validate-msg-nested' : 'validate-msg';
+            field.fieldValidateMsgClass.set(!isValid
+                ? baseClass : baseClass + ' hide');
             return isValid;
         } else {
             return true;
@@ -961,7 +1128,7 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
     }
 
     checkClearTextInput(evt, elem, ctx) {                
-        if (elem.value === '<-->') {
+        if (elem.value === '________') {
             elem.value = '';
         }        
         //return true;
@@ -970,7 +1137,7 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
     formatDisplayValue(val, unit, decimalDisp?,showUnits?) {
         let returnVal;
         //showUnits = showUnits ? false : true;
-        if (val === '<-->') {
+        if (val === '________') {
             return val;
         } else {
             val = this.addCommas(val);
@@ -1003,7 +1170,7 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
             this.validateConstraints(field);
             return field.value.get();
         } else if (formula.indexOf('[interpolate') !== -1) {
-            console.log('interpolate!!!', field, formula);
+            //console.log('interpolate!!!', field, formula);
             return this.interpolateValues(field).toString();            
         }
         else {
@@ -1022,7 +1189,7 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
                 this.screens_collection.get().forEach(s => {
                     s['sections'].get().forEach(sct => {
                         sct.fields.get().forEach(f => {
-                            if (f.fieldCalVar === ff && ff !== '') {
+                            if (f.fieldCalVar === ff && ff !== '' && (f.show.indexOf('All') !== -1 || f.show.indexOf(this.selected_system_text.get()) !== -1)) {
                                 let value = f.value.get().split(/\ /g)[0].replace(/\,/g, '');
                                 formulaVals = formulaVals.replace(ff, value);
                             }
@@ -1033,7 +1200,7 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
             );
 
             //should have updated formula as a string
-            console.log('formula with values', formulaVals);
+            //console.log('formula with values', formulaVals);
 
             return eval(formulaVals);
         }
@@ -1045,16 +1212,21 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
             s['sections'].get().forEach(sct => {
                 sct.fields.get().forEach(f => {
                     //validate constraints
-                    if (_fieldToValidate !== '' && f.fieldCalVar === _fieldToValidate) {
-                        if (field.value.get() !== '<-->') {
+                    if (_fieldToValidate !== '' && f.fieldCalVar === _fieldToValidate && (f.show.indexOf('All') !== -1 || f.show.indexOf(this.selected_system_text.get()) !== -1)) {
+                        if (field.value.get() !== '________') {
                             let isNotValid = parseFloat(field.value.get().replace(/\,/g, '')) < parseFloat(f.value.get().replace(/\,/g, ''));
                             f.class.set(isNotValid ? 'div-table-cell values warning' : 'div-table-cell values');
                             this.invalid_array = this.invalid_array.filter(iv => iv !== f.fieldCalVar)
                             if (isNotValid) {
                                 this.invalid_array.push(f.fieldCalVar);
                             }
-                            this.show_warning.set(this.invalid_array.length > 0);
-
+                            //set system level warning
+                            this.systems_tbl.get().forEach(s => {
+                                if (s['system'] === this.selected_system_text.get()) {
+                                    s['constraintsValid'].set(this.invalid_array.length === 0)
+                                }
+                            });
+                            //this.show_warning.set();
                         }
                     }
                 });
@@ -1077,8 +1249,8 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
             default:
                 //get lookup values based on formula fields
                 //weight
-                let weight = parseInt(this.getValue(fields[0]).replace(/\,/,''));
-                let distance = parseInt(this.getValue(fields[1]).replace(/\,/, ''));
+                let weight = parseInt(this.getSetValue(fields[0]).replace(/\,/,''));
+                let distance = parseInt(this.getSetValue(fields[1]).replace(/\,/, ''));
                 //market distance under
                 let x_1 = this.transportation_lut
                     .map(td => parseInt(td.miles))
@@ -1127,55 +1299,19 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
     }
 
     setSelectedSystem(selSystem) {
-        this.selected_system.set(selSystem);
-        this.show_next_btn.set(true);
-        //this.selected_species.set(this.species_tbl.get().filter(spec => {
-        //    let selected = spec.species === selSystem.system;
-        //    spec.selected.set(selected);
-        //    return selected;
-        //})[0]);
-        //this.selected_prod_meth.set(this.prod_meth_tbl.get().filter(prod => {
-        //    let selected =  prod.production_method === selSystem.production_method;
-        //    prod.selected.set(selected);
-        //    return selected;
-        //})[0]);
-        //if (this.screens_collection.get().length > 0) {
-        //    this.screens_collection.getItems().forEach(s => {
-        //        s['sections'].get().forEach(sct => {
-        //            if (sct.sectionType === 'Select System') {
-        //                sct.selected_system.set(sct.systems_tbl.get().filter((sys) => {
-        //                    return sys['system'] === selSystem.system;
-        //                })[0]);
-                        
-        //                sct.selected_species.set(sct.species_tbl.get().filter((sys) => {
-        //                    return sys['species'] === sct.selected_system.get()['species'];
-        //                })[0]);
-        //                sct.selected_prod_meth.set(sct.prod_meth_tbl.get().filter((sys) => {
-        //                    return sys['production_method'] === sct.selected_system.get()['production_method'];
-        //                })[0]);
-        //            }
-        //        });
-        //    });
-        //}
+        if (this.selected_system.get() !== selSystem) {
+            this.selected_system.set(selSystem);
+            this.show_next_btn.set(true);
 
-        this.systems_tbl.get()
-            .forEach(s => {
-                s['selected'].set(selSystem.system === s['system']);
+            this.systems_tbl.get()
+                .forEach(s => {
+                    s['selected'].set(selSystem.system === s['system']);
                 });
 
-        this.show_other_input_params_1.set(selSystem.system ? true : false);
+            this.show_other_input_params_1.set(selSystem.system ? true : false);
 
-        this.refreshScreenFilters()
-
-        //this.viewModel.selected_system.set(this.viewModel.systems_tbl.get().filter((system) => {
-        //    return system['system'] === context.system;
-        //})[0]);
-        //this.viewModel.selected_species.set(this.viewModel.species_tbl.get().filter((species) => {
-        //    return species['species'] === this.viewModel.selected_system.get()['species'];
-        //})[0]);
-        //this.viewModel.selected_prod_meth.set(this.viewModel.prod_meth_tbl.get().filter((prodmeth) => {
-        //    return prodmeth['production_method'] === this.viewModel.selected_system.get()['production_method'];
-        //})[0]);
+        //this.refreshScreenFilters()
+        }
     }
 
     setSelectedQuickstartResource(selQsRes) {
@@ -1205,6 +1341,35 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
         }
     }
 
+    getClosestMarkets() {
+        let mapPoint = this.selected_location.get().point;
+        var workflowArgs: any = {};
+        workflowArgs.workflowId = "Closest_Markets";
+        workflowArgs.mapPoint = this.selected_location.get().point;        
+        this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
+    }
+
+    getClosestFeedSuppliers() {
+        let mapPoint = this.selected_location.get().point;
+        var workflowArgs: any = {};
+        workflowArgs.workflowId = "Closest_Feed_Suppliers";
+        workflowArgs.mapPoint = this.selected_location.get().point;
+        this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
+    }
+
+    getSiteReport() {
+        if (this.site_report_loading.get() !== true) {
+            this.site_report_loading.set(true);
+            this.show_site_report_url.set(false);
+            let mapPoint = esri.geometry.geographicToWebMercator(this.selected_location.get().point);
+            var workflowArgs: any = {};
+            workflowArgs.workflowId = "Aquaculture_Site_Report";
+            workflowArgs.startPointIn = mapPoint;
+            workflowArgs.onlyReportURL = true;
+            this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
+        }
+    }
+
     runRoutingServices() {
         let mapPoint = this.selected_location.get().point;
         //convert to 4326
@@ -1225,10 +1390,10 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
             url: "./Resources/Scripts/oe_added_scripts/html2canvas.min.js",
             dataType: "script",
             success: function () {
-                console.log('success!');
+                //console.log('success!');
             },
             error: function (err) {
-                console.log('fail', err);
+                //console.log('fail', err);
             }
         });
     }
@@ -1240,12 +1405,21 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
                     if (sct.sectionType === 'Select System') {
                         sct.systems_tbl_filter.refresh();
                         sct.show_no_systems_in_filtered_view.set(sct.systems_tbl_filter.isEmpty());
+                    } else {
+                        //update field categories to filter based on new system selection
+                        sct.field_categories.get().forEach(fc => {
+                            fc.fields_filter.refresh();
+                        });
+                        //sct.field_ui_categories.get().forEach(fc => {
+                        //    fc.fields_filter.refresh();
+                        //});
+                        sct.fields_filter.refresh();
                     }
                 });
             });
         }
     }
-
+    
     _onSiteInitialized(site: Site, thisViewModel, config) {
 
        this._injectScript();
@@ -1295,7 +1469,7 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
         this.selected_location.bind(this, (selLoc) => {
             if (this.screens_collection.get().length > 0) {
                 //update the map screen info
-                console.log('selected location', selLoc, this.screens_collection);
+                //console.log('selected location', selLoc, this.screens_collection);
                 this.screens_collection.getItems().forEach(s => {
                     s['sections'].get().forEach(sct => {
                         if (sct.sectionType === 'Map') {
@@ -1410,10 +1584,26 @@ let value = att.Default === '<-->' ? att.Default : this.formatValue(att.Default,
 
     }
 
+    _resetMap() {
+        try {
+            this.esriMap = null;
+
+            if (this.esriBasemapToggle) {
+                this.esriBasemapToggle.destroy();
+            }
+            if (this.esriHomeBtn) {
+                this.esriHomeBtn.destroy();
+            }
+            if (this.esriSearch) {
+                this.esriSearch.destroy();
+            }
+        } catch (ex) {
+            //console.log('multiple map deletes?');
+        }
+        
+    }
+
     _resetDefaults() {                
-        this.esriMap = null;
-        this.esriBasemapToggle.destroy();
-        this.esriHomeBtn.destroy();
-        this.esriSearch.destroy();        
+        this._resetMap();
     }
 }

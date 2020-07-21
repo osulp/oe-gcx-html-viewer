@@ -85,13 +85,16 @@ export class OE_AquacultureFinancialView extends ViewBase {
 
             this.viewModel.esriMap = new esri.Map("location-map", {
                 //center: [44.17432483, -120.5859375],
-                center: new esri.geometry.Point(-120.58, 44.17),
+                //OSU Ag Fields: -123.29560542046448, 44.56679003060179
+                //Statewide: new esri.geometry.Point(-120.58, 44.17)
+                center: new esri.geometry.Point(-123.29560542046448, 44.56679003060179),
                 zoom: 6,
                 basemap: "streets",
                 minZoom: 6,
                 slider: true,
                 showAttribution: true,
-                logo:false
+                //autoResize: true,
+                logo: false
             });
 
 
@@ -132,7 +135,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
                     });
                 });
             } catch (ex) {
-                console.log('cannot load search');
+                //console.log('cannot load search');
             }
 
             try {
@@ -143,7 +146,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
 
                 this.viewModel.esriHomeBtn.startup();
             } catch (ex) {
-                console.log('cannot load home button');
+                //console.log('cannot load home button');
             }
 
             try {
@@ -168,7 +171,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 }, "basemap-toggle");
                 this.viewModel.esriBasemapToggle.startup();
             } catch (ex) {
-                console.log('cannot load basemap toggle');
+                //console.log('cannot load basemap toggle');
             }
 
 
@@ -180,7 +183,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 //window.setTimeout(thisScope.animateInfoScreen, 1000);
                 thisScope.resizeMap();
                 thisScope.resizeWindow();
-                if (thisScope.viewModel.has_location.get()) {    
+                if (thisScope.viewModel.has_location.get()) {
                     window.setTimeout(() => {
                         let inputPnt = thisScope.viewModel.selected_location.get().point;
                         thisScope.viewModel.esriLocator.locationToAddress(inputPnt, 100);
@@ -215,6 +218,9 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 thisScope.viewModel.esriMap.centerAndZoom(evt.mapPoint, 13);
             });
         }
+        else {
+            //this.viewModel.esriMap.resize();
+        }
     }
 
     deactivated() {
@@ -224,7 +230,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
             this.viewModel.workflowContext.completeActivity();
             this.viewModel._resetDefaults();
         } catch (ex) {
-            console.log('deactivated warning');
+            //console.log('deactivated warning');
         }
         
     }
@@ -272,7 +278,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
         //adjust scroll window based on modal-container height
         let modal_height = $('.modal-container').height() - $('.modal-container-inner').height() + "px";
         $('.panel-scroll-container').css("maxHeight", modal_height);
-        console.log('panel height: ', modal_height);
+        //console.log('panel height: ', modal_height);
     }
 
     getPDFReport() {
@@ -448,8 +454,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
         //context.value.set();
     }
 
-    checkReset(evt, el, context) {
-        console.log('test', evt, el, context);
+    checkReset(evt, el, context) {        
         if (evt.key === 'Esc') {
             context.value.set(context.defaultVal);
             el.value = '';
@@ -523,6 +528,19 @@ export class OE_AquacultureFinancialView extends ViewBase {
         });
     }
 
+    updateDistance(evt, elem, ctx) {
+        console.log('updating distance', ctx);
+        this.viewModel.getSetValue(ctx.formula, elem.value);
+    }
+
+    runSiteReport(evt, elem, ctx) {
+        this.viewModel.getSiteReport();
+    }
+
+    downloadSiteReport(evt, elem, ctx) {
+        window.open(ctx.reportUrl, "_blank");
+    }
+
     removeSelectedLocation() {
         this.viewModel.selected_location.set(null);
         this.setLocation();
@@ -530,7 +548,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
             this.viewModel.esriSearch.clear();
             this.viewModel.esriMap.graphics.clear();
         } catch (ex) {
-            console.log('clear search exit');
+            //console.log('clear search exit');
         }
     }
 
@@ -622,6 +640,10 @@ export class OE_AquacultureFinancialView extends ViewBase {
 
     closeView() {
         this.viewModel.app.commandRegistry.command("DeactivateView").execute("OE_AquacultureFinancialView");
+    }
+
+    gotoMapViewer() {
+        window.open('https://tools.oregonexplorer.info/OE_HtmlViewer/index.html?viewer=aquaculture');
     }
 
     setUIInputs(reset?) {

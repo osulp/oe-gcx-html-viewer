@@ -2,13 +2,13 @@
     <fieldset>
         <legend data-binding="{@text:displayName}"></legend>
         <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
-        <div data-binding="{@source:field_ui_categories}" class="div-row production">
-            <div data-binding="{@template-for:field_ui_categories}" class="div-row-cell">
+        <div data-binding="{@source:field_categories}" class="div-row production">
+            <div data-binding="{@template-for:field_categories}" class="div-row-cell">
                 <div data-binding="{@source:@context}{@template-selector:category}">
-                    <div data-binding="{@template-select:slider}">
-                        <h3>Inputs</h3>
-                        <div class="div-table production" data-binding="{@source:fields}">
-                            <div class="div-table-row" data-binding="{@template-for:fields}">
+                    <div data-binding="{@template-select:Input}">
+                        <h3>Your Inputs</h3>
+                        <div class="div-table production" data-binding="{@source:fields_filter}">
+                            <div class="div-table-row" data-binding="{@template-for:fields_filter}">
                                 <div data-binding="{class:tableDisplayClass}">
                                     <div class="tooltip">
                                         <span class="input-header" data-binding="{@text:fieldLabel}"> </span>
@@ -20,6 +20,8 @@
                                     <div data-binding="{@template-select:slider}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/sliderKendo.html}"></div>
                                     <!-- DROPDOWN -->
                                     <div data-binding="{@template-select:dropdown}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/dropdown.html}"></div>
+                                    <!-- DROPDOWN LOCATIONS -->
+                                    <div data-binding="{@template-select:dropdownLocations}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/dropdownLocations.html}"></div>
                                     <!--  Input NUMBERS -->
                                     <div data-binding="{@template-select:inputNumber}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputNumber.html}"></div>
                                     <!--  LAT LONG -->
@@ -31,11 +33,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div data-binding="{@template-select:calculated}">
+                    </div>                    
+                    <div data-binding="{@template-select:InputCalculated}">
                         <h3>Calculated</h3>
-                        <div class="div-table production" data-binding="{@source:fields}">
-                            <div class="div-table-row" data-binding="{@template-for:fields}">
+                        <div class="div-table production" data-binding="{@source:fields_filter}">
+                            <div class="div-table-row" data-binding="{@template-for:fields_filter}">
                                 <div data-binding="{class:tableDisplayClass}">
                                     <span class="input-header" data-binding="{@text:fieldName}"></span>
                                 </div>
@@ -47,7 +49,7 @@
             </div>
         </div>
         <!--input location display-->
-        <div data-binding="{@source:field_ui_categories}" class="div-row production">
+        <!--<div data-binding="{@source:field_ui_categories}" class="div-row production">
             <div data-binding="{@template-for:field_ui_categories}" class="div-row-cell input-location-section">
                 <div data-binding="{@source:@context}{@template-selector:category}">
                     <div data-binding="{@template-select:inputLocation}">
@@ -63,7 +65,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </fieldset>
     <br />
 </div>

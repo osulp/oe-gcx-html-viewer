@@ -16,7 +16,6 @@
             <div class="header-bar-right">
                 <button data-binding="{@event-onclick:getPDFReport}" class="toolbar-item tool aqua" title="Add layers to the map"><img alt="Get a pdf of your Oregon Aquaculture Financial Planning scenario" src="Resources/Images/Icons/Toolbar/reports-24.png" class="bound-visible-inline"><p>Full PDF Report</p></button>
                 <button data-binding="{@event-onclick:print}" class="toolbar-item tool aqua" title="Add layers to the map"><img alt="Print the current page" src="Resources/Images/Icons/Toolbar/print-24.png" class="bound-visible-inline"><p>Print Page</p></button>
-                <button data-binding="{@event-onclick:closeView}" class="toolbar-item tool aqua" title="Add layers to the map"><img alt="Print the current page" src="Resources/Images/Icons/Toolbar/share-map-24.png" class="bound-visible-inline"><p>Map Viewer</p></button>                
             </div>
         </div>
     </header>
@@ -59,8 +58,8 @@
                                     <div data-binding="{@template-select:Map}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/locationMap.html}">
                                     </div>
                                     <!-- Transportation Locations -->
-                                    <div data-binding="{@template-select:transportationLocations}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/transportationLocations.html}{class:displayClass}">
-                                    </div>
+                                    <!--<div data-binding="{@template-select:transportationLocations}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/transportationLocations.html}{class:displayClass}">
+                                    </div>-->
                                     <!-- Calculated Inputs -->
                                     <div data-binding="{@template-select:InputsCalculated}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/inputsCalculated.html}{class:displayClass}">
                                     </div>
@@ -80,7 +79,7 @@
                                     <div data-binding="{@template-for:sections}{@visible:visible}{class:displayClass}">
                                         <fieldset>
                                             <legend data-binding="{@text:displayName}"></legend>
-                                            <div data-binding="{@text:sectionDesc}"></div>
+                                            <div data-binding="{innerHTML:sectionDesc}"></div>
                                             <div data-binding="{@source:fields_filter}">
                                                 <div data-binding="{@template-for:fields_filter}">
                                                     <span data-binding="{@text:fieldName}"></span>

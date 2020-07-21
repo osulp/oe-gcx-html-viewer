@@ -96,9 +96,11 @@
         <div data-binding="{@source:@context}{@template-selector:sectionType}">
             <div data-binding="{@template-select:Parameter}">
                 <fieldset>
-                    <legend data-binding="{@text:displayName}"></legend>
-                    <br />
-                    <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
+                    <legend class="tooltip">
+                        <span class="input-header">Assumptions & Calculations</span>
+                        <span data-binding="{innerHTML:sectionDesc}" class="tooltiptext"></span>
+                    </legend>                    
+                    <br />                   
                     <br />
                     <div class="div-table parameters" data-binding="{@source:fields_filter}">
 

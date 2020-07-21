@@ -35,6 +35,7 @@
     <Content Include="src\OE_Aquaculture\OE_AquacultureFinancialView.ts" />
     <Content Include="src\OE_Aquaculture\OE_AquacultureFinancialViewModel.ts" />
     <Content Include="src\OE_Aquaculture\OE_AquacultureModule.ts" />
+    <Content Include="src\OE_Aquaculture\Templates\dropdownLocations.html" />
     <Content Include="src\OE_Aquaculture\Templates\transportationLocations.html" />
     <Content Include="src\OE_Aquaculture\Templates\operatingCharts.html" />
     <Content Include="src\OE_Aquaculture\Templates\latlong.html" />

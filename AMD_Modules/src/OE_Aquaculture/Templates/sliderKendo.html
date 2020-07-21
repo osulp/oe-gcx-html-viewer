@@ -5,10 +5,11 @@
             <span data-binding="{innerHTML:fieldValidateMsg}" class="tooltiptext"></span>
         </div>
         <div class="slider-text-input-div" data-binding="{data-value:unit}">
+            <!--<img src="Resources/Images/Icons/file-edit-16.png" />-->
             <input type="text" class="slider-value" data-binding="{id:fieldHandle}{@event-change:updateSlider}{@event-keyup:validateTextInput}{@event-onclick:checkClearTextInput}" />
         </div>
     </div>
-    <input class="oe_slider" data-binding="{id:fieldCalVar}" />
+    <input class="oe_slider" data-binding="{id:fieldID}" />
 </div>
 
 

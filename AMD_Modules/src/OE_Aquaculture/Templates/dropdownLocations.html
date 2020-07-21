@@ -1,0 +1,20 @@
+﻿<div class="oe_select dd-locations">
+    <div class="select">
+        <select data-binding="{@source: ddOptions}{@value: selDDoption}">
+            <option data-binding="{@template-for: ddOptions}{value: option}{@text: option}" />
+        </select>
+    </div>
+    <div data-binding="{@visible:showOtherInput}">
+        <div style="position:relative">
+            <hr />
+            <div data-binding="{id:fieldValidateMsgID}{class:fieldValidateMsgClass}">
+                <span data-binding="{innerHTML:fieldValidateMsg}" class="tooltiptext"></span>
+            </div>
+            <label>Enter a distance (miles)</label>
+            <input type="text" data-binding="{id:fieldHandle}{@event-change:updateDistance}{@event-keyup:validateTextInput}{@event-onclick:checkClearTextInput}" />
+        </div>
+    </div>
+</div>
+     
+
+

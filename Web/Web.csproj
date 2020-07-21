@@ -112,6 +112,8 @@
     <Content Include="Resources\Config\Default\dev_configs\aquaculture\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\aquaculture\Tablet.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\wildfire\Desktop.json.js" />
+    <Content Include="Resources\Images\Custom\AquacultureSiteReportThumb.png" />
+    <Content Include="Resources\Images\Custom\AquacultureViewer.png" />
     <Content Include="Resources\Images\Custom\broadcasting.png" />
     <Content Include="Resources\Images\Custom\demographics-24.png" />
     <Content Include="Resources\Images\Custom\dlcd_logo.png" />
