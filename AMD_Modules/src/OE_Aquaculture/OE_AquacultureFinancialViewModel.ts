@@ -8,6 +8,7 @@ import { Observable, ObservableCollection } from "geocortex/framework/observable
 import { FilterableCollection } from "geocortex/framework-ui/FilterableCollection";
 import { OrderedCollection } from "geocortex/framework-ui/OrderedCollection";
 import { Site } from "geocortex/essentials/Site";
+import { isNumeric } from "geocortex/infrastructure/NumberFormat";
 //import { OE_Charts } from "../OE_Aquaculture/OE_Charts";
 
 export class OE_AquacultureFinancialViewModel extends ViewModelBase {
@@ -187,7 +188,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             });
         }
 
-        this.app.registerActivityIdHandler("runFinancialPlnModule", (wc, cf) => {
+        this.app.registerActivityIdHandler("runFinancialPlnModule", (wc) => {
             this.workflowContext = $.extend({}, wc);
 
             //this.resetSystemFilters();
@@ -226,20 +227,29 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
         this.app.registerActivityIdHandler("onClosestCitiesGTE50k", (wc) => {
             //console.log('on closest cities!', wc);
-            let closestMarkets = wc.getValue("citiesTable").features.map((m => {
-                return {
-                    "option": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(2) + " Miles" + ")",
-                    "value": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(2) + " Miles" + ")",
-                    "market": m.attributes.NAME,
-                    "distance": (m.attributes.NEAR_DIST / 1609).toFixed(2) + " Miles",
-                    "rank": m.attributes.NEAR_RANK
-                }
-            }));
-            closestMarkets.push({
-                "option": 'Other distance',
-                "value": 'Other distance'
-            })
-            this.closest_markets.set(closestMarkets);
+            try {
+                let closestMarkets = wc.getValue("citiesTable").features.map((m => {
+                    return {
+                        "option": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles" + ")",
+                        "value": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles" + ")",
+                        "market": m.attributes.NAME,
+                        "distance": (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles",
+                        "rank": m.attributes.NEAR_RANK
+                    }
+                }));
+                closestMarkets.push({
+                    "option": 'Other distance',
+                    "value": 'Other distance'
+                })
+                this.closest_markets.set(closestMarkets);
+            } catch(ex) {
+                let closestMarkets =[{
+                    "option": 'Other distance',
+                    "value": 'Other distance'
+                }];
+                this.closest_markets.set(closestMarkets);
+            }
+            
         });
 
         this.app.registerActivityIdHandler("onSiteReportHandler", (wc) => {
@@ -255,23 +265,33 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
         this.app.registerActivityIdHandler("onClosestFeedSupplier", (wc) => {
             //console.log('on closest cities!', wc);
-            let feedSuppliers = wc.getValue("feedSuppliersTable").features.map((m => {
-                return {
-                    "option": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(2) + " Miles" + ")",
-                    "value": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(2) + " Miles" + ")",
-                    "market": m.attributes.NAME,
-                    "distance": (m.attributes.NEAR_DIST / 1609).toFixed(2) + " Miles",
-                    "rank": m.attributes.NEAR_RANK
-                }
-            }));
-            feedSuppliers.push({
-                "option": 'Other distance',
-                "value": 'Other distance'
-            })
-            this.feed_suppliers.set(feedSuppliers);
+            let feedSuppliers = [];
+            try {
+                feedSuppliers = wc.getValue("feedSuppliersTable").features.map((m => {
+                    return {
+                        "option": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles" + ")",
+                        "value": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles" + ")",
+                        "market": m.attributes.NAME,
+                        "distance": (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles",
+                        "rank": m.attributes.NEAR_RANK
+                    }
+                }));
+                feedSuppliers.push({
+                    "option": 'Other distance',
+                    "value": 'Other distance'
+                })
+                this.feed_suppliers.set(feedSuppliers);
+            } catch (ex) {
+                feedSuppliers.push({
+                    "option": 'Other distance',
+                    "value": 'Other distance'
+                })
+                this.feed_suppliers.set(feedSuppliers);
+            }
+            
         });
 
-        this.app.registerActivityIdHandler("onRoutingServicesComplete", (wc, df) => {
+        this.app.registerActivityIdHandler("onRoutingServicesComplete", (wc) => {
             
             let routes = wc.getValue("RouteEndPoints").features.map((ri: any) => {
                 return {
@@ -567,7 +587,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                             .map(sf => {
                                 let thisScope = this;
                                 const att = sf.attributes;
-                                let value = att.Default === '________' ? att.Default : this.formatValue(att.Default, att.Decimal)
+                                let value = att.Default === '' && att.FieldCategory === 'ExistingResource' ? '________' : this.formatValue(att.Default, att.Decimal)
                                 let fieldValue;
                                 fieldValue = new Observable<any>(value);
                                 let fieldValidateMsg = new Observable<any>('Invalid input: Please enter a number between ' + this.formatValue(att.Min, att.Decimal) + ' and ' + this.formatValue(att.Max, att.Decimal) + '. <br>  ESC to reset to default value.');
@@ -796,7 +816,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         this.screens_collection.get().forEach(scr => {
             scr['sections'].get().forEach(sct => {
                 sct['fields'].get().forEach(f => {
-                    if (f.chartConfig) {
+                    if (f.chartConfig && (f.show.indexOf('All') !== -1 || f.show.indexOf(this.selected_system_text.get()) !== -1)) {
                         let totalChartValues = 0;
                         //update with model values
                         f.chartConfig.chartSeries.data.forEach(d => {
@@ -963,7 +983,11 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     formatValue(value, decimalPlaces) {
         try {
             let val = value.toString().replace(/\,/g, '');
-            return this.addCommas(parseFloat(val).toFixed(decimalPlaces).toString());
+            if (isNumeric(val)) {
+                return this.addCommas(parseFloat(val).toFixed(decimalPlaces).toString());
+            } else {
+                return value;
+            }            
         } catch (ex) {
             return value;
         }       
@@ -984,14 +1008,18 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     updateViewModel(changedInput) {
         //find all fields that are dependant on this field for selected system        
         let _fieldCalVar = changedInput.fieldCalVar;
-        //let _fieldToValidate = changedInput.formula.indexOf('[validate:') !== -1 ? changedInput.formula.split('validate:')[1].split(']')[0] : '';
+       
+        if (['feedDistance', 'marketDistance'].indexOf(_fieldCalVar) !== -1) {
+            //process interpolated distance before processing other dependent variables
+            console.log('update interpolated then update costs', changedInput);
+            this.updateInterpolatedValues(_fieldCalVar === 'feedDistance' ? 'feedLbTransportCost' : 'marketLbTransportCost');
+        }
         if (changedInput.formula.indexOf('[validate:') !== -1) {
             this.validateConstraints(changedInput);
         } else if (changedInput.formula.indexOf('[interpolate:') !== -1) {
-            //console.log('interpolate:', changedInput);
-            let interpolatedValue = Number(this.interpolateValues(changedInput)).toFixed(15);
+            let interpolatedValue = Number(this.interpolateValues(changedInput)).toFixed(9);
             changedInput.value.set(interpolatedValue);
-        }
+        }        
         else {
             this.screens_collection.get().forEach(s => {
                 s['sections'].get().forEach(sct => {
@@ -1035,7 +1063,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
         let increment = f.increment ? parseFloat(f.increment) : 1;
 
-        let value = newVal.replace(/\,/g,'');//this.formatValue(newVal, f.decimalDisp);
+        let value = newVal.replace(/\,/g, '');//
+        //let value = this.formatValue(newVal, f.decimalDisp);
 
         ////////////////////////////////////////////////
         // Kendo Slider
@@ -1075,13 +1104,13 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     }
 
     updateSlider(field) {
-        if (this.checkIsValidTextInput(field)) {
+        if (this.checkIsValidTextInput(field) && field.uiType === 'slider') {
         let sliderTextHandle = $("#" + field.fieldHandle);
-        let newValue = sliderTextHandle.val().split(' ')[0].replace(/\,/g, '');
+        let newValue = sliderTextHandle.val().toString().split(' ')[0].replace(/\,/g, '');
         sliderTextHandle.val(this.formatDisplayValue(newValue, field.unit, field.decimalDisp, false));
         var slider = $("#" + field.fieldID).data("kendoSlider");
-        if (!isNaN(newValue)) {
-            slider.value(newValue);
+        if ($.isNumeric(newValue)) {
+            slider.value(Number(newValue));
         } else {
             slider.value(0);
         }
@@ -1115,7 +1144,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     }
 
     checkIsValidTextInput(field) {
-        let inputValue = $("#" + field.fieldHandle).val().split(' ')[0].replace(/\,/g, '');
+        let inputValue:any = $("#" + field.fieldHandle).val().toString().split(' ')[0].replace(/\,/g, '');
         if (inputValue !== field.defaultVal || !isNaN(field.defaultVal)) {
             let isValid = !isNaN(inputValue) ? parseFloat(inputValue) >= parseFloat(field.min) && parseFloat(inputValue) <= parseFloat(field.max) : false;
             let baseClass = field.uiType === 'dropdownLocations' ? 'validate-msg-nested' : 'validate-msg';
@@ -1185,19 +1214,25 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                 .replace(/\Math.log/g,'')
                 .split(',');
 
+            //formulaFields.forEach(ff => {
+            //    this.screens_collection.get().forEach(s => {
+            //        s['sections'].get().forEach(sct => {
+            //            sct.fields.get().forEach(f => {
+            //                if (f.fieldCalVar === ff && ff !== '' && (f.show.indexOf('All') !== -1 || f.show.indexOf(this.selected_system_text.get()) !== -1)) {
+            //                    let value = f.value.get().split(/\ /g)[0].replace(/\,/g, '');
+            //                    formulaVals = formulaVals.replace(ff, value);
+            //                }
+            //            });
+            //        });
+            //    });
+            //});
+
             formulaFields.forEach(ff => {
-                this.screens_collection.get().forEach(s => {
-                    s['sections'].get().forEach(sct => {
-                        sct.fields.get().forEach(f => {
-                            if (f.fieldCalVar === ff && ff !== '' && (f.show.indexOf('All') !== -1 || f.show.indexOf(this.selected_system_text.get()) !== -1)) {
-                                let value = f.value.get().split(/\ /g)[0].replace(/\,/g, '');
-                                formulaVals = formulaVals.replace(ff, value);
-                            }
-                        });
-                    });
-                });
-            }
-            );
+                if (!isNumeric(ff)) {
+                    let ffVal = this.getSetValue(ff).toString().split(/\ /g)[0].replace(/\,/g, '');
+                    formulaVals = formulaVals.replace(ff, ffVal);
+                }
+            });
 
             //should have updated formula as a string
             //console.log('formula with values', formulaVals);
@@ -1233,7 +1268,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             });
         });
     }
-
+       
     interpolateValues(field) {
         //get values to base lookup and interpolation
         let formula = field.formula;
@@ -1249,31 +1284,31 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             default:
                 //get lookup values based on formula fields
                 //weight
-                let weight = parseInt(this.getSetValue(fields[0]).replace(/\,/,''));
-                let distance = parseInt(this.getSetValue(fields[1]).replace(/\,/, ''));
-                //market distance under
+                let weight = parseInt(this.getSetValue(fields[0]).replace(/\,/g,''));
+                let distance = parseInt(this.getSetValue(fields[1]).replace(/\,/g, ''));
+                //distance under
                 let x_1 = this.transportation_lut
                     .map(td => parseInt(td.miles))
                     .filter(distinct)
                     .filter(td => td <= distance)
                     .sort((a, b) => b - a)[0];
-                //market distance over
+                //distance over
                 let x_2 = this.transportation_lut
                     .map(td => parseInt(td.miles))
                     .filter(distinct)
-                    .filter(td => td >= distance)
+                    .filter(td => td > distance)
                     .sort((a, b) => a - b)[0];
-                //harvest weight under
+                //weight under
                 let y_1 = this.transportation_lut
                     .map(td => parseInt(td.pounds))
                     .filter(distinct)
                     .filter(td => td <= weight)
                     .sort((a, b) => b - a)[0];
-                //havest weight over
+                //weight over
                 let y_2 = this.transportation_lut
                     .map(td => parseInt(td.pounds))
                     .filter(distinct)
-                    .filter(td => td >= weight)
+                    .filter(td => td > weight)
                     .sort((a, b) => a - b)[0];
                 //get value lookups
                 //market distance under by harvest weight under
@@ -1291,11 +1326,26 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                 let interpolatedShipCostLbMile = 1 / ((x_2 - x_1) * (y_2 - y_1)) * (Q_11 * (x_2 - x) * (y_2 - y) + Q_21 * (x - x_1) * (y_2 - y) + Q_12 * (x_2 - x) * (y - y_1) + Q_22 * (x - x_1) * (y - y_1));
 
                 //set field value
+
                 returnVal = interpolatedShipCostLbMile;
 
                 break;
         }
         return returnVal;
+    }
+
+    updateInterpolatedValues(fieldCalVar) {
+        //get field for system
+        this.screens_collection.get().forEach(scr => {
+            scr['sections'].get().forEach(sct => {
+                sct['fields'].get().forEach(f => {
+                    if (f.fieldCalVar === fieldCalVar && (f.show.indexOf('All') !== -1 || f.show.indexOf(this.selected_system_text.get()) !== -1)) {
+                        let interpolatedValue = Number(this.interpolateValues(f)).toFixed(9);
+                        f.value.set(interpolatedValue);
+                    }
+                });
+            });
+        });
     }
 
     setSelectedSystem(selSystem) {

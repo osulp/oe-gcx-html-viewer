@@ -17,8 +17,7 @@
     <AssemblyName>Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
+    <IISExpressSSLPort>44345</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -137,6 +136,7 @@
     <Content Include="Resources\Images\Custom\sprite-orange-0.3.png" />
     <Content Include="Resources\Images\Custom\zoom-next-24.png" />
     <Content Include="Resources\Images\Custom\zoom-previous-24.png" />
+    <Content Include="Resources\Scripts\kendo.extract.min.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\daterangepicker.min.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\easy-responsive-tabs.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\hopscotch-0.1.1.min.js" />
@@ -566,6 +566,7 @@
     <Content Include="Resources\Scripts\oe_added_scripts\html2canvas.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\html2canvas.min.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\jQAllRangeSliders-min.js" />
+    <Content Include="Resources\Scripts\oe_added_scripts\jqueryTableSort.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\lightpick.js" />
     <Content Include="Resources\Styles\Animations.css" />
     <Content Include="Resources\Styles\common.css" />
@@ -604,6 +605,7 @@
     <Content Include="Resources\ModuleConfig\SageConLandscapePlanningFilters\query_filters_config.json" />
     <Content Include="Resources\ModuleConfig\AquacultureFinancePlnModule\config.json" />
     <Content Include="Resources\ModuleConfig\AquacultureFinancePlnModule\tilapia_recirculating.json" />
+    <Content Include="Resources\Scripts\kendo.dataviz.min.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

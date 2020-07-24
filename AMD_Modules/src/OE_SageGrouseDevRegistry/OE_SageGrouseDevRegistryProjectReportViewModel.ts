@@ -29,7 +29,7 @@ export class OE_SageGrouseDevRegistryProjectReportViewModel extends ViewModelBas
         var myLibID = this.libraryId;
         var thisViewModel = this;
 
-        this.app.registerActivityIdHandler("display_form_dev_reg_proj_report", function CustomEventHandler(workflowContext, contextFunctions) {
+        this.app.registerActivityIdHandler("display_form_dev_reg_proj_report", function CustomEventHandler(workflowContext) {
             //let cat_area_rows = [];
             thisViewModel.pac_intersect.set(true);
             thisViewModel.no_pac_intersect.set(false);

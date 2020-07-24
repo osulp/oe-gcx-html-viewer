@@ -8,9 +8,12 @@ require({
     cache: {
         "geocortex/oe_amd/OE_Wildfire/OE_WildfireModule": function () {
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -20,7 +23,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "geocortex/framework/application/ModuleBase"], function (require, exports, ModuleBase_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var OE_WildfireModule = (function (_super) {
+    var OE_WildfireModule = /** @class */ (function (_super) {
         __extends(OE_WildfireModule, _super);
         function OE_WildfireModule(app, lib) {
             return _super.call(this, app, lib) || this;
@@ -44,9 +47,12 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
 },
 "geocortex/oe_amd/OE_Wildfire/OE_WildfireView": function () {
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -56,7 +62,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "geocortex/framework/ui/ViewBase"], function (require, exports, ViewBase_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var OE_WildfireView = (function (_super) {
+    var OE_WildfireView = /** @class */ (function (_super) {
         __extends(OE_WildfireView, _super);
         function OE_WildfireView(app, lib) {
             var _this = _super.call(this, app, lib) || this;
@@ -83,9 +89,12 @@ define(["require", "exports", "geocortex/framework/ui/ViewBase"], function (requ
 },
 "geocortex/oe_amd/OE_Wildfire/OE_WildfireViewModel": function () {
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -97,7 +106,7 @@ define(["require", "exports", "geocortex/framework/ui/ViewModelBase", "geocortex
     Object.defineProperty(exports, "__esModule", { value: true });
     //popup toggle and default state
     exports.fireRiskPopupEnabled = true;
-    var OE_WildfireViewModel = (function (_super) {
+    var OE_WildfireViewModel = /** @class */ (function (_super) {
         __extends(OE_WildfireViewModel, _super);
         function OE_WildfireViewModel(app, lib) {
             var _this = _super.call(this, app, lib) || this;
@@ -201,9 +210,12 @@ define(["require", "exports", "geocortex/framework/ui/ViewModelBase", "geocortex
 },
 "geocortex/oe_amd/OE_Wildfire/OE_Wildfire_DynamicFormView": function () {
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -213,7 +225,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "geocortex/framework/ui/ViewBase"], function (require, exports, ViewBase_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var OE_Wildfire_DynamicFormView = (function (_super) {
+    var OE_Wildfire_DynamicFormView = /** @class */ (function (_super) {
         __extends(OE_Wildfire_DynamicFormView, _super);
         function OE_Wildfire_DynamicFormView(app, lib) {
             var _this = _super.call(this, app, lib) || this;
@@ -286,9 +298,12 @@ define(["require", "exports", "geocortex/framework/ui/ViewBase"], function (requ
 /// <reference path="./../../_Definitions/Framework.AMD.d.ts" />
 /// <reference path="./../../_Definitions/Framework.UI.AMD.d.ts" />
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -307,7 +322,7 @@ define(["require", "exports", "geocortex/framework/ui/ViewModelBase", "geocortex
     //export var riskPercentOut;
     //popup toggle and default state
     //export var fireRiskPopupEnabled = <boolean>true;
-    var OE_Wildfire_DynamicFormViewModel = (function (_super) {
+    var OE_Wildfire_DynamicFormViewModel = /** @class */ (function (_super) {
         __extends(OE_Wildfire_DynamicFormViewModel, _super);
         function OE_Wildfire_DynamicFormViewModel(app, lib) {
             var _this = _super.call(this, app, lib) || this;
@@ -363,7 +378,7 @@ define(["require", "exports", "geocortex/framework/ui/ViewModelBase", "geocortex
                 }
             });
             //dynamic external workflow form
-            this.app.registerActivityIdHandler("displayWildfirePointResults", function CustomEventHandler(workflowContext, contextFunctions) {
+            this.app.registerActivityIdHandler("displayWildfirePointResults", function CustomEventHandler(workflowContext) {
                 //let myWorkflowContext: any;
                 //myWorkflowContext = $.extend({}, workflowContext);
                 thisViewModel.myModel = thisViewModel;

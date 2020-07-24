@@ -1,12 +1,10 @@
 {
-  "name": "QuickStart",
+  "name": "gvh-bundle",
   "version": "0.2.0",
   "private": true,
   "license": "MIT",
   "author": "Latitude Geographics",
   "dependencies": {
-    "@types/jquery": "^3.3.31",
-    "@types/jqueryui": "^1.12.7",
     "glob": "^7.1.2",
     "gulp": "^4.0.0",
     "gulp-concat": "^2.6.1",
@@ -22,9 +20,14 @@
     "tslint": "^5.19.0",
     "eslint": "^6.3.0"
   },
+  "peerDependencies": {
+    "typescript": "3.x"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "gulp --silent",
-    "postinstall": "npm link ../gvh-bundle"
+    "build": "gulp --silent"
+  },
+  "bin": {
+    "gvh-bundle": "./bin.js"
   }
 }

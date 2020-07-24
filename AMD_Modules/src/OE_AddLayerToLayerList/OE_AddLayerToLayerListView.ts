@@ -139,7 +139,7 @@ export class OE_AddLayerToLayerListView extends ViewBase {
 
 
     buttonDoSearch(event, element, context: OE_AddLayerToLayerListViewModel) {
-        context.searchFieldText.set($("#oeLayerSearchInput").val());
+        context.searchFieldText.set($("#oeLayerSearchInput").val().toString());
         context.DoSearch();
     }
 

@@ -6,9 +6,12 @@ require({
     cache: {
         "geocortex/oe_amd/OE_Graphics/OE_GraphicsModule": function () {
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -18,7 +21,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "geocortex/framework/application/ModuleBase", "geocortex/infrastructure/GraphicsLayerUtils", "geocortex/infrastructure/GraphicsLayerIds"], function (require, exports, ModuleBase_1, GraphicsLayerUtils_1, GraphicsLayerIds_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var OE_GraphicsModule = (function (_super) {
+    var OE_GraphicsModule = /** @class */ (function (_super) {
         __extends(OE_GraphicsModule, _super);
         //nextMarkupColor: string; //rgb(202,0,19)
         function OE_GraphicsModule(app, lib) {

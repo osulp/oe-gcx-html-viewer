@@ -81,7 +81,7 @@ export class OE_AquacultureDynamicFormViewModel extends ViewModelBase {
         });*/
                 
         //dynamic external workflow form
-        this.app.registerActivityIdHandler("displayAquacultureForm", function CustomEventHandler(workflowContext, contextFunctions) {
+        this.app.registerActivityIdHandler("displayAquacultureForm", function CustomEventHandler(workflowContext) {
 
             thisViewModel.myModel = thisViewModel;
 

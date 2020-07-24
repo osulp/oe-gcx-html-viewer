@@ -116,7 +116,7 @@ export class OE_SageGrouseDevRegistryViewModel extends ViewModelBase {
             this.processPACSummaries();
         })
 
-        this.app.registerActivityIdHandler("displayAdminAllPacsReport", (wc, cf) => {
+        this.app.registerActivityIdHandler("displayAdminAllPacsReport", (wc) => {
             //create the object array for summary data
             this.all_pac_area_baseline_area = wc.getValue("pacAreaBaselineArea");
             this.all_pac_development_data = wc.getValue("developmentData");

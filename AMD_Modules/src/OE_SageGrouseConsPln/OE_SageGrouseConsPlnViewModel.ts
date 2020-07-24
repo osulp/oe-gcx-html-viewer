@@ -442,7 +442,7 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
     }
 
     _onSiteInitialized(site: Site, thisViewModel) {
-        this.app.registerActivityIdHandler("showConsPlnFilters", function CustomEventHandler(workflowContext, contextFunctions) {
+        this.app.registerActivityIdHandler("showConsPlnFilters", function CustomEventHandler(workflowContext) {
             //Show over viewe first // add check based on cookie preference to show again or not.
 
             //thisViewModel.app.commandRegistry.command("ActivateView").execute("OE_SageGrouseConsPlnHelpTutorialView"); 

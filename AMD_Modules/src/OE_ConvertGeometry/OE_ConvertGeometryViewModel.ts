@@ -45,7 +45,7 @@ export class OE_ConvertGeometryViewModel extends ViewModelBase {
     _onSiteInitialized(site: Site, thisViewModel) {
                 
         //dynamic external workflow form
-        this.app.registerActivityIdHandler("googlePolylineDecode", function CustomEventHandler(workflowContext, contextFunctions) {
+        this.app.registerActivityIdHandler("googlePolylineDecode", function CustomEventHandler(workflowContext) {
 
             //let myWorkflowContext: any;
             //myWorkflowContext = $.extend({}, workflowContext);
