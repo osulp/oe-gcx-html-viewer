@@ -7,6 +7,7 @@ import { ViewerApplication } from "geocortex/infrastructure/Viewer";
 import { OE_AquacultureFinancialViewModel } from './OE_AquacultureFinancialViewModel';
 
 declare var html2canvas: any;
+declare var $: any;
 
 
 export class OE_AquacultureFinancialView extends ViewBase {
@@ -177,19 +178,24 @@ export class OE_AquacultureFinancialView extends ViewBase {
 
             //Event handlers
             this.viewModel.esriMap.on("load", function (event: any) {
-                var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/42");
-                (<esri.Map>event.map).addLayer(featureLayer);
-                //thisScope.setInfoScreenHeight();
-                //window.setTimeout(thisScope.animateInfoScreen, 1000);
-                thisScope.resizeMap();
-                thisScope.resizeWindow();
-                if (thisScope.viewModel.has_location.get()) {
-                    window.setTimeout(() => {
-                        let inputPnt = thisScope.viewModel.selected_location.get().point;
-                        thisScope.viewModel.esriLocator.locationToAddress(inputPnt, 100);
-                        thisScope.viewModel.esriMap.centerAndZoom(inputPnt, 13);
-                    }, 500);
+                try {
+                    var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/42");
+                    (<esri.Map>event.map).addLayer(featureLayer);
+                    //thisScope.setInfoScreenHeight();
+                    //window.setTimeout(thisScope.animateInfoScreen, 1000);
+                    thisScope.resizeMap();
+                    thisScope.resizeWindow();
+                    if (thisScope.viewModel.has_location.get()) {
+                        window.setTimeout(() => {
+                            let inputPnt = thisScope.viewModel.selected_location.get().point;
+                            thisScope.viewModel.esriLocator.locationToAddress(inputPnt, 100);
+                            thisScope.viewModel.esriMap.centerAndZoom(inputPnt, 13);
+                        }, 500);
+                    }
+                } catch (ex) {
+                    console.log('error loading map', ex);
                 }
+                
             });
 
             this.viewModel.esriLocator = this.esriLocator;
@@ -304,6 +310,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
             "species": this.viewModel.species_tbl.get().filter(species => species.selected)[0],
             "prodMeth": this.viewModel.prod_meth_tbl.get().filter(prod => prod.selected)[0],
             "screen_data": [],
+            "financial_summary": [],
             "charts": []
         }
 
@@ -327,19 +334,30 @@ export class OE_AquacultureFinancialView extends ViewBase {
                                 field: f.fieldLabel,
                                 fieldVal: f.formattedValue.get() === '<enter value>' ? '' : f.formattedValue.get()
                             };
-                            if (sd.screen !== 'FINANCIAL SUMMARY') {
+                            if (['FINANCIAL SUMMARY','SUMMARY'].indexOf(sd.screen) === -1) {
                                 //hide financial summary since the data is processed as charts and table images
                                 report_data.screen_data.push(sd);
-                            }                            
+                            } 
+                            if (sct.section === "sumOverview") {
+                                report_data.financial_summary.push(sd);
+                            }
                         }
                     });
                 });
             });
             window.setTimeout(() => {
                 report_data.charts = window['oe_report_charts'];
+                let sel_loc = this.viewModel.selected_location.get()
                 var workflowArgs: any = {};
                 workflowArgs.workflowId = "Get_Financial_Planning_Report";
-                workflowArgs.report_data = JSON.stringify(report_data); // JSON.stringify(screens);
+                workflowArgs.report_data = JSON.stringify(report_data);
+                workflowArgs.aoi_geometry = sel_loc.point;
+                workflowArgs.aoi_name = sel_loc.name;
+                workflowArgs.aoi_latlong = sel_loc.point.y.toFixed(2) + ", " + sel_loc.point.x.toFixed(2);
+                workflowArgs.map_extent = typeof this.viewModel.esriMap == "undefined" || this.viewModel.esriMap == null ? new esri.geometry.Extent({
+                    "xmin": -122.68, "ymin": 45.53, "xmax": -122.45, "ymax": 45.6,
+                    "spatialReference": { "wkid": 4326 }
+                }) : this.viewModel.esriMap.extent;
                 thisScope.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
                 thisScope.gotoTab(null, null, currentScreen);
                 thisScope.viewModel.show_loading.set(false);
@@ -651,15 +669,16 @@ export class OE_AquacultureFinancialView extends ViewBase {
         this.viewModel.screens_collection.get().forEach((s) => {
             s['sections'].get().forEach(sct => {
                 sct.fields.get().forEach(f => {
-                    switch (f.uiType) {
-                        case 'slider':
-                            thisScope.viewModel.setKendoSlider(f);
-                            
-                            if (reset) {
-                                f.value.set(null);
-                            }
-
-                    }
+                    if ((f.show.indexOf('All') !== -1 || f.show.indexOf(this.viewModel.selected_system_text.get()) !== -1)) {
+                        switch (f.uiType) {
+                            case 'slider':
+                                thisScope.viewModel.setKendoSlider(f);
+                                if (reset) {
+                                    f.value.set(null);
+                                }
+                                break;
+                        }
+                    }                    
                 });
             });
         });

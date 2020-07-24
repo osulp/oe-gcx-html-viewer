@@ -8,9 +8,12 @@ require({
         "geocortex/oe_amd/OE_Search/OE_SearchModule": function () {
 /// <reference path="./../../_Definitions/Framework.AMD.d.ts" />
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -20,7 +23,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "geocortex/framework/application/ModuleBase"], function (require, exports, ModuleBase_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var OE_SearchModule = (function (_super) {
+    var OE_SearchModule = /** @class */ (function (_super) {
         __extends(OE_SearchModule, _super);
         function OE_SearchModule(app, libraryId) {
             var _this = _super.call(this, app, libraryId) || this;
@@ -45,9 +48,12 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
 /// <reference path="./../../_Definitions/Framework.AMD.d.ts"/>
 /// <reference path="./../../_Definitions/Mapping.Infrastructure.AMD.d.ts"/>
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -57,7 +63,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "geocortex/infrastructure/search/SearchProviderBase", "geocortex/infrastructure/FeatureAttribute", "geocortex/infrastructure/FeatureSet", "geocortex/infrastructure/Feature", "geocortex/infrastructure/eventArgs/SearchProgressEventArgs", "geocortex/infrastructure/search/SearchManager"], function (require, exports, SearchProviderBase_1, FeatureAttribute_1, FeatureSet_1, Feature_1, SearchProgressEventArgs_1, SearchManager_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var OE_SearchProvider = (function (_super) {
+    var OE_SearchProvider = /** @class */ (function (_super) {
         __extends(OE_SearchProvider, _super);
         // Initializes a new instance of the GeoNamesSearchProvider class.
         function OE_SearchProvider(app, libraryId) {

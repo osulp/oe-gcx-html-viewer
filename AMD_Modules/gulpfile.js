@@ -18,8 +18,8 @@ const color = require("ansi-colors")
 
 // TODO: Support supplying arguments via a .json file similar to tsconfig.json
 // Arguments provided by the CLI
-const libraryId = argv.libraryId || "Quickstart";
-const namespace = argv.namespace || "geocortex/quickstart";
+const libraryId = argv.libraryId || "OE_AMD";
+const namespace = argv.namespace || "geocortex/oe_amd";
 /** 
  * This allows the markup resources to have a different namespace prefix compared to the javascript AMD modules.
  * Going forward we won't recommend using this, but we need to support older markup paths such as 'Mapping/', etc.

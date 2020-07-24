@@ -109,7 +109,7 @@ export class OE_SageGrouseDevSitingViewModel extends ViewModelBase {
     _onSiteInitialized(site: Site, thisViewModel) {
 
         thisViewModel.myModel = thisViewModel;
-        this.app.registerActivityIdHandler("devSitingDashboard", function (wfContext, contextFunction) {
+        this.app.registerActivityIdHandler("devSitingDashboard", function (wfContext) {
             thisViewModel.myWorkflowContext = $.extend({}, wfContext);
             thisViewModel.wfContext = $.extend({}, wfContext);
             let selectedReport = thisViewModel.myWorkflowContext.getValue("selectedReport");
@@ -143,7 +143,7 @@ export class OE_SageGrouseDevSitingViewModel extends ViewModelBase {
         });
 
 
-        this.app.registerActivityIdHandler("devSitingForm", function CustomEventHandler(workflowContext, contextFunctions) {
+        this.app.registerActivityIdHandler("devSitingForm", function CustomEventHandler(workflowContext) {
             thisViewModel.setReportValues(workflowContext, thisViewModel, true);
             //thisViewModel.app.commandRegistry.command
             //thisViewModel.app.commandRegistry.command("ActivateView").execute("OE_SageGrouseDevSitingReportView");
@@ -151,8 +151,8 @@ export class OE_SageGrouseDevSitingViewModel extends ViewModelBase {
             //thisViewModel.myModel = thisViewModel;
         });
 
-        this.app.registerActivityIdHandler("handleKmlLink", function (wfContext, contextFunction) {
-            console.log('link result', wfContext, contextFunction);
+        this.app.registerActivityIdHandler("handleKmlLink", function (wfContext) {
+            console.log('link result', wfContext);
         });
 
     }

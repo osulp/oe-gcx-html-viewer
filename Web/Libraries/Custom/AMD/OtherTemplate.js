@@ -7,9 +7,12 @@ require({
     cache: {
         "geocortex/oe_amd/OtherTemplate/OtherTemplateModule": function () {
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -19,7 +22,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "geocortex/framework/application/ModuleBase"], function (require, exports, ModuleBase_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var OtherTemplateModule = (function (_super) {
+    var OtherTemplateModule = /** @class */ (function (_super) {
         __extends(OtherTemplateModule, _super);
         function OtherTemplateModule(app, lib) {
             return _super.call(this, app, lib) || this;
@@ -35,9 +38,12 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
 },
 "geocortex/oe_amd/OtherTemplate/OtherTemplateView": function () {
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -47,7 +53,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "geocortex/framework/ui/ViewBase"], function (require, exports, ViewBase_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var OtherTemplateView = (function (_super) {
+    var OtherTemplateView = /** @class */ (function (_super) {
         __extends(OtherTemplateView, _super);
         function OtherTemplateView() {
             return _super !== null && _super.apply(this, arguments) || this;
@@ -60,9 +66,12 @@ define(["require", "exports", "geocortex/framework/ui/ViewBase"], function (requ
 },
 "geocortex/oe_amd/OtherTemplate/OtherTemplateViewModel": function () {
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -72,7 +81,7 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "geocortex/framework/ui/ViewModelBase"], function (require, exports, ViewModelBase_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var OtherTemplateViewModel = (function (_super) {
+    var OtherTemplateViewModel = /** @class */ (function (_super) {
         __extends(OtherTemplateViewModel, _super);
         function OtherTemplateViewModel() {
             return _super !== null && _super.apply(this, arguments) || this;

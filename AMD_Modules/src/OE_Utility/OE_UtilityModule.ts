@@ -36,7 +36,7 @@ export class OE_UtilityModule extends ModuleBase {
 
     _onSiteInitialized(site,myModule) {
         
-        this.app.registerActivityIdHandler("OE_Utility_IsViewActive", function CustomEventHandler(workflowContext, contextFunctions) {
+        this.app.registerActivityIdHandler("OE_Utility_IsViewActive", function CustomEventHandler(workflowContext) {
 
             //check for view from passed in view name (id)  "BannerView" for example
             let checkView: ViewBase = myModule.app.viewManager.getViewById(workflowContext.getValue("viewName"));

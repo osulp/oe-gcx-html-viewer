@@ -91,7 +91,7 @@ export class OE_Wildfire_DynamicFormViewModel extends ViewModelBase {
         });
                 
         //dynamic external workflow form
-        this.app.registerActivityIdHandler("displayWildfirePointResults", function CustomEventHandler(workflowContext, contextFunctions) {
+        this.app.registerActivityIdHandler("displayWildfirePointResults", function CustomEventHandler(workflowContext) {
 
             //let myWorkflowContext: any;
             //myWorkflowContext = $.extend({}, workflowContext);
