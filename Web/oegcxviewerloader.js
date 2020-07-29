@@ -58,7 +58,7 @@ var oeGCXViewerLoader = {
         console.log(this.workingSite);
 
         new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize({
-            onSiteInitialized: function (app, loader) {
+            onSiteInitialized: function (app, loader) {                
                 geocortex.config.io.timeout = 180000; // 180 seconds
             }
         });

@@ -1,5 +1,5 @@
 // All material copyright ESRI, All Rights Reserved, unless otherwise specified.
-// See http://js.arcgis.com/3.27/esri/copyright.txt for details.
+// See http://js.arcgis.com/3.32/esri/copyright.txt for details.
 //>>built
 define("esri/layers/vectorTiles/views/vectorTiles/WorkerTileHandler","require exports dojo/Deferred ../../core/promiseUtils ../2d/tiling/enums ./WorkerTile ./style/StyleRepository".split(" "),function(n,p,k,e,l,f,m){return function(){function b(){this._tiles=new Map;this._spriteInfo={};this._glyphInfo={}}b.prototype.reset=function(){var a=new k;this._spriteInfo={};this._glyphInfo={};var d=this._tiles;d.forEach(function(a){return a.setObsolete()});d.clear();a.resolve();return a.promise};b.prototype.getLayers=
 function(){return this._layers};b.prototype.setLayers=function(a){this._layers=(new m(a)).layers;return e.resolve({data:""})};b.prototype.getTile=function(a,d){var b=this,g=a.key,c=f.pool.acquire();c.initialize(a.key,a.refKey,this,a.rotation);var h=a.cacheTile;return d.invoke("fetchTileData",a.refKey).then(function(a){return c.setDataAndParse(a,d).then(function(a){h&&c.status!==l.TileStatus.INVALID&&b._tiles.set(g,c);return a}).catch(function(a){c.setObsolete();f.pool.release(c);b._tiles["delete"](c.tileKey);

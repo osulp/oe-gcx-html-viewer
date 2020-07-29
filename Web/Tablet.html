@@ -1,31 +1,59 @@
 ﻿<!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1"/>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <title>Oregon Explorer Map Viewer</title>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Oregon Explorer Map Viewer</title>
 
-        <link rel="shortcut icon" href="favicon_oe.ico" />
-        <link rel="apple-touch-icon" href="Resources/Images/Icons/iOS/apple-touch-icon.png"/>
-        <link rel="apple-touch-icon" sizes="72x72" href="Resources/Images/Icons/iOS/apple-touch-icon-72x72.png"/>
-        <link rel="apple-touch-icon" sizes="76x76" href="Resources/Images/Icons/iOS/apple-touch-icon-ipad.png"/>
-        <link rel="apple-touch-icon" sizes="114x114" href="Resources/Images/Icons/iOS/apple-touch-icon-114x114.png"/>
-        <link rel="apple-touch-icon" sizes="120x120" href="Resources/Images/Icons/iOS/apple-touch-icon-iphone-retina.png"/>
-        <link rel="apple-touch-icon" sizes="144x144" href="Resources/Images/Icons/iOS/apple-touch-icon-144x144.png"/>
-        <link rel="apple-touch-icon" sizes="152x152" href="Resources/Images/Icons/iOS/apple-touch-icon-ipad-retina.png"/>
+    <link rel="shortcut icon" href="favicon_oe.ico" />
+    <link rel="apple-touch-icon" href="Resources/Images/Icons/iOS/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="Resources/Images/Icons/iOS/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="Resources/Images/Icons/iOS/apple-touch-icon-ipad.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="Resources/Images/Icons/iOS/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="Resources/Images/Icons/iOS/apple-touch-icon-iphone-retina.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="Resources/Images/Icons/iOS/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="Resources/Images/Icons/iOS/apple-touch-icon-ipad-retina.png" />
 
-        <link rel="stylesheet" href="Resources/Styles/splash.css" />
-    </head>
+    <link rel="stylesheet" href="Resources/Styles/splash.css" />
+
+    <style>
+        #oeLoginNotice, #myProgress {
+            display: block;
+            width: 95%;
+            background-color: #fff;
+            text-align: center;
+            font-weight: bold;
+            height: 30px;
+            color: #4273b7;
+            font-family: "Segoe UI", "Helvetica Neue", "Droid Sans", Helvetica, Arial, sans-serif;
+        }
+
+        #oeLoginNotice {
+            display: none;
+        }
+    </style>
+</head>
     <body>
         <!-- Splash Screen Markup -->
         <div class="splash-overlay">
             <div class="splash-plate">
                 <img class="splash-image" src="Resources/Images/Custom/splash-logo.png" alt="" />
+                <br />
+                <div id="myProgress">
+                    Spinning up the tool.
+                </div>
+                <div id="oeLoginNotice">
+                    Please wait a moment.
+                </div>
+                <img src="Resources/Images/Custom/loader-activity12.gif" />
+                <br>
                 <p class="splash-paragraph">This application uses licensed Geocortex Essentials technology for the Esri<sup>&reg;</sup> ArcGIS platform. All rights reserved.</p>
-                <img src="Resources/Images/loader-small.gif" alt="Loader" />
+                <!--<p class="splash-paragraph">Notice! The maps and data used in this tool are temporarily unavailable due to an unforeseen technical difficulty. We apologize for any inconvenience, and are working to bring these services back online as quickly as possible.</p>-->
+                <!--<img src="Resources/Images/loader-small.gif" alt="Loader" />-->
             </div>
         </div>
+        <iframe id="autoFrame" style="display:none;"></iframe>
 
         <!-- Standard GVH Embed -->
         <script src="Resources/Compiled/loader.js"></script>

@@ -128,7 +128,11 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase", "geo
                     //feature color
                     if (this.customFeaturesIn.color != "") {
                         graphic.symbol.setColor(esri.Color.fromHex("#000000"));
-                        var workingRBGString = this.customFeaturesIn.color.replace(/[rgb()" \s]/g, "");
+                        var workingRBGString = void 0;
+                        if (this.customFeaturesIn.color.indexOf("rgba") > -1)
+                            workingRBGString = this.customFeaturesIn.color.replace(/[rgba()" \s]/g, "");
+                        else
+                            workingRBGString = this.customFeaturesIn.color.replace(/[rgb()" \s]/g, "");
                         var rgbArray = workingRBGString.split(",");
                         graphic.symbol.color.r = parseInt(rgbArray[0]);
                         graphic.symbol.color.g = parseInt(rgbArray[1]);

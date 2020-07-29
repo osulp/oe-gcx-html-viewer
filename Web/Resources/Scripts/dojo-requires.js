@@ -33,6 +33,11 @@ require(["esri/layers/wmts"]);
 require(["esri/layers/WebTiledLayer"]);
 require(["esri/virtualearth/VETiledLayer"]);
 
+require(["esri/dijit/Search"]);
+require(["esri/dijit/HomeButton"]);
+require(["esri/dijit/BasemapToggle"]);
+require(["esri/geometry/webMercatorUtils"], function (m) { esri.geometry.webMercatorUtils = m; });
+
 require(["moment/moment"], function(moment) {
     window.moment = moment;
 });

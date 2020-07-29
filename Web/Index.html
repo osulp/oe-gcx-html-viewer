@@ -29,7 +29,7 @@
 			font-family: "Segoe UI", "Helvetica Neue", "Droid Sans", Helvetica, Arial, sans-serif;
 		}
 
-        #myProgress {
+        #oeLoginNotice {
             display:none;
         }
     </style>
@@ -54,29 +54,34 @@
             <!--<img src="Resources/Images/loader-small.gif" alt="Loader" />-->
         </div>
     </div>
-    <!--<div id="tempmap"></div>-->
+    <iframe id="autoFrame" style="display:none;"></iframe>
 
     <!-- Standard GVH Embed with custom Defaults.json.js configuration -->
     <script src="Resources/Compiled/loader.js"></script>
-    
+
     <script>
         // Uncomment the below line to only use local copies of Esri API files. This is done automatically in the Geocortex Mobile App Framework.
         //var geocortexUseLocalEsriApi = true;
 
         var viewerConfig = {
             "configurations": {
-                "default": "Resources/Config/Default/dev_configs/oitt/Desktop.json.js",                
-                "default_original": "Resources/Config/Default/" + shellName + ".json.js"                
+                "default": "Resources/Config/Default/" + shellName + ".json.js"
             },
             "viewerConfigUri": ""
         };
-       
-        var oeGCXViewerLoaderSkipLogin = true; 
+      
+        new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize({
+            onSiteInitialized: function (app, loader) {                
+                geocortex.config.io.timeout = 180000; // 180 seconds
+            }
+        });
+
+        //var oeGCXViewerLoaderSkipLogin = true;
 
     </script>
 
-    <script src="oegcxviewerloader.js"></script>
-    
+    <!--<script src="oegcxviewerloader.js"></script>-->
+
     <script type="text/javascript">
 
         var _gaq = _gaq || [];

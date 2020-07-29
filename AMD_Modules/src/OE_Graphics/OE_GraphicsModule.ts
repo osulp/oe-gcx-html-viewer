@@ -166,7 +166,12 @@ export class OE_GraphicsModule extends ModuleBase {
                 {
                     graphic.symbol.setColor(esri.Color.fromHex("#000000"));
 
-                    let workingRBGString = this.customFeaturesIn.color.replace(/[rgb()" \s]/g, "");
+                    let workingRBGString;
+
+                    if (this.customFeaturesIn.color.indexOf("rgba") > -1)
+                        workingRBGString = this.customFeaturesIn.color.replace(/[rgba()" \s]/g, "");
+                    else
+                        workingRBGString = this.customFeaturesIn.color.replace(/[rgb()" \s]/g, "");
 
                     let rgbArray = workingRBGString.split(",");
                     graphic.symbol.color.r = parseInt(rgbArray[0]);
