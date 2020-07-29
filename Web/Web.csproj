@@ -131,11 +131,13 @@
     <Content Include="Resources\Images\Custom\profile-tool-24.png" />
     <Content Include="Resources\Images\Custom\README.txt" />
     <Content Include="Resources\Images\Custom\schools-search-24.png" />
+    <Content Include="Resources\Images\Custom\search-pointer.png" />
     <Content Include="Resources\Images\Custom\splash-logo.png" />
     <Content Include="Resources\Images\Custom\sprite-green-0.3.png" />
     <Content Include="Resources\Images\Custom\sprite-orange-0.3.png" />
     <Content Include="Resources\Images\Custom\zoom-next-24.png" />
     <Content Include="Resources\Images\Custom\zoom-previous-24.png" />
+    <Content Include="Resources\Scripts\dojo-requires.js" />
     <Content Include="Resources\Scripts\kendo.extract.min.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\daterangepicker.min.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\easy-responsive-tabs.js" />

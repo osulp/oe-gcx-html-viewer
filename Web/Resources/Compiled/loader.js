@@ -273,7 +273,6 @@ var geocortex;
                                     loaderResourcePrefix + "Resources/Scripts/globalize/globalize.min.js",
                                     loaderResourcePrefix + "Resources/Scripts/caja-html-sanitizer-minified.js",
                                     loaderResourcePrefix + "Resources/Scripts/kendo.extract.min.js",
-                                    loaderResourcePrefix + "Resources/Scripts/kendo.dataviz.min.js",
                                     loaderResourcePrefix + "Resources/Scripts/Bridge.js",
                                     loaderResourcePrefix + "Resources/Scripts/insight-event-relay.js",
                                     loaderResourcePrefix + "Resources/Scripts/classList.min.js"

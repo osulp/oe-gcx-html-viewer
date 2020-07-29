@@ -55,9 +55,16 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     //MAP COMPONENTS
     esriMap: esri.Map;
     esriSearch: esri.dijit.Search;
-    esriLocator: esri.tasks.Locator;
+    OregonGeolocator: esri.tasks.Locator = new esri.tasks.Locator("https://navigator.state.or.us/arcgis/rest/services/Locators/gc_Composite/GeocodeServer");
+    esriLocator: esri.tasks.Locator = new esri.tasks.Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
     esriHomeBtn: esri.dijit.HomeButton;
     esriBasemapToggle: esri.dijit.BasemapToggle;
+    marker: esri.symbol.PictureMarkerSymbol = new esri.symbol.PictureMarkerSymbol({
+        "height": 28,
+        "width": 28,
+        "url": "./Resources/Images/Custom/search-pointer.png"
+        //"url": "//js.arcgis.com/3.27/esri/dijit/Search/images/search-pointer.png"
+    });
     //INFO SCREEN
     info_screen_arrow_src: Observable<string> = new Observable("Resources/Images/Icons/arrow-right-small-24.png");
     show_info_screen: Observable<boolean> = new Observable(false);
@@ -75,20 +82,24 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     //Summary Button
     show_summary_btn: Observable<boolean> = new Observable(false);
     //UPDATE State
+    show_loading_pdf: Observable<boolean> = new Observable(false);
     show_loading: Observable<boolean> = new Observable(false);
     show_all_for_report: Observable<boolean> = new Observable(false);
     //Validation Monitoring
     show_warning: Observable<boolean> = new Observable(false);
     invalid_array = [];
+
+    
         
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
         this.screens_collection_filter = new FilterableCollection<any>(this.screens_collection, this._screensFilter.bind(this, this));
         this.selected_location.bind(this, (selLoc) => {
             if (selLoc) {
-                this.getClosestMarkets();   
-                this.getClosestFeedSuppliers();               
-            }            
+                if (selLoc.name !== 'User click') {
+                    this.runRoutingServices();
+                }  
+            }         
         });
         
         //this.selected_system_binding_token =
@@ -144,8 +155,9 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                         fc.fields.get().forEach(ff => {
                             if (ff.fieldCalVar === 'marketDistanceOpts') {
                                 ff.ddOptions.set(cm.sender.value);
-                                ff.selDDoption.set(cm.sender.value[0].value);
-                                this.getSetValue(ff.formula, cm.sender.value[0].distance.split(' Miles')[0]);
+                                ff.selDDoption.set(cm.sender.value[1].value);
+                                this.getSetValue(ff.formula, cm.sender.value[1].distance.toString());
+                                //this.routeDistance('market', cm);
                             }
                         });
                     });
@@ -161,18 +173,14 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                         fc.fields.get().forEach(ff => {
                             if (ff.fieldCalVar === 'feedDistanceOpts') {
                                 ff.ddOptions.set(cm.sender.value);
-                                ff.selDDoption.set(cm.sender.value[0].value);
-                                this.getSetValue(ff.formula, cm.sender.value[0].distance.split(' Miles')[0]);
+                                ff.selDDoption.set(cm.sender.value[1].value);
+                                this.getSetValue(ff.formula, cm.sender.value[1].distance.toString());
                             }
                         });
                     });
                 });
             });
-        });
-
-        this.site_report_loading.bind(this, (loading) => {
-
-        });
+        });        
     }
 
     initialize(config: any): void {
@@ -195,14 +203,14 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             let hasLocation = wc.getValue("location") ? true : false;
 
             this.has_location.set(hasLocation);
-                      
-            this.setSystems(wc);
-
-            this.setScreens(wc);
 
             this.setSpecies(wc);
 
             this.setProdMethods(wc);
+
+            this.setSystems(wc);
+
+            this.setScreens(wc);
 
             this.transportation_lut = wc.getValue('transportation').features ? wc.getValue('transportation').features.map(f => {
                 return {
@@ -217,7 +225,10 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             } else {
                 let defaultLocation = new esri.geometry.Point(-123.29560542046448, 44.56679003060179);
                 this.selected_location.set({ "point": defaultLocation, "name": "OSU Agriculuture Fields" });
-            }            
+            }
+            let inputPnt = this.selected_location.get().point;
+            this.esriLocator.locationToAddress(inputPnt, 100);
+            //this.runRoutingServices();
 
             //rerun to set the resources system selection screen val...  TODO: figure out a better way
             //this.setSystems(wc);
@@ -242,14 +253,14 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                     "value": 'Other distance'
                 })
                 this.closest_markets.set(closestMarkets);
-            } catch(ex) {
-                let closestMarkets =[{
+            } catch (ex) {
+                let closestMarkets = [{
                     "option": 'Other distance',
                     "value": 'Other distance'
                 }];
                 this.closest_markets.set(closestMarkets);
             }
-            
+
         });
 
         this.app.registerActivityIdHandler("onSiteReportHandler", (wc) => {
@@ -276,7 +287,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                         "rank": m.attributes.NEAR_RANK
                     }
                 }));
-                feedSuppliers.push({
+                feedSuppliers.splice(0,0,{
                     "option": 'Other distance',
                     "value": 'Other distance'
                 })
@@ -288,51 +299,70 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                 })
                 this.feed_suppliers.set(feedSuppliers);
             }
-            
+
         });
 
-        this.app.registerActivityIdHandler("onRoutingServicesComplete", (wc) => {
-            
-            let routes = wc.getValue("RouteEndPoints").features.map((ri: any) => {
-                return {
-                    "distance": ri.attributes.distance,
-                    "name": ri.attributes.NAME,
-                    "city": ri.attributes.CITY,
-                    "county": ri.attributes.COUNTY
-                };
+        this.app.registerActivityIdHandler("onMarketFeedRouted", (wc) => {
+
+            let closestMarkets = JSON.parse(wc.getValue("marketDestinations"))
+                .map(m => {
+                    return {
+                        "distance": m.distance,
+                        "name": m.name,
+                        "state": m.state,
+                        "value": m.name + ", " + m.state + " (" + m.distance.toFixed(0) + " Miles)",
+                        "option": m.name + ", " + m.state + " (" + m.distance.toFixed(0) + " Miles)"
+                    }
+                })
+                .sort((a, b) => a.distance - b.distance)
+                .slice(0, 15);
+
+            closestMarkets.splice(0, 0, {
+                "option": 'Other distance',
+                "value": 'Other distance'
             });
-            if (routes.length > 0) {
-                this.screens_collection.get().forEach(scr => {
-                    scr['sections'].get().forEach(sec => {
-                        sec['fields'].get().forEach(f => {
-                            if (f['fieldCalVar'] === 'feedLocation') {
-                                f.value.set(routes.length > 0 ? routes[0].name + ': ' + routes[0].distance + ' miles <br> City: ' + routes[0].city : 'None found');
-                            }
-                            if (f['fieldCalVar'] === 'seedLocation') {
-                                f.value.set(routes.length > 1 ? routes[1].name + ': ' + routes[1].distance + ' miles <br> City: ' + routes[1].city : 'None found');
-                            }
-                            if (f['fieldCalVar'] === 'marketLocation') {
-                                f.value.set(routes.length > 2 ? routes[2].name + ': ' + routes[2].distance + ' miles <br> City: ' + routes[2].city : 'None found');
-                            }
-                            if (f['fieldCalVar'] === 'feedDistance') {
-                                f.value.set(routes.length > 0 ? routes[0].distance.toString() : 0);
-                                this.updateViewModel(f);
-                            }
-                            if (f['fieldCalVar'] === 'seedDistance') {
-                                f.value.set(routes.length > 0 ? routes[1].distance.toString() : 0);
-                                this.updateViewModel(f);
-                            }
-                            if (f['fieldCalVar'] === 'marketDistance') {
-                                f.value.set(routes.length > 0 ? routes[2].distance.toString() : 0);
-                                this.updateViewModel(f);
-                            }
-                        });
-                    });
+
+            this.closest_markets.set(closestMarkets);
+
+            let feedSuppliers = JSON.parse(wc.getValue("feedSupplierDestinations"))
+                .map(m => {
+                    return {
+                        "distance": m.distance,
+                        "name": m.name,
+                        "state": m.state,
+                        "value": m.name + ", " + m.state + " (" + m.distance.toFixed(0) + " Miles)",
+                        "option": m.name + ", " + m.state + " (" + m.distance.toFixed(0) + " Miles)"
+                    }
+                })
+                .sort((a, b) => a.distance - b.distance)
+                .slice(0, 15);
+
+            feedSuppliers.splice(0, 0, {
+                "option": 'Other distance',
+                "value": 'Other distance'
+            });
+
+            this.feed_suppliers.set(feedSuppliers);
+        });
+
+        this.esriLocator.on("location-to-address-complete", function (evt) {
+            if (evt.address.address) {
+                var address = evt.address.address;
+                var location = esri.geometry.geographicToWebMercator(evt.address.location);
+
+                thisViewModel.selected_location.set({
+                    "point": new esri.geometry.Point(evt.address.location),
+                    "name": address.Match_addr !== "" ? address.Match_addr : address.Address
                 });
+
+                if (typeof thisViewModel.esriMap !== "undefined" && thisViewModel.esriMap !== null) {
+                    var graphic = new esri.Graphic(location, thisViewModel.marker, address);
+                    thisViewModel.esriMap.graphics.add(graphic);
+                }
             }
-            //this.sub_station_routes.set(routes);
         });
     }
+            
 
     setSystems(wc) {
         //create the object array for summary data
@@ -1391,21 +1421,21 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         }
     }
 
-    getClosestMarkets() {
-        let mapPoint = this.selected_location.get().point;
-        var workflowArgs: any = {};
-        workflowArgs.workflowId = "Closest_Markets";
-        workflowArgs.mapPoint = this.selected_location.get().point;        
-        this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
-    }
+    //getClosestMarkets() {
+    //    let mapPoint = this.selected_location.get().point;
+    //    var workflowArgs: any = {};
+    //    workflowArgs.workflowId = "Closest_Markets";
+    //    workflowArgs.mapPoint = this.selected_location.get().point;        
+    //    this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
+    //}
 
-    getClosestFeedSuppliers() {
-        let mapPoint = this.selected_location.get().point;
-        var workflowArgs: any = {};
-        workflowArgs.workflowId = "Closest_Feed_Suppliers";
-        workflowArgs.mapPoint = this.selected_location.get().point;
-        this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
-    }
+    //getClosestFeedSuppliers() {
+    //    let mapPoint = this.selected_location.get().point;
+    //    var workflowArgs: any = {};
+    //    workflowArgs.workflowId = "Closest_Feed_Suppliers";
+    //    workflowArgs.mapPoint = this.selected_location.get().point;
+    //    this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
+    //}
 
     getSiteReport() {
         if (this.site_report_loading.get() !== true) {
@@ -1420,14 +1450,49 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         }
     }
 
+    //routeDistance(destType, location) {
+    //    var site = (<any>this).app.site;
+    //    var queryUrl = site.essentialsMap.mapServices.filter(ms => ms.displayName === 'Supplies and Markets')[0].layers.filter(l => l.displayName === (destType === 'markets' ? 'Markets (Cities > 50K)' : 'Feed Suppliers'))[0].getLayerUrl();
+    //    //based on destination get appropriate data
+
+    //    let QueryTask = new esri.tasks.QueryTask(queryUrl);
+    //    let Query = new esri.tasks.Query();
+    //    Query.returnGeometry = true;
+    //    Query.where = destType === 'markets' ? "NAME like  '" + location.name + "'" : "Name like '" + location.name + "'";
+    //    QueryTask.execute(Query, (results) => {
+    //        console.log('results from markets/feed', results);
+    //    });
+    //    let request = new XMLHttpRequest();
+
+    //    request.open('POST', "https://api.openrouteservice.org/v2/matrix/driving-car");
+
+    //    request.setRequestHeader('Accept', 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8');
+    //    request.setRequestHeader('Content-Type', 'application/json');
+    //    request.setRequestHeader('Authorization', '5b3ce3597851110001cf6248be3feb3f8b3c45a68ca1db32bbfaa56b');
+
+    //    request.onreadystatechange = function () {
+    //        if (this.readyState === 4) {
+    //            console.log('Status:', this.status);
+    //            console.log('Headers:', this.getAllResponseHeaders());
+    //            console.log('Body:', this.responseText);
+    //        }
+    //    };
+
+    //    const body = '{"locations":[[9.70093,48.477473],[9.207916,49.153868],[37.573242,55.801281],[115.663757,38.106467]]}';
+
+    //    request.send(body);
+    //}
+
     runRoutingServices() {
         let mapPoint = this.selected_location.get().point;
         //convert to 4326
 
         var workflowArgs: any = {};
-        workflowArgs.workflowId = "Routing_Services";
-        workflowArgs.startPointIn = mapPoint.x.toString() + "," + mapPoint.y.toString() + "," + mapPoint.spatialReference.wkid;
-        workflowArgs.runInBackground = true;
+        workflowArgs.workflowId = "Markets_Supply_Distances";
+        workflowArgs.locationIn = mapPoint; //mapPoint.x.toString() + "," + mapPoint.y.toString() + "," + mapPoint.spatialReference.wkid;
+        workflowArgs.useDynamicExternal = true;
+        workflowArgs.maxDistance = "250";
+        //workflowArgs.runInBackground = true;
         this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
     }
 

@@ -1,4 +1,4 @@
-﻿<div id="aqua-financial-pln-wrapper">  
+﻿<div id="aqua-financial-pln-wrapper">
     <header>
         <div class="header-bar-wrapper">
             <div class="header-bar-left">
@@ -12,7 +12,7 @@
                     <div id="warning-message" data-binding="{@event-onclick:gotoProductionTab}">Resource constraints less than required resources.  Results may not be realistic.</div>
                 </div>
             </div>
-            
+
             <div class="header-bar-right">
                 <button data-binding="{@event-onclick:getPDFReport}" class="toolbar-item tool aqua" title="Add layers to the map"><img alt="Get a pdf of your Oregon Aquaculture Financial Planning scenario" src="Resources/Images/Icons/Toolbar/reports-24.png" class="bound-visible-inline"><p>Full PDF Report</p></button>
                 <button data-binding="{@event-onclick:print}" class="toolbar-item tool aqua" title="Add layers to the map"><img alt="Print the current page" src="Resources/Images/Icons/Toolbar/print-24.png" class="bound-visible-inline"><p>Print Page</p></button>
@@ -120,9 +120,16 @@
 </div>
 <div id="loading-wrapper" data-binding="{@visible:show_loading}">
     <div id="loading">
+        <div>           
+        </div>
+    </div>
+</div>
+<div id="loading-wrapper-pdf" data-binding="{@visible:show_loading_pdf}">
+    <div id="loading_pdf">
         <div>
             Generating PDF report....
             Please wait
         </div>
     </div>
 </div>
+
