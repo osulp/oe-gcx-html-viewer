@@ -21,20 +21,22 @@ export class OE_AquacultureDynamicFormViewModel extends ViewModelBase {
     fieldCounty: Observable<string> = new Observable<string>("");
     fieldCityOrTown: Observable<string> = new Observable<string>("");
 
-    fieldClosestWaterRightDistance: Observable<string> = new Observable<string>("");
+    /*fieldClosestWaterRightDistance: Observable<string> = new Observable<string>("");
     fieldClosestWaterRightType: Observable<string> = new Observable<string>("");
     fieldClosestWaterRightUseCodeDesc: Observable<string> = new Observable<string>("");
     fieldClosestWaterRightVolumeMaxRate: Observable<string> = new Observable<string>("");
 
-    fieldDistanceToElectricalService: Observable<string> = new Observable<string>("");
+    fieldDistanceToElectricalService: Observable<string> = new Observable<string>("");*/
 
     fieldFloodplain100: Observable<string> = new Observable<string>("");
-    fieldFloodplain500: Observable<string> = new Observable<string>("");
+    /*fieldFloodplain500: Observable<string> = new Observable<string>("");
 
     fieldSalmonidHabitat: Observable<string> = new Observable<string>("");
     fieldSalmonidHabitatMiles: Observable<string> = new Observable<string>("");
     fieldWaterQualityLimitedStream: Observable<string> = new Observable<string>("");
-    fieldWaterQualityLimitedStreamMiles: Observable<string> = new Observable<string>("");
+    fieldWaterQualityLimitedStreamMiles: Observable<string> = new Observable<string>("");*/
+
+    reportLink: Observable<string> = new Observable<string>("");
         
     //output
     customFormResult: Observable<string> = new Observable<string>("");
@@ -82,10 +84,12 @@ export class OE_AquacultureDynamicFormViewModel extends ViewModelBase {
                 
         //dynamic external workflow form
         this.app.registerActivityIdHandler("displayAquacultureForm", function CustomEventHandler(workflowContext) {
-
+        //this.app.registerActivityIdHandler("displayAquacultureForm", function CustomEventHandler(aContext: ActivityContext) {
+                        
             thisViewModel.myModel = thisViewModel;
 
             thisViewModel.myWorkflowContext = $.extend({}, workflowContext);
+            
 
             var wf: ActivityContext;
                                                 
@@ -98,20 +102,22 @@ export class OE_AquacultureDynamicFormViewModel extends ViewModelBase {
             thisViewModel.fieldCounty.set(thisViewModel.myWorkflowContext.getValue("fieldCounty"));
             thisViewModel.fieldCityOrTown.set(thisViewModel.myWorkflowContext.getValue("fieldCityOrTown"));
 
-            thisViewModel.fieldClosestWaterRightDistance.set(thisViewModel.myWorkflowContext.getValue("fieldClosestWaterRightDistance"));
+            /*thisViewModel.fieldClosestWaterRightDistance.set(thisViewModel.myWorkflowContext.getValue("fieldClosestWaterRightDistance"));
             thisViewModel.fieldClosestWaterRightType.set(thisViewModel.myWorkflowContext.getValue("fieldClosestWaterRightType"));
             thisViewModel.fieldClosestWaterRightUseCodeDesc.set(thisViewModel.myWorkflowContext.getValue("fieldClosestWaterRightUseCodeDesc"));
             thisViewModel.fieldClosestWaterRightVolumeMaxRate.set(thisViewModel.myWorkflowContext.getValue("fieldClosestWaterRightVolumeMaxRate"));
 
-            thisViewModel.fieldDistanceToElectricalService.set(thisViewModel.myWorkflowContext.getValue("fieldDistanceToElectricalService"));
+            thisViewModel.fieldDistanceToElectricalService.set(thisViewModel.myWorkflowContext.getValue("fieldDistanceToElectricalService"));*/
             
             thisViewModel.fieldFloodplain100.set(thisViewModel.myWorkflowContext.getValue("fieldFloodplain100"));
-            thisViewModel.fieldFloodplain500.set(thisViewModel.myWorkflowContext.getValue("fieldFloodplain500"));
+            /*thisViewModel.fieldFloodplain500.set(thisViewModel.myWorkflowContext.getValue("fieldFloodplain500"));
 
             thisViewModel.fieldSalmonidHabitat.set(thisViewModel.myWorkflowContext.getValue("fieldSalmonidHabitat"));
             thisViewModel.fieldSalmonidHabitatMiles.set(thisViewModel.myWorkflowContext.getValue("fieldSalmonidHabitatMiles"));
             thisViewModel.fieldWaterQualityLimitedStream.set(thisViewModel.myWorkflowContext.getValue("fieldWaterQualityLimitedStream"));
-            thisViewModel.fieldWaterQualityLimitedStreamMiles.set(thisViewModel.myWorkflowContext.getValue("fieldWaterQualityLimitedStreamMiles"));
+            thisViewModel.fieldWaterQualityLimitedStreamMiles.set(thisViewModel.myWorkflowContext.getValue("fieldWaterQualityLimitedStreamMiles"));*/
+
+            thisViewModel.reportLink.set(thisViewModel.myWorkflowContext.getValue("reportLink"));
 
             /*if (thisViewModel.myWorkflowContext.getValue("isSFPD")) {
                 $(".wildfire_sfpd_content").css("display", "block");

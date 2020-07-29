@@ -13,6 +13,10 @@
     color: #999999;
 }
 
+.oeAquacultureDynamicForm h3 {
+    margin-top:8px;
+}
+
 .oeAquacultureDynamicForm .your_location {
     padding: 12px 0px 0px 4px;
 }

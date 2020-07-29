@@ -19,6 +19,8 @@ import { Layer } from "geocortex/essentials/Layer";
 import { AddStatusArgs } from "geocortex/infrastructure/commandArgs/AddStatusArgs";
 import { ImageProperties } from "geocortex/infrastructure/commandArgs/ImageProperties";
 import { SiteServiceDiscoveryProvider } from "geocortex/essentials/serviceDiscovery/SiteServiceDiscoveryProvider";
+import { ServiceDiscoveryUtilities } from "geocortex/essentials/utilities/ServiceDiscoveryUtilities";
+import { ServiceHelper } from "geocortex/essentials/ServiceHelper";
 import { ResultItem } from "geocortex/essentials/serviceDiscovery/ResultItem";
 import { LayerListMapServiceItem } from "geocortex/infrastructure/layerList/LayerListMapServiceItem";
 import { Site } from "geocortex/essentials/Site";
@@ -93,7 +95,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         this.app.commandRegistry.command("oeLayerSearch").register(this, this.OpenSearchWindow);
 
         this.ssdp = new SiteServiceDiscoveryProvider();
-        this.ssdp.initialize(this.app.site);
+        this.ssdp.initialize(this.app.site);                
     }
 
     public OpenSearchWindow() {
@@ -241,13 +243,13 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
     public CleanURL(val: string): string {
                 
         //remove url=
-        val = val.replace("url=", "");
+        //val = val.replace("url=", "");
 
         //url is the first item only use it
-        if (val.indexOf(";") > -1) {           
+        /*if (val.indexOf(";") > -1) {           
             //url
             val = val.split(";")[0];
-        }
+        }*/
 
         //some connection strings have the layer id in them.... why?
         if (val.indexOf("/MapServer/") > -1) {
@@ -265,7 +267,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         return val;
     }
 
-    public GetURLToken(val: string) {
+    public GetURLPart(val: string, searchName: string) {
 
         let token: string = "";
 
@@ -273,10 +275,10 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         if (val.indexOf(";") > -1) {
             let valArray: string[] = val.split(";");
 
-            if (val.indexOf(";token=") > -1) {
+            if (val.indexOf(searchName+"=") > -1) {
                 for (let i: number = 0; i < valArray.length; i++) {
-                    if (valArray[i].indexOf("token=") > -1) {
-                        token = valArray[i].replace("token=", "");
+                    if (valArray[i].indexOf(searchName+"=") > -1) {
+                        token = valArray[i].replace(searchName+"=", "");
                         break;
                     }
                 }
@@ -503,7 +505,16 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                 let sortIndentObject: any;
 
                 workingService = {};
-                workingService["displayName"] = data.documentInfo.Subject;
+
+                if (!thisRef.IsDefined(data, "documentInfo") )
+                    workingService["displayName"] = workingServiceURL;
+                else if(data.documentInfo.Title != "")
+                    workingService["displayName"] = data.documentInfo.Title;
+                else if (data.documentInfo.Subject != "")
+                    workingService["displayName"] = data.documentInfo.Subject;
+                else
+                    workingService["displayName"] = workingServiceURL;
+
                 workingService["tipURL"] = workingServiceURL;
                 workingService["connectionString"] = workingServiceURL;
 
@@ -551,7 +562,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                         parentIdMap["k" + workingService.layers[i]["id"]] = workingService.layers[i];
                     }
                                         
-                    workingService.layers[i]["mapServiceConnectionString"] = workingServiceURL;
+                    workingService.layers[i]["mapServiceConnectionString"] = "url="+workingServiceURL;
                     workingService.layers[i]["mapServiceID"] = null;
 
                     workingService.layers[i]["layerCheckbox"] = new Observable<boolean>(false);
@@ -863,26 +874,41 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
     ResolveLayerTest() {
         let customLayer: any = {};
         //customLayer.mapServiceConnectionString = "https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer";
-        customLayer.mapServiceConnectionString = "https://chetco-new.dsl.state.or.us/arcgis/rest/services/Maps/ESH_State_15/MapServer";
+        //customLayer.mapServiceConnectionString = "https://chetco-new.dsl.state.or.us/arcgis/rest/services/Maps/ESH_State_15/MapServer";
+        customLayer.mapServiceConnectionString = "https://gis.dogami.oregon.gov/arcgis/rest/services/secured/StatewideEQ_gen2/MapServer?tokenUrl=https://gis.dogami.oregon.gov/arcgis/tokens/generateToken&layerMask=Active Faults";
         customLayer.mapServiceID = null;
         customLayer.description = "This is a custom description.";
         customLayer.displayName = "Custom Layer A";
         customLayer.id = "0";
 
-        this.OEAddMapServiceFromGecortexLayer(customLayer,"");
+        //layerMask=Active Faults;tokenUrl=https://gis.dogami.oregon.gov/arcgis/tokens/generateToken
+
+        //this.OEAddMapServiceFromGecortexLayer(customLayer);
+        this.CheckToken(customLayer);
     }
 
-    OEAddMapServiceFromGecortexLayer(gcxLayer: any, layerName: string) {
+    CheckToken(gcxLayer: any) {
 
         if (gcxLayer.mapServiceConnectionString.indexOf(";token=") > -1) {
+            this.LoadGCXSiteForSecureRequest(gcxLayer);
+            //this.OEAddMapServiceFromGecortexLayer(gcxLayer);
 
-            this.LoadGCXSiteForSecureRequest(gcxLayer)
-            return;
         }
+        else {
+            this.OEAddMapServiceFromGecortexLayer(gcxLayer);
+        }            
+    }
+
+    OEAddMapServiceFromGecortexLayer(gcxLayer: any) {
+                
+        //MapUtilities
+        //createMapServiceFromJson
 
         let thisRef: any = this;        
-        let url: string = this.CleanURL(gcxLayer.mapServiceConnectionString);//"https://lib-gis2.library.oregonstate.edu/arcgis/rest/services/restoration/OITT/MapServer";
-                        
+        //let url: string = this.CleanURL(gcxLayer.mapServiceConnectionString);//"https://lib-gis2.library.oregonstate.edu/arcgis/rest/services/restoration/OITT/MapServer";
+        let url: string = ServiceHelper.extractConnectionStringValue(gcxLayer.mapServiceConnectionString, 'url');        
+        url = this.CleanURL(url);
+                                
         class TMPItem implements ResultItem {
             isWhitelisted?: boolean;
             id: string;
@@ -908,19 +934,31 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         }
 
         let rItem: TMPItem = new TMPItem();
-        rItem.connection = { id: (gcxLayer.mapServiceID != null) ? gcxLayer.mapServiceID.toString() : null }
+        rItem.connection = { id: null }; //{ id: (gcxLayer.mapServiceID != null) ? gcxLayer.mapServiceID.toString() : null }
         rItem.description = gcxLayer.description;
         rItem.discoveryProviderName = "ArcGisServerDiscoveryProvider";
         rItem.displayName = gcxLayer.displayName;
         rItem.serviceProviderName = "Geocortex.Gis.Services.ArcGisServer.Rest";
         rItem.serviceType = ["None", "FeatureLayer", "ServiceLayer", "MapService"];
-                
-        let urlToken = this.GetURLToken(gcxLayer.mapServiceConnectionString);
-        rItem.url = url + "/" + gcxLayer.id + "?token=" + urlToken;
-                
+                       
+        
+        let tokenUrl = this.GetURLPart(gcxLayer.mapServiceConnectionString, "tokenUrl");
+        let layerMask = this.GetURLPart(gcxLayer.mapServiceConnectionString, "layerMask");
+
+        let tokenVal = this.GetURLPart(gcxLayer.mapServiceConnectionString, "token");
+        rItem["serviceToken"] = tokenVal;
+        //rItem["connectionString"] = gcxLayer.mapServiceConnectionString;
+        
+        //rItem.url = url + "/" + gcxLayer.id + "?token=" + tokenVal;
+        url = url + "/" + gcxLayer.id;
+        if (tokenVal!="")
+            url = RestHelperHTTPService.appendTokenToUrl(url, tokenVal);
+        rItem.url = url;
+        
+                        
         console.log("Realize Map Service: " + rItem.displayName);
         console.log("Realize Map Service: " + rItem.url);
-                
+                               
         //RestHelperHTTPService.setDefaultToken(urlToken, url);        
         //RestHelperHTTPService.
         //RestHelperHTTPService.setDefaultToken
@@ -929,39 +967,79 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             console.log("Url has token");
         }*/
 
-        thisRef.app.commandRegistry.command("AddStatus").execute(new AddStatusArgs('Requesting service: ' + rItem.displayName, null, null, rItem.url, 10000, true));
-                
-        Promise.resolve(this.ssdp.realizeMapService(rItem, this.app.map.spatialReference.wkid.toString()))
+        this.AddServiceItem(rItem);                
+    }
+
+    /*CreateMapService(gcxLayer: any) {
+        //try map service method
+
+        let url: string = ServiceHelper.extractConnectionStringValue(gcxLayer.mapServiceConnectionString, 'url');
+        url = this.CleanURL(url);
+
+        //class TMPClass implements ResultItem { }
+
+        //MapServiceInfo
+
+        let workingService: MapService = new MapService(url);
+        
+        workingService.serviceToken = ServiceHelper.extractConnectionStringValue(gcxLayer.mapServiceConnectionString, 'token');
+        workingService.drawingBehavior = "MapService";
+
+        //let layerOptions = { "id": gcxLayer.id, "opacity": 1, "showAttribution": false };
+        //let dLayer = new esri.layers.ArcGISDynamicMapServiceLayer(url, layerOptions);
+        //dLayer.setVisibleLayers([layerName]);
+        //dLayer.setVisibleLayers([7]);
+
+        //workingService.serviceLayer = dLayer;
+        workingService.mapServiceType = MapServiceType.DYNAMIC;
+        workingService.isUserCreated = true;
+        workingService.userLayerType = "LayerAddition";
+        workingService.includeInLayerList = true;
+        //workingService.essentialsMap = this.app.site.essentialsMap;                
+        workingService.displayName = gcxLayer.name;
+        //newMapService.disableClientCaching = true;
+        workingService.mapServiceFunction = MapServiceFunction.OPERATIONAL;
+        workingService.opacity = 1;
+
+        //workingService._configureObject()
+    }*/
+
+    AddServiceItem(serviceItem: any) {
+
+        let thisRef = this;
+
+        thisRef.app.commandRegistry.command("AddStatus").execute(new AddStatusArgs('Requesting service: ' + serviceItem.displayName, null, null, serviceItem.url, 10000, true));
+
+        Promise.resolve(this.ssdp.realizeMapService(serviceItem, this.app.map.spatialReference.wkid.toString()))
             .then(
                 function (e) {
 
-                    thisRef.app.commandRegistry.command("RemoveStatus").execute(e.serviceLayer.url);                    
+                    thisRef.app.commandRegistry.command("RemoveStatus").execute(e.serviceLayer.url);
                     thisRef.app.command("AddMapService").execute(e);
-                
-                    console.log("Adding Map Service: " + e.displayName);
-                    console.log("Adding Map Service: " + e.serviceLayer.url);                                        
-                }
-        ).catch(function (e) {            
 
-            thisRef.app.commandRegistry.command("RemoveStatus").execute(rItem.url);
-            thisRef.app.commandRegistry.command("AddStatus").execute(new AddStatusArgs('Service unavailable: ' + rItem.displayName, { uri: "Resources/Images/Custom/warning.png", altText: "", class: "" }, null, null, 0, false));
-            
-            console.log("RealizeMapService catch: " + e);
-            console.log("RealizeMapService catch: " + e.message);
-            console.log("RealizeMapService catch: " + e.status);
-        }
-        ).error(function (e) {
-            thisRef.app.commandRegistry.command("AddStatus").execute(new AddStatusArgs('Service unavailable (e): ' + rItem.displayName, { uri: "Resources/Images/Custom/warning.png", altText: "", class: "" }, null, null, 0, false));
-            console.log("RealizeMapService Error: " + e);
-        });
+                    console.log("Adding Map Service: " + e.displayName);
+                    console.log("Adding Map Service: " + e.serviceLayer.url);
+                }
+            ).catch(function (e) {
+
+                thisRef.app.commandRegistry.command("RemoveStatus").execute(serviceItem.url);
+                thisRef.app.commandRegistry.command("AddStatus").execute(new AddStatusArgs('Service unavailable: ' + serviceItem.displayName, { uri: "Resources/Images/Custom/warning.png", altText: "", class: "" }, null, null, 0, false));
+
+                console.log("RealizeMapService catch: " + e);
+                console.log("RealizeMapService catch: " + e.message);
+                console.log("RealizeMapService catch: " + e.status);
+            }
+            ).error(function (e) {
+                thisRef.app.commandRegistry.command("AddStatus").execute(new AddStatusArgs('Service unavailable (e): ' + serviceItem.displayName, { uri: "Resources/Images/Custom/warning.png", altText: "", class: "" }, null, null, 0, false));
+                console.log("RealizeMapService Error: " + e);
+            });
     }
 
     LoadGCXSiteForSecureRequest(gcxLayer:any) {
 
         var thisRef = this;
 
-        if (!this.IsDefined(this.remoteGCXSites, gcxLayer.siteURL) )
-        {
+        if (!this.IsDefined(this.remoteGCXSites, gcxLayer.siteURL)) {
             let map = new esri.Map("oeLayerSearchJunkMap");
             let essentialsSite = new Site(gcxLayer.siteURL, map);
 
@@ -970,12 +1048,28 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                 console.log("Site ready");
                 console.log(args);
 
-                let url: string = thisRef.CleanURL(gcxLayer.mapServiceConnectionString);
-                url += "/" + gcxLayer.id;
+                //let url: string = thisRef.CleanURL(gcxLayer.mapServiceConnectionString);
+                let url: string = ServiceHelper.extractConnectionStringValue(gcxLayer.mapServiceConnectionString, 'url');
+                url = thisRef.CleanURL(url);
+                //url += "/" + gcxLayer.id;
 
                 args.essentialsMap.mapServices.forEach(s1 => {
-                    if (s1.serviceURL == url && gcxLayer.id == s1.id ) {
-                        console.log("found layer");
+                    if (s1.serviceUrl == url) {
+
+                        if (s1.layers != null) {
+                            s1.layers.forEach(l1 => {
+                                if (gcxLayer.id == l1.id) {
+
+                                    //add layer directly without reslove?
+                                    //thisRef.OEAddMapServiceFromGecortexLayer(gcxLayer);
+                                    //thisRef.AddServiceItem(s1);
+                                    thisRef.app.command("AddMapService").execute(s1);
+
+                                    return;
+                                }
+                            });
+                        }
+
                     }
                 });
 
@@ -995,6 +1089,10 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
 
             this.remoteGCXSites[this.remoteServiceURLs[this.remoteServiceURLcurrent]] = essentialsSite;
             this.remoteGCXSites[this.remoteServiceURLs[this.remoteServiceURLcurrent]].initialize();
+        }
+        else {
+            //site already loaded, try adding layer
+            this.OEAddMapServiceFromGecortexLayer(gcxLayer);
         }
     }
     

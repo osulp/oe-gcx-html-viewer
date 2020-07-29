@@ -32,7 +32,7 @@ export class OE_AddLayerToLayerListView extends ViewBase {
 
             //console.log(this.checkedBoxMap[prop]);
             context.checkedBoxMap[prop]["customID"] = prop;
-            context.OEAddMapServiceFromGecortexLayer(context.checkedBoxMap[prop],"*");
+            context.CheckToken(context.checkedBoxMap[prop]);
         }
 
         context.CancelClicked();
