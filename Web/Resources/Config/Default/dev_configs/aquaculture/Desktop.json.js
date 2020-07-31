@@ -1532,6 +1532,16 @@
                                     "defaultIconUri": "Resources/Images/Icons/Toolbar/edit-24.png",
                                     "items": [
                                         {
+                                            "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/reports-24.png",
+                                            "text": "Create an aqaculture site report (land-based)",
+                                            "command": "RunWorkflowWithArguments",
+                                            "commandParameter": {
+                                                "workflowId": "Aquaculture_Site_Report",
+                                                "startPointIn": "{{context}}",
+                                                "onlyReportURL": false
+                                            }
+                                        },
+                                        {
                                             "iconUri": "Resources/Images/Icons/Toolbar/identify-24.png",
                                             "text": "@language-menu-identify",
                                             "command": "Identify",

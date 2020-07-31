@@ -13,34 +13,10 @@ export class OE_AquacultureDynamicFormView extends ViewBase {
         super(app, lib);
     }
 
-    /*getPDF = function (event, element, context) {
-        let reportUrl = context.getValue('reportURL');
-        window.open(reportUrl, "_blank");
-    };
-
-    zoomTo = function (event, element, context) {
-        let featureExtent: any = context.getValue('uda_extent');
-        this.app.commandRegistry.commands.ZoomToExtent.execute(featureExtent);
-    };
-
-    clearTitle = function (event, element, context) {
-        element.value = "";
-    };*/
-
-    /*runNewReport = function (event, element, context) {
-        context.setValue("finalFormBtn", 'New');
-        context.completeActivity();
-        this.app.commandRegistry.command("DeactivateView").execute("CustomForm49ModuleView");
+    runFinancialTool = function (event, element, context) {
+        context.myModel.RunFinancialTool();
         return true;
-    };*/
-                
-    /*countyReport = function (event, element, context) {
-        context.myWorkflowContext.setValue("customFormResult", 'county');
-        context.myWorkflowContext.completeActivity();
-        //this.app.commandRegistry.command("DeactivateView").execute("OE_Wildfire_DynamicFormView");
-        context.myModel.closeView();
-        return true;
-    };*/
+    };
         
     cancelForm = function (event, element, context) {
         context.myWorkflowContext.setValue("customFormResult", 'close');

@@ -2,10 +2,14 @@
 <div class="module workflow-form oeAquacultureDynamicForm" dir="ltr">
     <div data-binding="{innerHTML:mainContent}"></div>    
     <h3>Your Location</h3>
-    <div class="your_location">        
+    <div class="your_location">
         <div class="data-hd">Detailed Site Suitability Report</div>
         <div class="data-content">
             <a data-binding="{href:reportLink}" target="_blank" href="">Download Report</a>
+        </div>
+        <div class="data-hd">Financial Planning</div>
+        <div class="data-content">
+            <a data-binding="{@event-onclick:runFinancialTool}" href="javascript:void(0)">Run Financial Planning Tool for this location</a>
         </div>
         <div class="data-hd">Zoning</div>
         <div class="data-content" data-binding="{@text:fieldZoning}"></div>
