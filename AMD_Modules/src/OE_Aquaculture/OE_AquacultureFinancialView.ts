@@ -19,19 +19,6 @@ export class OE_AquacultureFinancialView extends ViewBase {
     sliderPriceTarget: any;
     kChartActive: kendo.dataviz.ui.Chart;
 
-
-    OregonGeolocator: esri.tasks.Locator = new esri.tasks.Locator("https://navigator.state.or.us/arcgis/rest/services/Locators/gc_Composite/GeocodeServer");
-
-    esriLocator: esri.tasks.Locator = new esri.tasks.Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
-
-
-    marker: esri.symbol.PictureMarkerSymbol = new esri.symbol.PictureMarkerSymbol({
-        "height": 28,
-        "width": 28,
-        "url": "./Resources/Images/Custom/search-pointer.png"
-        //"url": "//js.arcgis.com/3.27/esri/dijit/Search/images/search-pointer.png"
-    });
-
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
     }
@@ -39,8 +26,15 @@ export class OE_AquacultureFinancialView extends ViewBase {
     activated() {        
         let thisScope = this;
         this.fitScreenHeight();        
-        this.setSelectedSystem(null,null,this.viewModel.selected_system.get());
+        this.setSelectedSystem(null, null, this.viewModel.selected_system.get());
+        //load map to preserve location in report if clicked without having gone to location tab.
         this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(0)); 
+        //window.setTimeout(() => {
+        //    thisScope.openTab(null, null, thisScope.viewModel.screens_collection_filter.getAt(0));
+        //    //avoid flicker of map loading
+        //    window.setTimeout(() => { thisScope.viewModel.show_loading.set(false);}, 500);
+            
+        //}, 500);
         //this.renderMap();
 
         $(window).resize(function () {
@@ -103,15 +97,14 @@ export class OE_AquacultureFinancialView extends ViewBase {
             try {
 
                 var sources = [{
-                    locator: this.esriLocator,// this.OregonGeolocator,
+                    locator: this.viewModel.esriLocator,// this.OregonGeolocator,
                     locationType: "street",
                     singleLineFieldName: "SingleLine",
                     name: "Oregon GC_Composite",
                     placeholder: "Search",
-                    highlightSymbol: this.marker,
+                    highlightSymbol: this.viewModel.marker,
                     countryCode: "US",
-                    suffix: " OR",
-                    maxResults: 3,
+                    suffix: ", OR",
                     maxSuggestions: 6,
                     enableSuggestions: true,
                     minCharacters: 1
@@ -198,25 +191,6 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 
             });
 
-            this.viewModel.esriLocator = this.esriLocator;
-
-            //this.viewModel.esriLocator = this.OregonGeolocator;
-
-            this.viewModel.esriLocator.on("location-to-address-complete", function (evt) {
-                if (evt.address.address) {
-                    var address = evt.address.address;
-                    var location = esri.geometry.geographicToWebMercator(evt.address.location);
-
-                    thisScope.viewModel.selected_location.set({
-                        "point": new esri.geometry.Point(evt.address.location),
-                        "name": address.Match_addr !== "" ? address.Match_addr : address.Address
-                    });
-
-                    var graphic = new esri.Graphic(location, thisScope.marker, address);
-                    thisScope.viewModel.esriMap.graphics.add(graphic);
-                }
-            });
-
             this.viewModel.esriMap.on("click", function (evt) {
                 //console.log('map click!', evt);
                 thisScope.viewModel.esriMap.graphics.clear();
@@ -288,7 +262,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
     }
 
     getPDFReport() {
-        this.viewModel.show_loading.set(true);
+        this.viewModel.show_loading_pdf.set(true);
         let currentScreen = this.viewModel.screens_collection.get()[this.viewModel.active_screen.get()];
         //clear global variable to store the chart images
         window['oe_report_charts'] = [];
@@ -301,7 +275,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 .filter(sys => sys["selected"].get())
                 .map((sys: any) => {
                     return {
-                        "system": sys.system,
+                        "system": sys.systemTitle,
                         "system_img": sys.img_credit,
                         "system_img_credit": sys.img_credit,
                         "system_overview": sys.overview.replace(/\<\/p>/g, '').replace(/\<p>/g, '')
@@ -334,7 +308,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
                                 field: f.fieldLabel,
                                 fieldVal: f.formattedValue.get() === '<enter value>' ? '' : f.formattedValue.get()
                             };
-                            if (['FINANCIAL SUMMARY','SUMMARY'].indexOf(sd.screen) === -1) {
+                            if (['FINANCIAL SUMMARY','SUMMARY'].indexOf(sd.screen) === -1 && ['Amortization Table'].indexOf(sct.distplayName) === -1) {
                                 //hide financial summary since the data is processed as charts and table images
                                 report_data.screen_data.push(sd);
                             } 
@@ -360,7 +334,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 }) : this.viewModel.esriMap.extent;
                 thisScope.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
                 thisScope.gotoTab(null, null, currentScreen);
-                thisScope.viewModel.show_loading.set(false);
+                thisScope.viewModel.show_loading_pdf.set(false);
                 thisScope.showHideLabelsOnCharts(true);
             }, 100);
         }, 750);
@@ -657,6 +631,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
     }
 
     closeView() {
+        this.deactivated();
         this.viewModel.app.commandRegistry.command("DeactivateView").execute("OE_AquacultureFinancialView");
     }
 
