@@ -17,8 +17,7 @@
     <AssemblyName>Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
+    <IISExpressSSLPort>44345</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -95,6 +94,7 @@
     <Content Include="Libraries\Custom\AMD\OE_SageGrouseDevRegistry.js" />
     <Content Include="Libraries\Custom\AMD\OE_SageGrouseDevSiting.js" />
     <Content Include="Libraries\Custom\AMD\OE_Search.js" />
+    <Content Include="Libraries\Custom\AMD\OE_SearchToWorkflow.js" />
     <Content Include="Libraries\Custom\AMD\OE_Utility.js" />
     <Content Include="Libraries\Custom\AMD\OE_Wildfire.js" />
     <Content Include="Libraries\Custom\AMD\OtherTemplate.js" />
