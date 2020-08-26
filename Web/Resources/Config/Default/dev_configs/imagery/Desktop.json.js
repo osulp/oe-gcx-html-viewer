@@ -4141,14 +4141,14 @@
                                             "description": "Use a swipe tool to view imagery",
                                             "command": "RunWorkflowWithArguments",
                                             "commandParameter": {
-                                                "workflowId": "runWorkflowCommands",
+                                                "workflowId": "runImageryCommands",
                                                 "command": "compare"
                                             }                                            
                                         },
                                         {
                                             "text": "Route Options",
                                             "command": "RunWorkflowById",
-                                            "commandParameter": "AquacultureSiteReport"
+                                            "commandParameter": "runImageryCommands"
                                         },
                                         {
                                             "iconUri": "Resources/Images/Icons/Toolbar/identify-24.png",
@@ -6992,7 +6992,7 @@
                         "moduleName": "Site",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                         "configuration": {
-                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/Aquaculture",
+                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/imagery_test",
                             "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                             "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                             "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined"

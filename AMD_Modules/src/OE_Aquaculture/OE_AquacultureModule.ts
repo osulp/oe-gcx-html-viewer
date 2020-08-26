@@ -20,16 +20,26 @@ export class OE_AquacultureModule extends ModuleBase {
         
         var site = (<any>this).app.site;       
         Chart.prototype.initialize();
+        
+        
         //var map = new esri.Map("tempmap");
         //var essentialsSite = new Site("https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root_oreall", map);
         
-        //dojo.connect(essentialsSite, "onInitialized", this._onSiteInitialized);
-        //dojo.connect(essentialsSite, "onInitializationFailed", this._onSiteInitializationFailed);
-        //essentialsSite.initialize();
+        //dojo.connect(site, "onInitialized", this._onSiteInitialized);
+        //dojo.connect(site, "onInitializationFailed", this._onSiteInitializationFailed);
+        //site.initialize();
+        //if (site && site.isInitialized) {
+        //    this._onSiteInitialized(site);
+        //}
+        //else {
+        //    this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, (args) => {
+        //        this._onSiteInitialized(args);
+        //    });
+        //}
     }
 
     _onSiteInitialized(site) {
-        console.log('site?', site);
+        
     }
     _onSiteInitializationFailed(args) {
         console.log('failed', args);

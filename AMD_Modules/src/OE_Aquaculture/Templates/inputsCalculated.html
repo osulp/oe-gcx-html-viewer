@@ -39,7 +39,10 @@
                         <div class="div-table production" data-binding="{@source:fields_filter}">
                             <div class="div-table-row" data-binding="{@template-for:fields_filter}">
                                 <div data-binding="{class:tableDisplayClass}">
-                                    <span class="input-header" data-binding="{@text:fieldName}"></span>
+                                    <div class="tooltip">
+                                        <span class="input-header" data-binding="{@text:fieldLabel}"> </span>
+                                        <span data-binding="{@text:desc}" class="tooltiptext"></span>
+                                    </div>
                                 </div>
                                 <div data-binding="{class:tableDisplayClass}"><span data-binding="{@text:formattedValue}"></span></div>
                             </div>

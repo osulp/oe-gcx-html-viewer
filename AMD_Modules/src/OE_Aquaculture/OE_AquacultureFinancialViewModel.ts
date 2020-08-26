@@ -82,6 +82,9 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     //Summary Button
     show_summary_btn: Observable<boolean> = new Observable(false);
     //UPDATE State
+    show_report_name_input: Observable<boolean> = new Observable(false);
+    report_number: number = 0;
+    report_name: Observable<string> = new Observable('scenario1');
     show_loading_pdf: Observable<boolean> = new Observable(false);
     show_loading: Observable<boolean> = new Observable(false);
     show_all_for_report: Observable<boolean> = new Observable(false);
@@ -197,6 +200,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         }
 
         this.app.registerActivityIdHandler("runFinancialPlnModule", (wc) => {
+
             this.workflowContext = $.extend({}, wc);
 
             //this.resetSystemFilters();
@@ -210,7 +214,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
             this.setSystems(wc);
 
-            this.setScreens(wc);
+            this.setScreens();
 
             this.transportation_lut = wc.getValue('transportation').features ? wc.getValue('transportation').features.map(f => {
                 return {
@@ -225,6 +229,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             } else {
                 let defaultLocation = new esri.geometry.Point(-123.29560542046448, 44.56679003060179);
                 this.selected_location.set({ "point": defaultLocation, "name": "OSU Agriculuture Fields" });
+                this.has_location.set(true);
             }
             let inputPnt = this.selected_location.get().point;
             this.esriLocator.locationToAddress(inputPnt, 100);
@@ -498,13 +503,13 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         //}
     }
 
-    setScreens(wc) {
+    setScreens() {
         //////////
         // Screen Config
         // Create obj of screens and fields to display
         // Screens -> sections -> fields heirarchy
         //////////////
-
+        let wc = this.workflowContext;
         let _screens = wc.getValue('screens').features
             ? wc.getValue('screens').features
                 .map(s => {
@@ -1068,7 +1073,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                                     this.calculateAmortization();
                                 }
                                 //check if net gain/loss or profitability and change display class to color accordingly.
-                                if (['annualNetGainLoss', 'grossProfitMarginRatio', 'annualNetGainLossLoan'].indexOf(f.fieldCalVar) !== -1) {
+                                if (['annualNetGainLoss', 'grossProfitMarginRatio', 'annualNetGainLossLoan', '_annualNetGainLoss', '_grossProfitMarginRatio', '_annualNetGainLossLoan'].indexOf(f.fieldCalVar) !== -1) {
                                     f.tableDisplayClass.set(parseFloat(f.value.get().replace(/\,/g,'')) > 0 ? 'div-table-cell InputCalcRevenue' : 'div-table-cell InputCalcExpense');
                                 }
                                 //recurssivley search for other dependent variables
@@ -1718,7 +1723,18 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         
     }
 
+    _resetValues() {
+        let closestMarkets = [];
+        this.closest_markets.get().forEach(m => closestMarkets.push(m));
+        let closestFeedSuppliers = [];
+        this.feed_suppliers.get().forEach(f => closestFeedSuppliers.push(f));
+        this.setScreens();
+        this.show_warning.set(false);
+        this.closest_markets.set(closestMarkets);
+        this.feed_suppliers.set(closestFeedSuppliers);
+    }
+
     _resetDefaults() {                
-        this._resetMap();
+        this._resetMap();        
     }
 }
