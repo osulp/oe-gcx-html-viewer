@@ -19,7 +19,7 @@
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <Use64BitIISExpress />
-    <TypeScriptToolsVersion>3.4</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>3.6</TypeScriptToolsVersion>
   </PropertyGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -95,6 +95,9 @@
     <Content Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingCompareSummaryView.html" />
     <Content Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingSummaryView.html" />
     <Content Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingModule.css" />
+    <Content Include="src\OE_SearchToWorkflow\CSS\OE_SearchToWorkflow.css" />
+    <Content Include="src\OE_SearchToWorkflow\readme.txt" />
+    <Content Include="src\OE_SearchToWorkflow\OE_SearchToWorkflowView.html" />
     <Content Include="src\OE_ShowHideMeasurementLabels\README.txt" />
     <Content Include="src\OE_Utility\readme.txt" />
     <Content Include="src\OE_Wildfire\Language.json" />
@@ -165,6 +168,9 @@
     <TypeScriptCompile Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingCompareSummaryView.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingSummaryView.ts" />
     <TypeScriptCompile Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingViewModel.ts" />
+    <TypeScriptCompile Include="src\OE_SearchToWorkflow\OE_SearchToWorkflowModule.ts" />
+    <Content Include="src\OE_SearchToWorkflow\OE_SearchToWorkflowView.ts" />
+    <Content Include="src\OE_SearchToWorkflow\OE_SearchToWorkflowViewModel.ts" />
     <TypeScriptCompile Include="src\OE_Search\OE_SearchModule.ts" />
     <TypeScriptCompile Include="src\OE_Search\OE_SearchProvider.ts" />
     <Content Include="src\OE_ShowHideMeasurementLabels\OE_ShowHideMeasurementLabelsModule.ts" />

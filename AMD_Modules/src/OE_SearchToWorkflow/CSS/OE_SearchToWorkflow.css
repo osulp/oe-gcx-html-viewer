@@ -1,0 +1,44 @@
+﻿/*css*/
+    .OE_SearchToWorkflowView {
+        float:right;
+    }
+
+    .oeSearchToWorkflow-module-view {
+    
+    }
+
+    .oeSearchToWorkflow-module-view button {
+        border: 1px solid #D9D9D9;
+        border-style: solid;
+        border-width: 1px;
+        padding: .4em;
+        margin-right: 2px;
+    }
+
+    .oeSearchToWorkflow-module-view div {
+        position: absolute;    
+        display: block;
+        background-color: white;
+        border: 1px solid #D9D9D9;    
+    }
+
+    .oeSearchToWorkflow-module-view div a {
+        padding: 8px;
+        display: block;
+        background-color: #fff;
+        text-align: left;
+        color: #000;
+        text-decoration: none;
+    }
+    
+    .oeSearchToWorkflow-module-view div a:hover {
+        color: #fff;
+        background-color: #4C4C4C;
+        text-decoration: none;
+    }
+
+        .oeSearchToWorkflow-module-view div a.oeSearchToWorkflowSelected {
+            color: #fff;
+            background-color: #4C4C4C;
+            text-decoration: none;
+        }
