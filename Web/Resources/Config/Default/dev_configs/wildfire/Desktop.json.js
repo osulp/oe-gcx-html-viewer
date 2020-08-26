@@ -87,6 +87,12 @@
             ],
             "modules": [
                 {
+                    "moduleName": "OE_SearchToWorkflow",
+                    "libraryId": "OE_AMD",
+                    "require": "geocortex/oe_amd/OE_SearchToWorkflow/OE_SearchToWorkflowModule",
+                    "configuration": {}
+                },
+                {
                     "moduleName": "OE_AddLayerToLayerList",
                     "libraryId": "OE_AMD",
                     "require": "geocortex/oe_amd/OE_AddLayerToLayerList/OE_AddLayerToLayerListModule",
