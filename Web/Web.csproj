@@ -17,8 +17,7 @@
     <AssemblyName>Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
+    <IISExpressSSLPort>44345</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -95,6 +94,7 @@
     <Content Include="Libraries\Custom\AMD\OE_SageGrouseDevRegistry.js" />
     <Content Include="Libraries\Custom\AMD\OE_SageGrouseDevSiting.js" />
     <Content Include="Libraries\Custom\AMD\OE_Search.js" />
+    <Content Include="Libraries\Custom\AMD\OE_SearchToWorkflow.js" />
     <Content Include="Libraries\Custom\AMD\OE_Utility.js" />
     <Content Include="Libraries\Custom\AMD\OE_Wildfire.js" />
     <Content Include="Libraries\Custom\AMD\OtherTemplate.js" />
@@ -107,6 +107,9 @@
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Tablet.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\imagery\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\imagery\Handheld.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\imagery\Tablet.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\dev_reg\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\dev_reg\Desktop.prod.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\aquaculture\Desktop.json.js" />
@@ -139,6 +142,7 @@
     <Content Include="Resources\Images\Custom\zoom-next-24.png" />
     <Content Include="Resources\Images\Custom\zoom-previous-24.png" />
     <Content Include="Resources\Scripts\dojo-requires.js" />
+    <Content Include="Resources\Scripts\esri\dijit\images\vDrag.png" />
     <Content Include="Resources\Scripts\kendo.extract.min.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\daterangepicker.min.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\easy-responsive-tabs.js" />

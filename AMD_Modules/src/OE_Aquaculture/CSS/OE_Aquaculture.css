@@ -9,20 +9,20 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1.2em;
 }
+    
 
 .modal-container {
     min-width: 90% !important;
     max-width: 1400px !important;
     min-height: 90% !important;
     max-height: 1400px !important;
-    /*max-width:900px !important;*/
 }
 
-/*.toolbar-group.bound-visible.oe-aqua img{
+.toolbar-group.bound-visible.oe-aqua img{
     width:16px;
     height:16px;
     
-}*/
+}
 
 #loading-wrapper-pdf, #loading-wrapper {
     background-color: white;
@@ -108,7 +108,7 @@ header {
 }
     header div{
         /*text-align:right;*/
-        padding:5px;
+        padding:5px 25px 5px;
         font-size:12px;
         color:#1A72C4;
     }
@@ -123,8 +123,6 @@ header {
     width:100%;
     display:table-row;
 }
-
-
 
 .header-bar-left {
     /*position: absolute;
@@ -167,6 +165,31 @@ header {
     vertical-align:middle;
 }
 
+.header-bar-wrapper #report-name {
+    position: absolute;
+    right: 20px;
+    top: 45px;
+    /*padding: 5px;*/
+    z-index: 2;
+    background: #d7e1e7;
+    border: 1px solid black;
+    border-radius: 5px;
+    color: black;
+    width: 200px;
+}
+
+#report-name-form{
+    position:relative;
+    padding:10px 0;
+}
+
+#report-name-form .close-btn {
+    position: absolute;
+    right: -40px;
+    top: -2px;
+}
+
+
 
 .clear{
     float:none;
@@ -181,7 +204,7 @@ header {
     /*border-top: 1px solid #1A72C4;*/
     padding: 10px 0;
     background-color: #ddd;
-    min-height: 50px;
+    /*min-height: 50px;*/
     z-index: 100;
 }
 
@@ -249,7 +272,7 @@ header {
         width: 140px;
         position: absolute;
         right: 6px;
-        top: 6px;
+        top: 5px;
     }
 
         .oe-btn-wrapper.summary:hover {
@@ -939,7 +962,7 @@ h2.screen-header {
 .tooltip {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted black;
+    border-bottom: 1px dotted black !important;
 }
 
 .slider-handle-wrapper{

@@ -35,7 +35,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
         this.searchWorkflowID = config.searchWorkflowID;
         this.searchArgumentName = config.searchArgumentName;
         this.defaultSearchOption = config.defaultSearchOption || "site";
-
+        
         let tmpText = config.workflowSearchText || "Address Search";
         this.workflowSearchText.set(tmpText);
                 
@@ -50,7 +50,6 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
     }
    
     _onSiteInitialized(site) {
-
         this.app.eventRegistry.event("SearchProgressEvent").subscribe(this, (args) => {
             this.searchProgressEvent(args);
         });
@@ -60,13 +59,16 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
         });*/
 
         //add search view combo box, SearchView
-        this.app.commandRegistry.command("ActivateView").execute("OE_SearchToWorkflowView");
-
-        //set default selected option
-        if (this.defaultSearchOption == "workflow")
-            this.searchToWorkflow();
-        else
-            this.searchToDefault();
+        let thisScope = this;
+        window.setTimeout(() => {
+            thisScope.app.commandRegistry.command("ActivateView").execute("OE_SearchToWorkflowView");
+            //set default selected option
+            if (thisScope.defaultSearchOption == "workflow")
+                thisScope.searchToWorkflow();
+            else
+                thisScope.searchToDefault();
+        }, 1000);
+        
     }
 
     searchToDefault() {
@@ -115,7 +117,8 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
             }
         }
 
-        if (this.eventCount >= 4)
+        if (this.eventCount >= 4) {
             this.eventCount = 0;
+        }   
     }    
 }

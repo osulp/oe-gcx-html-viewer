@@ -29,6 +29,7 @@ require(["esri/urlUtils"]);
 require(["esri/SnappingManager"]);
 require(["esri/geometry/geometryEngineAsync"], function (m) { esri.geometry.geometryEngineAsync = m; });
 
+
 require(["esri/arcgis/utils"]);
 require(["esri/arcgis/Portal"]);
 require(["esri/layers/FeatureLayer"]);
@@ -40,6 +41,7 @@ require(["esri/virtualearth/VETiledLayer"]);
 require(["esri/dijit/Search"]);
 require(["esri/dijit/HomeButton"]);
 require(["esri/dijit/BasemapToggle"]);
+require(["esri/dijit/LayerSwipe"]);
 require(["esri/geometry/webMercatorUtils"], function (m) { esri.geometry.webMercatorUtils = m; });
 
 require(["moment/moment"], function(moment) {

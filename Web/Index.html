@@ -18,19 +18,19 @@
 
     <link rel="stylesheet" href="Resources/Styles/splash.css" />
     <style>
-		#oeLoginNotice, #myProgress {
-			display:block;
+        #oeLoginNotice, #myProgress {
+            display: block;
             width: 95%;
             background-color: #fff;
-			text-align: center;
-			font-weight: bold;
-			height:30px;
-			color: #4273b7;
-			font-family: "Segoe UI", "Helvetica Neue", "Droid Sans", Helvetica, Arial, sans-serif;
-		}
+            text-align: center;
+            font-weight: bold;
+            height: 30px;
+            color: #4273b7;
+            font-family: "Segoe UI", "Helvetica Neue", "Droid Sans", Helvetica, Arial, sans-serif;
+        }
 
         #oeLoginNotice {
-            display:none;
+            display: none;
         }
     </style>
 
@@ -65,14 +65,14 @@
 
         var viewerConfig = {
             "configurations": {
-                "default": "Resources/Config/Default/dev_configs/aquaculture/Desktop.json.js",                
-                "default_original": "Resources/Config/Default/" + shellName + ".json.js"                
+                "default": "Resources/Config/Default/dev_configs/aquaculture/Desktop.json.js",
+                "default_original": "Resources/Config/Default/" + shellName + ".json.js"
             },
             "viewerConfigUri": ""
         };
-      
+
         new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize({
-            onSiteInitialized: function (app, loader) {                
+            onSiteInitialized: function (app, loader) {
                 geocortex.config.io.timeout = 180000; // 180 seconds
             }
         });
@@ -98,4 +98,4 @@
     </script>
 
 </body>
-    </html>
+</html>

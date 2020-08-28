@@ -1,8 +1,9 @@
-﻿* {
-    box-sizing: border-box
+﻿/* Style the tab */
+
+.tab *, .tabcontent * {
+    box-sizing: border-box;
 }
 
-/* Style the tab */
 .tab {
     /*float: left;*/
     border: 1px solid #ccc;

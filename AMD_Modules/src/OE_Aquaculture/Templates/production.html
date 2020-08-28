@@ -11,13 +11,24 @@
                             <div data-binding="{@source:@context}{@template-selector:uiType}">
                                 <div data-binding="{@template-select:dropdown}">
                                     <center>
-                                        <h3>Market Size (lbs)</h3>
+                                        <h3 class="tooltip">
+                                            <span class="input-header">Market Size (lbs)</span>
+                                            <span class="tooltiptext">
+                                                Select the size of your whole fish product at which you will sell it to the market
+                                            </span>
+                                        </h3>
                                         <div data-binding="{@source:@context}{@template:geocortex/oe_amd/OE_Aquaculture/Templates/dropdown.html}"></div>
                                     </center>
                                 </div>
                                 <div data-binding="{@template-select:slider}">
-                                    <center><h3>Annual Harvest (lbs)</h3>
-                                        </center>
+                                    <center>
+                                        <h3 class="tooltip">
+                                            <span class="input-header">Annual Harvest (lbs)</span>
+                                            <span class="tooltiptext">
+                                                Select the size of your annual harvest
+                                            </span>
+                                        </h3>
+                                    </center>
                                     <div data-binding="{@source:@context}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/sliderKendo.html}"></div>
                                 </div>
                             </div>
@@ -77,7 +88,10 @@
                                         </div>-->
                                         <div class="div-table-row" data-binding="{@template-for:fields_filter}">
                                             <div data-binding="{class:tableDisplayClass}">
-                                                <span class="input-header" data-binding="{@text:fieldName}"></span>
+                                                <div class="tooltip">
+                                                    <span class="input-header" data-binding="{@text:fieldLabel}"> </span>
+                                                    <span data-binding="{@text:desc}" class="tooltiptext"></span>
+                                                </div>
                                             </div>
                                             <div data-binding="{class:class}"><span data-binding="{@text:formattedValue}"></span></div>
                                         </div>

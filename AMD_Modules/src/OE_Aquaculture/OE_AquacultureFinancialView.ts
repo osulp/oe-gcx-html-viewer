@@ -71,6 +71,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
             if (ctx.screen === 'Financial Summary') {
                 this.viewModel.renderCharts();
             }
+            this.viewModel.show_summary_btn.set(this.viewModel.active_screen.get() < this.viewModel.screens_collection.length() - 1);
         }
     } 
 
@@ -215,6 +216,15 @@ export class OE_AquacultureFinancialView extends ViewBase {
         
     }
 
+    resetValues(evt, el, ctx) {
+        //let activeScreen = this.viewModel.active_screen.get();
+        this.viewModel.show_loading.set(true);
+        let screen = this.viewModel.screens_collection.get().filter(s => s['screenOrder'] === (this.viewModel.active_screen.get() + 1).toString())[0];
+        this.viewModel._resetValues();
+        this.openTab(null, null, screen);
+        this.viewModel.show_loading.set(false);
+    }
+
     print(event, element, context) {
         event.preventDefault();
         var html = '<!DOCTYPE html><html><head><title>FinancialPlanningPrint</title></head><body onload="window.print();window.close();">';
@@ -262,12 +272,17 @@ export class OE_AquacultureFinancialView extends ViewBase {
     }
 
     getPDFReport() {
-        this.viewModel.show_loading_pdf.set(true);
+        this.viewModel.show_report_name_input.set(false);
+        this.viewModel.show_loading_pdf.set(true);        
         let currentScreen = this.viewModel.screens_collection.get()[this.viewModel.active_screen.get()];
         //clear global variable to store the chart images
         window['oe_report_charts'] = [];
         this.gotoTab(null, null, this.viewModel.screens_collection.get().filter(s => s['screen'] === "Financial Summary")[0]);
         this.showHideLabelsOnCharts(true);
+        //render map if not already rendered for the 
+        if (typeof this.viewModel.esriMap == "undefined" || this.viewModel.esriMap == null) {
+            this.gotoTab(null, null, this.viewModel.screens_collection.get().filter(s => s['screen'] === "Location")[0]);
+        }
         let thisScope = this;
         //To pass json to workflow, you have to double quote each attribute...
         let report_data = {
@@ -308,7 +323,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
                                 field: f.fieldLabel,
                                 fieldVal: f.formattedValue.get() === '<enter value>' ? '' : f.formattedValue.get()
                             };
-                            if (['FINANCIAL SUMMARY','SUMMARY'].indexOf(sd.screen) === -1 && ['Amortization Table'].indexOf(sct.distplayName) === -1) {
+                            if (['FINANCIAL SUMMARY','SUMMARY'].indexOf(sd.screen) === -1 && ['Amortization Table'].indexOf(sct.displayName) === -1) {
                                 //hide financial summary since the data is processed as charts and table images
                                 report_data.screen_data.push(sd);
                             } 
@@ -321,13 +336,17 @@ export class OE_AquacultureFinancialView extends ViewBase {
             });
             window.setTimeout(() => {
                 report_data.charts = window['oe_report_charts'];
-                let sel_loc = this.viewModel.selected_location.get()
+                let sel_loc = this.viewModel.selected_location.get();
+                let sel_loc_point = sel_loc.point.spatialReference.wkid !== 4326
+                    ? new esri.geometry.Point(esri.geometry.webMercatorToGeographic(sel_loc.point))
+                    : sel_loc.point;
                 var workflowArgs: any = {};
                 workflowArgs.workflowId = "Get_Financial_Planning_Report";
                 workflowArgs.report_data = JSON.stringify(report_data);
-                workflowArgs.aoi_geometry = sel_loc.point;
+                workflowArgs.report_name = thisScope.viewModel.report_name.get(),
+                workflowArgs.aoi_geometry = sel_loc_point;
                 workflowArgs.aoi_name = sel_loc.name;
-                workflowArgs.aoi_latlong = sel_loc.point.y.toFixed(2) + ", " + sel_loc.point.x.toFixed(2);
+                workflowArgs.aoi_latlong = sel_loc_point.y.toFixed(2) + ", " + sel_loc_point.x.toFixed(2);
                 workflowArgs.map_extent = typeof this.viewModel.esriMap == "undefined" || this.viewModel.esriMap == null ? new esri.geometry.Extent({
                     "xmin": -122.68, "ymin": 45.53, "xmax": -122.45, "ymax": 45.6,
                     "spatialReference": { "wkid": 4326 }
@@ -366,6 +385,20 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 });               
             }
         });
+    }
+    showPDFReportName() {
+        if (this.viewModel.show_report_name_input.get()) {
+            this.viewModel.show_report_name_input.set(false);
+        } else {
+            this.viewModel.report_number++;
+            this.viewModel.report_name.set('Scenario ' + this.viewModel.report_number.toString() + ': ' + this.viewModel.selected_system_text.get());
+            this.viewModel.show_report_name_input.set(true);
+        }
+    }
+
+    hideReportNameInput() {
+        this.viewModel.show_report_name_input.set(false);
+        this.viewModel.report_number--;
     }
 
     showHideLabelsOnCharts(show: boolean) {
@@ -471,7 +504,6 @@ export class OE_AquacultureFinancialView extends ViewBase {
             //this.app.viewManager.getViewById("OE_AquacultureFinancialView").title.set("Aquaculture Financial Planning for " + this.viewModel.selected_system.get().system);
             this.viewModel.refreshScreenFilters();
         } 
-        this.viewModel.show_summary_btn.set(this.viewModel.active_screen.get() < this.viewModel.screens_collection.length() - 1);
         this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(curIndx + 1));
         //if (this.viewModel.active_screen.get() === 2) {
         //    this.createLineChart();

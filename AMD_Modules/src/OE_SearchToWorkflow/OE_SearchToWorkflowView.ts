@@ -9,20 +9,21 @@ import { OE_SearchToWorkflowViewModel } from "../OE_SearchToWorkflow/OE_SearchTo
 export class OE_SearchToWorkflowView extends ViewBase {
 
     app: ViewerApplication;
+    viewModel: OE_SearchToWorkflowViewModel;
     
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
     }
 
     toggleSearchOptions(event, element, context) {
-        (<OE_SearchToWorkflowViewModel>context).toggleSearchOptions( !(<OE_SearchToWorkflowViewModel>context).searchOptionsVisible.get() );
+        this.viewModel.toggleSearchOptions( !this.viewModel.searchOptionsVisible.get() );
     }
     
     searchToDefault(event, element, context) {
-        (<OE_SearchToWorkflowViewModel>context).searchToDefault();
+        this.viewModel.searchToDefault();
     }
 
     searchToWorkflow(event, element, context) {
-        (<OE_SearchToWorkflowViewModel>context).searchToWorkflow();
+        this.viewModel.searchToWorkflow();
     }
 }

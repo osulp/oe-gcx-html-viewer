@@ -12,14 +12,13 @@
     <DebugSymbols>true</DebugSymbols>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
+    <IISExpressSSLPort>44325</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <Use64BitIISExpress />
-    <TypeScriptToolsVersion>3.4</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>3.7</TypeScriptToolsVersion>
   </PropertyGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -60,6 +59,10 @@
     <Content Include="src\OE_Hopscotch\CSS\OE_HopscotchModule.css" />
     <Content Include="src\OE_Hopscotch\ModuleJS.txt" />
     <Content Include="src\OE_Hopscotch\OE_HopscotchView.html" />
+    <Content Include="src\OE_Imagery\OE_ImageryViewCompare1.html" />
+    <Content Include="src\OE_Imagery\OE_ImageryViewCompare2.html" />
+    <Content Include="src\OE_Imagery\OE_ImageryViewResults.html" />
+    <Content Include="src\OE_Imagery\readme.txt" />
     <Content Include="src\OE_OITT\readme.txt" />
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsAreaView.html" />
     <Content Include="src\OE_OWRTReports\readme.txt" />
@@ -123,6 +126,7 @@
     <Content Include="src\OE_OITT\OE_OITTView.html" />
     <Content Include="src\OE_AddLayerToLayerList\CSS\OE_AddLayerToLayerListModule.css" />
     <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListView.html" />
+    <Content Include="src\OE_Imagery\CSS\OE_ImageryModule.css" />
     <Content Include="src\Template\CSS\TemplateModule.css" />
     <Content Include="src\OE_OWRTReports\Language.json" />
     <Content Include="src\OE_LayerActions\Language.json" />
@@ -131,6 +135,9 @@
     <Content Include="src\OE_ConvertGeometry\Language.json" />
     <Content Include="src\OE_Aquaculture\Language.json" />
     <Content Include="src\OE_Hopscotch\Language.json" />
+    <None Include="src\OE_Aquaculture\CSS\calcite.dijit.css.old" />
+    <None Include="src\OE_Aquaculture\CSS\calcite.esri.css.old" />
+    <Content Include="src\OE_Imagery\Language.json" />
     <None Include="src\Template\Language.json" />
     <None Include="src\Template\TemplateView.html" />
   </ItemGroup>
@@ -146,6 +153,9 @@
     <Content Include="src\OE_Hopscotch\OE_HopscotchView.ts" />
     <Content Include="src\OE_Hopscotch\OE_HopscotchModule.ts" />
     <TypeScriptCompile Include="src\OE_HyperlinkBanner\OE_HyperlinkBannerModule.ts" />
+    <TypeScriptCompile Include="src\OE_Imagery\OE_ImageryViewCompare1.ts" />
+    <TypeScriptCompile Include="src\OE_Imagery\OE_ImageryViewCompare2.ts" />
+    <TypeScriptCompile Include="src\OE_Imagery\OE_ImageryViewResults.ts" />
     <TypeScriptCompile Include="src\OE_OITT\OE_JsonAdapter.ts" />
     <TypeScriptCompile Include="src\OE_OWRTReports\OE_JsonAdapter.ts" />
     <Content Include="src\OE_OWRTReports\OE_OWRTReportsAreaViewModel.ts" />
@@ -195,6 +205,8 @@
     <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListModule.ts" />
     <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListView.ts" />
     <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListViewModel.ts" />
+    <Content Include="src\OE_Imagery\OE_ImageryModule.ts" />
+    <Content Include="src\OE_Imagery\OE_ImageryViewModel.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\OE_Search\CSS\" />
