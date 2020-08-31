@@ -43,6 +43,10 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
         this.searchWorkflowID = config.searchWorkflowID;
         this.searchArgumentName = config.searchArgumentName;
         this.defaultSearchOption = config.defaultSearchOption || "site";
+
+        this.suggestionSearchDelayMS = config.suggestionSearchDelayMS || 250;
+        this.minLengthToSearch = config.minLengthToSearch || 3;
+        
         
         let tmpText = config.workflowSearchText || "Address Search";
         this.workflowSearchText.set(tmpText);
@@ -155,7 +159,8 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
             return;
         }
 
-        if (event.keyCode == 8 || event.keyCode == 46 || (event.keyCode >= 48 && event.keyCode <= 90) || (event.keyCode >= 96 && event.keyCode <= 111)) {
+        //event.keyCode == 8 || event.keyCode == 46 ||
+        if (event.keyCode == 8 || (event.keyCode >= 48 && event.keyCode <= 90) || (event.keyCode >= 96 && event.keyCode <= 111)) {
             this.searchSuggestStartTimeout();
         }
     }
