@@ -16,13 +16,22 @@
     }
 
     .oeSearchToWorkflow-module-view div {
-        position: absolute;    
+        position: absolute;
         display: block;
         background-color: white;
-        border: 1px solid #D9D9D9;    
+        border: 1px solid #D9D9D9;
     }
 
-    .oeSearchToWorkflow-module-view div a {
+.oeSearchToWorkflowSuggest-module-view {
+    position: absolute;
+    display: block;
+    background-color: white;
+    border: 1px solid #D9D9D9;
+    right: 10px;
+    margin-top: 37px;
+}
+
+    .oeSearchToWorkflow-module-view div a, .oeSearchToWorkflowSuggest-module-view a {
         padding: 8px;
         display: block;
         background-color: #fff;
@@ -30,15 +39,15 @@
         color: #000;
         text-decoration: none;
     }
-    
-    .oeSearchToWorkflow-module-view div a:hover {
+
+    .oeSearchToWorkflow-module-view div a:hover, .oeSearchToWorkflowSuggest-module-view a:hover {
         color: #fff;
         background-color: #4C4C4C;
         text-decoration: none;
     }
 
-        .oeSearchToWorkflow-module-view div a.oeSearchToWorkflowSelected {
-            color: #fff;
-            background-color: #4C4C4C;
-            text-decoration: none;
-        }
+    .oeSearchToWorkflow-module-view div a.oeSearchToWorkflowSelected, .oeSearchToWorkflowSuggest-module-view a:hover {
+        color: #fff;
+        background-color: #4C4C4C;
+        text-decoration: none;
+    }

@@ -14,7 +14,18 @@
             "visible": true,
             "region": "BannerContentRegion",
             "configuration": {}
-        }],
+        },
+		{
+            "id": "OE_SearchToWorkflowSuggestView",
+            "require": "geocortex/oe_amd/OE_SearchToWorkflow/OE_SearchToWorkflowSuggestView",
+            "markup": "geocortex/oe_amd/OE_SearchToWorkflow/OE_SearchToWorkflowSuggestView.html",
+            "viewModelId": "OE_SearchToWorkflowViewModel",
+            "title": "OE Search Suggestion",
+            "visible": true,
+            "region": "BannerContentRegion",
+            "configuration": {}
+        }
+		],
     "viewModels": [
         {
             "id": "OE_SearchToWorkflowViewModel",
@@ -23,9 +34,11 @@
                 "searchWorkflowID": "Geocoder_Search",
                 "searchArgumentName": "searchIn",
                 "workflowSearchText": "Search for location",
-                "defaultSearchOption": "workflow"
+                "defaultSearchOption": "workflow",
+				"suggestionSearchDelayMS":250
             }
-        }]
+        }
+		]
 },
 
 -------------------------------------
