@@ -12,13 +12,14 @@
     <DebugSymbols>true</DebugSymbols>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>44325</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <Use64BitIISExpress />
-    <TypeScriptToolsVersion>3.7</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>3.4</TypeScriptToolsVersion>
   </PropertyGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -98,6 +99,7 @@
     <Content Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingSummaryView.html" />
     <Content Include="src\OE_SageGrouseDevSiting\OE_SageGrouseDevSitingModule.css" />
     <Content Include="src\OE_SearchToWorkflow\CSS\OE_SearchToWorkflow.css" />
+    <Content Include="src\OE_SearchToWorkflow\OE_SearchToWorkflowSuggestView.html" />
     <Content Include="src\OE_SearchToWorkflow\readme.txt" />
     <Content Include="src\OE_SearchToWorkflow\OE_SearchToWorkflowView.html" />
     <Content Include="src\OE_ShowHideMeasurementLabels\README.txt" />
@@ -179,6 +181,8 @@
     <TypeScriptCompile Include="src\OE_SearchToWorkflow\OE_SearchToWorkflowModule.ts" />
     <Content Include="src\OE_SearchToWorkflow\OE_SearchToWorkflowView.ts" />
     <Content Include="src\OE_SearchToWorkflow\OE_SearchToWorkflowViewModel.ts" />
+    <Content Include="src\OE_SearchToWorkflow\OE_SearchToWorkflowSuggestView.ts" />
+    <Content Include="src\OE_SearchToWorkflow\OE_SearchToWorkflowSuggestViewModel.ts" />
     <TypeScriptCompile Include="src\OE_Search\OE_SearchModule.ts" />
     <TypeScriptCompile Include="src\OE_Search\OE_SearchProvider.ts" />
     <Content Include="src\OE_ShowHideMeasurementLabels\OE_ShowHideMeasurementLabelsModule.ts" />
