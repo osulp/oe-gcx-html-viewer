@@ -266,8 +266,12 @@ export class OE_AquacultureFinancialView extends ViewBase {
 
     fitScreenHeight() {
         //adjust scroll window based on modal-container height
-        let modal_height = $('.modal-container').height() - $('.modal-container-inner').height() + "px";
-        $('.panel-scroll-container').css("maxHeight", modal_height);
+        let modal_height = $('.modal-container').height() - $('.modal-container-inner').height();
+        if (modal_height > 0) {
+            $('.panel-scroll-container').css("maxHeight", (modal_height + "px"));
+        } else {
+            $("#fin-pln-footer").css("display", "none");
+        }
         //console.log('panel height: ', modal_height);
     }
 

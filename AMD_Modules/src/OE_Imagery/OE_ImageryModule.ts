@@ -27,27 +27,7 @@ export class ImageryModule extends ModuleBase {
 
     _onSiteInitialized(site) {
         //alert(this.app.getResource(this.libraryId, "language-hello-world-initialized"));
-        $("#map").append('<div id="swipeDiv"></div>');
-        //swipe
-        let map = site.essentialsMap.getMap();
-        let swipeLayer = site.essentialsMap.getMap().layerIds[0]
-        //swipe       
-        var swipeWidget = new esri.dijit.LayerSwipe({
-            type: "vertical",  //Try switching to "scope" or "horizontal"
-            map: map,
-            top: 500,
-            layers: [swipeLayer]
-        }, "swipeDiv");
-        swipeWidget.startup();
-
-        window.setTimeout(() => {
-            $(".vertical").css("top", "-" + $(".vertical")[0].clientHeight + "px");
-        }, 4000);
-        $(".vertical").on("dragstop dragstart click dblclick pointerdown selectstart ", (arg) => {
-            window.setTimeout(function () {
-                $(".vertical").css("top", "-" + $(".vertical").css("top"));
-            }, 1500);
-        });
+        
     }
     _onSiteInitializationFailed(args) {
         console.log('failed', args);

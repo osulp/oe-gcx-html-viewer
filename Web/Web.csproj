@@ -87,6 +87,7 @@
     <Content Include="Libraries\Custom\AMD\OE_AddLayerToLayerList.js" />
     <Content Include="Libraries\Custom\AMD\OE_Graphics.js" />
     <Content Include="Libraries\Custom\AMD\OE_HyperlinkBanner.js" />
+    <Content Include="Libraries\Custom\AMD\OE_Imagery.js" />
     <Content Include="Libraries\Custom\AMD\OE_LayerActions.js" />
     <Content Include="Libraries\Custom\AMD\OE_OWRTReports.js" />
     <Content Include="Libraries\Custom\AMD\OE_PickerListItemRenderer.js" />
