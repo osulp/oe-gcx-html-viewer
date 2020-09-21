@@ -121,27 +121,16 @@
                         "require": "geocortex/oe_amd/OE_Imagery/OE_ImageryModule",
                         "configuration": {},
                         "views": [{
-                            "id": "OE_ImageryViewCompare1",
-                            "require": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewCompare1",
-                            "markup": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewCompare1.html",
+                            "id": "OE_ImageryViewCompare",
+                            "require": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewCompare",
+                            "markup": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewCompare.html",
                             "viewModelId": "OE_ImageryViewModel",
                             "title": "Imagery: Compare and Download",
                             "visible": false,
-                            "region": "NavigationMapRegion",
+                            "region": "TopCenterMapRegion",
                             "configuration": {
                             }
-                        },
-                            {
-                                "id": "OE_ImageryViewCompare2",
-                                "require": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewCompare2",
-                                "markup": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewCompare2.html",
-                                "viewModelId": "OE_ImageryViewModel",
-                                "title": "Imagery: Compare and Download",
-                                "visible": false,
-                                "region": "BasemapMapRegion",
-                                "configuration": {
-                                }
-                            },
+                        },                           
                             {
                                 "id": "OE_ImageryViewResults",
                                 "require": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewResults",

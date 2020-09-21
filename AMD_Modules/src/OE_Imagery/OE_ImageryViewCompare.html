@@ -1,0 +1,12 @@
+﻿<div>
+    <span>Compare Imagery:</span>
+    <span>Overlay:</span>
+    <select data-binding="{@source: imageryLayers}{@value: selectedImagery1}">
+        <option data-binding="{@template-for: imageryLayers}{value: displayName}{@text: displayName}" />
+    </select>
+    <span>by Swiping over: </span>
+    <select data-binding="{@source: imageryLayers}{@value: selectedImagery2}">
+        <option data-binding="{@template-for: imageryLayers}{value: displayName}{@text: displayName}" />
+    </select>
+</div>
+

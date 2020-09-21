@@ -1,18 +1,13 @@
-﻿
-.region .view.TemplateModuleView.active {
-    margin: 0;
+﻿.view.OE_ImageryViewCompare{
+    max-width:60%;
+    margin:auto;
+    padding:20px;
+    background:white;
 }
 
-.template-module-view
-{
-    position: absolute;
-    z-index: 100;
-    width: 200px;
-    right: 0;
-    background: white;
-    color: black;
-    padding: 6px;
-    border: 1px solid #333;
-    margin-top: 75px;
-    margin-right: 2px;
+.map-top-center{
+    top:15px !important;
+    position:absolute !important;
+    left:20% !important;
+    right:20% !important;
 }

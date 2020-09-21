@@ -12,14 +12,13 @@
     <DebugSymbols>true</DebugSymbols>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
+    <IISExpressSSLPort>44325</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <Use64BitIISExpress />
-    <TypeScriptToolsVersion>3.6</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
   </PropertyGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -60,8 +59,7 @@
     <Content Include="src\OE_Hopscotch\CSS\OE_HopscotchModule.css" />
     <Content Include="src\OE_Hopscotch\ModuleJS.txt" />
     <Content Include="src\OE_Hopscotch\OE_HopscotchView.html" />
-    <Content Include="src\OE_Imagery\OE_ImageryViewCompare1.html" />
-    <Content Include="src\OE_Imagery\OE_ImageryViewCompare2.html" />
+    <Content Include="src\OE_Imagery\OE_ImageryViewCompare.html" />
     <Content Include="src\OE_Imagery\OE_ImageryViewResults.html" />
     <Content Include="src\OE_Imagery\readme.txt" />
     <Content Include="src\OE_OITT\readme.txt" />
@@ -155,8 +153,7 @@
     <Content Include="src\OE_Hopscotch\OE_HopscotchView.ts" />
     <Content Include="src\OE_Hopscotch\OE_HopscotchModule.ts" />
     <TypeScriptCompile Include="src\OE_HyperlinkBanner\OE_HyperlinkBannerModule.ts" />
-    <TypeScriptCompile Include="src\OE_Imagery\OE_ImageryViewCompare1.ts" />
-    <TypeScriptCompile Include="src\OE_Imagery\OE_ImageryViewCompare2.ts" />
+    <TypeScriptCompile Include="src\OE_Imagery\OE_ImageryViewCompare.ts" />
     <TypeScriptCompile Include="src\OE_Imagery\OE_ImageryViewResults.ts" />
     <TypeScriptCompile Include="src\OE_OITT\OE_JsonAdapter.ts" />
     <TypeScriptCompile Include="src\OE_OWRTReports\OE_JsonAdapter.ts" />
@@ -211,6 +208,7 @@
     <Content Include="src\OE_AddLayerToLayerList\OE_AddLayerToLayerListViewModel.ts" />
     <Content Include="src\OE_Imagery\OE_ImageryModule.ts" />
     <Content Include="src\OE_Imagery\OE_ImageryViewModel.ts" />
+    <TypeScriptCompile Include="_Definitions\Mapping.Infrastructure.AMD.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\OE_Search\CSS\" />
@@ -243,11 +241,11 @@
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
-    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
     <TypeScriptTarget>ES5</TypeScriptTarget>
     <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
-    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
-    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>True</TypeScriptNoImplicitAny>
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
     <TypeScriptAllowJs>True</TypeScriptAllowJs>
     <TypeScriptOutFile>notused.js</TypeScriptOutFile>
