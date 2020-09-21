@@ -62,6 +62,13 @@ export class OE_HopscotchViewModel extends ViewModelBase {
 
         //register tagging command
         this.app.commandRegistry.command("oeStartTour").register(this, this._startTour);
+
+        //register tagging command
+        this.app.commandRegistry.command("oeEndTour").register(this, this._endTour);
+    }
+
+    _endTour() {
+        this.hopscotch.endTour();
     }
 
     _startTour(args:any) {
@@ -111,6 +118,10 @@ export class OE_HopscotchViewModel extends ViewModelBase {
 
             for (var i = 0; i < this.toursKeyValObject[args].tour.steps.length; i++) {
 
+                if (this.toursKeyValObject[args].tour.steps[i].hasOwnProperty("focusOnShow") && this.toursKeyValObject[args].tour.steps[i].focusOnShow) {
+                    this.toursKeyValObject[args].tour.steps[i].onShow = () => { currentScope.SetFocusByID(currentScope, "focusOnShow") }
+                }
+
                 if (this.toursKeyValObject[args].tour.steps[i].hasOwnProperty("commandOnShow") && this.toursKeyValObject[args].tour.steps[i].commandOnShow) {
                     this.toursKeyValObject[args].tour.steps[i].onShow = () => { currentScope.CheckOnEventCommand(currentScope, "commandOnShow", "commandOnShowParam") }
                 }
@@ -129,6 +140,16 @@ export class OE_HopscotchViewModel extends ViewModelBase {
                 this.hopscotch.startTour(this.toursKeyValObject[args].tour);
             }
         }        
+    }
+        
+    private SetFocusByID(currentScope: any, commandName: string, commandParamName: string) {
+
+        var cTour: any = currentScope.hopscotch.getCurrTour();
+        var currStepNum: any = currentScope.hopscotch.getCurrStepNum();
+        var cStep: any = cTour.steps[currStepNum];
+
+        if (cStep[commandName])
+            $("#" + cStep[commandName]).focus();
     }
 
     private CheckOnEventCommand(currentScope:any, commandName:string, commandParamName:string) {

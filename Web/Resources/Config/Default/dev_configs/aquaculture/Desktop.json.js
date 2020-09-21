@@ -87,135 +87,17 @@
             ],
                 "modules": [
                     {
-                        "moduleName": "OE_HyperlinkBanner",
+                        "moduleName": "OE_Hopscotch",
+                        "require": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchModule",
                         "libraryId": "OE_AMD",
-                        "require": "geocortex/oe_amd/OE_HyperlinkBanner/OE_HyperlinkBannerModule",
-                        "configuration": {
-                            "linkUri": "http://oregonexplorer.info"
-                        }
-                    },
-                    {
-                        "moduleName": "OE_Elevation",
-                        "libraryId": "OE_AMD",
-                        "require": "geocortex/oe_amd/OE_Elevation/OE_ElevationModule",
-                        "configuration": {
-                        }
-                    },
-                    {
-                        "moduleName": "OE_LayerActions",
-                        "libraryId": "OE_AMD",
-                        "require": "geocortex/oe_amd/OE_LayerActions/OE_LayerActionsModule",
-                        "configuration": {
-                            "showLayerDescription": true,
-                            "showLayerDescViewHide": false,
-                            "allowAllLayerTypes:": true,
-                            "metadataHyperlinkOverride": true,
-                            "downloadHyperlinkOverride": true,
-                            "expandLayerTreeOnVisible": true,
-                            "downloadWorkflowEnabled": true
-                        }
-                    },
-                    {
-                        "moduleName": "OE_Imagery",
-                        "libraryId": "OE_AMD",
-                        "require": "geocortex/oe_amd/OE_Imagery/OE_ImageryModule",
-                        "configuration": {},
-                        "views": [{
-                            "id": "OE_ImageryViewCompare1",
-                            "require": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewCompare1",
-                            "markup": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewCompare1.html",
-                            "viewModelId": "OE_ImageryViewModel",
-                            "title": "Imagery: Compare and Download",
-                            "visible": false,
-                            "region": "NavigationMapRegion",
-                            "configuration": {
-                            }
-                        },
-                            {
-                                "id": "OE_ImageryViewCompare2",
-                                "require": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewCompare2",
-                                "markup": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewCompare2.html",
-                                "viewModelId": "OE_ImageryViewModel",
-                                "title": "Imagery: Compare and Download",
-                                "visible": false,
-                                "region": "BasemapMapRegion",
-                                "configuration": {
-                                }
-                            },
-                            {
-                                "id": "OE_ImageryViewResults",
-                                "require": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewResults",
-                                "markup": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewResults.html",
-                                "viewModelId": "OE_ImageryViewModel",
-                                "title": "Imagery: Compare and Download",
-                                "visible": false,
-                                "region": "RightPanelRegion",
-                                "configuration": {
-                                }
-                            }],
-                        "viewModels": [
-                            {
-                                "id": "OE_ImageryViewModel",
-                                "require": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewModel",
-                                "configuration": {}
-                            }]
-                    },
-                    {
-                        "moduleName": "OE_Aquaculture",
-                        "libraryId": "OE_AMD",
-                        "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureModule",
                         "configuration": {},
                         "views": [
                             {
-                                "id": "OE_AquacultureDynamicFormView",
-                                "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureDynamicFormView",
-                                "markup": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureDynamicFormView.html",
-                                "viewModelId": "OE_AquacultureDynamicFormViewModel",
-                                "title": "Aquaculture Site Report: Land-Based",
-                                "visible": false,
-                                "region": "DataRegion",
-                                "configuration": {
-                                }
-                            },
-                            {
-                                "id": "OE_AquacultureFinancialView",
-                                "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureFinancialView",
-                                "markup": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureFinancialView.html",
-                                "title": "Oregon Aquaculture Financial Planning Tool",
-                                "viewModelId": "OE_AquacultureFinancialViewModel",
-                                "visible": false,
-                                "region": "ModalWindowRegion",
-                                "configuration": {}
-                            }
-                        ],
-                        "viewModels": [
-                            {
-                                "id": "OE_AquacultureDynamicFormViewModel",
-                                "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureDynamicFormViewModel",
-                                "configuration": {}
-                            },
-                            {
-                                "id": "OE_AquacultureFinancialViewModel",
-                                "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureFinancialViewModel",
-                                "configuration": {
-                                    "configUri": "./Resources/ModuleConfig/AquacultureFinancePlnModule/config.json"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "moduleName": "OE_ConvertGeometry",
-                        "libraryId": "OE_AMD",
-                        "require": "geocortex/oe_amd/OE_ConvertGeometry/OE_ConvertGeometryModule",
-                        "configuration": {
-                        },
-                        "views": [
-                            {
-                                "id": "OE_ConvertGeometryView",
-                                "require": "geocortex/oe_amd/OE_ConvertGeometry/OE_ConvertGeometryView",
-                                "markup": "geocortex/oe_amd/OE_ConvertGeometry/OE_ConvertGeometryView.html",
-                                "viewModelId": "OE_ConvertGeometryViewModel",
-                                "title": "Convert Geometry",
+                                "id": "OE_HopscotchView",
+                                "require": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchView",
+                                "markup": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchView.html",
+                                "title": "Tour Name",
+                                "viewModelId": "OE_HopscotchViewModel",
                                 "visible": false,
                                 "region": "DataRegion",
                                 "configuration": {}
@@ -223,9 +105,37 @@
                         ],
                         "viewModels": [
                             {
-                                "id": "OE_ConvertGeometryViewModel",
-                                "require": "geocortex/oe_amd/OE_ConvertGeometry/OE_ConvertGeometryViewModel",
-                                "configuration": {}
+                                "id": "OE_HopscotchViewModel",
+                                "require": "geocortex/oe_amd/OE_Hopscotch/OE_HopscotchViewModel",
+                                "configuration": {
+                                    "tours": [
+                                        {
+                                            "key": "searchFocus",
+                                            "requiredView": "",
+                                            "commandOnTourStart": "",
+                                            "commandOnTourStartParam": "",
+                                            "commandOnTourEnd": "",
+                                            "commandOnTourEndParam": "",
+                                            "commandOnTourClose": "",
+                                            "commandOnTourCloseParam": "",
+                                            "tour": {
+                                                "steps": [
+                                                    {
+                                                        "title": "Aquaculture at your location",
+                                                        "content": "Navigate to your site by searching an address, place name, or latitude/longitude coordinates.<br /><br />From the location results you can run a Site Report or a Financial Planning Tool. ",
+                                                        "target": ".SearchView",
+                                                        "yOffset": -2,
+                                                        "xOffset": -24,
+                                                        "placement": "bottom",                                                        
+                                                        "focusOnShow": "gcx_search"
+                                                    }
+                                                ],
+                                                "showCloseButton": true,
+                                                "showPrevButton": false
+                                            }
+                                        }
+                                    ]
+                                }
                             }
                         ]
                     },
@@ -3652,7 +3562,7 @@
                                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.footer.FooterView",
                                 "region": "FooterRegion",
                                 "configuration": {}
-                            },
+                            },                           
                             {
                                 "id": "SocialFooterMenuView",
                                 "viewModelId": "SocialFooterMenuViewModel",
@@ -3694,7 +3604,7 @@
                                 "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.menus.MenuViewModel",
                                 "require": "geocortex/infrastructure/menus/MenuViewModel",
                                 "configuration": {}
-                            },
+                            },                            
                             {
                                 "id": "SocialFooterMenuViewModel",
                                 "type": "geocortex.essentialsHtmlViewer.mapping.infrastructure.menus.MenuViewModel",
@@ -4045,7 +3955,7 @@
                                 "id": "InfoViewModel",
                                 "type": "geocortex.essentialsHtmlViewer.mapping.modules.Info.InfoViewModel",
                                 "configuration": {
-                                    "content": "%3Cdiv%20style%3D%22font-family%3ASegoe%20UI%20Light%2C%20Segoe%20UI%2C%20Arial%3B%20padding%3A20px%22%3E%20%3Cp%20style%3D%22color%3A%20%23000000%3B%20%20font-size%3A%2018px%3B%22%3E%0A%20%20%20%20%20%20%20%20Welcome%20to%20the%20Oregon%20Aquaculture%0A%20%20%20%20%20%20%20%20Map%20Viewer%20%3Cspan%20style%3D%22color%3A%20rgb(255%2C%200%2C%200)%3B%22%3E(BETA)%3C%2Fspan%3E!%20%3Cbr%3E%3C%2Fp%3E%0A%0A%3Cp%20style%3D%22color%3A%20%23000000%3B%20%20font-size%3A%2018px%3B%22%3E%3Cspan%20style%3D%22color%3A%20rgb(255%2C%200%2C%200)%3B%22%3EFor%20internal%20use%20only%20during%20development.%3C%2Fspan%3E%3Cbr%3E%3C%2Fp%3E%0A%0A%3Cfieldset%20style%3D%22margin%3A0%22%3E%0A%3Clegend%3EAquaculture%20at%20your%20location%3C%2Flegend%3E%0A%3Cp%3E%0ANavigate%20to%20your%20site%20by%20searching%20an%20address%2C%20place%20name%2C%20or%20latitude%2Flongitude%20coordinates%20in%20the%20box%20below%3A%0A%3C%2Fp%3E%0A%0A%3Cp%20style%3D%22position%3A%20relative%3B%20width%3A220px%3B%20margin%3A0%20auto%3B%22%3E%0A%3Cinput%20id%3D%22homePanelGeocoderSearchInput%22%20tabindex%3D%220%22%20placeholder%3D%22Search%20for%20location...%22%20title%3D%22Type%20your%20search%20terms%22%20style%3D%22height%3A%2024px%3B%20width%3A%20200px%3B%20font-size%3A13px%3B%22%20onkeypress%3D%22if(event.keyCode%3D%3D13)%7Bdocument.getElementById('homePanelGeocoderSearchInputButton').click()%7D%22%20type%3D%22text%22%3E%0A%20%20%20%20%20%20%20%20%3Cbutton%20id%3D%22homePanelGeocoderSearchInputButton%22%20onclick%3D%22geocortex.framework.applications%5B0%5D.commandRegistry.command('RunWorkflowWithArguments').execute(%7B'workflowId'%3A'Geocoder_Search'%2C'searchIn'%3Adocument.getElementById('homePanelGeocoderSearchInput').value%7D)%3B%20document.getElementById('homePanelGeocoderSearchInput').value%20%3D%20''%3B%22%20tabindex%3D%220%22%20style%3D%22position%3Aabsolute%3B%20top%3A%201px%3B%20left%3A%20210px%3B%20height%3A%2024px%3B%20width%3A%2024px%3B%20border%3A%200%3B%0A%20%20%20%20box-shadow%3A%20none%3B%20margin%3A0%3B%20padding%3A0%3B%20cursor%3Apointer%3B%20overflow%3Ahidden%3B%20background%3A%20url(Resources%2FImages%2FIcons%2FToolbar%2Fsearch-24.png)%20center%20center%20no-repeat%3B%22%3E%3C%2Fbutton%3E%0A%09%0A%3C%2Fp%3E%0A%3Cp%3E%0A%09From%20the%20location%20results%20you%20can%20run%20a%20Site%20Report%20or%20a%20Financial%20Planning%20Tool.%0A%3C%2Fp%3E%0A%3C%2Ffieldset%3E%0A%0A%3Ctable%3E%3Ctbody%3E%3Ctr%3E%3Ctd%20style%3D%22text-align%3A%20center%3B%20padding%3A%2010px%2035px%3B%20%22%3E%3Ca%20href%3D%22command%3ARunWorkflowById%3FFinancial_Planning%22%3E%3Cimg%20src%3D%22Resources%2FImages%2FCustom%2FaquaCultureFinancialPlannerThumb.png%22%20style%3D%22height%3A%20100px%3B%22%3E%3C%2Fa%3E%3C%2Ftd%3E%3Ctd%20style%3D%22text-align%3A%20center%3B%20padding%3A%2010px%2040px%3B%20%22%3E%3Ca%20href%3D%22command%3ARunWorkflowById%3FAquaculture_Site_Report%22%3E%3Cimg%20src%3D%22Resources%2FImages%2FCustom%2FAquacultureSiteReportThumb.PNG%22%20style%3D%22height%3A%20100px%3B%22%3E%3C%2Fa%3E%3C%2Ftd%3E%3C%2Ftr%3E%3Ctr%3E%3Ctd%20style%3D%22text-align%3A%20center%3B%22%3E%3Ca%20href%3D%22command%3ARunWorkflowById%3FFinancial_Planning%22%3E%3Cfont%20size%3D%222%22%3EOpen%20%3Cbr%3EFinancial%20Planner%3C%2Ffont%3E%3C%2Fa%3E%3Cbr%3E%3C%2Ftd%3E%3Ctd%20style%3D%22text-align%3A%20center%3B%22%3E%3Ca%20href%3D%22command%3ARunWorkflowById%3FAquaculture_Site_Report%22%3E%3Cfont%20size%3D%222%22%3ECreate%3Cbr%3ESite%20Report%3C%2Ffont%3E%3C%2Fa%3E%3Cbr%3E%3C%2Ftd%3E%3C%2Ftr%3E%3C%2Ftbody%3E%3C%2Ftable%3E%3Cbr%3E%0A%0A%0A%20%20%20%20%0A%0A%20%20%20%20%3Cp%3E%3Cbr%3E%3C%2Fp%3E%3Cp%3EClick%20button%20below%20to%20directly%20access%20the%20map%20layers%20or%20click%20on%20the%20%E2%80%9Clayers%E2%80%9D%20icon%20in%20the%20bottom%20left%20hand%20corner%20of%20this%20window.%20%20The%20home%20button%20gets%20you%20back%20to%20this%20introduction.%3C%2Fp%3E%3Cbr%3E%0A%20%20%20%20%3Cp%20style%3D%22text-align%3Acenter%22%3E%3Ca%20href%3D%22command%3ASwitchToLayerView%22%3E%3Cimg%20src%3D%22Resources%2FImages%2FCustom%2FGotoLayers.png%22%3E%3C%2Fa%3E%3C%2Fp%3E%0A%20%20%20%20%0A%20%20%20%20%3C%2Fdiv%3E%3Cdiv%20style%3D%22font-family%3ASegoe%20UI%20Light%2C%20Segoe%20UI%2C%20Arial%3B%20padding%3A20px%22%3E%3Cbr%3E%0A%20%20%20%20%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%26nbsp%3B%0A%20%20%20%20%20%20%20%20Send%20questions%20or%20feedback%20to%3A%20%3Ca%20href%3D%22mailto%3Avirtualoregon.support%40oregonstate.edu%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20virtualoregon.support%40oregonstate.edu%0A%20%20%20%20%20%20%20%20%3C%2Fa%3E%0A%20%20%20%20%3C%2Fp%3E%0A%20%20%20%20%3Cbr%3E%3C%2Fdiv%3E",
+                                    "content": "%3Cdiv%20style%3D%22font-family%3ASegoe%20UI%20Light%2C%20Segoe%20UI%2C%20Arial%3B%20padding%3A20px%22%3E%20%3Cp%20style%3D%22color%3A%20%23000000%3B%20%20font-size%3A%2018px%3B%22%3E%0A%20%20%20%20%20%20%20%20Welcome%20to%20the%20Oregon%20Aquaculture%0A%20%20%20%20%20%20%20%20Map%20Viewer%20%3Cspan%20style%3D%22color%3A%20rgb(255%2C%200%2C%200)%3B%22%3E(BETA)%3C%2Fspan%3E!%20%3Cbr%3E%3C%2Fp%3E%0A%0A%3Cp%20style%3D%22color%3A%20%23000000%3B%20%20font-size%3A%2018px%3B%22%3E%3Cspan%20style%3D%22color%3A%20rgb(255%2C%200%2C%200)%3B%22%3EFor%20internal%20use%20only%20during%20development.%3C%2Fspan%3E%3Cbr%3E%3C%2Fp%3E%0A%0A%3Cfieldset%20style%3D%22margin%3A0%22%3E%0A%3Clegend%3EAquaculture%20at%20your%20location%3C%2Flegend%3E%0A%3Cp%3E%0ANavigate%20to%20your%20site%20by%20searching%20an%20address%2C%20place%20name%2C%20or%20latitude%2Flongitude%20coordinates%20in%20the%20box%20below%3A%0A%3C%2Fp%3E%0A%0A%3Cp%20style%3D%22position%3A%20relative%3B%20width%3A220px%3B%20margin%3A0%20auto%3B%22%3E%0A%3Cinput%20id%3D%22homePanelGeocoderSearchInput%22%20tabindex%3D%220%22%20placeholder%3D%22Search%20for%20location...%22%20title%3D%22Type%20your%20search%20terms%22%20style%3D%22height%3A%2024px%3B%20width%3A%20200px%3B%20font-size%3A13px%3B%22%20onkeypress%3D%22if(event.keyCode%3D%3D13)%7Bdocument.getElementById('homePanelGeocoderSearchInputButton').click()%7D%22%20type%3D%22text%22%3E%0A%20%20%20%20%20%20%20%20%3Cbutton%20id%3D%22homePanelGeocoderSearchInputButton%22%20onclick%3D%22geocortex.framework.applications%5B0%5D.commandRegistry.command('RunWorkflowWithArguments').execute(%7B'workflowId'%3A'Geocoder_Search'%2C'searchIn'%3Adocument.getElementById('homePanelGeocoderSearchInput').value%7D)%3B%20document.getElementById('homePanelGeocoderSearchInput').value%20%3D%20''%3B%22%20tabindex%3D%220%22%20style%3D%22position%3Aabsolute%3B%20top%3A%201px%3B%20left%3A%20210px%3B%20height%3A%2024px%3B%20width%3A%2024px%3B%20border%3A%200%3B%0A%20%20%20%20box-shadow%3A%20none%3B%20margin%3A0%3B%20padding%3A0%3B%20cursor%3Apointer%3B%20overflow%3Ahidden%3B%20background%3A%20url(Resources%2FImages%2FIcons%2FToolbar%2Fsearch-24.png)%20center%20center%20no-repeat%3B%22%3E%3C%2Fbutton%3E%0A%09%0A%3C%2Fp%3E%0A%3Cp%3E%0A%09From%20the%20location%20results%20you%20can%20run%20a%20Site%20Report%20or%20a%20Financial%20Planning%20Tool.%20%3Ca%20href%3D%22javascript%3Avoid(0)%22%20onclick%3D%22geocortex.framework.applications%5B0%5D.commandRegistry.command('oeStartTour').execute('searchFocus')%22%3ESearch%20Now%3C%2Fa%3E%0A%3C%2Fp%3E%0A%3C%2Ffieldset%3E%0A%0A%3Ctable%3E%3Ctbody%3E%3Ctr%3E%3Ctd%20style%3D%22text-align%3A%20center%3B%20padding%3A%2010px%2035px%3B%20%22%3E%3Ca%20href%3D%22command%3ARunWorkflowById%3FFinancial_Planning%22%3E%3Cimg%20src%3D%22Resources%2FImages%2FCustom%2FaquaCultureFinancialPlannerThumb.png%22%20style%3D%22height%3A%20100px%3B%22%3E%3C%2Fa%3E%3C%2Ftd%3E%3Ctd%20style%3D%22text-align%3A%20center%3B%20padding%3A%2010px%2040px%3B%20%22%3E%3Ca%20href%3D%22command%3ARunWorkflowById%3FAquaculture_Site_Report%22%3E%3Cimg%20src%3D%22Resources%2FImages%2FCustom%2FAquacultureSiteReportThumb.PNG%22%20style%3D%22height%3A%20100px%3B%22%3E%3C%2Fa%3E%3C%2Ftd%3E%3C%2Ftr%3E%3Ctr%3E%3Ctd%20style%3D%22text-align%3A%20center%3B%22%3E%3Ca%20href%3D%22command%3ARunWorkflowById%3FFinancial_Planning%22%3E%3Cfont%20size%3D%222%22%3EOpen%20%3Cbr%3EFinancial%20Planner%3C%2Ffont%3E%3C%2Fa%3E%3Cbr%3E%3C%2Ftd%3E%3Ctd%20style%3D%22text-align%3A%20center%3B%22%3E%3Ca%20href%3D%22command%3ARunWorkflowById%3FAquaculture_Site_Report%22%3E%3Cfont%20size%3D%222%22%3ECreate%3Cbr%3ESite%20Report%3C%2Ffont%3E%3C%2Fa%3E%3Cbr%3E%3C%2Ftd%3E%3C%2Ftr%3E%3C%2Ftbody%3E%3C%2Ftable%3E%3Cbr%3E%0A%0A%0A%20%20%20%20%0A%0A%20%20%20%20%3Cp%3E%3Cbr%3E%3C%2Fp%3E%3Cp%3EClick%20button%20below%20to%20directly%20access%20the%20map%20layers%20or%20click%20on%20the%20%E2%80%9Clayers%E2%80%9D%20icon%20in%20the%20bottom%20left%20hand%20corner%20of%20this%20window.%20%20The%20home%20button%20gets%20you%20back%20to%20this%20introduction.%3C%2Fp%3E%3Cbr%3E%0A%20%20%20%20%3Cp%20style%3D%22text-align%3Acenter%22%3E%3Ca%20href%3D%22command%3ASwitchToLayerView%22%3E%3Cimg%20src%3D%22Resources%2FImages%2FCustom%2FGotoLayers.png%22%3E%3C%2Fa%3E%3C%2Fp%3E%0A%20%20%20%20%0A%20%20%20%20%3C%2Fdiv%3E%3Cdiv%20style%3D%22font-family%3ASegoe%20UI%20Light%2C%20Segoe%20UI%2C%20Arial%3B%20padding%3A20px%22%3E%3Cbr%3E%0A%20%20%20%20%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%26nbsp%3B%0A%20%20%20%20%20%20%20%20Send%20questions%20or%20feedback%20to%3A%20%3Ca%20href%3D%22mailto%3Avirtualoregon.support%40oregonstate.edu%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20virtualoregon.support%40oregonstate.edu%0A%20%20%20%20%20%20%20%20%3C%2Fa%3E%0A%20%20%20%20%3C%2Fp%3E%0A%20%20%20%20%3Cbr%3E%3C%2Fdiv%3E",
                                     "included": true,
                                     "title": "@language-common-welcome"
                                 }
@@ -4111,6 +4021,12 @@
                                     "items": [
                                         {
                                             "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
+                                            "text": "End Active Tour",
+                                            "description": "",
+                                            "command": "oeEndTour"
+                                        },
+                                        {
+                                            "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
                                             "text": "Create an aquaculture site report (land-based)",
                                             "description": "",
                                             "command": "RunWorkflowById",
@@ -4125,18 +4041,10 @@
                                         },
                                         {
                                             "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",
-                                            "text": "Compare Imagery",
-                                            "description": "Use a swipe tool to view imagery",
-                                            "command": "RunWorkflowWithArguments",
-                                            "commandParameter": {
-                                                "workflowId": "runWorkflowCommands",
-                                                "command": "compare"
-                                            }                                            
-                                        },
-                                        {
-                                            "text": "Route Options",
-                                            "command": "RunWorkflowById",
-                                            "commandParameter": "AquacultureSiteReport"
+                                            "text": "@language-menu-home-panel",
+                                            "description": "@language-menu-home-panel-desc",
+                                            "command": "ShowHomePanel",
+                                            "commandParameter": null
                                         },
                                         {
                                             "iconUri": "Resources/Images/Icons/Toolbar/identify-24.png",
@@ -7059,8 +6967,8 @@
                         "moduleName": "Site",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                         "configuration": {
-                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/Aquaculture",
-                            "oeUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
+                            "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/Aquaculture",
+                            "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                             "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                             "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined"
                         },
@@ -8662,6 +8570,7 @@
                                 "id": "OE_SearchToWorkflowViewModel",
                                 "require": "geocortex/oe_amd/OE_SearchToWorkflow/OE_SearchToWorkflowViewModel",
                                 "configuration": {
+                                    "targetInputBoxID": "#gcx_search",
                                     "searchWorkflowID": "Geocoder_Search",
                                     "searchArgumentName": "searchIn",
                                     "workflowSearchText": "Search for location",

@@ -17,7 +17,8 @@
     <AssemblyName>Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>44345</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -116,6 +117,9 @@
     <Content Include="Resources\Config\Default\dev_configs\aquaculture\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\aquaculture\Tablet.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\orwapsfam\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\vanilla\Desktop.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\vanilla\Handheld.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\vanilla\Tablet.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\wildfire\Desktop.json.js" />
     <Content Include="Resources\Images\Custom\AquacultureSiteReportThumb.png" />
     <Content Include="Resources\Images\Custom\AquacultureViewer.png" />

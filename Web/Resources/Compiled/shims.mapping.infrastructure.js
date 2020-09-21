@@ -1101,4 +1101,4 @@ SelectionStar_ts_251) {
 
 if (!geocortex) geocortex = { }; 
 if (!geocortex.essentialsHtmlViewer) geocortex.essentialsHtmlViewer = { }; 
-geocortex.essentialsHtmlViewer.version = "4.13.0.2779"; 
+geocortex.essentialsHtmlViewer.version = "4.13.2.2898"; 

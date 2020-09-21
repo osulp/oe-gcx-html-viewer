@@ -18,4 +18,8 @@ export class OE_SearchToWorkflowSuggestView extends ViewBase {
     searchThisItem(event, element, context) {
         this.viewModel.suggestionClicked(context);
     }
+
+    suggestMouseOver(event, element, context) {
+        this.viewModel.suggestMouseOver(element);
+    }
 }
