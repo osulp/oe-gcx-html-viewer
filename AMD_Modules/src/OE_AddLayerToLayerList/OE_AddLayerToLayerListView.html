@@ -16,23 +16,23 @@
 
         <div class="lc-filter">
             <div class="lc-search">
-                <input data-binding="{@event-keyup: inputDoSearch} {value: searchFieldText}" class="search-field ui-autocomplete-input" type="text" id="oeLayerSearchInput" placeholder="Search Oregon Explorer Layers" autocomplete="off">
+                <input data-binding="{@event-keyup: inputDoSearch} {value: searchFieldText}" class="search-field ui-autocomplete-input" type="text" id="oeLayerSearchInput" placeholder="Search layers or add your own" autocomplete="off">
                 <span role="status" aria-live="polite" class="ui-helper-hidden-accessible">1 result is available, use up and down arrow keys to navigate.</span>
                 <button class="clear-button" title="Clear search input" data-binding="{@event-onclick: buttonClearSearch}"></button>
                 <button class="search-button" title="Perform search" data-binding="{@event-onclick: buttonDoSearch}"></button>
             </div>
-            <div class="oeSearchLayerRightButtons">                
+            <div class="oeSearchLayerRightButtons">
+                <button title="Help" data-binding="{@event-onclick: OpenHelp}"><img src="Resources/Images/Icons/Custom/help-24.png" /></button>
                 <button title="Options" data-binding="{@event-onclick: OptionsToggle}"><img src="Resources/Images/Icons/vertical-ellipsis.png" /></button>
             </div>
-            <div class="oeSearchLayerOptions bound-invisible" data-binding="{@visible: oeSearchLayerOptionsVisible}">
-                <div><button title="Search Portal" data-binding="{@event-onclick: SearchPortal}"><img src="Resources/Images/Icons/map-24.png" />Portal Search</button></div>
-                <div><button title="Reload Services" data-binding="{@event-onclick: buttonReloadServices}"><img src="Resources/Images/Icons/Toolbar/sync-manage-24.png" />Reload Services</button></div>
-                <div><button title="Reload Services" data-binding="{@event-onclick: buttonTestLayer}"><img src="Resources/Images/Icons/Toolbar/sync-manage-24.png" />Add Test Layer</button></div>
+            <div class="oeSearchLayerOptions bound-invisible" data-binding="{@visible: oeSearchLayerOptionsVisible}">                
+                <div><button title="Reload Services" data-binding="{@event-onclick: buttonReloadServices}"><img src="Resources/Images/Icons/Toolbar/sync-manage-24.png" /><span>Reload Services</span></button></div>                
             </div>
         </div>
 
         <div class="oeLayerSearchToggleTrees">
             <div><span data-binding="{@text: currentFilteredCount}"></span> layer(s)</div>
+            <div><button class="button-text-link" data-binding="{@text: toggleLiveText}{@event-onclick: buttonToggleLive}">Show Live</button></div>
             <div><button class="button-text-link" data-binding="{@event-onclick: buttonCollapseAll}">Collapse All</button></div>
             <div><button class="button-text-link" data-binding="{@event-onclick: buttonExpandAll}">Expand All</button></div>
             <div><button class="button-text-link" data-binding="{@text: toggleSelectedText}{@event-onclick: ToggledSelected}">Show Selected</button></div>
@@ -61,9 +61,7 @@
                                         <span data-binding="{@visible: oeTreeExpand}" class="expander-button folder-closed bound-visible" aria-label="Layer Catalog group expanded"></span>
                                         <span data-binding="{@visible: oeTreeCollapse}" class="expander-button folder-open bound-invisible" aria-label="Layer Catalog group collapsed"></span>
                                     </span>
-                                    <span data-binding="{@text: displayName}"><img src="Resources/Images/Icons/connection-24.png" /> PLACE HOLDER SERVICE NAME</span> <span data-binding="{@text: oeResultCountString}"></span>
-                                    <span class="selected-indicator bound-invisible">(Some Selected)</span>
-                                    <span class="selected-indicator bound-invisible">(All Selected)</span>                                    
+                                    <span data-binding="{@text: displayName}"><img src="Resources/Images/Icons/connection-24.png" /> PLACE HOLDER SERVICE NAME</span> <span data-binding="{@text: oeResultCountString}"></span>                                    
                                 </button>
                                 <button title="Remove Service" data-binding="{@event-onclick: buttonRemoveService}"><img data-binding="{@visible: removeCustomServiceVisible}" src="Resources/Images/Icons/status-error-16.png" /></button>
                                 <div class="catalog-folder-select bound-visible">
@@ -82,15 +80,15 @@
                                 <!-- Layers in map service -->
                                 <li class="lc-tree" data-binding="{@template-for: layers}{@visible: oeLayerVisible}{alt: nameGroupSort}">
                                     <div class="catalog-layer-item" data-binding="{style: oeIndentLevel}{class: oeHasParentLayer}">
-                                        <label class="catalog-item-label">
+                                        <label class="catalog-item-label">                                            
                                             <span class="catalog-item-control">
                                                 <input type="checkbox" data-binding="{@value: layerCheckbox}{@event-onchange: CheckboxChanged}">
                                             </span>
                                             <span class="layer-item">
-                                                <span class="layer-item-name" data-binding="{class: oeSearchLayerGroup}{@text: displayName}"></span>
+                                                <span class="layer-item-name" data-binding="{class: oeSearchLayerGroup}{@text: displayName}"></span>  <span data-binding="{@visible: inLayerList}">(already added)</span>
                                             </span>
-                                        </label>
-                                        <button class="lc-details bound-invisible"><img alt="" src="" title=""></button>
+                                            <img class="oeAddLayerVisitImg" data-binding="{@event-onclick: showLayerDetails}" src="Resources/Images/Icons/Custom/info_icon_solid_blue-20.png" />
+                                        </label>                                        
                                     </div>
                                 </li>
                             </ul>
@@ -103,11 +101,16 @@
             </div>
         </div>
 
+        <div class="oeAddLayerDetails" data-binding="{@visible: layerDetailsVisible}">
+            <button class="oeAddLayerDetailsClose"><img data-binding="{@event-onclick: hideLayerDetails}" src="Resources/Images/Icons/panel-close.png" /></button>
+            <div class="oeAddLayerDetailsText"></div>
+            <div class="oeAddLayerDetailsDesc"></div>            
+        </div>
+
         <div class="lc-actions">
             <button class="button" data-binding="{@event-onclick: buttonOK}">OK</button>
             <button class="button" data-binding="{@event-onclick: buttonCancel}">Cancel</button>
         </div>
-
     </div>
 
     <div id="oeLayerSearchJunkMap" style="display:none"></div>

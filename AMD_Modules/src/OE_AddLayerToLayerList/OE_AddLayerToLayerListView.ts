@@ -9,6 +9,9 @@ import { OE_AddLayerToLayerListViewModel } from "../OE_AddLayerToLayerList/OE_Ad
 export class OE_AddLayerToLayerListView extends ViewBase {
 
     app: ViewerApplication;
+
+    fullDescription: string;
+    groupIDS: string[];
         
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);                
@@ -25,17 +28,65 @@ export class OE_AddLayerToLayerListView extends ViewBase {
     buttonOK(event, element, context: OE_AddLayerToLayerListViewModel) {
         context.OkClicked();
 
+        this.groupIDS = [];
+        let workingUrl: string;
+        
+        //Add group layer service AND note group layer urls and id.   url_ID
+        for (var prop in context.checkedBoxMap) {
+            //skip missing properties
+            if (!context.checkedBoxMap.hasOwnProperty(prop))
+                continue;
+            
+            if (context.checkedBoxMap[prop].type == "GroupLayer") {
+                                
+                workingUrl = this.GetLayerURLWithoutID(context.checkedBoxMap[prop].fullURL);
+                this.groupIDS.push(workingUrl + "_" + context.checkedBoxMap[prop].id);
+
+                context.checkedBoxMap[prop]["customID"] = prop;
+                context.CheckToken(context.checkedBoxMap[prop]);
+            }
+        }
+
+        //Add individual layers
         for (var prop in context.checkedBoxMap) {
             //skip missing properties
             if (!context.checkedBoxMap.hasOwnProperty(prop))
                 continue;
 
-            //console.log(this.checkedBoxMap[prop]);
-            context.checkedBoxMap[prop]["customID"] = prop;
-            context.CheckToken(context.checkedBoxMap[prop]);
+            //skip group layers
+            if (context.checkedBoxMap[prop].type == "GroupLayer")
+                continue;
+
+            workingUrl = this.GetLayerURLWithoutID(context.checkedBoxMap[prop].fullURL);            
+
+            //add individual layers
+            if (!this.IsParentGroupIncluded(workingUrl, context.checkedBoxMap[prop].id)) {
+
+                context.checkedBoxMap[prop]["customID"] = prop;
+                context.CheckToken(context.checkedBoxMap[prop]);
+            }            
         }
 
+        this.app.commandRegistry.command("ActivateView").execute("LayerListView");
+
         context.CancelClicked();
+    }
+
+    GetLayerURLWithoutID(workingUrl:string) {        
+        let workingLen: number = workingUrl.length - (workingUrl.length - workingUrl.lastIndexOf("/"));
+        workingUrl = workingUrl.substr(0, workingLen);
+        return workingUrl;
+    }
+
+    IsParentGroupIncluded(url:string, id:string): boolean {
+
+        for (let i = 0; i < this.groupIDS.length; i++) {
+            if (this.groupIDS[i].indexOf(url) > - 1 && this.groupIDS[i].indexOf("_"+id)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     public OptionsToggle(event, element, context: OE_AddLayerToLayerListViewModel) {
@@ -43,11 +94,7 @@ export class OE_AddLayerToLayerListView extends ViewBase {
         let newVal: boolean = !context.oeSearchLayerOptionsVisible.get();
         context.oeSearchLayerOptionsVisible.set(newVal);
     }
-
-    public SearchPortal(event, element, context: OE_AddLayerToLayerListViewModel) {
-        context.OESearchPortalLayers();
-    }
-
+    
     public TreeToggle(event, element, context: any) {
                         
         let newVal: boolean = !context.oeTreeVisible.get();
@@ -91,12 +138,9 @@ export class OE_AddLayerToLayerListView extends ViewBase {
     }
     
     public CheckboxChanged(event, element, context: any) {
-        
-        //var workingService: any = this.viewModel.resultsObject.getAt(context.mapServiceIndex);
+                
         var mapKey: string = context.mapServiceConnectionString.replace("url=", "") + "/"+context.id;
-
-        console.log(mapKey);
-
+        
         if (element.checked) {                       
             this.viewModel.checkedBoxMap[mapKey] = context;
         }
@@ -105,8 +149,70 @@ export class OE_AddLayerToLayerListView extends ViewBase {
                 delete this.viewModel.checkedBoxMap[mapKey];
             }
         }
+
+        if (context.type == "GroupLayer")
+        {
+            if (element.checked)
+                this.viewModel.CheckAllChildLayers(context, true);
+            else
+                this.viewModel.CheckAllChildLayers(context, false);
+        }
+        else
+        {
+            this.viewModel.CheckParentGroupLayer(context, false);            
+        }
+    }
+
+
+    showLayerDetails(event, element, context: any) {
+        
+        let val: string = "<strong>" + context.displayName + "</strong><br /><a href=\"" + context.fullURL+"\" target=\"_blank\">" + context.fullURL + "</a>";
                 
-        //context.serviceURL;        
+        $(".oeAddLayerDetailsText").html(val);
+                
+        if (!this.viewModel.IsDefined(context,"description")) {
+            $(".oeAddLayerDetailsDesc").text("");                        
+            $(".oeAddLayerDetails").css("height", "7em");
+            $(".oeAddLayerDetailsDesc").css("height", "5em");
+            $(".oeAddLayerDetailsDesc").css("overflow-y", "hidden");            
+        }
+        else {
+
+            this.fullDescription = context.description;
+            let descShort;
+                        
+            if (context.description.length > 250) {                
+                descShort = context.description;                
+                $(".oeAddLayerDetails").css("height", "17em");
+                $(".oeAddLayerDetailsDesc").css("height", "11em");
+                $(".oeAddLayerDetailsDesc").css("overflow-y", "scroll");
+            }            
+            else {
+                descShort = context.description;
+
+                if (context.description.length < 50)
+                    $(".oeAddLayerDetails").css("height", "7em");
+                else
+                    $(".oeAddLayerDetails").css("height", "11em");
+
+                $(".oeAddLayerDetailsDesc").css("height", "5em");
+                $(".oeAddLayerDetailsDesc").css("overflow-y", "hidden");
+            }
+
+            $(".oeAddLayerDetailsDesc").text(descShort);
+        }
+        
+        this.viewModel.layerDetailsVisible.set(true);
+    }
+        
+    hideLayerDetails(event, element, context: any) {
+        this.viewModel.layerDetailsVisible.set(false);
+        $(".oeAddLayerDetailsText").text("");
+        $(".oeAddLayerDetailsDesc").text("");
+    }
+    
+    loadSourceURL(event, element, context: any) {
+        window.open(context.fullURL, "_blank");
     }
 
     buttonClearSearch(event, element, context: OE_AddLayerToLayerListViewModel) {
@@ -119,9 +225,8 @@ export class OE_AddLayerToLayerListView extends ViewBase {
             context.searchFieldText.set(element.value);
             context.DoSearch();
         }
-        else if (element.value.toLowerCase().indexOf("http") > -1) {
-            context.searchFieldText.set(element.value);
-            context.ShowDirectServiceURL();
+        else if (context.isStringAurl(element.value.toLowerCase())) {
+            //no auto search or adding of urls, requires manual dosearch request
         }
         else if (element.value.length > 2) {
             context.searchFieldText.set(element.value);
@@ -132,15 +237,48 @@ export class OE_AddLayerToLayerListView extends ViewBase {
         }
     }
 
+    OpenHelp() {
+
+        let valTitle: string = "<strong>Help</strong>";
+       
+        $(".oeAddLayerDetailsText").html(valTitle);
+
+        $(".oeAddLayerDetails").css("height", "15em");
+        $(".oeAddLayerDetailsDesc").css("height", "11em");
+        $(".oeAddLayerDetailsDesc").css("overflow-y", "scroll");
+
+        let valDesc = "To add external layer, enter service url. Example: <br />https://lib-gis2.library.oregonstate.edu/arcgis/rest/services/animals_plants/Oregon2020/MapServer<br /><br />";
+        valDesc += "External layers must be added with https."
+
+        $(".oeAddLayerDetailsDesc").html(valDesc);
+        
+        this.viewModel.layerDetailsVisible.set(true);
+    }
+
     buttonReloadServices(event, element, context: OE_AddLayerToLayerListViewModel) {        
         //force services reload
         context.LoadRemoteServiceSources(true);
+        context.LoadRemoteSingleURLS(true);
     }
-
-
+    
     buttonDoSearch(event, element, context: OE_AddLayerToLayerListViewModel) {
         context.searchFieldText.set($("#oeLayerSearchInput").val().toString());
         context.DoSearch();
+    }
+
+    buttonToggleLive(event, element, context: OE_AddLayerToLayerListViewModel) {
+        
+        let newVal: boolean = !context.toggleLiveValue.get();
+        context.toggleLiveValue.set(newVal);
+                
+        if (newVal) {
+            context.toggleLiveText.set("Show All");
+            context.ToggleLiveLayers();
+        }
+        else {
+            context.toggleLiveText.set("Show Live");
+            this.ShowAllOrSelected(true);
+        }
     }
 
     buttonToggleSelected(event, element, context: OE_AddLayerToLayerListViewModel) {
@@ -154,11 +292,7 @@ export class OE_AddLayerToLayerListView extends ViewBase {
     buttonExpandAll(event, element, context: OE_AddLayerToLayerListViewModel) {
         context.ExpandAllTrees(true);
     }
-
-    buttonTestLayer(event, element, context: OE_AddLayerToLayerListViewModel) {
-        context.ResolveLayerTest();
-    }
-
+    
     buttonRemoveService(event, element, context: any) {
         this.viewModel.RemoveService(context);
     }

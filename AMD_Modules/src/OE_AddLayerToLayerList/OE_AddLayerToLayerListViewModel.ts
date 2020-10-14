@@ -10,26 +10,19 @@ import { ObservableCollection } from "geocortex/framework/observables";
 
 import { RestHelperHTTPService } from "geocortex/essentials/RestHelperHTTPService";
 
-import { MapService } from "geocortex/essentials/MapService";
-import { MapServiceType } from "geocortex/essentials/MapServiceConstants";
-import { MapServiceFunction } from "geocortex/essentials/MapServiceConstants";
-
-import { Layer } from "geocortex/essentials/Layer";
-
 import { AddStatusArgs } from "geocortex/infrastructure/commandArgs/AddStatusArgs";
-import { ImageProperties } from "geocortex/infrastructure/commandArgs/ImageProperties";
 import { SiteServiceDiscoveryProvider } from "geocortex/essentials/serviceDiscovery/SiteServiceDiscoveryProvider";
-import { ServiceDiscoveryUtilities } from "geocortex/essentials/utilities/ServiceDiscoveryUtilities";
 import { ServiceHelper } from "geocortex/essentials/ServiceHelper";
 import { ResultItem } from "geocortex/essentials/serviceDiscovery/ResultItem";
-import { LayerListMapServiceItem } from "geocortex/infrastructure/layerList/LayerListMapServiceItem";
 import { Site } from "geocortex/essentials/Site";
 
 export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
 
     app: ViewerApplication;    
     site: any;
-    thisViewModel: OE_AddLayerToLayerListViewModel
+    thisViewModel: OE_AddLayerToLayerListViewModel;
+
+    menuItems: [{}];
 
     loaderVisible: Observable<boolean> = new Observable<boolean>(true);
     loaderMessage: Observable<string> = new Observable<string>("Loading content...");
@@ -40,7 +33,11 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
     resultButtonText: Observable<string> = new Observable<string>("New Search");
 
     searchFieldText: Observable<string> = new Observable<string>("");    
-    noResultsVisible: Observable<boolean> = new Observable<boolean>(false);    
+    noResultsVisible: Observable<boolean> = new Observable<boolean>(false);
+    layerDetailsVisible: Observable<boolean> = new Observable<boolean>(false);
+
+    toggleLiveValue: Observable<boolean> = new Observable<boolean>(false);
+    toggleLiveText: Observable<string> = new Observable<string>("Show Live");
 
     toggleSelectedValue: Observable<boolean> = new Observable<boolean>(false);
     toggleSelectedText: Observable<string> = new Observable<string>("Show Selected");
@@ -51,14 +48,21 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
     currentFilteredCount: Observable<string> = new Observable<string>();
     
     usedURLs: any[] = [];
+    layerListURLS: string[] = [];
         
     ssdp: SiteServiceDiscoveryProvider;
 
-    remoteServiceURLs: string[] = [];
-    remoteServiceURLcurrent: number = 0;
+    defaultRemoteUrls: string[] = [];
+    defaultRemoteUrlsCurrent: number = 0;
+    
+    gcxServiceMaps: string[] = [];
+    gcxServiceMapsCurrent: number = 0;
+    gcxServiceMapsFlagLive: string[] = [];
+
     remoteGCXSites: any = {};
 
     checkedBoxMap: any;
+    checkBoxGroupID: number = 0;
 
     parentServiceLayerIDShown: string[] = [];
 
@@ -66,6 +70,8 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
     
     //portalLayers: any;
     portalServices: any;
+
+    isSmallShell: boolean = false;
                                             
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);        
@@ -76,8 +82,13 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         this.site = (<any>this).app.site;
         this.thisViewModel = this;
 
-        this.remoteServiceURLs = config.remoteServiceURLs;
+        this.gcxServiceMaps = config.gcxServiceMaps;
+        this.gcxServiceMapsFlagLive = config.gcxServiceMapsFlagLive ? config.gcxServiceMapsFlagLive : [];
+
+        this.defaultRemoteUrls = config.defaultRemoteUrls;
         this.checkedBoxMap = {};
+
+        this.menuItems = config.menuItems ? config.menuItems : [];
                 
         if (this.site && this.site.isInitialized) {
             this._onSiteInitialized();
@@ -91,11 +102,109 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
 
     _onSiteInitialized() {
 
-        //register tagging command
-        this.app.commandRegistry.command("oeLayerSearch").register(this, this.OpenSearchWindow);
+        let shellElement: any = $(".shell-small");
+        if (shellElement.length >0)
+            this.isSmallShell = true;
 
+        //layer search window
+        this.app.commandRegistry.command("oeLayerSearch").register(this, this.OpenSearchWindow);
+                
+        //toggle legend view in layer list
+        this.app.commandRegistry.command("oeToggleLayerListLegend").register(this, this.oeToggleLayerListLegend);
+
+        this.app.eventRegistry.event("LayerRemovedEvent").subscribe(this, (args) => {
+            this.serviceOrLayerRemoved(args.url, false);
+        });
+
+        this.app.eventRegistry.event("MapServiceRemovedEvent").subscribe(this, (args) => {
+            this.serviceOrLayerRemoved(args.serviceUrl, true);
+        });
+        
         this.ssdp = new SiteServiceDiscoveryProvider();
         this.ssdp.initialize(this.app.site);                
+
+        this.BuildLayerListButtons(); //try buttons now as the view may already be active
+        this.ListenForLayerListView();
+    }
+
+    isStringAurl(val: string): boolean {
+
+        if (val.indexOf("https://") > -1 || val.indexOf("http://") > -1)
+            return true;
+
+        if (val.split("/").length > 2)
+            return true;
+
+        return false;
+    }
+
+    serviceOrLayerRemoved(workingURL: string, isServiceURL: boolean) {
+
+        let ptr: number = this.layerListURLS.indexOf(workingURL.toLowerCase());
+        this.layerListURLS.splice(ptr, 1);
+
+        let workingServiceURL: string;
+        let incomingURL: string;
+
+        incomingURL = workingURL.replaceAll("/", "").toLowerCase();
+                
+        for (let i: number = 0; i < this.resultsObject.length(); i++) {
+            let workingService: any = this.resultsObject.getAt(i);
+
+            workingServiceURL = this.ServiceLayerURLLink(workingService.connectionString).toLowerCase().replaceAll("/", "");
+
+            if (isServiceURL && workingServiceURL == incomingURL) {
+                for (var lyr = 0; lyr < workingService.layers.length(); lyr++)
+                        workingService.layers.getAt(lyr).inLayerList.set(false);
+            }
+            else {
+                for (var lyr = 0; lyr < workingService.layers.length(); lyr++) {
+
+                    if (workingService.layers.getAt(lyr).fullURL.toLowerCase() == workingURL.toLowerCase())
+                        workingService.layers.getAt(lyr).inLayerList.set(false);
+                }
+            }
+        }
+
+        this.currentFilteredCount.set(this.resultsObject.length().toString());
+    }
+
+    oeToggleLayerListLegend() {        
+        let ele: HTMLElement = $(".LegendView.active").get(0);
+
+        if (!ele || ele == undefined)
+            this.app.commandRegistry.command("SwitchToLegendView").execute();
+        else
+            this.app.commandRegistry.command("ShowLayerList").execute();
+    }
+
+    ListenForLayerListView() {
+        let thisScope = this;
+        this.app.eventRegistry.event("ViewActivatedEvent").subscribe(this, (args) => {
+            
+            if (args.id === "LayerListView" && args.hostView) {
+                setTimeout(function () { thisScope.BuildLayerListButtons(); }, 100);                
+            }
+        });
+    }
+
+    BuildLayerListButtons() {
+
+        let layerWrapper: any = $('.layer-list-wrapper');
+
+        if ($(".oe_add_layer_wrapper").length === 0 && this.menuItems.length > 0 && layerWrapper!=null) {
+            let menuHMTL = "";
+            this.menuItems.forEach(menu => {
+                let menuItemHTML = "<button onclick =\"geocortex.framework.applications[0].commandRegistry.commands." + menu["command"] + ".execute()\" class=\"toolbar-item tool\" title=\"Add layers to the map\"><img alt=\"" + menu["description"] + "\" src=\"" + menu["iconUri"] + "\" class=\"bound-visible-inline\"><p>" + menu["text"] + "</p></button>";
+                menuHMTL += menuItemHTML;
+            })
+                        
+            $('.layer-list-wrapper').prepend("<div class=\"oe_add_layer_wrapper\">" + menuHMTL + "</div>");
+            $('.LegendView').prepend("<div class=\"oe_add_layer_wrapper\">" + menuHMTL + "</div>");
+            $('.layer-list').css("position", "relative !important");
+            $('.layer-list').css("top", "unset !important");
+        }
+                
     }
 
     public OpenSearchWindow() {
@@ -128,8 +237,35 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         }
         else {
             this.HideLoader();
-            this.LoadRemoteServiceSources(false);
+
+            //load remote urls
+            this.LoadRemoteSingleURLS(false);
+
+            this.LoadRemoteServiceSources(false);                        
         }
+    }
+
+    LoadRemoteSingleURLS(forceLoad: boolean) {
+
+        if (!forceLoad && this.resultsObject.length() > 0) {
+            return;
+        }
+
+        this.ShowLoader("Loading remote services.  This may take a moment...", true, true, false, false, false);
+
+        this.defaultRemoteUrlsCurrent = 0;
+
+        if (this.defaultRemoteUrls != null && this.defaultRemoteUrls.length > 0) {
+            this.ShowDirectServiceURL(this.defaultRemoteUrls[this.defaultRemoteUrlsCurrent], false);
+        }
+        else {
+            this.RemoteServiceLoadedCheck(false);
+        }
+                
+        /*if (this.defaultRemoteUrls != null && this.defaultRemoteUrls.length > 0) {
+            for (let i: number = 0; i < this.defaultRemoteUrls.length; i++)
+                this.ShowDirectServiceURL(this.defaultRemoteUrls[i],false);
+        }*/
     }
 
     LoadRemoteServiceSources(forceLoad:boolean) {
@@ -137,7 +273,9 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         //"https://tools.oregonexplorer.info/Geocortex/Essentials/oe/rest/sites/__root_oreall/map/mapservices?f=json"
         //"/map/mapservices?f=json"
 
+        this.layerDetailsVisible.set(false);
         this.oeSearchLayerOptionsVisible.set(false);
+        this.checkBoxGroupID = 0;
 
         if (!forceLoad && this.resultsObject.length() > 0) {
 
@@ -145,7 +283,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             this.ClearLayerCheckboxes();
             this.checkedBoxMap = {};
             this.searchFieldText.set("");
-
+                        
             this.HideLoader();
             return;
         }
@@ -159,36 +297,62 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         this.searchFieldText.set("");
         this.noResultsVisible.set(false);
 
-        this.remoteServiceURLcurrent = 0;
+        this.gcxServiceMapsCurrent = 0;
 
-        if (this.remoteServiceURLs!=null && this.remoteServiceURLs.length > 0) {
-            this.RequestSearchSources(this.remoteServiceURLs[this.remoteServiceURLcurrent]);
+        if (this.gcxServiceMaps != null && this.gcxServiceMaps.length > 0) {
+            this.RequestGCXSources(this.gcxServiceMaps[this.gcxServiceMapsCurrent]);
         }
         else {
             //no service urls!
-            this.ShowLoader("Error: No remote service urls.  No search can be performed.", true, false, true, true, true);
+            //this.ShowLoader("Error: No remote service urls.  No search can be performed.", true, false, true, true, true);
+            //this.SourcesDone();
+            this.RemoteServiceLoadedCheck(true);
         }        
     }
 
-    RemoteServiceLoadedCheck(isError: boolean) {
+    RemoteServiceLoadedCheck(isGCX: boolean) {
+        
+        if (isGCX) {
 
-        this.remoteServiceURLcurrent++;
+            this.gcxServiceMapsCurrent++;
 
-        if (this.remoteServiceURLcurrent < this.remoteServiceURLs.length) {
-            //load next
-            this.RequestSearchSources(this.remoteServiceURLs[this.remoteServiceURLcurrent]);
+            if (this.gcxServiceMaps != null && this.gcxServiceMapsCurrent < this.gcxServiceMaps.length) {
+                //load next
+                this.RequestGCXSources(this.gcxServiceMaps[this.gcxServiceMapsCurrent]);
+            }
         }
         else {
-            //done
-            this.SourcesDone();
+
+            this.defaultRemoteUrlsCurrent++;
+
+            if (this.defaultRemoteUrls != null && this.defaultRemoteUrlsCurrent < this.defaultRemoteUrls.length) {
+                //load next
+                this.ShowDirectServiceURL(this.defaultRemoteUrls[this.defaultRemoteUrlsCurrent], false);
+            }
         }
+
+        let isDone: number = 0;
+
+        if (this.gcxServiceMaps == null || this.gcxServiceMapsCurrent >= this.gcxServiceMaps.length) {
+            isDone++;
+        }
+
+        if (this.defaultRemoteUrls == null || this.defaultRemoteUrlsCurrent >= this.defaultRemoteUrls.length) {
+            isDone++;
+        }
+
+        //finish
+        if (isDone>1)
+            this.SourcesDone();
+        
     }
 
     SourcesDone(): void {
                 
         if (this.resultsArrayForSort.length < 1) {
 
-            this.ShowLoader("Error. No remote services loaded.", true, false, true, false, true);
+            //this.ShowLoader("Error. No remote services loaded.", true, false, true, false, true);
+            this.HideLoader();
         }
         else {
 
@@ -205,30 +369,31 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             this.HideLoader();
 
             //show all results
-            this.OESearchLayers(true,false);
+            this.OESearchLayers(true,false,false);
         }
     }
 
-    public ClearSearchInput() {
-        console.log("Clear search");
+    public ClearSearchInput() {        
         this.searchFieldText.set("");
                        
         //show all results
-        this.OESearchLayers(true,false);
+        this.OESearchLayers(true,false,false);
     }
 
     public DoSearch() {
-                
-        console.log("Do search: " + this.searchFieldText.get());
-        this.OESearchLayers(false,false);
+        
+        var searchText: string = this.searchFieldText.get().toLowerCase();
+
+        if (this.isStringAurl(searchText))
+            this.ShowDirectServiceURL(this.searchFieldText.get(),true);
+        else
+            this.OESearchLayers(false, false,false);
     }
 
-    public ToggleSelected() {
-        console.log("Toggle selected");
+    public ToggleSelected() {        
     }
 
-    public OkClicked() {
-        console.log("Ok clicked");
+    public OkClicked() {        
     }
         
     public CancelClicked() {                
@@ -241,16 +406,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
     }
         
     public CleanURL(val: string): string {
-                
-        //remove url=
-        //val = val.replace("url=", "");
-
-        //url is the first item only use it
-        /*if (val.indexOf(";") > -1) {           
-            //url
-            val = val.split(";")[0];
-        }*/
-
+             
         //some connection strings have the layer id in them.... why?
         if (val.indexOf("/MapServer/") > -1) {
             let searchVal: string = "/MapServer/";
@@ -296,29 +452,36 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         return true;
     }
 
-    public RequestSearchSources(urlToLoad:string): void {
+    public RequestGCXSources(urlToLoad:string): void {
                 
         var thisRef = this;        
         
         this.ShowLoader("Loading sources...", true, true, false, false, false);
         
         //"https://tools.oregonexplorer.info/Geocortex/Essentials/oe/rest/sites/__root_oreall/map/mapservices?f=json"
-        var siteURL = urlToLoad;
-        urlToLoad += "/map/mapservices?f=json";
+        var siteURL = urlToLoad; //urlToLoad is url to the site name https://tools.oregonexplorer.info/Geocortex/Essentials/oe/rest/sites/__root_oreall
+        let fullRequestURL = urlToLoad + "/map/mapservices?f=json";
 
+        let flagAsLiveService: boolean = (this.gcxServiceMapsFlagLive.indexOf(urlToLoad) > -1) ? true : false;
+                
         var aSettings: any = {
-            url: urlToLoad,
+            url: fullRequestURL,
             dataType: "jsonp",
             success: function (data) {
 
-                var workingService: any;                                
+                var workingService: any;
                 let tmpCollection: ObservableCollection<object>;
                 let parentIdMap: any = {};
                 let sortIndentObject: any;
-
+                let fullURL: string;
+                                
                 for (var i = 0; i < data.mapServices.length; i++) {
-                    
+                                                            
                     workingService = data.mapServices[i];
+
+                    //do not include kml at this time
+                    if (workingService.serviceType.toLowerCase() == "kml")
+                        continue;
 
                     //no layers
                     if (!thisRef.IsDefined(workingService, "layers") || workingService.layers.length<1 )
@@ -335,6 +498,8 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                     workingService["oeResultCount"] = 0;
                     workingService["removeCustomServiceVisible"] = new Observable<boolean>(false);
                     workingService["oeCanRemove"] = false;
+
+                    workingService["isLive"] = flagAsLiveService;
                                         
                     //layers need custom properties here
                     for (var lyr = 0; lyr < workingService.layers.length; lyr++) {
@@ -343,8 +508,8 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                         if (workingService.layers[lyr]["subLayerIds"].length > 0 &&
                             !thisRef.IsDefined(parentIdMap, workingService.layers[lyr]["id"])) {
 
-                            parentIdMap["k"+workingService.layers[lyr]["id"]] = workingService.layers[lyr];
-                        }
+                            parentIdMap["k" + workingService.layers[lyr]["id"]] = workingService.layers[lyr];                                                     
+                        }                        
 
                         workingService.layers[lyr]["siteURL"] = siteURL;
                         workingService.layers[lyr]["mapServiceConnectionString"] = workingService.connectionString;
@@ -352,7 +517,15 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                                                                         
                         workingService.layers[lyr]["layerCheckbox"] = new Observable<boolean>(false);
                         workingService.layers[lyr]["oeLayerVisible"] = new Observable<boolean>(true);
-                        workingService.layers[lyr]["nameAlt"] = thisRef.CleanURL(workingService.connectionString);                        
+
+                        
+                        fullURL = thisRef.ServiceLayerURLLink(workingService.connectionString) + "/" + workingService.layers[lyr]["id"];                                                                        
+                        workingService.layers[lyr]["fullURL"] = fullURL;
+
+                        if (thisRef.layerListURLS.indexOf(fullURL.toLowerCase()) > -1)
+                            workingService.layers[lyr]["inLayerList"] = new Observable<boolean>(true);
+                        else
+                            workingService.layers[lyr]["inLayerList"] = new Observable<boolean>(false);
 
                         //sort by displayName by default
                         workingService.layers[lyr]["nameGroupSort"] = workingService.layers[lyr]["displayName"];
@@ -392,7 +565,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                     thisRef.resultsArrayForSort.push(workingService);
                 }
                 
-                thisRef.RemoteServiceLoadedCheck(false);
+                thisRef.RemoteServiceLoadedCheck(true);
             }
         };
 
@@ -403,12 +576,24 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             });
     }
 
+    public ServiceLayerURLLink(val: string): string {
+
+        let vals: string[] = val.split(";");
+        if (vals.length>0)
+            val = vals[0];
+
+        val = val.replace("url=", "");
+
+        return val; //val.toLowerCase();
+    }
+
     public IndentLevel(parentIdMap:any, workingLayer: any): any {
 
         let indentOut: number = 0;
         let workingParentID: string = workingLayer.parentLayerId;
         let workingKey: string;
         let outProp: any = { "sort": workingLayer.displayName, "indent": "" };
+        let indentPx: number = (this.isSmallShell) ? 48 : 24;
                         
         while (workingParentID != null) {
 
@@ -434,9 +619,11 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             //possible next parent
             workingParentID = parentIdMap[workingKey].parentLayerId;
         }
-
+                
         if (indentOut > 0) {
-            outProp.indent = (indentOut * 24).toString();
+
+
+            outProp.indent = (indentOut * indentPx).toString();
         }
 
         return outProp;
@@ -458,17 +645,24 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             this.resultsObject.removeAt(target);
         }
 
-        this.OESearchLayers(true, false);
+        this.OESearchLayers(true, false, false);
     }
 
-    public ShowDirectServiceURL() {
+    public ShowDirectServiceURL(urlToAdd: string, canRemove: boolean) {
 
         this.oeSearchLayerOptionsVisible.set(false);
 
         var thisRef = this;
 
         //load map service
-        let workingURL: string = this.searchFieldText.get();
+        let workingURL: string = urlToAdd; //this.searchFieldText.get();
+
+        //force https if scheme is missing
+        if (workingURL.indexOf("https://") < 0 && workingURL.indexOf("http://") < 0)
+            workingURL = "https://" + workingURL;
+        else if (workingURL.indexOf("https://") < 0 && workingURL.indexOf("http://") > -1)
+            workingURL = workingURL.replace("http://", "https://");
+
         this.searchFieldText.set("");
         let urlArray: string[] = workingURL.split("/");
 
@@ -488,9 +682,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         else {
             workingServiceURL = workingURL;
         }
-
-        console.log("Working url: "+workingServiceURL);
-
+                
         //load the service information
         let urlToLoad = workingServiceURL+"?f=json";
         
@@ -503,17 +695,35 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                 let tmpCollection: ObservableCollection<object>;
                 let parentIdMap: any = {};
                 let sortIndentObject: any;
+                let fullURL: string;
+                let tempURL: string;
 
                 workingService = {};
 
-                if (!thisRef.IsDefined(data, "documentInfo") )
+                if (!thisRef.IsDefined(data, "documentInfo"))
                     workingService["displayName"] = workingServiceURL;
-                else if(data.documentInfo.Title != "")
+                else if (data.documentInfo.Title != "")
                     workingService["displayName"] = data.documentInfo.Title;
                 else if (data.documentInfo.Subject != "")
                     workingService["displayName"] = data.documentInfo.Subject;
-                else
-                    workingService["displayName"] = workingServiceURL;
+                else {
+                    let urlSplit: string[] = workingServiceURL.split("/");
+                    let urlDisplayName = workingServiceURL;
+                    if (urlSplit.length > 2)
+                        urlDisplayName = urlSplit[0] + "//" + urlSplit[2] + "/";
+
+                    let servicesIndex = workingServiceURL.indexOf("/services/");
+                    if (servicesIndex > -1) {
+                        let startIndex = servicesIndex + 10;
+                        urlDisplayName += ".../" + workingServiceURL.substr(startIndex, workingServiceURL.length - startIndex)
+                    }  
+
+                    urlDisplayName = urlDisplayName.replace("/MapServer", "");
+                    urlDisplayName = urlDisplayName.replace("/mapserver", "");
+
+                    workingService["displayName"] = urlDisplayName;
+                }
+                    
 
                 workingService["tipURL"] = workingServiceURL;
                 workingService["connectionString"] = workingServiceURL;
@@ -525,8 +735,8 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
 
                 workingService["oeResultCountString"] = new Observable<string>("0");
                 workingService["oeResultCount"] = 0;
-                workingService["removeCustomServiceVisible"] = new Observable<boolean>(true);
-                workingService["oeCanRemove"] = true;
+                workingService["removeCustomServiceVisible"] = new Observable<boolean>(canRemove);
+                workingService["oeCanRemove"] = canRemove;
                                 
                 if (workingLayerID != null) {
 
@@ -567,8 +777,21 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
 
                     workingService.layers[i]["layerCheckbox"] = new Observable<boolean>(false);
                     workingService.layers[i]["oeLayerVisible"] = new Observable<boolean>(true);
-                    workingService.layers[i]["nameAlt"] = workingServiceURL;
 
+                    tempURL = thisRef.ServiceLayerURLLink(workingService.connectionString);
+                    fullURL = tempURL;
+                    if (tempURL.lastIndexOf("/") < tempURL.length-1)
+                        fullURL += "/";
+
+                    fullURL += workingService.layers[i]["id"];
+                    
+                    workingService.layers[i]["fullURL"] = fullURL;
+
+                    if (thisRef.layerListURLS.indexOf(fullURL.toLowerCase()) > -1)
+                        workingService.layers[i]["inLayerList"] = new Observable<boolean>(true);
+                    else
+                        workingService.layers[i]["inLayerList"] = new Observable<boolean>(false);
+                    
                     //sort by displayName by default
                     workingService.layers[i]["nameGroupSort"] = workingService.layers[i].name;
 
@@ -603,25 +826,63 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
 
                 tmpCollection.addItems(workingService.layers);
                 workingService.layers = tmpCollection;
-
-                //thisRef.resultsArrayForSort.push(workingService);                
-                //thisRef.RemoteServiceLoadedCheck(false);
-                //thisRef.SourcesDone();
-
+                                                
                 //insert service to list
                 (<ObservableCollection<object>>thisRef.resultsObject).insertItem(0, workingService);
-                thisRef.HideLoader();
-                thisRef.OESearchLayers(true, false);                                
+
+                //added from input box
+                if (canRemove) {
+                    thisRef.HideLoader();
+                    thisRef.OESearchLayers(true, false, false);
+                }
+                else { //added from default list
+                    thisRef.RemoteServiceLoadedCheck(false);
+                }
             }
         };
 
         $.ajax(aSettings)
             .fail(function (xhr, ajaxOptions, thrownError) {                
                 console.log("Sources request failed.");
-                thisRef.HideLoader();
-                //thisRef.RemoteServiceLoadedCheck(true);
+                thisRef.RemoteServiceLoadedCheck(false);
+                //thisRef.HideLoader();                
             });
             
+    }
+
+    CheckParentGroupLayer(childLayer: any, val: boolean) {
+
+        for (var i = 0; i < this.resultsObject.length(); i++) {
+
+            if (!this.IsDefined((<any>this.resultsObject.getAt(i)), "layers"))
+                continue;
+                        
+            for (var lptr = 0; lptr < (<any>this.resultsObject.getAt(i)).layers.length(); lptr++) {
+
+                if ((<any>this.resultsObject.getAt(i)).layers.getAt(lptr).type != "GroupLayer")
+                    continue;
+                
+                if (childLayer.mapServiceID == (<any>this.resultsObject.getAt(i)).layers.getAt(lptr).mapServiceID &&
+                    childLayer.parentLayerId == (<any>this.resultsObject.getAt(i)).layers.getAt(lptr).id)
+                    (<any>this.resultsObject.getAt(i)).layers.getAt(lptr).layerCheckbox.set(val);
+            }
+        }
+    }
+    
+    CheckAllChildLayers(gcxLayer: any, val: boolean) {
+
+        for (var i = 0; i < this.resultsObject.length(); i++) {
+
+            if (!this.IsDefined((<any>this.resultsObject.getAt(i)), "layers"))
+                continue;
+
+            for (var lptr = 0; lptr < (<any>this.resultsObject.getAt(i)).layers.length(); lptr++) {
+                
+                if (gcxLayer.mapServiceID == (<any>this.resultsObject.getAt(i)).layers.getAt(lptr).mapServiceID &&
+                    gcxLayer.id == (<any>this.resultsObject.getAt(i)).layers.getAt(lptr).parentLayerId)
+                    (<any>this.resultsObject.getAt(i)).layers.getAt(lptr).layerCheckbox.set(val);
+            }
+        }
     }
 
     public ClearLayerCheckboxes() {
@@ -660,7 +921,11 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         }
     }
 
-    public OESearchLayers(showAllFilter: boolean, onlySelected:boolean): void {
+    public ToggleLiveLayers() {
+        this.OESearchLayers(false, false, true);
+    }
+
+    public OESearchLayers(showAllFilter: boolean, onlySelected: boolean, showOnlyLive: boolean): void {
 
         this.oeSearchLayerOptionsVisible.set(false);
 
@@ -669,8 +934,14 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             this.toggleSelectedText.set("Show Selected");
         }        
 
+        if (!showOnlyLive) {
+            this.toggleLiveValue.set(false);
+            this.toggleLiveText.set("Show Live");
+        }
+
         if (this.resultsObject.length() < 1) {
-            this.ShowLoader("Error: No layers to search.", true, false, false, true, true);
+            //this.ShowLoader("Error: No layers to search.", true, false, false, true, true);
+            this.currentFilteredCount.set("0");
             return;
         }
 
@@ -694,8 +965,14 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             (<any>this.resultsObject.getAt(i)).oeServiceVisible.set(showAllFilter);
 
             showLayersForServiceHit = false;
-            //service name, show all layer?
-            if ((<any>this.resultsObject.getAt(i)).displayName.toLowerCase().indexOf(searchText) > -1) {
+
+            //show layers for a isLive flag service hit            
+            if (showOnlyLive) {
+                if (this.IsDefined((<any>this.resultsObject.getAt(i)), "isLive") && (<any>this.resultsObject.getAt(i)).isLive)
+                    showLayersForServiceHit = true;
+            }
+            //service hit should show layers for this service
+            else if ((<any>this.resultsObject.getAt(i)).displayName.toLowerCase().indexOf(searchText) > -1) {
                 showLayersForServiceHit = true;
             }
 
@@ -713,6 +990,40 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                 if (showAllFilter) {
                     (<any>this.resultsObject.getAt(i)).layers.getAt(lptr).oeLayerVisible.set(showAllFilter);
                     foundCount++;
+                }                
+                else if (showOnlyLive) {
+
+                    if (showLayersForServiceHit) {
+
+                        //show service tree if a layer is on
+                        (<any>this.resultsObject.getAt(i)).oeServiceVisible.set(true);
+
+                        //show layer
+                        (<any>this.resultsObject.getAt(i)).layers.getAt(lptr).oeLayerVisible.set(true);
+                        this.parentServiceLayerIDShown.push(serviceLayerKey);
+
+                        foundItem = true;
+                        foundCount++;
+
+                        //if this is a group layer show children
+                        if ((<any>this.resultsObject.getAt(i)).layers.getAt(lptr).subLayerIds.length > 0) {
+                            childCount = this.ShowImmediateChildren(i, (<any>this.resultsObject.getAt(i)).layers.getAt(lptr).subLayerIds);
+                            foundCount += childCount;
+                        }
+
+                        //enable all parents
+                        if ((<any>this.resultsObject.getAt(i)).layers.getAt(lptr).parentLayerId != null) {
+                            this.ShowParents(i, (<any>this.resultsObject.getAt(i)).layers.getAt(lptr).parentLayerId);
+                        }
+                    }
+                    else if (this.parentServiceLayerIDShown.indexOf(serviceLayerKey) > -1) {
+                        //layer is already toggled on, do nothing                            
+                    }
+                    else {
+                        //hide layer
+                        (<any>this.resultsObject.getAt(i)).layers.getAt(lptr).oeLayerVisible.set(false);
+                    }
+
                 }
                 else {
                                         
@@ -743,14 +1054,13 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                             }
                         }
                         else if (this.parentServiceLayerIDShown.indexOf(serviceLayerKey) > -1) {
-                            //layer is already toggled on, do nothing
-                            console.log("do nothing");
+                            //layer is already toggled on, do nothing                            
                         }
                         else {
                             //hide layer
                             (<any>this.resultsObject.getAt(i)).layers.getAt(lptr).oeLayerVisible.set(false);
                         }
-                    }
+                    }                    
                     else {
                                                 
                         if (showLayersForServiceHit || (<any>this.resultsObject.getAt(i)).layers.getAt(lptr).name.toLowerCase().indexOf(searchText) > -1 ||
@@ -782,8 +1092,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                         }
                         else if (this.parentServiceLayerIDShown.indexOf(serviceLayerKey) > -1)
                         {
-                            //layer is already toggled on, do nothing
-                            console.log("do nothing");
+                            //layer is already toggled on, do nothing                            
                         }
                         else {
                             (<any>this.resultsObject.getAt(i)).layers.getAt(lptr).oeLayerVisible.set(false);
@@ -794,7 +1103,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             }
             //end layers
 
-            if (showAllFilter || onlySelected)
+            if (showAllFilter || onlySelected || showOnlyLive)
                 (<any>this.resultsObject.getAt(i)).oeResultCountString.set("");
             else
                 (<any>this.resultsObject.getAt(i)).oeResultCountString.set("(" + (<any>this.resultsObject.getAt(i)).oeResultCount.toString() + ")");
@@ -802,22 +1111,26 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         //end services
 
         this.noResultsVisible.set(false);
-        this.textSelectedLayersVisible.set(false);
-        this.currentFilteredCount.set(foundCount.toString());
+        this.textSelectedLayersVisible.set(false);        
         this.HideLoader();
 
+        let filteredCountString = foundCount.toString();
+        if (showOnlyLive)
+            filteredCountString += " (Live)";
+
+        this.currentFilteredCount.set(filteredCountString);
+
         if (onlySelected && foundItem) {            
-            //this.HideLoader();
+
         }
         else if (onlySelected && !foundItem) {
             this.textSelectedLayersVisible.set(true);
-            //this.HideLoader();            
+            
         }
         else if (foundItem) {            
-            //this.HideLoader();            
+            
         }
-        else {            
-            //this.ShowLoader("No results for: " + this.searchFieldText.get(), true, false, true, false, true);            
+        else {                        
             this.noResultsVisible.set(true);
         }
     }
@@ -870,28 +1183,11 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
 
         return valOut;
     }
-
-    ResolveLayerTest() {
-        let customLayer: any = {};
-        //customLayer.mapServiceConnectionString = "https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer";
-        //customLayer.mapServiceConnectionString = "https://chetco-new.dsl.state.or.us/arcgis/rest/services/Maps/ESH_State_15/MapServer";
-        customLayer.mapServiceConnectionString = "https://gis.dogami.oregon.gov/arcgis/rest/services/secured/StatewideEQ_gen2/MapServer?tokenUrl=https://gis.dogami.oregon.gov/arcgis/tokens/generateToken&layerMask=Active Faults";
-        customLayer.mapServiceID = null;
-        customLayer.description = "This is a custom description.";
-        customLayer.displayName = "Custom Layer A";
-        customLayer.id = "0";
-
-        //layerMask=Active Faults;tokenUrl=https://gis.dogami.oregon.gov/arcgis/tokens/generateToken
-
-        //this.OEAddMapServiceFromGecortexLayer(customLayer);
-        this.CheckToken(customLayer);
-    }
-
+    
     CheckToken(gcxLayer: any) {
 
         if (gcxLayer.mapServiceConnectionString.indexOf(";token=") > -1) {
             this.LoadGCXSiteForSecureRequest(gcxLayer);
-            //this.OEAddMapServiceFromGecortexLayer(gcxLayer);
 
         }
         else {
@@ -900,10 +1196,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
     }
 
     OEAddMapServiceFromGecortexLayer(gcxLayer: any) {
-                
-        //MapUtilities
-        //createMapServiceFromJson
-
+        
         let thisRef: any = this;        
         //let url: string = this.CleanURL(gcxLayer.mapServiceConnectionString);//"https://lib-gis2.library.oregonstate.edu/arcgis/rest/services/restoration/OITT/MapServer";
         let url: string = ServiceHelper.extractConnectionStringValue(gcxLayer.mapServiceConnectionString, 'url');        
@@ -940,71 +1233,22 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         rItem.displayName = gcxLayer.displayName;
         rItem.serviceProviderName = "Geocortex.Gis.Services.ArcGisServer.Rest";
         rItem.serviceType = ["None", "FeatureLayer", "ServiceLayer", "MapService"];
-                       
-        
-        let tokenUrl = this.GetURLPart(gcxLayer.mapServiceConnectionString, "tokenUrl");
-        let layerMask = this.GetURLPart(gcxLayer.mapServiceConnectionString, "layerMask");
-
+                
         let tokenVal = this.GetURLPart(gcxLayer.mapServiceConnectionString, "token");
         rItem["serviceToken"] = tokenVal;
-        //rItem["connectionString"] = gcxLayer.mapServiceConnectionString;
         
-        //rItem.url = url + "/" + gcxLayer.id + "?token=" + tokenVal;
         url = url + "/" + gcxLayer.id;
         if (tokenVal!="")
             url = RestHelperHTTPService.appendTokenToUrl(url, tokenVal);
         rItem.url = url;
-        
                         
         console.log("Realize Map Service: " + rItem.displayName);
         console.log("Realize Map Service: " + rItem.url);
-                               
-        //RestHelperHTTPService.setDefaultToken(urlToken, url);        
-        //RestHelperHTTPService.
-        //RestHelperHTTPService.setDefaultToken
-        //RestHelperHTTPService.setDefaultToken()
-        /*if (RestHelperHTTPService.urlHasToken(rItem.url)) {
-            console.log("Url has token");
-        }*/
-
-        this.AddServiceItem(rItem);                
-    }
-
-    /*CreateMapService(gcxLayer: any) {
-        //try map service method
-
-        let url: string = ServiceHelper.extractConnectionStringValue(gcxLayer.mapServiceConnectionString, 'url');
-        url = this.CleanURL(url);
-
-        //class TMPClass implements ResultItem { }
-
-        //MapServiceInfo
-
-        let workingService: MapService = new MapService(url);
         
-        workingService.serviceToken = ServiceHelper.extractConnectionStringValue(gcxLayer.mapServiceConnectionString, 'token');
-        workingService.drawingBehavior = "MapService";
-
-        //let layerOptions = { "id": gcxLayer.id, "opacity": 1, "showAttribution": false };
-        //let dLayer = new esri.layers.ArcGISDynamicMapServiceLayer(url, layerOptions);
-        //dLayer.setVisibleLayers([layerName]);
-        //dLayer.setVisibleLayers([7]);
-
-        //workingService.serviceLayer = dLayer;
-        workingService.mapServiceType = MapServiceType.DYNAMIC;
-        workingService.isUserCreated = true;
-        workingService.userLayerType = "LayerAddition";
-        workingService.includeInLayerList = true;
-        //workingService.essentialsMap = this.app.site.essentialsMap;                
-        workingService.displayName = gcxLayer.name;
-        //newMapService.disableClientCaching = true;
-        workingService.mapServiceFunction = MapServiceFunction.OPERATIONAL;
-        workingService.opacity = 1;
-
-        //workingService._configureObject()
-    }*/
-
-    AddServiceItem(serviceItem: any) {
+        this.AddServiceItem(rItem, gcxLayer);                
+    }
+    
+    AddServiceItem(serviceItem: any, gcxLayer: any) {
 
         let thisRef = this;
 
@@ -1017,6 +1261,13 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                     thisRef.app.commandRegistry.command("RemoveStatus").execute(e.serviceLayer.url);
                     thisRef.app.command("AddMapService").execute(e);
 
+                    //layer added to layer list
+                    if (thisRef.layerListURLS.indexOf(e.serviceLayer.url) < 0) {
+                        gcxLayer.inLayerList.set(true);
+                        thisRef.layerListURLS.push(e.serviceLayer.url.toLowerCase());
+                    }
+                        
+                    
                     console.log("Adding Map Service: " + e.displayName);
                     console.log("Adding Map Service: " + e.serviceLayer.url);
                 }
@@ -1035,308 +1286,73 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             });
     }
 
+
+    Create_UUID(): string {
+        var dt = new Date().getTime();
+        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = (dt + Math.random() * 16) % 16 | 0;
+            dt = Math.floor(dt / 16);
+            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+        return uuid;
+    }
+
     LoadGCXSiteForSecureRequest(gcxLayer:any) {
 
         var thisRef = this;
-
-        if (!this.IsDefined(this.remoteGCXSites, gcxLayer.siteURL)) {
-            let map = new esri.Map("oeLayerSearchJunkMap");
-            let essentialsSite = new Site(gcxLayer.siteURL, map);
-
-            essentialsSite.onInitialized = function (args) {
-                thisRef.remoteGCXSites[gcxLayer.siteURL] = args;
-                console.log("Site ready");
-                console.log(args);
-
-                //let url: string = thisRef.CleanURL(gcxLayer.mapServiceConnectionString);
-                let url: string = ServiceHelper.extractConnectionStringValue(gcxLayer.mapServiceConnectionString, 'url');
-                url = thisRef.CleanURL(url);
-                //url += "/" + gcxLayer.id;
-
-                args.essentialsMap.mapServices.forEach(s1 => {
-                    if (s1.serviceUrl == url) {
-
-                        if (s1.layers != null) {
-                            s1.layers.forEach(l1 => {
-                                if (gcxLayer.id == l1.id) {
-
-                                    //add layer directly without reslove?
-                                    //thisRef.OEAddMapServiceFromGecortexLayer(gcxLayer);
-                                    //thisRef.AddServiceItem(s1);
-                                    thisRef.app.command("AddMapService").execute(s1);
-
-                                    return;
-                                }
-                            });
-                        }
-
-                    }
-                });
-
-                /*this.app.eventRegistry.event("LayerListInitializedEvent").subscribe(this, (sender: RestLayerList) => {
-                    // look for tables
-                    this.layerList = sender;
-                    if (this.app.site.principal.isAuthenticated) {
-                        this._getDevSubTypes();
-                    }
-                });*/
-            };
-
-            essentialsSite.onInitializationFailed = function (args) {
-                console.log("Site failed");
-                console.log(args);
-            };
-
-            this.remoteGCXSites[this.remoteServiceURLs[this.remoteServiceURLcurrent]] = essentialsSite;
-            this.remoteGCXSites[this.remoteServiceURLs[this.remoteServiceURLcurrent]].initialize();
-        }
-        else {
-            //site already loaded, try adding layer
-            this.OEAddMapServiceFromGecortexLayer(gcxLayer);
-        }
-    }
-    
-    
-    public OESearchPortalLayers(): void {
-
-        //?q=wildfire+%2B+%22map+service%22&bbox=&sortField=&sortOrder=
-
-        this.resultsObject.clear();
-
-        var thisRef = this;
-        var recordsToProcess = 0;
-        var workingTitle = "";
-        var workingURL = "";
-
-        let workingMapService: MapService;
-        let workingLayer: Layer;
-
-        var usedURLs = [];
                 
-        this.portalServices = [];
-                
-        let urlToLoad: string = "https://lib-gis1.library.oregonstate.edu/arcgis/sharing/rest/search";
-                
-        var aSettings: any = {
-            url: urlToLoad,   
-            type:"GET",
-            dataType: "jsonp",
-            data: { "q": this.searchFieldText.get(), "start":1, "num":100, f:"json"},
-            success: function (data) {
+        let workingUUID = this.Create_UUID();
+        thisRef.app.commandRegistry.command("AddStatus").execute(new AddStatusArgs('Requesting service: ' + gcxLayer.displayName, null, null, workingUUID, 10000, true));
+        
+        let tmpMap = new esri.Map("oeLayerSearchJunkMap");
+        let essentialsSite = new Site(gcxLayer.siteURL, tmpMap);
 
-                if (data.results.length < 1) {
-                    console.log("No hits for search term.");
-                }
-                else {
-
-                    console.log("Results: " + data.results.length);
-                    recordsToProcess = data.results.length;
-
-                    for (var i = 0; i < data.results.length; i++) {
-
-                        //check each result for a map service and load the layers from that service                                                            
-                        if (data.results[i].type == "Map Service" && data.results[i].url.length > 0) {
-
-                            console.log("Title: " + data.results[i].title);
-                            console.log("Map service url: " + data.results[i].url);
-                            workingTitle = data.results[i].title;
-                            workingURL = data.results[i].url;
-                            //usedURLs.push(workingURL);
-                            
-                            thisRef.ssdp.findServices(workingURL).then(
-                                function (e) {
-                                    console.log("Find Service");
-                                    console.log(workingURL);
-                                    console.log(e);
-                                }
-                            );
-
-                            /*workingMapService = new MapService(workingURL +"?f=json");
-                            workingMapService.onInitialized = function (args) {
-                                console.log("service up!");
-
-                                console.log(workingURL);
-                                console.log(args);
-                            };
-                            workingMapService.onInitializationFailed = function (args) {
-                                console.log("service failed!");
-                                console.log(workingURL);
-                                console.log(args);
-                            }
-                            workingMapService.initialize();*/
-
-                            recordsToProcess--;
-                            thisRef.IsSearchDone(recordsToProcess);
-
-                            /*$.get(workingURL + "?f=json", null, null, "json")
-                                .done(function (serviceUrlResult) {
-
-                                    console.log(serviceUrlResult);
-                                                                        
-                                    //only add layers with no subLayerIds
-                                    for (var layerIndex = 0; layerIndex < serviceUrlResult.layers.length; layerIndex++) {
-
-                                        if (serviceUrlResult.layers[layerIndex].subLayerIds == null &&
-                                            serviceUrlResult.layers[layerIndex].name.toLowerCase().indexOf(thisRef.searchFieldText.get().toString().toLowerCase()) > -1) {
+        essentialsSite.onInitialized = function (args) {
+            thisRef.remoteGCXSites[gcxLayer.siteURL] = args;
+            
+            let url: string = ServiceHelper.extractConnectionStringValue(gcxLayer.mapServiceConnectionString, 'url');
+            url = thisRef.CleanURL(url);
                                             
-                                            serviceUrlResult.layers[layerIndex].serviceTitle = workingTitle;
-                                            serviceUrlResult.layers[layerIndex].serviceURL = workingURL;
-                                            serviceUrlResult.layers[layerIndex].nameLong = serviceUrlResult.layers[layerIndex].name + " (" + workingURL + ")";
-                                            serviceUrlResult.layers[layerIndex].displayName = serviceUrlResult.layers[layerIndex].name;
+            args.essentialsMap.mapServices.forEach(s1 => {
+                if (s1.serviceUrl == url) {
 
-                                            //thisRef.portalLayers.push(serviceUrlResult.layers[layerIndex]);
-                                        }
-                                    }
+                    if (s1.layers != null) {
+                        s1.layers.forEach(l1 => {
+                            if (gcxLayer.id == l1.id) {
 
-                                    serviceUrlResult.layers.sort((a: any, b: any) => {
-                                        if (a.name < b.name) return -1;
-                                        if (a.name > b.name) return 1;
-                                        return 0;
-                                    });
+                                //add layer directly without reslove?
+                                thisRef.app.command("AddMapService").execute(s1);
+                                thisRef.app.commandRegistry.command("RemoveStatus").execute(workingUUID);      
 
-                                    thisRef.portalServices.push(serviceUrlResult);
+                                //layer added to layer list
+                                if (thisRef.layerListURLS.indexOf(s1.serviceUrl) < 0) {
+                                    gcxLayer.inLayerList.set(true);
+                                    thisRef.layerListURLS.push(s1.serviceUrl.toLowerCase());
+                                }                                    
 
-                                    //thisRef.resultsObject.addItem(workingResultAndLayers);
-                                    recordsToProcess--;
-                                    thisRef.IsSearchDone(recordsToProcess);
-                                })
-                                .fail(function (xhr, ajaxOptions, thrownError) {
-                                    recordsToProcess--;
-                                    console.log("Failed to load map service layers: " + data.results[i].url);
-                                    thisRef.IsSearchDone(recordsToProcess);
-                                });*/
-                            
-                        }
-                        else {
-                            recordsToProcess--;
-                            thisRef.IsSearchDone(recordsToProcess);
-                        }
+                                //unload hidden site
+                                essentialsSite.onInitializationFailed = null;
+                                essentialsSite = null;
+                                delete thisRef.remoteGCXSites[this.remoteServiceURLs[this.remoteServiceURLcurrent]];
+                                tmpMap.destroy();
+
+                                return;
+                            }
+                        });
                     }
+
                 }
-            }
+            });
         };
 
-        $.ajax(aSettings)
-            .fail(function (xhr, ajaxOptions, thrownError) {
-                console.log("Portal sources request failed.");
-                thisRef.RemoteServiceLoadedCheck(true);
-            });
-                                
-        /*$.get("https://lib-gis1.library.oregonstate.edu/arcgis/sharing/rest/search", { "q": this.searchFieldText.get(), "start":1,"num":100, "f": "json" }, null, "json")
-            .done(function (result) {
+        essentialsSite.onInitializationFailed = function (args) {
+            console.log("Site failed");
+            console.log(args);
+            thisRef.app.commandRegistry.command("RemoveStatus").execute(workingUUID);
+            thisRef.app.commandRegistry.command("AddStatus").execute(new AddStatusArgs('Service unavailable (STF): ' + gcxLayer.displayName, { uri: "Resources/Images/Custom/warning.png", altText: "", class: "" }, null, null, 0, false));
+        };
 
-                if (result.num < 1) {
-                    console.log("No hits for search term.");
-                }
-                else {
-
-                    console.log("Results: " + result.results.length);
-                    recordsToProcess = result.results.length;
-                     
-                    for (var i = 0; i < result.results.length; i++) {                        
-
-                        //check each result for a map service and load the layers from that service                                                            
-                        if (usedURLs.indexOf(result.results[i].url)<0 && result.results[i].type == "Map Service" && result.results[i].url.length > 0) {
-
-                            console.log("Title: " + result.results[i].title);
-                            console.log("Map service url: " + result.results[i].url);
-                            workingTitle = result.results[i].title;
-                            workingURL = result.results[i].url;
-                            usedURLs.push(workingURL);
-                            //let workingLayers: any = { "title": result.results[i].title, "layers": [] };
-
-                            $.get(result.results[i].url + "?f=json", null, null, "json")
-                                .done(function (serviceUrlResult) {
-
-                                    console.log(serviceUrlResult);
-
-                                    //only add layers with no subLayerIds
-                                    for (var layerIndex = 0; layerIndex < serviceUrlResult.layers.length; layerIndex++) {
-                                        
-                                        if (serviceUrlResult.layers[layerIndex].subLayerIds == null && 
-                                            serviceUrlResult.layers[layerIndex].name.toLowerCase().indexOf(thisRef.searchFieldText.get().toString().toLowerCase()) > -1) {
-                                            //workingResultAndLayers.layers.push(serviceUrlResult.layers[layerIndex]);
-                                            serviceUrlResult.layers[layerIndex].serviceTitle = workingTitle;
-                                            serviceUrlResult.layers[layerIndex].serviceURL = workingURL;
-                                            serviceUrlResult.layers[layerIndex].nameLong = serviceUrlResult.layers[layerIndex].name + " (" +workingURL+")";
-                                            //thisRef.resultsObject.addItem(serviceUrlResult.layers[layerIndex]);
-                                            thisRef.portalLayers.push(serviceUrlResult.layers[layerIndex]);
-                                        }
-                                    }
-                                                                        
-                                    //thisRef.resultsObject.addItem(workingResultAndLayers);
-                                    recordsToProcess--;
-                                    thisRef.IsSearchDone(recordsToProcess);
-                                })
-                                .fail(function (xhr, ajaxOptions, thrownError) {                                                                        
-                                    recordsToProcess--;
-                                    console.log("Failed to load map service layers: " + result.results[i].url);                                    
-                                    thisRef.IsSearchDone(recordsToProcess);
-                                });
-                        }
-                        else {
-                            recordsToProcess--;
-                            thisRef.IsSearchDone(recordsToProcess);
-                        }
-                    }
-                }
-            })
-            .fail(function (xhr, ajaxOptions, thrownError) {
-                console.log("Portal Search Failed.");
-            });*/
-    }
-
-    public IsSearchDone(recordsToProcess:any) {
-
-        console.log("Records to process: " + recordsToProcess);
-
-        if (recordsToProcess > 0)
-            return;
-
-        /*this.portalLayers.sort((a: any, b: any) => {
-            if (a.name < b.name) return -1;
-            if (a.name > b.name) return 1;
-            return 0;
-        });*/
-
-        console.log("Results: " + this.portalServices.length);
-        console.log("Results: " + this.portalServices);
-
-        //this.resultsObject.addItems(this.portalLayers);   
-        //console.log("Results Object Count: " + this.resultsObject.length());
-        //console.log("Results Object: " + this.resultsObject);
-    }
-
-/*
-    OEAddMapService(context:any, layerName:string) {
-        let url: string = context.serviceURL; //"https://lib-gis2.library.oregonstate.edu/arcgis/rest/services/restoration/OITT/MapServer";
-        let workingService: MapService = new MapService(url);
-
-
-        let layerOptions = { "id": context.customID, "opacity": 1, "showAttribution": false };
-        let dLayer = new esri.layers.ArcGISDynamicMapServiceLayer(url, layerOptions);
-        dLayer.setVisibleLayers([layerName]);
-        //dLayer.setVisibleLayers([7]);
-                
-        workingService.serviceLayer = dLayer;
-        workingService.mapServiceType = MapServiceType.DYNAMIC;
-        workingService.isUserCreated = true;
-        workingService.userLayerType = "LayerAddition";
-        workingService.includeInLayerList = true;
-        //workingService.essentialsMap = this.app.site.essentialsMap;                
-        workingService.displayName = context.name;
-        //newMapService.disableClientCaching = true;
-        workingService.mapServiceFunction = MapServiceFunction.OPERATIONAL;
-        workingService.opacity = 1;
-
-        dLayer.on("load", (args) => {
-            workingService.id = dLayer.id;
-            this.thisViewModel.app.commandRegistry.commands.AddMapService.execute(workingService);
-        });
-
-        dLayer.on("error", (args) => {
-            console.log("Error in initializing map service: {0}".format(args.error));
-        });
-    }
-    */
+        this.remoteGCXSites[this.gcxServiceMaps[this.gcxServiceMapsCurrent]] = essentialsSite;
+        this.remoteGCXSites[this.gcxServiceMaps[this.gcxServiceMapsCurrent]].initialize();
+    }        
 }
