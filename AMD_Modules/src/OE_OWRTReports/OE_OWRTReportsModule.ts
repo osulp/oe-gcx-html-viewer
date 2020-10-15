@@ -18,6 +18,5 @@ export class OE_OWRTReportsModule extends ModuleBase {
 
     initialize(config: any): void {
         //alert(this.app.getResource(this.libraryId, "language-hello-world-initialized"));                
-    }   
-
+    }           
 }

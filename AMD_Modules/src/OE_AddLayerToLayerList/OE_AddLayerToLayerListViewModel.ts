@@ -119,6 +119,11 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         this.app.eventRegistry.event("MapServiceRemovedEvent").subscribe(this, (args) => {
             this.serviceOrLayerRemoved(args.serviceUrl, true);
         });
+
+        /*this.app.eventRegistry.event("RegionDeactivatedEvent").subscribe(this, (args) => {
+            if (args.name == "ModalWindowPlaceholderRegion")
+                $('.modal-container').removeClass("oeAddLayerModalContainer");
+        });*/
         
         this.ssdp = new SiteServiceDiscoveryProvider();
         this.ssdp.initialize(this.app.site);                
@@ -126,7 +131,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         this.BuildLayerListButtons(); //try buttons now as the view may already be active
         this.ListenForLayerListView();
     }
-
+    
     isStringAurl(val: string): boolean {
 
         if (val.indexOf("https://") > -1 || val.indexOf("http://") > -1)
@@ -211,6 +216,8 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
 
         this.app.commandRegistry.command("ActivateView").execute("OE_AddLayerToLayerListView");
         this.CheckSSDPState();
+
+        //$('.modal-container').addClass("oeAddLayerModalContainer");
     }
 
     ShowLoader(loaderMessage: string, showLoader: boolean, showSpinner: boolean, showWarning: boolean, showError: boolean, showResetButton: boolean): void {
