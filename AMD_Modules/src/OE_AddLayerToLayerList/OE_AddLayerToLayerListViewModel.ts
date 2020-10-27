@@ -15,6 +15,7 @@ import { SiteServiceDiscoveryProvider } from "geocortex/essentials/serviceDiscov
 import { ServiceHelper } from "geocortex/essentials/ServiceHelper";
 import { ResultItem } from "geocortex/essentials/serviceDiscovery/ResultItem";
 import { Site } from "geocortex/essentials/Site";
+import { MapService } from "geocortex/essentials/MapService";
 
 export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
 
@@ -120,16 +121,126 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             this.serviceOrLayerRemoved(args.serviceUrl, true);
         });
 
-        /*this.app.eventRegistry.event("RegionDeactivatedEvent").subscribe(this, (args) => {
-            if (args.name == "ModalWindowPlaceholderRegion")
-                $('.modal-container').removeClass("oeAddLayerModalContainer");
-        });*/
+
+        this.app.eventRegistry.event("FeatureDetailsInvokedEvent").subscribe(this, (args) => {
+                                    
+            if (args.featureSet.displayName.get().toLowerCase().indexOf("u.s. drought monitor") > -1)
+            {
+                let objectOfObservables: any = this.getAttributeObservableByName(args.attributes, "name");                
+                if (objectOfObservables != null) {
+                    args.label.set(this.getDroughtName(objectOfObservables.value.get()));
+                }
+                                
+                setTimeout(function () {
+                    $(".FeatureDetailsCompactView .feature-description").text(args.label.get());
+                }, 20);
+
+            }            
+        });
+                       
+        this.app.eventRegistry.event("ViewActivatedEvent").subscribe(this, (args) => {
+
+            let thisRef = this;
+
+            if (args.id === "FeatureSetResultsView") {
+              
+                for (let i: number = 0; i < args.viewModel.resultsPage.length(); i++) {                    
+                    if (args.viewModel.featureSet.value.displayName.get().toLowerCase().indexOf("u.s. drought monitor") > -1) {                                                
+                        setTimeout(function () {                            
+                            $(".FeatureSetResultsView .feature-label").text(thisRef.getDroughtName($(".FeatureSetResultsView .feature-label").text()));
+                            $(".FeatureSetResultsView .feature-description").text("");
+                        }, 20);
+
+                    }
+                }                                                        
+            }
+        });
+
+        this.app.eventRegistry.event("LayerAddedEvent").subscribe(this, function (args, mapS: MapService) {
+            if (args.url.toLowerCase() == "https://droughtmonitor.unl.edu/data/kmz/usdm_current.kmz") {
+                let isLayers: boolean = this.IsDefined(args, "_fLayers");                
+                if (isLayers) {
+                    for (let i: number = 0; i < args._fLayers[0].renderer.infos.length; i++) {                        
+                        let workingInfo = args._fLayers[0].renderer.infos[i];
+                        workingInfo.label = this.getDroughtName(workingInfo.label);
+                    }
+                }
+            }
+            else if (args.url.toLowerCase() == "https://waterwatch.usgs.gov/index.php?m=real&w=kml&r=us&regions=all") {
+                let isLayers: boolean = this.IsDefined(args, "_fLayers");
+                if (isLayers) {
+                    for (let i: number = 0; i < args._fLayers[0].renderer.infos.length; i++) {
+                        args._fLayers[0]._name = "Stream Levels (KML)";
+                        let workingInfo = args._fLayers[0].renderer.infos[i];
+                        workingInfo.label = this.getStreamLevelName(workingInfo.label);
+                    }
+                }
+            }
+        });
         
         this.ssdp = new SiteServiceDiscoveryProvider();
         this.ssdp.initialize(this.app.site);                
 
         this.BuildLayerListButtons(); //try buttons now as the view may already be active
         this.ListenForLayerListView();
+    }
+
+    getStreamLevelName(sIn:string): string {
+                
+        switch (sIn) {
+            case "icon_1":
+                return "Low";                
+            case "icon_3":
+                return "Much below normal (<10 percentile)";
+            case "icon_4":
+                return "Below normal (10-24 percentile)";
+            case "icon_5":
+                return "Normal (25-75 percentile)";
+            case "icon_6":
+                return "Above normal (76-90 percentile)";
+            case "icon_7":
+                return "Much above normal (>90 percentile)";
+            case "icon_8":
+                return "High (<10 percentile)";
+            case "icon_0":
+                return "Not Ranked";
+            default:
+            case "default":
+                return "";
+        }    
+    }
+
+    getDroughtName(sIn: string): string {
+
+        switch (sIn) {
+            case "PolyStyle00":
+            case "0":
+                return "DO: Abnomally dry";
+            case "PolyStyle01":
+            case "1":
+                return "D1: Drought - Moderate";
+            case "PolyStyle02":
+            case "2":
+                return "D2: Drought - Severe";
+            case "PolyStyle03":
+            case "3":
+                return "D3: Drought - Extreme";                
+            case "PolyStyle04":
+            case "4":
+                return "D4: Drought - Exceptional";
+            default:
+                return "Average";
+        }
+    }
+
+    getAttributeObservableByName(attributesOCollection, nameMatch) {
+        for (let i: number = 0; i < attributesOCollection.length(); i++) {
+            if (attributesOCollection.getAt(i).name.get().toLowerCase() == nameMatch) {
+                return attributesOCollection.getAt(i);
+            }
+        }
+
+        return null;
     }
     
     isStringAurl(val: string): boolean {
@@ -142,8 +253,11 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
 
         return false;
     }
-
+        
     serviceOrLayerRemoved(workingURL: string, isServiceURL: boolean) {
+
+        if (workingURL == null || workingURL == "" || workingURL == undefined)
+            return;
 
         let ptr: number = this.layerListURLS.indexOf(workingURL.toLowerCase());
         this.layerListURLS.splice(ptr, 1);
@@ -157,6 +271,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             let workingService: any = this.resultsObject.getAt(i);
 
             workingServiceURL = this.ServiceLayerURLLink(workingService.connectionString).toLowerCase().replaceAll("/", "");
+            workingServiceURL = decodeURIComponent(workingServiceURL);
 
             if (isServiceURL && workingServiceURL == incomingURL) {
                 for (var lyr = 0; lyr < workingService.layers.length(); lyr++)
@@ -487,7 +602,11 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                     workingService = data.mapServices[i];
 
                     //do not include kml at this time
-                    if (workingService.serviceType.toLowerCase() == "kml")
+                    //if (workingService.serviceType.toLowerCase() == "kml")
+                    //    continue;
+
+                    //do not include tile maps
+                    if (thisRef.IsDefined(workingService, "tileInfo") && thisRef.IsDefined(workingService.tileInfo, "dpi"))
                         continue;
 
                     //no layers
@@ -518,6 +637,9 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                             parentIdMap["k" + workingService.layers[lyr]["id"]] = workingService.layers[lyr];                                                     
                         }                        
 
+                        if (workingService.layers[lyr]["displayName"] != null && workingService.layers[lyr]["displayName"] != "" && workingService.layers[lyr]["displayName"].toLowerCase() == "kml layer")
+                            workingService.layers[lyr]["displayName"] = workingService["displayName"] + " (KML)";
+
                         workingService.layers[lyr]["siteURL"] = siteURL;
                         workingService.layers[lyr]["mapServiceConnectionString"] = workingService.connectionString;
                         workingService.layers[lyr]["mapServiceID"] = workingService.id;
@@ -525,8 +647,15 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                         workingService.layers[lyr]["layerCheckbox"] = new Observable<boolean>(false);
                         workingService.layers[lyr]["oeLayerVisible"] = new Observable<boolean>(true);
 
+                        if (workingService.serviceType.toLowerCase() == "kml") {
+                            fullURL = thisRef.ServiceLayerURLLink(workingService.connectionString);
+                            fullURL = decodeURIComponent(fullURL);
+                            //workingService.layers[lyr]["customID"] = fullURL;
+                        }
+                        else {
+                            fullURL = thisRef.ServiceLayerURLLink(workingService.connectionString) + "/" + workingService.layers[lyr]["id"];
+                        }
                         
-                        fullURL = thisRef.ServiceLayerURLLink(workingService.connectionString) + "/" + workingService.layers[lyr]["id"];                                                                        
                         workingService.layers[lyr]["fullURL"] = fullURL;
 
                         if (thisRef.layerListURLS.indexOf(fullURL.toLowerCase()) > -1)
@@ -706,6 +835,10 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                 let tempURL: string;
 
                 workingService = {};
+
+                //do not include kml at this time
+                //if (workingService.serviceType.toLowerCase() == "kml")
+                //    continue;
 
                 if (!thisRef.IsDefined(data, "documentInfo"))
                     workingService["displayName"] = workingServiceURL;
@@ -1203,12 +1336,13 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
     }
 
     OEAddMapServiceFromGecortexLayer(gcxLayer: any) {
-        
+               
         let thisRef: any = this;        
         //let url: string = this.CleanURL(gcxLayer.mapServiceConnectionString);//"https://lib-gis2.library.oregonstate.edu/arcgis/rest/services/restoration/OITT/MapServer";
         let url: string = ServiceHelper.extractConnectionStringValue(gcxLayer.mapServiceConnectionString, 'url');        
         url = this.CleanURL(url);
-                                
+        url = decodeURIComponent(url);
+                                        
         class TMPItem implements ResultItem {
             isWhitelisted?: boolean;
             id: string;
@@ -1232,21 +1366,33 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             isLastItemOfPage: boolean;
 
         }
-
-        let rItem: TMPItem = new TMPItem();
-        rItem.connection = { id: null }; //{ id: (gcxLayer.mapServiceID != null) ? gcxLayer.mapServiceID.toString() : null }
-        rItem.description = gcxLayer.description;
-        rItem.discoveryProviderName = "ArcGisServerDiscoveryProvider";
-        rItem.displayName = gcxLayer.displayName;
-        rItem.serviceProviderName = "Geocortex.Gis.Services.ArcGisServer.Rest";
-        rItem.serviceType = ["None", "FeatureLayer", "ServiceLayer", "MapService"];
                 
-        let tokenVal = this.GetURLPart(gcxLayer.mapServiceConnectionString, "token");
-        rItem["serviceToken"] = tokenVal;
+        let rItem: TMPItem = new TMPItem();
+
+        rItem.connection = { id: null }; //{ id: (gcxLayer.mapServiceID != null) ? gcxLayer.mapServiceID.toString() : null }
+        rItem.name = gcxLayer.displayName;
+        rItem.displayName = gcxLayer.displayName;
+        rItem.description = gcxLayer.description;
+
+        if (gcxLayer.type.toLowerCase() == "kmllayer") {
+            rItem.serviceType = ["None", "KmlService", "KmlLayer", "Kml"];
+            rItem.discoveryProviderName = "KmlDiscoveryProvider";
+            rItem.serviceProviderName = "Geocortex.Gis.Services.Kml";            
+                        
+        }
+        else {
+            rItem.discoveryProviderName = "ArcGisServerDiscoveryProvider";            
+            rItem.serviceProviderName = "Geocortex.Gis.Services.ArcGisServer.Rest";
+            rItem.serviceType = ["None", "FeatureLayer", "ServiceLayer", "MapService"];
+
+            let tokenVal = this.GetURLPart(gcxLayer.mapServiceConnectionString, "token");
+            rItem["serviceToken"] = tokenVal;
+            url = url + "/" + gcxLayer.id;
+
+            if (tokenVal != "")
+                url = RestHelperHTTPService.appendTokenToUrl(url, tokenVal);
+        }        
         
-        url = url + "/" + gcxLayer.id;
-        if (tokenVal!="")
-            url = RestHelperHTTPService.appendTokenToUrl(url, tokenVal);
         rItem.url = url;
                         
         console.log("Realize Map Service: " + rItem.displayName);
@@ -1254,7 +1400,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         
         this.AddServiceItem(rItem, gcxLayer);                
     }
-    
+        
     AddServiceItem(serviceItem: any, gcxLayer: any) {
 
         let thisRef = this;
@@ -1265,6 +1411,10 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             .then(
                 function (e) {
 
+                    //force display name from popup list on to the map service display name.
+                    e.displayName = gcxLayer.displayName;
+                    e.identifiable = false;
+                                        
                     thisRef.app.commandRegistry.command("RemoveStatus").execute(e.serviceLayer.url);
                     thisRef.app.command("AddMapService").execute(e);
 
@@ -1273,7 +1423,6 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                         gcxLayer.inLayerList.set(true);
                         thisRef.layerListURLS.push(e.serviceLayer.url.toLowerCase());
                     }
-                        
                     
                     console.log("Adding Map Service: " + e.displayName);
                     console.log("Adding Map Service: " + e.serviceLayer.url);
