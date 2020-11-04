@@ -16,6 +16,10 @@ import { ServiceHelper } from "geocortex/essentials/ServiceHelper";
 import { ResultItem } from "geocortex/essentials/serviceDiscovery/ResultItem";
 import { Site } from "geocortex/essentials/Site";
 import { MapService } from "geocortex/essentials/MapService";
+import { LegendItemProviderFactory } from "geocortex/infrastructure/legend/LegendItemProviderFactory";
+import { LayerList } from "geocortex/infrastructure/layerList/LayerList";
+import { LayerListItem } from "geocortex/infrastructure/layerList/LayerListItem";
+import { LegendItem } from "geocortex/infrastructure/legend/LegendItem";
 
 export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
 
@@ -120,8 +124,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         this.app.eventRegistry.event("MapServiceRemovedEvent").subscribe(this, (args) => {
             this.serviceOrLayerRemoved(args.serviceUrl, true);
         });
-
-
+        
         this.app.eventRegistry.event("FeatureDetailsInvokedEvent").subscribe(this, (args) => {
                                     
             if (args.featureSet.displayName.get().toLowerCase().indexOf("u.s. drought monitor") > -1)
@@ -143,30 +146,43 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             let thisRef = this;
 
             if (args.id === "FeatureSetResultsView") {
-              
-                for (let i: number = 0; i < args.viewModel.resultsPage.length(); i++) {                    
-                    if (args.viewModel.featureSet.value.displayName.get().toLowerCase().indexOf("u.s. drought monitor") > -1) {                                                
-                        setTimeout(function () {                            
+
+                for (let i: number = 0; i < args.viewModel.resultsPage.length(); i++) {
+                    if (args.viewModel.featureSet.value.displayName.get().toLowerCase().indexOf("u.s. drought monitor") > -1) {
+                        setTimeout(function () {
                             $(".FeatureSetResultsView .feature-label").text(thisRef.getDroughtName($(".FeatureSetResultsView .feature-label").text()));
                             $(".FeatureSetResultsView .feature-description").text("");
                         }, 20);
 
                     }
-                }                                                        
+                }
             }
         });
-
+        
         this.app.eventRegistry.event("LayerAddedEvent").subscribe(this, function (args, mapS: MapService) {
-            if (args.url.toLowerCase() == "https://droughtmonitor.unl.edu/data/kmz/usdm_current.kmz") {
+            if (mapS.displayName.toLowerCase() == "user kml")
+            {
+                let isLayers: boolean = this.IsDefined(args, "_fLayers");
+                if (isLayers && args._fLayers.length > 0 && this.IsDefined(args._fLayers[0],"_name")) {
+                    mapS.displayName = args._fLayers[0]._name;
+
+                    this.secureKMLSymbols(args);
+                    this.buildKmlLayerLegend(args, mapS, args._fLayers[0].id);
+                }                                
+            }
+            else if (args.url.toLowerCase() == "https://droughtmonitor.unl.edu/data/kmz/usdm_current.kmz") {
                 let isLayers: boolean = this.IsDefined(args, "_fLayers");                
-                if (isLayers) {
+                if (isLayers) {                                        
                     for (let i: number = 0; i < args._fLayers[0].renderer.infos.length; i++) {                        
                         let workingInfo = args._fLayers[0].renderer.infos[i];
                         workingInfo.label = this.getDroughtName(workingInfo.label);
                     }
+
+                    this.secureKMLSymbols(args);
+                    this.buildKmlLayerLegend(args, mapS, args._fLayers[0].id);
                 }
             }
-            else if (args.url.toLowerCase() == "https://waterwatch.usgs.gov/index.php?m=real&w=kml&r=us&regions=all") {
+            else if (args.url.toLowerCase() == "https://waterwatch.usgs.gov/index.php?m=real&w=kml&r=us&regions=or") {
                 let isLayers: boolean = this.IsDefined(args, "_fLayers");
                 if (isLayers) {
                     for (let i: number = 0; i < args._fLayers[0].renderer.infos.length; i++) {
@@ -174,6 +190,9 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                         let workingInfo = args._fLayers[0].renderer.infos[i];
                         workingInfo.label = this.getStreamLevelName(workingInfo.label);
                     }
+
+                    this.secureKMLSymbols(args);
+                    this.buildKmlLayerLegend(args, mapS, args._fLayers[0].id);
                 }
             }
         });
@@ -183,6 +202,102 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
 
         this.BuildLayerListButtons(); //try buttons now as the view may already be active
         this.ListenForLayerListView();
+    }
+
+    secureKMLSymbols(args:any) {
+
+        if (this.IsDefined(args._fLayers[0], "renderer") && this.IsDefined(args._fLayers[0].renderer, "symbol") && args._fLayers[0].renderer.symbol.url.indexOf("http:") > -1) {
+            args._fLayers[0].renderer.symbol.url = args._fLayers[0].renderer.symbol.url.replace("http:", "https:");
+        }
+
+        if (this.IsDefined(args._fLayers[0], "renderer") && this.IsDefined(args._fLayers[0].renderer, "defaultSymbol") && this.IsDefined(args._fLayers[0].renderer.defaultSymbol, "url") &&  args._fLayers[0].renderer.defaultSymbol.url.indexOf("http:") > -1) {
+            args._fLayers[0].renderer.defaultSymbol.url = args._fLayers[0].renderer.defaultSymbol.url.replace("http:", "https:");
+        }
+    }
+
+    buildKmlLayerLegend(args:any, mapS: MapService, uniqueID:string) {
+
+        let thisRef = this;
+        let lastMapService = mapS;
+        args["uniqueId"] = uniqueID; //legend items use the map service id + layer id, like #_0 for layer 0
+        
+        setTimeout(function () {
+
+            LegendItemProviderFactory.getLegendItemWhenAvailable(args, function (legendItem: LegendItem) {
+                
+                let lList = (<LayerList>thisRef.app.layerList);
+                let listItems: LayerListItem[] = lList.getDescendants();
+                for (let i = 0; i < listItems.length; i++) {
+                    if (listItems[i].id.get() == args.id) {
+
+                        console.log(args);
+                        let workingItem: LayerListItem = listItems[i];
+
+                        //layers should match the info index?
+                        if (workingItem.children.length() == 1) {
+
+                            if ((<any>workingItem.children.getAt(0))._kmlLayer.uniqueId == uniqueID)
+                                thisRef.buildLegendItem((<any>workingItem.children.getAt(0)), legendItem);
+                        }
+                        else if (workingItem.children.length() > 1) {
+
+                            if (legendItem.children.length() > 1) //grouped legend on parent
+                                thisRef.buildLegendItem(workingItem, legendItem);                            
+
+                            for (let j = 0; j < workingItem.children.length(); j++) {                                
+                                if ((<any>workingItem.children.getAt(j))._kmlLayer.uniqueId == uniqueID) {                                                                        
+                                    //individual swatches on children?
+                                    thisRef.buildLegendItem((<any>workingItem.children.getAt(j)), legendItem.children.getAt(j));                                    
+                                }
+                            }
+
+                        }
+                        else {
+                            thisRef.buildLegendItem(workingItem, legendItem);
+                        }                                                
+                    }
+                }
+
+            });
+
+        }, 100);
+    }
+
+    buildLegendItem(workingItem: LayerListItem, legendItem: LegendItem) {
+
+        console.log(legendItem.swatchElement.get());
+
+        //source mapping.infrastructure.bundle _populateLegendItem = function
+        workingItem.expandLegend.set(!1);
+
+        if ("single-item" === legendItem.templateType) {
+            workingItem.legendItems.addItem(legendItem);
+            workingItem.legendSwatch.set(legendItem.swatchElement.get());
+        }
+        else {
+            workingItem.legendItems.addItems(legendItem.children.get());
+
+            if (workingItem.legendItems.length() > 1) {
+
+                if (workingItem.legendItems.getAt(workingItem.legendItems.length() - 1).label.get().toLowerCase().indexOf("all other values") > -1) {
+                    workingItem.legendItems.removeAt(workingItem.legendItems.length() - 1);
+                }
+
+                workingItem.legendSwatch.set(workingItem.layerList.multiLegendSwatchElement || workingItem.legendItems.getAt(0).swatchElement.get());
+                workingItem.legendHasMultipleItems.set(!0)
+            }
+            else {
+                workingItem.legendSwatch.set(workingItem.legendItems.getAt(0).swatchElement.get());
+                workingItem.legendHasMultipleItems.set(!1);
+            }
+        }
+
+        if (workingItem.legendItems.length() === 1)
+            workingItem.legendTooltip.set(workingItem.layerList.singleLegendIconTooltip.format(workingItem.name.get()));
+        else
+            workingItem.legendTooltip.set(workingItem.layerList.multiLegendIconTooltip)
+
+        workingItem.legendTooltip.set(workingItem.legendTooltip.get().format(workingItem.name.get()));
     }
 
     getStreamLevelName(sIn:string): string {
@@ -383,11 +498,6 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         else {
             this.RemoteServiceLoadedCheck(false);
         }
-                
-        /*if (this.defaultRemoteUrls != null && this.defaultRemoteUrls.length > 0) {
-            for (let i: number = 0; i < this.defaultRemoteUrls.length; i++)
-                this.ShowDirectServiceURL(this.defaultRemoteUrls[i],false);
-        }*/
     }
 
     LoadRemoteServiceSources(forceLoad:boolean) {
@@ -425,9 +535,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
             this.RequestGCXSources(this.gcxServiceMaps[this.gcxServiceMapsCurrent]);
         }
         else {
-            //no service urls!
-            //this.ShowLoader("Error: No remote service urls.  No search can be performed.", true, false, true, true, true);
-            //this.SourcesDone();
+            //no service urls!            
             this.RemoteServiceLoadedCheck(true);
         }        
     }
@@ -471,9 +579,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
 
     SourcesDone(): void {
                 
-        if (this.resultsArrayForSort.length < 1) {
-
-            //this.ShowLoader("Error. No remote services loaded.", true, false, true, false, true);
+        if (this.resultsArrayForSort.length < 1) {                        
             this.HideLoader();
         }
         else {
@@ -805,6 +911,16 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         let workingServiceURL: string;
         let workingLayerID: string = null;
 
+        if (workingURL.toLowerCase().indexOf("mapserver") < 0 &&
+            (workingURL.toLowerCase().indexOf(".kmz") > -1 ||
+            workingURL.toLowerCase().indexOf("/kmz") > -1 ||
+            workingURL.toLowerCase().indexOf(".kml") > -1 ||
+            workingURL.toLowerCase().indexOf("=kml") > -1)) {
+
+            this.AddKmlDirect(workingURL);
+            return;
+        }
+
         //url has a layer id on the end
         if (urlArray[urlArray.length-1].toLowerCase().indexOf("server") < 0) {
 
@@ -818,7 +934,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         else {
             workingServiceURL = workingURL;
         }
-                
+                                
         //load the service information
         let urlToLoad = workingServiceURL+"?f=json";
         
@@ -988,6 +1104,21 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
                 //thisRef.HideLoader();                
             });
             
+    }
+
+    AddKmlDirect(workingURL: string) {       
+
+        let gcxLayer: any = {};
+        gcxLayer.displayName = "User KML";
+        gcxLayer.description = "User KML";
+        gcxLayer.type = "kmllayer";
+        gcxLayer.mapServiceConnectionString = "url=" + workingURL;
+
+        //add kml service
+        this.OEAddMapServiceFromGecortexLayer(gcxLayer);
+
+        this.app.commandRegistry.command("ActivateView").execute("LayerListView");
+        this.CancelClicked();
     }
 
     CheckParentGroupLayer(childLayer: any, val: boolean) {
@@ -1420,7 +1551,10 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
 
                     //layer added to layer list
                     if (thisRef.layerListURLS.indexOf(e.serviceLayer.url) < 0) {
-                        gcxLayer.inLayerList.set(true);
+
+                        if (thisRef.IsDefined(gcxLayer,"inLayerList"))
+                            gcxLayer.inLayerList.set(true);
+
                         thisRef.layerListURLS.push(e.serviceLayer.url.toLowerCase());
                     }
                     
