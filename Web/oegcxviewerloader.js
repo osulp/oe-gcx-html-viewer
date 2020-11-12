@@ -46,8 +46,7 @@
 var oeGCXViewerLoader = {
 
     workingSite: "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/",
-    workingURL: "https://tools.oregonexplorer.info/",
-    lockedViewers: [],
+    workingURL: "https://tools.oregonexplorer.info/",    
 
     startViewer: function () {
 
@@ -199,18 +198,7 @@ var oeGCXViewerLoader = {
                 }
                 //else if (htmlString.indexOf("currently logged in") > -1 && htmlString.indexOf("not authorized") > -1) {
                 else if (htmlString.indexOf("(signed in as") > -1) {
-
-                    if (activeUser.trim() == "oe_anonymous" && thisMain.lockedViewers.indexOf(targetViewer) > -1) {
-                        //console.log("sign out");
-                        var newURL = thisMain.workingSite + "security/signOut";
-                        window.location.href = newURL;
-                    }
-                    else {
-                        //console.log("check login");
-                        thisMain.checkLogin(true);
-                    }
-
-                    //thisMain.checkLogin(true);                    
+                    thisMain.checkLogin(true);                    
                 }
                 else if (htmlString.indexOf("RequestSecurityTokenResponseCollection") > -1) {
 
@@ -226,12 +214,7 @@ var oeGCXViewerLoader = {
                 else if (typeof data === 'object') {
                     console.log("Json OBJECT!");
                     thisMain.startViewer();
-                }
-                else if (activeUser.trim() <= 0 && thisMain.lockedViewers.indexOf(targetViewer) > -1) {
-                    //no user signed in
-                    var newURL = thisMain.workingSite + "security/signOut";
-                    window.location.href = newURL;
-                }
+                }                
                 else if (htmlString.indexOf("__RequestVerificationToken") > -1) {
 
                     //get token
