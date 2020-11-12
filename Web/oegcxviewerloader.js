@@ -45,41 +45,56 @@
 */
 var oeGCXViewerLoader = {
 
-    workingSite: "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/",
+    workingSite: "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/",
     workingURL: "https://tools.oregonexplorer.info/",
-	lockedViewers: ["testpassword"],
-	
+    lockedViewers: [],
+
     startViewer: function () {
 
-		//console.log("Cookie: "+this.getCookie("oregonExplorerAutoLoginParams"));
-		//console.log("Referrer: "+document.referrer);
-		
-		if(document.referrer == "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/security/callback" && 
-		this.getCookie("oregonExplorerAutoLoginParams").length > 0)
-		{
-			var insertPtr = window.location.href.indexOf("#");			
-			var newURL = window.location.href.substring(0,insertPtr) + this.getCookie("oregonExplorerAutoLoginParams") + window.location.href.substring(insertPtr,window.location.href.length);
-			//console.log("New url: "+newURL);
-			window.location.href = newURL;
-			//location.reload(true);
-			return;
-		}
-		
+        //console.log("Cookie: "+this.getCookie("oregonExplorerAutoLoginParams"));
+        //console.log("Referrer: "+document.referrer);
+
+        if (document.referrer == "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/security/callback" &&
+            this.getCookie("oregonExplorerAutoLoginParams").length > 0) {
+            var insertPtr = window.location.href.indexOf("#");
+            var newURL = window.location.href.substring(0, insertPtr) + this.getCookie("oregonExplorerAutoLoginParams") + window.location.href.substring(insertPtr, window.location.href.length);
+            //console.log("New url: "+newURL);
+            window.location.href = newURL;
+            //location.reload(true);
+            return;
+        }
+
         document.getElementById("oeLoginNotice").style.display = "none";
         document.getElementById("myProgress").style.display = "block";
         console.log("Starting viewer...");
         console.log(this.workingSite);
 
+        let thisRef = this;
+
         new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize({
             onSiteInitialized: function (app, loader) {
-                geocortex.config.io.timeout = 180000; // 180 seconds
+                geocortex.config.io.timeout = 180000; // 180 seconds				
+            },
+            onError: function (resource, error) {
+                if (resource.message.toLowerCase().indexOf("cannot access the desired resource") > -1) {
+                    document.getElementById("oeAuthenticate").style.display = "block";
+                    document.getElementById("oeAuthSignout").addEventListener("click", function () {
+                        thisRef.signOut(thisRef);
+                    });
+                }
             }
         });
     },
-	signIn: function() {
-		var newURL = this.workingSite + "security/signIn?token_type=fragment";
-		window.location.href = newURL; 
-	},
+    signOut: function (oeLoader) {
+        //document.getElementById("oeAuthName").text = resource.message;		
+        var requestedURL = encodeURI(window.location);
+        var newURL = oeLoader.workingSite + "security/signOut";
+        window.location.href = newURL;
+    },
+    signIn: function () {
+        var newURL = this.workingSite + "security/signIn?token_type=fragment";
+        window.location.href = newURL;
+    },
     checkSiteAuthentication: function () {
 
         if (document.referrer.indexOf("SignOutCallback") > -1) {
@@ -89,94 +104,91 @@ var oeGCXViewerLoader = {
 
         document.getElementById("myProgress").style.display = "none";
         document.getElementById("oeLoginNotice").style.display = "block";
-		
-		var results = new RegExp('[\?&]' + 'viewer' + '=([^&#]*)').exec(window.location.href);
-		var targetUrl = this.workingSite + "viewers/" + decodeURI(results[1]) + "?f=json";
-		
-		var d = new Date();
-		console.log("Viewers request start: "+d.toString());
-						
-		var thisMain = this;
-		thisMain.makeRequest("GET", null, targetUrl,
-			function (data) {
-				console.log("Site listing object");				
-				jObject = JSON.parse(data);
-				
-				var d = new Date();
-				console.log("Viewers request end: "+d.toString());
-																
-				if (jObject.isAuthorized) {
-					//site does not have other accounts
-					oeGCXViewerLoader.checkLogin(false);
-				}								
-				else if (!jObject.isAuthorized) {					
-					
-					//var newURL = thisMain.workingSite + "security/signOut";
-					//window.location.href = newURL;
-					oeGCXViewerLoader.checkLogin(false);
-				}				
-				else {
-					//error, no site?
-					console.log("Site not found");
-					thisMain.startViewer();
-				}
-			},
-			function (data) {
-				console.log("Site detail request error.");				
-				thisMain.startViewer();
-			}
-		);
-		
+
+        var results = new RegExp('[\?&]' + 'viewer' + '=([^&#]*)').exec(window.location.href);
+        var targetUrl = this.workingSite + "viewers/" + decodeURI(results[1]) + "?f=json";
+
+        var d = new Date();
+        console.log("Viewers request start: " + d.toString());
+
+        var thisMain = this;
+        thisMain.makeRequest("GET", null, targetUrl,
+            function (data) {
+                console.log("Site listing object");
+                jObject = JSON.parse(data);
+
+                var d = new Date();
+                console.log("Viewers request end: " + d.toString());
+
+                if (jObject.isAuthorized) {
+                    //site does not have other accounts
+                    oeGCXViewerLoader.checkLogin(false);
+                }
+                else if (!jObject.isAuthorized) {
+
+                    //var newURL = thisMain.workingSite + "security/signOut";
+                    //window.location.href = newURL;
+                    oeGCXViewerLoader.checkLogin(false);
+                }
+                else {
+                    //error, no site?
+                    console.log("Site not found");
+                    thisMain.startViewer();
+                }
+            },
+            function (data) {
+                console.log("Site detail request error.");
+                thisMain.startViewer();
+            }
+        );
+
     },
     checkLogin: function (loadViewerWithGCX) {
 
         var thisMain = this;
         var requestedURL = encodeURI(window.location);
-				
-		//var paramsURL = new URL(requestedURL);
-		//var paramAction = paramsURL.searchParams.get("action");
-		//var allParams = null;
-		if(requestedURL.indexOf("?") > -1 && requestedURL.indexOf("&") > -1)
-		{
-			//console.log(requestedURL.indexOf("?"));
-			//console.log(requestedURL.length-1);
-			var allParams = requestedURL.substring(requestedURL.indexOf("&"), requestedURL.length);		
-			this.setCookie("oregonExplorerAutoLoginParams",allParams,.1);
-		}
-		else
-		{
-			this.setCookie("oregonExplorerAutoLoginParams",allParams,-10);
-		}
-				
+
+        //var paramsURL = new URL(requestedURL);
+        //var paramAction = paramsURL.searchParams.get("action");
+        //var allParams = null;
+        if (requestedURL.indexOf("?") > -1 && requestedURL.indexOf("&") > -1) {
+            //console.log(requestedURL.indexOf("?"));
+            //console.log(requestedURL.length-1);
+            var allParams = requestedURL.substring(requestedURL.indexOf("&"), requestedURL.length);
+            this.setCookie("oregonExplorerAutoLoginParams", allParams, .1);
+        }
+        else {
+            this.setCookie("oregonExplorerAutoLoginParams", allParams, -10);
+        }
+
         var getURL = "";
         if (loadViewerWithGCX)
             getURL = this.workingSite + "security/signIn?token_type=fragment&app=" + requestedURL;
         else
             getURL = this.workingURL + "Geocortex/IdentityServer/account/signin?token_type=fragment&app=" + requestedURL;
-				
+
         thisMain.makeRequest("GET", null, getURL,
             function (data) {
                 var htmlString = JSON.stringify(data);
-				
-				//check if user is logged in
-				var activeUser = "";
-				if(htmlString.indexOf("(signed in as") > -1)
-				{
-					var userPtr = htmlString.indexOf("(signed in as") + "(signed in as".length + 1;
-					var userCloser = htmlString.indexOf(")", urlPtr);
-					activeUser = htmlString.substring(userPtr, userCloser);					
-					console.log("Account already logged in: "+activeUser);
-				}
-				
-				//get viewer name
-				var vPtr = htmlString.indexOf("viewer=") + "viewer=".length;
-				var vCloser = htmlString.indexOf("\"", vPtr)-1;
-				var targetViewer = htmlString.substring(vPtr, vCloser).trim().toLowerCase();
-				console.log("Viewer: "+targetViewer);
+
+                //check if user is logged in
+                var activeUser = "";
+                if (htmlString.indexOf("(signed in as") > -1) {
+                    var userPtr = htmlString.indexOf("(signed in as") + "(signed in as".length + 1;
+                    var userCloser = htmlString.indexOf(")", urlPtr);
+                    activeUser = htmlString.substring(userPtr, userCloser);
+                    console.log("Account already logged in: " + activeUser);
+                }
+
+                //get viewer name
+                var vPtr = htmlString.indexOf("viewer=") + "viewer=".length;
+                var vCloser = htmlString.indexOf("\"", vPtr) - 1;
+                var targetViewer = htmlString.substring(vPtr, vCloser).trim().toLowerCase();
+                console.log("Viewer: " + targetViewer);
 
                 //check for login token #gcx
                 if (htmlString.indexOf("#gcx") > -1) {
-																									
+
                     //get gcx value
                     var urlPtr = htmlString.indexOf("#gcx-");
                     var urlCloser = htmlString.indexOf("\"", urlPtr) - 1;
@@ -186,27 +198,25 @@ var oeGCXViewerLoader = {
                     location.reload(true);
                 }
                 //else if (htmlString.indexOf("currently logged in") > -1 && htmlString.indexOf("not authorized") > -1) {
-				else if (htmlString.indexOf("(signed in as") > -1) {
-															
-					if(activeUser.trim() == "oe_anonymous" && thisMain.lockedViewers.indexOf(targetViewer)>-1)
-					{
-						//console.log("sign out");
-						var newURL = thisMain.workingSite + "security/signOut";
-						window.location.href = newURL;
-					}
-					else
-					{
-						//console.log("check login");
-						thisMain.checkLogin(true);
-					}
-					
+                else if (htmlString.indexOf("(signed in as") > -1) {
+
+                    if (activeUser.trim() == "oe_anonymous" && thisMain.lockedViewers.indexOf(targetViewer) > -1) {
+                        //console.log("sign out");
+                        var newURL = thisMain.workingSite + "security/signOut";
+                        window.location.href = newURL;
+                    }
+                    else {
+                        //console.log("check login");
+                        thisMain.checkLogin(true);
+                    }
+
                     //thisMain.checkLogin(true);                    
                 }
                 else if (htmlString.indexOf("RequestSecurityTokenResponseCollection") > -1) {
-					
-					//console.log(data);
-					//return;
-					
+
+                    //console.log(data);
+                    //return;
+
                     //form auto submit                    
                     //$("#autoFrame").html(data);					
                     var autoFrame = document.getElementById("autoFrame");
@@ -217,14 +227,13 @@ var oeGCXViewerLoader = {
                     console.log("Json OBJECT!");
                     thisMain.startViewer();
                 }
-				else if(activeUser.trim() <= 0 && thisMain.lockedViewers.indexOf(targetViewer) > -1 )
-				{
-					//no user signed in
-					var newURL = thisMain.workingSite + "security/signOut";
-					window.location.href = newURL;
-				}
+                else if (activeUser.trim() <= 0 && thisMain.lockedViewers.indexOf(targetViewer) > -1) {
+                    //no user signed in
+                    var newURL = thisMain.workingSite + "security/signOut";
+                    window.location.href = newURL;
+                }
                 else if (htmlString.indexOf("__RequestVerificationToken") > -1) {
-																	
+
                     //get token
                     var tokenPtr = htmlString.indexOf("__RequestVerificationToken");
                     var valuePtr = htmlString.indexOf("value=", tokenPtr) + 8;
@@ -244,7 +253,7 @@ var oeGCXViewerLoader = {
                         "&UserName=oe_anonymous" +
                         "&Password=oe_anonymous" +
                         "&EnableSSO=true";
-					
+
                     thisMain.makeRequest("POST", postString, actionToUse,
                         function (data) {
 
@@ -252,7 +261,7 @@ var oeGCXViewerLoader = {
                                 thisMain.checkLogin(true);
                                 return;
                             }
-														
+
                             //form auto submit                            
                             var autoFrame = document.getElementById("autoFrame");
                             var frag = document.createRange().createContextualFragment(data);
@@ -305,36 +314,36 @@ var oeGCXViewerLoader = {
             xmlhttp.send(postData);
         else
             xmlhttp.send();
-    },	
-	setCookie: function(cname, cvalue, exdays) {
-	  var d = new Date();
-	  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-	  var expires = "expires="+d.toUTCString();
-	  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-	},
-	getCookie: function(cname) {
-	  var name = cname + "=";
-	  var ca = document.cookie.split(';');
-	  for(var i = 0; i < ca.length; i++) {
-		var c = ca[i];
-		while (c.charAt(0) == ' ') {
-		  c = c.substring(1);
-		}
-		if (c.indexOf(name) == 0) {
-		  return c.substring(name.length, c.length);
-		}
-	  }
-	  return "";
-	}
+    },
+    setCookie: function (cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    },
+    getCookie: function (cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
 };
 
 
 
 //check for login token #gcx
-if(typeof oeGCXViewerLoaderSkipLogin !== "undefined" && oeGCXViewerLoaderSkipLogin)
-	oeGCXViewerLoader.startViewer();
+if (typeof oeGCXViewerLoaderSkipLogin !== "undefined" && oeGCXViewerLoaderSkipLogin)
+    oeGCXViewerLoader.startViewer();
 else if (typeof document.referrer !== "undefined" && (document.referrer.indexOf("wsfed") > -1 || document.referrer == window.location.href))
-	oeGCXViewerLoader.signIn();
+    oeGCXViewerLoader.signIn();
 else if (window.location.href.indexOf("#gcx") > -1)
     oeGCXViewerLoader.startViewer();
 else

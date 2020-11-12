@@ -32,6 +32,26 @@
         #oeLoginNotice {
             display: none;
         }
+
+        #oeAuthenticate {
+			position: absolute;			
+			width: 100%;
+			height: 100%;
+			z-index: 1000;						
+			font-size: 20px;
+			text-align: center;
+			background-color: gray;			
+		}
+		
+		#oeAuthenticate div {
+			background-color: white;
+			padding:16px;
+		}
+		
+		#oeAuthenticate button {
+			margin-top:16px;
+			padding:8px 16px;			
+		}
     </style>
 
 </head>
@@ -52,6 +72,13 @@
             <p class="splash-paragraph">This application uses licensed Geocortex Essentials technology for the Esri<sup>&reg;</sup> ArcGIS platform. All rights reserved.</p>
             <!--<p class="splash-paragraph">Notice! The maps and data used in this tool are temporarily unavailable due to an unforeseen technical difficulty. We apologize for any inconvenience, and are working to bring these services back online as quickly as possible.</p>-->
             <!--<img src="Resources/Images/loader-small.gif" alt="Loader" />-->
+        </div>
+    </div>
+    <div id="oeAuthenticate" style="display:none;">
+        <div>
+            <a href="https://oregonexplorer.info/"><img src="Resources/Images/Custom/splash-logo.png" alt="" /></a><br /><br />
+            This site requires a user login.<br /><br />
+            <button id="oeAuthSignout" class="button">Proceed to login</button>
         </div>
     </div>
     <iframe id="autoFrame" style="display:none;"></iframe>
