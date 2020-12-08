@@ -1505,7 +1505,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         rItem.displayName = gcxLayer.displayName;
         rItem.description = gcxLayer.description;
 
-        if (gcxLayer.type.toLowerCase() == "kmllayer") {
+        if (this.IsDefined(gcxLayer,"type") && gcxLayer.type.toLowerCase() == "kmllayer") {
             rItem.serviceType = ["None", "KmlService", "KmlLayer", "Kml"];
             rItem.discoveryProviderName = "KmlDiscoveryProvider";
             rItem.serviceProviderName = "Geocortex.Gis.Services.Kml";            
