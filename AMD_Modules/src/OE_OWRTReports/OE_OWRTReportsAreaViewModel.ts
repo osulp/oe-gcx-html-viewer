@@ -370,9 +370,9 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     reportAreaList: ObservableCollection<object> = new ObservableCollection<object>(null);
 
     yearMin: number = 1995;
-    yearMax: number = 2018;
+    yearMax: number = 2019;
     startYearDefault: number = 1995;
-    endYearDefault: number = 2018;
+    endYearDefault: number = 2019;
 
     startYear: Observable<string> = new Observable<string>(this.startYearDefault.toString());
     endYear: Observable<string> = new Observable<string>(this.endYearDefault.toString());
