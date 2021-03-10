@@ -1,14 +1,6 @@
 ﻿.oeLayerSearch-module-view {
     position: inherit;
     z-index: 100;
-    /*width: 900px;
-    padding: 6px;
-    margin-top: 12px;
-    margin-right: 2px;
-    min-height: 570px;
-    font: 12px Myriad,Helvetica,Tahoma,Arial,clean,sans-serif;
-    font-size: .9em;
-    right: 0;*/
     background: white;
     color: black;
     border: none;
@@ -22,8 +14,12 @@
     height: 100%;
     background-color: #ffffff;
     text-align: center;
-    /*padding-top: 50px;*/
     z-index: 1000;
+}
+
+#oeLayerSearchInput {
+    font-size: 1.25em;
+    height: 32px;
 }
 
 .oeLayerSearchLoading button {
@@ -49,9 +45,25 @@
     padding-bottom: 16px;
 }
 
-.oe_add_layer_wrapper
-{
-    height:48px;
+.oe_add_layer_wrapper {
+    height: 64px;
+    padding-left: 8px;
+    padding-top: 4px;
+    border-top: 1px solid #D9D9D9;
+}
+
+.oe_add_layer_wrapper p {
+    font-size: 0.9em;
+}
+
+.layer-list-wrapper .layer-list {
+    position: unset !important;
+    padding-top: 0.5em;
+    padding-left: 0.5em;
+}
+
+.layer-theme-switcher {
+    border-top: 1px solid #D9D9D9;
 }
 
 .oeLayerSearchToggleTrees {
@@ -61,7 +73,7 @@
 
 .oeLayerSearchToggleTrees div {
     display: inline-block;
-    width: 22%;
+    width: 18%;
     text-align: center;
 }
 
@@ -76,6 +88,15 @@
     z-index: 2;
 }
 
+.oeSearchLayerOptions span{
+    vertical-align:middle;
+    padding-left:8px;
+}
+
+.oeSearchLayerOptions div button img {
+    vertical-align: top;
+}
+
 .oe-lc-entries {
     position: absolute;
     top: 7em;
@@ -83,6 +104,7 @@
     bottom: 4em;
     left: 0;
     overflow-y: auto;
+    padding-bottom:16px;
 }
 
 .oeLayerSearchToggleTrees hr
@@ -109,6 +131,11 @@ div.oeHasParentLayer
     padding-right: 8px;
 }
 
+.oeLayerSearch-module-view .layer-item span:nth-child(2) {
+    color:#808080;
+    font-style:italic;
+}
+
 span.oeLayerSearchLayerGroup {
     background-image: url(Resources/Images/Icons/Toolbar/layers-24.png);
     background-repeat: no-repeat;
@@ -122,45 +149,115 @@ span.oeLayerSearchLayerGroup {
     right:20px;
     top:16px;    
 }
-/*
-.oeSLSToolTip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
-    border-top: 1px dotted black;
-}
 
-.oeSLSToolTip .oeSLSToolTipText {
-        visibility: hidden;
-        width: 500px;
-        background-color: #555;
-        color: #fff;
-        text-align: center;
-        padding: 5px 0;
-        border-radius: 6px;
-        
-        position: absolute;
-        z-index: 1;
-        top: 135%;
-        
-        margin-left: -20px;
-        
-        opacity: 0;
-        transition: opacity 0.3s;
-}
-
-.oeSLSToolTip .oeSLSToolTipText::after {
-    content: "";
+.oeAddLayerDetails {
     position: absolute;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent #555 transparent;
+    top: 7em;
+    left: 1em;
+    width: 90%;
+    height: 9em;
+    background-color: #F8F8F8;
+    padding: 8px;
+    border: 2px solid black;
+    overflow: hidden;
 }
 
-.oeSLSToolTip:hover .oeSLSToolTipText {
-    visibility: visible;
-    opacity: 1;
-}*/
+.oeAddLayerDetailsText {
+    width: 98%;
+    overflow-wrap: break-word;
+}
+
+.oeAddLayerDetailsDesc {
+    overflow-y: scroll;
+    display: block;
+    height: 5em;
+    margin-top: 1em;
+    overflow-wrap:break-word;
+}
+
+.oeAddLayerDetailsClose {
+    position: absolute;
+    right: 10px;
+    top: 6px;
+}
+
+.oeAddLayerLockImg {
+    vertical-align: text-bottom;
+}
+
+.oeAddLayerVisitImg {
+    padding-left: 4px;
+    opacity: .30;
+    vertical-align: text-bottom;
+}
+
+.shell-small .OE_AddLayerToLayerListView .lc-actions {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+}
+
+.OE_AddLayerToLayerListView .lc-actions button {
+    width: 7em;
+    margin-left: 1em;
+    text-align: center;
+}
+
+
+.shell-small .OE_AddLayerToLayerListView .layer-catalog-items {
+    padding-inline-start: 8px;
+}
+
+.shell-small .oeLayerSearch-module-view .oeSearchLayerRightButtons {
+    top: 4px;
+}
+
+.shell-small .oeLayerSearch-module-view .layer-catalog-items .lc-tree {
+    list-style: none;
+    margin-bottom: .8em;
+}
+
+.shell-small .oeLayerSearch-module-view .layer-catalog-items input[type='checkbox'] {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.shell-small .oeLayerSearch-module-view .catalog-item-control {
+    float: left;
+    padding-right: 8px;
+}
+
+.shell-small .oeLayerSearch-module-view .catalog-layer-item {
+    padding-left:2em;
+}
+
+.shell-small .oeLayerSearch-module-view .catalog-item-control .expander-button {
+    width: 2em;
+    height: 2em;
+}
+
+.shell-small .oeLayerSearch-module-view .catalog-item-control .bound-invisible {
+    display: none !important;
+}
+
+.shell-small .oeLayerSearch-module-view .catalog-item-control span {
+    float: left
+}
+
+.shell-small .oeLayerSearch-module-view .folder-open {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: url(Resources/Images/Icons/tree-expander-open-light-16.png) top center no-repeat !important;
+}
+
+.shell-small .oeLayerSearch-module-view .folder-closed {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: url(Resources/Images/Icons/tree-expander-closed-light-16.png) top center no-repeat !important;
+}
+
+.shell-small div.oeHasParentLayer {
+    padding-left: 3.8em;
+}

@@ -31,6 +31,7 @@
             "id": "OE_SearchToWorkflowViewModel",
             "require": "geocortex/oe_amd/OE_SearchToWorkflow/OE_SearchToWorkflowViewModel",
             "configuration": {
+				"targetInputBoxID": "#gcx_search",
                 "searchWorkflowID": "Geocoder_Search",
                 "searchArgumentName": "searchIn",
                 "workflowSearchText": "Search for location",

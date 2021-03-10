@@ -90,39 +90,7 @@
                     "moduleName": "OE_AddLayerToLayerList",
                     "libraryId": "OE_AMD",
                     "require": "geocortex/oe_amd/OE_AddLayerToLayerList/OE_AddLayerToLayerListModule",
-                    "configuration": {
-                        "menuItems": [
-                            {
-                                "text": "Add Layers",
-                                "description": "Add layers from OE Layer Catalog",
-                                "iconUri": "Resources/Images/Icons/Toolbar/layers-add-24.png",
-                                "command": "AddMapLayerInteractive"
-                            },
-                            {
-                                "text": "Upload",
-                                "description": "Upload your own layers.",
-                                "iconUri": "Resources/Images/Icons/Toolbar/upload-24.png",
-                                "command": "UploadData"
-                            },
-                            {
-                                "text": "Re-Order",
-                                "description": "Change the layer drawing order",
-                                "iconUri": "Resources/Images/Icons/Toolbar/layers-reorder-24.png",
-                                "command": "OpenLayerDrawingOrderGroups"
-                            },
-                            {
-                                "text": "Show Legend",
-                                "description": "View the Legend",
-                                "iconUri": "Resources/Images/Icons/legend-16.png",
-                                "command": "SwitchToLegendView"
-                            },
-                            {
-                                "text": "Show Layers",
-                                "description": "View the Layer List",
-                                "iconUri": "Resources/Images/Icons/Toolbar/layers-24.png",
-                                "command": "ShowLayerList"
-                            }
-                        ]
+                    "configuration": {                        
                     },
                     "views": [
                         {
@@ -133,7 +101,7 @@
                             "title": "Layer Search",
                             "visible": false,
                             "region": "ModalWindowRegion",
-                            "configuration": {
+                            "configuration": {                                
                             }
                         }
                     ],
@@ -142,8 +110,35 @@
                             "id": "OE_AddLayerToLayerListViewModel",
                             "require": "geocortex/oe_amd/OE_AddLayerToLayerList/OE_AddLayerToLayerListViewModel",
                             "configuration": {
-								 "remoteServiceURLs": [
-                                    "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/rest/sites/__root_oreall"
+                                "remoteServiceDefault": "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/rest/sites/__root_oreall",
+                                "defaultRemoteUrls": [],
+                                "gcxServiceMaps": ["https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/live_services", "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/rest/sites/__root_oreall"],
+                                "gcxServiceMapsFlagLive": ["https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/live_services"],
+                                "menuItems": [
+                                    {
+                                        "text": "Add Layers",
+                                        "description": "Add layers from OE Layer Catalog",
+                                        "iconUri": "Resources/Images/Icons/Toolbar/layers-add-24.png",
+                                        "command": "oeLayerSearch"
+                                    },
+                                    {
+                                        "text": "Upload",
+                                        "description": "Upload your own layers.",
+                                        "iconUri": "Resources/Images/Icons/Toolbar/upload-24.png",
+                                        "command": "UploadData"
+                                    },
+                                    {
+                                        "text": "Re-Order",
+                                        "description": "Change the layer drawing order",
+                                        "iconUri": "Resources/Images/Icons/Toolbar/layers-reorder-24.png",
+                                        "command": "OpenLayerDrawingOrderGroups"
+                                    },
+                                    {
+                                        "text": "Toggle Legend",
+                                        "description": "Toggle the Legend",
+                                        "iconUri": "Resources/Images/Icons/Custom/legend-24.png",
+                                        "command": "oeToggleLayerListLegend"
+                                    }                                  
                                 ]
 							}
                         }

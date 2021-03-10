@@ -1,7 +1,8 @@
 ﻿<div class="oeSearchToWorkflow-module-view">
-    <button title="Search Options" data-binding="{@event-onclick: toggleSearchOptions}"><img src="Resources/Images/Icons/arrow-down-small-24.png" /></button>
+    <button title="Search Options" data-binding="{@event-onclick: toggleSearchOptions}{@visible: searchOptionsButtonVisible}"><img src="Resources/Images/Icons/arrow-down-small-24.png" /></button>
+    <button title="Clear Search" data-binding="{@event-onclick: clearSearchBox}{@visible: clearSearchVisible}"><img src="Resources/Images/Icons/close-24.png" /></button>
     <div data-binding="{@visible: searchOptionsVisible}">
-        <a href="javascript:void(0)" data-binding="{className: oeSearchToWorkflowDefault} {@event-onclick: searchToDefault}">Search Site Layers &amp; Geocoder</a>
         <a href="javascript:void(0)" data-binding="{@text:workflowSearchText} {className: oeSearchToWorkflowWorkflow} {@event-onclick: searchToWorkflow}">Custom Search</a>
+        <a href="javascript:void(0)" data-binding="{className: oeSearchToWorkflowDefault} {@event-onclick: searchToDefault}">Search Layer Attributes</a>
     </div>
 </div>

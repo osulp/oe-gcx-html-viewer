@@ -3,9 +3,9 @@
         float:right;
     }
 
-    .oeSearchToWorkflow-module-view {
-    
-    }
+.oeSearchToWorkflow-module-view { 
+    background-color: #fff;
+}
 
     .oeSearchToWorkflow-module-view button {
         border: 1px solid #D9D9D9;
@@ -13,6 +13,7 @@
         border-width: 1px;
         padding: .4em;
         margin-right: 2px;
+        z-index:100;
     }
 
     .oeSearchToWorkflow-module-view div {
@@ -22,7 +23,7 @@
         border: 1px solid #D9D9D9;
     }
 
-.oeSearchToWorkflowSuggest-module-view {
+.shell-large .oeSearchToWorkflowSuggest-module-view {
     position: absolute;
     display: block;
     background-color: white;
@@ -31,23 +32,48 @@
     margin-top: 37px;
 }
 
-    .oeSearchToWorkflow-module-view div a, .oeSearchToWorkflowSuggest-module-view a {
-        padding: 8px;
-        display: block;
-        background-color: #fff;
-        text-align: left;
-        color: #000;
-        text-decoration: none;
-    }
+.oeSearchToWorkflow-module-view div a, .oeSearchToWorkflowSuggest-module-view a {
+    padding: 8px;
+    display: block;
+    background-color: #fff;
+    text-align: left;
+    color: #000;
+    text-decoration: none;
+}
 
-    .oeSearchToWorkflow-module-view div a:hover, .oeSearchToWorkflowSuggest-module-view a:hover {
-        color: #fff;
-        background-color: #4C4C4C;
-        text-decoration: none;
-    }
+/*.oeSearchToWorkflow-module-view div a:hover, .oeSearchToWorkflowSuggest-module-view a:hover, .oeSearchToWorkflow-module-view div a.oeSearchToWorkflowSelected, .oeSearchToWorkflowSuggest-module-view a:hover, a.oeSearchSuggestSelected {*/
+.oeSearchToWorkflow-module-view div a:hover, .oeSearchToWorkflow-module-view div a.oeSearchToWorkflowSelected, a.oeSearchSuggestSelected {
+    color: #fff;
+    background-color: #4C4C4C;
+    text-decoration: none;
+}
 
-    .oeSearchToWorkflow-module-view div a.oeSearchToWorkflowSelected, .oeSearchToWorkflowSuggest-module-view a:hover {
-        color: #fff;
-        background-color: #4C4C4C;
-        text-decoration: none;
-    }
+.shell-small .oeSearchToWorkflow-module-view div {
+    position: absolute;
+    display: block;
+    background-color: white;
+    border: 1px solid #D9D9D9;
+    z-index: 100;
+    width: 200px;
+}
+
+.shell-small .OE_SearchToWorkflowView {
+    /* float: right; */
+    left: 130px;
+    top: 3px;
+}
+
+.shell-small .oeSearchToWorkflowSuggest-module-view {
+    position: absolute;
+    display: block;
+    background-color: white;
+    border: 1px solid #D9D9D9;
+    right: 10px;
+    margin-top: 0px;
+    width: 300px;
+    height: 200px;
+}
+
+.shell-small .oeSearchToWorkflowSuggest-module-view div a{
+    height:30px;
+}

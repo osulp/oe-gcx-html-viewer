@@ -3149,7 +3149,7 @@
                                             "commandParameter": "Aquaculture_Site_Report"
                                         },
                                         {
-                                            "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
+                                            "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/reports-24.png",
                                             "text": "Financial Planning Module",
                                             "description": "Run aquaculture financial scenarios",
                                             "command": "RunWorkflowById",
@@ -5367,8 +5367,8 @@
                                 "Resources/Styles/SmallShell.css",
                                 "Resources/Styles/Custom/sites.css",
                                 "Resources/Styles/Custom/sites_handheld.css",
-                                "Resources/Styles/Custom/common.css",
-                                "Resources/Styles/Custom/Handheld_OE.css"
+                                "{ViewerConfigUri}../../Styles/Custom/common.css",
+                                "{ViewerConfigUri}../../Styles/Custom/Handheld_OE.css"
                             ],
                             "homePanelVisible": true
                         },
@@ -5701,7 +5701,8 @@
                         "moduleName": "Site",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                         "configuration": {
-                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/Aquaculture"
+                            "siteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/Aquaculture",
+                            "siteUriORG": "{ViewerConfigUri}../../../../../.."
                         },
                         "views": [
                             {
@@ -5992,7 +5993,7 @@
                                         {
                                             "id": "SaveButton",
                                             "type": "button",
-                                            "iconUri": "Resources/Images/Icons/Toolbar/reports-24.png",
+                                            "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/reports-24.png",
                                             "command": "RunWorkflowById",
                                             "commandParameter": "Aquaculture_Site_Report",
                                             "hideOnDisable": false,
@@ -6922,7 +6923,7 @@
                                 "viewModelId": "OE_SearchToWorkflowViewModel",
                                 "title": "OE Search To Workflow",
                                 "visible": true,
-                                "region": "BannerContentRegion",
+                                "region": "HeaderRegion",
                                 "configuration": {}
                             },
                             {
@@ -6932,7 +6933,7 @@
                                 "viewModelId": "OE_SearchToWorkflowViewModel",
                                 "title": "OE Search Suggestion",
                                 "visible": true,
-                                "region": "BannerContentRegion",
+                                "region": "TopRightMapRegion",
                                 "configuration": {}
                             }
                         ],

@@ -26,4 +26,8 @@ export class OE_SearchToWorkflowView extends ViewBase {
     searchToWorkflow(event, element, context) {
         this.viewModel.searchToWorkflow();
     }
+
+    clearSearchBox(event, element, context) {
+        this.viewModel.clearSearchBox();
+    }
 }

@@ -16,10 +16,10 @@
 	Inside the splash-plate div add:
 
 	<div id="oeLoginNotice">
-		Authenticating.  Please wait a moment.
+		Please wait a moment.
     </div>		
 
-	Include script after loader.js:
+	Include script and auto frame after loader.js:
 	
 	<script src="Resources/Compiled/loader.js"></script>	    
 
@@ -36,11 +36,8 @@
         //var oeGCXViewerLoaderSkipLogin = true; 
     </script >
        
-    <script src="oegcxviewerloader.js"></script>
-	
-	At the bottom of index.html add:
-	
 	<iframe id="autoFrame" style="display:none;"></iframe>
+    <script src="oegcxviewerloader.js"></script>
 	
 	In this file change workingSite for the correct site (usually oe or dev)	
 	"https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/"
@@ -48,20 +45,54 @@
 */
 var oeGCXViewerLoader = {
 
-    workingSite: "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/",
-    workingURL: "https://tools.oregonexplorer.info/",
+    workingSite: "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/",
+    workingURL: "https://tools.oregonexplorer.info/",    
+
     startViewer: function () {
+
+        //console.log("Cookie: "+this.getCookie("oregonExplorerAutoLoginParams"));
+        //console.log("Referrer: "+document.referrer);
+
+        if (document.referrer == "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/security/callback" &&
+            this.getCookie("oregonExplorerAutoLoginParams").length > 0) {
+            var insertPtr = window.location.href.indexOf("#");
+            var newURL = window.location.href.substring(0, insertPtr) + this.getCookie("oregonExplorerAutoLoginParams") + window.location.href.substring(insertPtr, window.location.href.length);
+            //console.log("New url: "+newURL);
+            window.location.href = newURL;
+            //location.reload(true);
+            return;
+        }
 
         document.getElementById("oeLoginNotice").style.display = "none";
         document.getElementById("myProgress").style.display = "block";
         console.log("Starting viewer...");
         console.log(this.workingSite);
 
+        let thisRef = this;
+
         new geocortex.essentialsHtmlViewer.ViewerLoader().loadAndInitialize({
-            onSiteInitialized: function (app, loader) {                
-                geocortex.config.io.timeout = 180000; // 180 seconds
+            onSiteInitialized: function (app, loader) {
+                geocortex.config.io.timeout = 180000; // 180 seconds				
+            },
+            onError: function (resource, error) {
+                if (resource.message.toLowerCase().indexOf("cannot access the desired resource") > -1) {
+                    document.getElementById("oeAuthenticate").style.display = "block";
+                    document.getElementById("oeAuthSignout").addEventListener("click", function () {
+                        thisRef.signOut(thisRef);
+                    });
+                }
             }
         });
+    },
+    signOut: function (oeLoader) {
+        //document.getElementById("oeAuthName").text = resource.message;		
+        var requestedURL = encodeURI(window.location);
+        var newURL = oeLoader.workingSite + "security/signOut";
+        window.location.href = newURL;
+    },
+    signIn: function () {
+        var newURL = this.workingSite + "security/signIn?token_type=fragment";
+        window.location.href = newURL;
     },
     checkSiteAuthentication: function () {
 
@@ -73,67 +104,61 @@ var oeGCXViewerLoader = {
         document.getElementById("myProgress").style.display = "none";
         document.getElementById("oeLoginNotice").style.display = "block";
 
+        var results = new RegExp('[\?&]' + 'viewer' + '=([^&#]*)').exec(window.location.href);
+        var targetUrl = this.workingSite + "viewers/" + decodeURI(results[1]) + "?f=json";
+
+        var d = new Date();
+        console.log("Viewers request start: " + d.toString());
+
         var thisMain = this;
-        var targetSite = this.workingSite;
-        var vLoader = new geocortex.essentialsHtmlViewer.ViewerLoader();
-        var options = {};
-        options.onError = function (error, loader) {
-            console.log("Options error");
-        };
+        thisMain.makeRequest("GET", null, targetUrl,
+            function (data) {
+                console.log("Site listing object");
+                jObject = JSON.parse(data);
 
-        options.query = new geocortex.framework.application.loading.CaselessMap(new geocortex.framework.application.loading.QueryParameters(location.href));
+                var d = new Date();
+                console.log("Viewers request end: " + d.toString());
 
-        try {
-            vLoader.obtainConfigFromAlias(options,
-                function () {
+                if (jObject.isAuthorized) {
+                    //site does not have other accounts
+                    oeGCXViewerLoader.checkLogin(false);
+                }
+                else if (!jObject.isAuthorized) {
 
-                    if (typeof options === "undefined" || !options.hasOwnProperty("configBase")) {
-                        console.log("Viewer ID error.  No configBase.");
-                        window.location.href = "https://tools.oregonexplorer.info/OE_HtmlViewer/Index.html?viewer=oe";
-                        return;
-                    }
-
-                    var urlPtr = options.configBase.indexOf("sites/") + 6;
-                    var urlCloser = options.configBase.indexOf("/", urlPtr);
-                    var targetUrl = targetSite + "sites/" + options.configBase.substring(urlPtr, urlCloser);
-                    targetUrl += "?f=json";
-
-                    thisMain.makeRequest("GET", null, targetUrl,
-                        function (data) {
-                            console.log("Site listing object");
-                            if (!data.hasOwnProperty("error")) {
-                                //site does not have other accounts														
-                                oeGCXViewerLoader.checkLogin(false);
-                            }
-                            else {
-                                //site has other accounts													
-                                window.location.replace(thisMain.workingSite + "security/signIn");
-                                location.reload(true);
-                            }
-                        },
-                        function (data) {
-                            console.log("Site detail request error.");
-                            thisMain.startViewer();
-                        }
-                    );
-
-                },
-                function (err) {
-                    console.log("Alias error");
+                    //var newURL = thisMain.workingSite + "security/signOut";
+                    //window.location.href = newURL;
+                    oeGCXViewerLoader.checkLogin(false);
+                }
+                else {
+                    //error, no site?
+                    console.log("Site not found");
                     thisMain.startViewer();
-                });
-        }
-        catch (err) {
-            console.log("Internal GCX Error.");
-            console.log("The viewer id likely doesn't exist");
-            thisMain.startViewer();
-        }
+                }
+            },
+            function (data) {
+                console.log("Site detail request error.");
+                thisMain.startViewer();
+            }
+        );
 
     },
     checkLogin: function (loadViewerWithGCX) {
 
         var thisMain = this;
         var requestedURL = encodeURI(window.location);
+
+        //var paramsURL = new URL(requestedURL);
+        //var paramAction = paramsURL.searchParams.get("action");
+        //var allParams = null;
+        if (requestedURL.indexOf("?") > -1 && requestedURL.indexOf("&") > -1) {
+            //console.log(requestedURL.indexOf("?"));
+            //console.log(requestedURL.length-1);
+            var allParams = requestedURL.substring(requestedURL.indexOf("&"), requestedURL.length);
+            this.setCookie("oregonExplorerAutoLoginParams", allParams, .1);
+        }
+        else {
+            this.setCookie("oregonExplorerAutoLoginParams", allParams, -10);
+        }
 
         var getURL = "";
         if (loadViewerWithGCX)
@@ -145,8 +170,24 @@ var oeGCXViewerLoader = {
             function (data) {
                 var htmlString = JSON.stringify(data);
 
+                //check if user is logged in
+                var activeUser = "";
+                if (htmlString.indexOf("(signed in as") > -1) {
+                    var userPtr = htmlString.indexOf("(signed in as") + "(signed in as".length + 1;
+                    var userCloser = htmlString.indexOf(")", urlPtr);
+                    activeUser = htmlString.substring(userPtr, userCloser);
+                    console.log("Account already logged in: " + activeUser);
+                }
+
+                //get viewer name
+                var vPtr = htmlString.indexOf("viewer=") + "viewer=".length;
+                var vCloser = htmlString.indexOf("\"", vPtr) - 1;
+                var targetViewer = htmlString.substring(vPtr, vCloser).trim().toLowerCase();
+                console.log("Viewer: " + targetViewer);
+
                 //check for login token #gcx
                 if (htmlString.indexOf("#gcx") > -1) {
+
                     //get gcx value
                     var urlPtr = htmlString.indexOf("#gcx-");
                     var urlCloser = htmlString.indexOf("\"", urlPtr) - 1;
@@ -155,12 +196,15 @@ var oeGCXViewerLoader = {
                     window.location.href = newURL;
                     location.reload(true);
                 }
-                else if (htmlString.indexOf("currently logged in") > -1 && htmlString.indexOf("not authorized") > -1) {
-                    console.log("Account already logged in");
-                    thisMain.checkLogin(true);
-                    //thisMain.startViewer();
+                //else if (htmlString.indexOf("currently logged in") > -1 && htmlString.indexOf("not authorized") > -1) {
+                else if (htmlString.indexOf("(signed in as") > -1) {
+                    thisMain.checkLogin(true);                    
                 }
                 else if (htmlString.indexOf("RequestSecurityTokenResponseCollection") > -1) {
+
+                    //console.log(data);
+                    //return;
+
                     //form auto submit                    
                     //$("#autoFrame").html(data);					
                     var autoFrame = document.getElementById("autoFrame");
@@ -170,8 +214,9 @@ var oeGCXViewerLoader = {
                 else if (typeof data === 'object') {
                     console.log("Json OBJECT!");
                     thisMain.startViewer();
-                }
+                }                
                 else if (htmlString.indexOf("__RequestVerificationToken") > -1) {
+
                     //get token
                     var tokenPtr = htmlString.indexOf("__RequestVerificationToken");
                     var valuePtr = htmlString.indexOf("value=", tokenPtr) + 8;
@@ -252,13 +297,37 @@ var oeGCXViewerLoader = {
             xmlhttp.send(postData);
         else
             xmlhttp.send();
+    },
+    setCookie: function (cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    },
+    getCookie: function (cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
     }
 };
 
 
 
 //check for login token #gcx
-if (window.location.href.indexOf("#gcx") > -1 || (typeof oeGCXViewerLoaderSkipLogin !== "undefined" && oeGCXViewerLoaderSkipLogin))
+if (typeof oeGCXViewerLoaderSkipLogin !== "undefined" && oeGCXViewerLoaderSkipLogin)
+    oeGCXViewerLoader.startViewer();
+else if (typeof document.referrer !== "undefined" && (document.referrer.indexOf("wsfed") > -1 || document.referrer == window.location.href))
+    oeGCXViewerLoader.signIn();
+else if (window.location.href.indexOf("#gcx") > -1)
     oeGCXViewerLoader.startViewer();
 else
     oeGCXViewerLoader.checkSiteAuthentication();
