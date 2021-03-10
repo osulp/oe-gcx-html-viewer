@@ -1,6 +1,7 @@
 ﻿<div data-binding="{@template-for:sections}">
     <fieldset>
         <legend data-binding="{@text:displayName}"></legend>
+        <div class="resetSection"><button data-binding="{@event-onclick:resetSection}" class="toolbar-item tool aqua" title="Reset values"><img alt="Reset all of the values to default values." src="Resources/Images/Icons/Toolbar/sync-24.png" class="bound-visible-inline"><p>Reset</p></button></div>
         <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
         <div data-binding="{@source:fields_filter}">
             <br />
@@ -15,9 +16,9 @@
                             <span>)</span>
                         </div>
                         <div class="input_wrapper" data-binding="{@source:@context}{@template-selector: uiType}">
-                            <div data-binding="{@template-select:inputLocation}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/latlong.html}"></div>                           
+                            <div data-binding="{@template-select:inputLocation}{@template: geocortex/oe_amd/OE_Aquaculture/Templates/latlong.html}"></div>
                         </div>
-                    </div>                    
+                    </div>
                     <div class="div-row-cell">
                         <div class="desc" data-binding="{@visible:showDesc}">
                             <div class="input-header" data-binding="{@text:fieldName}"></div>
@@ -28,6 +29,6 @@
                 </div>
             </div>
         </div>
-        <hr />        
+        <hr />
     </fieldset>
 </div>

@@ -83,8 +83,12 @@
     /*min-height: 500px;*/
 }
 
-@media only screen and (max-width:800px) {
+@media only screen and (max-width:850px) {
     .tab{
-        width: 10em;
+        width: 8em;
+    }
+
+    .tab .button{
+        font-size:.8em;
     }
 }

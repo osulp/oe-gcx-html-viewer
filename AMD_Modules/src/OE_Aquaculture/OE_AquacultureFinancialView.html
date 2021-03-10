@@ -14,34 +14,65 @@
             </div>
 
             <div class="header-bar-right">
-                <button data-binding="{@event-onclick:resetValues}" class="toolbar-item tool aqua" title="Reset values"><img alt="Reset all of the values to default values." src="Resources/Images/Icons/Toolbar/sync-24.png" class="bound-visible-inline"><p>Reset Values</p></button>
-                <button data-binding="{@event-onclick:showPDFReportName}" class="toolbar-item tool aqua" title="Add layers to the map"><img alt="Get a pdf of your Oregon Aquaculture Financial Planning scenario" src="Resources/Images/Icons/Toolbar/reports-24.png" class="bound-visible-inline"><p>Full PDF Report</p></button>
+                <button data-binding="{@event-onclick:resetValues}" class="toolbar-item tool aqua" title="Reset values"><img alt="Reset all of the values to default values." src="Resources/Images/Icons/Toolbar/sync-24.png" class="bound-visible-inline"><p>Reset Tool</p></button>
                 <button data-binding="{@event-onclick:print}" class="toolbar-item tool aqua" title="Print the current page"><img alt="Print the current page" src="Resources/Images/Icons/Toolbar/print-24.png" class="bound-visible-inline"><p>Print Page</p></button>
+                <button data-binding="{@event-onclick:showPDFReportName}" class="toolbar-item tool aqua" title="Download the full report of your selected values as a PDF."><img alt="Get a pdf of your Oregon Aquaculture Financial Planning scenario" src="Resources/Images/Icons/Toolbar/reports-24.png" class="bound-visible-inline"><p>Full PDF Report</p></button>
+                <button data-binding="{@event-onclick:toggleSpreadsheetInfo}" class="toolbar-item tool aqua" title="Download model spreadsheet"><img alt="Download Spreadsheet" src="Resources/Images/Icons/Toolbar/download-24.png" class="bound-visible-inline"><p>Model Spreadsheet</p></button>
             </div>
             <div id="report-name" data-binding="{@visible:show_report_name_input}">
                 <div id="report-name-form">
                     <div class="close-btn" data-binding="{@event-onclick:hideReportNameInput}"><img src="Resources/Images/Icons/close-16.png" /></div>
-                    
-                        <label>Enter name for report:</label>
-                        <br />
-                        <input type="text" data-binding="{@value:report_name}" />
-                        <div class="oe-btn-wrapper">
-                            <div data-binding="{@event-onclick: getPDFReport}" class="oe-btn">Get PDF Report</div>
-                        </div>
-                    
+
+                    <label>Enter name for report:</label>
+                    <br />
+                    <input type="text" data-binding="{@value:report_name}" />
+                    <div class="oe-btn-wrapper">
+                        <div data-binding="{@event-onclick: getPDFReport}" class="oe-btn">Get PDF Report</div>
+                    </div>
+
                 </div>
-                
+
+            </div>
+            <div id="spreadsheet-info" data-binding="{@visible:show_spreadsheet_info}">
+                <div id="report-name-form">
+                    <div class="close-btn" data-binding="{@event-onclick:toggleSpreadsheetInfo}"><img src="Resources/Images/Icons/close-16.png" /></div>
+
+
+                    <br />
+                    <p>Download an Excel spreadsheet of your currently selected system (<span data-binding="{@text:selected_system_text}"></span>) with formulas for a deeper dive into the financial model and assumptions.<p>
+                    <p>NOTE: the downloaded spreadsheet contains generic default values.  If you want to apply the values you have selected in this tool, print out the <b>Full PDF Report</b> and use as a record of your inputs to test in the offline spreadsheet.</p>
+                    <div class="oe-btn-wrapper">
+                        <div data-binding="{@event-onclick: getSpreadsheet}" class="oe-btn">Download</div>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
     <div class="panel">
         <div class="panel-row">
-            <div class="panel-cell tabs">
+            <div data-binding="{@hidden: is_mobile}" class="panel-cell tabs">
                 <div data-binding="{@source:screens_collection_filter}" class="tab">
 
                     <button class="tablinks" data-binding="{@template-for:screens_collection_filter}{@text:screen}{@event-onclick:openTab}{id:tabId}{class:screenTabClass}"></button>
 
                 </div>
+            </div>
+            <div data-binding="{@visible: is_mobile}" class="panel-cell mobile-list">
+                <center>
+                    <div class="oe-btn-wrapper">
+                        <div data-binding="{@visible: show_back_btn}{@event-onclick: gotoPrevScreen}" class="oe-btn"><-</div>
+                    </div>
+                    <div class="oe_select">
+                        <div class="select">
+                            <select data-binding="{@source: screens_collection_filter}{@value: selected_screen}">
+                                <option data-binding="{@template-for: screens_collection_filter}{value: screen}{@text: screen}" />
+                            </select>
+                        </div>
+                    </div>
+                    <div class="oe-btn-wrapper">
+                        <div data-binding="{@event-onclick: gotoNextScreen}{@visible: show_next_btn}" class="oe-btn">-></div>
+                    </div>
+                </center>
             </div>
 
             <div id="printarea" class="panel-cell screens">
@@ -135,7 +166,7 @@
 </div>
 <div id="loading-wrapper" data-binding="{@visible:show_loading}">
     <div id="loading">
-        <div>           
+        <div>
         </div>
     </div>
 </div>

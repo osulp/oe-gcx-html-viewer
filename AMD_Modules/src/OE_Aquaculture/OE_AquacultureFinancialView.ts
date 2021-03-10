@@ -5,6 +5,7 @@
 import { ViewBase } from "geocortex/framework/ui/ViewBase";
 import { ViewerApplication } from "geocortex/infrastructure/Viewer";
 import { OE_AquacultureFinancialViewModel } from './OE_AquacultureFinancialViewModel';
+import { KmlService } from "geocortex/essentials/KmlService";
 
 declare var html2canvas: any;
 declare var $: any;
@@ -29,6 +30,13 @@ export class OE_AquacultureFinancialView extends ViewBase {
         this.setSelectedSystem(null, null, this.viewModel.selected_system.get());
         //load map to preserve location in report if clicked without having gone to location tab.
         this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(0)); 
+
+        //var kmzTest = new KmlService('https://droughtmonitor.unl.edu/data/kmz/usdm_current.kmz');
+        ////this.viewModel.app.commandRegistry.command("AddMapService").execute(kmzTest);
+        //this.app.command('AddMapService').execute(kmzTest);
+        ////kml test
+        ////buildKmlService('https://droughtmonitor.unl.edu/data/kmz/usdm_current.kmz').then()
+
         //window.setTimeout(() => {
         //    thisScope.openTab(null, null, thisScope.viewModel.screens_collection_filter.getAt(0));
         //    //avoid flicker of map loading
@@ -36,10 +44,39 @@ export class OE_AquacultureFinancialView extends ViewBase {
             
         //}, 500);
         //this.renderMap();
+        this.viewModel.selected_screen.bind(this, (screen) => {
+            this.gotoTab(null, null, { screen: screen });
+        });
 
-        $(window).resize(function () {
+        $(window).resize(function () {            
             thisScope.fitScreenHeight();
             thisScope.resizeMap();
+        });
+
+        $('.tooltip').on('click', (args) => {
+            console.log('touchy,toucy', $(args.target));
+            let isVisible = $(args.target).parent().find('.tooltiptext').css('visibility');
+            console.log('visibile?', isVisible);
+            if (isVisible === 'hidden') {
+                $(args.target).parent().find('.tooltiptext').css({ "visibility": "visible", "opacity": "1" });
+            } else {
+                $(args.target).parent().find('.tooltiptext').css({ "visibility": "hidden", "opacity": "0" });
+            }
+        });
+        this.app.registerActivityIdHandler("aquaculturePDFReportDone", (wc) => {
+            //window.open(wc.getValue("report_url"), '_blank');
+            thisScope.viewModel.show_loading_pdf.set(false);
+            thisScope.showHideLabelsOnCharts(true);
+            //check if chrome
+            const a = window.document.createElement('a');
+            a.href = wc.getValue("report_url");
+            a.download = 'AquacultureFinanicalPlanningReport.pdf';
+            a.target = '_blank';
+            document.body.appendChild(a);
+            // IE: "Access is denied"; 
+            // see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
+            a.click();
+            document.body.removeChild(a);
         });
     }
 
@@ -77,6 +114,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
 
     renderMap() {
         var thisScope = this;
+        
         if (typeof this.viewModel.esriMap == "undefined" || this.viewModel.esriMap == null) {
 
             this.viewModel.esriMap = new esri.Map("location-map", {
@@ -120,7 +158,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 this.viewModel.esriSearch.startup();
 
                 this.viewModel.esriSearch.on('search-results', function (e) {
-                    thisScope.viewModel.esriMap.graphics.clear();
+                    //thisScope.viewModel.esriMap.graphics.clear();
                 });
 
                 this.viewModel.esriSearch.on('select-result', function (e) {
@@ -128,6 +166,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
                         "point": new esri.geometry.Point(e.result.feature.geometry),
                         "name": e.result.name
                     });
+                    thisScope.viewModel.show_site_report_url.set(false);
                 });
             } catch (ex) {
                 //console.log('cannot load search');
@@ -181,9 +220,11 @@ export class OE_AquacultureFinancialView extends ViewBase {
                     thisScope.resizeWindow();
                     if (thisScope.viewModel.has_location.get()) {
                         window.setTimeout(() => {
-                            let inputPnt = thisScope.viewModel.selected_location.get().point;
-                            thisScope.viewModel.esriLocator.locationToAddress(inputPnt, 100);
-                            thisScope.viewModel.esriMap.centerAndZoom(inputPnt, 13);
+                            if (thisScope.viewModel.selected_location.get()) {
+                                let inputPnt = thisScope.viewModel.selected_location.get().point;
+                                thisScope.viewModel.esriLocator.locationToAddress(inputPnt, 100);
+                                thisScope.viewModel.esriMap.centerAndZoom(inputPnt, 13);
+                            }
                         }, 500);
                     }
                 } catch (ex) {
@@ -194,9 +235,12 @@ export class OE_AquacultureFinancialView extends ViewBase {
 
             this.viewModel.esriMap.on("click", function (evt) {
                 //console.log('map click!', evt);
-                thisScope.viewModel.esriMap.graphics.clear();
-                thisScope.viewModel.esriLocator.locationToAddress(evt.mapPoint, 100);
+                thisScope.viewModel.esriMap.graphics.clear();               
                 thisScope.viewModel.esriMap.centerAndZoom(evt.mapPoint, 13);
+                thisScope.viewModel.esriLocator.locationToAddress(evt.mapPoint, 100);
+                thisScope.viewModel.show_site_report_url.set(false);
+                var graphic = new esri.Graphic(evt.mapPoint, thisScope.viewModel.marker);
+                thisScope.viewModel.esriMap.graphics.add(graphic);       
             });
         }
         else {
@@ -272,6 +316,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
         } else {
             $("#fin-pln-footer").css("display", "none");
         }
+        this.viewModel.is_mobile.set($(window).width() < 850);
         //console.log('panel height: ', modal_height);
     }
 
@@ -357,8 +402,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
                 }) : this.viewModel.esriMap.extent;
                 thisScope.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
                 thisScope.gotoTab(null, null, currentScreen);
-                thisScope.viewModel.show_loading_pdf.set(false);
-                thisScope.showHideLabelsOnCharts(true);
+                
             }, 100);
         }, 750);
     }
@@ -398,6 +442,34 @@ export class OE_AquacultureFinancialView extends ViewBase {
             this.viewModel.report_name.set('Scenario ' + this.viewModel.report_number.toString() + ': ' + this.viewModel.selected_system_text.get());
             this.viewModel.show_report_name_input.set(true);
         }
+    }
+
+    toggleSpreadsheetInfo() {
+        if (this.viewModel.show_spreadsheet_info.get()) {
+            
+        }
+
+        this.viewModel.show_spreadsheet_info.set(!this.viewModel.show_spreadsheet_info.get());
+    }
+
+    resetSection(evt, elem, ctx) {
+        console.log('reset section values', ctx);
+        this.viewModel._resetSectionValues(ctx);
+        let currentScreen = this.viewModel.screens_collection.get()[this.viewModel.active_screen.get()];
+        this.gotoTab(null,null,currentScreen);
+    }
+
+    getSpreadsheet() {
+        let downloadUrl = this.viewModel.selected_system.get().model_spreadsheet;
+        const a = window.document.createElement('a');
+        a.href = downloadUrl;
+        a.download = downloadUrl.split('/')[downloadUrl.split('/').length - 1];
+        a.target = '_blank';
+        document.body.appendChild(a);
+        // IE: "Access is denied"; 
+        // see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
+        a.click();
+        document.body.removeChild(a);
     }
 
     hideReportNameInput() {
@@ -509,6 +581,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
             this.viewModel.refreshScreenFilters();
         } 
         this.openTab(null, null, this.viewModel.screens_collection_filter.getAt(curIndx + 1));
+        this.viewModel.selected_screen.set(this.viewModel.screens_collection_filter.getAt(curIndx + 1).screen);
         //if (this.viewModel.active_screen.get() === 2) {
         //    this.createLineChart();
         //    //get routing on second page if selected place

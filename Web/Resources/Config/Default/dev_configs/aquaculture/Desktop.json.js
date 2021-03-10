@@ -116,51 +116,6 @@
                         }
                     },
                     {
-                        "moduleName": "OE_Imagery",
-                        "libraryId": "OE_AMD",
-                        "require": "geocortex/oe_amd/OE_Imagery/OE_ImageryModule",
-                        "configuration": {},
-                        "views": [{
-                            "id": "OE_ImageryViewCompare1",
-                            "require": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewCompare1",
-                            "markup": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewCompare1.html",
-                            "viewModelId": "OE_ImageryViewModel",
-                            "title": "Imagery: Compare and Download",
-                            "visible": false,
-                            "region": "NavigationMapRegion",
-                            "configuration": {
-                            }
-                        },
-                            {
-                                "id": "OE_ImageryViewCompare2",
-                                "require": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewCompare2",
-                                "markup": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewCompare2.html",
-                                "viewModelId": "OE_ImageryViewModel",
-                                "title": "Imagery: Compare and Download",
-                                "visible": false,
-                                "region": "BasemapMapRegion",
-                                "configuration": {
-                                }
-                            },
-                            {
-                                "id": "OE_ImageryViewResults",
-                                "require": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewResults",
-                                "markup": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewResults.html",
-                                "viewModelId": "OE_ImageryViewModel",
-                                "title": "Imagery: Compare and Download",
-                                "visible": false,
-                                "region": "RightPanelRegion",
-                                "configuration": {
-                                }
-                            }],
-                        "viewModels": [
-                            {
-                                "id": "OE_ImageryViewModel",
-                                "require": "geocortex/oe_amd/OE_Imagery/OE_ImageryViewModel",
-                                "configuration": {}
-                            }]
-                    },
-                    {
                         "moduleName": "OE_Aquaculture",
                         "libraryId": "OE_AMD",
                         "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureModule",

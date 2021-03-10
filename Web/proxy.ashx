@@ -26,7 +26,11 @@ public class proxy : IHttpHandler
 {
 
     public void ProcessRequest(HttpContext context)
-    {
+    {  
+            if (ServicePointManager.SecurityProtocol.HasFlag(SecurityProtocolType.Tls12) == false)
+            {
+                ServicePointManager.SecurityProtocol = ServicePointManager.SecurityProtocol | SecurityProtocolType.Tls12;
+            }
 
         HttpResponse response = context.Response;
 		ProxyConfig config = ProxyConfig.GetCurrentConfig();

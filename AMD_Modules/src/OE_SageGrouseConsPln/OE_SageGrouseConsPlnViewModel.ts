@@ -425,7 +425,7 @@ export class SageGrouseConsPlnViewModel extends ViewModelBase {
         }
     }
 
-    _toggleLayerDisplay(service, layer, show?: boolean) {
+    _toggleLayerDisplay(service: string, layer: string, show?: boolean) {
         var mService = this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === service).length > 0 ? this.app.site.essentialsMap.mapServices.filter((ms: any) => ms.displayName === service)[0] : null;
         let serviceLayer = mService.findLayerByName(layer);
         //mService.serviceLayer["setVisibleLayers"]([parseInt(serviceLayer.id)]);
