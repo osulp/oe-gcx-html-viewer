@@ -117,6 +117,7 @@
     <Content Include="Resources\Config\Default\dev_configs\aquaculture\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\aquaculture\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\aquaculture\Tablet.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\oitt\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\orwapsfam\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\vanilla\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\vanilla\Handheld.json.js" />
@@ -630,7 +631,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Config\Default\dev_configs\m49\" />
-    <Folder Include="Resources\Config\Default\dev_configs\oitt\" />
     <Folder Include="Resources\Config\Default\dev_configs\owrt\" />
     <Folder Include="Resources\Config\Default\dev_configs\zLayerSite\" />
     <Folder Include="Resources\Config\DevTy\" />

@@ -3,7 +3,8 @@
         <div data-binding="{@source:@context}{@template-selector:sectionType}">
             <div data-binding="{@template-select:Production}">
                 <fieldset>
-                    <legend data-binding="{@text:displayName}"></legend>                   
+                    <legend data-binding="{@text:displayName}"></legend>  
+                    <div class="resetSection"><button data-binding="{@event-onclick:resetSection}" class="toolbar-item tool aqua" title="Reset values"><img alt="Reset all of the values to default values." src="Resources/Images/Icons/Toolbar/sync-24.png" class="bound-visible-inline"><p>Reset</p></button></div>
                     <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
                     <!--<br />-->
                     <div id="production-targets" data-binding="{@source:fields_filter}" class="div-row">
@@ -40,7 +41,8 @@
         <div data-binding="{@source:@context}{@template-selector:sectionType}">
             <div data-binding="{@template-select:ReqResources}">
                 <fieldset>
-                    <legend data-binding="{@text:displayName}"></legend>                    
+                    <legend data-binding="{@text:displayName}"></legend>
+                    <div class="resetSection"><button data-binding="{@event-onclick:resetSection}" class="toolbar-item tool aqua" title="Reset values"><img alt="Reset all of the values to default values." src="Resources/Images/Icons/Toolbar/sync-24.png" class="bound-visible-inline"><p>Reset</p></button></div>
                     <div data-binding="{@source:field_categories}" class="div-row production">
                         <div data-binding="{@template-for:field_categories}" class="div-row-cell">
                             <div data-binding="{@source:@context}{@template-selector:category}">
@@ -120,7 +122,11 @@
 
                         <div class="div-table-row" data-binding="{@template-for:fields_filter}">
                             <div data-binding="{class:tableDisplayClass}">
-                                <span class="input-header" data-binding="{@text:fieldName}"></span>
+                                <div class="tooltip">
+                                    <span class="input-header" data-binding="{@text:fieldLabel}"> </span>
+                                    <span data-binding="{@text:desc}" class="tooltiptext"></span>
+                                </div>
+                                <!--<span class="input-header" data-binding="{@text:fieldName}"></span>-->
                             </div>
                             <div class="div-table-cell values"><span data-binding="{@text:formattedValue}"></span></div>
                         </div>

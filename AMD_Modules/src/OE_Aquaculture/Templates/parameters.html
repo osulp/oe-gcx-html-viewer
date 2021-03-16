@@ -16,7 +16,11 @@
                 <!--<thead><td>Parameter</td><td>Unit</td><td>Value</td></thead>-->
                 <div class="div-table-row" data-binding="{@template-for:fields_filter}">
                     <div class="div-table-cell">
-                        <span class="input-header" data-binding="{@text:fieldLabel}"></span>
+                        <div class="tooltip">
+                            <span class="input-header" data-binding="{@text:fieldLabel}"> </span>
+                            <span data-binding="{@text:desc}" class="tooltiptext"></span>
+                        </div>
+                        <!--<span class="input-header" data-binding="{@text:fieldLabel}"></span>-->
                     </div>
                     <!--<div class="div-table-cell units"><span data-binding="{@text:unit}"></span></div>-->
                     <div class="div-table-cell values"> <span data-binding="{@text:formattedValue}"></span></div>

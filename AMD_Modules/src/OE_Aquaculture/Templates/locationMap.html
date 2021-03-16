@@ -51,14 +51,19 @@
         <legend>More resources</legend>
         <div class="div-row">
             <div class="div-row-cell site-report">
-                <h3>Site Report</h3>
+                <h3>Site Report</h3>                
+                <fieldset data-binding="{@visible: show_site_report_error}">
+                    <legend>ERROR</legend>
+                    <!--<img src="Resources/Images/Icons/error-24.png" alt="error generating site report" />-->
+                    <p>Sorry, there was an issue in generating your report.  This can happen if an external data service is temporarily unavailable. Please try again.  If the problem continues contact us at: <a href="mailto:virtualoregon.support@oregonstate.edu?subject=Aquaculture Site Report">virtualoregon.support@oregonstate.edu</a></p>
+                </fieldset>
                 <div>
                     <div class="float-left">
                         <img src="Resources/Images/Custom/AquacultureSiteReportThumb.png" width="100" alt="Site Report Thumbnail" />
                     </div>
                     <p> Get a Site Report for your selected location.  A Site Report pulls together spatial information about your location including:</p>
                     <br />
-                </div>                
+                </div>
                 <div class="clear">
                     <ul>
                         <li>Zoning and Ownership</li>

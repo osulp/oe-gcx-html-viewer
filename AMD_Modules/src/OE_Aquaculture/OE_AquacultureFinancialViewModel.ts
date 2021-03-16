@@ -9,6 +9,8 @@ import { FilterableCollection } from "geocortex/framework-ui/FilterableCollectio
 import { OrderedCollection } from "geocortex/framework-ui/OrderedCollection";
 import { Site } from "geocortex/essentials/Site";
 import { isNumeric } from "geocortex/infrastructure/NumberFormat";
+import { buildKmlService } from "geocortex/infrastructure/LayerIntegrationUtils";
+import { KmlService } from "geocortex/essentials/KmlService";
 //import { OE_Charts } from "../OE_Aquaculture/OE_Charts";
 
 export class OE_AquacultureFinancialViewModel extends ViewModelBase {
@@ -41,14 +43,17 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     //SCREEN CONFIG
     screens_collection: ObservableCollection<string> = new ObservableCollection([]);
     screens_collection_filter: FilterableCollection<any>;
+    selected_screen: Observable<string> = new Observable('Start Here');
     //OTHER INPUT PARAMS
     show_other_input_params_1: Observable<boolean> = new Observable(false);
     //SELECTED LOCATION
     has_location: Observable<boolean> = new Observable(false);
     selected_location: Observable<any> = new Observable();
+    prev_location: Observable<any> = new Observable();
     site_report_loading: Observable<boolean> = new Observable(false);
     site_report_url: Observable<string> = new Observable('');
     show_site_report_url: Observable<boolean> = new Observable(false);
+    show_site_report_error: Observable<boolean> = new Observable(false);
     //Markets and Feed Suppliers
     closest_markets: ObservableCollection<any> = new ObservableCollection([]);
     feed_suppliers: ObservableCollection<any> = new ObservableCollection([]);
@@ -88,22 +93,21 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     show_loading_pdf: Observable<boolean> = new Observable(false);
     show_loading: Observable<boolean> = new Observable(false);
     show_all_for_report: Observable<boolean> = new Observable(false);
+    //spreadsheet
+    show_spreadsheet_info: Observable<boolean> = new Observable(false);
     //Validation Monitoring
     show_warning: Observable<boolean> = new Observable(false);
     invalid_array = [];
-
+    //Scree size
+    is_mobile: Observable<boolean> = new Observable(false);
     
         
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
         this.screens_collection_filter = new FilterableCollection<any>(this.screens_collection, this._screensFilter.bind(this, this));
-        this.selected_location.bind(this, (selLoc) => {
-            if (selLoc) {
-                if (selLoc.name !== 'User click') {
-                    this.runRoutingServices();
-                }  
-            }         
-        });
+        //this.selected_location.bind(this, (selLoc) => {
+                   
+        //});
         
         //this.selected_system_binding_token =
         this.selected_system.bind(this, (sys) => {
@@ -128,6 +132,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                 //this._resetMap();
             }
         });
+
+        
 
         this.species_tbl_filter = new FilterableCollection<any>(this.species_tbl, this._selectedFilter.bind(this, this));
         this.prod_meth_tbl_filter = new FilterableCollection<any>(this.prod_meth_tbl, this._selectedFilter.bind(this, this));
@@ -158,8 +164,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                         fc.fields.get().forEach(ff => {
                             if (ff.fieldCalVar === 'marketDistanceOpts') {
                                 ff.ddOptions.set(cm.sender.value);
-                                ff.selDDoption.set(cm.sender.value[1].value);
-                                this.getSetValue(ff.formula, cm.sender.value[1].distance.toString());
+                                ff.selDDoption.set(cm.sender.value[cm.sender.value.length > 1 ? 1 : 0].value );
+                                this.getSetValue(ff.formula, cm.sender.value.length > 1 ? cm.sender.value[1].distance.toString() : '0');
                                 //this.routeDistance('market', cm);
                             }
                         });
@@ -176,8 +182,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                         fc.fields.get().forEach(ff => {
                             if (ff.fieldCalVar === 'feedDistanceOpts') {
                                 ff.ddOptions.set(cm.sender.value);
-                                ff.selDDoption.set(cm.sender.value[1].value);
-                                this.getSetValue(ff.formula, cm.sender.value[1].distance.toString());
+                                ff.selDDoption.set(cm.sender.value[cm.sender.value.length > 1 ? 1 : 0].value);
+                                this.getSetValue(ff.formula, cm.sender.value.length > 1 ? cm.sender.value[1].distance.toString() : '0');
                             }
                         });
                     });
@@ -238,35 +244,37 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             //rerun to set the resources system selection screen val...  TODO: figure out a better way
             //this.setSystems(wc);
 
+            $('.modal-container').addClass("oe-aquaculture-financial-modal");
             this.app.commandRegistry.command("ActivateView").execute("OE_AquacultureFinancialView");
+            //$('.modal-container').addClass("oe-aquaculture-financial-modal");
         });
 
-        this.app.registerActivityIdHandler("onClosestCitiesGTE50k", (wc) => {
-            //console.log('on closest cities!', wc);
-            try {
-                let closestMarkets = wc.getValue("citiesTable").features.map((m => {
-                    return {
-                        "option": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles" + ")",
-                        "value": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles" + ")",
-                        "market": m.attributes.NAME,
-                        "distance": (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles",
-                        "rank": m.attributes.NEAR_RANK
-                    }
-                }));
-                closestMarkets.push({
-                    "option": 'Other distance',
-                    "value": 'Other distance'
-                })
-                this.closest_markets.set(closestMarkets);
-            } catch (ex) {
-                let closestMarkets = [{
-                    "option": 'Other distance',
-                    "value": 'Other distance'
-                }];
-                this.closest_markets.set(closestMarkets);
-            }
+        //this.app.registerActivityIdHandler("onClosestCitiesGTE50k", (wc) => {
+        //    //console.log('on closest cities!', wc);
+        //    try {
+        //        let closestMarkets = wc.getValue("citiesTable").features.map((m => {
+        //            return {
+        //                "option": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles" + ")",
+        //                "value": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles" + ")",
+        //                "market": m.attributes.NAME,
+        //                "distance": (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles",
+        //                "rank": m.attributes.NEAR_RANK
+        //            }
+        //        }));
+        //        closestMarkets.push({
+        //            "option": 'Other distance',
+        //            "value": 'Other distance'
+        //        })
+        //        this.closest_markets.set(closestMarkets);
+        //    } catch (ex) {
+        //        let closestMarkets = [{
+        //            "option": 'Other distance',
+        //            "value": 'Other distance'
+        //        }];
+        //        this.closest_markets.set(closestMarkets);
+        //    }
 
-        });
+        //});
 
         this.app.registerActivityIdHandler("onSiteReportHandler", (wc) => {
             this.site_report_loading.set(false);
@@ -276,43 +284,45 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                 this.show_site_report_url.set(true);
                 this.site_report_url.set(siteReportURL);
                 console.log('url', siteReportURL);
+            } else {
+                this.show_site_report_error.set(true);
             }
         });
 
-        this.app.registerActivityIdHandler("onClosestFeedSupplier", (wc) => {
-            //console.log('on closest cities!', wc);
-            let feedSuppliers = [];
-            try {
-                feedSuppliers = wc.getValue("feedSuppliersTable").features.map((m => {
-                    return {
-                        "option": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles" + ")",
-                        "value": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles" + ")",
-                        "market": m.attributes.NAME,
-                        "distance": (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles",
-                        "rank": m.attributes.NEAR_RANK
-                    }
-                }));
-                feedSuppliers.splice(0,0,{
-                    "option": 'Other distance',
-                    "value": 'Other distance'
-                })
-                this.feed_suppliers.set(feedSuppliers);
-            } catch (ex) {
-                feedSuppliers.push({
-                    "option": 'Other distance',
-                    "value": 'Other distance'
-                })
-                this.feed_suppliers.set(feedSuppliers);
-            }
+        //this.app.registerActivityIdHandler("onClosestFeedSupplier", (wc) => {
+        //    //console.log('on closest cities!', wc);
+        //    let feedSuppliers = [];
+        //    try {
+        //        feedSuppliers = wc.getValue("feedSuppliersTable").features.map((m => {
+        //            return {
+        //                "option": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles" + ")",
+        //                "value": m.attributes.NAME + " (" + (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles" + ")",
+        //                "market": m.attributes.NAME,
+        //                "distance": (m.attributes.NEAR_DIST / 1609).toFixed(0) + " Miles",
+        //                "rank": m.attributes.NEAR_RANK
+        //            }
+        //        }));
+        //        feedSuppliers.splice(0,0,{
+        //            "option": 'Other distance',
+        //            "value": 'Other distance'
+        //        })
+        //        this.feed_suppliers.set(feedSuppliers);
+        //    } catch (ex) {
+        //        feedSuppliers.push({
+        //            "option": 'Other distance',
+        //            "value": 'Other distance'
+        //        })
+        //        this.feed_suppliers.set(feedSuppliers);
+        //    }
 
-        });
+        //});
 
         this.app.registerActivityIdHandler("onMarketFeedRouted", (wc) => {
 
             let closestMarkets = JSON.parse(wc.getValue("marketDestinations"))
                 .map(m => {
                     return {
-                        "distance": m.distance,
+                        "distance": m.distance.toFixed(0),
                         "name": m.name,
                         "state": m.state,
                         "value": m.name + ", " + m.state + " (" + m.distance.toFixed(0) + " Miles)",
@@ -332,7 +342,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             let feedSuppliers = JSON.parse(wc.getValue("feedSupplierDestinations"))
                 .map(m => {
                     return {
-                        "distance": m.distance,
+                        "distance": m.distance.toFixed(0),
                         "name": m.name,
                         "state": m.state,
                         "value": m.name + ", " + m.state + " (" + m.distance.toFixed(0) + " Miles)",
@@ -349,7 +359,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
             this.feed_suppliers.set(feedSuppliers);
         });
-
+        
         this.esriLocator.on("location-to-address-complete", function (evt) {
             if (evt.address.address) {
                 var address = evt.address.address;
@@ -362,9 +372,15 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
                 if (typeof thisViewModel.esriMap !== "undefined" && thisViewModel.esriMap !== null) {
                     var graphic = new esri.Graphic(location, thisViewModel.marker, address);
-                    thisViewModel.esriMap.graphics.add(graphic);
+                    thisViewModel.esriMap.graphics.add(graphic);                   
                 }
             }
+        });
+
+        this.app.eventRegistry.event("RegionDeactivatedEvent").subscribe(this, (args) => {
+            if (args.name == "ModalWindowPlaceholderRegion")
+                $('.modal-container').removeClass("oe-aquaculture-financial-modal");
+                $('.modal-container').removeClass("oe-aquaculture-financial-modal");
         });
     }
             
@@ -391,7 +407,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                     "overview": feat.attributes.Overview,
                     "img_src": feat.attributes.ImagePath,
                     "img_credit": feat.attributes.ImageCredit,
-                    "constraintsValid": constraintsValid
+                    "constraintsValid": constraintsValid,
+                    "model_spreadsheet": feat.attributes.SpreadsheetPath
                 };
                 if (feat.attributes.Default === 'True') {
                     defaultSystem = sys;
@@ -503,7 +520,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         //}
     }
 
-    setScreens() {
+    setScreens(reset?) {
         //////////
         // Screen Config
         // Create obj of screens and fields to display
@@ -567,12 +584,13 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
                         switch (ssAttr.SectionType) {
                             case 'Map':
-                                returnSectionInfo['selected_location'] = new Observable<any>('');
-                                returnSectionInfo['show_add_location'] = new Observable<boolean>(true);
-                                returnSectionInfo['show_selected_location'] = new Observable<boolean>(false);
+                                returnSectionInfo['selected_location'] = reset ? this.selected_location  :  new Observable<any>('');
+                                returnSectionInfo['show_add_location'] = new Observable<boolean>(reset ? false : true);
+                                returnSectionInfo['show_selected_location'] = new Observable<boolean>(reset ? true : false);
                                 returnSectionInfo['site_report_loading'] = this.site_report_loading;
                                 returnSectionInfo['site_report_url'] = this.site_report_url;
                                 returnSectionInfo['show_site_report_url'] = this.show_site_report_url;
+                                returnSectionInfo['show_site_report_error'] = this.show_site_report_error;
                                 break;
                             case 'Select System':
                                 returnSectionInfo['show_filter_class'] = new Observable<any>('show-filters');
@@ -623,8 +641,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                                 let thisScope = this;
                                 const att = sf.attributes;
                                 let value = att.Default === '' && att.FieldCategory === 'ExistingResource' ? '________' : this.formatValue(att.Default, att.Decimal)
-                                let fieldValue;
-                                fieldValue = new Observable<any>(value);
+                                let fieldValue = new Observable<any>(value);
                                 let fieldValidateMsg = new Observable<any>('Invalid input: Please enter a number between ' + this.formatValue(att.Min, att.Decimal) + ' and ' + this.formatValue(att.Max, att.Decimal) + '. <br>  ESC to reset to default value.');
                                 let fieldValidateMsgClass = new Observable<any>(att.UiType === 'dropdownLocations' ? 'validate-msg-nested hide' : 'validate-msg hide');
                                 let fieldDisplayValue = new Observable<any>(this.formatDisplayValue(value, att.Unit, att.Decimal, true));
@@ -760,7 +777,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                                                     this.screens_collection.get().forEach(scr => {
                                                         scr['sections'].get().forEach(sct => {
                                                             sct['fields'].get().forEach(f => {
-                                                                if (f.fieldCalVar === dd.updateField) {
+                                                                if (f.fieldCalVar === dd.updateField && f.show.indexOf(this.selected_system_text.get()) !== -1) {
                                                                     f.value.set(dd.value);
                                                                     this.updateViewModel(f);
                                                                 }
@@ -1046,7 +1063,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
        
         if (['feedDistance', 'marketDistance'].indexOf(_fieldCalVar) !== -1) {
             //process interpolated distance before processing other dependent variables
-            console.log('update interpolated then update costs', changedInput);
+            //console.log('update interpolated then update costs', changedInput);
             this.updateInterpolatedValues(_fieldCalVar === 'feedDistance' ? 'feedLbTransportCost' : 'marketLbTransportCost');
         }
         if (changedInput.formula.indexOf('[validate:') !== -1) {
@@ -1098,8 +1115,11 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
         let increment = f.increment ? parseFloat(f.increment) : 1;
 
-        let value = newVal.replace(/\,/g, '');//
-        //let value = this.formatValue(newVal, f.decimalDisp);
+        //OPTION for slider to start on left
+        //let value = newVal === '________' ? null : newVal.replace(/\,/g, '');
+
+        //Slider handle starts in the middle
+        let value = newVal.replace(/\,/g, '');        
 
         ////////////////////////////////////////////////
         // Kendo Slider
@@ -1130,8 +1150,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         };
 
         //Check if slider already added and update reference or else create
-        if ($("#" + sliderID).data("kendoSlider")) {
-            var slider = $("#" + sliderID).data("kendoSlider");
+        var slider = $("#" + sliderID).data("kendoSlider");
+        if (slider) {
             slider.value(value);            
         } else {
             $("#" + sliderID).kendoSlider(opts);
@@ -1283,21 +1303,23 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                 sct.fields.get().forEach(f => {
                     //validate constraints
                     if (_fieldToValidate !== '' && f.fieldCalVar === _fieldToValidate && (f.show.indexOf('All') !== -1 || f.show.indexOf(this.selected_system_text.get()) !== -1)) {
-                        if (field.value.get() !== '________') {
-                            let isNotValid = parseFloat(field.value.get().replace(/\,/g, '')) < parseFloat(f.value.get().replace(/\,/g, ''));
-                            f.class.set(isNotValid ? 'div-table-cell values warning' : 'div-table-cell values');
-                            this.invalid_array = this.invalid_array.filter(iv => iv !== f.fieldCalVar)
-                            if (isNotValid) {
-                                this.invalid_array.push(f.fieldCalVar);
-                            }
-                            //set system level warning
-                            this.systems_tbl.get().forEach(s => {
-                                if (s['system'] === this.selected_system_text.get()) {
-                                    s['constraintsValid'].set(this.invalid_array.length === 0)
-                                }
-                            });
-                            //this.show_warning.set();
+                        //if (field.value.get() !== '________') {
+                        let isNotValid = field.value.get() !== '________'
+                            ? parseFloat(field.value.get().replace(/\,/g, '')) < parseFloat(f.value.get().replace(/\,/g, ''))
+                            : false;
+                        f.class.set(isNotValid ? 'div-table-cell values warning' : 'div-table-cell values');
+                        this.invalid_array = this.invalid_array.filter(iv => iv !== f.fieldCalVar)
+                        if (isNotValid) {
+                            this.invalid_array.push(f.fieldCalVar);
                         }
+                        //set system level warning
+                        this.systems_tbl.get().forEach(s => {
+                            if (s['system'] === this.selected_system_text.get()) {
+                                s['constraintsValid'].set(this.invalid_array.length === 0)
+                            }
+                        });
+                        //this.show_warning.set();
+                        //}
                     }
                 });
             });
@@ -1394,6 +1416,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                 });
 
             this.show_other_input_params_1.set(selSystem.system ? true : false);
+            this.calculateAmortization();
 
         //this.refreshScreenFilters()
         }
@@ -1445,8 +1468,11 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     getSiteReport() {
         if (this.site_report_loading.get() !== true) {
             this.site_report_loading.set(true);
+            this.show_site_report_error.set(false);
             this.show_site_report_url.set(false);
-            let mapPoint = esri.geometry.geographicToWebMercator(this.selected_location.get().point);
+            let mapPoint = this.selected_location.get().point.spatialReference.wkid !== 102100
+                ? esri.geometry.geographicToWebMercator(this.selected_location.get().point)
+                : this.selected_location.get().point;
             var workflowArgs: any = {};
             workflowArgs.workflowId = "Aquaculture_Site_Report";
             workflowArgs.startPointIn = mapPoint;
@@ -1498,7 +1524,12 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         workflowArgs.useDynamicExternal = true;
         workflowArgs.maxDistance = "250";
         //workflowArgs.runInBackground = true;
-        this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
+        try {
+            this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
+        } catch (ex) {
+            console.log('problem running workflow Markets_Supply_Distances');
+        }
+        
     }
 
     _injectScript() {        
@@ -1587,19 +1618,25 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         //}
 
         this.selected_location.bind(this, (selLoc) => {
-            if (this.screens_collection.get().length > 0) {
-                //update the map screen info
-                //console.log('selected location', selLoc, this.screens_collection);
-                this.screens_collection.getItems().forEach(s => {
-                    s['sections'].get().forEach(sct => {
-                        if (sct.sectionType === 'Map') {
-                            sct.selected_location.set(selLoc);
-                            sct.show_selected_location.set(selLoc ? true : false);
-                            sct.show_add_location.set(selLoc ? false : true);
-                        } 
+            if (selLoc && JSON.stringify(selLoc) !== JSON.stringify(this.prev_location.get())) {
+                this.prev_location.set(selLoc);
+                if (selLoc.name !== 'User click') {
+                    this.runRoutingServices();
+                }
+                if (this.screens_collection.get().length > 0) {
+                    //update the map screen info
+                    //console.log('selected location', selLoc, this.screens_collection);
+                    this.screens_collection.getItems().forEach(s => {
+                        s['sections'].get().forEach(sct => {
+                            if (sct.sectionType === 'Map') {
+                                sct.selected_location.set(selLoc);
+                                sct.show_selected_location.set(selLoc ? true : false);
+                                sct.show_add_location.set(selLoc ? false : true);
+                            }
+                        });
                     });
-                });
-            }
+                }
+            }  
         });
     }
 
@@ -1724,14 +1761,41 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     }
 
     _resetValues() {
+        this._resetMap();
         let closestMarkets = [];
         this.closest_markets.get().forEach(m => closestMarkets.push(m));
         let closestFeedSuppliers = [];
         this.feed_suppliers.get().forEach(f => closestFeedSuppliers.push(f));
-        this.setScreens();
+        this.setScreens(true);
         this.show_warning.set(false);
         this.closest_markets.set(closestMarkets);
         this.feed_suppliers.set(closestFeedSuppliers);
+    }
+
+    _resetSectionValues(section:any) {
+        this.screens_collection.get().forEach(scr => {
+            if (scr['screen'] === section.screen) {
+                scr['sections'].get().forEach(sct => {
+                    if (sct.section === section.section) {
+                        sct.fields.get().forEach(f => {
+                            if (f.show.indexOf(this.selected_system_text.get()) !== -1 || f.show.indexOf('All') !== -1) {
+                                let value = f.defaultVal === '' && f.fieldCat === 'ExistingResource' ? '________' : this.formatValue(f.defaultVal, f.decimalDisp);
+                                f.value.set(value);
+                                if (f.uiType === 'slider') {
+                                    //this.updateSlider(f);
+                                    this.setKendoSlider(f, value);
+                                } else if (f.uiType === 'dropdown') {
+                                    f.selDDoption.set(value + ' ' + f.unit);
+                                }                                
+                                this.updateViewModel(f);
+                            }
+                        });
+                    }
+                });
+                //scr['sections'].set(sections);
+                scr['sections'].pulse();
+            }            
+        });        
     }
 
     _resetDefaults() {                

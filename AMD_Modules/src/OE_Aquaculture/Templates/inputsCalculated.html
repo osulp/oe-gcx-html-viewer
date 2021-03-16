@@ -1,6 +1,7 @@
 ﻿<div data-binding="{@template-for:sections}">
     <fieldset>
         <legend data-binding="{@text:displayName}"></legend>
+        <div class="resetSection"><button data-binding="{@event-onclick:resetSection}" class="toolbar-item tool aqua" title="Reset values"><img alt="Reset all of the values to default values." src="Resources/Images/Icons/Toolbar/sync-24.png" class="bound-visible-inline"><p>Reset</p></button></div>
         <div class="section-desc" data-binding="{innerHTML:sectionDesc}"></div>
         <div data-binding="{@source:field_categories}" class="div-row production">
             <div data-binding="{@template-for:field_categories}" class="div-row-cell">
@@ -33,7 +34,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>                    
+                    </div>
                     <div data-binding="{@template-select:InputCalculated}">
                         <h3>Calculated</h3>
                         <div class="div-table production" data-binding="{@source:fields_filter}">
@@ -53,22 +54,22 @@
         </div>
         <!--input location display-->
         <!--<div data-binding="{@source:field_ui_categories}" class="div-row production">
-            <div data-binding="{@template-for:field_ui_categories}" class="div-row-cell input-location-section">
-                <div data-binding="{@source:@context}{@template-selector:category}">
-                    <div data-binding="{@template-select:inputLocation}">
-                        <h3>Locations</h3>
-                        <div class="div-table" data-binding="{@source:fields}">
-                            <div class="div-table-row" data-binding="{@template-for:fields}">
-                                <div data-binding="{class:tableDisplayClass}">
-                                    <span class="input-header" data-binding="{@text:fieldName}"></span>
-                                </div>
-                                <div data-binding="{class:tableDisplayClass}"><span data-binding="{innerHTML:value}"></span></div>
+        <div data-binding="{@template-for:field_ui_categories}" class="div-row-cell input-location-section">
+            <div data-binding="{@source:@context}{@template-selector:category}">
+                <div data-binding="{@template-select:inputLocation}">
+                    <h3>Locations</h3>
+                    <div class="div-table" data-binding="{@source:fields}">
+                        <div class="div-table-row" data-binding="{@template-for:fields}">
+                            <div data-binding="{class:tableDisplayClass}">
+                                <span class="input-header" data-binding="{@text:fieldName}"></span>
                             </div>
+                            <div data-binding="{class:tableDisplayClass}"><span data-binding="{innerHTML:value}"></span></div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>-->
+        </div>
+    </div>-->
     </fieldset>
     <br />
 </div>
