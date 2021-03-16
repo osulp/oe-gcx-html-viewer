@@ -242,6 +242,13 @@ export class OE_OITTViewModel extends ViewModelBase {
     //greeting: Observable<string> = new Observable<string>();
 
     reportMapServiceName: string;
+    projectClusterScalesLayerName: string;
+    oregonCountiesLayerName: string;
+    oregonPlanBasinsLayerName: string;
+    huc8LayerName: string;
+    watershedCouncilsLayerName: string;
+    swcdMapServiceName: string;
+    swcdLayerName: string;
 
     esriMap: esri.Map;
     esriAreaLayer: esri.layers.FeatureLayer;
@@ -252,6 +259,8 @@ export class OE_OITTViewModel extends ViewModelBase {
     areaMapLegend: Observable<string> = new Observable<string>("Map");
     owrtActivitySymbols: any[] = [];
     layerIDProjectPoints: number;
+
+    serviceAndLayerErrors: string = "";
 
     fsSelectedAreaGeometry: esri.tasks.FeatureSet = null;
     selectedAreaGeometry: esri.geometry.Polygon = null;
@@ -414,6 +423,14 @@ export class OE_OITTViewModel extends ViewModelBase {
 
         this.reportMapServiceName = config.reportMapServiceName || "OITT_2016";
 
+        this.projectClusterScalesLayerName = config.projectClusterScalesLayerName;
+        this.oregonCountiesLayerName = config.oregonCountiesLayerName;
+        this.oregonPlanBasinsLayerName = config.oregonPlanBasinsLayerName;
+        this.huc8LayerName = config.huc8LayerName;
+        this.watershedCouncilsLayerName = config.watershedCouncilsLayerName;
+        this.swcdMapServiceName = config.swcdMapServiceName;
+        this.swcdLayerName = config.swcdLayerName;
+
         if (site && site.isInitialized) {
             this._onSiteInitialized();
         }
@@ -438,30 +455,11 @@ export class OE_OITTViewModel extends ViewModelBase {
             workingYear = this.endYearDefault;
 
         this.startYearDefault = workingYear - 5;
-
-        //this._SetupJQueryTableSort();
+                
         this._injectScript();
 
-        // Register our custom JSON data adapter with the charting infrastructure.
-        //let jsonDataAdapter = new OE_ChartPointJsonAdapter();
-        //let sourceTypeString = ChartFieldSourceType[(<any>ChartFieldSourceType).Json];
-        //ChartPointAdapterRegistry.registerAdapter((<any>jsonDataAdapter), sourceTypeString);
-        
-        //let mService = this._GetServiceByName("OWRT");
-        //let mService = this._GetServiceByName("OITT_2016");
-        let mService = this._GetServiceByName(this.reportMapServiceName);
-        this.urlMainMapService = mService.serviceUrl;
-        this.layerIDProjectPoints = Number(this._GetLayerIDByName(mService, "Projects_Cluster_Scales").id);
-        this.queryURLProjects = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Projects_Cluster_Scales").id;        
-
-        this.queryUrlCounty = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Oregon Counties").id;
-        this.queryUrlBasins = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Oregon Plan Basins").id;
-        this.queryUrlHUC8 = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "8-Digit Hydrologic Unit Code").id;
-        this.queryUrlWSC = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Watershed Councils").id;
-
-        mService = this._GetServiceByName("Soil and Water Conservation District Boundaries (WM)");
-        //this.urlSWCDMapService = mService.serviceUrl;
-        this.queryUrlSWCD = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Soil and Water Conservation District Boundaries (WM)").id;
+        //build main queries based on service and layer names
+        this.buildServicesAndLayers();
 
         //create the map symbol
         this.esriMapSymbolFill = new esri.symbol.SimpleFillSymbol(
@@ -504,6 +502,39 @@ export class OE_OITTViewModel extends ViewModelBase {
             }
         );
     }
+
+    buildServicesAndLayers() {
+
+        this.serviceAndLayerErrors = "";
+
+        let mService = this._GetServiceByName(this.reportMapServiceName);
+
+        if (mService == null || mService == undefined) {
+            this.serviceAndLayerErrors += "Primary map service not found. Has the map service name changed?";            
+            return;
+        }
+        else {
+            this.urlMainMapService = mService.serviceUrl;
+            this.layerIDProjectPoints = Number(this._GetLayerIDByName(mService, this.projectClusterScalesLayerName).id);
+            this.queryURLProjects = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.projectClusterScalesLayerName).id;
+
+            this.queryUrlCounty = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.oregonCountiesLayerName).id;
+            this.queryUrlBasins = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.oregonPlanBasinsLayerName).id;
+            this.queryUrlHUC8 = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.huc8LayerName).id;
+            this.queryUrlWSC = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.watershedCouncilsLayerName).id;
+        }
+
+        //Soil and Water Conservation District Boundaries (WM)
+        mService = this._GetServiceByName(this.swcdMapServiceName);
+
+        if (mService == null || mService == undefined) {
+            this.serviceAndLayerErrors += "SWCD map service not found. Has the map service name changed?";
+        }
+        else {
+            this.queryUrlSWCD = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.swcdLayerName).id;
+        }        
+    }
+
 
     deactivated() {
         this._destroyAllCharts();
@@ -576,6 +607,11 @@ export class OE_OITTViewModel extends ViewModelBase {
                 
         this._LoaderStateSet(true, "Loading Report...");
 
+        if (this.serviceAndLayerErrors != "") {
+            this.StopOnErrorMessage(this.serviceAndLayerErrors);            
+            return;
+        }
+
         $(".owrtChartTableShared").tablesort();
         $(".owrtChartTableFundInvestByYear").tablesort();
         //$(".owrtChartTableFundInvestByActByYear").tablesort();
@@ -643,6 +679,16 @@ export class OE_OITTViewModel extends ViewModelBase {
 
         this.reportOptionsPanelVisible.set(false);
         this._LoaderStateSet(true, "Loading report...");
+
+        if (this.serviceAndLayerErrors != "") {
+            //try to build service and layers again
+            this.buildServicesAndLayers();                        
+        }
+
+        if (this.serviceAndLayerErrors != "") {
+            this.StopOnErrorMessage(this.serviceAndLayerErrors);
+            return;
+        }
 
         //clear all active charts
         this._destroyAllCharts();                        

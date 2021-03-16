@@ -148,14 +148,30 @@
                                 "id": "OE_OWRTReportsViewModel",
                                 "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsViewModel",
                                 "configuration": {
-                                    "reportMapServiceName": "OWRT"
+                                    "reportMapServiceName": "OWRT",
+                                    "layerNameALL_POLYS_SDE_WM": "ALL_POLYS_SDE_WM",
+                                    "layerNameCentroidsSimple": "CentroidsSimple",
+                                    "layerNamePROJECT_INFO": "PROJECT_INFO",
+                                    "layerNamePARTICIPANTS_ROLE_LU": "PARTICIPANTS_ROLE_LU",
+                                    "layerNamePARTICIPANTS_SUPERTYPE_LU": "PARTICIPANTS_SUPERTYPE_LU",
+                                    "layerNamePARTICIPANTS_TYPE_LU": "PARTICIPANTS_TYPE_LU",
+                                    "layerNameLAND_USE": "LAND_USE"
                                 }
                             },
                             {
                                 "id": "OE_OWRTReportsAreaViewModel",
                                 "require": "geocortex/oe_amd/OE_OWRTReports/OE_OWRTReportsAreaViewModel",
                                 "configuration": {
-                                    "reportMapServiceName": "OWRT"
+                                    "reportMapServiceName": "OWRT",
+                                    "layerNamePoly_Centroids": "Poly_Centroids",
+                                    "layerNameCentroidsSimple": "CentroidsSimple",
+                                    "layerNameOregonCounties": "Oregon Counties",
+                                    "layerNameOregonPlanBasins": "Oregon Plan Basins",
+                                    "layerName8DigitHydrologicUnitCode": "8-Digit Hydrologic Unit Code",
+                                    "layerNameWatershedCouncils": "Watershed Councils",
+                                    "tableNameACTIVITY_TYPES": "ACTIVITY_TYPES",
+                                    "serviceNameSWCDBoundaries": "Soil Water Conservation District Boundaries 2021 (WM)",
+                                    "layerNameSWCDBoundaries": "Soil Water Conservation District Boundaries 2021 (WM)"
                                 }
                             }
                         ]

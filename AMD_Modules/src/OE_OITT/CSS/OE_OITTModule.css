@@ -681,7 +681,8 @@ div.oittAreaTabEnabled
 
 .oeOWRTAreaPanelCell
 {
-    display:table-cell  
+    display:table-cell;
+    vertical-align:top;
 }
 
 .oeOWRTFloatRight
