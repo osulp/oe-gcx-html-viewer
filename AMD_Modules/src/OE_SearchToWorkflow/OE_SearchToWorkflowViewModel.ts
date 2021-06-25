@@ -15,6 +15,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
     eventCount: number = 0;
     searchWorkflowID: string;
     searchArgumentName: string;
+    isWorkflow: boolean;
 
     targetInputBoxID: string;
 
@@ -50,8 +51,10 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
         var site = (<any>this).app.site;
 
         this.targetInputBoxID = config.targetInputBoxID || "#gcx_search";
-
+                
         this.searchWorkflowID = config.searchWorkflowID;
+        this.isWorkflow = (this.searchWorkflowID && this.searchWorkflowID != undefined && this.searchWorkflowID != null && this.searchWorkflowID != "") ? true : false;
+
         this.searchArgumentName = config.searchArgumentName;
         this.defaultSearchOption = config.defaultSearchOption || "site";
 
@@ -73,11 +76,16 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
     }
    
     _onSiteInitialized(site) {
-                
-        this.app.eventRegistry.event("SearchProgressEvent").subscribe(this, (args) => {
-            this.searchProgressEvent(args);
-        });
-                        
+
+        //only register event if workflow is used
+        if (this.isWorkflow) {
+
+            this.app.eventRegistry.event("SearchProgressEvent").subscribe(this, (args) => {
+                this.searchProgressEvent(args);
+            });
+
+        }
+                                
         //add search view combo box, SearchView
         let thisScope = this;
         window.setTimeout(() => {
@@ -88,6 +96,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
             thisScope.app.commandRegistry.command("ActivateView").execute("OE_SearchToWorkflowView");
 
             thisScope.toggleSearchClearButton(true);
+            //thisScope.searchOptionsButtonVisible.set(thisScope.isWorkflow);
                         
             //set default selected option
             if (thisScope.defaultSearchOption == "workflow")
@@ -97,7 +106,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
                         
             //listen for input
             $(this.targetInputBoxID).keyup(function (event: any) {
-                thisScope.searchKeyUp(event);
+                thisScope.searchKeyUp(event);                
             });
 
             $(this.targetInputBoxID).focusin(function (event: any) {
@@ -114,9 +123,21 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
                     thisScope.searchBoxFocusOutEvent();
                 }, 250);
             });
+
+            thisScope.suggestionBoxAdjustRight();
                         
         }, 1000);
         
+    }
+
+    suggestionBoxAdjustRight() {
+        //adjust suggestion popup right alight based on distance from right edge.
+        let suggestRightValue = $("body").width() - ($(".SearchView").position().left + $(".SearchView").width());
+        //console.log(suggestRightValue);
+        if (suggestRightValue < 30 || suggestRightValue > 300)
+            suggestRightValue = 30;
+
+        $(".oeSearchToWorkflowSuggest-module-view").css("right", suggestRightValue);
     }
 
     searchBoxFocusOutEvent() {
@@ -132,11 +153,28 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
 
         $(this.targetInputBoxID).val("");
         this.suggestionsVisible.set(false);
+
+        this.toggleSearchClearButton(true);
     }
 
     toggleSearchClearButton(showOptions: boolean) {
-        this.searchOptionsButtonVisible.set(showOptions);
-        this.clearSearchVisible.set(!showOptions);
+
+        //the search options is only needed if there is a workflow
+        if (this.isWorkflow) {
+            this.searchOptionsButtonVisible.set(showOptions);
+            this.clearSearchVisible.set(!showOptions);
+        }
+        else {
+
+            this.searchOptionsButtonVisible.set(false);
+
+            if ($(this.targetInputBoxID).val() == "") {
+                this.clearSearchVisible.set(false);
+            }
+            else {
+                this.clearSearchVisible.set(true);
+            }                        
+        }        
     }
           
     searchToDefault() {
@@ -161,10 +199,25 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
     }
 
     searchProgressEvent(args: SearchProgressEventArgs) {
+                
         //first event is searching, second is idle, third is idle
         this.eventCount++;
-                        
-        if (this.searchType && this.searchType.get() == "workflow") {
+
+        if (!this.isWorkflow) {
+
+            this.toggleSearchClearButton(true);
+            this.suggestionsVisible.set(false);
+
+            //keyboard selection submission event
+            if (this.eventCount == 1 && this.suggestionSelectedText != null) {
+
+                $(this.targetInputBoxID).val(this.suggestionSelectedText);
+                this.suggestionSelectedText = null;
+                $(".search-button").click();
+                return;
+            }                        
+        }                        
+        else if (this.searchType && this.searchType.get() == "workflow") {
 
             //prevent default search results
             this.app.commandRegistry.command("DeactivateView").execute("DataFrameResultsContainerView");
@@ -213,6 +266,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
         if ($(this.targetInputBoxID).val().toString().length > 0) {
             try
             {
+                this.clearSearchVisible.set(true);
                 this.app.commandRegistry.command("oeEndTour").execute();
             }
             catch (e) { }
@@ -247,7 +301,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
                 clearTimeout(this.suggestTimeout)
 
             this.suggestionsVisible.set(false);
-
+                        
             return;
         }
                 
@@ -295,6 +349,8 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
     suggestionResults(data: any) {
 
         console.log(data);
+
+        this.suggestionBoxAdjustRight();
 
         this.suggestions.clear();
 
