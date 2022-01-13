@@ -35,6 +35,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
 
     suggestionSearchDelayMS: number;
     minLengthToSearch: number;
+    searchEventCountTrigger: number; //the search event progress moves through various stages, this determines when to do our custom stuff
 
     suggestTimeout: any;
     suggestionsVisible: Observable<boolean> = new Observable<boolean>(false);
@@ -60,8 +61,8 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
 
         this.suggestionSearchDelayMS = config.suggestionSearchDelayMS || 250;
         this.minLengthToSearch = config.minLengthToSearch || 3;
-        
-        
+        this.searchEventCountTrigger = 3; ///config.searchEventCountTrigger || 4;
+                               
         let tmpText = config.workflowSearchText || "Address Search";
         this.workflowSearchText.set(tmpText);
                 
@@ -85,10 +86,16 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
             });
 
         }
-                                
+                                                
         //add search view combo box, SearchView
         let thisScope = this;
         window.setTimeout(() => {
+
+            //determine how many event cycles need to be supressed 
+            //1st event is a "Searching" notifcation.  The following events are based on the number of geocoder services on the site.
+            if (thisScope.app.site.geocodingEndpoints !== undefined && thisScope.app.site.geocodingEndpoints !== null) {
+                this.searchEventCountTrigger = thisScope.app.site.geocodingEndpoints.length + 1;
+            }
 
             //disable search input auto complete
             $(this.targetInputBoxID).attr("autocomplete", "off");
@@ -236,7 +243,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
                 return;
             }
 
-            if (this.eventCount >= 4) {
+            if (this.eventCount >= this.searchEventCountTrigger) {
                 this.eventCount = 0;
                                                 
                 var workflowArgs: any = {};
@@ -254,7 +261,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
             }
         }
 
-        if (this.eventCount >= 4) {
+        if (this.eventCount >= this.searchEventCountTrigger) {
             this.eventCount = 0;
         }   
     }    
@@ -374,6 +381,9 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
 
         $(this.targetInputBoxID).val(searchText);
         //$("#gcx_search").submit();
+
+        //this is handled in searchProgressEvent
+        //this.suggestionSelectedText = searchText;
 
         //primary search box use the search button
         if (this.targetInputBoxID == "#gcx_search")
