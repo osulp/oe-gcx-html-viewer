@@ -6987,7 +6987,7 @@
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                 "configuration": {
-                    "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/OITT",
+                    "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/OITT",
                     "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                     "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                     "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined"
