@@ -139,26 +139,35 @@
                     "moduleName": "OE_OITT",
                     "libraryId": "OE_AMD",
                     "require": "geocortex/oe_amd/OE_OITT/OE_OITTModule",
-                    "configuration": {
-        
-                    },
+                    "configuration": {},
                     "views": [
-                    {
-                        "id": "OE_OITTView",
-                        "require": "geocortex/oe_amd/OE_OITT/OE_OITTView",
-                        "markup": "geocortex/oe_amd/OE_OITT/OE_OITTView.html",        
-                        "viewModelId": "OE_OITTViewModel",
-                        "title": "OITT Project Report",
-                        "visible": false,        
-                        "region": "ModalWindowRegion",
-                        "configuration": {}
-                    }],
+                        {
+                            "id": "OE_OITTView",
+                            "require": "geocortex/oe_amd/OE_OITT/OE_OITTView",
+                            "markup": "geocortex/oe_amd/OE_OITT/OE_OITTView.html",
+                            "viewModelId": "OE_OITTViewModel",
+                            "title": "OITT Project Report",
+                            "visible": false,
+                            "region": "ModalWindowRegion",
+                            "configuration": {}
+                        }
+                    ],
                     "viewModels": [
-                    {
-                        "id": "OE_OITTViewModel",      
-                        "require": "geocortex/oe_amd/OE_OITT/OE_OITTViewModel",      
-                        "configuration": {}
-                    }]
+                        {
+                            "id": "OE_OITTViewModel",
+                            "require": "geocortex/oe_amd/OE_OITT/OE_OITTViewModel",
+                            "configuration": {
+                                "reportMapServiceName": "OITT_2016",
+                                "projectClusterScalesLayerName": "Projects_Cluster_Scales",
+                                "oregonCountiesLayerName": "Oregon Counties",
+                                "oregonPlanBasinsLayerName": "Oregon Plan Basins",
+                                "huc8LayerName": "8-Digit Hydrologic Unit Code",
+                                "watershedCouncilsLayerName": "Watershed Councils",
+                                "swcdMapServiceName": "Soil and Water Conservation District Boundaries (WM)",
+                                "swcdLayerName": "Soil Water Conservation District Boundaries 2021 (WM)"
+                            }
+                        }
+                    ]
                 },
                 {
                     "moduleName": "LayerActionsExtension",
@@ -6978,7 +6987,7 @@
                 "moduleName": "Site",
                 "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                 "configuration": {
-                    "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/OITT",
+                    "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/OITT",
                     "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
                     "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                     "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined"

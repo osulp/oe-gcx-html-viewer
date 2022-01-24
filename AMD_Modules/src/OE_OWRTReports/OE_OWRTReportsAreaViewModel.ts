@@ -255,6 +255,17 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
     reportMapServiceName: string;
 
+    //layer and service names defined in config
+    layerNamePoly_Centroids: string;
+    layerNameCentroidsSimple: string;
+    layerNameOregonCounties: string;
+    layerNameOregonPlanBasins: string;
+    layerName8DigitHydrologicUnitCode: string;
+    layerNameWatershedCouncils: string;
+    tableNameACTIVITY_TYPES: string;
+    serviceNameSWCDBoundaries: string;
+    layerNameSWCDBoundaries: string;
+
     geoService: string = "http://arcgis.oregonexplorer.info/arcgis/rest/services/Utilities/Geometry/GeometryServer";
         
     loaderVisible: Observable<boolean> = new Observable<boolean>(true);
@@ -370,9 +381,9 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
     reportAreaList: ObservableCollection<object> = new ObservableCollection<object>(null);
 
     yearMin: number = 1995;
-    yearMax: number = 2019;
+    yearMax: number = (new Date().getFullYear()-2); //2020; Max year is current year -2
     startYearDefault: number = 1995;
-    endYearDefault: number = 2019;
+    endYearDefault: number = (new Date().getFullYear() -2); //2020; current year -2
 
     startYear: Observable<string> = new Observable<string>(this.startYearDefault.toString());
     endYear: Observable<string> = new Observable<string>(this.endYearDefault.toString());
@@ -525,6 +536,16 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
 
         this.reportMapServiceName = config.reportMapServiceName || "OWRT";
 
+        this.layerNamePoly_Centroids = config.layerNamePoly_Centroids;
+        this.layerNameCentroidsSimple = config.layerNameCentroidsSimple;
+        this.layerNameOregonCounties = config.layerNameOregonCounties;
+        this.layerNameOregonPlanBasins = config.layerNameOregonPlanBasins;
+        this.layerName8DigitHydrologicUnitCode = config.layerName8DigitHydrologicUnitCode;
+        this.layerNameWatershedCouncils = config.layerNameWatershedCouncils;
+        this.tableNameACTIVITY_TYPES = config.tableNameACTIVITY_TYPES;
+        this.serviceNameSWCDBoundaries = config.serviceNameSWCDBoundaries;
+        this.layerNameSWCDBoundaries = config.layerNameSWCDBoundaries;
+        
         if (site && site.isInitialized) {
             this._onSiteInitialized();
         }
@@ -565,25 +586,26 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
         let jsonDataAdapter = new OE_ChartPointJsonAdapter();
         let sourceTypeString = ChartFieldSourceType[(<any>ChartFieldSourceType).Json];
         ChartPointAdapterRegistry.registerAdapter((<any>jsonDataAdapter), sourceTypeString);
-                                
+        
         let mService = this._GetServiceByName(this.reportMapServiceName);
         this.urlMainMapService = mService.serviceUrl;
-        this.layerIDProjectPoints = Number(this._GetLayerIDByName(mService, "Poly_Centroids").id);
-        this.queryUrlOWRT = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Poly_Centroids").id;
-        this.queryCentroidsSimple = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "CentroidsSimple").id;
-                        
-        this.queryUrlCounty = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Oregon Counties").id;
-        this.queryUrlBasins = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Oregon Plan Basins").id;
-        this.queryUrlHUC8 = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "8-Digit Hydrologic Unit Code").id;
-        this.queryUrlWSC = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Watershed Councils").id;
+        this.layerIDProjectPoints = Number(this._GetLayerIDByName(mService, this.layerNamePoly_Centroids).id);
+        this.queryUrlOWRT = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.layerNamePoly_Centroids).id;
+        this.queryCentroidsSimple = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.layerNameCentroidsSimple).id;
+
+        this.queryUrlCounty = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.layerNameOregonCounties).id;
+        this.queryUrlBasins = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.layerNameOregonPlanBasins).id;
+        this.queryUrlHUC8 = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.layerName8DigitHydrologicUnitCode).id;
+        this.queryUrlWSC = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.layerNameWatershedCouncils).id;
 
         this.queryUrlActivityTypes = mService.serviceUrl + "/";
-        this.queryUrlActivityTypes += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "ACTIVITY_TYPES"))) ? "20" : this._GetTableIDByName(mService, "ACTIVITY_TYPES").id;
+        this.queryUrlActivityTypes += (this._IsNullOrEmpty(this._GetTableIDByName(mService, this.tableNameACTIVITY_TYPES))) ? "20" : this._GetTableIDByName(mService, this.tableNameACTIVITY_TYPES).id;
         console.log("ACTIVITY_TYPES: " + this.queryUrlActivityTypes);
 
-        mService = this._GetServiceByName("Soil and Water Conservation District Boundaries (WM)");
+        //mService = this._GetServiceByName("Soil and Water Conservation District Boundaries (WM)");
+        mService = this._GetServiceByName(this.serviceNameSWCDBoundaries);
         this.urlSWCDMapService = mService.serviceUrl;
-        this.queryUrlSWCD = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "Soil and Water Conservation District Boundaries (WM)").id;
+        this.queryUrlSWCD = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.layerNameSWCDBoundaries).id;
 
         //create the map symbol
         this.esriMapSymbolFill = new esri.symbol.SimpleFillSymbol(
@@ -1643,7 +1665,7 @@ export class OE_OWRTReportsAreaViewModel extends ViewModelBase {
             queryString = "1=1";
 
         queryString += " AND complete_year BETWEEN " + this.startYear.get() + " AND " + this.endYear.get();
-
+                
         this.primaryQueryString.set(queryString);        
     }
 

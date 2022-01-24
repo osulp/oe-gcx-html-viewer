@@ -41,6 +41,15 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
     dataSource: any;
 
     reportMapServiceName: string;
+
+    //layer names from config
+    layerNameALL_POLYS_SDE_WM: string;
+    layerNameCentroidsSimple: string;
+    layerNamePROJECT_INFO: string;
+    layerNamePARTICIPANTS_ROLE_LU: string;
+    layerNamePARTICIPANTS_SUPERTYPE_LU: string;
+    layerNamePARTICIPANTS_TYPE_LU: string;
+    layerNameLAND_USE: string;
         
     loaderVisible: Observable<boolean> = new Observable<boolean>(true);
     loaderMessage: Observable<string> = new Observable<string>("Loading Report...");
@@ -139,6 +148,14 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
 
         this.reportMapServiceName = config.reportMapServiceName || "OWRT";
 
+        this.layerNameALL_POLYS_SDE_WM = config.layerNameALL_POLYS_SDE_WM;
+        this.layerNameCentroidsSimple = config.layerNameCentroidsSimple;
+        this.layerNamePROJECT_INFO = config.layerNamePROJECT_INFO;
+        this.layerNamePARTICIPANTS_ROLE_LU = config.layerNamePARTICIPANTS_ROLE_LU;
+        this.layerNamePARTICIPANTS_SUPERTYPE_LU = config.layerNamePARTICIPANTS_SUPERTYPE_LU;
+        this.layerNamePARTICIPANTS_TYPE_LU = config.layerNamePARTICIPANTS_TYPE_LU;
+        this.layerNameLAND_USE = config.layerNameLAND_USE;
+        
         if (site && site.isInitialized) {
             this._onSiteInitialized();
         }
@@ -165,29 +182,29 @@ export class OE_OWRTReportsViewModel extends ViewModelBase {
         ChartPointAdapterRegistry.registerAdapter((<any>jsonDataAdapter), sourceTypeString);
 
         this.initializeChartFactory();                
-        
+                                
         let mService = this._GetServiceByName(this.reportMapServiceName);
-        this.queryUrlOWRT = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "ALL_POLYS_SDE_WM").id;
-        this.queryUrlCentroids = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, "CentroidsSimple").id;
+        this.queryUrlOWRT = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.layerNameALL_POLYS_SDE_WM).id;
+        this.queryUrlCentroids = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.layerNameCentroidsSimple).id;
                                 
         this.queryUrlProjectInfo = mService.serviceUrl + "/";
-        this.queryUrlProjectInfo += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PROJECT_INFO"))) ? "28" : this._GetTableIDByName(mService, "PROJECT_INFO").id;
+        this.queryUrlProjectInfo += (this._IsNullOrEmpty(this._GetTableIDByName(mService, this.layerNamePROJECT_INFO))) ? "28" : this._GetTableIDByName(mService, this.layerNamePROJECT_INFO).id;
         console.log("PROJECT_INFO: "+this.queryUrlProjectInfo);
 
         this.queryUrlPartRoles = mService.serviceUrl + "/";
-        this.queryUrlPartRoles += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PARTICIPANTS_ROLE_LU"))) ? "25" : this._GetTableIDByName(mService, "PARTICIPANTS_ROLE_LU").id;
+        this.queryUrlPartRoles += (this._IsNullOrEmpty(this._GetTableIDByName(mService, this.layerNamePARTICIPANTS_ROLE_LU))) ? "25" : this._GetTableIDByName(mService, this.layerNamePARTICIPANTS_ROLE_LU).id;
         console.log("PARTICIPANTS_ROLE_LU: "+this.queryUrlPartRoles);
 
         this.queryUrlPartSuperTypes = mService.serviceUrl + "/";
-        this.queryUrlPartSuperTypes += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PARTICIPANTS_SUPERTYPE_LU"))) ? "26" : this._GetTableIDByName(mService, "PARTICIPANTS_SUPERTYPE_LU").id;
+        this.queryUrlPartSuperTypes += (this._IsNullOrEmpty(this._GetTableIDByName(mService, this.layerNamePARTICIPANTS_SUPERTYPE_LU))) ? "26" : this._GetTableIDByName(mService, this.layerNamePARTICIPANTS_SUPERTYPE_LU).id;
         console.log("PARTICIPANTS_SUPERTYPE_LU: " + this.queryUrlPartSuperTypes);
 
         this.queryUrlPartTypes = mService.serviceUrl + "/";
-        this.queryUrlPartTypes += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "PARTICIPANTS_TYPE_LU"))) ? "27" : this._GetTableIDByName(mService, "PARTICIPANTS_TYPE_LU").id;
+        this.queryUrlPartTypes += (this._IsNullOrEmpty(this._GetTableIDByName(mService, this.layerNamePARTICIPANTS_TYPE_LU))) ? "27" : this._GetTableIDByName(mService, this.layerNamePARTICIPANTS_TYPE_LU).id;
         console.log("PARTICIPANTS_TYPE_LU: "+this.queryUrlPartTypes);
 
         this.queryUrlLandUse = mService.serviceUrl + "/";
-        this.queryUrlLandUse += (this._IsNullOrEmpty(this._GetTableIDByName(mService, "LAND_USE"))) ? "22" : this._GetTableIDByName(mService, "LAND_USE").id;
+        this.queryUrlLandUse += (this._IsNullOrEmpty(this._GetTableIDByName(mService, this.layerNameLAND_USE))) ? "22" : this._GetTableIDByName(mService, this.layerNameLAND_USE).id;
         console.log("LAND_USE: "+this.queryUrlLandUse);
 
         //create the map symbol

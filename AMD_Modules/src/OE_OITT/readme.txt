@@ -24,7 +24,14 @@ Module Include
         "id": "OE_OITTViewModel",      
         "require": "geocortex/oe_amd/OE_OITT/OE_OITTViewModel",      
         "configuration": {
-			"reportMapServiceName": "OITT_2016"
+			"reportMapServiceName": "OITT_2016",
+			"projectClusterScalesLayerName": "Projects_Cluster_Scales",
+			"oregonCountiesLayerName": "Oregon Counties",
+			"oregonPlanBasinsLayerName": "Oregon Plan Basins",
+			"huc8LayerName": "8-Digit Hydrologic Unit Code",
+			"watershedCouncilsLayerName": "Watershed Councils",
+			"swcdMapServiceName": "Soil and Water Conservation District Boundaries (WM)",
+			"swcdLayerName": "Soil Water Conservation District Boundaries 2021 (WM)"
 		}
     }]
 }

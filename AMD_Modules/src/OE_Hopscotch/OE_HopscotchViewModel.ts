@@ -78,11 +78,18 @@ export class OE_HopscotchViewModel extends ViewModelBase {
         this.hopscotch.endTour();
 
         var currentScope: any = this;
-        
+                
         if (this.hopscotch && this.toursKeyValObject.hasOwnProperty(args)) {
 
             if (this.toursKeyValObject[args].hasOwnProperty("requiredView") && this.toursKeyValObject[args].requiredView)
                 this.app.command("ActivateView").execute(this.toursKeyValObject[args].requiredView);
+
+            if (this.toursKeyValObject[args].hasOwnProperty("setScroll")) {
+                                
+                if (this.toursKeyValObject[args].setScroll.indexOf(",") > -1) {
+                    currentScope.SetElementScrollTop(currentScope, currentScope.toursKeyValObject[args].setScroll.split(",")[0], currentScope.toursKeyValObject[args].setScroll.split(",")[1]);
+                }                
+            }
 
             if (this.toursKeyValObject[args].hasOwnProperty("commandOnTourStart") && this.toursKeyValObject[args].commandOnTourStart) {         
 
@@ -117,7 +124,7 @@ export class OE_HopscotchViewModel extends ViewModelBase {
             }
 
             for (var i = 0; i < this.toursKeyValObject[args].tour.steps.length; i++) {
-
+                                
                 if (this.toursKeyValObject[args].tour.steps[i].hasOwnProperty("focusOnShow") && this.toursKeyValObject[args].tour.steps[i].focusOnShow) {
                     this.toursKeyValObject[args].tour.steps[i].onShow = () => { currentScope.SetFocusByID(currentScope, "focusOnShow") }
                 }
@@ -129,6 +136,18 @@ export class OE_HopscotchViewModel extends ViewModelBase {
                 if (this.toursKeyValObject[args].tour.steps[i].hasOwnProperty("runWorkflowById") ) {
                     this.toursKeyValObject[args].tour.steps[i].onShow = () => { currentScope.CheckOnEventWorkflow(currentScope) }
                 }
+
+                /*if (this.toursKeyValObject[args].tour.steps[i].hasOwnProperty("setScroll")) {
+                                        
+                    this.toursKeyValObject[args].tour.steps[i].onShow = function () {
+
+                        let activeStep = currentScope.toursKeyValObject[args].tour.steps[currentScope.hopscotch.getCurrStepNum()];
+                        
+                        if (activeStep !== null && activeStep.setScroll.indexOf(",") > -1) {                            
+                            currentScope.SetElementScrollTop(currentScope, activeStep.setScroll.split(",")[0], activeStep.setScroll.split(",")[1]);
+                        }                        
+                    };                    
+                }*/
             }
 
             if (this.toursKeyValObject[args].hasOwnProperty("startTourDelay") && this.toursKeyValObject[args].startTourDelay) {
@@ -150,6 +169,11 @@ export class OE_HopscotchViewModel extends ViewModelBase {
 
         if (cStep[commandName])
             $("#" + cStep[commandName]).focus();
+    }
+
+    private SetElementScrollTop(currentScope: any, targetName: string, scrollValue: number) {
+        //panel-scroll-container region-active
+        $(targetName).scrollTop(scrollValue);
     }
 
     private CheckOnEventCommand(currentScope:any, commandName:string, commandParamName:string) {
