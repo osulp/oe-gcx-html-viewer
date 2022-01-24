@@ -4126,18 +4126,17 @@
                                     "items": [
                                         {
                                             "iconUri": "Resources/Images/Icons/Toolbar/home-24.png",
-                                            "text": "Compare Imagery",
+                                            "text": "Compare Imagery Test",
                                             "description": "Use a swipe tool to view imagery",
-                                            "command": "RunWorkflowWithArguments",
-                                            "commandParameter": {
-                                                "workflowId": "runImageryCommands",
-                                                "command": "compare"
-                                            }                                            
+                                            "command": "RunWorkflowById",
+                                            "commandParameter": "Run_External_Command"
                                         },
                                         {
-                                            "text": "Route Options",
+                                            "iconUri": "{ViewerConfigUri}../../../Resources/Images/Icons/Toolbar/reports-24.png",
+                                            "text": "Financial Planning Module",
+                                            "description": "Run aquaculture financial scenarios",
                                             "command": "RunWorkflowById",
-                                            "commandParameter": "runImageryCommands"
+                                            "commandParameter": "Financial_Planning"
                                         },
                                         {
                                             "iconUri": "Resources/Images/Icons/Toolbar/identify-24.png",
@@ -6981,8 +6980,8 @@
                         "moduleName": "Site",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.site.SiteModule",
                         "configuration": {
-                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/imagery_test",
-                            "oeUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/__root",
+                            "imageryUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/imagery_test",
+                            "siteUri": "https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/Aquaculture",
                             "oeDevUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/dev/REST/sites/dev_reg",
                             "cakeSiteUri": "http://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/sfam_orwap_combined"
                         },

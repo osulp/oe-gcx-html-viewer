@@ -170,7 +170,7 @@
     ]
   },
   {
-    "folder": "Existing Condition",
+    "folder": "Existing Condition (some datasets out of date)",
     "layers": [
       {
         "layerName": "Habitat Intactness",
@@ -218,7 +218,7 @@
       },
       {
         "layerName": "Vegetation Condition (Primary Threat)",
-        "layerDesc": "Vegetation condition is mapped based on the primary threats to the sagebrush ecosystem from a threat-based model of rangeland condition developed in the state of Oregon. Primary threats are summarized as poor understory condition and juniper encroachment. For more information, see <a href='https://oe.oregonexplorer.info/externalcontent/sagecon/metadata/Oregon%20Ecostate%20Map%20Description.pdf' target='_blank'>the documentation.</a>. The original dataset was summarized to 1 square mile hexagons for the purposes of querying;",
+        "layerDesc": "Vegetation condition is mapped based on the primary threats to the sagebrush ecosystem from a threat-based model of rangeland condition developed in the state of Oregon. Primary threats are summarized as poor understory condition and juniper encroachment. The original dataset was summarized to 1 square mile hexagons for the purposes of querying;",
         "layerDataValues": [
           {
             "label": "Not Habitat",

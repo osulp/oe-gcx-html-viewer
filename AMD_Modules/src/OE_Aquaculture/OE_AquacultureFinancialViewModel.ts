@@ -1061,11 +1061,11 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         //find all fields that are dependant on this field for selected system        
         let _fieldCalVar = changedInput.fieldCalVar;
        
-        if (['feedDistance', 'marketDistance'].indexOf(_fieldCalVar) !== -1) {
-            //process interpolated distance before processing other dependent variables
-            //console.log('update interpolated then update costs', changedInput);
-            this.updateInterpolatedValues(_fieldCalVar === 'feedDistance' ? 'feedLbTransportCost' : 'marketLbTransportCost');
-        }
+        //if (['feedDistance', 'marketDistance'].indexOf(_fieldCalVar) !== -1) {
+        //    //process interpolated distance before processing other dependent variables
+        //    //console.log('update interpolated then update costs', changedInput);
+        //    this.updateInterpolatedValues(_fieldCalVar === 'feedDistance' ? 'feedLbTransportCost' : 'marketLbTransportCost');
+        //}
         if (changedInput.formula.indexOf('[validate:') !== -1) {
             this.validateConstraints(changedInput);
         } else if (changedInput.formula.indexOf('[interpolate:') !== -1) {
@@ -1772,13 +1772,14 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         this.feed_suppliers.set(closestFeedSuppliers);
     }
 
-    _resetSectionValues(section:any) {
+    _resetSectionValues(section: any) {
+
         this.screens_collection.get().forEach(scr => {
             if (scr['screen'] === section.screen) {
                 scr['sections'].get().forEach(sct => {
                     if (sct.section === section.section) {
                         sct.fields.get().forEach(f => {
-                            if (f.show.indexOf(this.selected_system_text.get()) !== -1 || f.show.indexOf('All') !== -1) {
+                            if (['none','calculated'].indexOf(f.uiType) === -1 && (f.show.indexOf(this.selected_system_text.get()) !== -1 || f.show.indexOf('All') !== -1)) {
                                 let value = f.defaultVal === '' && f.fieldCat === 'ExistingResource' ? '________' : this.formatValue(f.defaultVal, f.decimalDisp);
                                 f.value.set(value);
                                 if (f.uiType === 'slider') {

@@ -444,6 +444,17 @@ export class OE_AquacultureFinancialView extends ViewBase {
         }
     }
 
+    sendFeedback() {        
+        const a = window.document.createElement('a');
+        a.href = 'mailto:virtualoregon.support@oregonstate.edu?subject=Aquaculture Financial Planning Tool';        
+        a.target = '_top';
+        document.body.appendChild(a);
+        // IE: "Access is denied"; 
+        // see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
+        a.click();
+        document.body.removeChild(a);
+    }
+
     toggleSpreadsheetInfo() {
         if (this.viewModel.show_spreadsheet_info.get()) {
             

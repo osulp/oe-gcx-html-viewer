@@ -39,6 +39,7 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
             }
         };
         OE_UtilityModule.prototype._onSiteInitialized = function (site, myModule) {
+            var _this = this;
             this.app.registerActivityIdHandler("OE_Utility_IsViewActive", function CustomEventHandler(workflowContext) {
                 //check for view from passed in view name (id)  "BannerView" for example
                 var checkView = myModule.app.viewManager.getViewById(workflowContext.getValue("viewName"));
@@ -49,6 +50,18 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
                     workflowContext.setValue("isViewActive", false);
                 //move the workflow to the next activity
                 workflowContext.completeActivity();
+            });
+            this.app.eventRegistry.event("ResultsTableFeatureClickedEvent").subscribe(this, function (args) {
+                //console.log('resulttable feature clicked!', args);
+                _this.app.commandRegistry.command("PanToFeature").execute(args);
+                $('.toggle-filter-button > button').click();
+                var thisScope = _this;
+                window.setTimeout(function () {
+                    //thisScope.app.commandRegistry.command("StepZoomOut").execute();
+                    //thisScope.app.commandRegistry.command("StepZoomOut").execute();
+                    thisScope.app.commandRegistry.command("ZoomToScale").execute(36112);
+                    //console.log('zoom time?');
+                }, 1500);
             });
         };
         return OE_UtilityModule;

@@ -168,12 +168,12 @@ header {
         vertical-align: middle;
     }
 
-.header-bar-wrapper #report-name, #spreadsheet-info {
+#report-name, #spreadsheet-info {
     position: absolute;
     right: 20px;
     top: 45px;
     /*padding: 5px;*/
-    z-index: 2;
+    z-index: 200;
     background: #d7e1e7;
     border: 1px solid black;
     border-radius: 5px;

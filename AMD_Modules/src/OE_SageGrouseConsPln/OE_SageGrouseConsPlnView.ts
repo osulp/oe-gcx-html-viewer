@@ -209,7 +209,7 @@ export class OE_SageGrouseConsPlnView extends ViewBase {
                             steps: [
                                 {
                                     title: "Tour the customized query features",
-                                    content: "The Query Data Tool allows you to easily construct a customized, web-based query by filtering values of multiple data layers. The tool queries hexagons (1 square mile in size) across the sagebrush landscape in Oregon (displayed in blue over the map). As filters are applied, hexagons are removed from the selection to identify areas of interest. Click the Next button to continue through this 6-step tutorial.",
+                                    content: "<p><b>NOTE: SOME LAYERS OUT OF DATE</b></p><p>The Query Data Tool allows you to easily construct a customized, web-based query by filtering values of multiple data layers. The tool queries hexagons (1 square mile in size) across the sagebrush landscape in Oregon (displayed in blue over the map). As filters are applied, hexagons are removed from the selection to identify areas of interest. Click the Next button to continue through this 6-step tutorial.</p>",
                                     target: ".panel-title-contents.bound-visible-inline",
                                     yOffset: -20,
                                     placement: "right",

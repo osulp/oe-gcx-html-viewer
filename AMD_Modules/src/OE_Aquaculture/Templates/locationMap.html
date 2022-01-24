@@ -7,7 +7,7 @@
                     <div data-binding="{@template-for:selected_location}">
                         <span> SELECTED:  </span>
                         <span id="selected-location-name" data-binding="{@event-onclick: zoomToSelectedLocation}{@text:name}"></span>
-                        <span id="selected-location-remove" title="Remove selected location" data-binding="{@event-onclick: removeSelectedLocation}"><img src="Resources/Images/Icons/delete-16.png" /></span>
+                        <span id="selected-location-remove" title="Remove selected location" data-binding="{@event-onclick: removeSelectedLocation}"><img src="./Resources/Images/Icons/delete-16.png" /></span>
                     </div>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                 </fieldset>
                 <div>
                     <div class="float-left">
-                        <img src="Resources/Images/Custom/AquacultureSiteReportThumb.png" width="100" alt="Site Report Thumbnail" />
+                        <img src="./Resources/Images/Custom/AquacultureSiteReportThumb.png" width="100" alt="Site Report Thumbnail" />
                     </div>
                     <p> Get a Site Report for your selected location.  A Site Report pulls together spatial information about your location including:</p>
                     <br />
@@ -84,12 +84,12 @@
                     <div>
                         Generating site report for your selected location.  Please be patient.  This may take a minute...
                         <p>
-                            <img src="Resources/Images/loader-small.gif" alt="generating site report" />
+                            <img src="./Resources/Images/loader-small.gif" alt="generating site report" />
                         </p>
                     </div>
                 </div>
                 <div data-binding="{@visible: show_site_report_url}">
-                    <a data-binding="{href:site_report_url}" href="" target="_blank" download="Site Report"><img src="Resources/Images/Icons/download-16.png" alt="Download site report" />&nbsp; Download Site Report (PDF)</a>
+                    <a data-binding="{href:site_report_url}" href="" target="_blank" download="Site Report"><img src="./Resources/Images/Icons/download-16.png" alt="Download site report" />&nbsp; Download Site Report (PDF)</a>
                 </div>
             </div>
             <div class="div-row-cell map-viewer">
@@ -97,7 +97,7 @@
                 <div>
                     <div class="float-left">
                         <!--<button data-binding="{@event-onclick:closeView}" class="toolbar-item tool aqua" title="Goto map viewer"><p>Map Viewer</p></button>-->
-                        <img width="150" alt="Go to map viewer" src="Resources/Images/Custom/AquacultureViewer.png" class="bound-visible-inline">
+                        <img width="150" alt="Go to map viewer" src="./Resources/Images/Custom/AquacultureViewer.png" class="bound-visible-inline">
                     </div>
                     <p>
                         The Oregon Aquaculture Map Viewer brings together dozens of layers to view interactively on the map.

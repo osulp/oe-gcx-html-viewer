@@ -24,7 +24,7 @@
                                 <div data-binding="{@template-select:slider}">
                                     <center>
                                         <h3 class="tooltip">
-                                            <span class="input-header">Annual Harvest (lbs)</span>
+                                            <span class="input-header">Avg. Annual Harvest (lbs)</span>
                                             <span class="tooltiptext">
                                                 Select the size of your annual harvest
                                             </span>
@@ -46,14 +46,36 @@
                     <div data-binding="{@source:field_categories}" class="div-row production">
                         <div data-binding="{@template-for:field_categories}" class="div-row-cell">
                             <div data-binding="{@source:@context}{@template-selector:category}">
-                                <div data-binding="{@template-select:ExistingResource}">
-                                    <h3>Resource constraints</h3>
-                                    <div class="production notes">(Enter any known constraints)</div>
+                                <div data-binding="{@template-select:RequiredResource}">
+                                    <h3>Required resources</h3>
+                                    <div class="production notes">(Based on the production targets above)</div>
                                     <div class="div-table production" data-binding="{@source:fields_filter}">
                                         <!--<div class="div-table-row">
-                                            <div class="div-table-cell">Existing Resource</div>
-                                            <div class="div-table-cell">Value</div>
-                                        </div>-->
+                <div class="div-table-cell">Required Resource</div>
+                <div class="div-table-cell">Value</div>
+            </div>-->
+                                        <div class="div-table-row" data-binding="{@template-for:fields_filter}">
+                                            <div data-binding="{class:tableDisplayClass}">
+                                                <div class="tooltip">
+                                                    <span class="input-header" data-binding="{@text:fieldLabel}"> </span>
+                                                    <span data-binding="{@text:desc}" class="tooltiptext"></span>
+                                                </div>
+                                            </div>
+                                            <div data-binding="{class:class}"><span data-binding="{@text:formattedValue}"></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="required-notes" data-binding="{@visible:show_warning}">
+                                        <span>Values in </span><span class="warning-span">YELLOW</span><span> indicate you have exceeded your available resource. Adjust the Annual Harvest slider until there are no</span><span class="warning-span">YELLOW</span><span> values. </span>
+                                    </div>
+                                </div>
+                                <div data-binding="{@template-select:ExistingResource}">
+                                    <h3>Resource constraints</h3>
+                                    <div class="production notes"><b><em>OPTIONAL</em></b>:  (Enter any known constraints)</div>
+                                    <div class="div-table production" data-binding="{@source:fields_filter}">
+                                        <!--<div class="div-table-row">
+                <div class="div-table-cell">Existing Resource</div>
+                <div class="div-table-cell">Value</div>
+            </div>-->
                                         <div class="div-table-row" data-binding="{@template-for:fields_filter}">
                                             <div data-binding="{class:tableDisplayClass}">
                                                 <div class="tooltip">
@@ -80,28 +102,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div data-binding="{@template-select:RequiredResource}">
-                                    <h3>Required resources</h3>
-                                    <div class="production notes">(Based on the production targets above)</div>
-                                    <div class="div-table production" data-binding="{@source:fields_filter}">
-                                        <!--<div class="div-table-row">
-                                            <div class="div-table-cell">Required Resource</div>
-                                            <div class="div-table-cell">Value</div>
-                                        </div>-->
-                                        <div class="div-table-row" data-binding="{@template-for:fields_filter}">
-                                            <div data-binding="{class:tableDisplayClass}">
-                                                <div class="tooltip">
-                                                    <span class="input-header" data-binding="{@text:fieldLabel}"> </span>
-                                                    <span data-binding="{@text:desc}" class="tooltiptext"></span>
-                                                </div>
-                                            </div>
-                                            <div data-binding="{class:class}"><span data-binding="{@text:formattedValue}"></span></div>
-                                        </div>
-                                    </div>
-                                    <div class="required-notes" data-binding="{@visible:show_warning}">
-                                        <span>Values in </span><span class="warning-span">YELLOW</span><span> indicate you have exceeded your available resource. Adjust the Annual Harvest slider until there are no</span><span class="warning-span">YELLOW</span><span> values. </span>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>                    

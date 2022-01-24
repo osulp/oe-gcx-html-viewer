@@ -4983,7 +4983,7 @@
                                 "id": "OE_AquacultureFinancialView",
                                 "require": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureFinancialView",
                                 "markup": "geocortex/oe_amd/OE_Aquaculture/OE_AquacultureFinancialView.html",
-                                "title": "Oregon Aquaculture Financial Planning Tool- BETA TOOL",
+                                "title": "Oregon Aquaculture Financial Planning Tool",
                                 "viewModelId": "OE_AquacultureFinancialViewModel",
                                 "visible": false,
                                 "region": "ModalWindowRegion",

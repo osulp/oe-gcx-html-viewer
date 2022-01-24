@@ -50,5 +50,18 @@ export class OE_UtilityModule extends ModuleBase {
             //move the workflow to the next activity
             workflowContext.completeActivity();
         });           
+
+        this.app.eventRegistry.event("ResultsTableFeatureClickedEvent").subscribe(this, (args) => {
+            //console.log('resulttable feature clicked!', args);
+            this.app.commandRegistry.command("PanToFeature").execute(args);
+            $('.toggle-filter-button > button').click();
+            let thisScope = this;
+            window.setTimeout(() => {
+                //thisScope.app.commandRegistry.command("StepZoomOut").execute();
+                //thisScope.app.commandRegistry.command("StepZoomOut").execute();
+                thisScope.app.commandRegistry.command("ZoomToScale").execute(36112);
+                //console.log('zoom time?');
+            }, 1500);           
+        });
     }
 }
