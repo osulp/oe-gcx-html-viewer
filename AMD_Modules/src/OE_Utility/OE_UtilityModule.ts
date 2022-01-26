@@ -63,5 +63,20 @@ export class OE_UtilityModule extends ModuleBase {
                 //console.log('zoom time?');
             }, 1500);           
         });
+
+        this.app.commandRegistry.command("ResultsTableDownloadToCSV").register(this, (args) => {            
+            //console.log("Try results download");
+            let eArray: any = $('.ResultsRegionViewContainerView .list-menu-details');
+            //console.log(eArray);
+            for (let listItem of eArray) {
+                //console.log(listItem);
+                if (listItem.innerHTML.indexOf("CSV<") > -1) {
+                    listItem.click();
+                    break;
+                }
+            }
+
+            //$('.toggle-filter-button > button').click();            
+        });
     }
 }

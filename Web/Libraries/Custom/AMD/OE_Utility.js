@@ -63,6 +63,22 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
                     //console.log('zoom time?');
                 }, 1500);
             });
+            this.app.commandRegistry.command("ResultsTableDownloadToCSV").register(this, function (args) {
+                //console.log('resulttable feature clicked!', args);
+                //this.app.commandRegistry.command("PanToFeature").execute(args);
+                console.log("Try results download");
+                var eArray = $('.ResultsRegionViewContainerView .list-menu-details');
+                console.log(eArray);
+                for (var _i = 0, eArray_1 = eArray; _i < eArray_1.length; _i++) {
+                    var listItem = eArray_1[_i];
+                    console.log(listItem);
+                    if (listItem.innerHTML.indexOf("CSV<") > -1) {
+                        listItem.click();
+                        break;
+                    }
+                }
+                //$('.toggle-filter-button > button').click();            
+            });
         };
         return OE_UtilityModule;
     }(ModuleBase_1.ModuleBase));
