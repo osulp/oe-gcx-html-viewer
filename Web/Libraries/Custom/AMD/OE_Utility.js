@@ -28,6 +28,8 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
         }
         OE_UtilityModule.prototype.initialize = function (config) {
             var _this = this;
+            console.log('module config!', config);
+            this.resultTableConfig = config.reportTableOptions !== undefined ? config.reportTableOptions : {};
             var site = this.app.site;
             if (site && site.isInitialized) {
                 this._onSiteInitialized(site, this);
@@ -51,18 +53,33 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
                 //move the workflow to the next activity
                 workflowContext.completeActivity();
             });
-            this.app.eventRegistry.event("ResultsTableFeatureClickedEvent").subscribe(this, function (args) {
-                //console.log('resulttable feature clicked!', args);
-                _this.app.commandRegistry.command("PanToFeature").execute(args);
-                $('.toggle-filter-button > button').click();
-                var thisScope = _this;
-                window.setTimeout(function () {
-                    //thisScope.app.commandRegistry.command("StepZoomOut").execute();
-                    //thisScope.app.commandRegistry.command("StepZoomOut").execute();
-                    thisScope.app.commandRegistry.command("ZoomToScale").execute(36112);
-                    //console.log('zoom time?');
-                }, 1500);
-            });
+            //RESULT TABLE CONFIGS
+            if (this.resultTableConfig !== undefined) {
+                // For result table row click zoom to point based feature and set  scale
+                if (this.resultTableConfig.zoomToResultFeature !== undefined ? this.resultTableConfig.zoomToResultFeature : false) {
+                    console.log('result table zoom to result feature');
+                    this.app.eventRegistry.event("ResultsTableFeatureClickedEvent").subscribe(this, function (args) {
+                        _this.app.commandRegistry.command("PanToFeature").execute(args);
+                        var thisScope = _this;
+                        window.setTimeout(function () {
+                            //thisScope.app.commandRegistry.command("StepZoomOut").execute();
+                            thisScope.app.commandRegistry.command("ZoomToScale").execute(36112);
+                        }, 1500);
+                    });
+                }
+                // For result table show filter by default
+                if (this.resultTableConfig.showResultTableFilter !== undefined ? this.resultTableConfig.showResultTableFilter : false) {
+                    this.app.eventRegistry.event("FSMCollectionAddedEvent").subscribe(this, function (args) {
+                        if (_this.resultTableConfig.featureSetID !== undefined ? _this.resultTableConfig.featureSetID === args.featureSetCollectionId : false) {
+                            //$('.filter-off-16')[0].click();
+                            window.setTimeout(function () {
+                                console.log('Ready to toggle...', $('.filter-off-16'));
+                                $('.toggle-filter-button > button').click();
+                            }, 2000);
+                        }
+                    });
+                }
+            }
         };
         return OE_UtilityModule;
     }(ModuleBase_1.ModuleBase));

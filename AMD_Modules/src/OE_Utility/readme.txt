@@ -1,11 +1,17 @@
 ﻿
 
 {
-    "moduleName": "OE_Utility",
-    "libraryId": "OE_AMD",
-    "require": "geocortex/oe_amd/OE_Utility/OE_UtilityModule",
-    "configuration": {}
-},
+        "moduleName": "OE_Utility",
+        "libraryId": "OE_AMD",
+        "require": "geocortex/oe_amd/OE_Utility/OE_UtilityModule",
+        "configuration": {
+			reportTableOptions:{
+				zoomToResultFeature: true,
+				showResultTableFilter: true,
+				featureSetID: "Surplus Lands Result"
+			}			
+		}
+      }
 
 
 

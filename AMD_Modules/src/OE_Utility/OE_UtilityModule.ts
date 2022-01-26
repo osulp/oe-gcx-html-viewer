@@ -15,53 +15,71 @@ import { Observable } from "geocortex/framework/observables";
 export class OE_UtilityModule extends ModuleBase {
 
     app: ViewerApplication;
-        
+    resultTableConfig: any;
+
     constructor(app: ViewerApplication, lib: string) {
         super(app, lib);
     }
 
     initialize(config: any): void {
-                
+        console.log('module config!', config);
+        this.resultTableConfig = config.reportTableOptions !== undefined ? config.reportTableOptions : {};
+
         var site = (<any>this).app.site;
-        
+
         if (site && site.isInitialized) {
-            this._onSiteInitialized(site,this);
+            this._onSiteInitialized(site, this);
         }
         else {
-            this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, (args) => {
-                this._onSiteInitialized(args,this);
+            this.app.eventRegistry.event("SiteInitializedEvent").subscribe(this, (args: any) => {
+                this._onSiteInitialized(args, this);
             });
         }
     }
 
-    _onSiteInitialized(site,myModule) {
-        
+    _onSiteInitialized(site: any, myModule: any) {
+
         this.app.registerActivityIdHandler("OE_Utility_IsViewActive", function CustomEventHandler(workflowContext) {
 
             //check for view from passed in view name (id)  "BannerView" for example
             let checkView: ViewBase = myModule.app.viewManager.getViewById(workflowContext.getValue("viewName"));
 
             //set the workflow out variable "isViewActive"
-            if (checkView) 
+            if (checkView)
                 workflowContext.setValue("isViewActive", checkView.isActive);
             else
                 workflowContext.setValue("isViewActive", false);
 
             //move the workflow to the next activity
             workflowContext.completeActivity();
-        });           
-
-        this.app.eventRegistry.event("ResultsTableFeatureClickedEvent").subscribe(this, (args) => {
-            //console.log('resulttable feature clicked!', args);
-            this.app.commandRegistry.command("PanToFeature").execute(args);
-            $('.toggle-filter-button > button').click();
-            let thisScope = this;
-            window.setTimeout(() => {
-                //thisScope.app.commandRegistry.command("StepZoomOut").execute();
-                //thisScope.app.commandRegistry.command("StepZoomOut").execute();
-                thisScope.app.commandRegistry.command("ZoomToScale").execute(36112);
-                //console.log('zoom time?');
-            }, 1500);           
         });
+
+        //RESULT TABLE CONFIGS
+        if (this.resultTableConfig !== undefined) {
+            // For result table row click zoom to point based feature and set  scale
+            if (this.resultTableConfig.zoomToResultFeature !== undefined ? this.resultTableConfig.zoomToResultFeature : false) {
+                console.log('result table zoom to result feature');
+                this.app.eventRegistry.event("ResultsTableFeatureClickedEvent").subscribe(this, (args: any) => {
+                    this.app.commandRegistry.command("PanToFeature").execute(args);
+                    let thisScope = this;
+                    window.setTimeout(() => {
+                        //thisScope.app.commandRegistry.command("StepZoomOut").execute();
+                        thisScope.app.commandRegistry.command("ZoomToScale").execute(36112);
+                    }, 1500);
+                });
+            }
+
+            // For result table show filter by default
+            if (this.resultTableConfig.showResultTableFilter !== undefined ? this.resultTableConfig.showResultTableFilter : false) {
+                this.app.eventRegistry.event("FSMCollectionAddedEvent").subscribe(this, (args: any) => {                    
+                    if (this.resultTableConfig.featureSetID !== undefined ? this.resultTableConfig.featureSetID === args.featureSetCollectionId : false) {                        
+                        window.setTimeout(() => {                            
+                            $('.toggle-filter-button > button').click();
+                        }, 2000);
+                    }
+                });
+            }
+        }
+
     }
 }
