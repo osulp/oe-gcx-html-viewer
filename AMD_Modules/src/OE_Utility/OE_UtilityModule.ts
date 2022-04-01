@@ -53,21 +53,7 @@ export class OE_UtilityModule extends ModuleBase {
             //move the workflow to the next activity
             workflowContext.completeActivity();
         });
-
-        //Results table download visible set
-        this.app.commandRegistry.command("ResultsTableDownloadToCSV").register(this, (args) => {
-            //console.log("Try results download");
-            let eArray: any = $('.ResultsRegionViewContainerView .list-menu-details');
-            //console.log(eArray);
-            for (let listItem of eArray) {
-                //console.log(listItem);
-                if (listItem.innerHTML.indexOf("CSV<") > -1) {
-                    listItem.click();
-                    break;
-                }
-            }
-        });
-
+                
         //RESULT TABLE CONFIGS
         if (this.resultTableConfig !== undefined) {
             // For result table row click zoom to point based feature and set  scale
@@ -93,6 +79,48 @@ export class OE_UtilityModule extends ModuleBase {
                     }
                 });
             }
+
+            //Results table download visible set
+            this.app.commandRegistry.command("ResultsTableDownloadToCSV").register(this, (args) => {
+                //console.log("Try results download");
+                let eArray: any = $('.ResultsRegionViewContainerView .list-menu-details');
+                //console.log(eArray);
+                for (let listItem of eArray) {
+                    //console.log(listItem);
+                    if (listItem.innerHTML.indexOf("CSV<") > -1) {
+                        listItem.click();
+                        break;
+                    }
+                }
+            });
+
+            //Results table download visible set
+            this.app.commandRegistry.command("ResultsTableDownloadToXLSX").register(this, (args) => {
+                //console.log("Try results download");
+                let eArray: any = $('.ResultsRegionViewContainerView .list-menu-details');
+                //console.log(eArray);
+                for (let listItem of eArray) {
+                    //console.log(listItem);
+                    if (listItem.innerHTML.indexOf("XLSX<") > -1) {
+                        listItem.click();
+                        break;
+                    }
+                }
+            });
+
+            //Results table download visible set
+            this.app.commandRegistry.command("ResultsTableDownloadToShapefile").register(this, (args) => {
+                //console.log("Try results download");
+                let eArray: any = $('.ResultsRegionViewContainerView .list-menu-details');
+                //console.log(eArray);
+                for (let listItem of eArray) {
+                    //console.log(listItem);
+                    if (listItem.innerHTML.indexOf("Shapefile<") > -1) {
+                        listItem.click();
+                        break;
+                    }
+                }
+            });
         }
 
         

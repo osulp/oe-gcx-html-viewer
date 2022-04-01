@@ -71,14 +71,54 @@ define(["require", "exports", "geocortex/framework/application/ModuleBase"], fun
                 if (this.resultTableConfig.showResultTableFilter !== undefined ? this.resultTableConfig.showResultTableFilter : false) {
                     this.app.eventRegistry.event("FSMCollectionAddedEvent").subscribe(this, function (args) {
                         if (_this.resultTableConfig.featureSetID !== undefined ? _this.resultTableConfig.featureSetID === args.featureSetCollectionId : false) {
-                            //$('.filter-off-16')[0].click();
                             window.setTimeout(function () {
-                                console.log('Ready to toggle...', $('.filter-off-16'));
                                 $('.toggle-filter-button > button').click();
                             }, 2000);
                         }
                     });
                 }
+                //Results table download visible set
+                this.app.commandRegistry.command("ResultsTableDownloadToCSV").register(this, function (args) {
+                    //console.log("Try results download");
+                    var eArray = $('.ResultsRegionViewContainerView .list-menu-details');
+                    //console.log(eArray);
+                    for (var _i = 0, eArray_1 = eArray; _i < eArray_1.length; _i++) {
+                        var listItem = eArray_1[_i];
+                        //console.log(listItem);
+                        if (listItem.innerHTML.indexOf("CSV<") > -1) {
+                            listItem.click();
+                            break;
+                        }
+                    }
+                });
+                //Results table download visible set
+                this.app.commandRegistry.command("ResultsTableDownloadToXLSX").register(this, function (args) {
+                    //console.log("Try results download");
+                    var eArray = $('.ResultsRegionViewContainerView .list-menu-details');
+                    //console.log(eArray);
+                    for (var _i = 0, eArray_2 = eArray; _i < eArray_2.length; _i++) {
+                        var listItem = eArray_2[_i];
+                        //console.log(listItem);
+                        if (listItem.innerHTML.indexOf("XLSX<") > -1) {
+                            listItem.click();
+                            break;
+                        }
+                    }
+                });
+                //Results table download visible set
+                this.app.commandRegistry.command("ResultsTableDownloadToShapefile").register(this, function (args) {
+                    //console.log("Try results download");
+                    var eArray = $('.ResultsRegionViewContainerView .list-menu-details');
+                    //console.log(eArray);
+                    for (var _i = 0, eArray_3 = eArray; _i < eArray_3.length; _i++) {
+                        var listItem = eArray_3[_i];
+                        //console.log(listItem);
+                        if (listItem.innerHTML.indexOf("Shapefile<") > -1) {
+                            listItem.click();
+                            break;
+                        }
+                    }
+                });
             }
         };
         return OE_UtilityModule;
