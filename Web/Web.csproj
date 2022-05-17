@@ -122,6 +122,7 @@
     <Content Include="Resources\Config\Default\dev_configs\vanilla\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\vanilla\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\vanilla\Tablet.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\wildfire2022\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\wildfire\Desktop.json.js" />
     <Content Include="Resources\Images\Custom\AquacultureSiteReportThumb.png" />
     <Content Include="Resources\Images\Custom\AquacultureViewer.png" />

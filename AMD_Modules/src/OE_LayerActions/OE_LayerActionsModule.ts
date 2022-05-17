@@ -197,9 +197,7 @@ export class OE_LayerActionsModule extends ModuleBase {
                     // check to see if div id already added, else create a new one
                     if (args.childRegions[0].activeViews.length > 1) {
                         let layerListView = args.childRegions[0].activeViews.filter((av: any) => av.id === "LayerActionsView");
-                        if (layerListView.length > 0 &&
-                            layerListView[0].viewModel.menuContext.value.description != undefined &&
-                            layerListView[0].viewModel.menuContext.value.description != null) {
+                        if (layerListView.length > 0 && layerListView[0].viewModel.menuContext.value.description != undefined && layerListView[0].viewModel.menuContext.value.description != null) {
                             this.layer_desc_full = layerListView[0].viewModel.menuContext.value.description.split("Metadata:")[0];
                             this.layer_desc_full = this.layer_desc_full.split('Abstract:').length > 1
                                 ? this.layer_desc_full.split('Abstract:')[1]
