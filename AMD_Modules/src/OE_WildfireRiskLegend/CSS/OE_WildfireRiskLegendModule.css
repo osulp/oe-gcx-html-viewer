@@ -1,0 +1,27 @@
+﻿/*
+.region .view.TemplateModuleView.active {
+    margin: 0;
+}*/
+
+.wildfire-legend-view {
+    position: absolute;
+    z-index: 100;
+    width: 80px;
+    right: 3px;
+    background: white;
+    color: black;
+    padding: 6px;
+    border: 1px solid #333;
+    margin-top: 75px;
+    margin-right: 2px;
+}
+
+    .wildfire-legend-view:hover {
+        cursor: pointer;
+    }
+
+@media only screen and (max-width: 600px) {
+    .wildfire-legend-view {
+        margin-top: 3px;
+    }
+}

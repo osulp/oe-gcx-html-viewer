@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="..\packages\Microsoft.TypeScript.MSBuild.4.6.4\build\Microsoft.TypeScript.MSBuild.props" Condition="Exists('..\packages\Microsoft.TypeScript.MSBuild.4.6.4\build\Microsoft.TypeScript.MSBuild.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <ProjectGuid>{F1A10E10-48FF-47E3-8E58-E66700C01CC0}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <OutputPath>bin</OutputPath>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
@@ -18,7 +18,9 @@
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <Use64BitIISExpress />
-    <TypeScriptToolsVersion>3.7</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -103,6 +105,12 @@
     <Content Include="src\OE_SearchToWorkflow\OE_SearchToWorkflowView.html" />
     <Content Include="src\OE_ShowHideMeasurementLabels\README.txt" />
     <Content Include="src\OE_Utility\readme.txt" />
+    <Content Include="src\OE_WildfireRiskLegend\CSS\OE_WildfireRiskLegendModule.css" />
+    <Content Include="src\OE_WildfireRiskLegend\OE_WildfireRiskLegendModule.js" />
+    <Content Include="src\OE_WildfireRiskLegend\OE_WildfireRiskLegendView.html" />
+    <Content Include="src\OE_WildfireRiskLegend\OE_WildfireRiskLegendView.js" />
+    <Content Include="src\OE_WildfireRiskLegend\OE_WildfireRiskLegendViewModel.js" />
+    <Content Include="src\OE_WildfireRiskLegend\readme.txt" />
     <Content Include="src\OE_Wildfire\Language.json" />
     <Content Include="src\OE_SageGrouseDevSiting\Language.json" />
     <Content Include="src\OE_SageGrouseConsPln\Language.json" />
@@ -135,11 +143,23 @@
     <Content Include="src\OE_ConvertGeometry\Language.json" />
     <Content Include="src\OE_Aquaculture\Language.json" />
     <Content Include="src\OE_Hopscotch\Language.json" />
+    <None Include="packages.config" />
     <None Include="src\OE_Aquaculture\CSS\calcite.dijit.css.old" />
     <None Include="src\OE_Aquaculture\CSS\calcite.esri.css.old" />
     <Content Include="src\OE_Imagery\Language.json" />
+    <Content Include="src\OE_WildfireRiskLegend\Language.json" />
+    <Content Include="src\OE_WildfireRiskLegend\OE_WildfireRiskLegendModule.js.map" />
+    <Content Include="src\OE_WildfireRiskLegend\OE_WildfireRiskLegendView.js.map" />
+    <Content Include="src\OE_WildfireRiskLegend\OE_WildfireRiskLegendViewModel.js.map" />
     <None Include="src\Template\Language.json" />
     <None Include="src\Template\TemplateView.html" />
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="src\OE_ConvertGeometry\OE_ConvertGeometryModule.ts" />
@@ -186,6 +206,9 @@
     <TypeScriptCompile Include="src\OE_Search\OE_SearchProvider.ts" />
     <Content Include="src\OE_ShowHideMeasurementLabels\OE_ShowHideMeasurementLabelsModule.ts" />
     <TypeScriptCompile Include="src\OE_Utility\OE_UtilityModule.ts" />
+    <TypeScriptCompile Include="src\OE_WildfireRiskLegend\OE_WildfireRiskLegendModule.ts" />
+    <TypeScriptCompile Include="src\OE_WildfireRiskLegend\OE_WildfireRiskLegendView.ts" />
+    <TypeScriptCompile Include="src\OE_WildfireRiskLegend\OE_WildfireRiskLegendViewModel.ts" />
     <TypeScriptCompile Include="src\OE_Wildfire\OE_WildfireModule.ts" />
     <TypeScriptCompile Include="src\OE_Wildfire\OE_Wildfire_DynamicFormViewModel.ts" />
     <TypeScriptCompile Include="src\OE_Wildfire\OE_Wildfire_DynamicFormView.ts" />
@@ -212,6 +235,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\OE_Search\CSS\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
@@ -260,7 +291,6 @@
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
   </PropertyGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <PropertyGroup>
     <PostBuildEvent>call cd "$(SolutionDir)AMD_Modules"
 call "$(SolutionDir)AMD_Modules\post_build_modules.bat"</PostBuildEvent>
@@ -269,4 +299,12 @@ call "$(SolutionDir)AMD_Modules\post_build_modules.bat"</PostBuildEvent>
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.TypeScript.MSBuild.4.6.4\build\Microsoft.TypeScript.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TypeScript.MSBuild.4.6.4\build\Microsoft.TypeScript.MSBuild.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.TypeScript.MSBuild.4.6.4\build\Microsoft.TypeScript.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TypeScript.MSBuild.4.6.4\build\Microsoft.TypeScript.MSBuild.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.TypeScript.MSBuild.4.6.4\build\Microsoft.TypeScript.MSBuild.targets" Condition="Exists('..\packages\Microsoft.TypeScript.MSBuild.4.6.4\build\Microsoft.TypeScript.MSBuild.targets')" />
 </Project>
