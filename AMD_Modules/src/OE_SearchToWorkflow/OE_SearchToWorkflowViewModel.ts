@@ -35,7 +35,9 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
 
     suggestionSearchDelayMS: number;
     minLengthToSearch: number;
-    searchEventCountTrigger: number; //the search event progress moves through various stages, this determines when to do our custom stuff
+    searchEventCountTrigger: number; //the search event progress moves through various stages, this determines when to do our custom stuff    
+    launchWorkflowLocked: boolean;
+    launchWorkflowLockedTimeout: number; //timeout for each workflow launch request
 
     suggestTimeout: any;
     suggestionsVisible: Observable<boolean> = new Observable<boolean>(false);
@@ -62,6 +64,8 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
         this.suggestionSearchDelayMS = config.suggestionSearchDelayMS || 250;
         this.minLengthToSearch = config.minLengthToSearch || 3;
         this.searchEventCountTrigger = 3; ///config.searchEventCountTrigger || 4;
+        this.launchWorkflowLockedTimeout = config.launchWorkflowLockedTimeout || 1000;  //default ms
+        this.launchWorkflowLocked = false;
                                
         let tmpText = config.workflowSearchText || "Address Search";
         this.workflowSearchText.set(tmpText);
@@ -227,10 +231,17 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
         else if (this.searchType && this.searchType.get() == "workflow") {
 
             //prevent default search results
-            this.app.commandRegistry.command("DeactivateView").execute("DataFrameResultsContainerView");
+            try {
+                this.app.commandRegistry.command("DeactivateView").execute("DataFrameResultsContainerView");
+            }
+            catch (viewError){}
+
             //mobile version
-            this.app.commandRegistry.command("DeactivateView").execute("ResultsViewContainerView");
-            
+            try {
+                this.app.commandRegistry.command("DeactivateView").execute("ResultsViewContainerView");
+            }
+            catch (viewError){}
+                        
             this.toggleSearchClearButton(true);
             this.suggestionsVisible.set(false);
             
@@ -243,8 +254,13 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
                 return;
             }
 
-            if (this.eventCount >= this.searchEventCountTrigger) {
-                this.eventCount = 0;
+            if (!this.launchWorkflowLocked && this.eventCount >= this.searchEventCountTrigger) {
+
+                this.launchWorkflowLocked = true;
+
+                console.log("Starting workflow");
+
+                this.eventCount = 0; //this.searchEventCountAfterWorkflowRun; //0;
                                                 
                 var workflowArgs: any = {};
                 workflowArgs.workflowId = this.searchWorkflowID;                                
@@ -256,8 +272,13 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
                         workflowArgs["magicKey"] = suggestObject.magicKey;
                 }
                 
+                this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
 
-                this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);                
+                let thisScope = this;
+
+                window.setTimeout(() => {
+                    thisScope.launchWorkflowLocked = false;
+                }, thisScope.launchWorkflowLockedTimeout);
             }
         }
 
@@ -332,6 +353,8 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
 
     searchSuggestRequest() {
 
+        this.launchWorkflowLocked = false;
+
         this.suggestionSelectedIndex = -1;
         this.suggestionSelectedText = null;
 
@@ -339,7 +362,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
         let requestURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=" + searchString + "&category=Address,Postal&searchExtent=-124.83,41.85,-116.37,46.36&location=&f=json";
 
         let thisScope = this;
-
+                
         var jqxhr = $.getJSON(requestURL, function (data) {
             console.log("success");
             thisScope.suggestionResults(data);
