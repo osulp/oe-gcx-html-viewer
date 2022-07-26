@@ -272,14 +272,18 @@ export class OE_LayerActionsModule extends ModuleBase {
                 if (context === null) {
                     return false;
                 }
-                //hide if the layer property "hideDownload" has a value
-                if (context.properties.hideServiceInfo !== undefined) {
-                    //if (["FALSE","TRUE"].indexOf(context.properties.hideDownload.toUpperCase()) !== -1) {
-                    if (context.properties.hideServiceInfo.length !== -1) {
-                        return false;
-                    }
+                for (var prop in context.properties) {
+                    //console.log('prop', prop);
+                    if (prop.toUpperCase() === 'HIDESERVICEINFO') {
+                        return context.properties[prop].toUpperCase() !== 'TRUE'
+                    }                    
                 }
-
+                    //if (context.properties.hideServiceInfo !== undefined) {
+                    //    //if (["FALSE","TRUE"].indexOf(context.properties.hideDownload.toUpperCase()) !== -1) {
+                    //    if (context.properties.hideServiceInfo.length !== -1) {
+                    //        return false;
+                    //    }
+                    //}
                 //is the map service there?
                 if (context.mapService == null || context.mapService == "")
                     return false;
@@ -379,12 +383,18 @@ export class OE_LayerActionsModule extends ModuleBase {
                         return false;
                     }    
                     //hide if the layer property "hideDownload" has a value
-                    if (context.properties.hideDownload !== undefined) {
-                        //if (["FALSE","TRUE"].indexOf(context.properties.hideDownload.toUpperCase()) !== -1) {
-                        if (context.properties.hideDownload.length !== -1) {
-                            return false;
+                    for (var prop in context.properties) {
+                        //console.log('prop', prop);
+                        if (prop.toUpperCase() === 'HIDEDOWNLOAD') {
+                            return context.properties[prop].toUpperCase() !== 'TRUE'
                         }
-                    }                 
+                    }
+                    //if (context.properties.hideDownload !== undefined) {
+                    //    //if (["FALSE","TRUE"].indexOf(context.properties.hideDownload.toUpperCase()) !== -1) {
+                    //    if (context.properties.hideDownload.length !== -1) {
+                    //        return false;
+                    //    }
+                    //}                 
 
                     //is the map service there?
                     if (context.mapService == null || context.mapService == "")
