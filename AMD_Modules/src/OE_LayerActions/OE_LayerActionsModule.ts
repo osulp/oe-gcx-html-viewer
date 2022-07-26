@@ -126,7 +126,7 @@ export class OE_LayerActionsModule extends ModuleBase {
         return returnLink;
     }
 
-    _onSiteInitialized(site:Site) {
+    _onSiteInitialized(site: Site) {
 
         //add listener if layer trees will expand when enabled
         if (this.expandLayerTreeOnVisible) {
@@ -216,7 +216,7 @@ export class OE_LayerActionsModule extends ModuleBase {
             });
 
         }
-        
+
         this.app.commandRegistry.command("showMetadata").register(this, async function (layer) {
 
             //override metadata link
@@ -225,7 +225,7 @@ export class OE_LayerActionsModule extends ModuleBase {
                 return;
             }
 
-            var metadataLink = await this.getLinkUrl(layer,'metadata');
+            var metadataLink = await this.getLinkUrl(layer, 'metadata');
 
             if (metadataLink !== "") {
                 window.open(metadataLink, "_blank");
@@ -244,30 +244,59 @@ export class OE_LayerActionsModule extends ModuleBase {
                 return false;
 
             if (context.mapService.serviceUrl == null || context.mapService.serviceUrl == "undefined")
-                    return false;
-
-                if (context.description == null || context.description == "undefined")
-                    return false;
-
-                //there is a description show this button
-                var isOEService = context.mapService.serviceUrl.match("lib-gis") !== -1
-                    ? true
-                    : context.mapService.serviceUrl.match("lib-gis") !== -1
-                        ? true
-                        : context.mapService.serviceUrl.match("arcgis.oregonexplorer.info") !== -1
-                            ? true
-                            : false;
-                if (isOEService && context.description !== "")
-                    return true;
-
                 return false;
+
+            if (context.description == null || context.description == "undefined")
+                return false;
+
+            //there is a description show this button
+            var isOEService = context.mapService.serviceUrl.match("lib-gis") !== -1
+                ? true
+                : context.mapService.serviceUrl.match("lib-gis") !== -1
+                    ? true
+                    : context.mapService.serviceUrl.match("arcgis.oregonexplorer.info") !== -1
+                        ? true
+                        : false;
+            if (isOEService && context.description !== "")
+                return true;
+
+            return false;
 
         });
         // view LayerActionsView active
 
         this.app.commandRegistry.command("showServiceInfo").register(this, function (layer) {
             window.open(layer.getLayerUrl(), "_blank");
+        }, function (context): boolean {
+            function canExecute(context) {
+                if (context === null) {
+                    return false;
+                }
+                //hide if the layer property "hideDownload" has a value
+                if (context.properties.hideServiceInfo !== undefined) {
+                    //if (["FALSE","TRUE"].indexOf(context.properties.hideDownload.toUpperCase()) !== -1) {
+                    if (context.properties.hideServiceInfo.length !== -1) {
+                        return false;
+                    }
+                }
+
+                //is the map service there?
+                if (context.mapService == null || context.mapService == "")
+                    return false;
+                if (context.mapService.serviceUrl == null || context.mapService.serviceUrl == "")
+                    return false;
+
+                return true;
+            }
+            let showServiceInfo = canExecute(context);
+            if (showServiceInfo) {
+                return true;
+            } else {
+                return false;
+            };
         });
+    
+
         this.app.commandRegistry.command("showDownload").register(this, async function (layer) {
 
             //override download link
