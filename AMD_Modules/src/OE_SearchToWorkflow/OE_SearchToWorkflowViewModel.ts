@@ -227,7 +227,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
                 $(".search-button").click();
                 return;
             }                        
-        }                        
+        }
         else if (this.searchType && this.searchType.get() == "workflow") {
 
             //prevent default search results
@@ -268,12 +268,22 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
 
                 if (this.suggestionSelectedIndex > -1 && this.suggestions && this.suggestionSelectedIndex < this.suggestions.length()) {
                     let suggestObject: any = this.suggestions.getAt(this.suggestionSelectedIndex);
-                    if (suggestObject)
+                    if (suggestObject) {
                         workflowArgs["magicKey"] = suggestObject.magicKey;
+                        workflowArgs["text"] = suggestObject.text;
+                    }
+                }
+
+                //portal workflow
+                if (workflowArgs.workflowId.indexOf("http") > -1) {
+                    workflowArgs["url"] = workflowArgs.workflowId;
+                    workflowArgs["inputs"] = {"magicKey": workflowArgs["magicKey"],"text": workflowArgs["text"]};
+                    this.app.commandRegistry.command("RunWorkflowByUrlAndInputs").execute(workflowArgs);
+                }
+                else {
+                    this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
                 }
                 
-                this.app.commandRegistry.command("RunWorkflowWithArguments").execute(workflowArgs);
-
                 let thisScope = this;
 
                 window.setTimeout(() => {

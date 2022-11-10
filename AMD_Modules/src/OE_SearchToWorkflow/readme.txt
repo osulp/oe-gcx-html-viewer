@@ -6,6 +6,9 @@ Viewer JSON
 NOTE! This module should be loaded after the signin module or the options dropdown/clear search button will be out of place.
 It works well if place it after:  "moduleName": "Tools"
 
+Portal workflow support added. The "searchWorkflowID" property in the view model config can be an id for the workflow in essentials, OR it can be a url of a portal workflow.
+
+
  {
     "moduleName": "OE_SearchToWorkflow",
     "libraryId": "OE_AMD",
