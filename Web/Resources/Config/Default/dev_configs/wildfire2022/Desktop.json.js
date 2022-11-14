@@ -4203,6 +4203,35 @@
                         ]
                     },
                     {
+                        "moduleName": "OE_HandheldHeaderButton",
+                        "libraryId": "OE_AMD",
+                        "require": "geocortex/oe_amd/OE_HandheldHeaderButton/OE_HandheldHeaderButtonModule",
+                        "configuration": {},
+                        "views": [
+                            {
+                                "id": "OE_HandheldHeaderButtonView",
+                                "require": "geocortex/oe_amd/OE_HandheldHeaderButton/OE_HandheldHeaderButtonView",
+                                "markup": "geocortex/oe_amd/OE_HandheldHeaderButton/OE_HandheldHeaderButtonView.html",
+                                "viewModelId": "OE_HandheldHeaderButtonViewModel",
+                                "title": "Header Button",
+                                "visible": true,
+                                "region": "HeaderRegion",
+                                "configuration": {}
+                            }
+                        ],
+                        "viewModels": [
+                            {
+                                "id": "OE_HandheldHeaderButtonViewModel",
+                                "require": "geocortex/oe_amd/OE_HandheldHeaderButton/OE_HandheldHeaderButtonViewModel",
+                                "configuration": {
+                                    "buttonText": "Find Location",
+                                    "commandName": "ActivateView",
+                                    "commandParam": "IWantToMenuButtonView"
+                                }
+                            }
+                        ]
+                    },
+                    {
                         "moduleName": "LabelOptions",
                         "moduleType": "geocortex.essentialsHtmlViewer.mapping.modules.labelOptions.LabelOptionsModule",
                         "configuration": {},
