@@ -532,7 +532,11 @@ export class OE_OITTViewModel extends ViewModelBase {
         }
         else {
             this.queryUrlSWCD = mService.serviceUrl + "/" + this._GetLayerIDByName(mService, this.swcdLayerName).id;
-        }        
+        }
+
+        console.log(this.urlMainMapService);
+        console.log(this.layerIDProjectPoints);
+        console.log(this.queryURLProjects);
     }
 
 
@@ -748,6 +752,7 @@ export class OE_OITTViewModel extends ViewModelBase {
     private _GetReportFeatureSetsDone() {
 
         console.log("Projects: " + this.projectsGraphicsArray.length);
+        console.log("Staring counts");
 
         this._loadEsirMap(this);
 
@@ -765,6 +770,8 @@ export class OE_OITTViewModel extends ViewModelBase {
             projectTypeCounts[this.fsProjectTypes.features[i].attributes.ProjectType] = 0;
         }
 
+        console.log("Project types object: " + projectTypeCounts);
+
         //project year counts
         let sYearNum:number = Number(this.startYear.get());
         let eYearNum: number = Number(this.endYear.get());
@@ -777,12 +784,17 @@ export class OE_OITTViewModel extends ViewModelBase {
             this.chartProjectYearCount.push({ "y": year, "c": 0}); //new object
         }
 
+        console.log("Years bins: " + this.chartProjectYearCount.length);
+
+
         //project type counts
         sYearNum = Number(this.startYear.get());
         eYearNum = Number(this.endYear.get());
 
         let keyProjectTypeCount = {};
         this.chartProjectTypeCount = [];
+
+        console.log("Project types: " + this.fsProjectTypes.features.length);
 
         for (let i = 0; i < this.fsProjectTypes.features.length; i++) {
 
@@ -791,6 +803,8 @@ export class OE_OITTViewModel extends ViewModelBase {
             keyProjectTypeCount[pType] = this.chartProjectTypeCount.length;
             this.chartProjectTypeCount.push({ "t": pType, "c": 0 }); //new object
         }
+
+        console.log("Project type bins: " + this.chartProjectTypeCount.length);
 
         //funding by year
         this.chartFundingYear = [];
@@ -837,13 +851,18 @@ export class OE_OITTViewModel extends ViewModelBase {
             this.chartFundingTypeYear.push(yearActFAB);
         }
 
+        let completeYearForMatchingProjectSkips = 0;
+        let projectTypesNotFound = 0;
+        let projectYearNotFound = 0;
+        let projectTypeBinNotFound = 0;
+        
+
         //loop over projects
         if (this.projectsGraphicsArray.length > 0) {
 
             this.areaTotalProjects.set(this.projectsGraphicsArray.length.toLocaleString('en'));
 
-            for (let i = 0; i < this.projectsGraphicsArray.length; i++)
-            {
+            for (let i = 0; i < this.projectsGraphicsArray.length; i++) {
                 let atts = this.projectsGraphicsArray[i].attributes;
 
                 //investment
@@ -851,15 +870,13 @@ export class OE_OITTViewModel extends ViewModelBase {
                 this.areaTotalFunds += Number(atts.FundedAmount);
 
                 //any federal funds?
-                if (!this._IsNullOrEmpty(atts.FederalFunds) && atts.FederalFunds.toString() != "null")
-                {
+                if (!this._IsNullOrEmpty(atts.FederalFunds) && atts.FederalFunds.toString() != "null") {
                     //totalInvestment += Number(atts.FederalFunds);
                     this.areaTotalFed += Number(atts.FederalFunds);
                 }
 
                 //funding by year
-                if (!this._IsNullOrEmpty(keyFundingYear[atts.YearEnd]))
-                {
+                if (!this._IsNullOrEmpty(keyFundingYear[atts.YearEnd])) {
                     (<any>this.chartFundingYear[keyFundingYear[atts.YearEnd]]).fund += atts.FundedAmount;
                     (<any>this.chartFundingYear[keyFundingYear[atts.YearEnd]]).fed += atts.FederalFunds;
                 }
@@ -869,21 +886,29 @@ export class OE_OITTViewModel extends ViewModelBase {
                     (<any>this.chartFundingType[keyFundingType[atts.ProjectType]]).s += (atts.FundedAmount + atts.FederalFunds);
 
                     //if (lowestTypeFunding < (<any>this.chartFundingType[keyFundingType[atts.ProjectType]]).s)
-                      //  lowestTypeFunding = (<any>this.chartFundingType[keyFundingType[atts.ProjectType]]).s;
+                    //  lowestTypeFunding = (<any>this.chartFundingType[keyFundingType[atts.ProjectType]]).s;
                 }
-                                    
-                //project counts
-                if (!this._IsNullOrEmpty(projectTypeCounts[atts.ProjectType]))
-                    projectTypeCounts[atts.ProjectType] += 1;
 
+                //project counts
+                if (!this._IsNullOrEmpty(projectTypeCounts[atts.ProjectType])) {
+                    projectTypeCounts[atts.ProjectType] += 1;
+                }
+                else
+                    projectTypesNotFound++;
 
                 //project year counts
-                if (!this._IsNullOrEmpty(keyProjectYearCount[Number(atts.YearEnd)]))
+                if (!this._IsNullOrEmpty(keyProjectYearCount[Number(atts.YearEnd)])) {
                     (<any>this.chartProjectYearCount[keyProjectYearCount[Number(atts.YearEnd)]]).c += 1;
+                }
+                else
+                    projectYearNotFound++;
+                    
 
                 //project type counts
                 if (!this._IsNullOrEmpty(keyProjectTypeCount[atts.ProjectType]))
                     (<any>this.chartProjectTypeCount[keyProjectTypeCount[atts.ProjectType]]).c += 1;
+                else
+                    projectTypeBinNotFound++;
 
                 //funding by type by year
 
@@ -892,8 +917,10 @@ export class OE_OITTViewModel extends ViewModelBase {
                 let numYear = parseInt(atts.YearEnd);
 
                 //get complete year for matching project number                
-                if ( isNaN(numYear) || this._IsNullOrEmpty(keyFundingTypeYear[numYear]) || numYear == 0 )
-                    continue;                
+                if (isNaN(numYear) || this._IsNullOrEmpty(keyFundingTypeYear[numYear]) || numYear == 0) {
+                    completeYearForMatchingProjectSkips++;
+                    continue;
+                }
 
                 //check for new key year
                 if (this._IsNullOrEmpty(keyFundingTypeYear[actYearKey])) {
@@ -916,6 +943,10 @@ export class OE_OITTViewModel extends ViewModelBase {
 
             }
 
+            console.log("Year match skips: "+completeYearForMatchingProjectSkips);
+            console.log("Project types not found: "+projectTypesNotFound);
+            console.log("Project year not found: "+projectYearNotFound);
+            console.log("Project type bin not found: "+projectTypeBinNotFound);
             
             //funding by ProjectType divider
             /*if (lowestTypeFunding > 100,000) {                
@@ -1146,7 +1177,7 @@ export class OE_OITTViewModel extends ViewModelBase {
         //all queries are selected by state or geometry
         queryString = "1=1";
 
-        queryString += " AND YearStart BETWEEN " + this.startYear.get() + " AND " + this.endYear.get();
+        queryString += " AND YearEnd BETWEEN " + this.startYear.get() + " AND " + this.endYear.get();
 
         this.primaryQueryString.set(queryString);
     }
