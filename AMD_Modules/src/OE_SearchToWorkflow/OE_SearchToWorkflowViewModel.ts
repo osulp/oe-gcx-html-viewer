@@ -63,7 +63,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
 
         this.suggestionSearchDelayMS = config.suggestionSearchDelayMS || 250;
         this.minLengthToSearch = config.minLengthToSearch || 3;
-        this.searchEventCountTrigger = 3; ///config.searchEventCountTrigger || 4;
+        this.searchEventCountTrigger = config.searchEventCountTrigger || 3; //3; 
         this.launchWorkflowLockedTimeout = config.launchWorkflowLockedTimeout || 1000;  //default ms
         this.launchWorkflowLocked = false;
                                
@@ -115,12 +115,12 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
             else
                 thisScope.searchToDefault();
                         
-            //listen for input
-            $(this.targetInputBoxID).keyup(function (event: any) {
+            //listen for input            
+            $(this.targetInputBoxID).on("keyup",function (event: any) {
                 thisScope.searchKeyUp(event);                
             });
 
-            $(this.targetInputBoxID).focusin(function (event: any) {
+            $(this.targetInputBoxID).on("focusin",function (event: any) {
 
                 if (thisScope.searchBoxFocusOutTimeout)
                     clearTimeout(thisScope.searchBoxFocusOutTimeout)
@@ -129,7 +129,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
                 thisScope.searchOptionsVisible.set(false);
             });
 
-            $(this.targetInputBoxID).focusout(function (event: any) {
+            $(this.targetInputBoxID).on("focusout",function (event: any) {
                 thisScope.searchBoxFocusOutTimeout = window.setTimeout( () => {
                     thisScope.searchBoxFocusOutEvent();
                 }, 250);
@@ -224,7 +224,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
 
                 $(this.targetInputBoxID).val(this.suggestionSelectedText);
                 this.suggestionSelectedText = null;
-                $(".search-button").click();
+                $(".search-button").trigger("click");
                 return;
             }                        
         }
@@ -250,7 +250,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
                                 
                 $(this.targetInputBoxID).val(this.suggestionSelectedText);                
                 this.suggestionSelectedText = null;
-                $(".search-button").click();
+                $(".search-button").trigger("click");
                 return;
             }
 
@@ -330,7 +330,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
         }
 
         if (this.suggestionsVisible.get() && (event.key.charCodeAt(0) == 38 || event.key.charCodeAt(0) <= 40)) {
-            this.suggestionArrowMovement(event.keyCode);
+            this.suggestionArrowMovement(event.key);
         }
 
         if ($(this.targetInputBoxID).val().toString().length < this.minLengthToSearch) {
@@ -420,7 +420,7 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
 
         //primary search box use the search button
         if (this.targetInputBoxID == "#gcx_search")
-            $(".search-button").click();
+            $(".search-button").trigger("click");
     }
 
     suggestMouseOver(overElement: Element) {
@@ -442,14 +442,14 @@ export class OE_SearchToWorkflowViewModel extends ViewModelBase {
         $(overElement).addClass("oeSearchSuggestSelected");
     }
 
-    suggestionArrowMovement(keyCode: number) {
+    suggestionArrowMovement(keyCode: string) {
                 
         let pElement: Element = document.getElementsByClassName("oeSearchToWorkflowSuggest-module-view")[0];
 
         if (!pElement)
             return;
 
-        let moveDir: number = (keyCode == 38) ? -1 : 1;
+        let moveDir: number = (keyCode == "ArrowUp") ? -1 : 1;
         this.suggestionSelectedIndex += moveDir;
 
         if (this.suggestionSelectedIndex < 0 && pElement.children.length > 0)
