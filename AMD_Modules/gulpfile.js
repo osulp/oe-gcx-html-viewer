@@ -15,6 +15,7 @@ const merge = require("merge2");
 const through = require("through2");
 const uglifyJS = require("uglify-js");
 const color = require("ansi-colors")
+const xlxs = require("xlsx");
 
 // TODO: Support supplying arguments via a .json file similar to tsconfig.json
 // Arguments provided by the CLI

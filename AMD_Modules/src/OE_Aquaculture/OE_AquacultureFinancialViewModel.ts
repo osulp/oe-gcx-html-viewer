@@ -9,9 +9,12 @@ import { FilterableCollection } from "geocortex/framework-ui/FilterableCollectio
 import { OrderedCollection } from "geocortex/framework-ui/OrderedCollection";
 import { Site } from "geocortex/essentials/Site";
 import { isNumeric } from "geocortex/infrastructure/NumberFormat";
-import { buildKmlService } from "geocortex/infrastructure/LayerIntegrationUtils";
-import { KmlService } from "geocortex/essentials/KmlService";
-//import { OE_Charts } from "../OE_Aquaculture/OE_Charts";
+//import { buildKmlService } from "geocortex/infrastructure/LayerIntegrationUtils";
+//import { KmlService } from "geocortex/essentials/KmlService";
+//import { format } from "geocortex/infrastructure/FormatUtils";
+
+
+declare var XLSX: any;
 
 export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
@@ -84,6 +87,8 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
     sub_station_routes: ObservableCollection<any> = new ObservableCollection([]);
     //AMORTIZATION
     amortization_tbl: ObservableCollection<any> = new ObservableCollection([]);
+    //10yr Cash flow
+    tenYrCashFlow_tbl: ObservableCollection<any> = new ObservableCollection([]);
     //Summary Button
     show_summary_btn: Observable<boolean> = new Observable(false);
     //UPDATE State
@@ -190,6 +195,47 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                 });
             });
         });        
+
+        // Load Excel file on initialization
+        this.loadExcelFile("https://tools.oregonexplorer.info/Geocortex/Essentials/oe/REST/sites/Aquaculture/viewers/Aquaculture/VirtualDirectory/aquacultureConfig2025.xlsx");
+    }
+
+    /**
+     * Load and parse an Excel file, then populate the data model.
+     * @param filePath Path to the Excel file.
+     */
+    async loadExcelFile(filePath: string): Promise<void> {
+        try {
+            // Fetch the Excel file from the online path
+            const response = await fetch(filePath);
+            const arrayBuffer = await response.arrayBuffer();
+
+            // Parse the Excel file
+            const workbook = XLSX.read(arrayBuffer, { type: "array" });
+
+            // Process each sheet
+            workbook.SheetNames.forEach((sheetName) => {
+                const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+                console.log(`Data from sheet "${sheetName}":`, sheetData);
+
+                // Example: Populate a table based on sheet name
+                if (sheetName === "Species") {
+                    this.species_tbl.set(sheetData.map((row: any) => ({
+                        species: row["Species"],
+                        type: row["Type"],
+                        weight_min: row["WeightMin"],
+                        weight_max: row["WeightMax"],
+                        price_min: row["PriceMin"],
+                        price_max: row["PriceMax"],
+                        selected: false,
+                    })));
+                }
+            });
+
+            console.log("Excel data loaded successfully.");
+        } catch (error) {
+            console.error("Error loading Excel file:", error);
+        }
     }
 
     initialize(config: any): void {
@@ -691,25 +737,55 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                                 };
                                 //add chart config if applicable
                                 if (att.ChartConfig !== '') {
-                                    //lookup chart config values and render?
-                                    let _chartConfig = _chartConfigs.filter(f => f.attributes.ChartID === att.ChartConfig)[0];
+                                    //lookup chart config values and render?                                    
+                                    let _chartConfig = _chartConfigs.filter(f => f.attributes.ChartID === att.ChartConfig)[0];                                    
                                     let chartSeries = JSON.parse(_chartConfig.attributes.Series);
-                                    let chartData = new ObservableCollection<any>(chartSeries.data.map(d => {
-                                        return {
-                                            value: new Observable<any>(d.value),
-                                            percent: new Observable<any>(d.value),
-                                            category: d.category,
-                                            fieldCalVar: d.fieldCalVar
-                                        }
-                                    }));
+                                    console.log("Chart config lookup: ", att.ChartConfig);
+                                    console.log("Chart TYPE: ", _chartConfig.attributes["Type"]);
+                                    let chartData = new ObservableCollection<any>();
+                                    if (_chartConfig.attributes['Type'] === "column") {
+                                        // for each series in series
+                                        chartData = new ObservableCollection<any>(chartSeries.series.map(d => {
+                                            return {
+                                                year: new Observable<any>(),
+                                                costs: new Observable<any>(),
+                                                revenue: new Observable<any>(),
+                                                net: new Observable<any>(),
+                                            }
+                                        }));
+                                        chartSeries.dataSource.data = new ObservableCollection<any>();
+                                        let NPV = new Observable<any>();
+                                        let IRR = new Observable<any>();                                        
 
-                                    returnVal['chartConfig'] = {
-                                        chartID: _chartConfig.attributes.ChartID,
-                                        chartName: _chartConfig.attributes.ChartName,
-                                        chartType: _chartConfig.attributes.Type,
-                                        chartSeries: chartSeries,
-                                        chartData: chartData
-                                    };
+                                        returnVal['chartConfig'] = {
+                                            chartID: _chartConfig.attributes.ChartID,
+                                            chartName: _chartConfig.attributes.ChartName,
+                                            chartType: _chartConfig.attributes.Type,
+                                            chartSeries: chartSeries,
+                                            chartData: chartData,
+                                            npv: NPV,
+                                            irr: IRR
+                                        };
+                                        console.log("Chart config response: ", chartData);
+                                    } else {
+                                        chartData = new ObservableCollection<any>(chartSeries.data.map(d => {
+                                            return {
+                                                value: new Observable<any>(d.value),
+                                                percent: new Observable<any>(d.value),
+                                                category: d.category,
+                                                fieldCalVar: d.fieldCalVar
+                                            }
+                                        }));
+
+                                        returnVal['chartConfig'] = {
+                                            chartID: _chartConfig.attributes.ChartID,
+                                            chartName: _chartConfig.attributes.ChartName,
+                                            chartType: _chartConfig.attributes.Type,
+                                            chartSeries: chartSeries,
+                                            chartData: chartData
+                                        };
+                                    }
+                                    
                                 }
                                 if (att.UiType === 'dropdownLocations') {
                                     let selectedDDoption = new Observable<any>();
@@ -838,6 +914,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
         this._setScreenSectionBindings();
         this.calculateAmortization();
+        this.calculate10yrCashFlow();
         this.renderCharts();
         this.saveScenarioToCache();
     }
@@ -869,54 +946,94 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             scr['sections'].get().forEach(sct => {
                 sct['fields'].get().forEach(f => {
                     if (f.chartConfig && (f.show.indexOf('All') !== -1 || f.show.indexOf(this.selected_system_text.get()) !== -1)) {
-                        let totalChartValues = 0;
-                        //update with model values
-                        f.chartConfig.chartSeries.data.forEach(d => {
-                            let value = this.getSetValue(d.fieldCalVar);
-                            d.value = parseInt(value.replace(/\,/g, ''));
-                            totalChartValues += d.value;
-                        });
-                        //update chartData for table display
-                        let sortedData = [];
-                        f.chartConfig.chartData.get().forEach(cd => {
-                            let value = this.getSetValue(cd.fieldCalVar);
-                            cd.value.set(this.formatDisplayValue(parseInt(value.replace(/\,/g, '')), "$",null,true));
-                            cd.percent.set((parseInt(value.replace(/\,/g, '')) / totalChartValues * 100).toFixed(1) + "%");
-                            sortedData.push(cd);
-                        });
-                        sortedData = sortedData.sort(this.sortChartDataTable);
-                        f.chartConfig.chartData.set(sortedData);
-                        //f.chartConfig.chartDataSorted.sync();
-                        let opts = {
-                            plotArea: {
-                                margin: {
-                                    top:-10
-                                }
-                            },
-                            legend: {
-                                visible: true,
-                                position: "bottom"
-                            },
-                            chartArea: {
-                                background: ""
-                            },
-                            seriesColors: ["#b64242", "#cc8830", "#d0b809", "#07873b", "#39a0a1", "#24769f", "#82295c", "#1a1128", "#77747f","#cecad1"],
-                            seriesDefaults: {
-                                labels: {
-                                    visible: false,
-                                    background: "transparent",
-                                    template: "#= category #: #= kendo.format('{0:P0}', percentage)#"
-                                    //template: "#= category #: #= kendo.format('{0:P0}', percentage)# \n #= kendo.format('{0:c0}',value)#"
-                                }
-                            },
-                            series: [f.chartConfig.chartSeries],
-                            tooltip: {
-                                visible: true,
-                                template: "#= category #: #= kendo.format('{0:c0}', value)# \n #= kendo.format('{0:P0}',percentage)#"
-                                //format: "{0:c0}"
+                        if (f.chartConfig.chartType === "column") {                            
+                            switch (f.chartConfig.chartID) {
+                                case "tenYrCashFlow":                                    
+                                    let formattedCashFlowData = this.tenYrCashFlow_tbl.get().map(d => {
+                                        return {
+                                            year: d.year,
+                                            costs: this.formatDisplayValue(d.costs, "$", 0, true),
+                                            revenue: this.formatDisplayValue(d.revenue, "$", 0, true),
+                                            net: this.formatDisplayValue(d.net, "$", 0, true),
+                                            class: 'div-table-row'
+                                        }
+                                    });
+                                    let cashFlowDataTable = [{
+                                        year: "Year",
+                                        costs: "Costs",
+                                        revenue: "Revenue",
+                                        net: "Net Cash Flow",
+                                        class: "div-table-row heading"
+                                    }].concat(formattedCashFlowData);
+                                    let netValues = this.tenYrCashFlow_tbl.get().map(d => d.net);
+                                    //f.chartConfig.internalRateReturn10yr = this.calculateIRR(netValues,.01);
+                                    //console.log('IRR: ', f.chartConfig.internalRateReturn10yr);
+                                    //f.chartConfig.netPresentValue10yr = this.getNPV(.06, netValues[0], netValues.slice(1));
+                                    //console.log('NPV: ', f.chartConfig.netPresentValue10yr);
+                                    let excelNPV = this.calculateNPVExcelStyle(netValues, .06);
+                                    //console.log("Excel NPV", excelNPV);
+                                    f.chartConfig.npv.set(this.formatDisplayValue(excelNPV, "$", 0, true));
+                                    f.chartConfig.irr.set(this.formatDisplayValue(this.calculateIRR(netValues, .01), "%", 1, true));
+                                    f.chartConfig.chartData.set(cashFlowDataTable);
+                                    f.chartConfig.chartSeries.dataSource.data = this.tenYrCashFlow_tbl.get();    
+                                    //console.log("CHART CONFIG", f.chartConfig);
+                                    break;
+                                default:
+                                    break;
                             }
-                        };
-                        $("#"+f.chartConfig.chartID).kendoChart(opts);
+                            $("#" + f.chartConfig.chartID).kendoChart(f.chartConfig.chartSeries);
+                        } else { // pie
+                            let totalChartValues = 0;
+                            //update with model values
+                            
+                            f.chartConfig.chartSeries.data.forEach(d => {
+                                let value = this.getSetValue(d.fieldCalVar);
+                                d.value = parseInt(value.replace(/\,/g, ''));
+                                totalChartValues += d.value;
+                            });
+                            //update chartData for table display
+                            let sortedData = [];
+                            f.chartConfig.chartData.get().forEach(cd => {
+                                let value = this.getSetValue(cd.fieldCalVar);
+                                cd.value.set(this.formatDisplayValue(parseInt(value.replace(/\,/g, '')), "$", null, true));
+                                cd.percent.set((parseInt(value.replace(/\,/g, '')) / totalChartValues * 100).toFixed(1) + "%");
+                                sortedData.push(cd);
+                            });
+                            sortedData = sortedData.sort(this.sortChartDataTable);
+                            f.chartConfig.chartData.set(sortedData);
+                            //f.chartConfig.chartDataSorted.sync();
+                            let opts = {
+                                plotArea: {
+                                    margin: {
+                                        top: -10
+                                    }
+                                },
+                                legend: {
+                                    visible: true,
+                                    position: "bottom"
+                                },
+                                chartArea: {
+                                    background: ""
+                                },
+                                seriesColors: ["#b64242", "#cc8830", "#d0b809", "#07873b", "#39a0a1", "#24769f", "#82295c", "#1a1128", "#77747f", "#cecad1"],
+                                seriesDefaults: {
+                                    labels: {
+                                        visible: false,
+                                        background: "transparent",
+                                        template: "#= category #: #= kendo.format('{0:P0}', percentage)#"
+                                        //template: "#= category #: #= kendo.format('{0:P0}', percentage)# \n #= kendo.format('{0:c0}',value)#"
+                                    }
+                                },
+                                series: [f.chartConfig.chartSeries],
+                                tooltip: {
+                                    visible: true,
+                                    template: "#= category #: #= kendo.format('{0:c0}', value)# \n #= kendo.format('{0:P0}',percentage)#"
+                                    //format: "{0:c0}"
+                                }
+                            };
+                            $("#" + f.chartConfig.chartID).kendoChart(opts);
+                        }
+                        
                     }
                 });
             });
@@ -940,6 +1057,125 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
         });
         return returnVal;
     }
+
+    calculateIRR(cashflows: number[], guess = 0.1, tolerance = 1e-6, maxIterations = 1000): number | null {
+        // Example usage for 10 years (11 cash flows: initial outlay + 10 yearly flows)
+        //const cashflows = [-10000, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500];
+        //const irr = calculateIRR(cashflows);
+        //console.log("IRR:", irr !== null ? (irr * 100).toFixed(2) + "%" : "No solution");
+        let irr = guess;
+        for (let iter = 0; iter < maxIterations; iter++) {
+            let npv = 0;
+            let dnpv = 0;
+            for (let t = 0; t < cashflows.length; t++) {
+                npv += cashflows[t] / Math.pow(1 + irr, t);
+                dnpv -= t * cashflows[t] / Math.pow(1 + irr, t + 1);
+            }
+            const newIrr = irr - npv / dnpv;
+            if (Math.abs(newIrr - irr) < tolerance) {
+                return newIrr;
+            }
+            irr = newIrr;
+        }
+        return null; // No convergence
+    }
+
+    getNPV(rate: number, initialCost: number, cashFlows: number[]): number {
+        //// Example usage:
+        //const rate = 0.08; // 8% discount rate
+        //const initialCost = -10000;
+        //const cashFlows = [3000, 3000, 3000, 3000, 3000];
+        //console.log(getNPV(rate, initialCost, cashFlows)); // Output: NPV value
+        //return cashFlows.reduce(
+        //    (acc, current, i) => acc + current / Math.pow(1 + rate, i + 1),
+        //    initialCost );
+          return cashFlows.reduce((acc, val, i) => acc + val / Math.pow(1 + rate, i), 0);
+       
+    }
+    //getNPV(rate: number, cashFlows: number[]): number {
+    //    // Assumes cashFlows[0] is at time 0 (no discount) and subsequent flows are at t=1,2,...
+    //    return cashFlows.reduce(
+    //        (acc, current, i) => acc + current / Math.pow(1 + rate, i),
+    //        0
+    //    );
+    //}
+    /**
+     * Calculate NPV to match Excel's NPV timing.
+     * @param cashflows Array of cash flows (Year 1, Year 2, ..., Year 10)
+     * @param rate Discount rate as a decimal (e.g., 0.06 for 6%)
+     * @returns NPV value matching Excel's result
+     */
+    calculateNPVExcelStyle(cashflows: number[], rate: number): number {
+        // Exclude the first cash flow (initial outlay)
+        const initialOutlay = cashflows[0];
+        const futureCashflows = cashflows.slice(1);
+        // Discount future cash flows as Excel does (end of each period)
+        const npv = futureCashflows.reduce((acc, val, i) => acc + val / Math.pow(1 + rate, i + 1), 0);
+        // Add the initial outlay (not discounted)
+        return initialOutlay + npv;
+    }
+
+
+
+
+    calculate10yrCashFlow() {
+        //pull out Annual Expenses Prior to Operating Loan, Operating Loan, and Startup Loan Expenses
+        // Calculate year cost = 1st year at .62 times annual expenses prior to operating loan + operating loan and startup loan expenses
+        // Subsequent year costs just the sum of expenses and loans.
+        // Revenue for first year is .33 of annual revenue and the annual revenue from then on
+        console.log('CALCULATE 10YR CASH FLOW');
+        let annualExpensesNoOperatingLoan;
+        let operatingLoanExpense;
+        let annualLoanPayment;
+        let firstYearCost;
+        let firstYearRevenue;
+        let annualRevenue;
+        let tenYrCashFlowTbl = [];
+
+        this.screens_collection.get().forEach(scr => {
+            scr['sections'].get().forEach(sct => {
+                sct['fields'].get().forEach(f => {
+                    
+                    if ((f.show.indexOf('All') !== -1 || f.show.indexOf(this.selected_system_text.get()) !== -1)) {                        
+                        switch (f.fieldCalVar) {
+                            case 'annualExpenseNoOperatingLoan':
+                                annualExpensesNoOperatingLoan = parseFloat(f.value.get().replace(/\,/g, ''));
+                                break;
+                            case 'operatingLoanExpense':
+                                operatingLoanExpense = parseFloat(f.value.get().replace(/\,/g, ''));
+                                break;
+                            case 'annualLoanPayment':
+                                annualLoanPayment = parseFloat(f.value.get().replace(/\,/g, ''));
+                                break;
+                            case 'annualRevenue':
+                                annualRevenue = parseFloat(f.value.get().replace(/\,/g, ''));
+                                break;
+                        }
+                    }
+                });
+            });
+        });
+
+        firstYearCost = (.62 * annualExpensesNoOperatingLoan) + operatingLoanExpense + annualLoanPayment;
+        firstYearRevenue = (.33 * annualRevenue);
+        for (var x = 1; x < 11; x++) {
+            let cost = x === 1 ? firstYearCost : (annualExpensesNoOperatingLoan + operatingLoanExpense + annualLoanPayment);
+            let revenue = x === 1 ? firstYearRevenue : annualRevenue;
+            let entryVal = {
+                year: x,
+                costs: cost ,
+                revenue: revenue,
+                net: revenue - cost
+            };
+            tenYrCashFlowTbl.push(entryVal);            
+        }
+        this.tenYrCashFlow_tbl.set(tenYrCashFlowTbl);
+        this.tenYrCashFlow_tbl.pulse();
+        this.renderCharts();
+        console.log("10 yr cash flow table: ", tenYrCashFlowTbl);
+    }
+
+
 
     calculateAmortization() {
         //pull out loan amount, interest rate, term
@@ -1089,6 +1325,10 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
                                 if (['_termOfLoan', '_loanIntRate', 'loanAmountReq'].indexOf(f.fieldCalVar) !== -1) {
                                     this.calculateAmortization();
                                 }
+                                if (['annualExpenseNoOperatingLoan', 'operatingLoanExpense', 'annualLoanPayment', 'annualRevenue','chartTenYrCashFlow'].indexOf(f.fieldCalVar) !== -1) {
+                                    //console.log("trigger update of 10 yr cash flow");
+                                    this.calculate10yrCashFlow();
+                                }
                                 //check if net gain/loss or profitability and change display class to color accordingly.
                                 if (['annualNetGainLoss', 'grossProfitMarginRatio', 'annualNetGainLossLoan', '_annualNetGainLoss', '_grossProfitMarginRatio', '_annualNetGainLossLoan'].indexOf(f.fieldCalVar) !== -1) {
                                     f.tableDisplayClass.set(parseFloat(f.value.get().replace(/\,/g,'')) > 0 ? 'div-table-cell InputCalcRevenue' : 'div-table-cell InputCalcExpense');
@@ -1227,16 +1467,20 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
             val = this.addCommas(val);
             switch (unit) {
                 case '$':
-                    returnVal = (showUnits ? unit : '') + val;
+                    // Remove any existing commas and parse the value
+                    const numericValue = parseFloat(val.toString().replace(/,/g, ''));
+                    // Ensure no decimals (or use decimalDisp if provided) and move negative sign outside the dollar sign
+                    const formattedValue = numericValue.toFixed(decimalDisp ? decimalDisp : 0);
+                    returnVal = (numericValue < 0 ? '-' : '') + (showUnits ? unit : '') + this.addCommas(formattedValue.replace('-', ''));
                     break;
                 case '#':
                     returnVal = val;
                     break;
                 case '%':
                     returnVal = decimalDisp
-                        ? decimalDisp > 2
+                        ? decimalDisp >= 2
                             ? ((parseFloat(val) * 100).toFixed(decimalDisp - 2) + (showUnits ? unit : ''))
-                            : Math.round(parseFloat(val) * 100) + (showUnits ? unit : '')
+                            : Math.round(parseFloat(val) * 100).toFixed(decimalDisp) + (showUnits ? unit : '')
                         : Math.round(parseFloat(val) * 100) + (showUnits ? unit : '');
                     break;
                 default:
@@ -1417,6 +1661,7 @@ export class OE_AquacultureFinancialViewModel extends ViewModelBase {
 
             this.show_other_input_params_1.set(selSystem.system ? true : false);
             this.calculateAmortization();
+            this.calculate10yrCashFlow();
 
         //this.refreshScreenFilters()
         }

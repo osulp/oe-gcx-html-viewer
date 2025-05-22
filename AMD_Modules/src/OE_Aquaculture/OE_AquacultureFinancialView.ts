@@ -212,7 +212,7 @@ export class OE_AquacultureFinancialView extends ViewBase {
             //Event handlers
             this.viewModel.esriMap.on("load", function (event: any) {
                 try {
-                    var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/42");
+                    var featureLayer = new esri.layers.FeatureLayer("https://lib-gis1.library.oregonstate.edu/arcgis/rest/services/oreall/oreall_admin/MapServer/44");
                     (<esri.Map>event.map).addLayer(featureLayer);
                     //thisScope.setInfoScreenHeight();
                     //window.setTimeout(thisScope.animateInfoScreen, 1000);

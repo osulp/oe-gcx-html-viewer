@@ -5,27 +5,97 @@
         <br />
         <div data-binding="{@source:fields_filter}">
             <div data-binding="{@template-for:fields_filter}">
-                <div data-binding="{@source:chartConfig}">
-                    <div class="div-row" data-binding="{@template-for:chartConfig}">
-                        <div class="div-row-cell" data-binding="{data-table:chartID}">
-                            <div class="div-table" data-binding="{@source:chartData}">
-                                <div class="div-table-row" data-binding="{@template-for:chartData}">
-                                    <div class="div-table-cell" data-binding="{@text:category}"></div>
-                                    <div class="div-table-cell" data-binding="{@text:value}"></div>
-                                    <div class="div-table-cell" data-binding="{@text:percent}"></div>
+                <div data-binding="{@source:chartConfig}{@template-selector:chartID}">
+                    <!-- Template for tenYrCashFlow: Chart on top, table below -->
+                    <div data-binding="{@template-select:tenYrCashFlow}">
+                        <div class="demo-section k-content wide">
+                            <div data-binding="{id:chartID}"></div>
+                        </div>
+                        
+                        <div>
+                            <hr />
+                            <span><b>   Internal Rate of Return (10yrs):  </b></span>
+                            <span data-binding="{@text:irr}"></span>
+                        </div>
+                        <div>
+                            <hr />
+                            <span><b>   Net Present Value (10yrs):  </b></span>
+                            <span data-binding="{@text:npv}"></span>
+                            <hr />
+                        </div>
+
+                        <div class="div-table" data-binding="{@source:chartData}">
+                            <div data-binding="{@template-for:chartData}{class:class}">
+                                <div class="div-table-cell" style="width:10%" data-binding="{@text:year}"></div>
+                                <div class="div-table-cell" style="width:30%" data-binding="{@text:costs}"></div>
+                                <div class="div-table-cell" style="width:30%" data-binding="{@text:revenue}"></div>
+                                <div class="div-table-cell" style="width:30%" data-binding="{@text:net}"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Default template: Chart and table side-by-side -->
+                    <div data-binding="{@template-select:yrOperExpChart}">
+                        <div class="div-row">
+                            <div class="div-row-cell">
+                                <div class="div-table" data-binding="{@source:chartData}">
+                                    <div class="div-table-row" data-binding="{@template-for:chartData}">
+                                        <div class="div-table-cell" data-binding="{@text:category}"></div>
+                                        <div class="div-table-cell" data-binding="{@text:value}"></div>
+                                        <div class="div-table-cell" data-binding="{@text:percent}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="div-row-cell">
+                                <div class="demo-section k-content wide">
+                                    <div data-binding="{id:chartID}"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="div-row-cell">
-                            <div class="demo-section k-content wide" >
-                                <div data-binding="{id:chartID}"></div>
+                    </div>
+                    <div data-binding="{@template-select:yrOperExpWLoanChart}">
+                        <div class="div-row">
+                            <div class="div-row-cell">
+                                <div class="div-table" data-binding="{@source:chartData}">
+                                    <div class="div-table-row" data-binding="{@template-for:chartData}">
+                                        <div class="div-table-cell" data-binding="{@text:category}"></div>
+                                        <div class="div-table-cell" data-binding="{@text:value}"></div>
+                                        <div class="div-table-cell" data-binding="{@text:percent}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="div-row-cell">
+                                <div class="demo-section k-content wide">
+                                    <div data-binding="{id:chartID}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-binding="{@template-select:startUpCosts}">
+                        <div class="div-row">
+                            <div class="div-row-cell">
+                                <div class="div-table" data-binding="{@source:chartData}">
+                                    <div class="div-table-row" data-binding="{@template-for:chartData}">
+                                        <div class="div-table-cell" data-binding="{@text:category}"></div>
+                                        <div class="div-table-cell" data-binding="{@text:value}"></div>
+                                        <div class="div-table-cell" data-binding="{@text:percent}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="div-row-cell">
+                                <div class="demo-section k-content wide">
+                                    <div data-binding="{id:chartID}"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </fieldset>
 </div>
 <br />
+
 

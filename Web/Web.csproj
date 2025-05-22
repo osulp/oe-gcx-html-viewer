@@ -77,6 +77,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="IndexFinancial.html" />
     <Content Include="IndexSignIn.html" />
     <Content Include="bin\Viewer.dll" />
     <Content Include="favicon_oe.ico" />
@@ -109,6 +110,7 @@
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\add_layer_dev\Tablet.json.js" />
+    <Content Include="Resources\Config\Default\dev_configs\aquaculture\NoMap.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\imagery\Desktop.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\imagery\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\imagery\Tablet.json.js" />
@@ -582,6 +584,7 @@
     <Content Include="Resources\Scripts\oe_added_scripts\jQAllRangeSliders-min.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\jqueryTableSort.js" />
     <Content Include="Resources\Scripts\oe_added_scripts\lightpick.js" />
+    <Content Include="Resources\Scripts\oe_added_scripts\xlsx.js" />
     <Content Include="Resources\Styles\Animations.css" />
     <Content Include="Resources\Styles\common.css" />
     <Content Include="Resources\Styles\Custom\Common.css" />

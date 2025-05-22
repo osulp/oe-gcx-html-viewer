@@ -430,7 +430,7 @@ export class OE_AddLayerToLayerListViewModel extends ViewModelBase {
         if ($(".oe_add_layer_wrapper").length === 0 && this.menuItems.length > 0 && layerWrapper!=null) {
             let menuHMTL = "";
             this.menuItems.forEach(menu => {
-                let menuItemHTML = "<button onclick =\"geocortex.framework.applications[0].commandRegistry.commands." + menu["command"] + ".execute()\" class=\"toolbar-item tool\" title=\"Add layers to the map\"><img alt=\"" + menu["description"] + "\" src=\"" + menu["iconUri"] + "\" class=\"bound-visible-inline\"><p>" + menu["text"] + "</p></button>";
+                let menuItemHTML = "<button onclick =\"geocortex.framework.applications[0].commandRegistry.commands." + menu["command"] + ".execute()\" class=\"toolbar-item tool\" title=\"" + (menu["description"] !== undefined ? menu["description"] : "Add layers to the map") +"\"><img alt=\"" + menu["description"] + "\" src=\"" + menu["iconUri"] + "\" class=\"bound-visible-inline\"><p>" + menu["text"] + "</p></button>";
                 menuHMTL += menuItemHTML;
             })
                         
