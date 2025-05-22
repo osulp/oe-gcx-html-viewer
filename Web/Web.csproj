@@ -18,9 +18,9 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>44314</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <TypeScriptToolsVersion>2.4</TypeScriptToolsVersion>
     <UseGlobalApplicationHostFile />
     <Use64BitIISExpress />
@@ -125,6 +125,7 @@
     <Content Include="Resources\Config\Default\dev_configs\vanilla\Handheld.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\vanilla\Tablet.json.js" />
     <Content Include="Resources\Config\Default\dev_configs\wildfire2022\Desktop.json.js" />
+    <None Include="Resources\Config\Default\dev_configs\wildfire2022\Desktop.json.jsDEV" />
     <Content Include="Resources\Config\Default\dev_configs\wildfire\Desktop.json.js" />
     <Content Include="Resources\Images\Custom\AquacultureSiteReportThumb.png" />
     <Content Include="Resources\Images\Custom\AquacultureViewer.png" />
